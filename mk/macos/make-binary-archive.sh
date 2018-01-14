@@ -58,10 +58,10 @@ if [ "$skipbinarybuild" -eq "0" ]; then
 	echo "building binaries ..."
 	cd "$CURRENTDIR"
 	if [ -d "build" ]; then rm -rf "build"; fi
-	build_command="./build-mg.sh -b"
+	build_command="./build-zg.sh -b"
 	if [ "$NUMCORES" != "" ]; then build_command="$build_command -c $NUMCORES"; fi
 	$build_command
-	if [ "$?" -ne "0" ]; then echo 'ERROR: "./build-mg.sh" failed.' >&2; exit 1; fi
+	if [ "$?" -ne "0" ]; then echo 'ERROR: "./build-zg.sh" failed.' >&2; exit 1; fi
 else
 	echo "SKIPPING build of binaries ..."
 fi

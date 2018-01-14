@@ -42,11 +42,11 @@ B_SCRIPT_DIR="$GAMEDIR"
 
 # -------
 # useful for mods
-BASIC_SCRIPT="start_megaglest"
-FAKE_EXC_BINARY_MAC="MegaGlest"
-EXC_BINARY="megaglest"
-EXC_BINARY_DISTRO="megaglest"
-SHORT_GAME_NAME="megaglest"
+BASIC_SCRIPT="start_zetaglest"
+FAKE_EXC_BINARY_MAC="ZetaGlest"
+EXC_BINARY="ZetaGlest"
+EXC_BINARY_DISTRO="zetaglest"
+SHORT_GAME_NAME="zetaglest"
 # -------
 PORTSTART=62001
 NUM_OM_SERVERS=2

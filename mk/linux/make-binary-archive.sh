@@ -52,15 +52,15 @@ if [ "$SOURCE_BRANCH" != "" ]; then echo "Detected parameters for source reposit
 [[ -d "$RELEASEDIR" ]] && rm -rf "$RELEASEDIR"
 mkdir -p "$RELEASEDIR"
 
-if [ $skipbinarybuild = 0 ] 
+if [ $skipbinarybuild = 0 ]
 then
   # build the binaries
   echo "building binaries ..."
   cd $PROJDIR
   [[ -d "build" ]] && rm -rf "build"
-  ./build-mg.sh
+  ./build-zg.sh
   if [ $? -ne 0 ]; then
-    echo 'ERROR: "./build-mg.sh" failed.' >&2; exit 1
+    echo 'ERROR: "./build-zg.sh" failed.' >&2; exit 1
   fi
 else
   echo "SKIPPING build of binaries ..."
