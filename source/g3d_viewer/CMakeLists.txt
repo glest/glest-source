@@ -1,12 +1,12 @@
 # common libraries
 
 SET(EXTERNAL_LIBS "")
-SET(TARGET_NAME "megaglest_g3dviewer")
+SET(TARGET_NAME "zetaglest_g3dviewer")
 SET(TARGET_NAME_MANPAGE "${TARGET_NAME}.6")
 
 IF(BUILD_MEGAGLEST_MODEL_VIEWER)
-	MESSAGE(STATUS "Will try to build MegaGlest model viewer")
-	
+	MESSAGE(STATUS "Will try to build ZetaGlest model viewer")
+
 	IF(UNIX AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 		IF("${CMAKE_CXX_COMPILER_VERSION}" VERSION_LESS 4.7 OR NOT "${CMAKE_CXX_COMPILER_VERSION}")
 			ADD_DEFINITIONS("-std=gnu++0x")
@@ -121,7 +121,7 @@ IF(BUILD_MEGAGLEST_MODEL_VIEWER)
 		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/source/win32_deps/zlib-1.2.5)
 		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/source/win32_deps/curl-7.21.3/include)
 		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/source/win32_deps/${SDL_WINDOWS_DIR_DINC}/include)
-				       
+
 		link_directories(${PROJECT_SOURCE_DIR}/source/win32_deps/lib)
 		link_directories(${PROJECT_SOURCE_DIR}/source/win32_deps/xerces-c-src_2_8_0/lib)
 	ENDIF()
@@ -167,7 +167,7 @@ IF(BUILD_MEGAGLEST_MODEL_VIEWER)
 	INCLUDE_DIRECTORIES( ${GLEST_LIB_INCLUDE_ROOT}platform/${SDL_VERSION_SNAME} )
 
 	SET(MG_SOURCE_FILES "../glest_game/graphics/particle_type.cpp" "../glest_game/graphics/unit_particle_type.cpp" "../glest_game/global/config.cpp")
-	
+
 	FOREACH(DIR IN LISTS DIRS_WITH_SRC)
 		INCLUDE_DIRECTORIES( ${DIR} )
 
@@ -175,14 +175,14 @@ IF(BUILD_MEGAGLEST_MODEL_VIEWER)
 		FILE(GLOB SRC_FILES_FROM_THIS_DIR ${SRC_DIR_TO_GLOB}/*.cpp)
 		SET(MG_SOURCE_FILES ${MG_SOURCE_FILES} ${SRC_FILES_FROM_THIS_DIR})
 		FILE(GLOB INCLUDE_FILES_FROM_THIS_DIR ${SRC_DIR_TO_GLOB}/*.h)
-		SET(MG_INCLUDE_FILES ${MG_INCLUDE_FILES} ${INCLUDE_FILES_FROM_THIS_DIR})	
+		SET(MG_INCLUDE_FILES ${MG_INCLUDE_FILES} ${INCLUDE_FILES_FROM_THIS_DIR})
 		IF(APPLE)
 			FILE(GLOB SRC_FILES_FROM_THIS_DIR ${SRC_DIR_TO_GLOB}/*.mm)
 			#MESSAGE(STATUS "SRC_FILES_FROM_THIS_DIR: ${SRC_FILES_FROM_THIS_DIR}")
 			SET(MG_SOURCE_FILES ${MG_SOURCE_FILES} ${SRC_FILES_FROM_THIS_DIR})
 			FILE(GLOB SRC_FILES_FROM_THIS_DIR ${SRC_DIR_TO_GLOB}/*.m)
 			#MESSAGE(STATUS "SRC_FILES_FROM_THIS_DIR: ${SRC_FILES_FROM_THIS_DIR}")
-			SET(MG_SOURCE_FILES ${MG_SOURCE_FILES} ${SRC_FILES_FROM_THIS_DIR})	
+			SET(MG_SOURCE_FILES ${MG_SOURCE_FILES} ${SRC_FILES_FROM_THIS_DIR})
 			ENDIF(APPLE)
 	ENDFOREACH(DIR)
 
@@ -195,7 +195,7 @@ IF(BUILD_MEGAGLEST_MODEL_VIEWER)
                 SET(HELP2MAN_OUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/")
         ENDIF()
 
-        MESSAGE(STATUS "***Note: The final output path for MegaGlest G3d Viewer will be [${HELP2MAN_OUT_PATH}]")
+        MESSAGE(STATUS "***Note: The final output path for ZetaGlest G3d Viewer will be [${HELP2MAN_OUT_PATH}]")
 
 	FIND_PROGRAM(HELP2MAN "help2man")
 
@@ -232,21 +232,21 @@ IF(BUILD_MEGAGLEST_MODEL_VIEWER)
         # Requires an install prefix for the items below to work
         IF(NOT CMAKE_INSTALL_PREFIX STREQUAL "")
 	        # Installation of the program
-	        INSTALL(TARGETS 
-		        ${TARGET_NAME} 
+	        INSTALL(TARGETS
+		        ${TARGET_NAME}
 		        DESTINATION ${MEGAGLEST_BIN_INSTALL_PATH})
 
 	        IF(EXISTS ${HELP2MAN} AND NOT "${MEGAGLEST_MANPAGE_INSTALL_PATH}" STREQUAL "" AND NOT APPLE)
-         		MESSAGE(STATUS "**NOTE: Will Install manpage [${TARGET_NAME_MANPAGE}] to [${MEGAGLEST_MANPAGE_INSTALL_PATH}]")	
+         		MESSAGE(STATUS "**NOTE: Will Install manpage [${TARGET_NAME_MANPAGE}] to [${MEGAGLEST_MANPAGE_INSTALL_PATH}]")
 
 		        # Installation of the program manpage file
-		        INSTALL(FILES 
+		        INSTALL(FILES
 		          "${HELP2MAN_OUT_PATH}${TARGET_NAME_MANPAGE}"
 		          DESTINATION ${MEGAGLEST_MANPAGE_INSTALL_PATH})
 	        ENDIF()
 
                 # Installation of the program config and image files
-	        INSTALL(FILES 
+	        INSTALL(FILES
 	          "${PROJECT_SOURCE_DIR}/mk/shared/g3dviewer.ico"
 	          DESTINATION ${MEGAGLEST_INI_INSTALL_PATH})
         ENDIF()

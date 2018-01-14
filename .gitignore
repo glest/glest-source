@@ -90,3 +90,6 @@ $RECYCLE.BIN/
 *.msi
 *.pdb
 #
+/mk/linux/zetaglest
+/mk/linux/zetaglest_editor
+/mk/linux/zetaglest_g3dviewer

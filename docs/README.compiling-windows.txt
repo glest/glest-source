@@ -13,7 +13,7 @@ Developed on Windows with Microsoft Visual Studio Community 2015,
 little endian CPU. Compiling using the mingw32 toolset is experimental, which
 also allows for cross compiling.
 
-On Debian GNU/Linux systems please find license information in: 
+On Debian GNU/Linux systems please find license information in:
 /usr/share/common-licenses
 Also see Build Instructions for Linux
 
@@ -30,7 +30,7 @@ To build the game, the following tools and libraries must be present:
   folder)
 * mingw32
   http://mingw.org/
-  
+
 - Pick 1:
 * MegaGlest dependencies for building with VC++, which which will be downloaded
   automatically in 'Option A' (see below)
@@ -50,11 +50,11 @@ To build the game, the following tools and libraries must be present:
 
 To build and install the game proceed as follows:
 
-*** Option A ~ (recommended) Automated build on the command line: 
+*** Option A ~ (recommended) Automated build on the command line:
 
 1. Open a command prompt and navigate to the root folder where you have acquired the source code.
 
-2. cd mk\windoze
+2. cd mk\windows
 
 3. build-mg-2015.bat (or build-mg32bit-2015.bat for 32 bit build)
 
@@ -71,7 +71,7 @@ To build and install the game proceed as follows:
    subdirectories in it.
 
 2. Start the Visual C++ 2015 IDE and open the solution file:
-   \mk\windoze\Glest_vc2015.sln
+   \mk\windows\Glest_vc2015.sln
 
 3. Right Click on the top level 'Glest' node in Solution Explorer and select
    'Rebuild All' (choose release mode or release with debug info).
@@ -92,12 +92,12 @@ directory tree the %AppData% environment variable points to.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 3. Troubleshooting ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 --- General ---
-* Make sure that the hardware and software of your system match the 
+* Make sure that the hardware and software of your system match the
   requirements
 
 * If you cannot find what you are looking for on here please check the FAQs
   (https://docs.megaglest.org/MG/FAQ) before contacting.
-  
+
 --- Compiling ---
 * If configure fails make sure you have read the Building section above
 
@@ -109,15 +109,15 @@ directory tree the %AppData% environment variable points to.
 * Sound is played through OpenAL - you might need to take a look at your
   configuration: http://supertux.lethargik.org/wiki/OpenAL_Configuration
 
---- The game complains that OpenGL 1.3: is not available, is missing OpenGL 
+--- The game complains that OpenGL 1.3: is not available, is missing OpenGL
     extensions, or works very slowly ---
 * Try to get updated graphics drivers.
 
 -- The game crashes ---
 * Check the forums at http://forums.megaglest.org/
-* Please report any other crashes and freezes that are not yet described on 
+* Please report any other crashes and freezes that are not yet described on
   the forums, preferably with a backtrace from a debugging enabled build
-  
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~ 4. More information ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Website
@@ -141,11 +141,11 @@ directory tree the %AppData% environment variable points to.
     http://glest.org/
 
 * Linux port by:
-    Matthias Braun 
-    <matze@braunis.de> 
-  
-    with help from 
-  
+    Matthias Braun
+    <matze@braunis.de>
+
+    with help from
+
     Karl Robillard
     <krobbillard@san.rr.com>
 

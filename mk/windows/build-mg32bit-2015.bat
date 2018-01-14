@@ -1,19 +1,13 @@
 @echo off
 
 rem change to the directory of this batch file
-SET VCVARS_PLATFORM=x86_amd64
-
-rem Use below value to build x64 WITHOUT streflop
-rem SET MSBUILD_CONFIG=Release_WITHOUT_STREFLOP
-rem Use below value to build x64 WITH streflop
-SET MSBUILD_CONFIG=Release
+SET VCVARS_PLATFORM=
 
 ECHO --------------------------------
 ECHO Changing to build folder [%~dp0] p1 ["%1"] p2 ["%2"]
 rem pause
 cd /d "%~dp0"
 
-ECHO using msbuild config [%MSBUILD_CONFIG%]
 ECHO Checking for windows binary runtime tools...
 if NOT EXIST .\7z.exe call cscript getTools.vbs
 if NOT EXIST .\7z.dll call cscript getTools.vbs
@@ -21,7 +15,7 @@ if NOT EXIST .\tar.exe call cscript getTools.vbs
 if NOT EXIST .\wget.exe call cscript getTools.vbs
 
 set depfolder=windows_deps_2015
-set depfile=windows_deps_2015_x64.7z 
+set depfile=windows_deps_2015_x86.7z
 
 dir ..\..\source\
 if NOT EXIST ..\..\source\%depfolder%\NUL echo folder not found [%depfolder%]
@@ -100,7 +94,7 @@ set GET_GIT_SHA1="git log -1 --format=%%h --abbrev=7"
 for /f "delims=" %%a in ('%GET_GIT_SHA1%') do @set GITVERSION_SHA1=%%a
 for /f "delims=" %%a in ('git rev-list HEAD --count') do @set GITVERSION_REV=%%a
 ECHO Will build using GIT Revision: [%GITVERSION_REV%.%GITVERSION_SHA1%]
-cd mk\windoze
+cd mk\windows
 rem pause
 
 ECHO --------------------------------
@@ -155,16 +149,16 @@ rem /p:VCTargetsPath=%MSBUILD_PATH_MG_x64%;
 
 rem if "%2" == "rebuild" msbuild %msBuildMaxCPU% /v:detailed /p:TrackFileAccess=false;VCTargetsPath=%MSBUILD_PATH_MG_x64%;Configuration=Release;Platform=x64;PlatformToolset=v110 /m /t:Rebuild Glest_vc2012.sln
 rem if "%2" == "rebuild" msbuild %msBuildMaxCPU% /v:q /p:TrackFileAccess=false;VCTargetsPath=%MSBUILD_PATH_MG_x64%;Configuration=Release;Platform=x64;PlatformToolset=v110 /m /t:Rebuild Glest_vc2012.sln
-rem if "%2" == "rebuild" msbuild %msBuildMaxCPU% /v:q /p:TrackFileAccess=false;VCTargetsPath=%MSBUILD_PATH_MG_x64%;Configuration=%MSBUILD_CONFIG%;Platform=x64;PlatformToolset=v140 /m /t:Rebuild Glest_vc2015.sln
-if "%2" == "rebuild" msbuild %msBuildMaxCPU% /v:q /p:VCTargetsPath=%MSBUILD_PATH_MG_x64%;Configuration=%MSBUILD_CONFIG%;Platform=x64;PlatformToolset=v140 /m /t:Rebuild Glest_vc2015.sln
+rem if "%2" == "rebuild" msbuild %msBuildMaxCPU% /v:q /p:TrackFileAccess=false;VCTargetsPath=%MSBUILD_PATH_MG_x64%;Configuration=Release;Platform=Win32;PlatformToolset=v140 /m /t:Rebuild Glest_vc2015.sln
+if "%2" == "rebuild" msbuild %msBuildMaxCPU% /v:q /p:VCTargetsPath=%MSBUILD_PATH_MG_x64%;Configuration=Release;Platform=Win32;PlatformToolset=v140 /m /t:Rebuild Glest_vc2015.sln
 
 rem if not "%2" == "rebuild" msbuild /detailedsummary %msBuildMaxCPU% /p:BuildInParallel=%BuildInParallel% /p:Configuration=Release Glest_vc2010.sln
 rem if not "%2" == "rebuild" msbuild %msBuildMaxCPU% /p:Configuration=Release;Platform=x64 /v:q /m /p:PlatformToolset=v110_xp Glest_vc2012.sln
 
 rem if not "%2" == "rebuild" msbuild %msBuildMaxCPU% /v:detailed /p:TrackFileAccess=false;VCTargetsPath=%MSBUILD_PATH_MG_x64%;Configuration=Release;Platform=x64;PlatformToolset=v110 /m Glest_vc2012.sln
 rem if not "%2" == "rebuild" msbuild %msBuildMaxCPU% /v:q /p:TrackFileAccess=false;VCTargetsPath=%MSBUILD_PATH_MG_x64%;Configuration=Release;Platform=x64;PlatformToolset=v110 /m Glest_vc2012.sln
-rem if not "%2" == "rebuild" msbuild %msBuildMaxCPU% /v:q /p:TrackFileAccess=false;VCTargetsPath=%MSBUILD_PATH_MG_x64%;Configuration=%MSBUILD_CONFIG%;Platform=x64;PlatformToolset=v140 /m Glest_vc2015.sln
-if not "%2" == "rebuild" msbuild %msBuildMaxCPU% /v:q /p:VCTargetsPath=%MSBUILD_PATH_MG_x64%;Configuration=%MSBUILD_CONFIG%;Platform=x64;PlatformToolset=v140 /m Glest_vc2015.sln
+rem if not "%2" == "rebuild" msbuild %msBuildMaxCPU% /v:q /p:TrackFileAccess=false;VCTargetsPath=%MSBUILD_PATH_MG_x64%;Configuration=Release;Platform=Win32;PlatformToolset=v140 /m Glest_vc2015.sln
+if not "%2" == "rebuild" msbuild %msBuildMaxCPU% /v:q /p:VCTargetsPath=%MSBUILD_PATH_MG_x64%;Configuration=Release;Platform=Win32;PlatformToolset=v140 /m Glest_vc2015.sln
 
 ECHO ... End.
 rem pause execution so we can see the output before the batch file exits

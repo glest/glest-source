@@ -61,7 +61,7 @@ while getopts "c:defg:hl:mnswx" option; do
                 echo "       -l x : Force using LUA version x - example: -l 5.3"
                 echo "       -m   : Force running CMAKE only to create Make files (do not compile)"
                 echo "       -n   : Force running MAKE only to compile (assume CMAKE already built make files)"
-                echo "       -s   : Force compilation of wxWidgets STATIC libs"                
+                echo "       -s   : Force compilation of wxWidgets STATIC libs"
                 echo "       -w   : Force compilation 'Without using wxWidgets'"
                 echo "       -x   : Force cross compiling on x64 linux to produce an x86 32 bit binary"
 
@@ -335,8 +335,8 @@ else
         echo ''
         echo 'BUILD COMPLETE.'
         echo ''
-        echo 'To launch MegaGlest from the current directory, use:'
-        echo '  ./megaglest'
+        echo 'To launch ZetaGlest from the current directory, use:'
+        echo '  ./zetaglest'
         #echo 'Or change into mk/linux and run it from there:'
         #echo '  ./megaglest --ini-path=./ --data-path=./'
 fi

@@ -48,8 +48,8 @@ set BUILDTOOL=cov-int
 rem ------------------------------------------------------------------------------
 
 echo PROJECT [%PROJECT%]
-echo EMAIL [%EMAIL%] 
-echo TOKEN [%TOKEN%] 
+echo EMAIL [%EMAIL%]
+echo TOKEN [%TOKEN%]
 echo COVERITY_ANALYSIS_ROOT [%COVERITY_ANALYSIS_ROOT%]
 echo BITNESS [%BITNESS%]
 echo DESCRIPTION [%DESCRIPTION%]
@@ -70,7 +70,7 @@ set FILENAME=%PROJECT%_%DESCRIPTION%_%VERSION%
 rem Untested! Requires modification.
 rem wget.exe --no-check-certificate https://scan.coverity.com/download/win-32 --post-data "token=%TOKEN%&project=%PROJECT%" -O %TEMP%\coverity_tool.zip
 rem 7z.exe x %TEMP%\coverity_tool.zip
-rem set PATH=%PATH%;C:\build\megaglest-source\mk\windoze\cov-analysis-win32-6.6.1\bin\
+rem set PATH=%PATH%;C:\build\megaglest-source\mk\windows\cov-analysis-win32-6.6.1\bin\
 
 if "%MG_COV_PATH_SET%." == "." set PATH=%PATH%;%COVERITY_ANALYSIS_ROOT%\bin\
 set MG_COV_PATH_SET=TRUE

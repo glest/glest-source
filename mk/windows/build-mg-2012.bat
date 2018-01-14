@@ -20,7 +20,7 @@ if NOT EXIST .\tar.exe call cscript getTools.vbs
 if NOT EXIST .\wget.exe call cscript getTools.vbs
 
 set depfolder=windows_deps_2012
-set depfile=windows_deps_2012_x64.7z 
+set depfile=windows_deps_2012_x64.7z
 
 dir ..\..\source\
 if NOT EXIST ..\..\source\%depfolder%\NUL echo folder not found [%depfolder%]
@@ -112,7 +112,7 @@ set GET_GIT_SHA1="git log -1 --format=%%h --abbrev=7"
 for /f "delims=" %%a in ('%GET_GIT_SHA1%') do @set GITVERSION_SHA1=%%a
 for /f "delims=" %%a in ('git rev-list HEAD --count') do @set GITVERSION_REV=%%a
 ECHO Will build using GIT Revision: [%GITVERSION_REV%.%GITVERSION_SHA1%]
-cd mk\windoze
+cd mk\windows
 rem pause
 
 ECHO --------------------------------

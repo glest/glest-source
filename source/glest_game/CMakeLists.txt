@@ -2,11 +2,11 @@
 # common libraries
 
 SET(EXTERNAL_LIBS "")
-SET(TARGET_NAME "megaglest")
+SET(TARGET_NAME "zetaglest")
 SET(TARGET_NAME_MANPAGE "${TARGET_NAME}.6")
 
 IF(BUILD_MEGAGLEST)
-	MESSAGE(STATUS "Will try to build MegaGlest game")
+	MESSAGE(STATUS "Will try to build ZetaGlest game")
 
 	IF(WIN32)
 		SET(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH}
@@ -24,7 +24,7 @@ IF(BUILD_MEGAGLEST)
 		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/source/win32_deps/zlib-1.2.5)
 		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/source/win32_deps/curl-7.21.3/include)
 		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/source/win32_deps/${SDL_WINDOWS_DIR_DINC}/include)
-				       
+
 		link_directories(${PROJECT_SOURCE_DIR}/source/win32_deps/lib)
 		link_directories(${PROJECT_SOURCE_DIR}/source/win32_deps/xerces-c-src_2_8_0/lib)
 	ENDIF()
@@ -232,7 +232,7 @@ IF(BUILD_MEGAGLEST)
 	ENDIF()
 
 	SET(MG_SOURCE_FILES "")
-	
+
 	FOREACH(DIR IN LISTS DIRS_WITH_SRC)
 		INCLUDE_DIRECTORIES( ${DIR} )
 
@@ -269,7 +269,7 @@ IF(BUILD_MEGAGLEST)
 		SET(EXECUTABLE_OUTPUT_PATH "${MEGAGLEST_FRIENDLY_OUTPUT_PATH}")
 	ENDIF()
 
-    MESSAGE(STATUS "***Note: The final output path for the MegaGlest engine will be [${EXECUTABLE_OUTPUT_PATH}]")
+    MESSAGE(STATUS "***Note: The final output path for the ZetaGlest engine will be [${EXECUTABLE_OUTPUT_PATH}]")
 
 	SET_SOURCE_FILES_PROPERTIES(${MG_INCLUDE_FILES} PROPERTIES HEADER_FILE_ONLY 1)
 
@@ -329,18 +329,18 @@ IF(BUILD_MEGAGLEST)
 
     # Requires an install prefix for the items below to work
     IF(NOT CMAKE_INSTALL_PREFIX STREQUAL "")
-        MESSAGE(STATUS "**Source package INSTALL TRIGGERED [${PROJECT_SOURCE_DIR}]")	
+        MESSAGE(STATUS "**Source package INSTALL TRIGGERED [${PROJECT_SOURCE_DIR}]")
 
         # Installation of the program
-        INSTALL(TARGETS 
-	        ${TARGET_NAME} 
+        INSTALL(TARGETS
+	        ${TARGET_NAME}
 	        DESTINATION ${MEGAGLEST_BIN_INSTALL_PATH})
 
         IF(EXISTS ${HELP2MAN} AND NOT "${MEGAGLEST_MANPAGE_INSTALL_PATH}" STREQUAL "")
-     		MESSAGE(STATUS "**NOTE: Will Install manpage [${TARGET_NAME_MANPAGE}] to [${MEGAGLEST_MANPAGE_INSTALL_PATH}]")	
+     		MESSAGE(STATUS "**NOTE: Will Install manpage [${TARGET_NAME_MANPAGE}] to [${MEGAGLEST_MANPAGE_INSTALL_PATH}]")
 
 	        # Installation of the program manpage file
-	        INSTALL(FILES 
+	        INSTALL(FILES
 	          "${HELP2MAN_OUT_PATH}${TARGET_NAME_MANPAGE}"
 	          DESTINATION ${MEGAGLEST_MANPAGE_INSTALL_PATH})
         ENDIF()
@@ -356,7 +356,7 @@ IF(BUILD_MEGAGLEST)
 			DESTINATION ${MEGAGLEST_DATA_INSTALL_PATH})
 		IF(WIN32)
 			INSTALL(FILES
-				"${PROJECT_SOURCE_DIR}/mk/windoze/glest.ini"
+				"${PROJECT_SOURCE_DIR}/mk/windows/glest.ini"
 				DESTINATION ${MEGAGLEST_INI_INSTALL_PATH})
 		ELSEIF(UNIX AND NOT APPLE)
 			INSTALL(FILES

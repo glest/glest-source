@@ -23,6 +23,33 @@ available on their web site.
 
 ## To Build (Compile) and Run
 
+### Dependencies
+
+On Debian, Ubuntu, Fedora, Opensuse and even more Linux distributions,
+after you clone the source repository, you may use
+
+    cd mk/linux
+    sudo ./setupBuildDeps.sh
+
+which will run your package manager and attempt to install the needed packages.
+
+(These may vary based on your operating system or Linux distribution;
+we will attempt to document dependencies in more detail)
+
+Below is a list of most dependencies you will need. This document needs
+to indicate better which are optional and which are required.
+
+gcc gcc-c++ cmake libsdl2-dev libalut-dev libgl1-mesa-dev
+libglu1-mesa-dev libvorbis-dev libx11-dev liblua-dev libjpeg-dev
+libpng-dev libcurl-gnutls-dev libircclient-dev libglew-dev libftgl-dev
+libfribidi-dev libcppunit-dev libminiupnpc-dev libfreetype6-dev
+libgnutls28-dev libkrb5-dev libkrb5-dev libnghttp2-dev libopenal-dev
+libldap2-dev libwxgtk3.0-dev librtmp-dev libvlccore-dev libvlc-dev
+
+Additionally for map editor and model viewer:
+
+libwxgtk3.0-dev libxml2-dev
+
 ### Try the game without contributing
 
 Use this command:
@@ -32,7 +59,11 @@ Use this command:
 Afterward, to build, change to the mk/ directory, select your operating
 system and run
 
-    ./build-mg.sh
+    ./build-zg.sh
+
+To execute the game:
+
+    ./zetaglest
 
 ### Contributing and Testing
 
@@ -46,11 +77,11 @@ clone these 3 repositories:
 
 Afterward, to build, change to the zetaglest-source/mk/<OS> directory, and run:
 
-    ./build-mg.sh
+    ./build-zg.sh
 
 To run the game, you will need to specify the data path:
 
-    ./megaglest --data-path=<path to data repository>zetaglest-data/
+    ./zetaglest --data-path=<path to data repository>zetaglest-data/
 
 If you don't provide the data path, you will receive an error message
 when the game starts.
@@ -62,3 +93,4 @@ for extended, important instructions and guidelines for contributing.
 
 * IRC: [Freenode/#zetaglest-dev](http://webchat.freenode.net?channels=%23zetaglest-dev&uio=d4)
 * email: andy400-dev@yahoo.com
+* (Suggest alternate methods of communication)

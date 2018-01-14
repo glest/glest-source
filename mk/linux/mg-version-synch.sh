@@ -1,5 +1,5 @@
 #!/bin/sh
-# Use this script to synchronize other scripts and installers with the version 
+# Use this script to synchronize other scripts and installers with the version
 # in mg-version.sh for a Version Release
 # ----------------------------------------------------------------------------
 # Written by Mark Vejvoda <mark_vejvoda@hotmail.com>
@@ -90,35 +90,35 @@ echo
 echo '===== Updating Windows Installer ======'
 # !define APVER 3.6.0
 echo 'Windows Installer version # before:'
-grep -E '^\!define APVER [^"]*$' ../windoze/Installer/MegaGlestInstaller.nsi
-sed -i 's/^\!define APVER [^"]*$/\!define APVER '$CURRENT_VERSION'/' ../windoze/Installer/MegaGlestInstaller.nsi
+grep -E '^\!define APVER [^"]*$' ../windows/Installer/MegaGlestInstaller.nsi
+sed -i 's/^\!define APVER [^"]*$/\!define APVER '$CURRENT_VERSION'/' ../windows/Installer/MegaGlestInstaller.nsi
 echo 'Windows Installer version # after:'
-grep -E '^\!define APVER [^"]*$' ../windoze/Installer/MegaGlestInstaller.nsi
+grep -E '^\!define APVER [^"]*$' ../windows/Installer/MegaGlestInstaller.nsi
 echo
 if [ "$modifymore" = "yes" ]; then
 	echo 'Windows Installer version # before:'
-	grep -E '^\!define APVER_OLD [^"]*$' ../windoze/Installer/MegaGlestInstaller.nsi
-	sed -i 's/^\!define APVER_OLD [^"]*$/\!define APVER_OLD '$OLD_VERSION'/' ../windoze/Installer/MegaGlestInstaller.nsi
+	grep -E '^\!define APVER_OLD [^"]*$' ../windows/Installer/MegaGlestInstaller.nsi
+	sed -i 's/^\!define APVER_OLD [^"]*$/\!define APVER_OLD '$OLD_VERSION'/' ../windows/Installer/MegaGlestInstaller.nsi
 	echo 'Windows Installer version # after:'
-	grep -E '^\!define APVER_OLD [^"]*$' ../windoze/Installer/MegaGlestInstaller.nsi
+	grep -E '^\!define APVER_OLD [^"]*$' ../windows/Installer/MegaGlestInstaller.nsi
 	echo
 	echo '===== Updating Windows Updater ======'
 	echo 'Windows Updater version # before:'
-	grep -E '^\!define APVER [^"]*$' ../windoze/Installer/MegaGlestUpdater.nsi
-	sed -i 's/^\!define APVER [^"]*$/\!define APVER '$CURRENT_VERSION'/' ../windoze/Installer/MegaGlestUpdater.nsi
+	grep -E '^\!define APVER [^"]*$' ../windows/Installer/MegaGlestUpdater.nsi
+	sed -i 's/^\!define APVER [^"]*$/\!define APVER '$CURRENT_VERSION'/' ../windows/Installer/MegaGlestUpdater.nsi
 	echo 'Windows Updater version # after:'
-	grep -E '^\!define APVER [^"]*$' ../windoze/Installer/MegaGlestUpdater.nsi
+	grep -E '^\!define APVER [^"]*$' ../windows/Installer/MegaGlestUpdater.nsi
 	echo
 	echo 'Windows Updater version # before:'
-	grep -E '^\!define APVER_OLD [^"]*$' ../windoze/Installer/MegaGlestUpdater.nsi
-	sed -i 's/^\!define APVER_OLD [^"]*$/\!define APVER_OLD '$OLD_VERSION'/' ../windoze/Installer/MegaGlestUpdater.nsi
+	grep -E '^\!define APVER_OLD [^"]*$' ../windows/Installer/MegaGlestUpdater.nsi
+	sed -i 's/^\!define APVER_OLD [^"]*$/\!define APVER_OLD '$OLD_VERSION'/' ../windows/Installer/MegaGlestUpdater.nsi
 	echo 'Windows Updater version # after:'
-	grep -E '^\!define APVER_OLD [^"]*$' ../windoze/Installer/MegaGlestUpdater.nsi
+	grep -E '^\!define APVER_OLD [^"]*$' ../windows/Installer/MegaGlestUpdater.nsi
 	echo
 	echo 'Windows Updater version # before:'
-	grep -E '^\!define APVER_UPDATE [^"]*$' ../windoze/Installer/MegaGlestUpdater.nsi
-	sed -i 's/^\!define APVER_UPDATE [^"]*$/\!define APVER_UPDATE '$CURRENT_VERSION'/' ../windoze/Installer/MegaGlestUpdater.nsi
+	grep -E '^\!define APVER_UPDATE [^"]*$' ../windows/Installer/MegaGlestUpdater.nsi
+	sed -i 's/^\!define APVER_UPDATE [^"]*$/\!define APVER_UPDATE '$CURRENT_VERSION'/' ../windows/Installer/MegaGlestUpdater.nsi
 	echo 'Windows Updater version # after:'
-	grep -E '^\!define APVER_UPDATE [^"]*$' ../windoze/Installer/MegaGlestUpdater.nsi
+	grep -E '^\!define APVER_UPDATE [^"]*$' ../windows/Installer/MegaGlestUpdater.nsi
 	echo
 fi

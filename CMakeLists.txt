@@ -5,7 +5,7 @@ PROJECT( MegaGlest )
 
 #
 # *NOTE: For now we assume some variation of GCC Compiler (or MingW for Windows binaries)
-# VC++ users should not use CMake yet but rather the build-mg.bat file in mk/windoze
+# VC++ users should not use CMake yet but rather the build-mg.bat file in mk/windows
 #
 
 # build type
@@ -137,7 +137,7 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 #                ENDIF()
     ENDIF()
 
-	#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")	
+	#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
     #MESSAGE(STATUS "*TEST: Checking for max SSE LEVEL [${FORCE_MAX_SSE_LEVEL}]")
 
 	OPTION(FORCE_STREFLOP_SOFTWRAPPER "Set the streflop library to be forced to use the software emulator" OFF)
@@ -230,7 +230,7 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 		include(FindGit)
 
 		IF(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git/")
-            SET(HAS_GIT "TRUE") 
+            SET(HAS_GIT "TRUE")
             MESSAGE(STATUS "Found GIT and using GIT version stamping...")
 
             # Get the current commit SHA1
@@ -320,7 +320,7 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 	ENDIF()
 	SET(CMAKE_CXX_FLAGS_${MG_BUILD_TYPE} "${CMAKE_CXX_FLAGS_${MG_BUILD_TYPE}} ${CUSTOM_INSTALL_PATHS_VALUES}")
 
-	# We do some funky character escaping to get the right stuff written out to 
+	# We do some funky character escaping to get the right stuff written out to
 	# the final Makefile so we get the GIT Global Revsion #
 	string(REPLACE "'" "\"" CMAKE_CXX_FLAGS_${MG_BUILD_TYPE} "${CMAKE_CXX_FLAGS_${MG_BUILD_TYPE}}")
 
@@ -455,8 +455,8 @@ IF("${CPACK_GENERATOR}" STREQUAL "DEB")
 ENDIF()
 IF("${CPACK_GENERATOR}" STREQUAL "NSIS")
 	SET(CPACK_NSIS_DISPLAY_NAME "MegaGlest")
-	SET(CPACK_NSIS_MUI_ICON "${PROJECT_SOURCE_DIR}/mk/windoze/glest.ico")
-	SET(CPACK_PACKAGE_ICON "${PROJECT_SOURCE_DIR}/mk/windoze/megaglest.ico")
+	SET(CPACK_NSIS_MUI_ICON "${PROJECT_SOURCE_DIR}/mk/windows/glest.ico")
+	SET(CPACK_PACKAGE_ICON "${PROJECT_SOURCE_DIR}/mk/windows/megaglest.ico")
 	SET(CPACK_NSIS_URL_INFO_ABOUT "http://megaglest.org")
 ENDIF()
 
