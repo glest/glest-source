@@ -1,5 +1,8 @@
 # CONTRIBUTING
 
+You are welcome to join our [Discord server](https://discord.gg/WaAaXS7) or [IRC channel]
+(http://webchat.freenode.net/?channels=%23zetaglest-dev&uio=d4).
+
 If you find an issue that interests you, please leave a note asking about it
 first. If you don't see that anyone has inquired about it, you can simply
 leave a note saying you are going to work on it. If people work on an issue
