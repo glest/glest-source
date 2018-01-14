@@ -60,5 +60,5 @@ for extended, important instructions and guidelines for contributing.
 
 ## Contact
 
-* IRC: Freenode/#zetaglest-dev
+* IRC: [Freenode/#zetaglest-dev](http://webchat.freenode.net?channels=%23zetaglest-dev&uio=d4)
 * email: andy400-dev@yahoo.com
