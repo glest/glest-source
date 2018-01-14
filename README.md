@@ -52,7 +52,7 @@ To run the game, you will need to specify the data path:
 
     ./megaglest --data-path=<path to data repository>zetaglest-data/
 
-If you don't provide the data page, you will receive an error message
+If you don't provide the data path, you will receive an error message
 when the game starts.
 
 Please see [CONTRIBUTING.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/CONTRIBUTING.md)
