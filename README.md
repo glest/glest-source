@@ -39,11 +39,12 @@ system and run
 If you would like to contribute to development, you will need to fork and
 clone these 2 repositories:
 
-* https://github.com/ZetaGlest/zetaglest-source
-* https://github.com/ZetaGlest/zetaglest-data
-* https://github.com/ZetaGlest/zetaglest-masterserver
+  mkdir ZetaGlest
+  git clone https://github.com/ZetaGlest/zetaglest-source
+  git clone https://github.com/ZetaGlest/zetaglest-data
+  git clone https://github.com/ZetaGlest/zetaglest-masterserver
 
-Afterward, to build, change to the mk/<OS> directory, and run:
+Afterward, to build, change to the zetaglest-source/mk/<OS> directory, and run:
 
     ./build-mg.sh
 
