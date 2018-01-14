@@ -68,12 +68,18 @@ To execute the game:
 ### Contributing and Testing
 
 If you would like to contribute to development, you will need to fork and
-clone these 3 repositories:
+then clone your forks of these 3 repositories:
 
-    mkdir ZetaGlest
-    git clone https://github.com/ZetaGlest/zetaglest-source
-    git clone https://github.com/ZetaGlest/zetaglest-data
-    git clone https://github.com/ZetaGlest/zetaglest-masterserver
+* https://github.com/ZetaGlest/zetaglest-source
+* https://github.com/ZetaGlest/zetaglest-data
+* https://github.com/ZetaGlest/zetaglest-masterserver
+
+Hint: make a `ZetaGlest` directory, then clone from there. Afterward, you
+will have these 3 directories in `ZetaGlest`
+
+    zetaglest-data
+    zetaglest-masterserver
+    zetaglest-source
 
 Afterward, to build, change to the zetaglest-source/mk/<OS> directory, and run:
 
