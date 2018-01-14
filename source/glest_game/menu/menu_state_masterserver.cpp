@@ -34,7 +34,7 @@ namespace Glest{ namespace Game{
 DisplayMessageFunction MenuStateMasterserver::pCB_DisplayMessage = NULL;
 
 static string IRC_SERVER   = "irc.freenode.net";
-static string IRC_CHANNEL  = "#megaglest-lobby";
+static string IRC_CHANNEL  = "#zetaglest-lobby";
 
 // =====================================================
 // 	class MenuStateMasterserver
@@ -256,7 +256,7 @@ MenuStateMasterserver::MenuStateMasterserver(Program *program, MainMenu *mainMen
     int randomNickId = rand() % 999;
     string netPlayerName=Config::getInstance().getString("NetPlayerName",Socket::getHostName().c_str());
     string ircname=netPlayerName.substr(0,9);
-    snprintf(szIRCNick,80,"MG_%s_%d",ircname.c_str(),randomNickId);
+    snprintf(szIRCNick,80,"ZG_%s_%d",ircname.c_str(),randomNickId);
     normalizeNick(szIRCNick);
 
     currentIrcNick=ircname;
@@ -858,7 +858,7 @@ void MenuStateMasterserver::update() {
 					button->setFont(CoreData::getInstance().getDisplayFontSmall());
 					button->setFont3D(CoreData::getInstance().getDisplayFontSmall3D());
 					button->setText(nickList[i]);
-					if(strncmp(&nickList[i][0],"MG_",3) != 0 || &nickList[i][0] == currentIrcNick) {
+					if(strncmp(&nickList[i][0],"ZG_",3) != 0 || &nickList[i][0] == currentIrcNick) {
 						button->setEnabled(false);
 						button->setEditable(false);
 						button->setCustomTexture(CoreData::getInstance().getCustomTexture());
