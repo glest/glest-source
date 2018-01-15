@@ -1,7 +1,14 @@
 # CONTRIBUTING
 
-You are welcome to join our [Discord server](https://discord.gg/WaAaXS7) or [IRC channel]
-(http://webchat.freenode.net/?channels=%23zetaglest-dev&uio=d4).
+You are welcome to join our [Discord server](https://discord.gg/WaAaXS7) or [IRC channel](http://webchat.freenode.net/?channels=%23zetaglest-dev&uio=d4).
+
+ZetaGlest Issues are filed on these repositories:
+
+* [zetaglest-source](https://github.com/ZetaGlest/zetaglest-source/issues)
+* [zetaglest-data](https://github.com/ZetaGlest/zetaglest-data/issues)
+
+We try to keep issues related to the source code in -source and issues
+related to the data in -data.
 
 If you find an issue that interests you, please leave a note asking about it
 first. If you don't see that anyone has inquired about it, you can simply
