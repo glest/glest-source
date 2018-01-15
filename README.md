@@ -7,11 +7,11 @@ a libre software cross platform real-time strategy game.
 
 ZetaGlest is an entertaining free (freeware and free software) and open
 source cross-platform 3D real-time strategy (RTS) game, where you
-control the armies of one of seven different factions: Tech, Magic,
-Egypt, Indians, Norsemen, Persian or Romans. The game is played in one
-of 17 naturally looking settings, which, like the unit models, are
-crafted with great attention to detail. A lot of additional game data
-can be downloaded from within the game at no cost.
+control the armies of one of eight different factions: Tech, Magic,
+Egypt, Indians, Norsemen, Persian, Elves or Romans. The game is played
+in one of 17 naturally looking settings, which, like the unit models,
+are crafted with great attention to detail. A lot of additional game
+data can be downloaded from within the game at no cost.
 
 ## Download executable files
 
