@@ -82,31 +82,8 @@ To execute the game:
 
 ### Contributing and Testing
 
-If you would like to contribute to development, you will need to
-**fork* and then **clone your forks** of these 2 repositories:
-
-* https://github.com/ZetaGlest/zetaglest-source
-* https://github.com/ZetaGlest/zetaglest-data
-
-Hint: make a `ZetaGlest` directory
-
-* clone zetaglest-source
-* cd zetaglest-source/data
-* Important: clone the data repo into `glest_game/` by adding "glest_game" after the clone command
-
-  Example: git clone https://github.com/ZetaGlest/zetaglest-data glest_game
-  **Be sure to replace the URL with the URL of your fork**
-
-Afterward, to build, change to the zetaglest-source/mk/<OS> directory, and run:
-
-    ./build-zg.sh
-
-To run the game, use:
-
-    ./zetaglest
-
-The path to the data is specified in `glest-dev.ini`. If `zetaglest`
-can't find the data, you will receive an error message upon starting.
+If you'll be contributing code or changes to data, the procedures for
+forking and cloning are outlined in [CONTRIBUTING.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/CONTRIBUTING.md)
 
 Please see [CONTRIBUTING.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/CONTRIBUTING.md)
 for extended, important instructions and guidelines for contributing.

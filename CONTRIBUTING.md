@@ -31,6 +31,39 @@ Sometimes a patch will be a single line in a single file; other times a single
 patch will consist of changes to several files. Keep unrelated patches separate
 from each other (i.e. a separate PR for each patch).
 
+## Set up the repositories locally
+
+If you would like to contribute to development, you will need to
+**fork* and then **clone your forks** of these 2 repositories:
+
+* https://github.com/ZetaGlest/zetaglest-source
+* https://github.com/ZetaGlest/zetaglest-data
+
+Hint: make a `ZetaGlest` directory
+
+* clone zetaglest-source
+* cd zetaglest-source/data
+* Important: clone the **data** repo into `glest_game/` by adding `glest_game` after the clone command
+
+  Example: `git clone https://github.com/ZetaGlest/zetaglest-data glest_game`
+  **Be sure to replace the URL with the URL of your fork**
+
+### Dependencies
+
+Information about dependencies is currently listed in the
+[README](https://github.com/ZetaGlest/zetaglest-source#to-build-compile-and-run)
+
+To build, change to the zetaglest-source/mk/`<OS>` directory, and run:
+
+    ./build-zg.sh
+
+To run the game, use:
+
+    ./zetaglest
+
+The path to the data is specified in `glest-dev.ini`. If `zetaglest`
+can't find the data, you will receive an error message upon starting.
+
 ## Pull Requests
 1. [Fork the repo](https://github.com/ZetaGlest/zetaglest-source/fork) (if you haven't already done so)
 2. Clone it to your computer
