@@ -15,6 +15,8 @@ data can be downloaded from within the game at no cost.
 
 ## Why this fork? (Project Goals)
 
+ZetaGlest forked from MegaGlest at v3.13.0
+
 I noticed that there were some good feature requests in the MegaGlest
 forum, as well as some mods, but it seemed that implementing and
 testing had a pace that I was uncomfortable with. After talking about
@@ -80,30 +82,31 @@ To execute the game:
 
 ### Contributing and Testing
 
-If you would like to contribute to development, you will need to fork and
-then clone your forks of these 3 repositories:
+If you would like to contribute to development, you will need to
+**fork* and then **clone your forks** of these 2 repositories:
 
 * https://github.com/ZetaGlest/zetaglest-source
 * https://github.com/ZetaGlest/zetaglest-data
-* https://github.com/ZetaGlest/zetaglest-masterserver
 
-Hint: make a `ZetaGlest` directory, then clone from there. Afterward, you
-will have these 3 directories in `ZetaGlest`
+Hint: make a `ZetaGlest` directory
 
-    zetaglest-data
-    zetaglest-masterserver
-    zetaglest-source
+* clone zetaglest-source
+* cd zetaglest-source/data
+* Important: clone the data repo into `glest_game/` by adding "glest_game" after the clone command
+
+  Example: git clone https://github.com/ZetaGlest/zetaglest-data glest_game
+  **Be sure to replace the URL with the URL of your fork**
 
 Afterward, to build, change to the zetaglest-source/mk/<OS> directory, and run:
 
     ./build-zg.sh
 
-To run the game, you will need to specify the data path:
+To run the game, use:
 
-    ./zetaglest --data-path=<path to data repository>zetaglest-data/
+    ./zetaglest
 
-If you don't provide the data path, you will receive an error message
-when the game starts.
+The path to the data is specified in `glest-dev.ini`. If `zetaglest`
+can't find the data, you will receive an error message upon starting.
 
 Please see [CONTRIBUTING.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/CONTRIBUTING.md)
 for extended, important instructions and guidelines for contributing.
