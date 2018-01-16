@@ -13,6 +13,19 @@ in one of 17 naturally looking settings, which, like the unit models,
 are crafted with great attention to detail. A lot of additional game
 data can be downloaded from within the game at no cost.
 
+## Why this fork? (Project Goals)
+
+I noticed that there were some good feature requests in the MegaGlest
+forum, as well as some mods, but it seemed that implementing and
+testing had a pace that I was uncomfortable with. After talking about
+this with another player, I decided to fork the project and see if I
+could assemble regular contributors and players who had similar
+feelings about the speed of progress, adding artwork, promoting mods
+made by contributors, and code enhancements. I would like to encourage
+contributions, no matter how small, in the hopes of improving an
+already fun game and making the experience even more fun that it has
+been for me.
+
 ## Download executable files
 
 No binary packages of the ZetaGlest fork have been released yet. If you
