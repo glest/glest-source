@@ -9,6 +9,10 @@ see the [MegaGlest home page](https://megaglest.org/) or view GitHub's
 
 [Andy Alt](https://github.com/andy5995)
 
+### php || mysql
+
+[Martijn De Boer](https://github.com/sexybiggetje) | [Master Server](https://github.com/ZetaGlest/zetaglest-masterserver/graphs/contributors)
+
 ## Graphics, Animation, and Artwork
 
 [virtushda](https://github.com/virtushda)
