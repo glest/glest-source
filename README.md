@@ -13,6 +13,8 @@ in one of 17 naturally looking settings, which, like the unit models,
 are crafted with great attention to detail. A lot of additional game
 data can be downloaded from within the game at no cost.
 
+Open games and [Server list](http://zetaglest.dreamhosters.com/)
+
 ## Why this fork? (Project Goals)
 
 ZetaGlest forked from MegaGlest at v3.13.0
