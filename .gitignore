@@ -93,3 +93,6 @@ $RECYCLE.BIN/
 /mk/linux/zetaglest
 /mk/linux/zetaglest_editor
 /mk/linux/zetaglest_g3dviewer
+data
+source/masterserver
+mk/linux/tools-for-standalone-client/installer/mojosetup

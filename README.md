@@ -71,7 +71,9 @@ libwxgtk3.0-dev libxml2-dev
 
 Use this command:
 
-    git clone --recursive https://github.com/ZetaGlest/zetaglest-source.git
+    git clone https://github.com/ZetaGlest/zetaglest-source.git zetaglest
+    cd zetaglest
+    git clone https://github.com/ZetaGlest/zetaglest-data.git data
 
 Afterward, to build, change to the mk/ directory, select your operating
 system and run
