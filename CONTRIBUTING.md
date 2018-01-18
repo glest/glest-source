@@ -41,12 +41,18 @@ If you would like to contribute to development, you will need to
 
 Hint: make a `ZetaGlest` directory
 
-* clone zetaglest-source
-* cd zetaglest-source/data
-* Important: clone the **data** repo into `glest_game/` by adding `glest_game` after the clone command
+* clone zetaglest-source using the clone info provided by your fork
+* cd to `zetaglest-source`
+* Important: clone your fork of the **data repo** by adding `data` after the clone command
 
-  Example: `git clone https://github.com/ZetaGlest/zetaglest-data glest_game`
+  Example: `git clone https://github.com/ZetaGlest/zetaglest-data data`
   **Be sure to replace the URL with the URL of your fork**
+
+### Note
+
+If you have cloned the repositories this way, do not use the
+`git_update.sh` provided in the source directory. See the information
+below about syncing your repo.
 
 ### Dependencies
 
