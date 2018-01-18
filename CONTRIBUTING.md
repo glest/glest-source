@@ -34,16 +34,23 @@ from each other (i.e. a separate PR for each patch).
 ## Set up the repositories locally
 
 If you would like to contribute to development, you will need to
-**fork* and then **clone your forks** of these 2 repositories:
+**fork** and then **clone your forks** of these 2 repositories:
 
 * https://github.com/ZetaGlest/zetaglest-source
 * https://github.com/ZetaGlest/zetaglest-data
 
 ### Procedure for cloning your forks
 
+#### Source
+
 * clone zetaglest-source using the clone info provided by your fork
 (use "Clone or Download" link, but **do** select `clone` **not**
 `Download Zip`)
+
+#### Data
+
+After your clone of the source repo is complete:
+
 * cd to `zetaglest-source` * Important: clone your fork of the **data
 repo** by adding `data` after the clone command
 
