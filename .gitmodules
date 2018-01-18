@@ -1,9 +1,0 @@
-[submodule "data/glest_game"]
-	path = data/glest_game
-	url = https://github.com/ZetaGlest/zetaglest-data.git
-[submodule "source/masterserver"]
-	path = source/masterserver
-	url = https://github.com/ZetaGlest/zetaglest-masterserver.git
-[submodule "mk/linux/tools-for-standalone-client/installer/mojosetup"]
-	path = mk/linux/tools-for-standalone-client/installer/mojosetup
-	url = https://github.com/ZetaGlest/mojosetup-fork.git
