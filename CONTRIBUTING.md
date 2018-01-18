@@ -39,11 +39,13 @@ If you would like to contribute to development, you will need to
 * https://github.com/ZetaGlest/zetaglest-source
 * https://github.com/ZetaGlest/zetaglest-data
 
-Hint: make a `ZetaGlest` directory
+### Procedure for cloning your forks
 
 * clone zetaglest-source using the clone info provided by your fork
-* cd to `zetaglest-source`
-* Important: clone your fork of the **data repo** by adding `data` after the clone command
+(use "Clone or Download" link, but **do** select `clone` **not**
+`Download Zip`)
+* cd to `zetaglest-source` * Important: clone your fork of the **data
+repo** by adding `data` after the clone command
 
   Example: `git clone https://github.com/ZetaGlest/zetaglest-data data`
   **Be sure to replace the URL with the URL of your fork**
