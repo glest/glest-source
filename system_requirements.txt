@@ -1,0 +1,36 @@
+ZetaGlest System requirements
+
+Hardware requirements:
+* >= (2011) Intel Sandy Bridge x86 CPU with 1.6 GHz or higher frequency
+  (modern multi-core CPU series, at least 2.0 GHz recommended)
+* 2.0 GB RAM
+  (4.0 GB RAM recommended)
+* Graphics chip supporting OpenGL 2.1 or higher
+  (dedicated/discrete video card with hardware 3D acceleration recommended)
+* 512 MB video memory
+* Audio chip supporting OpenAL
+
+Software requirements:
+* A supported (by its producer) operating system version
+* Graphics drivers which work well with this operating system version and
+  support the OpenGL requirements discussed above
+* Audio drivers supporting OpenAL
+* A file archiving utility which provides a command line interface and can
+  decompress 7-zip archives
+
+Graphics hardware and drivers:
+Current dedicated Nvidia and AMD hardware with up to date vendor-supplied
+proprietary drivers installed usually provide the best experience. However, it
+is not unheard of that they may be difficult to get working on Linux and other
+open platforms (due to insufficient support by hardware vendors). If you
+experience such issues, open source 3D drivers are now becoming usable for both
+many current and legacy GPUs, and may help with the proprietary drivers'
+shortcomings.
+
+Next to standard dedicated gaming video cards, ZetaGlest also runs fine
+on most integrated Intel, Nvidia and AMD APUs. In some case, reduce
+visual effects from the options menu may help improve game performance.
+
+To run ZetaGlest in headless mode, neither video nor audio hardware and driver
+support are necessary. For a good user experience, please ensure your system
+meets all other minimum hardware requirements, as listed above.

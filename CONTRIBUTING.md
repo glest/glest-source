@@ -1,14 +1,19 @@
 # CONTRIBUTING
 
-You are welcome to join our [Discord server](https://discord.gg/WaAaXS7) or [IRC channel](http://webchat.freenode.net/?channels=%23zetaglest-dev&uio=d4).
+Welcome to the ZG project! Thank you for reading this document and
+considering contributing.
+
+Anyone is welcome to join our [Discord server](https://discord.gg/WaAaXS7) or [IRC channel](http://webchat.freenode.net/?channels=%23zetaglest-dev&uio=d4).
+
+The Discord rooms are for players, developers, and curiosity/adventure-seekers.
+
+## Issues
 
 ZetaGlest Issues are filed on these repositories:
 
-* [zetaglest-source](https://github.com/ZetaGlest/zetaglest-source/issues)
-* [zetaglest-data](https://github.com/ZetaGlest/zetaglest-data/issues)
-
-We try to keep issues related to the source code in -source and issues
-related to the data in -data.
+* [zetaglest-source Issues](https://github.com/ZetaGlest/zetaglest-source/issues)
+* [zetaglest-data Issues](https://github.com/ZetaGlest/zetaglest-data/issues)
+* [zetaglest-masterserver Issues](https://github.com/ZetaGlest/zetaglest-masterserver/issues)
 
 If you find an issue that interests you, please leave a note asking about it
 first. If you don't see that anyone has inquired about it, you can simply
@@ -19,6 +24,11 @@ submit a PR for the same issue.
 If you find a problem for which no ticket has yet been created, please don't
 hesitate to open a new ticket, and let us know if you are going to work on
 that issue.
+
+If you would like to contribute something, it is advised to inquire
+first, to be sure it's a patch that would get accepted. We don't want
+anyone to spend their time and generosity working on something that we
+would be unable to accept.
 
 Please leave another note if you change your mind or if you get busy with other
 things and are unable to finish it. That lets me and other people know the
@@ -31,53 +41,11 @@ Sometimes a patch will be a single line in a single file; other times a single
 patch will consist of changes to several files. Keep unrelated patches separate
 from each other (i.e. a separate PR for each patch).
 
-## Set up the repositories locally
-
-If you would like to contribute to development, you will need to
-**fork** and then **clone your forks** of these 2 repositories:
-
-* https://github.com/ZetaGlest/zetaglest-source
-* https://github.com/ZetaGlest/zetaglest-data
-
-### Procedure for cloning your forks
-
-#### Source
-
-* clone zetaglest-source using the clone info provided by your fork
-(use "Clone or Download" link, but **do** select `clone` **not**
-`Download Zip`)
-
-#### Data
-
-After your clone of the source repo is complete:
-
-* cd to `zetaglest-source` * Important: clone your fork of the **data
-repo** by adding `data` after the clone command
-
-  Example: `git clone https://github.com/ZetaGlest/zetaglest-data data`
-  **Be sure to replace the URL with the URL of your fork**
-
-### Note
-
-If you have cloned the repositories this way, do not use the
-`git_update.sh` provided in the source directory. See the information
-below about syncing your repo.
-
-### Dependencies
-
-Information about dependencies is currently listed in the
-[README](https://github.com/ZetaGlest/zetaglest-source#to-build-compile-and-run)
-
-To build, change to the zetaglest-source/mk/`<OS>` directory, and run:
-
-    ./build-zg.sh
-
-To run the game, use:
-
-    ./zetaglest
-
-The path to the data is specified in `glest-dev.ini`. If `zetaglest`
-can't find the data, you will receive an error message upon starting.
+See the instructions in
+[BUILD.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
+for important information about how to clone your forks so you can
+easily contribute patches, graphics, or other content to the ZetaGlest
+repositories.
 
 ## Pull Requests
 1. [Fork the repo](https://github.com/ZetaGlest/zetaglest-source/fork) (if you haven't already done so)

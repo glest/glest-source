@@ -13,6 +13,8 @@ in one of 17 naturally looking settings, which, like the unit models,
 are crafted with great attention to detail. A lot of additional game
 data can be downloaded from within the game at no cost.
 
+**[System Requirements](https://github.com/ZetaGlest/zetaglest-source/blob/develop/system_requirements.txt)
+
 Open games and [Server list](https://zetaglest.dreamhosters.com/)
 
 ## Why this fork? (Project Goals)
@@ -38,34 +40,8 @@ have no desire to compile software and would only like a binary
 game; binary package downloads for various operating systems are
 available on their web site.
 
-## To Build (Compile) and Run
-
-### Dependencies
-
-On Debian, Ubuntu, Fedora, Opensuse and even more Linux distributions,
-after you clone the source repository, you may use
-
-    cd mk/linux
-    sudo ./setupBuildDeps.sh
-
-which will run your package manager and attempt to install the needed packages.
-
-(These may vary based on your operating system or Linux distribution;
-we will attempt to document dependencies in more detail)
-
-Below is a list of most dependencies you will need. This document needs
-to indicate better which are optional and which are required.
-
-gcc gcc-c++ cmake libsdl2-dev libalut-dev libgl1-mesa-dev
-libglu1-mesa-dev libvorbis-dev libx11-dev liblua-dev libjpeg-dev
-libpng-dev libcurl-gnutls-dev libircclient-dev libglew-dev libftgl-dev
-libfribidi-dev libcppunit-dev libminiupnpc-dev libfreetype6-dev
-libgnutls28-dev libkrb5-dev libkrb5-dev libnghttp2-dev libopenal-dev
-libldap2-dev libwxgtk3.0-dev librtmp-dev libvlccore-dev libvlc-dev
-
-Additionally for map editor and model viewer:
-
-libwxgtk3.0-dev libxml2-dev
+See [Build instructions](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
+(not yet complete)
 
 ### Try the game without contributing
 
@@ -75,14 +51,32 @@ Use this command:
     cd zetaglest
     git clone https://github.com/ZetaGlest/zetaglest-data.git data
 
-Afterward, to build, change to the mk/ directory, select your operating
-system and run
+Afterward, to
+[build](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md),
+change to the mk/ directory, select your operating system and run
 
     ./build-zg.sh
 
 To execute the game:
 
     ./zetaglest
+
+To run your own headless (dedicated) server:
+
+    Forward TCP ports 61357-61366
+    ./zetaglest --headless-server-mode
+
+To start a server and host a game:
+
+    Forward TCP ports 61357-61366
+    Enter the ZetaGlest lobby and click "Host Game"
+
+### Note
+
+When serving a running game, a headless ZG server uses almost the
+same amount of computer resources as a running game. Therefore, it is
+recommended not to try connecting your ZG client to a headless server
+running on the same computer.
 
 ### Contributing and Testing
 
