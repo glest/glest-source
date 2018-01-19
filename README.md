@@ -13,7 +13,9 @@ in one of 17 naturally looking settings, which, like the unit models,
 are crafted with great attention to detail. A lot of additional game
 data can be downloaded from within the game at no cost.
 
-**[System Requirements](https://github.com/ZetaGlest/zetaglest-source/blob/develop/system_requirements.txt)
+**[System Requirements](https://github.com/ZetaGlest/zetaglest-source/blob/develop/system_requirements.txt)**
+
+**[Screenshot](https://github.com/ZetaGlest/screenshots)**
 
 Open games and [Server list](https://zetaglest.dreamhosters.com/)
 
