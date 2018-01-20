@@ -127,7 +127,7 @@ enum MasterServerGameStatusType {
 class GameConstants {
 public:
 	static const int specialFactions 				= fpt_EndCount - 1;
-	static const int maxPlayers						= 8;
+	static const int maxPlayers						= 10;
 	static const int serverPort						= 61357;
 	static const int serverAdminPort				= 61355;
 	static int updateFps;
@@ -167,7 +167,7 @@ public:
 	static const char *path_logs_CacheLookupKey;
 
 	static const char *application_name;
-	
+
 	static const char *saveNetworkGameFileServerCompressed;
 	static const char *saveNetworkGameFileServer;
 	static const char *saveNetworkGameFileClientCompressed;
@@ -182,7 +182,7 @@ public:
 	static const float ultraMultiplier;
 	static const float megaMultiplier;
 	//
-	
+
 	static const char * LOADING_SCREEN_FILE;
 	static const char * LOADING_SCREEN_FILE_FILTER;
 	static const char * PREVIEW_SCREEN_FILE;

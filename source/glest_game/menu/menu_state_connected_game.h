@@ -98,6 +98,9 @@ private:
 	GraphicLabel labelAllowObservers;
 	GraphicCheckBox checkBoxAllowObservers;
 
+	GraphicLabel labelObserversHeading;
+	GraphicListBox listBoxObservers;
+
 	GraphicLabel labelAllowNativeLanguageTechtree;
 	GraphicCheckBox checkBoxAllowNativeLanguageTechtree;
 

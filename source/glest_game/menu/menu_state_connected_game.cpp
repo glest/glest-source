@@ -1,13 +1,22 @@
-// ==============================================================
-//	This file is part of Glest (www.glest.org)
+//	menu_state_connected_game.cpp: game setup menu as it appears to
+//	connected clients (not the host or user setting up the game)
 //
-//	Copyright (C) 2001-2005 Martiño Figueroa
+//	Copyright (C) 2018  The ZetaGlest team <https://github.com/ZetaGlest>
 //
-//	You can redistribute this code and/or modify it under
-//	the terms of the GNU General Public License as published
-//	by the Free Software Foundation; either version 2 of the
-//	License, or (at your option) any later version
-// ==============================================================
+//	ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+//
+//	This program is free software: you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation, either version 3 of the License, or
+//	(at your option) any later version.
+
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "menu_state_connected_game.h"
 
@@ -423,12 +432,19 @@ MenuStateConnectedGame::MenuStateConnectedGame(Program *program, MainMenu *mainM
     labelTeam.init(xoffset+660, setupPos, 50, GraphicListBox::defH, true);
 	labelTeam.setText(lang.getString("Team"));
 
+    labelObserversHeading.registerGraphicComponent(containerName,"labelObserversHeading");
+    labelObserversHeading.init(xoffset+720, setupPos, 70, GraphicListBox::defH, true);
+	labelObserversHeading.setText(lang.getString("Observers"));
+
     labelControl.setFont(CoreData::getInstance().getMenuFontBig());
     labelControl.setFont3D(CoreData::getInstance().getMenuFontBig3D());
 	labelFaction.setFont(CoreData::getInstance().getMenuFontBig());
 	labelFaction.setFont3D(CoreData::getInstance().getMenuFontBig3D());
 	labelTeam.setFont(CoreData::getInstance().getMenuFontBig());
 	labelTeam.setFont3D(CoreData::getInstance().getMenuFontBig3D());
+
+	labelObserversHeading.setFont(CoreData::getInstance().getMenuFontBig());
+	labelObserversHeading.setFont3D(CoreData::getInstance().getMenuFontBig3D());
 
 	//texts
 	buttonDisconnect.setText(lang.getString("Return"));
@@ -742,12 +758,17 @@ void MenuStateConnectedGame::reloadUI() {
 
 	labelTeam.setText(lang.getString("Team"));
 
+	labelObserversHeading.setText(lang.getString("Observers"));
+
     labelControl.setFont(CoreData::getInstance().getMenuFontBig());
     labelControl.setFont3D(CoreData::getInstance().getMenuFontBig3D());
 	labelFaction.setFont(CoreData::getInstance().getMenuFontBig());
 	labelFaction.setFont3D(CoreData::getInstance().getMenuFontBig3D());
 	labelTeam.setFont(CoreData::getInstance().getMenuFontBig());
 	labelTeam.setFont3D(CoreData::getInstance().getMenuFontBig3D());
+
+	labelObserversHeading.setFont(CoreData::getInstance().getMenuFontBig());
+	labelObserversHeading.setFont3D(CoreData::getInstance().getMenuFontBig3D());
 
 	//texts
 	buttonDisconnect.setText(lang.getString("Return"));
@@ -1860,7 +1881,9 @@ void MenuStateConnectedGame::mouseClickAdmin(int x, int y, MouseButton mouseButt
         	broadcastServerSettingsDelayTimer=time(NULL);
         }
         else if(checkBoxAllowObservers.mouseClick(x, y)) {
-        	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
+#ifdef DEBUG
+PRINT_DEBUG("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
+#endif
         	needToBroadcastServerSettings=true;
         	broadcastServerSettingsDelayTimer=time(NULL);
         }
@@ -1967,7 +1990,9 @@ void MenuStateConnectedGame::mouseClickAdmin(int x, int y, MouseButton mouseButt
                 }
                 else if(clientInterface != NULL && clientInterface->getGameSettings()->getStartLocationIndex(clientInterface->getGameSettings()->getThisFactionIndex()) != i &&
                 		listBoxTeams[i].mouseClick(x, y)) {
-                	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
+#ifdef DEBUG
+PRINT_DEBUG("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
+#endif
                     if(factionFiles[listBoxFactions[i].getSelectedItemIndex()] != formatString(GameConstants::OBSERVER_SLOTNAME)) {
                         if(listBoxTeams[i].getSelectedItemIndex() + 1 != (GameConstants::maxPlayers + fpt_Observer)) {
                             //lastSelectedTeamIndex[i] = listBoxTeams[i].getSelectedItemIndex();
@@ -2778,6 +2803,7 @@ void MenuStateConnectedGame::render() {
 		renderer.renderLabel(&labelControl);
 		renderer.renderLabel(&labelFaction);
 		renderer.renderLabel(&labelTeam);
+		renderer.renderLabel(&labelObserversHeading);
 		renderer.renderLabel(&labelMapInfo);
 
 		renderer.renderListBox(&listBoxMap);

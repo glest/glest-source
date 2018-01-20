@@ -1,13 +1,20 @@
-// ==============================================================
-//	This file is part of Glest (www.glest.org)
+//	menu_state_join_game.cpp
+//	Copyright (C) 2018  The ZetaGlest team <https://github.com/ZetaGlest>
 //
-//	Copyright (C) 2001-2008 Martiño Figueroa
+//	ZetaGlest is a fork of MegaGlest <https://megaglest.org>
 //
-//	You can redistribute this code and/or modify it under
-//	the terms of the GNU General Public License as published
-//	by the Free Software Foundation; either version 2 of the
-//	License, or (at your option) any later version
-// ==============================================================
+//	This program is free software: you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation, either version 3 of the License, or
+//	(at your option) any later version.
+
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "menu_state_join_game.h"
 
@@ -270,7 +277,10 @@ void MenuStateJoinGame::reloadUI() {
 
 MenuStateJoinGame::~MenuStateJoinGame() {
 	abortAutoFind = true;
-	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d]\n",__FILE__,__FUNCTION__,__LINE__);
+
+#ifdef DEBUG
+PRINT_DEBUG ("In [%s::%s Line: %d]\n",__FILE__,__FUNCTION__,__LINE__);
+#endif
 }
 
 void MenuStateJoinGame::DiscoveredServers(std::vector<string> serverList) {
@@ -285,7 +295,9 @@ void MenuStateJoinGame::DiscoveredServers(std::vector<string> serverList) {
 	//serverList.push_back("test2");
 	//
 
-	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] serverList.size() = %d\n",__FILE__,__FUNCTION__,__LINE__,(int)serverList.size());
+#ifdef DEBUG
+PRINT_DEBUG ("In [%s::%s Line: %d] serverList.size() = %d\n",__FILE__,__FUNCTION__,__LINE__,(int)serverList.size());
+#endif
 
 	autoConnectToServer = false;
 	buttonAutoFindServers.setEnabled(true);
