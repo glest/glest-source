@@ -1,12 +1,22 @@
-//	This file is part of Glest (www.glest.org)
+//	menu_state_custom_game.cpp: game setup menu as it appears to
+//	to the host
 //
-//	Copyright (C) 2001-2005 Martiño Figueroa
+//	Copyright (C) 2018  The ZetaGlest team <https://github.com/ZetaGlest>
 //
-//	You can redistribute this code and/or modify it under
-//	the terms of the GNU General Public License as published
-//	by the Free Software Foundation; either version 2 of the
-//	License, or (at your option) any later version
-// ==============================================================
+//	ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+//
+//	This program is free software: you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation, either version 3 of the License, or
+//	(at your option) any later version.
+
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program.  If not, see <https://www.gnu.org/licenses/>
 #include "menu_state_custom_game.h"
 
 #include "renderer.h"
@@ -468,7 +478,7 @@ MenuStateCustomGame::MenuStateCustomGame(Program *program, MainMenu *mainMenu,
 	labelGameName.setMaxEditRenderWidth(200);
 
 
-	bool allowInProgressJoin = Config::getInstance().getBool("EnableJoinInProgressGame","false");
+	bool allowInProgressJoin = Config::getInstance().getBool("EnableJoinInProgressGame","true");
 	labelAllowInGameJoinPlayer.registerGraphicComponent(containerName,"labelAllowInGameJoinPlayer");
 	labelAllowInGameJoinPlayer.init(50, networkPos - 30, 80);
 	labelAllowInGameJoinPlayer.setText(lang.getString("AllowInGameJoinPlayer"));
