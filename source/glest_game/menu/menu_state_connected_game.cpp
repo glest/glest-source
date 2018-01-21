@@ -432,19 +432,12 @@ MenuStateConnectedGame::MenuStateConnectedGame(Program *program, MainMenu *mainM
     labelTeam.init(xoffset+660, setupPos, 50, GraphicListBox::defH, true);
 	labelTeam.setText(lang.getString("Team"));
 
-    labelObserversHeading.registerGraphicComponent(containerName,"labelObserversHeading");
-    labelObserversHeading.init(xoffset+720, setupPos, 70, GraphicListBox::defH, true);
-	labelObserversHeading.setText(lang.getString("Observers"));
-
     labelControl.setFont(CoreData::getInstance().getMenuFontBig());
     labelControl.setFont3D(CoreData::getInstance().getMenuFontBig3D());
 	labelFaction.setFont(CoreData::getInstance().getMenuFontBig());
 	labelFaction.setFont3D(CoreData::getInstance().getMenuFontBig3D());
 	labelTeam.setFont(CoreData::getInstance().getMenuFontBig());
 	labelTeam.setFont3D(CoreData::getInstance().getMenuFontBig3D());
-
-	labelObserversHeading.setFont(CoreData::getInstance().getMenuFontBig());
-	labelObserversHeading.setFont3D(CoreData::getInstance().getMenuFontBig3D());
 
 	//texts
 	buttonDisconnect.setText(lang.getString("Return"));
@@ -758,17 +751,12 @@ void MenuStateConnectedGame::reloadUI() {
 
 	labelTeam.setText(lang.getString("Team"));
 
-	labelObserversHeading.setText(lang.getString("Observers"));
-
     labelControl.setFont(CoreData::getInstance().getMenuFontBig());
     labelControl.setFont3D(CoreData::getInstance().getMenuFontBig3D());
 	labelFaction.setFont(CoreData::getInstance().getMenuFontBig());
 	labelFaction.setFont3D(CoreData::getInstance().getMenuFontBig3D());
 	labelTeam.setFont(CoreData::getInstance().getMenuFontBig());
 	labelTeam.setFont3D(CoreData::getInstance().getMenuFontBig3D());
-
-	labelObserversHeading.setFont(CoreData::getInstance().getMenuFontBig());
-	labelObserversHeading.setFont3D(CoreData::getInstance().getMenuFontBig3D());
 
 	//texts
 	buttonDisconnect.setText(lang.getString("Return"));
@@ -2803,7 +2791,6 @@ void MenuStateConnectedGame::render() {
 		renderer.renderLabel(&labelControl);
 		renderer.renderLabel(&labelFaction);
 		renderer.renderLabel(&labelTeam);
-		renderer.renderLabel(&labelObserversHeading);
 		renderer.renderLabel(&labelMapInfo);
 
 		renderer.renderListBox(&listBoxMap);
