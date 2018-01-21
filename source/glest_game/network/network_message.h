@@ -1,13 +1,25 @@
-// ==============================================================
-//	This file is part of Glest (www.glest.org)
 //
-//	Copyright (C) 2001-2008 Martiño Figueroa
+//	network_message.h: game setup menu as it appears to
+//	connected clients (not the host or user setting up the game)
 //
-//	You can redistribute this code and/or modify it under
-//	the terms of the GNU General Public License as published
-//	by the Free Software Foundation; either version 2 of the
-//	License, or (at your option) any later version
-// ==============================================================
+//	This file is part of ZetaGlest <https://github.com/ZetaGlest>
+//
+//	Copyright (C) 2018  The ZetaGlest team
+//
+//	ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+//
+//	This program is free software: you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation, either version 3 of the License, or
+//	(at your option) any later version.
+
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 #ifndef _GLEST_GAME_NETWORKMESSAGE_H_
 #define _GLEST_GAME_NETWORKMESSAGE_H_
@@ -1004,6 +1016,8 @@ enum NetworkMessageLoadingStatusType {
 	nmls_PLAYER6_CONNECTED = 0x20,
 	nmls_PLAYER7_CONNECTED = 0x40,
 	nmls_PLAYER8_CONNECTED = 0x80,
+	nmls_PLAYER9_CONNECTED = 0x160,
+	nmls_PLAYER10_CONNECTED = 0x320,
 
 	nmls_PLAYER1_READY = 0x100,
 	nmls_PLAYER2_READY = 0x200,
@@ -1012,7 +1026,9 @@ enum NetworkMessageLoadingStatusType {
 	nmls_PLAYER5_READY = 0x2000,
 	nmls_PLAYER6_READY = 0x4000,
 	nmls_PLAYER7_READY = 0x8000,
-	nmls_PLAYER8_READY = 0x10000
+	nmls_PLAYER8_READY = 0x10000,
+	nmls_PLAYER9_READY = 0x12000,
+	nmls_PLAYER10_READY = 0x14000
 };
 
 #pragma pack(push, 1)
