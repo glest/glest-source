@@ -1,6 +1,5 @@
 //
-//	network_message.h: game setup menu as it appears to
-//	connected clients (not the host or user setting up the game)
+//	network_message.h:
 //
 //	This file is part of ZetaGlest <https://github.com/ZetaGlest>
 //

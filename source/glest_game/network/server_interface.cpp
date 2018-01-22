@@ -2054,6 +2054,10 @@ void ServerInterface::waitUntilReady(Checksum *checksum) {
 						MutexSafeWrapper safeMutexSlot(slotAccessorMutexes[slotIndex],CODE_AT_LINE_X(slotIndex));
 						ConnectionSlot *connectionSlot= slots[slotIndex];
 						if(connectionSlot != NULL && connectionSlot->isConnected() == true) {
+							// FIXME: maxPlayers is declared in game_constants.h. Code such as
+							// this must be updated when maxPlayers is changed
+							//
+							// The PLAYER vars are enum'ed in network_message.h
 							switch(slotIndex) {
 								case 0:
 									loadingStatus |= nmls_PLAYER1_CONNECTED;

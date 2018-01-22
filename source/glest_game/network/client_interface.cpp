@@ -1728,6 +1728,22 @@ void ClientInterface::waitUntilReady(Checksum* checksum) {
 								waitForHosts += gameSettings.getNetworkPlayerNameByPlayerIndex(7);
 							}
 						}
+						if((networkMessageLoadingStatus.getStatus() & nmls_PLAYER9_CONNECTED) == nmls_PLAYER9_CONNECTED) {
+							if((networkMessageLoadingStatus.getStatus() & nmls_PLAYER9_READY) != nmls_PLAYER9_READY) {
+								if(waitForHosts != "") {
+									waitForHosts += ", ";
+								}
+								waitForHosts += gameSettings.getNetworkPlayerNameByPlayerIndex(7);
+							}
+						}
+						if((networkMessageLoadingStatus.getStatus() & nmls_PLAYER10_CONNECTED) == nmls_PLAYER10_CONNECTED) {
+							if((networkMessageLoadingStatus.getStatus() & nmls_PLAYER10_READY) != nmls_PLAYER10_READY) {
+								if(waitForHosts != "") {
+									waitForHosts += ", ";
+								}
+								waitForHosts += gameSettings.getNetworkPlayerNameByPlayerIndex(7);
+							}
+						}
 
 						if(waitForHosts == "") {
 							waitForHosts = lang.getString("Server");

@@ -4164,6 +4164,7 @@ bool MenuStateConnectedGame::loadMapInfo(string file, MapInfo *mapInfo, bool loa
 			Lang &lang= Lang::getInstance();
 			if(MapPreview::loadMapInfo(file, mapInfo, lang.getString("MaxPlayers"),lang.getString("Size"),true) == true) {
 				for(int i = 0; i < GameConstants::maxPlayers; ++i) {
+					mapInfo->players = GameConstants::maxPlayers;
 					bool visible=i+1 <= mapInfo->players;
 					labelPlayers[i].setVisible(visible);
 					labelPlayerNames[i].setVisible(visible);
