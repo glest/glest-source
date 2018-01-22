@@ -1635,13 +1635,14 @@ void Game::initCamera(Map *map){
 
 	if(world.getThisFaction() != NULL) {
 		const Vec2i &v= map->getStartLocation(world.getThisFaction()->getStartLocationIndex());
-		// gameCamera.setPos(Vec2f(v.x, v.y+gameCamera.getCalculatedDefault()/2));
+		// This args are set in map.cpp - Map::getStartLocation()
+		gameCamera.setPos(Vec2f(v.x, v.y+gameCamera.getCalculatedDefault()/2));
 		//
 		// for issue 13: observer mode (wip)
 		// This sets the camera position the same for each player.
 		// The goal is to set the camera position to this for observers only
 		// since they don't have a StartLocationIndex
-		gameCamera.setPos(Vec2f(10, 10));
+		// gameCamera.setPos(Vec2f(10, 10));
 
 	}
 }
