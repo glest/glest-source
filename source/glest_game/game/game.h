@@ -1,5 +1,9 @@
-//	game.h
-//	Copyright (C) 2018  The ZetaGlest team <https://github.com/ZetaGlest>
+//
+//	game.h:
+//
+//	This file is part of ZetaGlest <https://github.com/ZetaGlest>
+//
+//	Copyright (C) 2018  The ZetaGlest team
 //
 //	ZetaGlest is a fork of MegaGlest <https://megaglest.org>
 //
@@ -14,7 +18,7 @@
 //	GNU General Public License for more details.
 //
 //	You should have received a copy of the GNU General Public License
-//	along with this program.  If not, see <https://www.gnu.org/licenses/>.
+//	along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 #ifndef _GLEST_GAME_GAME_H_
 #define _GLEST_GAME_GAME_H_
