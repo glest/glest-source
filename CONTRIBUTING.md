@@ -7,6 +7,19 @@ Anyone is welcome to join our [Discord server](https://discord.gg/WaAaXS7) or [I
 
 The Discord rooms are for players, developers, and curiosity/adventure-seekers.
 
+## Mods, tech trees, scenarios, tilesets, maps
+
+Guidelines for submitting or letting us know about content you've
+created can be found on the data repo at
+[zetaglest-data#submitting-mods-tech-trees-tilesets-maps-scenarios](https://github.com/ZetaGlest/zetaglest-data#submitting-mods-tech-trees-tilesets-maps-scenarios)
+
+Our goal with content contributed by artists are:
+
+* help content creators promote their work
+* make it more visible
+* encourage testing by players
+* have it available for testing and reviewing in a timely manner
+
 ## Issues
 
 ZetaGlest Issues are filed on these repositories:
