@@ -27,6 +27,10 @@
 #include "stats.h"
 #include "leak_dumper.h"
 
+#ifndef PRINT_DEBUG
+#	define PRINT_DEBUG printf("[DEBUG] "); printf
+#endif
+
 using Shared::Platform::MouseButton;
 using Shared::Graphics::Context;
 using Shared::Platform::WindowGl;
