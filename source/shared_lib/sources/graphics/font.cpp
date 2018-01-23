@@ -36,6 +36,7 @@ using namespace Shared::Graphics::Gl;
 #include <fribidi.h>
 #endif
 
+#include <algorithm>
 #include <iterator>
 #include "leak_dumper.h"
 
@@ -139,7 +140,7 @@ float FontMetrics::getTextWidth(const string &str) {
 				}
 			}
 		}
-    }
+		}
 
 	if(textHandler != NULL) {
 		return (textHandler->Advance(longestLine.c_str()) * Font::scaleFontValue);
@@ -174,33 +175,33 @@ float FontMetrics::getHeight(const string &str) const {
 
 string FontMetrics::wordWrapText(string text, int maxWidth) {
 	// Strip newlines from source
-    replaceAll(text, "\n", " \n ");
+		replaceAll(text, "\n", " \n ");
 
 	// Get all words (space separated text)
 	vector<string> words;
 	Tokenize(text,words," ");
 
 	string wrappedText = "";
-    float lineWidth = 0.0f;
+		float lineWidth = 0.0f;
 
-    for(unsigned int i = 0; i < words.size(); ++i) {
-    	string word = words[i];
-    	if(word=="\n"){
-    		wrappedText += word;
-    		lineWidth = 0;
-    	}
-    	else {
-    		float wordWidth = this->getTextWidth(word);
-    		if (lineWidth + wordWidth > maxWidth) {
-    			wrappedText += "\n";
-    			lineWidth = 0;
-    		}
-    		lineWidth += this->getTextWidth(word+" ");
-    		wrappedText += word + " ";
-    	}
-    }
+		for(unsigned int i = 0; i < words.size(); ++i) {
+			string word = words[i];
+			if(word=="\n"){
+				wrappedText += word;
+				lineWidth = 0;
+			}
+			else {
+				float wordWidth = this->getTextWidth(word);
+				if (lineWidth + wordWidth > maxWidth) {
+					wrappedText += "\n";
+					lineWidth = 0;
+				}
+				lineWidth += this->getTextWidth(word+" ");
+				wrappedText += word + " ";
+			}
+		}
 
-    return wrappedText;
+		return wrappedText;
 }
 
 // ===============================================
@@ -603,15 +604,13 @@ const char* findFont(const char *firstFontToTry,const char *firstFontFamilyToTry
 	const char* font = NULL;
 	const char* path = NULL;
 
-
 	string tryFont = "";
 	if(firstFontToTry != NULL || firstFontFamilyToTry != NULL) {
 		if(firstFontToTry != NULL && strlen(firstFontToTry) > 0) {
 			tryFont = firstFontToTry;
 			#ifdef WIN32
-			  replaceAll(tryFont, "/", "\\");
+				replaceAll(tryFont, "/", "\\");
 			#endif
-
 
 			CHECK_FONT_PATH(tryFont.c_str(),firstFontFamilyToTry,&font,&path);
 		}
@@ -631,7 +630,7 @@ const char* findFont(const char *firstFontToTry,const char *firstFontFamilyToTry
 				tryFont = Text::DEFAULT_FONT_PATH_ABSOLUTE + "/" + extractFileFromDirectoryPath(tryFont);
 			}
 			#ifdef WIN32
-			  replaceAll(tryFont, "/", "\\");
+				replaceAll(tryFont, "/", "\\");
 			#endif
 
 			CHECK_FONT_PATH(tryFont.c_str(),megaglest_font_family.c_str(),&font,&path);
@@ -649,7 +648,7 @@ const char* findFont(const char *firstFontToTry,const char *firstFontFamilyToTry
 	}
 	tryFont = defaultFont;
 	#ifdef WIN32
-	  replaceAll(tryFont, "/", "\\");
+		replaceAll(tryFont, "/", "\\");
 	#endif
 	CHECK_FONT_PATH(tryFont.c_str(),"Linux Biolinum O:style=Bold",&font,&path);
 
@@ -722,6 +721,5 @@ const char* findFont(const char *firstFontToTry,const char *firstFontFamilyToTry
 
 	return font;
 }
-
 
 }}//end namespace
