@@ -1,13 +1,24 @@
-// ==============================================================
-//	This file is part of Glest (www.glest.org)
 //
-//	Copyright (C) 2001-2008 Martiño Figueroa
+//	game_util.cpp:
 //
-//	You can redistribute this code and/or modify it under
-//	the terms of the GNU General Public License as published
-//	by the Free Software Foundation; either version 2 of the
-//	License, or (at your option) any later version
-// ==============================================================
+//	This file is part of ZetaGlest <https://github.com/ZetaGlest>
+//
+//	Copyright (C) 2018  The ZetaGlest team
+//
+//	ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+//
+//	This program is free software: you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation, either version 3 of the License, or
+//	(at your option) any later version.
+
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 #include "game_util.h"
 
@@ -27,12 +38,12 @@ using namespace Shared::Platform;
 
 namespace Glest { namespace Game {
 
-const char *mailString				= " http://bugs.megaglest.org";
+const char *mailString				= " https://github.com/ZetaGlest";
 
 // !! Use minor versions !!  Only major and minor version control compatibility!
 // typical version numbers look like this: v3.13-beta1.0   v3.12-dev   v3.12.1
 // don't forget to update file: source/version.txt
-const string glestVersionString 	= "v3.13-dev";
+const string glestVersionString 	= "v0.8.01";
 const string lastCompatibleSaveGameVersionString 	= "v3.11.1";
 
 #if defined(GITVERSIONHEADER)
@@ -41,7 +52,7 @@ const string lastCompatibleSaveGameVersionString 	= "v3.11.1";
 #if defined(GITVERSION) || defined(GITVERSIONHEADER)
 	const string GIT_RawRev		= string(GITVERSION);
 #else
-	const string GIT_RawRev		= "$5608.a3c8464$";
+	const string GIT_RawRev		= "$5733.147264d$";
 #endif
 const string GIT_Rev 			= string("Rev: ") + string(GIT_RawRev);
 
@@ -212,16 +223,16 @@ string getAboutString1(int i) {
 	case 0: return "MegaGlest " + glestVersionString + " (" + "Shared Library " + sharedLibVersionString + ")";
 	case 1: return GIT_Rev;
 	case 2: return "Copyright 2001-2010 The Glest Team";
-	case 3: return "Copyright 2010-2017 The MegaGlest Team";
+	case 3: return "Copyright 2018 The ZetaGlest Team";
 	}
 	return "";
 }
 
 string getAboutString2(int i) {
 	switch(i) {
-	case 0: return "Web: http://megaglest.org";
+	case 0: return "Web: https://github.com/ZetaGlest";
 	case 1: return "Bug reports: " + string(mailString);
-	case 2: return "IRC: irc://irc.freenode.net/megaglest";
+	case 2: return "IRC: irc://irc.freenode.net/zegaglest-dev";
 	}
 	return "";
 }

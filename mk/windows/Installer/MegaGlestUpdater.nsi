@@ -1,11 +1,11 @@
 ;--------------------------------
 ; General Attributes
 
-!define APNAME MegaGlest
-!define APVER 3.13-dev
+!define APNAME ZetaGlest
+!define APVER 0.8.01
 !define APNAME_OLD Mega-Glest
 !define APVER_OLD 3.13.0
-!define APVER_UPDATE 3.13-dev
+!define APVER_UPDATE 0.8.01
 
 Name "${APNAME} ${APVER_UPDATE}"
 SetCompressor /FINAL /SOLID lzma
@@ -64,7 +64,7 @@ Function MUIGUIInit
 
   SetOutPath '$PLUGINSDIR'
   File megaglestinstallscreen.jpg
-  
+
   FindWindow $0 '_Nb'
   EBanner::show /NOUNLOAD /FIT=BOTH /HWND=$0 "$PLUGINSDIR\megaglestinstallscreen.jpg"
 
@@ -108,7 +108,7 @@ Function MUIGUIInit
 
 foundInst:
    StrCpy $INSTDIR "$R0"
-   
+
 MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION \
   "${APNAME} v${APVER} installation found in [$R0]. $\n$\nClick `OK` to update \
   the previous installation or `Cancel` to exit." \
@@ -134,7 +134,7 @@ uninstInit:
   ClearErrors
   ;ExecWait '$R0 _?=$INSTDIR' ;Do not copy the uninstaller to a temp file
   ;Exec $INSTDIR\uninst.exe ; instead of the ExecWait line
-    
+
 doneInit:
 
 FunctionEnd
@@ -164,7 +164,7 @@ Section "${APNAME} (required)"
   SectionIn RO
 
   #MUI_PAGE_INSTFILES
-  
+
   ; Set output path to the installation directory.
   SetOutPath $INSTDIR
 

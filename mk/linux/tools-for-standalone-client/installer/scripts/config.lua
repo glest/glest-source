@@ -1,13 +1,13 @@
 local GAME_INSTALL_SIZE = 705000000;
-local GAME_VERSION = "3.13-dev";
+local GAME_VERSION = "0.8.01";
 
 local _ = MojoSetup.translate
 
 Setup.Package
 {
-    vendor = "megaglest.org",
-    id = "megaglest",
-    description = _("MegaGlest v" .. GAME_VERSION),
+    vendor = "github.com/ZetaGlest",
+    id = "zetaglest",
+    description = _("ZetaGlest v" .. GAME_VERSION),
     version = GAME_VERSION,
     splash = "glestforumsheader.bmp",
     superuser = false,
@@ -21,20 +21,20 @@ Setup.Package
     },
 
     precheck = function(package)
-	-- MojoSetup.msgbox('Test#1', MojoSetup.info.homedir .. '/megaglest/uninstall-megaglest.sh')
+	-- MojoSetup.msgbox('Test#1', MojoSetup.info.homedir .. '/zetaglest/uninstall-zetaglest.sh')
 
 	local previousPath = ''
-        if MojoSetup.platform.exists(MojoSetup.info.homedir .. '/megaglest/uninstall-megaglest.sh') then
-		previousPath = MojoSetup.info.homedir .. '/megaglest/'
-	elseif MojoSetup.platform.exists('/opt/games/megaglest/uninstall-megaglest.sh') then
-		previousPath = '/opt/games/megaglest/'
-	elseif MojoSetup.platform.exists('/usr/local/games/megaglest/uninstall-megaglest.sh') then
-		previousPath = '/usr/local/games/megaglest/'
+        if MojoSetup.platform.exists(MojoSetup.info.homedir .. '/zetaglest/uninstall-zetaglest.sh') then
+		previousPath = MojoSetup.info.homedir .. '/zetaglest/'
+	elseif MojoSetup.platform.exists('/opt/games/zetaglest/uninstall-zetaglest.sh') then
+		previousPath = '/opt/games/zetaglest/'
+	elseif MojoSetup.platform.exists('/usr/local/games/zegaglest/uninstall-zetaglest.sh') then
+		previousPath = '/usr/local/games/zegaglest/'
 	end
 
 	if previousPath ~= '' then
-		if MojoSetup.promptyn(_("MegaGlest Uninstall Title"), _("MegaGlest Uninstall Prompt") .. '\n\n[' .. previousPath .. ']') then
-			os.execute(previousPath .. 'uninstall-megaglest.sh')
+		if MojoSetup.promptyn(_("ZetaGlest Uninstall Title"), _("ZetaGlest Uninstall Prompt") .. '\n\n[' .. previousPath .. ']') then
+			os.execute(previousPath .. 'uninstall-zegaglest.sh')
 		end
 
 	end
@@ -42,17 +42,17 @@ Setup.Package
 
     preinstall = function(package)
 	local previousPath = ''
-        if MojoSetup.platform.exists(MojoSetup.info.homedir .. '/megaglest/mydata/') then
-		previousPath = MojoSetup.info.homedir .. '/megaglest/'
-	elseif MojoSetup.platform.exists('/opt/games/megaglest/mydata/') then
-		previousPath = '/opt/games/megaglest/'
-	elseif MojoSetup.platform.exists('/usr/local/games/megaglest/mydata/') then
-		previousPath = '/usr/local/games/megaglest/'
+        if MojoSetup.platform.exists(MojoSetup.info.homedir .. '/zetaglest/mydata/') then
+		previousPath = MojoSetup.info.homedir .. '/zetaglest/'
+	elseif MojoSetup.platform.exists('/opt/games/zetaglest/mydata/') then
+		previousPath = '/opt/games/zetaglest/'
+	elseif MojoSetup.platform.exists('/usr/local/games/zetaglest/mydata/') then
+		previousPath = '/usr/local/games/zetaglest/'
 	end
 
 	-- Move mod data folder to new location if we find it
 	if previousPath ~= '' then
-		local instPathData =  MojoSetup.info.homedir .. '/.megaglest/'
+		local instPathData =  MojoSetup.info.homedir .. '/.zetaglest/'
 		local instPath =  instPathData
 		-- MojoSetup.msgbox('Moving mod folder','About to move mod folder from [' .. previousPath .. '] to [' .. instPath .. ']')
 
@@ -63,14 +63,14 @@ Setup.Package
     end,
 
     postinstall = function(package)
-	if MojoSetup.promptyn(_("MegaGlest Visit Website Title"), _("MegaGlest Visit Website Prompt")) then
-        	MojoSetup.launchbrowser("http://megaglest.org/get-started.html")
+	if MojoSetup.promptyn(_("ZetaGlest Visit Website Title"), _("ZetaGlest Visit Website Prompt")) then
+        	MojoSetup.launchbrowser("http://zetaglest.org/get-started.html")
 	end
     end,
 
     postuninstall = function(package)
-	-- Cleanup additional files 
-	if MojoSetup.destination ~= '' then	
+	-- Cleanup additional files
+	if MojoSetup.destination ~= '' then
 		if MojoSetup.platform.exists(MojoSetup.destination .. '/lib/') then
 			os.execute('rm -rf ' .. MojoSetup.destination .. '/lib/')
 		end
@@ -85,19 +85,19 @@ Setup.Package
 
     Setup.Eula
     {
-        description = _("MegaGlest Game License"),
+        description = _("ZetaGlest Game License"),
         source = _("docs/gnu_gpl_3.0.txt")
     },
 
     Setup.Eula
     {
-        description = _("MegaGlest Data License"),
+        description = _("ZetaGlest Data License"),
         source = _("docs/cc-by-sa-3.0-unported.txt")
     },
 
     Setup.Readme
     {
-        description = _("MegaGlest README"),
+        description = _("ZetaGlest README"),
         source = _("docs/README.txt")
     },
 
@@ -107,7 +107,7 @@ Setup.Package
         required = true,
         disabled = false,
         bytes = GAME_INSTALL_SIZE,
-        description = _("MegaGlest v" .. GAME_VERSION),
+        description = _("ZetaGlest v" .. GAME_VERSION),
 
         Setup.File
         {
@@ -118,24 +118,24 @@ Setup.Package
         Setup.DesktopMenuItem
         {
             disabled = false,
-            name = _("MegaGlest v" .. GAME_VERSION),
-            genericname = _("MegaGlest"),
+            name = _("ZetaGlest v" .. GAME_VERSION),
+            genericname = _("ZetaGlest"),
             tooltip = _("A real time strategy game."),
             builtin_icon = false,
-            icon = "megaglest.png",
-            commandline = "%0/start_megaglest",
+            icon = "zetaglest.png",
+            commandline = "%0/start_zetaglest",
             category = "Game;StrategyGame"
         },
 
         Setup.DesktopMenuItem
         {
             disabled = false,
-            name = _("MegaGlest Map Editor v" .. GAME_VERSION),
-            genericname = _("MegaGlest"),
+            name = _("ZetaGlest Map Editor v" .. GAME_VERSION),
+            genericname = _("ZetaGlest"),
             tooltip = _("A real time strategy game."),
             builtin_icon = false,
-            icon = "megaglest.png",
-            commandline = "%0/start_megaglest_mapeditor",
+            icon = "zetaglest.png",
+            commandline = "%0/start_zetaglest_mapeditor",
             category = "Game;StrategyGame",
             --mimetype = {"application/x-gbm", "application/mgm"}
         },
@@ -143,12 +143,12 @@ Setup.Package
         Setup.DesktopMenuItem
         {
             disabled = false,
-            name = _("MegaGlest G3D Model Viewer v" .. GAME_VERSION),
-            genericname = _("MegaGlest"),
+            name = _("ZetaGlest G3D Model Viewer v" .. GAME_VERSION),
+            genericname = _("ZetaGlest"),
             tooltip = _("A real time strategy game."),
             builtin_icon = false,
-            icon = "megaglest.png",
-            commandline = "%0/start_megaglest_g3dviewer",
+            icon = "zetaglest.png",
+            commandline = "%0/start_zetaglest_g3dviewer",
             category = "Game;StrategyGame",
             --mimetype = {"application/x-g3d"}
         },
@@ -156,15 +156,15 @@ Setup.Package
         Setup.DesktopMenuItem
         {
             disabled = false,
-            name = _("MegaGlest Uninstall v" .. GAME_VERSION),
-            genericname = _("MegaGlest"),
+            name = _("ZetaGlest Uninstall v" .. GAME_VERSION),
+            genericname = _("ZetaGlest"),
             tooltip = _("A real time strategy game."),
             builtin_icon = false,
-            icon = "megaglest-uninstall.ico",
-            commandline = "%0/uninstall-megaglest.sh",
+            icon = "zetaglest-uninstall.ico",
+            commandline = "%0/uninstall-zetaglest.sh",
             category = "Game;StrategyGame"
         }
-		
+
     }
 }
 

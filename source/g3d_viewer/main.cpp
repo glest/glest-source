@@ -1,13 +1,24 @@
-// ==============================================================
-// This file is part of MegaGlest (www.glest.org)
 //
-// Copyright (C) 2011 - by Mark Vejvoda <mark_vejvoda@hotmail.com>
+//	g3d_viewer:main.cpp:
 //
-//	You can redistribute this code and/or modify it under
-//	the terms of the GNU General Public License as published
-//	by the Free Software Foundation; either version 2 of the
-//	License, or (at your option) any later version
-// ==============================================================
+//	This file is part of ZetaGlest <https://github.com/ZetaGlest>
+//
+//	Copyright (C) 2018  The ZetaGlest team
+//
+//	ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+//
+//	This program is free software: you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation, either version 3 of the License, or
+//	(at your option) any later version.
+
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 #include "main.h"
 
@@ -62,7 +73,7 @@ const char *folderDelimiter = "/";
 //int GameConstants::updateFps= 40;
 //int GameConstants::cameraFps= 100;
 
-const string g3dviewerVersionString= "v3.13-dev";
+const string g3dviewerVersionString= "v0.8.01";
 
 // Because g3d should always support alpha transparency
 string fileFormat = "png";
@@ -465,7 +476,7 @@ MainWindow::MainWindow(	std::pair<string,vector<string> > unitToLoad,
 	RegCreateKeyEx(HKEY_CURRENT_USER,subKey.c_str(),0, NULL, 0, KEY_ALL_ACCESS, NULL, &keyHandle, &dwDisposition);
 	//Set the value.
 	auto_ptr<wchar_t> wstr(Ansi2WideString(appPath.c_str()));
-	
+
 	wstring launchApp = wstring(wstr.get()) + L" \"%1\"";
 	DWORD len = (launchApp.size() + 1) * sizeof(wchar_t);
 	RegSetValueEx(keyHandle, NULL, 0, REG_SZ, (PBYTE)launchApp.c_str(), len);
@@ -613,7 +624,7 @@ void MainWindow::onPaint(wxPaintEvent &event) {
 		event.Skip();
 		return;
 	}
-	
+
 	bool isFirstWindowShownEvent = !startupSettingsInited ;
 	if(startupSettingsInited == false) {
 		startupSettingsInited = true;
@@ -675,7 +686,7 @@ void MainWindow::onPaint(wxPaintEvent &event) {
 	}
 
 	renderer->renderParticleManager();
-	
+
 	if(isFirstWindowShownEvent) {
 		this->Refresh();
 		glCanvas->Refresh();
@@ -694,7 +705,7 @@ void MainWindow::onPaint(wxPaintEvent &event) {
 		Close();
 		return;
 	}
-	
+
 	glCanvas->SwapBuffers();
 
 	if(autoScreenShotAndExit == true && viewportW == 0 && viewportH == 0) {
@@ -2548,7 +2559,7 @@ if( hasCommandArgument(knownArgCount, (wxChar**)&GAME_ARGS[0], (const char *)tmp
 //		appPath = wxFNCONV(argv[0]);
 //#endif
 //	printf("appPath [%s]\n",argv[0]);
-	
+
 	wxString exe_path = wxStandardPaths::Get().GetExecutablePath();
     //wxString path_separator = wxFileName::GetPathSeparator();
     //exe_path = exe_path.BeforeLast(path_separator[0]);
@@ -2585,7 +2596,7 @@ if( hasCommandArgument(knownArgCount, (wxChar**)&GAME_ARGS[0], (const char *)tmp
 	if(autoScreenShotAndExit == true) {
 #if !defined(WIN32)
 		mainWindow->Iconize(true);
-#endif		
+#endif
 	}
 	mainWindow->Show();
 	mainWindow->init();
