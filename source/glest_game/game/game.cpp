@@ -1,12 +1,24 @@
-//	This file is part of Glest (www.glest.org)
 //
-//	Copyright (C) 2001-2008 Martiño Figueroa
+//	game.cpp:
 //
-//	You can redistribute this code and/or modify it under
-//	the terms of the GNU General Public License as published
-//	by the Free Software Foundation; either version 2 of the
-//	License, or (at your option) any later version
-// ==============================================================
+//	This file is part of ZetaGlest <https://github.com/ZetaGlest>
+//
+//	Copyright (C) 2018  The ZetaGlest team
+//
+//	ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+//
+//	This program is free software: you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation, either version 3 of the License, or
+//	(at your option) any later version.
+
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 #include "game.h"
 
@@ -1623,7 +1635,15 @@ void Game::initCamera(Map *map){
 
 	if(world.getThisFaction() != NULL) {
 		const Vec2i &v= map->getStartLocation(world.getThisFaction()->getStartLocationIndex());
+		// This args are set in map.cpp - Map::getStartLocation()
 		gameCamera.setPos(Vec2f(v.x, v.y+gameCamera.getCalculatedDefault()/2));
+		//
+		// for issue 13: observer mode (wip)
+		// This sets the camera position the same for each player.
+		// The goal is to set the camera position to this for observers only
+		// since they don't have a StartLocationIndex
+		// gameCamera.setPos(Vec2f(10, 10));
+
 	}
 }
 

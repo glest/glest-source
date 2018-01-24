@@ -1,7 +1,10 @@
+//
 //	menu_state_custom_game.cpp: game setup menu as it appears to
 //	to the host
 //
-//	Copyright (C) 2018  The ZetaGlest team <https://github.com/ZetaGlest>
+//	This file is part of ZetaGlest <https://github.com/ZetaGlest>
+//
+//	Copyright (C) 2018  The ZetaGlest team
 //
 //	ZetaGlest is a fork of MegaGlest <https://megaglest.org>
 //
@@ -196,7 +199,7 @@ MenuStateCustomGame::MenuStateCustomGame(Program *program, MainMenu *mainMenu,
 
 	int labelOffset=23;
 	int setupPos=605;
-	int mapHeadPos=330;
+	int mapHeadPos=300; //330;
 	int mapPos=mapHeadPos-labelOffset;
 	int aHeadPos=240;
 	int aPos=aHeadPos-labelOffset;
@@ -4287,7 +4290,7 @@ void MenuStateCustomGame::loadMapInfo(string file, MapInfo *mapInfo, bool loadMa
 						}
 					}
 				}
-
+				mapInfo->players = GameConstants::maxPlayers;
 				labelPlayers[i].setVisible(i+1 <= mapInfo->players);
 				labelPlayerNames[i].setVisible(i+1 <= mapInfo->players);
 				listBoxControls[i].setVisible(i+1 <= mapInfo->players);

@@ -1,13 +1,24 @@
-// ==============================================================
-//	This file is part of Glest (www.glest.org)
 //
-//	Copyright (C) 2001-2008 Martiño Figueroa
+//	server_interface.cpp:
 //
-//	You can redistribute this code and/or modify it under
-//	the terms of the GNU General Public License as published
-//	by the Free Software Foundation; either version 2 of the
-//	License, or (at your option) any later version
-// ==============================================================
+//	This file is part of ZetaGlest <https://github.com/ZetaGlest>
+//
+//	Copyright (C) 2018  The ZetaGlest team
+//
+//	ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+//
+//	This program is free software: you can redistribute it and/or modify
+//	it under the terms of the GNU General Public License as published by
+//	the Free Software Foundation, either version 3 of the License, or
+//	(at your option) any later version.
+
+//	This program is distributed in the hope that it will be useful,
+//	but WITHOUT ANY WARRANTY; without even the implied warranty of
+//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//	GNU General Public License for more details.
+//
+//	You should have received a copy of the GNU General Public License
+//	along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 #include "server_interface.h"
 
@@ -2043,6 +2054,10 @@ void ServerInterface::waitUntilReady(Checksum *checksum) {
 						MutexSafeWrapper safeMutexSlot(slotAccessorMutexes[slotIndex],CODE_AT_LINE_X(slotIndex));
 						ConnectionSlot *connectionSlot= slots[slotIndex];
 						if(connectionSlot != NULL && connectionSlot->isConnected() == true) {
+							// FIXME: maxPlayers is declared in game_constants.h. Code such as
+							// this must be updated when maxPlayers is changed
+							//
+							// The PLAYER vars are enum'ed in network_message.h
 							switch(slotIndex) {
 								case 0:
 									loadingStatus |= nmls_PLAYER1_CONNECTED;
@@ -2092,6 +2107,19 @@ void ServerInterface::waitUntilReady(Checksum *checksum) {
 										loadingStatus |= nmls_PLAYER8_READY;
 									}
 									break;
+								case 8:
+									loadingStatus |= nmls_PLAYER9_CONNECTED;
+									if(connectionSlot->isReady()) {
+										loadingStatus |= nmls_PLAYER9_READY;
+									}
+									break;
+								case 9:
+									loadingStatus |= nmls_PLAYER10_CONNECTED;
+									if(connectionSlot->isReady()) {
+										loadingStatus |= nmls_PLAYER10_READY;
+									}
+									break;
+
 							}
 						}
 					}
@@ -2698,24 +2726,24 @@ void ServerInterface::setGameSettings(GameSettings *serverGameSettings, bool wai
 		string mapFile = serverGameSettings->getMap();
 		if(find(mapFiles.begin(),mapFiles.end(),mapFile) == mapFiles.end()) {
 			printf("Reverting map from [%s] to [%s]\n",serverGameSettings->getMap().c_str(),gameSettings.getMap().c_str());
-	
+
 			serverGameSettings->setMapFilter(gameSettings.getMapFilter());
 			serverGameSettings->setMap(gameSettings.getMap());
 			serverGameSettings->setMapCRC(gameSettings.getMapCRC());
 		}
-	
+
 		string tilesetFile = serverGameSettings->getTileset();
 		if(find(tilesetFiles.begin(),tilesetFiles.end(),tilesetFile) == tilesetFiles.end()) {
 			printf("Reverting tileset from [%s] to [%s]\n",serverGameSettings->getTileset().c_str(),gameSettings.getTileset().c_str());
-	
+
 			serverGameSettings->setTileset(gameSettings.getTileset());
 			serverGameSettings->setTilesetCRC(gameSettings.getTilesetCRC());
 		}
-	
+
 		string techtreeFile = serverGameSettings->getTech();
 		if(find(techTreeFiles.begin(),techTreeFiles.end(),techtreeFile) == techTreeFiles.end()) {
 			printf("Reverting tech from [%s] to [%s]\n",serverGameSettings->getTech().c_str(),gameSettings.getTech().c_str());
-	
+
 			serverGameSettings->setTech(gameSettings.getTech());
 			serverGameSettings->setTechCRC(gameSettings.getTechCRC());
 		}
