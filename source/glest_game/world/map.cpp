@@ -402,10 +402,11 @@ Vec2i Map::getStartLocation(int locationIndex) const {
 	// throw megaglest_runtime_error("startLocations == NULL");
 	// }
 
-	if(locationIndex < maxPlayers + GameConstants::specialFactions) // maxPlayers for a map, not the Game
+	if(locationIndex < hardMaxPlayers) // maxPlayers for a map, not the Game
 		return startLocations[locationIndex];
-	else if (locationIndex < GameConstants::maxPlayers + GameConstants::specialFactions)
-		return startLocations[0];
+	else if (locationIndex < maxPlayers) {
+		return startLocations[1];
+	}
 	else {
 		char szBuf[8096]="";
 		snprintf(szBuf,8096,"locationIndex >= maxPlayers [%d] [%d]",locationIndex, maxPlayers);
@@ -452,7 +453,10 @@ Checksum Map::load(const string &path, TechTree *techTree, Tileset *tileset) {
 			waterLevel= static_cast<float>((header.waterLevel-0.01f)/heightFactor);
 			waterLevel = truncateDecimal<float>(waterLevel,6);
 			title= header.title;
-			maxPlayers= header.maxFactions;
+
+			//maxPlayers= header.maxFactions;
+			hardMaxPlayers = header.maxFactions;
+			maxPlayers = GameConstants::maxPlayers;
 
 			surfaceW= header.width;
 			surfaceH= header.height;
@@ -478,7 +482,7 @@ Checksum Map::load(const string &path, TechTree *techTree, Tileset *tileset) {
 
 			//start locations
 			startLocations= new Vec2i[maxPlayers];
-			for(int i=0; i < maxPlayers; ++i) {
+			for(int i=0; i < hardMaxPlayers; ++i) {
 				int x=0, y=0;
 				readBytes = fread(&x, sizeof(int32), 1, f);
 				if(readBytes != 1) {

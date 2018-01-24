@@ -587,13 +587,7 @@ std::pair<CommandResult,string> AiInterface::giveCommand(int unitIndex, const Co
 // ==================== get data ====================
 
 int AiInterface::getMapMaxPlayers(){
-		// return world->getMaxPlayers();
-
-		// If a player is connected to slot 5 on a 4 player map,
-		// there would be problems. Let's tell the game the max players
-		// for any map is 12 (issue 13 - observer mode)
-		return GameConstants::maxPlayers;
-
+     return world->getMaxPlayers();
 }
 
 Vec2i AiInterface::getHomeLocation(){

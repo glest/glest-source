@@ -1,5 +1,5 @@
 //
-//	ai_interface.cpp:
+//	ai_interface.h:
 //
 //	This file is part of ZetaGlest <https://github.com/ZetaGlest>
 //

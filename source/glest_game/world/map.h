@@ -236,6 +236,7 @@ private:
 	int surfaceH;
 	int surfaceSize;
 
+	int hardMaxPlayers; // the max players hard-coded into a map
 	int maxPlayers;
 	Cell *cells;
 	SurfaceCell *surfaceCells;

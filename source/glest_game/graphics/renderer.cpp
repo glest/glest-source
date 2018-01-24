@@ -350,7 +350,10 @@ Renderer::~Renderer() {
 		SystemFlags::OutputDebug(SystemFlags::debugError,szBuf);
 		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,szBuf);
 
-		throw megaglest_runtime_error(szBuf);
+		// FIXME: this always gives a warning that "throw will always call terminate".
+		// Is it needed? -andy5995
+
+		// throw megaglest_runtime_error(szBuf);
 	}
 }
 
@@ -4072,7 +4075,7 @@ Renderer::MapRenderer::Layer::~Layer() {
 	if(vbo_fowTexCoords) glDeleteBuffersARB(1,&vbo_fowTexCoords);
 	if(vbo_surfTexCoords) glDeleteBuffersARB(1,&vbo_surfTexCoords);
 	if(vbo_indices) glDeleteBuffersARB(1,&vbo_indices);
-	
+
 }
 
 template<typename T> void _loadVBO(GLuint &vbo,std::vector<T> buf,int target=GL_ARRAY_BUFFER_ARB) {
@@ -4519,7 +4522,7 @@ void Renderer::renderSurface(const int renderFps) {
 	glActiveTexture(baseTexUnit);
 
 	VisibleQuadContainerCache &qCache = getQuadCache();
-	
+
 	bool useVBORendering = getVBOSupported();
 	if(useVBORendering == true) {
 		VisibleQuadContainerCache &qCache = getQuadCache();
