@@ -199,7 +199,7 @@ MenuStateCustomGame::MenuStateCustomGame(Program *program, MainMenu *mainMenu,
 
 	int labelOffset=23;
 	int setupPos=605;
-	int mapHeadPos=330;
+	int mapHeadPos=300; //330;
 	int mapPos=mapHeadPos-labelOffset;
 	int aHeadPos=240;
 	int aPos=aHeadPos-labelOffset;

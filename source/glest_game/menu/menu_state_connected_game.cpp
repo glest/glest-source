@@ -176,7 +176,7 @@ MenuStateConnectedGame::MenuStateConnectedGame(Program *program, MainMenu *mainM
 	vector<string> teamItems, controlItems, results, rMultiplier, playerStatuses;
 	int labelOffset=23;
 	int setupPos=590;
-	int mapHeadPos=330;
+	int mapHeadPos=300;//330;
 	int mapPos=mapHeadPos-labelOffset;
 	int aHeadPos=240;
 	int aPos=aHeadPos-labelOffset;

@@ -402,10 +402,17 @@ Vec2i Map::getStartLocation(int locationIndex) const {
 	// throw megaglest_runtime_error("startLocations == NULL");
 	// }
 
-	if(locationIndex < maxPlayers)
+	if(locationIndex < maxPlayers + GameConstants::specialFactions) // maxPlayers for a map, not the Game
 		return startLocations[locationIndex];
-	else
+	else if (locationIndex < GameConstants::maxPlayers + GameConstants::specialFactions)
 		return startLocations[0];
+	else {
+		char szBuf[8096]="";
+		snprintf(szBuf,8096,"locationIndex >= maxPlayers [%d] [%d]",locationIndex, maxPlayers);
+		printf("%s\n",szBuf);
+		throw megaglest_runtime_error(szBuf);
+		assert(locationIndex < GameConstants::maxPlayers);
+		}
 }
 
 Checksum Map::load(const string &path, TechTree *techTree, Tileset *tileset) {
