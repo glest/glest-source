@@ -3,9 +3,9 @@
 //
 //	Copyright (C) 2001-2008 Martiño Figueroa
 //
-//	You can redistribute this code and/or modify it under 
-//	the terms of the GNU General Public License as published 
-//	by the Free Software Foundation; either version 2 of the 
+//	You can redistribute this code and/or modify it under
+//	the terms of the GNU General Public License as published
+//	by the Free Software Foundation; either version 2 of the
 //	License, or (at your option) any later version
 // ==============================================================
 
@@ -32,7 +32,7 @@ class AiInterface;
 class AiRule;
 
 // =====================================================
-// 	class Task  
+// 	class Task
 //
 ///	An action that has to be performed by the IA
 // =====================================================
@@ -41,11 +41,11 @@ enum TaskClass{
 	tcProduce,
 	tcBuild,
 	tcUpgrade
-};	
+};
 
 class Task{
 protected:
-	TaskClass taskClass;	
+	TaskClass taskClass;
 
 public:
 	Task();
@@ -69,8 +69,8 @@ public:
 	explicit ProduceTask(UnitClass unitClass);
 	explicit ProduceTask(const UnitType *unitType);
 	explicit ProduceTask(const ResourceType *resourceType);
-	
-	UnitClass getUnitClass() const					{return unitClass;} 
+
+	UnitClass getUnitClass() const					{return unitClass;}
 	const UnitType *getUnitType() const				{return unitType;}
 	const ResourceType *getResourceType() const		{return resourceType;}
 	virtual string toString() const;
@@ -122,7 +122,7 @@ public:
 };
 
 // ===============================
-// 	class AI 
+// 	class AI
 //
 ///	Main AI class
 // ===============================
@@ -170,7 +170,7 @@ private:
 
 	bool getAdjacentUnits(std::map<float, std::map<int, const Unit *> > &signalAdjacentUnits, const Unit *unit);
 
-public: 
+public:
 	Ai() {
 		// Defaults that used to be static which can now be overriden
 		maxBuildRadius					= 40;
@@ -180,7 +180,7 @@ public:
 		minMinWarriorsExpandCpuUltra	= 3;
 		minMinWarriorsExpandCpuNormal	= 3;
 		maxMinWarriors					= 20;
-		maxExpansions					= 2;
+		maxExpansions					= 20;
 		villageRadius					= 15;
 		scoutResourceRange				= 20;
 		minWorkerAttackersHarvesting	= 3;
@@ -194,13 +194,13 @@ public:
     ~Ai();
 
 	void init(AiInterface *aiInterface,int useStartLocation=-1);
-    void update(); 
+    void update();
 
     //state requests
 	AiInterface *getAiInterface() const		{return aiInterface;}
 	RandomGen* getRandom();
     int getCountOfType(const UnitType *ut);
-	
+
     int getMinWarriors() const { return minWarriors; }
 
 	int getCountOfClass(UnitClass uc,UnitClass *additionalUnitClassToExcludeFromCount=NULL);

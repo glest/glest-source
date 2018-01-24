@@ -3,9 +3,9 @@
 //
 //	Copyright (C) 2001-2008 Martiño Figueroa
 //
-//	You can redistribute this code and/or modify it under 
-//	the terms of the GNU General Public License as published 
-//	by the Free Software Foundation; either version 2 of the 
+//	You can redistribute this code and/or modify it under
+//	the terms of the GNU General Public License as published
+//	by the Free Software Foundation; either version 2 of the
 //	License, or (at your option) any later version
 // ==============================================================
 
@@ -38,9 +38,9 @@ class UpgradeTask;
 class ResourceType;
 
 // =====================================================
-//	class AiRule  
+//	class AiRule
 //
-///	An action that the AI will perform periodically 
+///	An action that the AI will perform periodically
 /// if the test succeeds
 // =====================================================
 
@@ -69,8 +69,8 @@ private:
 
 public:
 	explicit AiRuleWorkerHarvest(Ai *ai);
-	
-	virtual int getTestInterval() const	{return 2000;}
+
+	virtual int getTestInterval() const	{return 1000;}
 	virtual string getName() const		{return "Worker stopped => Order worker to harvest";}
 
 	virtual bool test();
@@ -87,7 +87,7 @@ private:
 
 public:
 	explicit AiRuleRefreshHarvester(Ai *ai);
-	
+
 	virtual int getTestInterval() const	{return 20000;}
 	virtual string getName() const		{return "Worker reassigned to needed resource";}
 
@@ -102,7 +102,7 @@ public:
 class AiRuleScoutPatrol: public AiRule{
 public:
 	explicit AiRuleScoutPatrol(Ai *ai);
-	
+
 	virtual int getTestInterval() const	{return 10000;}
 	virtual string getName() const		{return "Base is stable => Send scout patrol";}
 
@@ -124,7 +124,7 @@ private:
 
 public:
 	explicit AiRuleRepair(Ai *ai);
-	
+
 	virtual int getTestInterval() const	{return 10000;}
 	virtual string getName() const		{return "Building Damaged => Repair";}
 
@@ -141,7 +141,7 @@ private:
 	int stoppedUnitIndex;
 public:
 	explicit AiRuleReturnBase(Ai *ai);
-	
+
 	virtual int getTestInterval() const	{return 5000;}
 	virtual string getName() const		{return "Stopped unit => Order return base";}
 
@@ -164,7 +164,7 @@ private:
 
 public:
 	explicit AiRuleMassiveAttack(Ai *ai);
-	
+
 	virtual int getTestInterval() const	{return 1000;}
 	virtual string getName() const		{return "Unit under attack => Order massive attack";}
 
@@ -179,7 +179,7 @@ public:
 class AiRuleAddTasks: public AiRule{
 public:
 	explicit AiRuleAddTasks(Ai *ai);
-	
+
 	virtual int getTestInterval() const	{return 5000;}
 	virtual string getName() const		{return "Tasks empty => Add tasks";}
 
@@ -220,7 +220,7 @@ private:
 
 public:
 	explicit AiRuleProduceResourceProducer(Ai *ai);
-	
+
 	virtual int getTestInterval() const	{return interval;}
 	virtual string getName() const		{return "No resources => Build Resource Producer";}
 
@@ -243,7 +243,7 @@ private:
 public:
 	explicit AiRuleProduce(Ai *ai);
 
-	virtual int getTestInterval() const	{return 2000;}
+	virtual int getTestInterval() const	{return 100;}
 	virtual string getName() const		{return "Performing produce task";}
 
 	virtual bool test();
@@ -346,6 +346,6 @@ public:
 	virtual void execute();
 };
 
-}}//end namespace 
+}}//end namespace
 
 #endif

@@ -417,7 +417,7 @@ void AiRuleAddTasks::execute(){
 
 			//workers
 			if(workerCount<5) ai->addTask(new ProduceTask(ucWorker));
-			if(workerCount<10) ai->addTask(new ProduceTask(ucWorker));
+			if(workerCount<100) ai->addTask(new ProduceTask(ucWorker));
 			if(workerRatio<0.20) ai->addTask(new ProduceTask(ucWorker));
 			if(workerRatio<0.30) ai->addTask(new ProduceTask(ucWorker));
 
