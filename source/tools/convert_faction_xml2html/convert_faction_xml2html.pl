@@ -8,7 +8,7 @@
 
 our $version = "0.8.1 beta";
 
-# This tool requires jquery and the jquery dataTables plugin (run setupDeps.sh which uses curl to try to download these into the media folder). 
+# This tool requires jquery and the jquery dataTables plugin (run setupDeps.sh which uses curl to try to download these into the media folder).
 # These are NOT required to run the script but are used to display the resulting html.
 
 # general comments for running:
@@ -55,7 +55,7 @@ our $version = "0.8.1 beta";
 # - fixed morph cost of thor/thortotem
 # - pass http://validator.w3.org
 # - images path per unit for romans (5 times guard.bmp with different content)
-# - <NOBR> in cost 
+# - <NOBR> in cost
 # - included levels
 
 # maybe someday ...
@@ -64,7 +64,7 @@ our $version = "0.8.1 beta";
 # - units commands in seperate table
 # - links to XML-files
 # - print -> &log
-# - generate some descriptive text for each unit, like "this is the unit with the most hitpoints/damage to air units/armor/movement speed/... of the tech faction" 
+# - generate some descriptive text for each unit, like "this is the unit with the most hitpoints/damage to air units/armor/movement speed/... of the tech faction"
 # - diff feature (CGI?) to show what changed in units if moving f.e. from vanila glest 3.2 to MG 3.4
 # - make overview tables sortable (javascript?)
 # - overview tables without border but different colors in odd/even rows
@@ -76,7 +76,7 @@ our $version = "0.8.1 beta";
 # - map symbology below diagram
 # - single pages for units with animated gif, link to XML, mini-diagram of techtree just for this unit
 # - convert bmp-icons to png
-# - create PDF-handbook of all units 
+# - create PDF-handbook of all units
 
 # usefull for converting HTML-colors: http://www.yafla.com/yaflaColor/ColorRGBHSL.aspx
 
@@ -92,13 +92,13 @@ our $cfg;
 my $cfg_file;
 
 if ( $cfg_file = shift @ARGV ) {
-	
+
 	if ( ! -e $cfg_file ) {
 		die "cfg_file not existing: $cfg_file\n";
 	}
 }
 else {
-	$cfg_file ="megapack.ini";
+	$cfg_file ="zetapack.ini";
 }
 
 if ( ! -e $cfg_file ) {
@@ -465,14 +465,14 @@ foreach my $faction_path ( @factions ) {
 
 	}
 
-	# don't clutter the diagram with direct links (mostly "requirement") if there's an indirect link with 2 hops. 
+	# don't clutter the diagram with direct links (mostly "requirement") if there's an indirect link with 2 hops.
 	# f.e. don't show a link that the technodrom is a requirement of the defense-tower because there's a link from
 	# technodrom to advanced architecture and a link from there to defense tower.
 	&check_multi_hops($faction);
 
 	# now the graphviz-nodes are set, do the edges
 	foreach my $edge ( @{$c_edges{"$faction"}} ) {
-		
+
 		my ( $unit_from, $unit_to, $style, $relation ) = split(/:/, $edge );
 
 		print "dedge: deciding edge for $faction:$unit_from:$unit_to - $relation -style: $style\n";
@@ -480,21 +480,21 @@ foreach my $faction_path ( @factions ) {
 
 		# only show requirement-link of there's no build, morph or produce link
 		# otherwise graphviz would show a dotted line where a solid one makes more sense
-		if ( 
+		if (
 			(
 				$relation eq "Requirement"  ||
-				$relation eq "Upgrade-Requirement"  
+				$relation eq "Upgrade-Requirement"
 			) && (
 				$edges_relation{"$faction:$unit_from:$unit_to:Build"} ||
 				$edges_relation{"$faction:$unit_from:$unit_to:Morph"} ||
-				$edges_relation{"$faction:$unit_from:$unit_to:Produce"} 
+				$edges_relation{"$faction:$unit_from:$unit_to:Produce"}
 			)
 		) {
 		}
 		else {
 
 			my $dont_link_in_all=0;
-			if ( 
+			if (
 				$multi_hop{"$faction:$unit_from:$unit_to"}       &&
 				$relation ne "Build"                             &&
 				$relation ne "Morph"                             &&
@@ -513,9 +513,9 @@ foreach my $faction_path ( @factions ) {
 					$graph_buildings       -> add_edge("$unit_from" => "$unit_to", style => $style, color => $svg_fontcolor );
 				}
 			}
-			elsif ( 
+			elsif (
 				$relation eq "Requirement"           ||
-				$relation eq "Upgrade-Requirement"  
+				$relation eq "Upgrade-Requirement"
 			) {
 				$graph_all             -> add_edge("$unit_from" => "$unit_to", style => $style, color => $svg_fontcolor ) if (!$dont_link_in_all);
 				print "dedge: SHOWING edge $faction:$unit_from:$unit_to\n";
@@ -565,7 +565,7 @@ foreach my $faction_path ( @factions ) {
 
 	&export_graphs($faction);
 
-	if ( 
+	if (
 		$cfg->val('all', 'build_clickable_map') &&
 		$cfg->val('all', 'export_graph') =~ /as_png/ &&
 		$cfg->val('all', 'export_graph') =~ /as_cmapx/
@@ -594,20 +594,20 @@ foreach my $faction_path ( @factions ) {
 
 
 	my $full_all = "<P>&nbsp;<P><HR><H1>Unit Details for Faction $faction_pretty</H1>\n";
-	my $overview_all   = "<TABLE BORDER=1 WIDTH=\"100%\"><TR> <TH> Name 
+	my $overview_all   = "<TABLE BORDER=1 WIDTH=\"100%\"><TR> <TH> Name
 						<TH> Total Cost
-						<TH> Hit Points 
-						<TH> Rege- nerate 
-						<TH> Armor Strength 
-						<TH> Armor Type 
-						<TH> Sight Range 
+						<TH> Hit Points
+						<TH> Rege- nerate
+						<TH> Armor Strength
+						<TH> Armor Type
+						<TH> Sight Range
 					";
 
-	my $overview_combat   = "<H3>Combat Units</H3> $overview_all 
+	my $overview_combat   = "<H3>Combat Units</H3> $overview_all
 					<TH> Move Speed
 					<TH> Air / Ground
-					<TH> Attack Strength Land 
-					<TH> Attack Strength Air 
+					<TH> Attack Strength Land
+					<TH> Attack Strength Air
 					<TH> Attack Range
 				";
 
@@ -620,7 +620,7 @@ foreach my $faction_path ( @factions ) {
 					<TH>Storage
 				";
 
-	my $overview_upgrades = "<H3>Upgrades</H3><TABLE BORDER=1><TR> <TH WIDTH=200> Name 
+	my $overview_upgrades = "<H3>Upgrades</H3><TABLE BORDER=1><TR> <TH WIDTH=200> Name
 						<TH> Cost
 						<TH> Increases
 						<TH> Affects
@@ -677,7 +677,7 @@ foreach my $faction_path ( @factions ) {
 				$full .= "Combat Unit\n";
 				$col{'type'} = "Combat Unit";
 
-				
+
 			}
 			$full .= "</TD></TR>\n";
 		}
@@ -694,7 +694,7 @@ foreach my $faction_path ( @factions ) {
 		my ( $cost, $cost_icon, $cost_icon_overview );
 		# loop over creation-methods because f.e. guard might be produced in barracks or upgraded from swordman
 
-		my $num_creation_methods =@{$created_by_unit{ $u }}; 
+		my $num_creation_methods =@{$created_by_unit{ $u }};
 		my $num_method=0;
 		$full .= "<TR><TD>Creation:</TD><TD>";
 
@@ -714,7 +714,7 @@ foreach my $faction_path ( @factions ) {
 				$col{"${resource}_${num_method}"} = $amount;
 				$cost_hash{ $resource } = $amount;
 			}
-			
+
 
 			my $created;
 			if ( $method eq "morph" ) {
@@ -751,10 +751,10 @@ foreach my $faction_path ( @factions ) {
 			}
 
 			# prefer cost for produce-method in overview if more than one method (guard) because that's less micromanagement for player
-			if ( 
+			if (
 				$num_creation_methods == 1 ||
 				$num_creation_methods >= 2 &&
-				$method eq "produce" 
+				$method eq "produce"
 			) {
 				$cost_icon_overview = $cost_icon_overview_tmp;
 			}
@@ -842,7 +842,7 @@ foreach my $faction_path ( @factions ) {
 			if ( !$num_of_attacks ) {
 				my $full_attack_tmp_tmp;
 
-				( $full_attack_tmp_tmp, $max_strength_vs_land, $max_strength_vs_land_var, $max_strength_vs_air, $max_strength_vs_air_var, $max_range, $max_move_speed ) = 
+				( $full_attack_tmp_tmp, $max_strength_vs_land, $max_strength_vs_land_var, $max_strength_vs_air, $max_strength_vs_air_var, $max_range, $max_move_speed ) =
 					&show_attack( $c, $max_strength_vs_land, $max_strength_vs_land_var, $max_strength_vs_air, $max_strength_vs_air_var, $max_range, $max_move_speed );
 
 				$full_attack_tmp .= $full_attack_tmp_tmp;
@@ -874,13 +874,13 @@ foreach my $faction_path ( @factions ) {
 
 			my $full_attack_tmp_tmp;
 
-			( 
-				$full_attack_tmp_tmp, 
-				$max_strength_vs_land, 
-				$max_strength_vs_land_var, 
-				$max_strength_vs_air, 
-				$max_strength_vs_air_var, 
-				$max_range, 
+			(
+				$full_attack_tmp_tmp,
+				$max_strength_vs_land,
+				$max_strength_vs_land_var,
+				$max_strength_vs_air,
+				$max_strength_vs_air_var,
+				$max_range,
 				$max_move_speed,
 				$col{"attack_strength_$num_attack"},
 				$col{"attack_var_$num_attack"},
@@ -891,7 +891,7 @@ foreach my $faction_path ( @factions ) {
 				$col{"attack_ep_cost_$num_attack"},
 				$col{"used_on_hold_position_$num_attack"},
 				$col{"target_$num_attack"},
-			) = 
+			) =
 				&show_attack( $c, $max_strength_vs_land, $max_strength_vs_land_var, $max_strength_vs_air, $max_strength_vs_air_var, $max_range, $max_move_speed, $skill_on_hold_position );
 
 
@@ -963,7 +963,7 @@ foreach my $faction_path ( @factions ) {
 
 			$full_attack_tmp .= "</TD></TR>\n";
 		}
-	
+
 		# morphing
 		my $num_morph_skill=0;
 		foreach my $c ( @{$commands_of_unit{"$u:morph"}} ) {
@@ -997,7 +997,7 @@ foreach my $faction_path ( @factions ) {
 				}
 			}
 			$full_morph_tmp .= "</TD></TR>\n";
-			
+
 		}
 
 		# repairing
@@ -1024,11 +1024,11 @@ foreach my $faction_path ( @factions ) {
 			chop $col{"heal_units_$num_heal"};
 			chop $col{"heal_units_$num_heal"};
 			$full_repair_tmp .="<BR>\n";
-	
+
 			$full_repair_tmp .="Repair/Heal Speed: ".$speed{ $s }."<BR>\n";
 			$full_repair_tmp .= "</TD></TR>\n";
 			$col{"heal_speed_$num_heal"} = $speed{ $s };
-			
+
 		}
 
 		# harvesting/mining
@@ -1055,12 +1055,12 @@ foreach my $faction_path ( @factions ) {
 			chop $col{"mine_resource_$num_mine"};
 
 			$full_harvest_tmp .="<BR>\n";
-	
+
 			$full_harvest_tmp .="Speed: ".$speed{ $s }."<BR>\n";
 			$full_harvest_tmp .="Max Load: ".$max_load{ $c }."<BR>\n";
 			$full_harvest_tmp .="Hits per Unit: ".$hits_per_unit{ $c }."<BR>\n";
 			$full_harvest_tmp .= "</TD></TR>\n";
-			
+
 			$col{"mine_speed_$num_mine"} = $speed{ $s };
 			$col{"mine_max_load_$num_mine"} = $max_load{ $c };
 			$col{"mine_hits_per_unit_$num_mine"} = $hits_per_unit{ $c };
@@ -1165,7 +1165,7 @@ foreach my $faction_path ( @factions ) {
 			else {
 				$full_tmp = "<TR><TD>'$unit_pretty' is able to $relation:</TD><TD>";
 			}
-	
+
 			my $last_command="";
 			foreach my $unit_allows ( @{$c_unit_allows{"$faction:$unit:$relation"}} ) {
 				my ( $faction, $req_unit, $command ) = split(/:/, $unit_allows );
@@ -1305,7 +1305,7 @@ foreach my $faction_path ( @factions ) {
 		push @all_html_pages, $unit_html;
 		my $unit_title = &format_name( $unit )."  - of the $faction_pretty Faction";
 		$h_all_html_pages{"$faction:units"} .= "$unit_html:$unit_title;";
-	
+
 		open (UNIT, "> $unit_html") || die "cant write unit-html: $unit_html\n";
 		print UNIT &header($unit_title);
 		print UNIT &choose_faction_html( $faction )."<P>\n";
@@ -1323,7 +1323,7 @@ foreach my $faction_path ( @factions ) {
 				$align="RIGHT";
 			}
 			$all_html_table .= "	<TD ALIGN=$align>".($col{"$co"} || "")."</TD>\n";
-			
+
 		}
 		$all_html_table .= "</TR>\n";
 	}
@@ -1332,7 +1332,7 @@ foreach my $faction_path ( @factions ) {
 	$overview_worker   .= "</TABLE>\n";
 	$overview_building .= "</TABLE>\n";
 	$overview_upgrades .= "</TABLE>\n";
-	
+
 	my $overview_html = "<H1>Overview for Faction: $faction_pretty</H1>\n\n";
 	$overview_html .= $overview_combat;
 	$overview_html .= $overview_worker;
@@ -1465,7 +1465,7 @@ foreach my $faction_path ( @factions ) {
 		print HTML "<LI><a href=\"$page\">$title</a>\n";
 	}
 	print HTML "</UL>\n";
-	
+
 }
 print HTML $footer;
 close HTML;
@@ -1485,7 +1485,7 @@ exit 0;
 # end of main(), now subs
 ###############################################################################
 
- 
+
 sub create_glestkey_page {
 	my $html_page = "glestkeys.html";
 	my $title = "Keyboard Assignment";
@@ -1495,7 +1495,7 @@ sub create_glestkey_page {
 
 	print HTML header($title);
 	print HTML "Note: Keyboard assignment can be changed in glestuserkeys.ini.<P>\n";
-	
+
 	print HTML "<TABLE BORDER=1><TH>Name<TH>Key\n";
 
 	open (KEYS, "< $glestkeys") || die "can't read glestkeys: $glestkeys\n";
@@ -1519,10 +1519,10 @@ sub create_glestkey_page {
 
 			$key =~ s/^vk//;
 			$key =~ s/\'//g;
-			
+
 			print HTML "<TR><TD>$name_pretty</TD><TD ALIGN=CENTER>$key</TD></TR>\n";
 		}
-		
+
 	}
 
 	print HTML "</TABLE>\n";
@@ -1648,8 +1648,8 @@ sub read_unit {
 				}
 			}
 
-			
-			
+
+
 		}
 
 		##########################################
@@ -1696,7 +1696,7 @@ sub read_unit {
 				my $req_name = $1;
 				print "FFF unit-req: $c of $u - $req_name\n";
 
-				# this can be multivalued, but not used yet so i'll be lazy 
+				# this can be multivalued, but not used yet so i'll be lazy
 				$c_unit_requirements{ $c } = $req_name;
 			}
 
@@ -1707,7 +1707,7 @@ sub read_unit {
 				my $req_name = $1;
 				print "FFF-upgrade-req: $c of $u - $req_name\n";
 
-				# this can be multivalued, but not used yet so i'll be lazy 
+				# this can be multivalued, but not used yet so i'll be lazy
 				$c_upgrade_requirements{ $c } = $req_name;
 				push @{ $c_unit_allows{"$faction:$req_name:Command"} }, "$c";
 			}
@@ -1768,7 +1768,7 @@ sub read_unit {
 		}
 	}
 
-	# now read resources stored 
+	# now read resources stored
 	my $resources_stored = $xpath->find("/unit/parameters/resources-stored/resource");
 	foreach my $resource_stored ( $resources_stored->get_nodelist ) {
 		print "req: ".XML::XPath::XMLParser::as_string( $resource_stored ) . "\n";
@@ -1802,7 +1802,7 @@ sub read_unit {
 	# create graphviz-node
 	&g_add_node( $faction, $unit, $unit_pretty, $url, $building{$u}, $upgrade{$u} );
 
-	# definition of 
+	# definition of
 	# a. where to find requiremtns in the XML-data
 	# 1. if it's stored as parent-child or child-parent (REQUIREMENT, COMMAND)
 	# 2. which style of arrow should be used in graph (see cpan.org for graphviz-documentation)
@@ -1988,7 +1988,7 @@ sub check_multi_hops {
 
 	# loop over all edges and check each
 	foreach my $edge ( @{$c_edges{"$faction"}} ) {
-		
+
 		my ( $unit_from, $unit_to, $style, $relation ) = split(/:/, $edge );
 
 		print "#################edge_check1: $unit_from -> $unit_to\n";
@@ -2003,8 +2003,8 @@ sub check_multi_hops {
 		}
 		# find multihop from building via upgrade to building to include in graphs without upgrades
 		# f.e. techndrome via advanced architecture to defense tower
-		elsif ( 
-			$relation eq "Upgrade" && 
+		elsif (
+			$relation eq "Upgrade" &&
 			$building{"$faction:$unit_from"}
 		) {
 			# in our example, check all edges from advanced architecture for links to buildings
@@ -2015,7 +2015,7 @@ sub check_multi_hops {
 					$multi_hop_upgrade{"$faction:$unit_from:$o_unit_to"}=1;
 				}
 			}
-				
+
 		}
 	}
 }
@@ -2036,8 +2036,8 @@ sub check_edges {
 		my ( $o_unit_from, $o_unit_to, $o_style, $o_relation ) = split(/:/, $edge );
 
 		print "edge_check3: $o_unit_from -> $o_unit_to\n";
-		if ( 
-			$unit_to eq $o_unit_to     && 
+		if (
+			$unit_to eq $o_unit_to     &&
 			# skip the record we're just checking
 			$recursion_depth > 1
 		) {
@@ -2053,7 +2053,7 @@ sub check_edges {
 		}
 		last REC if ( $found_multihop );
 	}
-	return $found_multihop; 
+	return $found_multihop;
 }
 
 
@@ -2178,24 +2178,24 @@ sub calc_cost_of_unit {
 		foreach my $resource_requirement ( @{$c_resource_requirement{$u}}, @resource_order ) {
 			my ( $resource, $amount ) = split(/:/, $resource_requirement );
 
-			# ignore food, housing, energy if i have to calculate the cost of a unit morphed from 
-			if ( 
+			# ignore food, housing, energy if i have to calculate the cost of a unit morphed from
+			if (
 				!$ignore_food ||
 				$ignore_food && (
-					$resource eq "gold" || 
-					$resource eq "wood" || 
-					$resource eq "stone" 
+					$resource eq "gold" ||
+					$resource eq "wood" ||
+					$resource eq "stone"
 				)
 			) {
 
 				my ($amount_with_discount, $amount_total);
 
 				# part 2: stupid fix for thortotem + thor: add cost of stone in this case:
-				if ( 
+				if (
 					!$amount &&
-					$resource eq $resource_now 
+					$resource eq $resource_now
 				) {
-					if ( 
+					if (
 						$morph_cost_resource{ $resource } &&
 						# and check it's not in @{c_resource_requirement}, this is really stupid but i don't come up with a good solution at this
 						# time of the day ;)
@@ -2238,8 +2238,8 @@ sub calc_cost_of_unit {
 				}
 			}
 		}
-		
-		# handle f.e. thor where 
+
+		# handle f.e. thor where
 		if ( $morph_cost_resource{ $resource_now } ) {
 		}
 	}
@@ -2325,7 +2325,7 @@ sub link_unit {
 
 	my $link;
 
-	if ( 
+	if (
 		$cfg->val('all', 'link_to_single_units') ||
 		$link_to_single_units
 	) {
@@ -2394,26 +2394,26 @@ sub show_attack {
 		}
 	}
 
-	if ( 
+	if (
 		$attack_land{ $s } &&
 		$attack_air{ $s }
 	) {
 		$target .= "Ground and air";
 		$full_attack_tmp .= "Target: $target units<BR>\n";
 	}
-	elsif ( 
+	elsif (
 		$attack_air{ $s }
 	) {
 		$target .= "Only air";
 		$full_attack_tmp .= "Target: $target units<BR>\n";
 	}
-	elsif ( 
-		$attack_land{ $s } 
+	elsif (
+		$attack_land{ $s }
 	) {
 		$target .= "Only ground";
 		$full_attack_tmp .= "Target: $target units<BR>\n";
 	}
-	
+
 
 	if ( $attack_range{ $s } > $max_range ) {
 		$max_range = $attack_range{ $s };
@@ -2457,13 +2457,13 @@ sub show_attack {
 
 	$full_attack_tmp .= "</TD></TR>\n";
 
-	return ( 
-		$full_attack_tmp, 
-		$max_strength_vs_land, 
-		$max_strength_vs_land_var, 
-		$max_strength_vs_air, 
-		$max_strength_vs_air_var, 
-		$max_range, 
+	return (
+		$full_attack_tmp,
+		$max_strength_vs_land,
+		$max_strength_vs_land_var,
+		$max_strength_vs_air,
+		$max_strength_vs_air_var,
+		$max_range,
 		$max_move_speed,
 		$attack_strenght{ $s },
 		$attack_var{ $s },
@@ -2506,7 +2506,7 @@ sub load_tip_files {
 		}
 		close TIPS;
 	}
-	
+
 }
 
 sub choose_faction_html {
@@ -2523,7 +2523,7 @@ sub choose_faction_html {
 }
 
 sub diagram_links_html {
-	
+
 
 	my ( $faction ) = @_;
 
@@ -2645,12 +2645,12 @@ sub do_air_ground {
 	my $full_tmp .= "<TR><TD>Movement Type:</TD><TD>";
 
 	# air + land means land (f.e. tech archer)
-	# units can't be both, although that would seem ok for the genie 
-	if ( 
+	# units can't be both, although that would seem ok for the genie
+	if (
 		$land_unit{ $u }  ||
 		(
 			$air_unit{ $u }   &&
-			$land_unit{ $u } 
+			$land_unit{ $u }
 		)
 	) {
 		$overview_tmp .= "Ground";
@@ -2676,7 +2676,7 @@ sub show_special_pages {
 
 sub do_upgrade_benefits {
 
-	# show the benefit of an upgrade 
+	# show the benefit of an upgrade
 	my ( $u ) = @_;
 
 	my $upgrade_benefits="";

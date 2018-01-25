@@ -2,7 +2,7 @@ body {
     margin: 0 auto;
     width: 1016px;
 
-    background-color: #161616;
+    background-color: #000000;
     font-size: 0.8em;
     color: #fff6c0;
     font-family: "Lucida Sans Unicode","Lucida Grande","Lucida Sans", sans-serif;
@@ -17,7 +17,7 @@ body {
     width: 1016px;
     height: 175px;
     margin: 0 auto;
-    background: url("header/header.jpg") no-repeat;
+    /* background: url("header/header.jpg") no-repeat; */
 }
 
 /* Horizontal menu */
@@ -157,7 +157,7 @@ h2#download {
     margin: 0 8px;
 }
 
-/* 
+/*
  * Modules
  */
 #aside_left { background: url("modules/l_repeat.jpg") repeat-y }
