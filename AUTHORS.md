@@ -17,6 +17,10 @@ see the [MegaGlest home page](https://megaglest.org/) or view GitHub's
 
 [virtushda](https://github.com/virtushda)
 
+## Scenarios
+
+[Julie Marchant](https://github.com/onpon4)
+
 ## XML
 
 ## Music
