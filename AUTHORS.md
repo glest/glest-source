@@ -8,6 +8,7 @@ see the [MegaGlest home page](https://megaglest.org/) or view GitHub's
 ## Programming
 
 [Andy Alt](https://github.com/andy5995)
+[James Sherratt](https://github.com/Jammyjamjamman)
 
 ### php || mysql
 
@@ -23,8 +24,12 @@ see the [MegaGlest home page](https://megaglest.org/) or view GitHub's
 
 ## XML
 
+[Andy Alt](https://github.com/andy5995)
+
 ## Music
 
 ## Documentation
 
 [Shourya Jaiswal](https://github.com/shouryaj98)
+[James Sherratt](https://github.com/Jammyjamjamman)
+[Andy Alt](https://github.com/andy5995)
