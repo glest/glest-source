@@ -81,18 +81,19 @@ goto GITSECTION
 
 :GITSECTION
 rem Update from GIT to latest rev
+rem Code commented out so that script functions.
 ECHO --------------------------------
-Echo Updating Code from GIT to latest Revision...
+Echo Updating Code from GIT to latest Revision (WARNING! NO LONGER UPDATES!)...
 cd ..\..\
-set GIT_NORM_BRANCH=.
-for /f "delims=" %%a in ('git branch ^| findstr /rc:"^\*[^(]*([^) d]*[ ]*detached"') do @set GIT_NORM_BRANCH=%%a
-if "%GIT_NORM_BRANCH%" == "." git pull
-cd data\glest_game
-set GIT_NORM_BRANCH=.
-for /f "delims=" %%a in ('git branch ^| findstr /rc:"^\*[^(]*([^) d]*[ ]*detached"') do @set GIT_NORM_BRANCH=%%a
-if "%GIT_NORM_BRANCH%" == "." git pull
-cd ..\..\
-git submodule update
+rem set GIT_NORM_BRANCH=.
+rem for /f "delims=" %%a in ('git branch ^| findstr /rc:"^\*[^(]*([^) d]*[ ]*detached"') do @set GIT_NORM_BRANCH=%%a
+rem if "%GIT_NORM_BRANCH%" == "." git pull
+rem cd data\glest_game
+rem set GIT_NORM_BRANCH=.
+rem for /f "delims=" %%a in ('git branch ^| findstr /rc:"^\*[^(]*([^) d]*[ ]*detached"') do @set GIT_NORM_BRANCH=%%a
+rem if "%GIT_NORM_BRANCH%" == "." git pull
+rem cd ..\..\
+rem git submodule update
 
 set GITVERSION_SHA1=.
 set GITVERSION_REV=.
