@@ -1,22 +1,22 @@
-//	menu_state_connected_game.cpp: game setup menu as it appears to
-//	connected clients (not the host or user setting up the game)
+//      menu_state_connected_game.cpp: game setup menu as it appears to
+//      connected clients (not the host or user setting up the game)
 //
-//	Copyright (C) 2018  The ZetaGlest team <https://github.com/ZetaGlest>
+//      Copyright (C) 2018  The ZetaGlest team <https://github.com/ZetaGlest>
 //
-//	ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+//      ZetaGlest is a fork of MegaGlest <https://megaglest.org>
 //
-//	This program is free software: you can redistribute it and/or modify
-//	it under the terms of the GNU General Public License as published by
-//	the Free Software Foundation, either version 3 of the License, or
-//	(at your option) any later version.
+//      This program is free software: you can redistribute it and/or modify
+//      it under the terms of the GNU General Public License as published by
+//      the Free Software Foundation, either version 3 of the License, or
+//      (at your option) any later version.
 
-//	This program is distributed in the hope that it will be useful,
-//	but WITHOUT ANY WARRANTY; without even the implied warranty of
-//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//	GNU General Public License for more details.
+//      This program is distributed in the hope that it will be useful,
+//      but WITHOUT ANY WARRANTY; without even the implied warranty of
+//      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//      GNU General Public License for more details.
 //
-//	You should have received a copy of the GNU General Public License
-//	along with this program.  If not, see <https://www.gnu.org/licenses/>.
+//      You should have received a copy of the GNU General Public License
+//      along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "menu_state_connected_game.h"
 
@@ -44,5421 +44,9080 @@
 
 #include "leak_dumper.h"
 
-using namespace Shared::Util;
-using namespace Shared::CompressionUtil;
+using namespace
+  Shared::Util;
+using namespace
+  Shared::CompressionUtil;
 
-namespace Glest{ namespace Game{
-
-static const int MAX_PING_LAG_COUNT		= 6;
-static const double REPROMPT_DOWNLOAD_SECONDS		= 7;
-//static const string ITEM_MISSING 					= "***missing***";
-// above replaced with Lang::getInstance().getString("DataMissing","",true)
-const int HEADLESSSERVER_BROADCAST_SETTINGS_SECONDS  	= 2;
-static const char *HEADLESS_SAVED_GAME_FILENAME 	= "lastHeadlessGameSettings.mgg";
-
-const int mapPreviewTexture_X = 5;
-const int mapPreviewTexture_Y = 185;
-const int mapPreviewTexture_W = 150;
-const int mapPreviewTexture_H = 150;
-
-struct FormatString {
-	void operator()(string &s) {
-		s = formatString(s);
-	}
-};
-
-// =====================================================
-// 	class MenuStateConnectedGame
-// =====================================================
-
-MenuStateConnectedGame::MenuStateConnectedGame(Program *program, MainMenu *mainMenu,JoinMenu joinMenuInfo, bool openNetworkSlots) :
-	MenuState(program, mainMenu, "connected-game"), modHttpServerThread(NULL)
+namespace Glest
 {
-	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d]\n",__FILE__,__FUNCTION__,__LINE__);
-
-	containerName = "ClientConnectedGame";
-	switchSetupRequestFlagType |= ssrft_NetworkPlayerName;
-	updateDataSynchDetailText = false;
-	launchingNewGame = false;
-	isfirstSwitchingMapMessage = true;
-
-	this->zoomedMap = false;
-	this->render_mapPreviewTexture_X = mapPreviewTexture_X;
-	this->render_mapPreviewTexture_Y = mapPreviewTexture_Y;
-	this->render_mapPreviewTexture_W = mapPreviewTexture_W;
-	this->render_mapPreviewTexture_H = mapPreviewTexture_H;
-
-	needToBroadcastServerSettings=false;
-	broadcastServerSettingsDelayTimer=0;
-	lastGameSettingsReceivedCount=0;
-	noReceiveTimer=time(NULL)-100; // old but inititialized ( must be an "old" time )
-
-	soundConnectionCount=0;
-
-	this->factionVideo = NULL;
-	factionVideoSwitchedOffVolume=false;
-	currentTechName_factionPreview="";
-	currentFactionName_factionPreview="";
-
-	ftpClientThread                             = NULL;
-    ftpMissingDataType                          = ftpmsg_MissingNone;
-	getMissingMapFromFTPServer                  = "";
-	getMissingMapFromFTPServerLastPrompted		= 0;
-	getMissingMapFromFTPServerInProgress        = false;
-	getMissingTilesetFromFTPServer              = "";
-	getMissingTilesetFromFTPServerLastPrompted	= 0;
-	getMissingTilesetFromFTPServerInProgress    = false;
-    getMissingTechtreeFromFTPServer				= "";
-    getMissingTechtreeFromFTPServerLastPrompted	= 0;
-    getMissingTechtreeFromFTPServerInProgress	= false;
-
-    getInProgressSavedGameFromFTPServer			  = "";
-    getInProgressSavedGameFromFTPServerInProgress = false;
-    readyToJoinInProgressGame					  = false;
-
-    lastCheckedCRCTilesetName					= "";
-    lastCheckedCRCTechtreeName					= "";
-    lastCheckedCRCMapName						= "";
-    lastCheckedCRCTilesetValue					= 0;
-    lastCheckedCRCTechtreeValue					= 0;
-    lastCheckedCRCMapValue						= 0;
-
-    mapPreviewTexture=NULL;
-	currentFactionLogo = "";
-	factionTexture=NULL;
-	lastMissingMap="";
-	lastMissingTechtree ="";
-	lastMissingTileSet = "";
-
-	activeInputLabel = NULL;
-	lastNetworkSendPing = 0;
-	pingCount = 0;
-	needToSetChangedGameSettings = false;
-	lastSetChangedGameSettings   = time(NULL);
-	showFullConsole=false;
-
-
-	currentFactionName="";
-	currentMap="";
-	settingsReceivedFromServer=false;
-	initialSettingsReceivedFromServer=false;
-
-	validOriginalGameSettings=false;
-	validDisplayedGamesettings=false;
-
-	returnMenuInfo=joinMenuInfo;
-	Lang &lang= Lang::getInstance();
-
-    mainMessageBox.registerGraphicComponent(containerName,"mainMessageBox");
-	mainMessageBox.init(lang.getString("Ok"));
-	mainMessageBox.setEnabled(false);
-
-    ftpMessageBox.registerGraphicComponent(containerName,"ftpMessageBox");
-	ftpMessageBox.init(lang.getString("ModCenter"),lang.getString("GameHost"));
-	ftpMessageBox.addButton(lang.getString("NoDownload"));
-	ftpMessageBox.setEnabled(false);
-
-	NetworkManager &networkManager= NetworkManager::getInstance();
-    Config &config = Config::getInstance();
-    defaultPlayerName = config.getString("NetPlayerName",Socket::getHostName().c_str());
-    enableFactionTexturePreview = config.getBool("FactionPreview","true");
-    enableMapPreview = config.getBool("MapPreview","true");
-
-	enableScenarioTexturePreview = Config::getInstance().getBool("EnableScenarioTexturePreview","true");
-	scenarioLogoTexture=NULL;
-	previewLoadDelayTimer=time(NULL);
-	needToLoadTextures=true;
-	this->dirList = Config::getInstance().getPathListForType(ptScenarios);
-
-    vector<string> techtreesList = Config::getInstance().getPathListForType(ptTechs);
-    techTree.reset(new TechTree(techtreesList));
-
-	vector<string> teamItems, controlItems, results, rMultiplier, playerStatuses;
-	int labelOffset=23;
-	int setupPos=590;
-	int mapHeadPos=300;//330;
-	int mapPos=mapHeadPos-labelOffset;
-	int aHeadPos=240;
-	int aPos=aHeadPos-labelOffset;
-	int networkHeadPos=700;
-
-	//state
-	labelStatus.registerGraphicComponent(containerName,"labelStatus");
-	labelStatus.init(30, networkHeadPos);
-	labelStatus.setText("");
-
-	labelInfo.registerGraphicComponent(containerName,"labelInfo");
-	labelInfo.init(30, networkHeadPos+30);
-	labelInfo.setText("");
-	labelInfo.setFont(CoreData::getInstance().getMenuFontBig());
-	labelInfo.setFont3D(CoreData::getInstance().getMenuFontBig3D());
-
-	labelWaitingForPlayers.registerGraphicComponent(containerName,"labelInfo");
-	labelWaitingForPlayers.init(30, 100);
-	labelWaitingForPlayers.setText("");
-	labelWaitingForPlayers.setFont(CoreData::getInstance().getMenuFontBig());
-	labelWaitingForPlayers.setFont3D(CoreData::getInstance().getMenuFontBig3D());
-	labelWaitingForPlayers.setTextColor(Vec3f(1.0f,1.0f,0.f));
-
-    timerLabelFlash = time(NULL);
-    labelDataSynchInfo.registerGraphicComponent(containerName,"labelDataSynchInfo");
-	labelDataSynchInfo.init(30, networkHeadPos-60);
-	labelDataSynchInfo.setText("");
-	labelDataSynchInfo.setFont(CoreData::getInstance().getMenuFontBig());
-	labelDataSynchInfo.setFont3D(CoreData::getInstance().getMenuFontBig3D());
-
-	int xoffset=90;
-	labelAllowTeamUnitSharing.registerGraphicComponent(containerName,"labelAllowTeamUnitSharing");
-	labelAllowTeamUnitSharing.init(xoffset+410, 670, 80);
-	labelAllowTeamUnitSharing.setText(lang.getString("AllowTeamUnitSharing"));
-	labelAllowTeamUnitSharing.setVisible(true);
-
-	checkBoxAllowTeamUnitSharing.registerGraphicComponent(containerName,"checkBoxAllowTeamUnitSharing");
-	checkBoxAllowTeamUnitSharing.init(xoffset+612, 670);
-	checkBoxAllowTeamUnitSharing.setValue(false);
-	checkBoxAllowTeamUnitSharing.setVisible(true);
-	checkBoxAllowTeamUnitSharing.setEditable(false);
-
-	labelAllowTeamResourceSharing.registerGraphicComponent(containerName,"labelAllowTeamResourceSharing");
-	labelAllowTeamResourceSharing.init(xoffset+410, 640, 80);
-	labelAllowTeamResourceSharing.setText(lang.getString("AllowTeamResourceSharing"));
-	labelAllowTeamResourceSharing.setVisible(true);
-
-	checkBoxAllowTeamResourceSharing.registerGraphicComponent(containerName,"checkBoxAllowTeamResourceSharing");
-	checkBoxAllowTeamResourceSharing.init(xoffset+612, 640);
-	checkBoxAllowTeamResourceSharing.setValue(false);
-	checkBoxAllowTeamResourceSharing.setVisible(true);
-	checkBoxAllowTeamResourceSharing.setEditable(false);
-
-	// fog - o - war
-	xoffset=65;
-	labelFogOfWar.registerGraphicComponent(containerName,"labelFogOfWar");
-	labelFogOfWar.init(xoffset+100, aHeadPos, 165);
-	labelFogOfWar.setText(lang.getString("FogOfWar"));
-
-	listBoxFogOfWar.registerGraphicComponent(containerName,"listBoxFogOfWar");
-	listBoxFogOfWar.init(xoffset+100, aPos, 165);
-	listBoxFogOfWar.pushBackItem(lang.getString("Enabled"));
-	listBoxFogOfWar.pushBackItem(lang.getString("Explored"));
-	listBoxFogOfWar.pushBackItem(lang.getString("Disabled"));
-	listBoxFogOfWar.setSelectedItemIndex(0);
-	listBoxFogOfWar.setEditable(false);
-
-	labelAllowObservers.registerGraphicComponent(containerName,"labelAllowObservers");
-	labelAllowObservers.init(xoffset+325, aHeadPos, 80);
-	labelAllowObservers.setText(lang.getString("AllowObservers"));
-
-	checkBoxAllowObservers.registerGraphicComponent(containerName,"checkBoxAllowObservers");
-	checkBoxAllowObservers.init(xoffset+325, aPos);
-	checkBoxAllowObservers.setValue(false);
-	checkBoxAllowObservers.setEditable(false);
-
-	for(int i=0; i<45; ++i){
-		rMultiplier.push_back(floatToStr(0.5f+0.1f*i,1));
-	}
-
-	labelFallbackCpuMultiplier.registerGraphicComponent(containerName,"labelFallbackCpuMultiplier");
-	labelFallbackCpuMultiplier.init(xoffset+500, aHeadPos, 80);
-	labelFallbackCpuMultiplier.setText(lang.getString("FallbackCpuMultiplier"));
-
-	listBoxFallbackCpuMultiplier.registerGraphicComponent(containerName,"listBoxFallbackCpuMultiplier");
-	listBoxFallbackCpuMultiplier.init(xoffset+500, aPos, 80);
-	listBoxFallbackCpuMultiplier.setItems(rMultiplier);
-	listBoxFallbackCpuMultiplier.setSelectedItem("1.0");
-
-
-	// Allow Switch Team Mode
-	labelEnableSwitchTeamMode.registerGraphicComponent(containerName,"labelEnableSwitchTeamMode");
-	labelEnableSwitchTeamMode.init(xoffset+325, aHeadPos+45, 80);
-	labelEnableSwitchTeamMode.setText(lang.getString("EnableSwitchTeamMode"));
-
-	checkBoxEnableSwitchTeamMode.registerGraphicComponent(containerName,"checkBoxEnableSwitchTeamMode");
-	checkBoxEnableSwitchTeamMode.init(xoffset+325, aPos+45);
-	checkBoxEnableSwitchTeamMode.setValue(false);
-	checkBoxEnableSwitchTeamMode.setEditable(false);
-
-	labelAISwitchTeamAcceptPercent.registerGraphicComponent(containerName,"labelAISwitchTeamAcceptPercent");
-	labelAISwitchTeamAcceptPercent.init(xoffset+500, aHeadPos+45, 80);
-	labelAISwitchTeamAcceptPercent.setText(lang.getString("AISwitchTeamAcceptPercent"));
-
-	listBoxAISwitchTeamAcceptPercent.registerGraphicComponent(containerName,"listBoxAISwitchTeamAcceptPercent");
-	listBoxAISwitchTeamAcceptPercent.init(xoffset+500, aPos+45, 80);
-	for(int i = 0; i <= 100; i = i + 10) {
-		listBoxAISwitchTeamAcceptPercent.pushBackItem(intToStr(i));
-	}
-	listBoxAISwitchTeamAcceptPercent.setSelectedItem(intToStr(30));
-	listBoxAISwitchTeamAcceptPercent.setEditable(false);
-
-	//create
-	buttonCancelDownloads.registerGraphicComponent(containerName,"buttonCancelDownloads");
-	buttonCancelDownloads.init(xoffset+620, 180, 150);
-	buttonCancelDownloads.setText(lang.getString("CancelDownloads"));
-
-	// Network Frame Period
-	xoffset=65;
-    //map listBox
-
-	xoffset=65;
-	// MapFilter
-	labelMapFilter.registerGraphicComponent(containerName,"labelMapFilter");
-	labelMapFilter.init(xoffset+325, mapHeadPos);
-	labelMapFilter.setText(lang.getString("MapFilter"));
-
-	listBoxMapFilter.registerGraphicComponent(containerName,"listBoxMapFilter");
-	listBoxMapFilter.init(xoffset+325, mapPos, 80);
-	listBoxMapFilter.pushBackItem("-");
-	for(int i=1; i<GameConstants::maxPlayers+1; ++i){
-		listBoxMapFilter.pushBackItem(intToStr(i));
-	}
-	listBoxMapFilter.setSelectedItemIndex(0);
-	listBoxMapFilter.setEditable(false);
-
-
-	// put them all in a set, to weed out duplicates (gbm & mgm with same name)
-	// will also ensure they are alphabetically listed (rather than how the OS provides them)
-	listBoxMap.registerGraphicComponent(containerName,"listBoxMap");
-	listBoxMap.init(xoffset+100, mapPos, 220);
-	listBoxMap.setEditable(false);
-
-    labelMapInfo.registerGraphicComponent(containerName,"labelMapInfo");
-	labelMapInfo.init(xoffset+100, mapPos-labelOffset-10, 200, 40);
-    labelMapInfo.setText("?");
-
-	labelMap.registerGraphicComponent(containerName,"labelMap");
-	labelMap.init(xoffset+100, mapHeadPos);
-	labelMap.setText(lang.getString("Map"));
-
-    //tileset listBox
-	listBoxTileset.registerGraphicComponent(containerName,"listBoxTileset");
-	listBoxTileset.init(xoffset+500, mapPos, 160);
-	listBoxTileset.setEditable(false);
-
-	labelTileset.registerGraphicComponent(containerName,"labelTileset");
-	labelTileset.init(xoffset+500, mapHeadPos);
-	labelTileset.setText(lang.getString("Tileset"));
-
-
-    //tech Tree listBox
-	listBoxTechTree.setEditable(false);
-
-	listBoxTechTree.registerGraphicComponent(containerName,"listBoxTechTree");
-	listBoxTechTree.init(xoffset+700, mapPos, 180);
-
-	labelTechTree.registerGraphicComponent(containerName,"labelTechTree");
-	labelTechTree.init(xoffset+700, mapHeadPos);
-	labelTechTree.setText(lang.getString("TechTree"));
-
-	labelAllowNativeLanguageTechtree.registerGraphicComponent(containerName,"labelAllowNativeLanguageTechtree");
-	labelAllowNativeLanguageTechtree.init(xoffset+700, aHeadPos+45);
-	labelAllowNativeLanguageTechtree.setText(lang.getString("AllowNativeLanguageTechtree"));
-
-	checkBoxAllowNativeLanguageTechtree.registerGraphicComponent(containerName,"checkBoxAllowNativeLanguageTechtree");
-	checkBoxAllowNativeLanguageTechtree.init(xoffset+700, aPos+45);
-	checkBoxAllowNativeLanguageTechtree.setValue(false);
-	checkBoxAllowNativeLanguageTechtree.setEditable(false);
-	checkBoxAllowNativeLanguageTechtree.setEnabled(false);
-
-	// Network Scenario
-	int scenarioX=xoffset+700;
-	int scenarioY=aPos;
-    labelScenario.registerGraphicComponent(containerName,"labelScenario");
-    labelScenario.init(scenarioX, aHeadPos);
-    labelScenario.setText(lang.getString("Scenario"));
-	listBoxScenario.registerGraphicComponent(containerName,"listBoxScenario");
-    listBoxScenario.init(scenarioX+30, scenarioY,190);
-    listBoxScenario.setEditable(false);
-    listBoxScenario.setEnabled(false);
-    checkBoxScenario.registerGraphicComponent(containerName,"checkBoxScenario");
-    checkBoxScenario.init(scenarioX, scenarioY);
-    checkBoxScenario.setValue(false);
-    checkBoxScenario.setEditable(false);
-
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-	xoffset=5;
-	int rowHeight=27;
-    for(int i=0; i<GameConstants::maxPlayers; ++i){
-    	labelPlayers[i].registerGraphicComponent(containerName,"labelPlayers" + intToStr(i));
-		labelPlayers[i].init(xoffset-1, setupPos-30-i*rowHeight+2);
-		labelPlayers[i].setFont(CoreData::getInstance().getMenuFontVeryBig());
-		labelPlayers[i].setFont3D(CoreData::getInstance().getMenuFontVeryBig3D());
-		labelPlayers[i].setEditable(false);
-
-		labelPlayerStatus[i].registerGraphicComponent(containerName,"labelPlayerStatus" + intToStr(i));
-		labelPlayerStatus[i].init(xoffset+14, setupPos-30-i*rowHeight+2);
-		labelPlayerNames[i].registerGraphicComponent(containerName,"labelPlayerNames" + intToStr(i));
-		labelPlayerNames[i].init(xoffset+30,setupPos-30-i*rowHeight);
-
-		listBoxControls[i].registerGraphicComponent(containerName,"listBoxControls" + intToStr(i));
-        listBoxControls[i].init(xoffset+160, setupPos-30-i*rowHeight, 174);
-        listBoxControls[i].setEditable(false);
-
-        listBoxRMultiplier[i].registerGraphicComponent(containerName,"listBoxRMultiplier" + intToStr(i));
-        listBoxRMultiplier[i].init(xoffset+336, setupPos-30-i*rowHeight,70);
-        listBoxRMultiplier[i].setEditable(false);
-
-        listBoxFactions[i].registerGraphicComponent(containerName,"listBoxFactions" + intToStr(i));
-        listBoxFactions[i].init(xoffset+411, setupPos-30-i*rowHeight, 247);
-        listBoxFactions[i].setLeftControlled(true);
-        listBoxFactions[i].setEditable(false);
-
-        listBoxTeams[i].registerGraphicComponent(containerName,"listBoxTeams" + intToStr(i));
-		listBoxTeams[i].init(xoffset+660, setupPos-30-i*rowHeight, 60);
-		listBoxTeams[i].setEditable(false);
-		listBoxTeams[i].setLighted(true);
-
-		labelNetStatus[i].registerGraphicComponent(containerName,"labelNetStatus" + intToStr(i));
-		labelNetStatus[i].init(xoffset+723, setupPos-30-i*rowHeight, 60);
-		labelNetStatus[i].setFont(CoreData::getInstance().getDisplayFontSmall());
-		labelNetStatus[i].setFont3D(CoreData::getInstance().getDisplayFontSmall3D());
-
-		grabSlotButton[i].registerGraphicComponent(containerName,"grabSlotButton" + intToStr(i));
-		grabSlotButton[i].init(xoffset+726, setupPos-30-i*rowHeight, 35, rowHeight-5);
-		grabSlotButton[i].setText(">");
+  namespace Game
+  {
+
+    static const int
+      MAX_PING_LAG_COUNT = 6;
+    static const double
+      REPROMPT_DOWNLOAD_SECONDS = 7;
+//static const string ITEM_MISSING                                      = "***missing***";
+// above replaced with Lang::getInstance().getString("DataMissing","",true)
+    const int
+      HEADLESSSERVER_BROADCAST_SETTINGS_SECONDS = 2;
+    static const char *
+      HEADLESS_SAVED_GAME_FILENAME = "lastHeadlessGameSettings.mgg";
+
+    const int
+      mapPreviewTexture_X = 5;
+    const int
+      mapPreviewTexture_Y = 185;
+    const int
+      mapPreviewTexture_W = 150;
+    const int
+      mapPreviewTexture_H = 150;
+
+    struct FormatString
+    {
+      void
+      operator    () (string & s)
+      {
+        s = formatString (s);
+      }
+    };
+
+// =====================================================
+//      class MenuStateConnectedGame
+// =====================================================
+
+  MenuStateConnectedGame::MenuStateConnectedGame (Program * program, MainMenu * mainMenu, JoinMenu joinMenuInfo, bool openNetworkSlots):
+    MenuState (program, mainMenu, "connected-game"),
+      modHttpServerThread (NULL)
+    {
+      if (SystemFlags::VERBOSE_MODE_ENABLED)
+        printf ("In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
+
+      containerName = "ClientConnectedGame";
+      switchSetupRequestFlagType |= ssrft_NetworkPlayerName;
+      updateDataSynchDetailText = false;
+      launchingNewGame = false;
+      isfirstSwitchingMapMessage = true;
+
+      this->zoomedMap = false;
+      this->render_mapPreviewTexture_X = mapPreviewTexture_X;
+      this->render_mapPreviewTexture_Y = mapPreviewTexture_Y;
+      this->render_mapPreviewTexture_W = mapPreviewTexture_W;
+      this->render_mapPreviewTexture_H = mapPreviewTexture_H;
+
+      needToBroadcastServerSettings = false;
+      broadcastServerSettingsDelayTimer = 0;
+      lastGameSettingsReceivedCount = 0;
+      noReceiveTimer = time (NULL) - 100;       // old but inititialized ( must be an "old" time )
+
+      soundConnectionCount = 0;
+
+      this->factionVideo = NULL;
+      factionVideoSwitchedOffVolume = false;
+      currentTechName_factionPreview = "";
+      currentFactionName_factionPreview = "";
+
+      ftpClientThread = NULL;
+      ftpMissingDataType = ftpmsg_MissingNone;
+      getMissingMapFromFTPServer = "";
+      getMissingMapFromFTPServerLastPrompted = 0;
+      getMissingMapFromFTPServerInProgress = false;
+      getMissingTilesetFromFTPServer = "";
+      getMissingTilesetFromFTPServerLastPrompted = 0;
+      getMissingTilesetFromFTPServerInProgress = false;
+      getMissingTechtreeFromFTPServer = "";
+      getMissingTechtreeFromFTPServerLastPrompted = 0;
+      getMissingTechtreeFromFTPServerInProgress = false;
+
+      getInProgressSavedGameFromFTPServer = "";
+      getInProgressSavedGameFromFTPServerInProgress = false;
+      readyToJoinInProgressGame = false;
+
+      lastCheckedCRCTilesetName = "";
+      lastCheckedCRCTechtreeName = "";
+      lastCheckedCRCMapName = "";
+      lastCheckedCRCTilesetValue = 0;
+      lastCheckedCRCTechtreeValue = 0;
+      lastCheckedCRCMapValue = 0;
+
+      mapPreviewTexture = NULL;
+      currentFactionLogo = "";
+      factionTexture = NULL;
+      lastMissingMap = "";
+      lastMissingTechtree = "";
+      lastMissingTileSet = "";
+
+      activeInputLabel = NULL;
+      lastNetworkSendPing = 0;
+      pingCount = 0;
+      needToSetChangedGameSettings = false;
+      lastSetChangedGameSettings = time (NULL);
+      showFullConsole = false;
+
+
+      currentFactionName = "";
+      currentMap = "";
+      settingsReceivedFromServer = false;
+      initialSettingsReceivedFromServer = false;
+
+      validOriginalGameSettings = false;
+      validDisplayedGamesettings = false;
+
+      returnMenuInfo = joinMenuInfo;
+      Lang & lang = Lang::getInstance ();
+
+      mainMessageBox.registerGraphicComponent (containerName,
+                                               "mainMessageBox");
+      mainMessageBox.init (lang.getString ("Ok"));
+      mainMessageBox.setEnabled (false);
+
+      ftpMessageBox.registerGraphicComponent (containerName, "ftpMessageBox");
+      ftpMessageBox.init (lang.getString ("ModCenter"),
+                          lang.getString ("GameHost"));
+      ftpMessageBox.addButton (lang.getString ("NoDownload"));
+      ftpMessageBox.setEnabled (false);
+
+      NetworkManager & networkManager = NetworkManager::getInstance ();
+      Config & config = Config::getInstance ();
+      defaultPlayerName =
+        config.getString ("NetPlayerName", Socket::getHostName ().c_str ());
+      enableFactionTexturePreview = config.getBool ("FactionPreview", "true");
+      enableMapPreview = config.getBool ("MapPreview", "true");
+
+      enableScenarioTexturePreview =
+        Config::getInstance ().getBool ("EnableScenarioTexturePreview",
+                                        "true");
+      scenarioLogoTexture = NULL;
+      previewLoadDelayTimer = time (NULL);
+      needToLoadTextures = true;
+      this->dirList = Config::getInstance ().getPathListForType (ptScenarios);
+
+      vector <
+        string >
+        techtreesList = Config::getInstance ().getPathListForType (ptTechs);
+      techTree.reset (new TechTree (techtreesList));
+
+      vector <
+        string >
+        teamItems, controlItems, results, rMultiplier, playerStatuses;
+      int
+        labelOffset = 23;
+      int
+        setupPos = 590;
+      int
+        mapHeadPos = 300;       //330;
+      int
+        mapPos = mapHeadPos - labelOffset;
+      int
+        aHeadPos = 240;
+      int
+        aPos = aHeadPos - labelOffset;
+      int
+        networkHeadPos = 700;
+
+//state
+      labelStatus.registerGraphicComponent (containerName, "labelStatus");
+      labelStatus.init (30, networkHeadPos);
+      labelStatus.setText ("");
+
+      labelInfo.registerGraphicComponent (containerName, "labelInfo");
+      labelInfo.init (30, networkHeadPos + 30);
+      labelInfo.setText ("");
+      labelInfo.setFont (CoreData::getInstance ().getMenuFontBig ());
+      labelInfo.setFont3D (CoreData::getInstance ().getMenuFontBig3D ());
+
+      labelWaitingForPlayers.registerGraphicComponent (containerName,
+                                                       "labelInfo");
+      labelWaitingForPlayers.init (30, 100);
+      labelWaitingForPlayers.setText ("");
+      labelWaitingForPlayers.setFont (CoreData::getInstance ().
+                                      getMenuFontBig ());
+      labelWaitingForPlayers.setFont3D (CoreData::getInstance ().
+                                        getMenuFontBig3D ());
+      labelWaitingForPlayers.setTextColor (Vec3f (1.0f, 1.0f, 0.f));
+
+      timerLabelFlash = time (NULL);
+      labelDataSynchInfo.registerGraphicComponent (containerName,
+                                                   "labelDataSynchInfo");
+      labelDataSynchInfo.init (30, networkHeadPos - 60);
+      labelDataSynchInfo.setText ("");
+      labelDataSynchInfo.setFont (CoreData::getInstance ().getMenuFontBig ());
+      labelDataSynchInfo.setFont3D (CoreData::getInstance ().
+                                    getMenuFontBig3D ());
+
+      int
+        xoffset = 90;
+      labelAllowTeamUnitSharing.registerGraphicComponent (containerName,
+                                                          "labelAllowTeamUnitSharing");
+      labelAllowTeamUnitSharing.init (xoffset + 410, 670, 80);
+      labelAllowTeamUnitSharing.setText (lang.
+                                         getString ("AllowTeamUnitSharing"));
+      labelAllowTeamUnitSharing.setVisible (true);
+
+      checkBoxAllowTeamUnitSharing.registerGraphicComponent (containerName,
+                                                             "checkBoxAllowTeamUnitSharing");
+      checkBoxAllowTeamUnitSharing.init (xoffset + 612, 670);
+      checkBoxAllowTeamUnitSharing.setValue (false);
+      checkBoxAllowTeamUnitSharing.setVisible (true);
+      checkBoxAllowTeamUnitSharing.setEditable (false);
+
+      labelAllowTeamResourceSharing.registerGraphicComponent (containerName,
+                                                              "labelAllowTeamResourceSharing");
+      labelAllowTeamResourceSharing.init (xoffset + 410, 640, 80);
+      labelAllowTeamResourceSharing.setText (lang.
+                                             getString
+                                             ("AllowTeamResourceSharing"));
+      labelAllowTeamResourceSharing.setVisible (true);
+
+      checkBoxAllowTeamResourceSharing.registerGraphicComponent
+        (containerName, "checkBoxAllowTeamResourceSharing");
+      checkBoxAllowTeamResourceSharing.init (xoffset + 612, 640);
+      checkBoxAllowTeamResourceSharing.setValue (false);
+      checkBoxAllowTeamResourceSharing.setVisible (true);
+      checkBoxAllowTeamResourceSharing.setEditable (false);
+
+// fog - o - war
+      xoffset = 65;
+      labelFogOfWar.registerGraphicComponent (containerName, "labelFogOfWar");
+      labelFogOfWar.init (xoffset + 100, aHeadPos, 165);
+      labelFogOfWar.setText (lang.getString ("FogOfWar"));
+
+      listBoxFogOfWar.registerGraphicComponent (containerName,
+                                                "listBoxFogOfWar");
+      listBoxFogOfWar.init (xoffset + 100, aPos, 165);
+      listBoxFogOfWar.pushBackItem (lang.getString ("Enabled"));
+      listBoxFogOfWar.pushBackItem (lang.getString ("Explored"));
+      listBoxFogOfWar.pushBackItem (lang.getString ("Disabled"));
+      listBoxFogOfWar.setSelectedItemIndex (0);
+      listBoxFogOfWar.setEditable (false);
+
+      labelAllowObservers.registerGraphicComponent (containerName,
+                                                    "labelAllowObservers");
+      labelAllowObservers.init (xoffset + 325, aHeadPos, 80);
+      labelAllowObservers.setText (lang.getString ("AllowObservers"));
+
+      checkBoxAllowObservers.registerGraphicComponent (containerName,
+                                                       "checkBoxAllowObservers");
+      checkBoxAllowObservers.init (xoffset + 325, aPos);
+      checkBoxAllowObservers.setValue (false);
+      checkBoxAllowObservers.setEditable (false);
+
+      for (int i = 0; i < 45; ++i)
+      {
+        rMultiplier.push_back (floatToStr (0.5f + 0.1f * i, 1));
+      }
+
+      labelFallbackCpuMultiplier.registerGraphicComponent (containerName,
+                                                           "labelFallbackCpuMultiplier");
+      labelFallbackCpuMultiplier.init (xoffset + 500, aHeadPos, 80);
+      labelFallbackCpuMultiplier.setText (lang.getString
+                                          ("FallbackCpuMultiplier"));
+
+      listBoxFallbackCpuMultiplier.registerGraphicComponent (containerName,
+                                                             "listBoxFallbackCpuMultiplier");
+      listBoxFallbackCpuMultiplier.init (xoffset + 500, aPos, 80);
+      listBoxFallbackCpuMultiplier.setItems (rMultiplier);
+      listBoxFallbackCpuMultiplier.setSelectedItem ("1.0");
+
+
+// Allow Switch Team Mode
+      labelEnableSwitchTeamMode.registerGraphicComponent (containerName,
+                                                          "labelEnableSwitchTeamMode");
+      labelEnableSwitchTeamMode.init (xoffset + 325, aHeadPos + 45, 80);
+      labelEnableSwitchTeamMode.
+        setText (lang.getString ("EnableSwitchTeamMode"));
+
+      checkBoxEnableSwitchTeamMode.registerGraphicComponent (containerName,
+                                                             "checkBoxEnableSwitchTeamMode");
+      checkBoxEnableSwitchTeamMode.init (xoffset + 325, aPos + 45);
+      checkBoxEnableSwitchTeamMode.setValue (false);
+      checkBoxEnableSwitchTeamMode.setEditable (false);
+
+      labelAISwitchTeamAcceptPercent.registerGraphicComponent (containerName,
+                                                               "labelAISwitchTeamAcceptPercent");
+      labelAISwitchTeamAcceptPercent.init (xoffset + 500, aHeadPos + 45, 80);
+      labelAISwitchTeamAcceptPercent.setText (lang.getString
+                                              ("AISwitchTeamAcceptPercent"));
+
+      listBoxAISwitchTeamAcceptPercent.registerGraphicComponent
+        (containerName, "listBoxAISwitchTeamAcceptPercent");
+      listBoxAISwitchTeamAcceptPercent.init (xoffset + 500, aPos + 45, 80);
+      for (int i = 0; i <= 100; i = i + 10)
+      {
+        listBoxAISwitchTeamAcceptPercent.pushBackItem (intToStr (i));
+      }
+      listBoxAISwitchTeamAcceptPercent.setSelectedItem (intToStr (30));
+      listBoxAISwitchTeamAcceptPercent.setEditable (false);
+
+//create
+      buttonCancelDownloads.registerGraphicComponent (containerName,
+                                                      "buttonCancelDownloads");
+      buttonCancelDownloads.init (xoffset + 620, 180, 150);
+      buttonCancelDownloads.setText (lang.getString ("CancelDownloads"));
+
+// Network Frame Period
+      xoffset = 65;
+//map listBox
+
+      xoffset = 65;
+// MapFilter
+      labelMapFilter.registerGraphicComponent (containerName,
+                                               "labelMapFilter");
+      labelMapFilter.init (xoffset + 325, mapHeadPos);
+      labelMapFilter.setText (lang.getString ("MapFilter"));
+
+      listBoxMapFilter.registerGraphicComponent (containerName,
+                                                 "listBoxMapFilter");
+      listBoxMapFilter.init (xoffset + 325, mapPos, 80);
+      listBoxMapFilter.pushBackItem ("-");
+      for (int i = 1; i < GameConstants::maxPlayers + 1; ++i)
+      {
+        listBoxMapFilter.pushBackItem (intToStr (i));
+      }
+      listBoxMapFilter.setSelectedItemIndex (0);
+      listBoxMapFilter.setEditable (false);
+
+
+// put them all in a set, to weed out duplicates (gbm & mgm with same name)
+// will also ensure they are alphabetically listed (rather than how the OS provides them)
+      listBoxMap.registerGraphicComponent (containerName, "listBoxMap");
+      listBoxMap.init (xoffset + 100, mapPos, 220);
+      listBoxMap.setEditable (false);
+
+      labelMapInfo.registerGraphicComponent (containerName, "labelMapInfo");
+      labelMapInfo.init (xoffset + 100, mapPos - labelOffset - 10, 200, 40);
+      labelMapInfo.setText ("?");
+
+      labelMap.registerGraphicComponent (containerName, "labelMap");
+      labelMap.init (xoffset + 100, mapHeadPos);
+      labelMap.setText (lang.getString ("Map"));
+
+//tileset listBox
+      listBoxTileset.registerGraphicComponent (containerName,
+                                               "listBoxTileset");
+      listBoxTileset.init (xoffset + 500, mapPos, 160);
+      listBoxTileset.setEditable (false);
+
+      labelTileset.registerGraphicComponent (containerName, "labelTileset");
+      labelTileset.init (xoffset + 500, mapHeadPos);
+      labelTileset.setText (lang.getString ("Tileset"));
+
+
+//tech Tree listBox
+      listBoxTechTree.setEditable (false);
+
+      listBoxTechTree.registerGraphicComponent (containerName,
+                                                "listBoxTechTree");
+      listBoxTechTree.init (xoffset + 700, mapPos, 180);
+
+      labelTechTree.registerGraphicComponent (containerName, "labelTechTree");
+      labelTechTree.init (xoffset + 700, mapHeadPos);
+      labelTechTree.setText (lang.getString ("TechTree"));
+
+      labelAllowNativeLanguageTechtree.registerGraphicComponent
+        (containerName, "labelAllowNativeLanguageTechtree");
+      labelAllowNativeLanguageTechtree.init (xoffset + 700, aHeadPos + 45);
+      labelAllowNativeLanguageTechtree.setText (lang.getString
+                                                ("AllowNativeLanguageTechtree"));
+
+      checkBoxAllowNativeLanguageTechtree.registerGraphicComponent
+        (containerName, "checkBoxAllowNativeLanguageTechtree");
+      checkBoxAllowNativeLanguageTechtree.init (xoffset + 700, aPos + 45);
+      checkBoxAllowNativeLanguageTechtree.setValue (false);
+      checkBoxAllowNativeLanguageTechtree.setEditable (false);
+      checkBoxAllowNativeLanguageTechtree.setEnabled (false);
+
+// Network Scenario
+      int
+        scenarioX = xoffset + 700;
+      int
+        scenarioY = aPos;
+      labelScenario.registerGraphicComponent (containerName, "labelScenario");
+      labelScenario.init (scenarioX, aHeadPos);
+      labelScenario.setText (lang.getString ("Scenario"));
+      listBoxScenario.registerGraphicComponent (containerName,
+                                                "listBoxScenario");
+      listBoxScenario.init (scenarioX + 30, scenarioY, 190);
+      listBoxScenario.setEditable (false);
+      listBoxScenario.setEnabled (false);
+      checkBoxScenario.registerGraphicComponent (containerName,
+                                                 "checkBoxScenario");
+      checkBoxScenario.init (scenarioX, scenarioY);
+      checkBoxScenario.setValue (false);
+      checkBoxScenario.setEditable (false);
+
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s Line %d]\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__,
+                                  __LINE__);
+
+      xoffset = 5;
+      int
+        rowHeight = 27;
+      for (int i = 0; i < GameConstants::maxPlayers; ++i)
+      {
+        labelPlayers[i].registerGraphicComponent (containerName,
+                                                  "labelPlayers" +
+                                                  intToStr (i));
+        labelPlayers[i].init (xoffset - 1, setupPos - 30 - i * rowHeight + 2);
+        labelPlayers[i].
+          setFont (CoreData::getInstance ().getMenuFontVeryBig ());
+        labelPlayers[i].
+          setFont3D (CoreData::getInstance ().getMenuFontVeryBig3D ());
+        labelPlayers[i].setEditable (false);
+
+        labelPlayerStatus[i].registerGraphicComponent (containerName,
+                                                       "labelPlayerStatus" +
+                                                       intToStr (i));
+        labelPlayerStatus[i].init (xoffset + 14,
+                                   setupPos - 30 - i * rowHeight + 2);
+        labelPlayerNames[i].registerGraphicComponent (containerName,
+                                                      "labelPlayerNames" +
+                                                      intToStr (i));
+        labelPlayerNames[i].init (xoffset + 30,
+                                  setupPos - 30 - i * rowHeight);
+
+        listBoxControls[i].registerGraphicComponent (containerName,
+                                                     "listBoxControls" +
+                                                     intToStr (i));
+        listBoxControls[i].init (xoffset + 160, setupPos - 30 - i * rowHeight,
+                                 174);
+        listBoxControls[i].setEditable (false);
+
+        listBoxRMultiplier[i].registerGraphicComponent (containerName,
+                                                        "listBoxRMultiplier" +
+                                                        intToStr (i));
+        listBoxRMultiplier[i].init (xoffset + 336,
+                                    setupPos - 30 - i * rowHeight, 70);
+        listBoxRMultiplier[i].setEditable (false);
+
+        listBoxFactions[i].registerGraphicComponent (containerName,
+                                                     "listBoxFactions" +
+                                                     intToStr (i));
+        listBoxFactions[i].init (xoffset + 411, setupPos - 30 - i * rowHeight,
+                                 247);
+        listBoxFactions[i].setLeftControlled (true);
+        listBoxFactions[i].setEditable (false);
+
+        listBoxTeams[i].registerGraphicComponent (containerName,
+                                                  "listBoxTeams" +
+                                                  intToStr (i));
+        listBoxTeams[i].init (xoffset + 660, setupPos - 30 - i * rowHeight,
+                              60);
+        listBoxTeams[i].setEditable (false);
+        listBoxTeams[i].setLighted (true);
+
+        labelNetStatus[i].registerGraphicComponent (containerName,
+                                                    "labelNetStatus" +
+                                                    intToStr (i));
+        labelNetStatus[i].init (xoffset + 723, setupPos - 30 - i * rowHeight,
+                                60);
+        labelNetStatus[i].
+          setFont (CoreData::getInstance ().getDisplayFontSmall ());
+        labelNetStatus[i].
+          setFont3D (CoreData::getInstance ().getDisplayFontSmall3D ());
+
+        grabSlotButton[i].registerGraphicComponent (containerName,
+                                                    "grabSlotButton" +
+                                                    intToStr (i));
+        grabSlotButton[i].init (xoffset + 726, setupPos - 30 - i * rowHeight,
+                                35, rowHeight - 5);
+        grabSlotButton[i].setText (">");
+      }
+
+      labelControl.registerGraphicComponent (containerName, "labelControl");
+      labelControl.init (xoffset + 160, setupPos, 50, GraphicListBox::defH,
+                         true);
+      labelControl.setText (lang.getString ("Control"));
+
+      labelRMultiplier.registerGraphicComponent (containerName,
+                                                 "labelRMultiplier");
+      labelRMultiplier.init (xoffset + 310, setupPos, 50,
+                             GraphicListBox::defH, true);
+
+      labelFaction.registerGraphicComponent (containerName, "labelFaction");
+      labelFaction.init (xoffset + 411, setupPos, 50, GraphicListBox::defH,
+                         true);
+      labelFaction.setText (lang.getString ("Faction"));
+
+      labelTeam.registerGraphicComponent (containerName, "labelTeam");
+      labelTeam.init (xoffset + 660, setupPos, 50, GraphicListBox::defH,
+                      true);
+      labelTeam.setText (lang.getString ("Team"));
+
+      labelControl.setFont (CoreData::getInstance ().getMenuFontBig ());
+      labelControl.setFont3D (CoreData::getInstance ().getMenuFontBig3D ());
+      labelFaction.setFont (CoreData::getInstance ().getMenuFontBig ());
+      labelFaction.setFont3D (CoreData::getInstance ().getMenuFontBig3D ());
+      labelTeam.setFont (CoreData::getInstance ().getMenuFontBig ());
+      labelTeam.setFont3D (CoreData::getInstance ().getMenuFontBig3D ());
+
+//texts
+      buttonDisconnect.setText (lang.getString ("Return"));
+
+      controlItems.push_back (lang.getString ("Closed"));
+      controlItems.push_back (lang.getString ("CpuEasy"));
+      controlItems.push_back (lang.getString ("Cpu"));
+      controlItems.push_back (lang.getString ("CpuUltra"));
+      controlItems.push_back (lang.getString ("CpuMega"));
+      controlItems.push_back (lang.getString ("Network"));
+      controlItems.push_back (lang.getString ("NetworkUnassigned"));
+      controlItems.push_back (lang.getString ("Human"));
+
+
+      if (config.getBool ("EnableNetworkCpu", "false") == true)
+      {
+        controlItems.push_back (lang.getString ("NetworkCpuEasy"));
+        controlItems.push_back (lang.getString ("NetworkCpu"));
+        controlItems.push_back (lang.getString ("NetworkCpuUltra"));
+        controlItems.push_back (lang.getString ("NetworkCpuMega"));
+      }
+
+      for (int i = 1; i <= GameConstants::maxPlayers; ++i)
+      {
+        teamItems.push_back (intToStr (i));
+      }
+      for (int i = GameConstants::maxPlayers + 1;
+           i <= GameConstants::maxPlayers + GameConstants::specialFactions;
+           ++i)
+      {
+        teamItems.push_back (intToStr (i));
+      }
+
+      for (int i = 0; i < GameConstants::maxPlayers; ++i)
+      {
+        labelPlayerStatus[i].setText ("");
+        labelPlayerStatus[i].setTexture (NULL);
+        labelPlayerStatus[i].setH (16);
+        labelPlayerStatus[i].setW (12);
+
+        labelPlayers[i].setText (intToStr (i + 1));
+        labelPlayerNames[i].setText ("");
+        labelPlayerNames[i].setMaxEditWidth (16);
+        labelPlayerNames[i].setMaxEditRenderWidth (127);
+
+        listBoxTeams[i].setItems (teamItems);
+        listBoxTeams[i].setSelectedItemIndex (i);
+        listBoxControls[i].setItems (controlItems);
+        listBoxRMultiplier[i].setItems (rMultiplier);
+        listBoxRMultiplier[i].setSelectedItem ("1.0");
+
+        labelNetStatus[i].setText ("V");
+      }
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s Line %d]\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__,
+                                  __LINE__);
+
+//init controllers
+      listBoxControls[0].setSelectedItemIndex (ctHuman);
+
+
+//map listBox
+// put them all in a set, to weed out duplicates (gbm & mgm with same name)
+// will also ensure they are alphabetically listed (rather than how the OS provides them)
+      setupMapList ("");
+      listBoxMap.setItems (formattedPlayerSortedMaps[0]);
+
+      int
+        buttonx = 165;
+      int
+        buttony = 180;
+
+      listBoxPlayerStatus.registerGraphicComponent (containerName,
+                                                    "listBoxPlayerStatus");
+      listBoxPlayerStatus.init (buttonx, buttony, 165);
+      listBoxPlayerStatus.setTextColor (Vec3f (1.0f, 0.f, 0.f));
+      listBoxPlayerStatus.setLighted (true);
+      playerStatuses.push_back (lang.getString ("PlayerStatusSetup"));
+      playerStatuses.push_back (lang.getString ("PlayerStatusBeRightBack"));
+      playerStatuses.push_back (lang.getString ("PlayerStatusReady"));
+      listBoxPlayerStatus.setItems (playerStatuses);
+      buttonx += 180;
+
+      buttonDisconnect.registerGraphicComponent (containerName,
+                                                 "buttonDisconnect");
+      buttonDisconnect.init (buttonx, buttony, 125);
+      buttonx += 132;
+
+      buttonRestoreLastSettings.registerGraphicComponent (containerName,
+                                                          "buttonRestoreLastSettings");
+      buttonRestoreLastSettings.init (buttonx, buttony, 240);
+      buttonRestoreLastSettings.setText (lang.getString
+                                         ("ReloadLastGameSettings"));
+      buttonx += 247;
+
+      buttonPlayNow.registerGraphicComponent (containerName, "buttonPlayNow");
+      buttonPlayNow.init (buttonx, buttony, 125);
+      buttonPlayNow.setText (lang.getString ("PlayNow"));
+      buttonPlayNow.setVisible (false);
+
+
+// write hint to console:
+      Config & configKeys =
+        Config::getInstance (std::pair < ConfigType,
+                             ConfigType > (cfgMainKeys, cfgUserKeys));
+
+      console.addLine (lang.getString ("ToSwitchOffMusicPress") + " - \"" +
+                       configKeys.getString ("ToggleMusic") + "\"");
+      chatManager.init (&console, -1, true);
+
+      GraphicComponent::applyAllCustomProperties (containerName);
+
+//tileset listBox
+      setupTilesetList ("");
+
+      int
+        initialTechSelection = setupTechList ("", true);
+      listBoxTechTree.setSelectedItemIndex (initialTechSelection);
+
+
+//scenario listbox
+      vector < string > resultsScenarios;
+      findDirs (dirList, resultsScenarios);
+// Filter out only scenarios with no network slots
+      for (int i = 0; i < (int) resultsScenarios.size (); ++i)
+      {
+        string scenario = resultsScenarios[i];
+        string file = Scenario::getScenarioPath (dirList, scenario);
+
+        try
+        {
+          if (file != "")
+          {
+            bool isTutorial = Scenario::isGameTutorial (file);
+            Scenario::loadScenarioInfo (file, &scenarioInfo, isTutorial);
+
+            bool isNetworkScenario = false;
+            for (unsigned int j = 0;
+                 isNetworkScenario == false
+                 && j < (unsigned int) GameConstants::maxPlayers; ++j)
+            {
+              if (scenarioInfo.factionControls[j] == ctNetwork)
+              {
+                isNetworkScenario = true;
+              }
+            }
+            if (isNetworkScenario == true)
+            {
+              scenarioFiles.push_back (scenario);
+            }
+          }
+        }
+        catch (const std::exception & ex)
+        {
+          char
+            szBuf[8096] = "";
+          snprintf (szBuf, 8096,
+                    "In [%s::%s %d]\nError loading scenario [%s]:\n%s\n",
+                    extractFileFromDirectoryPath (__FILE__).c_str (),
+                    __FUNCTION__, __LINE__, scenario.c_str (), ex.what ());
+          SystemFlags::OutputDebug (SystemFlags::debugError, szBuf);
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem, "%s", szBuf);
+
+          showMessageBox (szBuf, "Error", false);
+//throw megaglest_runtime_error(szBuf);
+        }
+      }
+      resultsScenarios.clear ();
+      for (int i = 0; i < (int) scenarioFiles.size (); ++i)
+      {
+        resultsScenarios.push_back (formatString (scenarioFiles[i]));
+      }
+      listBoxScenario.setItems (resultsScenarios);
+      checkBoxScenario.setEnabled (false);
+
+      if (config.getBool ("EnableFTPXfer", "true") == true)
+      {
+        ClientInterface *
+          clientInterface = networkManager.getClientInterface ();
+        string serverUrl = clientInterface->getServerIpAddress ();
+        int
+          portNumber = clientInterface->getServerFTPPort ();
+
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                    "In [%s::%s Line %d] Using FTP port #: %d\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, portNumber);
+
+        vector < string > mapPathList = config.getPathListForType (ptMaps);
+        std::pair < string, string > mapsPath;
+        if (mapPathList.empty () == false)
+        {
+          mapsPath.first = mapPathList[0];
+        }
+        if (mapPathList.size () > 1)
+        {
+          mapsPath.second = mapPathList[1];
+        }
+        std::pair < string, string > tilesetsPath;
+        vector < string > tilesetsList =
+          Config::getInstance ().getPathListForType (ptTilesets);
+        if (tilesetsList.empty () == false)
+        {
+          tilesetsPath.first = tilesetsList[0];
+          if (tilesetsList.size () > 1)
+          {
+            tilesetsPath.second = tilesetsList[1];
+          }
+        }
+
+        std::pair < string, string > techtreesPath;
+        if (techtreesList.empty () == false)
+        {
+          techtreesPath.first = techtreesList[0];
+          if (techtreesList.size () > 1)
+          {
+            techtreesPath.second = techtreesList[1];
+          }
+        }
+
+        std::pair < string, string > scenariosPath;
+        vector < string > scenariosList =
+          Config::getInstance ().getPathListForType (ptScenarios);
+        if (scenariosList.empty () == false)
+        {
+          scenariosPath.first = scenariosList[0];
+          if (scenariosList.size () > 1)
+          {
+            scenariosPath.second = scenariosList[1];
+          }
+        }
+
+        string
+          fileArchiveExtension =
+          config.getString ("FileArchiveExtension", "");
+        string
+          fileArchiveExtractCommand =
+          config.getString ("FileArchiveExtractCommand", "");
+        string
+          fileArchiveExtractCommandParameters =
+          config.getString ("FileArchiveExtractCommandParameters", "");
+        int32
+          fileArchiveExtractCommandSuccessResult =
+          config.getInt ("FileArchiveExtractCommandSuccessResult", "0");
+
+// Get path to temp files
+        string tempFilePath = "temp/";
+        if (getGameReadWritePath (GameConstants::path_logs_CacheLookupKey) !=
+            "")
+        {
+          tempFilePath =
+            getGameReadWritePath (GameConstants::path_logs_CacheLookupKey) +
+            tempFilePath;
+        }
+        else
+        {
+          string userData = config.getString ("UserData_Root", "");
+          if (userData != "")
+          {
+            endPathWithSlash (userData);
+          }
+          tempFilePath = userData + tempFilePath;
+        }
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("Temp files path [%s]\n", tempFilePath.c_str ());
+
+        ftpClientThread = new FTPClientThread (portNumber, serverUrl,
+                                               mapsPath, tilesetsPath,
+                                               techtreesPath, scenariosPath,
+                                               this, fileArchiveExtension,
+                                               fileArchiveExtractCommand,
+                                               fileArchiveExtractCommandParameters,
+                                               fileArchiveExtractCommandSuccessResult,
+                                               tempFilePath);
+        ftpClientThread->start ();
+      }
+// Start http meta data thread
+      static
+        string
+        mutexOwnerId =
+        string (extractFileFromDirectoryPath (__FILE__).c_str ()) +
+        string ("_") + intToStr (__LINE__);
+      modHttpServerThread = new SimpleTaskThread (this, 0, 200);
+      modHttpServerThread->setUniqueID (mutexOwnerId);
+      modHttpServerThread->start ();
+
+      ClientInterface *
+        clientInterface = networkManager.getClientInterface ();
+      if (clientInterface != NULL
+          && clientInterface->getJoinGameInProgress () == true)
+      {
+        listBoxPlayerStatus.setVisible (false);
+        Lang & lang = Lang::getInstance ();
+        const
+          vector <
+          string >
+          languageList =
+          clientInterface->
+          getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+        for (unsigned int i = 0; i < languageList.size (); ++i)
+        {
+          char
+            szMsg[8096] = "";
+          if (lang.hasString ("JoinPlayerToCurrentGameWelcome",
+                              languageList[i]) == true)
+          {
+            snprintf (szMsg, 8096,
+                      lang.getString ("JoinPlayerToCurrentGameWelcome",
+                                      languageList[i]).c_str (),
+                      getHumanPlayerName ().c_str ());
+          }
+          else
+          {
+            snprintf (szMsg, 8096,
+                      "Player: %s has connected to the game and would like to join.",
+                      getHumanPlayerName ().c_str ());
+          }
+          bool localEcho = lang.isLanguageLocal (languageList[i]);
+          clientInterface->sendTextMessage (szMsg, -1, localEcho,
+                                            languageList[i]);
+        }
+        sleep (1);
+      }
+
+      if (SystemFlags::VERBOSE_MODE_ENABLED)
+        printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s Line %d]\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__,
+                                  __LINE__);
     }
 
-    labelControl.registerGraphicComponent(containerName,"labelControl");
-	labelControl.init(xoffset+160, setupPos, 50, GraphicListBox::defH, true);
-	labelControl.setText(lang.getString("Control"));
+    void
+    MenuStateConnectedGame::reloadUI ()
+    {
+      Config & config = Config::getInstance ();
+      Lang & lang = Lang::getInstance ();
 
-	labelRMultiplier.registerGraphicComponent(containerName,"labelRMultiplier");
-	labelRMultiplier.init(xoffset+310, setupPos, 50, GraphicListBox::defH, true);
+      console.resetFonts ();
+      mainMessageBox.init (lang.getString ("Ok"));
+      ftpMessageBox.init (lang.getString ("ModCenter"),
+                          lang.getString ("GameHost"));
+      ftpMessageBox.addButton (lang.getString ("NoDownload"));
 
-	labelFaction.registerGraphicComponent(containerName,"labelFaction");
-    labelFaction.init(xoffset+411, setupPos, 50, GraphicListBox::defH, true);
-    labelFaction.setText(lang.getString("Faction"));
+      labelInfo.setFont (CoreData::getInstance ().getMenuFontBig ());
+      labelInfo.setFont3D (CoreData::getInstance ().getMenuFontBig3D ());
 
-    labelTeam.registerGraphicComponent(containerName,"labelTeam");
-    labelTeam.init(xoffset+660, setupPos, 50, GraphicListBox::defH, true);
-	labelTeam.setText(lang.getString("Team"));
+      labelWaitingForPlayers.
+        setFont (CoreData::getInstance ().getMenuFontBig ());
+      labelWaitingForPlayers.
+        setFont3D (CoreData::getInstance ().getMenuFontBig3D ());
 
-    labelControl.setFont(CoreData::getInstance().getMenuFontBig());
-    labelControl.setFont3D(CoreData::getInstance().getMenuFontBig3D());
-	labelFaction.setFont(CoreData::getInstance().getMenuFontBig());
-	labelFaction.setFont3D(CoreData::getInstance().getMenuFontBig3D());
-	labelTeam.setFont(CoreData::getInstance().getMenuFontBig());
-	labelTeam.setFont3D(CoreData::getInstance().getMenuFontBig3D());
+      labelDataSynchInfo.setFont (CoreData::getInstance ().getMenuFontBig ());
+      labelDataSynchInfo.
+        setFont3D (CoreData::getInstance ().getMenuFontBig3D ());
 
-	//texts
-	buttonDisconnect.setText(lang.getString("Return"));
+      buttonCancelDownloads.setText (lang.getString ("CancelDownloads"));
 
-    controlItems.push_back(lang.getString("Closed"));
-	controlItems.push_back(lang.getString("CpuEasy"));
-	controlItems.push_back(lang.getString("Cpu"));
-    controlItems.push_back(lang.getString("CpuUltra"));
-    controlItems.push_back(lang.getString("CpuMega"));
-	controlItems.push_back(lang.getString("Network"));
-	controlItems.push_back(lang.getString("NetworkUnassigned"));
-	controlItems.push_back(lang.getString("Human"));
+      labelFogOfWar.setText (lang.getString ("FogOfWar"));
 
+      vector < string > fowItems;
+      fowItems.push_back (lang.getString ("Enabled"));
+      fowItems.push_back (lang.getString ("Explored"));
+      fowItems.push_back (lang.getString ("Disabled"));
+      listBoxFogOfWar.setItems (fowItems);
 
-	if(config.getBool("EnableNetworkCpu","false") == true) {
-		controlItems.push_back(lang.getString("NetworkCpuEasy"));
-		controlItems.push_back(lang.getString("NetworkCpu"));
-	    controlItems.push_back(lang.getString("NetworkCpuUltra"));
-	    controlItems.push_back(lang.getString("NetworkCpuMega"));
-	}
+      labelAllowObservers.setText (lang.getString ("AllowObservers"));
+      labelFallbackCpuMultiplier.setText (lang.getString
+                                          ("FallbackCpuMultiplier"));
 
-	for(int i = 1; i <= GameConstants::maxPlayers; ++i) {
-		teamItems.push_back(intToStr(i));
-	}
-	for(int i = GameConstants::maxPlayers + 1; i <= GameConstants::maxPlayers + GameConstants::specialFactions; ++i) {
-		teamItems.push_back(intToStr(i));
-	}
+      labelEnableSwitchTeamMode.
+        setText (lang.getString ("EnableSwitchTeamMode"));
 
-	for(int i=0; i<GameConstants::maxPlayers; ++i){
-		labelPlayerStatus[i].setText("");
-		labelPlayerStatus[i].setTexture(NULL);
-		labelPlayerStatus[i].setH(16);
-		labelPlayerStatus[i].setW(12);
+      labelAllowTeamUnitSharing.
+        setText (lang.getString ("AllowTeamUnitSharing"));
+      labelAllowTeamResourceSharing.
+        setText (lang.getString ("AllowTeamResourceSharing"));
 
-		labelPlayers[i].setText(intToStr(i+1));
-		labelPlayerNames[i].setText("");
-		labelPlayerNames[i].setMaxEditWidth(16);
-		labelPlayerNames[i].setMaxEditRenderWidth(127);
+      labelAISwitchTeamAcceptPercent.setText (lang.getString
+                                              ("AISwitchTeamAcceptPercent"));
 
-        listBoxTeams[i].setItems(teamItems);
-		listBoxTeams[i].setSelectedItemIndex(i);
-		listBoxControls[i].setItems(controlItems);
-		listBoxRMultiplier[i].setItems(rMultiplier);
-		listBoxRMultiplier[i].setSelectedItem("1.0");
+      vector < string > aiswitchteamModeItems;
+      for (int i = 0; i <= 100; i = i + 10)
+      {
+        aiswitchteamModeItems.push_back (intToStr (i));
+      }
+      listBoxAISwitchTeamAcceptPercent.setItems (aiswitchteamModeItems);
 
-		labelNetStatus[i].setText("V");
+      vector < string > rMultiplier;
+      for (int i = 0; i < 45; ++i)
+      {
+        rMultiplier.push_back (floatToStr (0.5f + 0.1f * i, 1));
+      }
+      listBoxFallbackCpuMultiplier.setItems (rMultiplier);
+
+      labelMap.setText (lang.getString ("Map"));
+
+      labelMapFilter.setText (lang.getString ("MapFilter"));
+
+      labelTileset.setText (lang.getString ("Tileset"));
+
+      labelTechTree.setText (lang.getString ("TechTree"));
+
+      vector < string > playerstatusItems;
+      playerstatusItems.push_back (lang.getString ("PlayerStatusSetup"));
+      playerstatusItems.
+        push_back (lang.getString ("PlayerStatusBeRightBack"));
+      playerstatusItems.push_back (lang.getString ("PlayerStatusReady"));
+      listBoxPlayerStatus.setItems (playerstatusItems);
+
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s Line %d]\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__,
+                                  __LINE__);
+
+      labelControl.setText (lang.getString ("Control"));
+
+      labelFaction.setText (lang.getString ("Faction"));
+
+      labelTeam.setText (lang.getString ("Team"));
+
+      labelControl.setFont (CoreData::getInstance ().getMenuFontBig ());
+      labelControl.setFont3D (CoreData::getInstance ().getMenuFontBig3D ());
+      labelFaction.setFont (CoreData::getInstance ().getMenuFontBig ());
+      labelFaction.setFont3D (CoreData::getInstance ().getMenuFontBig3D ());
+      labelTeam.setFont (CoreData::getInstance ().getMenuFontBig ());
+      labelTeam.setFont3D (CoreData::getInstance ().getMenuFontBig3D ());
+
+//texts
+      buttonDisconnect.setText (lang.getString ("Return"));
+
+      vector < string > controlItems;
+      controlItems.push_back (lang.getString ("Closed"));
+      controlItems.push_back (lang.getString ("CpuEasy"));
+      controlItems.push_back (lang.getString ("Cpu"));
+      controlItems.push_back (lang.getString ("CpuUltra"));
+      controlItems.push_back (lang.getString ("CpuMega"));
+      controlItems.push_back (lang.getString ("Network"));
+      controlItems.push_back (lang.getString ("NetworkUnassigned"));
+      controlItems.push_back (lang.getString ("Human"));
+
+      if (config.getBool ("EnableNetworkCpu", "false") == true)
+      {
+        controlItems.push_back (lang.getString ("NetworkCpuEasy"));
+        controlItems.push_back (lang.getString ("NetworkCpu"));
+        controlItems.push_back (lang.getString ("NetworkCpuUltra"));
+        controlItems.push_back (lang.getString ("NetworkCpuMega"));
+      }
+
+      for (int i = 0; i < GameConstants::maxPlayers; ++i)
+      {
+        labelPlayers[i].setText (intToStr (i + 1));
+        listBoxControls[i].setItems (controlItems);
+      }
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s Line %d]\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__,
+                                  __LINE__);
+
+      labelScenario.setText (lang.getString ("Scenario"));
+
+      labelAllowNativeLanguageTechtree.setText (lang.getString
+                                                ("AllowNativeLanguageTechtree"));
+
+      buttonPlayNow.setText (lang.getString ("PlayNow"));
+      buttonRestoreLastSettings.setText (lang.getString
+                                         ("ReloadLastGameSettings"));
+
+      chatManager.init (&console, -1, true);
+
+      GraphicComponent::reloadFontsForRegisterGraphicComponents
+        (containerName);
     }
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
 
-	//init controllers
-	listBoxControls[0].setSelectedItemIndex(ctHuman);
+    void
+    MenuStateConnectedGame::disconnectFromServer ()
+    {
+      NetworkManager & networkManager = NetworkManager::getInstance ();
+      ClientInterface *
+        clientInterface = networkManager.getClientInterface (false);
+      if (clientInterface != NULL)
+      {
+        CoreData & coreData = CoreData::getInstance ();
+        SoundRenderer & soundRenderer = SoundRenderer::getInstance ();
 
+        soundRenderer.playFx (coreData.getClickSoundA ());
+        if (clientInterface->getSocket () != NULL)
+        {
+          if (clientInterface->isConnected () == true)
+          {
+            Lang & lang = Lang::getInstance ();
+            const
+              vector <
+              string >
+              languageList =
+              clientInterface->
+              getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+            for (unsigned int i = 0; i < languageList.size (); ++i)
+            {
+              string sQuitText = lang.getString ("QuitGame", languageList[i]);
+              clientInterface->sendTextMessage (sQuitText, -1, false,
+                                                languageList[i]);
+            }
+            sleep (1);
 
-    //map listBox
-	// put them all in a set, to weed out duplicates (gbm & mgm with same name)
-	// will also ensure they are alphabetically listed (rather than how the OS provides them)
-	setupMapList("");
-    listBoxMap.setItems(formattedPlayerSortedMaps[0]);
+          }
+          clientInterface->close ();
+        }
+        clientInterface->reset ();
+      }
+      currentFactionName = "";
+      currentMap = "";
+    }
 
-	int buttonx=165;
-	int buttony=180;
+    MenuStateConnectedGame::~MenuStateConnectedGame ()
+    {
+      if (launchingNewGame == false)
+      {
+        disconnectFromServer ();
+        NetworkManager & networkManager = NetworkManager::getInstance ();
+        networkManager.end ();
+      }
 
-	listBoxPlayerStatus.registerGraphicComponent(containerName,"listBoxPlayerStatus");
-	listBoxPlayerStatus.init(buttonx, buttony, 165);
-	listBoxPlayerStatus.setTextColor(Vec3f(1.0f,0.f,0.f));
-	listBoxPlayerStatus.setLighted(true);
-	playerStatuses.push_back(lang.getString("PlayerStatusSetup"));
-	playerStatuses.push_back(lang.getString("PlayerStatusBeRightBack"));
-	playerStatuses.push_back(lang.getString("PlayerStatusReady"));
-	listBoxPlayerStatus.setItems(playerStatuses);
-	buttonx+=180;
+      if (modHttpServerThread != NULL)
+      {
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                    "In [%s::%s Line %d]\n", __FILE__,
+                                    __FUNCTION__, __LINE__);
 
-	buttonDisconnect.registerGraphicComponent(containerName,"buttonDisconnect");
-	buttonDisconnect.init(buttonx, buttony, 125);
-	buttonx+=132;
+        modHttpServerThread->setSimpleTaskInterfaceValid (false);
+        modHttpServerThread->signalQuit ();
+        modHttpServerThread->setThreadOwnerValid (false);
 
-	buttonRestoreLastSettings.registerGraphicComponent(containerName,"buttonRestoreLastSettings");
-	buttonRestoreLastSettings.init(buttonx, buttony, 240);
-	buttonRestoreLastSettings.setText(lang.getString("ReloadLastGameSettings"));
-	buttonx+=247;
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                    "In [%s::%s Line %d]\n", __FILE__,
+                                    __FUNCTION__, __LINE__);
+        if (modHttpServerThread->canShutdown (true) == true
+            && modHttpServerThread->shutdownAndWait () == true)
+        {
+          delete modHttpServerThread;
+        }
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+        modHttpServerThread = NULL;
+      }
 
-	buttonPlayNow.registerGraphicComponent(containerName,"buttonPlayNow");
-	buttonPlayNow.init(buttonx, buttony, 125);
-	buttonPlayNow.setText(lang.getString("PlayNow"));
-	buttonPlayNow.setVisible(false);
+      if (ftpClientThread != NULL)
+      {
+        ftpClientThread->setCallBackObject (NULL);
+        ftpClientThread->signalQuit ();
+        sleep (0);
+        if (ftpClientThread->canShutdown (true) == true &&
+            ftpClientThread->shutdownAndWait () == true)
+        {
+          delete ftpClientThread;
+        }
+        else
+        {
+          char
+            szBuf[8096] = "";
+          snprintf (szBuf, 8096,
+                    "In [%s::%s %d] Error cannot shutdown ftpClientThread\n",
+                    extractFileFromDirectoryPath (__FILE__).c_str (),
+                    __FUNCTION__, __LINE__);
 
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("%s", szBuf);
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem, "%s", szBuf);
+        }
 
-	// write hint to console:
-	Config &configKeys = Config::getInstance(std::pair<ConfigType,ConfigType>(cfgMainKeys,cfgUserKeys));
+        ftpClientThread = NULL;
+      }
 
-	console.addLine(lang.getString("ToSwitchOffMusicPress") + " - \"" + configKeys.getString("ToggleMusic") + "\"");
-	chatManager.init(&console, -1,true);
+      cleanupMapPreviewTexture ();
 
-	GraphicComponent::applyAllCustomProperties(containerName);
+      if (factionVideo != NULL)
+      {
+        factionVideo->closePlayer ();
+        delete factionVideo;
+        factionVideo = NULL;
+      }
+    }
 
-	//tileset listBox
-	setupTilesetList("");
+    string MenuStateConnectedGame::refreshTilesetModInfo (string tilesetInfo)
+    {
+      std::vector < std::string > tilesetInfoList;
+      Tokenize (tilesetInfo, tilesetInfoList, "|");
+      if (tilesetInfoList.size () >= 5)
+      {
+        Config & config = Config::getInstance ();
+        ModInfo modinfo;
+        modinfo.name = tilesetInfoList[0];
+        modinfo.crc = tilesetInfoList[1];
+        modinfo.description = tilesetInfoList[2];
+        modinfo.url = tilesetInfoList[3];
+        modinfo.imageUrl = tilesetInfoList[4];
+        modinfo.type = mt_Tileset;
 
-	int initialTechSelection = setupTechList("",true);
-	listBoxTechTree.setSelectedItemIndex(initialTechSelection);
+        string
+          itemPath =
+          config.getPathListForType (ptTilesets,
+                                     "")[1] + "/" + modinfo.name +
+          string ("/*");
+        if (itemPath.empty () == false)
+        {
+          bool
+            forceRefresh =
+            (mapCRCUpdateList.find (itemPath) == mapCRCUpdateList.end ());
+          uint32
+            crc =
+            getFolderTreeContentsCheckSumRecursively (itemPath, ".xml", NULL,
+                                                      forceRefresh);
+          if (crc == 0)
+          {
+            itemPath =
+              config.getPathListForType (ptTilesets,
+                                         "")[0] + "/" + modinfo.name +
+              string ("/*");
+            if (itemPath.empty () == false)
+            {
+              forceRefresh =
+                (mapCRCUpdateList.find (itemPath) == mapCRCUpdateList.end ());
+              crc =
+                getFolderTreeContentsCheckSumRecursively (itemPath, ".xml",
+                                                          NULL, forceRefresh);
+            }
+          }
+          modinfo.localCRC = uIntToStr (crc);
+//printf("itemPath='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
 
+//printf("#1 refreshTilesetModInfo name [%s] modInfo.crc [%s] modInfo.localCRC [%s]\n",modinfo.name.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str());
+        }
+        else
+        {
+          modinfo.localCRC = "";
 
-    //scenario listbox
-    vector<string> resultsScenarios;
-	findDirs(dirList, resultsScenarios);
-	// Filter out only scenarios with no network slots
-	for(int i= 0; i < (int)resultsScenarios.size(); ++i) {
-		string scenario = resultsScenarios[i];
-		string file = Scenario::getScenarioPath(dirList, scenario);
+//printf("#2 refreshTilesetModInfo name [%s] modInfo.crc [%s] modInfo.localCRC [%s]\n",modinfo.name.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str());
+        }
 
-		try {
-			if(file != "") {
-				bool isTutorial = Scenario::isGameTutorial(file);
-				Scenario::loadScenarioInfo(file, &scenarioInfo, isTutorial);
+        tilesetCacheList[modinfo.name] = modinfo;
+        return modinfo.name;
+      }
+      return "";
+    }
 
-				bool isNetworkScenario = false;
-				for(unsigned int j = 0; isNetworkScenario == false && j < (unsigned int)GameConstants::maxPlayers; ++j) {
-					if(scenarioInfo.factionControls[j] == ctNetwork) {
-						isNetworkScenario = true;
-					}
-				}
-				if(isNetworkScenario == true) {
-					scenarioFiles.push_back(scenario);
-				}
-			}
-		}
-		catch(const std::exception &ex) {
-		    char szBuf[8096]="";
-		    snprintf(szBuf,8096,"In [%s::%s %d]\nError loading scenario [%s]:\n%s\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,scenario.c_str(),ex.what());
-		    SystemFlags::OutputDebug(SystemFlags::debugError,szBuf);
-		    if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"%s",szBuf);
+    string MenuStateConnectedGame::refreshTechModInfo (string techInfo)
+    {
+      std::vector < std::string > techInfoList;
+      Tokenize (techInfo, techInfoList, "|");
+      if (techInfoList.size () >= 6)
+      {
+        Config & config = Config::getInstance ();
+        ModInfo modinfo;
+        modinfo.name = techInfoList[0];
+        modinfo.count = techInfoList[1];
+        modinfo.crc = techInfoList[2];
+        modinfo.description = techInfoList[3];
+        modinfo.url = techInfoList[4];
+        modinfo.imageUrl = techInfoList[5];
+        modinfo.type = mt_Techtree;
 
-		    showMessageBox( szBuf, "Error", false);
-		    //throw megaglest_runtime_error(szBuf);
-		}
-	}
-	resultsScenarios.clear();
-	for(int i = 0; i < (int)scenarioFiles.size(); ++i) {
-		resultsScenarios.push_back(formatString(scenarioFiles[i]));
-	}
-    listBoxScenario.setItems(resultsScenarios);
-    checkBoxScenario.setEnabled(false);
+        string
+          itemPath =
+          config.getPathListForType (ptTechs,
+                                     "")[1] + "/" + modinfo.name +
+          string ("/*");
+        if (itemPath.empty () == false)
+        {
+          bool
+            forceRefresh =
+            (mapCRCUpdateList.find (itemPath) == mapCRCUpdateList.end ());
+          uint32
+            crc =
+            getFolderTreeContentsCheckSumRecursively (itemPath, ".xml", NULL,
+                                                      forceRefresh);
+          if (crc == 0)
+          {
+            itemPath =
+              config.getPathListForType (ptTechs,
+                                         "")[0] + "/" + modinfo.name +
+              string ("/*");
+            if (itemPath.empty () == false)
+            {
+              forceRefresh =
+                (mapCRCUpdateList.find (itemPath) == mapCRCUpdateList.end ());
+              crc =
+                getFolderTreeContentsCheckSumRecursively (itemPath, ".xml",
+                                                          NULL, forceRefresh);
+            }
+          }
+          modinfo.localCRC = uIntToStr (crc);
+//printf("itemPath='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
+        }
+        else
+        {
+          modinfo.localCRC = "";
+        }
+        techCacheList[modinfo.name] = modinfo;
+        return modinfo.name;
+      }
+      return "";
+    }
 
-    if(config.getBool("EnableFTPXfer","true") == true) {
-        ClientInterface *clientInterface = networkManager.getClientInterface();
-        string serverUrl = clientInterface->getServerIpAddress();
-        int portNumber   = clientInterface->getServerFTPPort();
+    string MenuStateConnectedGame::getMapCRC (string mapName)
+    {
+      Config & config = Config::getInstance ();
+      vector < string > mappaths = config.getPathListForType (ptMaps, "");
+      string result = "";
+      if (mappaths.empty () == false)
+      {
+        Checksum checksum;
+        string itemPath = mappaths[1] + "/" + mapName;
+        if (fileExists (itemPath))
+        {
+          checksum.addFile (itemPath);
+          uint32 crc = checksum.getSum ();
+          result = uIntToStr (crc);
+//printf("itemPath='%s' modinfo.name='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.name.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
+        }
+        else
+        {
+          itemPath = mappaths[0] + "/" + mapName;
+          if (fileExists (itemPath))
+          {
+            checksum.addFile (itemPath);
+            uint32 crc = checksum.getSum ();
+            result = uIntToStr (crc);
+//printf("itemPath='%s' modinfo.name='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.name.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
+          }
+          else
+          {
+            result = "";
+          }
+        }
+      }
+      else
+      {
+        result = "";
+      }
+      return result;
+    }
 
-        if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d] Using FTP port #: %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,portNumber);
+    string MenuStateConnectedGame::refreshMapModInfo (string mapInfo)
+    {
+      std::vector < std::string > mapInfoList;
+      Tokenize (mapInfo, mapInfoList, "|");
+      if (mapInfoList.size () >= 6)
+      {
+//Config &config = Config::getInstance();
+        ModInfo modinfo;
+        modinfo.name = mapInfoList[0];
+        modinfo.count = mapInfoList[1];
+        modinfo.crc = mapInfoList[2];
+        modinfo.description = mapInfoList[3];
+        modinfo.url = mapInfoList[4];
+        modinfo.imageUrl = mapInfoList[5];
+        modinfo.type = mt_Map;
+        modinfo.localCRC = getMapCRC (modinfo.name);
+        mapCacheList[modinfo.name] = modinfo;
+        return modinfo.name;
+      }
+      return "";
+    }
 
-        vector<string> mapPathList = config.getPathListForType(ptMaps);
-        std::pair<string,string> mapsPath;
-        if(mapPathList.empty() == false) {
+    void
+    MenuStateConnectedGame::simpleTask (BaseThread * callingThread,
+                                        void *userdata)
+    {
+      if (SystemFlags::VERBOSE_MODE_ENABLED)
+        printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+
+      static
+        string
+        mutexOwnerId = string (__FILE__) + string ("_") + intToStr (__LINE__);
+      MutexSafeWrapper
+        safeMutexThreadOwner (callingThread->getMutexThreadOwnerValid (),
+                              mutexOwnerId);
+      if (callingThread->getQuitStatus () == true
+          || safeMutexThreadOwner.isValidMutex () == false)
+      {
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+        return;
+      }
+
+      callingThread->getMutexThreadOwnerValid ()->setOwnerId (mutexOwnerId);
+      if (SystemFlags::VERBOSE_MODE_ENABLED)
+        printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+
+      Lang & lang = Lang::getInstance ();
+      Config & config = Config::getInstance ();
+
+      std::string techsMetaData = "";
+      std::string tilesetsMetaData = "";
+      std::string mapsMetaData = "";
+      std::string scenariosMetaData = "";
+
+      if (SystemFlags::VERBOSE_MODE_ENABLED)
+        printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+
+      if (config.getString ("Masterserver", "") != "")
+      {
+        string baseURL = config.getString ("Masterserver");
+        if (baseURL != "")
+        {
+          endPathWithSlash (baseURL, false);
+        }
+        string
+          phpVersionParam =
+          config.getString ("phpVersionParam", "?version=0.1");
+        string
+          gameVersion =
+          "&glestVersion=" + SystemFlags::escapeURL (glestVersionString);
+        string
+          playerUUID =
+          "&uuid=" +
+          SystemFlags::escapeURL (config.getString ("PlayerId", ""));
+
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf
+            ("In [%s::%s Line %d] About to call first http url, base [%s]..\n",
+             __FILE__, __FUNCTION__, __LINE__, baseURL.c_str ());
+
+        CURL *
+          handle = SystemFlags::initHTTP ();
+        CURLcode curlResult = CURLE_OK;
+        techsMetaData =
+          SystemFlags::getHTTP (baseURL + "showTechsForGlest.php" +
+                                phpVersionParam + gameVersion + playerUUID,
+                                handle, -1, &curlResult);
+
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("techsMetaData [%s] curlResult = %d\n",
+                  techsMetaData.c_str (), curlResult);
+
+        if (callingThread->getQuitStatus () == true
+            || safeMutexThreadOwner.isValidMutex () == false)
+        {
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__,
+                    __LINE__);
+          return;
+        }
+
+        if (curlResult != CURLE_OK)
+        {
+          string curlError = curl_easy_strerror (curlResult);
+          char
+            szBuf[8096] = "";
+          snprintf (szBuf, 8096,
+                    lang.getString ("ModErrorGettingServerData").c_str (),
+                    curlError.c_str ());
+          console.addLine (string ("#1 ") + szBuf, true);
+        }
+
+        if (curlResult == CURLE_OK ||
+            (curlResult != CURLE_COULDNT_RESOLVE_HOST &&
+             curlResult != CURLE_COULDNT_CONNECT))
+        {
+
+          tilesetsMetaData =
+            SystemFlags::getHTTP (baseURL + "showTilesetsForGlest.php" +
+                                  phpVersionParam + gameVersion, handle, -1,
+                                  &curlResult);
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("tilesetsMetaData [%s]\n", tilesetsMetaData.c_str ());
+
+          if (callingThread->getQuitStatus () == true
+              || safeMutexThreadOwner.isValidMutex () == false)
+          {
+            if (SystemFlags::VERBOSE_MODE_ENABLED)
+              printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__,
+                      __LINE__);
+            return;
+          }
+
+          if (curlResult != CURLE_OK)
+          {
+            string curlError = curl_easy_strerror (curlResult);
+            char
+              szBuf[8096] = "";
+            snprintf (szBuf, 8096,
+                      lang.getString ("ModErrorGettingServerData").c_str (),
+                      curlError.c_str ());
+            console.addLine (string ("#2 ") + szBuf, true);
+          }
+
+          mapsMetaData =
+            SystemFlags::getHTTP (baseURL + "showMapsForGlest.php" +
+                                  phpVersionParam + gameVersion, handle, -1,
+                                  &curlResult);
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("mapsMetaData [%s]\n", mapsMetaData.c_str ());
+
+          if (callingThread->getQuitStatus () == true
+              || safeMutexThreadOwner.isValidMutex () == false)
+          {
+            if (SystemFlags::VERBOSE_MODE_ENABLED)
+              printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__,
+                      __LINE__);
+            return;
+          }
+
+          if (curlResult != CURLE_OK)
+          {
+            string curlError = curl_easy_strerror (curlResult);
+            char
+              szBuf[8096] = "";
+            snprintf (szBuf, 8096,
+                      lang.getString ("ModErrorGettingServerData").c_str (),
+                      curlError.c_str ());
+            console.addLine (string ("#3 ") + szBuf, true);
+          }
+
+          scenariosMetaData =
+            SystemFlags::getHTTP (baseURL + "showScenariosForGlest.php" +
+                                  phpVersionParam + gameVersion, handle, -1,
+                                  &curlResult);
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("scenariosMetaData [%s]\n", scenariosMetaData.c_str ());
+
+          if (curlResult != CURLE_OK)
+          {
+            string curlError = curl_easy_strerror (curlResult);
+            char
+              szBuf[8096] = "";
+            snprintf (szBuf, 8096,
+                      lang.getString ("ModErrorGettingServerData").c_str (),
+                      curlError.c_str ());
+            console.addLine (string ("#4 ") + szBuf, true);
+          }
+        }
+        SystemFlags::cleanupHTTP (&handle);
+      }
+      else
+      {
+        console.addLine (lang.getString ("MasterServerMissing"), true);
+      }
+
+      if (SystemFlags::VERBOSE_MODE_ENABLED)
+        printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+
+      if (callingThread->getQuitStatus () == true
+          || safeMutexThreadOwner.isValidMutex () == false)
+      {
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+        return;
+      }
+
+      if (SystemFlags::VERBOSE_MODE_ENABLED)
+        printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+
+      MutexSafeWrapper
+        safeMutex (callingThread->getMutexThreadObjectAccessor (),
+                   string (__FILE__) + "_" + intToStr (__LINE__));
+      tilesetListRemote.clear ();
+      Tokenize (tilesetsMetaData, tilesetListRemote, "\n");
+      safeMutex.ReleaseLock (true);
+
+      for (unsigned int i = 0; i < tilesetListRemote.size (); i++)
+      {
+
+        if (callingThread->getQuitStatus () == true
+            || safeMutexThreadOwner.isValidMutex () == false)
+        {
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__,
+                    __LINE__);
+          return;
+        }
+
+        safeMutex.Lock ();
+        string result = refreshTilesetModInfo (tilesetListRemote[i]);
+        safeMutex.ReleaseLock (true);
+      }
+
+      if (callingThread->getQuitStatus () == true
+          || safeMutexThreadOwner.isValidMutex () == false)
+      {
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+        return;
+      }
+
+      if (SystemFlags::VERBOSE_MODE_ENABLED)
+        printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+
+      if (callingThread->getQuitStatus () == true
+          || safeMutexThreadOwner.isValidMutex () == false)
+      {
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+        return;
+      }
+
+      if (SystemFlags::VERBOSE_MODE_ENABLED)
+        printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+
+      safeMutex.Lock ();
+      techListRemote.clear ();
+      Tokenize (techsMetaData, techListRemote, "\n");
+      safeMutex.ReleaseLock (true);
+
+      if (callingThread->getQuitStatus () == true
+          || safeMutexThreadOwner.isValidMutex () == false)
+      {
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+        return;
+      }
+
+      for (unsigned int i = 0; i < techListRemote.size (); i++)
+      {
+
+        if (callingThread->getQuitStatus () == true
+            || safeMutexThreadOwner.isValidMutex () == false)
+        {
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__,
+                    __LINE__);
+          return;
+        }
+
+        safeMutex.Lock ();
+        string result = refreshTechModInfo (techListRemote[i]);
+        safeMutex.ReleaseLock (true);
+      }
+
+      if (callingThread->getQuitStatus () == true
+          || safeMutexThreadOwner.isValidMutex () == false)
+      {
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+        return;
+      }
+
+      if (SystemFlags::VERBOSE_MODE_ENABLED)
+        printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+
+      if (callingThread->getQuitStatus () == true
+          || safeMutexThreadOwner.isValidMutex () == false)
+      {
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+        return;
+      }
+
+      if (SystemFlags::VERBOSE_MODE_ENABLED)
+        printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+
+      safeMutex.Lock ();
+      mapListRemote.clear ();
+      Tokenize (mapsMetaData, mapListRemote, "\n");
+      safeMutex.ReleaseLock (true);
+
+      for (unsigned int i = 0; i < mapListRemote.size (); i++)
+      {
+
+        if (callingThread->getQuitStatus () == true
+            || safeMutexThreadOwner.isValidMutex () == false)
+        {
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__,
+                    __LINE__);
+          return;
+        }
+
+        safeMutex.Lock ();
+        string result = refreshMapModInfo (mapListRemote[i]);
+        safeMutex.ReleaseLock (true);
+      }
+
+      if (callingThread->getQuitStatus () == true
+          || safeMutexThreadOwner.isValidMutex () == false)
+      {
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+        return;
+      }
+
+      if (callingThread->getQuitStatus () == true
+          || safeMutexThreadOwner.isValidMutex () == false)
+      {
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+        return;
+      }
+
+      if (SystemFlags::VERBOSE_MODE_ENABLED)
+        printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s Line: %d]\n", __FILE__,
+                                  __FUNCTION__, __LINE__);
+
+      if (modHttpServerThread != NULL)
+      {
+        modHttpServerThread->signalQuit ();
+      }
+
+      if (SystemFlags::VERBOSE_MODE_ENABLED)
+        printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+    }
+
+    void
+    MenuStateConnectedGame::mouseClick (int x, int y, MouseButton mouseButton)
+    {
+
+      CoreData & coreData = CoreData::getInstance ();
+      SoundRenderer & soundRenderer = SoundRenderer::getInstance ();
+      NetworkManager & networkManager = NetworkManager::getInstance ();
+      ClientInterface *
+        clientInterface = networkManager.getClientInterface ();
+      Lang & lang = Lang::getInstance ();
+
+      string advanceToItemStartingWith = "";
+      if (mainMessageBox.getEnabled () == false)
+      {
+        if (::Shared::Platform::Window::isKeyStateModPressed (KMOD_SHIFT) ==
+            true)
+        {
+          wchar_t
+            lastKey =::Shared::Platform::Window::extractLastKeyPressed ();
+//printf("lastKey = %d [%c]\n",lastKey,lastKey);
+          advanceToItemStartingWith = lastKey;
+        }
+      }
+
+      if (mapPreviewTexture != NULL)
+      {
+//                      printf("X: %d Y: %d      [%d, %d, %d, %d]\n",
+//                                      x, y,
+//                                      this->render_mapPreviewTexture_X, this->render_mapPreviewTexture_X + this->render_mapPreviewTexture_W,
+//                                      this->render_mapPreviewTexture_Y, this->render_mapPreviewTexture_Y + this->render_mapPreviewTexture_H);
+
+        if (x >= this->render_mapPreviewTexture_X
+            && x <=
+            this->render_mapPreviewTexture_X +
+            this->render_mapPreviewTexture_W
+            && y >= this->render_mapPreviewTexture_Y
+            && y <=
+            this->render_mapPreviewTexture_Y +
+            this->render_mapPreviewTexture_H)
+        {
+
+          if (this->render_mapPreviewTexture_X == mapPreviewTexture_X &&
+              this->render_mapPreviewTexture_Y == mapPreviewTexture_Y &&
+              this->render_mapPreviewTexture_W == mapPreviewTexture_W &&
+              this->render_mapPreviewTexture_H == mapPreviewTexture_H)
+          {
+
+            const
+              Metrics &
+              metrics = Metrics::getInstance ();
+
+            this->render_mapPreviewTexture_X = 0;
+            this->render_mapPreviewTexture_Y = 0;
+            this->render_mapPreviewTexture_W = metrics.getVirtualW ();
+            this->render_mapPreviewTexture_H = metrics.getVirtualH ();
+            this->zoomedMap = true;
+
+            cleanupMapPreviewTexture ();
+          }
+          else
+          {
+            this->render_mapPreviewTexture_X = mapPreviewTexture_X;
+            this->render_mapPreviewTexture_Y = mapPreviewTexture_Y;
+            this->render_mapPreviewTexture_W = mapPreviewTexture_W;
+            this->render_mapPreviewTexture_H = mapPreviewTexture_H;
+            this->zoomedMap = false;
+
+            cleanupMapPreviewTexture ();
+          }
+          return;
+        }
+        if (this->zoomedMap == true)
+        {
+          return;
+        }
+      }
+
+      if (mainMessageBox.getEnabled ())
+      {
+        int
+          button = 0;
+        if (mainMessageBox.mouseClick (x, y, button))
+        {
+          soundRenderer.playFx (coreData.getClickSoundA ());
+          if (button == 0)
+          {
+            mainMessageBox.setEnabled (false);
+          }
+        }
+      }
+      else if (ftpMessageBox.getEnabled ())
+      {
+        int
+          button = 0;
+        if (ftpMessageBox.mouseClick (x, y, button))
+        {
+          soundRenderer.playFx (coreData.getClickSoundA ());
+          ftpMessageBox.setEnabled (false);
+
+          if (button == 0
+              || (button == 1 && ftpMessageBox.getButtonCount () == 3))
+          {
+            if (ftpMissingDataType == ftpmsg_MissingMap)
+            {
+              getMissingMapFromFTPServerInProgress = true;
+
+              Lang & lang = Lang::getInstance ();
+              const
+                vector <
+                string >
+                languageList =
+                clientInterface->
+                getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+              for (unsigned int i = 0; i < languageList.size (); ++i)
+              {
+                char
+                  szMsg[8096] = "";
+                if (lang.hasString ("DataMissingMapNowDownloading",
+                                    languageList[i]) == true)
+                {
+                  snprintf (szMsg, 8096,
+                            lang.getString ("DataMissingMapNowDownloading",
+                                            languageList[i]).c_str (),
+                            getHumanPlayerName ().c_str (),
+                            getMissingMapFromFTPServer.c_str ());
+                }
+                else
+                {
+                  snprintf (szMsg, 8096,
+                            "Player: %s is attempting to download the map: %s",
+                            getHumanPlayerName ().c_str (),
+                            getMissingMapFromFTPServer.c_str ());
+                }
+                bool localEcho = lang.isLanguageLocal (languageList[i]);
+                clientInterface->sendTextMessage (szMsg, -1, localEcho,
+                                                  languageList[i]);
+              }
+
+              if (ftpClientThread != NULL)
+              {
+                if (button == 0 && ftpMessageBox.getButtonCount () == 3)
+                {
+                  string mapName = getMissingMapFromFTPServer;
+
+                  MutexSafeWrapper
+                    safeMutexThread ((modHttpServerThread !=
+                                      NULL ?
+                                      modHttpServerThread->getMutexThreadObjectAccessor
+                                      () : NULL),
+                                     string (__FILE__) + "_" +
+                                     intToStr (__LINE__));
+                  string mapURL = mapCacheList[mapName].url;
+                  safeMutexThread.ReleaseLock ();
+
+                  if (ftpClientThread != NULL)
+                    ftpClientThread->addMapToRequests (mapName, mapURL);
+                  MutexSafeWrapper
+                    safeMutexFTPProgress ((ftpClientThread !=
+                                           NULL ?
+                                           ftpClientThread->getProgressMutex
+                                           () : NULL),
+                                          string (__FILE__) + "_" +
+                                          intToStr (__LINE__));
+                  fileFTPProgressList[getMissingMapFromFTPServer] =
+                    pair < int,
+                  string > (0, "");
+                  safeMutexFTPProgress.ReleaseLock ();
+                }
+                else
+                {
+                  ftpClientThread->addMapToRequests
+                    (getMissingMapFromFTPServer);
+                  MutexSafeWrapper
+                    safeMutexFTPProgress ((ftpClientThread !=
+                                           NULL ?
+                                           ftpClientThread->getProgressMutex
+                                           () : NULL),
+                                          string (__FILE__) + "_" +
+                                          intToStr (__LINE__));
+                  fileFTPProgressList[getMissingMapFromFTPServer] =
+                    pair < int,
+                  string > (0, "");
+                  safeMutexFTPProgress.ReleaseLock ();
+                }
+              }
+            }
+            else if (ftpMissingDataType == ftpmsg_MissingTileset)
+            {
+              getMissingTilesetFromFTPServerInProgress = true;
+
+              Lang & lang = Lang::getInstance ();
+              const
+                vector <
+                string >
+                languageList =
+                clientInterface->
+                getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+              for (unsigned int i = 0; i < languageList.size (); ++i)
+              {
+                char
+                  szMsg[8096] = "";
+                if (lang.hasString ("DataMissingTilesetNowDownloading",
+                                    languageList[i]) == true)
+                {
+                  snprintf (szMsg, 8096,
+                            lang.getString
+                            ("DataMissingTilesetNowDownloading",
+                             languageList[i]).c_str (),
+                            getHumanPlayerName ().c_str (),
+                            getMissingTilesetFromFTPServer.c_str ());
+                }
+                else
+                {
+                  snprintf (szMsg, 8096,
+                            "Player: %s is attempting to download the tileset: %s",
+                            getHumanPlayerName ().c_str (),
+                            getMissingTilesetFromFTPServer.c_str ());
+                }
+                bool localEcho = lang.isLanguageLocal (languageList[i]);
+                clientInterface->sendTextMessage (szMsg, -1, localEcho,
+                                                  languageList[i]);
+              }
+
+              if (ftpClientThread != NULL)
+              {
+                if (button == 0 && ftpMessageBox.getButtonCount () == 3)
+                {
+                  string tilesetName = getMissingTilesetFromFTPServer;
+
+                  MutexSafeWrapper
+                    safeMutexThread ((modHttpServerThread !=
+                                      NULL ?
+                                      modHttpServerThread->getMutexThreadObjectAccessor
+                                      () : NULL),
+                                     string (__FILE__) + "_" +
+                                     intToStr (__LINE__));
+                  string tilesetURL = tilesetCacheList[tilesetName].url;
+                  safeMutexThread.ReleaseLock ();
+
+                  if (ftpClientThread != NULL)
+                    ftpClientThread->addTilesetToRequests (tilesetName,
+                                                           tilesetURL);
+                  MutexSafeWrapper
+                    safeMutexFTPProgress ((ftpClientThread !=
+                                           NULL ?
+                                           ftpClientThread->getProgressMutex
+                                           () : NULL),
+                                          string (__FILE__) + "_" +
+                                          intToStr (__LINE__));
+                  fileFTPProgressList[getMissingTilesetFromFTPServer] =
+                    pair < int,
+                  string > (0, "");
+                  safeMutexFTPProgress.ReleaseLock ();
+                }
+                else
+                {
+                  ftpClientThread->addTilesetToRequests
+                    (getMissingTilesetFromFTPServer);
+                  MutexSafeWrapper
+                    safeMutexFTPProgress ((ftpClientThread !=
+                                           NULL ?
+                                           ftpClientThread->getProgressMutex
+                                           () : NULL),
+                                          string (__FILE__) + "_" +
+                                          intToStr (__LINE__));
+                  fileFTPProgressList[getMissingTilesetFromFTPServer] =
+                    pair < int,
+                  string > (0, "");
+                  safeMutexFTPProgress.ReleaseLock ();
+                }
+              }
+            }
+            else if (ftpMissingDataType == ftpmsg_MissingTechtree)
+            {
+              getMissingTechtreeFromFTPServerInProgress = true;
+
+              Lang & lang = Lang::getInstance ();
+              const
+                vector <
+                string >
+                languageList =
+                clientInterface->
+                getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+              for (unsigned int i = 0; i < languageList.size (); ++i)
+              {
+                char
+                  szMsg[8096] = "";
+                if (lang.hasString ("DataMissingTechtreeNowDownloading",
+                                    languageList[i]) == true)
+                {
+                  snprintf (szMsg, 8096,
+                            lang.getString
+                            ("DataMissingTechtreeNowDownloading",
+                             languageList[i]).c_str (),
+                            getHumanPlayerName ().c_str (),
+                            getMissingTechtreeFromFTPServer.c_str ());
+                }
+                else
+                {
+                  snprintf (szMsg, 8096,
+                            "Player: %s is attempting to download the techtree: %s",
+                            getHumanPlayerName ().c_str (),
+                            getMissingTechtreeFromFTPServer.c_str ());
+                }
+                bool localEcho = lang.isLanguageLocal (languageList[i]);
+                clientInterface->sendTextMessage (szMsg, -1, localEcho,
+                                                  languageList[i]);
+              }
+
+              if (ftpClientThread != NULL)
+              {
+                if (button == 0 && ftpMessageBox.getButtonCount () == 3)
+                {
+                  string techName = getMissingTechtreeFromFTPServer;
+
+                  MutexSafeWrapper
+                    safeMutexThread ((modHttpServerThread !=
+                                      NULL ?
+                                      modHttpServerThread->getMutexThreadObjectAccessor
+                                      () : NULL),
+                                     string (__FILE__) + "_" +
+                                     intToStr (__LINE__));
+                  string techURL = techCacheList[techName].url;
+                  safeMutexThread.ReleaseLock ();
+
+                  if (ftpClientThread != NULL)
+                    ftpClientThread->addTechtreeToRequests (techName,
+                                                            techURL);
+                  MutexSafeWrapper
+                    safeMutexFTPProgress ((ftpClientThread !=
+                                           NULL ?
+                                           ftpClientThread->getProgressMutex
+                                           () : NULL),
+                                          string (__FILE__) + "_" +
+                                          intToStr (__LINE__));
+                  fileFTPProgressList[getMissingTechtreeFromFTPServer] =
+                    pair < int,
+                  string > (0, "");
+                  safeMutexFTPProgress.ReleaseLock ();
+                }
+                else
+                {
+                  ftpClientThread->addTechtreeToRequests
+                    (getMissingTechtreeFromFTPServer);
+                  MutexSafeWrapper
+                    safeMutexFTPProgress ((ftpClientThread !=
+                                           NULL ?
+                                           ftpClientThread->getProgressMutex
+                                           () : NULL),
+                                          string (__FILE__) + "_" +
+                                          intToStr (__LINE__));
+                  fileFTPProgressList[getMissingTechtreeFromFTPServer] =
+                    pair < int,
+                  string > (0, "");
+                  safeMutexFTPProgress.ReleaseLock ();
+                }
+              }
+            }
+          }
+        }
+      }
+      else if (buttonCancelDownloads.mouseClick (x, y))
+      {
+        soundRenderer.playFx (coreData.getClickSoundA ());
+
+        if (ftpClientThread != NULL && fileFTPProgressList.empty () == false)
+        {
+
+          ftpClientThread->setCallBackObject (NULL);
+          ftpClientThread->signalQuit ();
+          sleep (0);
+          if (ftpClientThread->canShutdown (true) == true &&
+              ftpClientThread->shutdownAndWait () == true)
+          {
+            delete ftpClientThread;
+          }
+          else
+          {
+            char
+              szBuf[8096] = "";
+            snprintf (szBuf, 8096,
+                      "In [%s::%s %d] Error cannot shutdown ftpClientThread\n",
+                      extractFileFromDirectoryPath (__FILE__).c_str (),
+                      __FUNCTION__, __LINE__);
+            if (SystemFlags::VERBOSE_MODE_ENABLED)
+              printf ("%s", szBuf);
+            if (SystemFlags::
+                getSystemSettingType (SystemFlags::debugSystem).enabled)
+              SystemFlags::OutputDebug (SystemFlags::debugSystem, "%s",
+                                        szBuf);
+          }
+          ftpClientThread = NULL;
+
+          fileFTPProgressList.clear ();
+          getMissingMapFromFTPServerInProgress = false;
+          getMissingTilesetFromFTPServerInProgress = false;
+          getMissingTechtreeFromFTPServerInProgress = false;
+          getMissingMapFromFTPServer = "";
+          getMissingTilesetFromFTPServer = "";
+          getMissingTechtreeFromFTPServer = "";
+          getMissingMapFromFTPServerLastPrompted = 0;
+          getMissingTilesetFromFTPServerLastPrompted = 0;
+          getMissingTechtreeFromFTPServerLastPrompted = 0;
+
+          ClientInterface *
+            clientInterface = networkManager.getClientInterface ();
+          if (clientInterface == NULL)
+          {
+            throw megaglest_runtime_error ("clientInterface == NULL");
+          }
+          if (getInProgressSavedGameFromFTPServerInProgress == true)
+          {
+            if (clientInterface != NULL)
+            {
+              clientInterface->close ();
+              return;
+            }
+          }
+
+          getInProgressSavedGameFromFTPServer = "";
+          getInProgressSavedGameFromFTPServerInProgress = false;
+
+          string serverUrl = clientInterface->getServerIpAddress ();
+          int
+            portNumber = clientInterface->getServerFTPPort ();
+
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                      "In [%s::%s Line %d] Using FTP port #: %d\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__, portNumber);
+
+          Config & config = Config::getInstance ();
+          vector < string > mapPathList = config.getPathListForType (ptMaps);
+          std::pair < string, string > mapsPath;
+          if (mapPathList.empty () == false)
+          {
             mapsPath.first = mapPathList[0];
-        }
-        if(mapPathList.size() > 1) {
+          }
+          if (mapPathList.size () > 1)
+          {
             mapsPath.second = mapPathList[1];
-        }
-        std::pair<string,string> tilesetsPath;
-        vector<string> tilesetsList = Config::getInstance().getPathListForType(ptTilesets);
-        if(tilesetsList.empty() == false) {
+          }
+          std::pair < string, string > tilesetsPath;
+          vector < string > tilesetsList =
+            Config::getInstance ().getPathListForType (ptTilesets);
+          if (tilesetsList.empty () == false)
+          {
             tilesetsPath.first = tilesetsList[0];
-            if(tilesetsList.size() > 1) {
-                tilesetsPath.second = tilesetsList[1];
+            if (tilesetsList.size () > 1)
+            {
+              tilesetsPath.second = tilesetsList[1];
             }
-        }
+          }
 
-        std::pair<string,string> techtreesPath;
-        if(techtreesList.empty() == false) {
-        	techtreesPath.first = techtreesList[0];
-            if(techtreesList.size() > 1) {
-            	techtreesPath.second = techtreesList[1];
+          std::pair < string, string > techtreesPath;
+          vector < string > techtreesList =
+            Config::getInstance ().getPathListForType (ptTechs);
+          if (techtreesList.empty () == false)
+          {
+            techtreesPath.first = techtreesList[0];
+            if (techtreesList.size () > 1)
+            {
+              techtreesPath.second = techtreesList[1];
             }
-        }
+          }
 
-        std::pair<string,string> scenariosPath;
-        vector<string> scenariosList = Config::getInstance().getPathListForType(ptScenarios);
-        if(scenariosList.empty() == false) {
-        	scenariosPath.first = scenariosList[0];
-            if(scenariosList.size() > 1) {
-            	scenariosPath.second = scenariosList[1];
+          std::pair < string, string > scenariosPath;
+          vector < string > scenariosList =
+            Config::getInstance ().getPathListForType (ptScenarios);
+          if (scenariosList.empty () == false)
+          {
+            scenariosPath.first = scenariosList[0];
+            if (scenariosList.size () > 1)
+            {
+              scenariosPath.second = scenariosList[1];
             }
-        }
+          }
 
-        string fileArchiveExtension = config.getString("FileArchiveExtension","");
-        string fileArchiveExtractCommand = config.getString("FileArchiveExtractCommand","");
-        string fileArchiveExtractCommandParameters = config.getString("FileArchiveExtractCommandParameters","");
-        int32 fileArchiveExtractCommandSuccessResult = config.getInt("FileArchiveExtractCommandSuccessResult","0");
+          string
+            fileArchiveExtension =
+            config.getString ("FileArchiveExtension", "");
+          string
+            fileArchiveExtractCommand =
+            config.getString ("FileArchiveExtractCommand", "");
+          string
+            fileArchiveExtractCommandParameters =
+            config.getString ("FileArchiveExtractCommandParameters", "");
+          int32
+            fileArchiveExtractCommandSuccessResult =
+            config.getInt ("FileArchiveExtractCommandSuccessResult", "0");
 
-    	// Get path to temp files
-    	string tempFilePath = "temp/";
-    	if(getGameReadWritePath(GameConstants::path_logs_CacheLookupKey) != "") {
-    		tempFilePath = getGameReadWritePath(GameConstants::path_logs_CacheLookupKey) + tempFilePath;
-    	}
-    	else {
-            string userData = config.getString("UserData_Root","");
-            if(userData != "") {
-            	endPathWithSlash(userData);
+// Get path to temp files
+          string tempFilePath = "temp/";
+          if (getGameReadWritePath (GameConstants::path_logs_CacheLookupKey)
+              != "")
+          {
+            tempFilePath =
+              getGameReadWritePath (GameConstants::path_logs_CacheLookupKey) +
+              tempFilePath;
+          }
+          else
+          {
+            string userData = config.getString ("UserData_Root", "");
+            if (userData != "")
+            {
+              endPathWithSlash (userData);
             }
             tempFilePath = userData + tempFilePath;
-    	}
-    	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("Temp files path [%s]\n",tempFilePath.c_str());
-
-        ftpClientThread = new FTPClientThread(portNumber,serverUrl,
-        		mapsPath,tilesetsPath,techtreesPath,scenariosPath,
-        		this,fileArchiveExtension,fileArchiveExtractCommand,
-        		fileArchiveExtractCommandParameters,
-        		fileArchiveExtractCommandSuccessResult,
-        		tempFilePath);
-        ftpClientThread->start();
-    }
-	// Start http meta data thread
-    static string mutexOwnerId = string(extractFileFromDirectoryPath(__FILE__).c_str()) + string("_") + intToStr(__LINE__);
-	modHttpServerThread = new SimpleTaskThread(this,0,200);
-	modHttpServerThread->setUniqueID(mutexOwnerId);
-	modHttpServerThread->start();
-
-	ClientInterface *clientInterface = networkManager.getClientInterface();
-	if(clientInterface != NULL && clientInterface->getJoinGameInProgress() == true) {
-		listBoxPlayerStatus.setVisible(false);
-		Lang &lang= Lang::getInstance();
-    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-			char szMsg[8096]="";
-			if(lang.hasString("JoinPlayerToCurrentGameWelcome",languageList[i]) == true) {
-				snprintf(szMsg,8096,lang.getString("JoinPlayerToCurrentGameWelcome",languageList[i]).c_str(),getHumanPlayerName().c_str());
-			}
-			else {
-				snprintf(szMsg,8096,"Player: %s has connected to the game and would like to join.",getHumanPlayerName().c_str());
-			}
-			bool localEcho = lang.isLanguageLocal(languageList[i]);
-			clientInterface->sendTextMessage(szMsg,-1, localEcho,languageList[i]);
-    	}
-    	sleep(1);
-	}
-
-	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-
-    if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-}
-
-void MenuStateConnectedGame::reloadUI() {
-	Config &config = Config::getInstance();
-	Lang &lang= Lang::getInstance();
-
-	console.resetFonts();
-	mainMessageBox.init(lang.getString("Ok"));
-	ftpMessageBox.init(lang.getString("ModCenter"),lang.getString("GameHost"));
-	ftpMessageBox.addButton(lang.getString("NoDownload"));
-
-	labelInfo.setFont(CoreData::getInstance().getMenuFontBig());
-	labelInfo.setFont3D(CoreData::getInstance().getMenuFontBig3D());
-
-	labelWaitingForPlayers.setFont(CoreData::getInstance().getMenuFontBig());
-	labelWaitingForPlayers.setFont3D(CoreData::getInstance().getMenuFontBig3D());
-
-	labelDataSynchInfo.setFont(CoreData::getInstance().getMenuFontBig());
-	labelDataSynchInfo.setFont3D(CoreData::getInstance().getMenuFontBig3D());
-
-	buttonCancelDownloads.setText(lang.getString("CancelDownloads"));
-
-	labelFogOfWar.setText(lang.getString("FogOfWar"));
-
-	vector<string> fowItems;
-	fowItems.push_back(lang.getString("Enabled"));
-	fowItems.push_back(lang.getString("Explored"));
-	fowItems.push_back(lang.getString("Disabled"));
-	listBoxFogOfWar.setItems(fowItems);
-
-	labelAllowObservers.setText(lang.getString("AllowObservers"));
-	labelFallbackCpuMultiplier.setText(lang.getString("FallbackCpuMultiplier"));
-
-	labelEnableSwitchTeamMode.setText(lang.getString("EnableSwitchTeamMode"));
-
-	labelAllowTeamUnitSharing.setText(lang.getString("AllowTeamUnitSharing"));
-	labelAllowTeamResourceSharing.setText(lang.getString("AllowTeamResourceSharing"));
-
-	labelAISwitchTeamAcceptPercent.setText(lang.getString("AISwitchTeamAcceptPercent"));
-
-	vector<string> aiswitchteamModeItems;
-	for(int i = 0; i <= 100; i = i + 10) {
-		aiswitchteamModeItems.push_back(intToStr(i));
-	}
-	listBoxAISwitchTeamAcceptPercent.setItems(aiswitchteamModeItems);
-
-	vector<string> rMultiplier;
-	for(int i=0; i<45; ++i){
-		rMultiplier.push_back(floatToStr(0.5f+0.1f*i,1));
-	}
-	listBoxFallbackCpuMultiplier.setItems(rMultiplier);
-
-	labelMap.setText(lang.getString("Map"));
-
-	labelMapFilter.setText(lang.getString("MapFilter"));
-
-	labelTileset.setText(lang.getString("Tileset"));
-
-	labelTechTree.setText(lang.getString("TechTree"));
-
-	vector<string> playerstatusItems;
-	playerstatusItems.push_back(lang.getString("PlayerStatusSetup"));
-	playerstatusItems.push_back(lang.getString("PlayerStatusBeRightBack"));
-	playerstatusItems.push_back(lang.getString("PlayerStatusReady"));
-	listBoxPlayerStatus.setItems(playerstatusItems);
-
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-	labelControl.setText(lang.getString("Control"));
-
-    labelFaction.setText(lang.getString("Faction"));
-
-	labelTeam.setText(lang.getString("Team"));
-
-    labelControl.setFont(CoreData::getInstance().getMenuFontBig());
-    labelControl.setFont3D(CoreData::getInstance().getMenuFontBig3D());
-	labelFaction.setFont(CoreData::getInstance().getMenuFontBig());
-	labelFaction.setFont3D(CoreData::getInstance().getMenuFontBig3D());
-	labelTeam.setFont(CoreData::getInstance().getMenuFontBig());
-	labelTeam.setFont3D(CoreData::getInstance().getMenuFontBig3D());
-
-	//texts
-	buttonDisconnect.setText(lang.getString("Return"));
-
-	vector<string> controlItems;
-    controlItems.push_back(lang.getString("Closed"));
-	controlItems.push_back(lang.getString("CpuEasy"));
-	controlItems.push_back(lang.getString("Cpu"));
-    controlItems.push_back(lang.getString("CpuUltra"));
-    controlItems.push_back(lang.getString("CpuMega"));
-	controlItems.push_back(lang.getString("Network"));
-	controlItems.push_back(lang.getString("NetworkUnassigned"));
-	controlItems.push_back(lang.getString("Human"));
-
-	if(config.getBool("EnableNetworkCpu","false") == true) {
-		controlItems.push_back(lang.getString("NetworkCpuEasy"));
-		controlItems.push_back(lang.getString("NetworkCpu"));
-	    controlItems.push_back(lang.getString("NetworkCpuUltra"));
-	    controlItems.push_back(lang.getString("NetworkCpuMega"));
-	}
-
-	for(int i=0; i < GameConstants::maxPlayers; ++i) {
-		labelPlayers[i].setText(intToStr(i+1));
-		listBoxControls[i].setItems(controlItems);
-    }
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-	labelScenario.setText(lang.getString("Scenario"));
-
-	labelAllowNativeLanguageTechtree.setText(lang.getString("AllowNativeLanguageTechtree"));
-
-	buttonPlayNow.setText(lang.getString("PlayNow"));
-	buttonRestoreLastSettings.setText(lang.getString("ReloadLastGameSettings"));
-
-	chatManager.init(&console, -1,true);
-
-	GraphicComponent::reloadFontsForRegisterGraphicComponents(containerName);
-}
-
-void MenuStateConnectedGame::disconnectFromServer() {
-	NetworkManager &networkManager= NetworkManager::getInstance();
-	ClientInterface* clientInterface= networkManager.getClientInterface(false);
-	if(clientInterface != NULL) {
-		CoreData &coreData= CoreData::getInstance();
-		SoundRenderer &soundRenderer= SoundRenderer::getInstance();
-
-		soundRenderer.playFx(coreData.getClickSoundA());
-		if(clientInterface->getSocket() != NULL) {
-			if(clientInterface->isConnected() == true) {
-				Lang &lang= Lang::getInstance();
-				const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-				for(unsigned int i = 0; i < languageList.size(); ++i) {
-					string sQuitText = lang.getString("QuitGame",languageList[i]);
-					clientInterface->sendTextMessage(sQuitText,-1,false,languageList[i]);
-				}
-				sleep(1);
-
-			}
-			clientInterface->close();
-		}
-		clientInterface->reset();
-	}
-	currentFactionName="";
-	currentMap="";
-}
-
-MenuStateConnectedGame::~MenuStateConnectedGame() {
-	if(launchingNewGame == false) {
-		disconnectFromServer();
-		NetworkManager &networkManager= NetworkManager::getInstance();
-		networkManager.end();
-	}
-
-	if(modHttpServerThread != NULL) {
-		if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-
-		modHttpServerThread->setSimpleTaskInterfaceValid(false);
-		modHttpServerThread->signalQuit();
-		modHttpServerThread->setThreadOwnerValid(false);
-
-		if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-		if( modHttpServerThread->canShutdown(true) == true &&
-			modHttpServerThread->shutdownAndWait() == true) {
-			delete modHttpServerThread;
-		}
-		if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-		modHttpServerThread = NULL;
-	}
-
-	if(ftpClientThread != NULL) {
-		ftpClientThread->setCallBackObject(NULL);
-		ftpClientThread->signalQuit();
-    	sleep(0);
-    	if(ftpClientThread->canShutdown(true) == true &&
-    			ftpClientThread->shutdownAndWait() == true) {
-    		delete ftpClientThread;
-    	}
-		else {
-			char szBuf[8096]="";
-			snprintf(szBuf,8096,"In [%s::%s %d] Error cannot shutdown ftpClientThread\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-			if(SystemFlags::VERBOSE_MODE_ENABLED) printf("%s",szBuf);
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"%s",szBuf);
-		}
-
-    	ftpClientThread = NULL;
-	}
-
-	cleanupMapPreviewTexture();
-
-	if(factionVideo != NULL) {
-		factionVideo->closePlayer();
-		delete factionVideo;
-		factionVideo = NULL;
-	}
-}
-
-string MenuStateConnectedGame::refreshTilesetModInfo(string tilesetInfo) {
-	std::vector<std::string> tilesetInfoList;
-	Tokenize(tilesetInfo,tilesetInfoList,"|");
-	if(tilesetInfoList.size() >= 5) {
-		Config &config = Config::getInstance();
-		ModInfo modinfo;
-		modinfo.name = tilesetInfoList[0];
-		modinfo.crc = tilesetInfoList[1];
-		modinfo.description = tilesetInfoList[2];
-		modinfo.url = tilesetInfoList[3];
-		modinfo.imageUrl = tilesetInfoList[4];
-		modinfo.type = mt_Tileset;
-
-		string itemPath = config.getPathListForType(ptTilesets,"")[1] + "/" + modinfo.name + string("/*");
-		if(itemPath.empty() == false) {
-		   bool forceRefresh = (mapCRCUpdateList.find(itemPath) == mapCRCUpdateList.end());
-		   uint32 crc = getFolderTreeContentsCheckSumRecursively(itemPath, ".xml", NULL,forceRefresh);
-		   if(crc == 0) {
-				itemPath = config.getPathListForType(ptTilesets,"")[0] + "/" + modinfo.name + string("/*");
-				if(itemPath.empty() == false) {
-				   forceRefresh = (mapCRCUpdateList.find(itemPath) == mapCRCUpdateList.end());
-				   crc=getFolderTreeContentsCheckSumRecursively(itemPath, ".xml", NULL,forceRefresh);
-				}
-		   }
-		   modinfo.localCRC=uIntToStr(crc);
-		   //printf("itemPath='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
-
-		   //printf("#1 refreshTilesetModInfo name [%s] modInfo.crc [%s] modInfo.localCRC [%s]\n",modinfo.name.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str());
-		}
-		else {
-			modinfo.localCRC="";
-
-			//printf("#2 refreshTilesetModInfo name [%s] modInfo.crc [%s] modInfo.localCRC [%s]\n",modinfo.name.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str());
-		}
-
-		tilesetCacheList[modinfo.name] = modinfo;
-		return modinfo.name;
-	}
-	return "";
-}
-
-string MenuStateConnectedGame::refreshTechModInfo(string techInfo) {
-	std::vector<std::string> techInfoList;
-	Tokenize(techInfo,techInfoList,"|");
-	if(techInfoList.size() >= 6) {
-		Config &config = Config::getInstance();
-		ModInfo modinfo;
-		modinfo.name = techInfoList[0];
-		modinfo.count = techInfoList[1];
-		modinfo.crc = techInfoList[2];
-		modinfo.description = techInfoList[3];
-		modinfo.url = techInfoList[4];
-		modinfo.imageUrl = techInfoList[5];
-		modinfo.type = mt_Techtree;
-
-		string itemPath = config.getPathListForType(ptTechs,"")[1] + "/" + modinfo.name + string("/*");
-		if(itemPath.empty() == false) {
-		   bool forceRefresh = (mapCRCUpdateList.find(itemPath) == mapCRCUpdateList.end());
-		   uint32 crc = getFolderTreeContentsCheckSumRecursively(itemPath, ".xml", NULL,forceRefresh);
-		   if(crc == 0) {
-				itemPath = config.getPathListForType(ptTechs,"")[0] + "/" + modinfo.name + string("/*");
-				if(itemPath.empty() == false) {
-				   forceRefresh = (mapCRCUpdateList.find(itemPath) == mapCRCUpdateList.end());
-				   crc = getFolderTreeContentsCheckSumRecursively(itemPath, ".xml", NULL,forceRefresh);
-				}
-		   }
-		   modinfo.localCRC=uIntToStr(crc);
-		   //printf("itemPath='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
-		}
-		else {
-			modinfo.localCRC="";
-		}
-		techCacheList[modinfo.name] = modinfo;
-		return modinfo.name;
-	}
-	return "";
-}
-
-string MenuStateConnectedGame::getMapCRC(string mapName) {
-	Config &config = Config::getInstance();
-	vector<string> mappaths=config.getPathListForType(ptMaps,"");
-	string result="";
-	if(mappaths.empty() == false) {
-		Checksum checksum;
-		string itemPath = mappaths[1] + "/" + mapName;
-		if (fileExists(itemPath)){
-			checksum.addFile(itemPath);
-			uint32 crc=checksum.getSum();
-			result=uIntToStr(crc);
-			//printf("itemPath='%s' modinfo.name='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.name.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
-		}
-		else {
-			itemPath = mappaths[0] + "/" + mapName;
-			if (fileExists(itemPath)){
-				checksum.addFile(itemPath);
-				uint32 crc=checksum.getSum();
-				result=uIntToStr(crc);
-				//printf("itemPath='%s' modinfo.name='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.name.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
-			}
-			else {
-				result="";
-			}
-		}
-	}
-	else {
-		result="";
-	}
-	return result;
-}
-
-string MenuStateConnectedGame::refreshMapModInfo(string mapInfo) {
-	std::vector<std::string> mapInfoList;
-	Tokenize(mapInfo,mapInfoList,"|");
-	if(mapInfoList.size() >= 6) {
-		//Config &config = Config::getInstance();
-		ModInfo modinfo;
-		modinfo.name = mapInfoList[0];
-		modinfo.count = mapInfoList[1];
-		modinfo.crc = mapInfoList[2];
-		modinfo.description = mapInfoList[3];
-		modinfo.url = mapInfoList[4];
-		modinfo.imageUrl = mapInfoList[5];
-		modinfo.type = mt_Map;
-		modinfo.localCRC=getMapCRC(modinfo.name);
-		mapCacheList[modinfo.name] = modinfo;
-		return modinfo.name;
-	}
-	return "";
-}
-
-void MenuStateConnectedGame::simpleTask(BaseThread *callingThread,void *userdata) {
-	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-
-	static string mutexOwnerId = string(__FILE__) + string("_") + intToStr(__LINE__);
-    MutexSafeWrapper safeMutexThreadOwner(callingThread->getMutexThreadOwnerValid(),mutexOwnerId);
-    if(callingThread->getQuitStatus() == true || safeMutexThreadOwner.isValidMutex() == false) {
-    	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-        return;
-    }
-
-    callingThread->getMutexThreadOwnerValid()->setOwnerId(mutexOwnerId);
-    if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-
-    Lang &lang= Lang::getInstance();
-    Config &config = Config::getInstance();
-
-	std::string techsMetaData = "";
-	std::string tilesetsMetaData = "";
-	std::string mapsMetaData = "";
-	std::string scenariosMetaData = "";
-
-	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-
-	if(config.getString("Masterserver","") != "") {
-		string baseURL = config.getString("Masterserver");
-		if(baseURL != "") {
-			endPathWithSlash(baseURL,false);
-		}
-		string phpVersionParam = config.getString("phpVersionParam","?version=0.1");
-		string gameVersion = "&glestVersion=" + SystemFlags::escapeURL(glestVersionString);
-		string playerUUID = "&uuid=" + SystemFlags::escapeURL(config.getString("PlayerId",""));
-
-		if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d] About to call first http url, base [%s]..\n",__FILE__,__FUNCTION__,__LINE__,baseURL.c_str());
-
-		CURL *handle = SystemFlags::initHTTP();
-		CURLcode curlResult = CURLE_OK;
-		techsMetaData = SystemFlags::getHTTP(baseURL + "showTechsForGlest.php"+phpVersionParam+gameVersion+playerUUID,handle,-1,&curlResult);
-
-		if(SystemFlags::VERBOSE_MODE_ENABLED) printf("techsMetaData [%s] curlResult = %d\n",techsMetaData.c_str(),curlResult);
-
-	    if(callingThread->getQuitStatus() == true || safeMutexThreadOwner.isValidMutex() == false) {
-	    	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-	        return;
-	    }
-
-	    if(curlResult != CURLE_OK) {
-			string curlError = curl_easy_strerror(curlResult);
-			char szBuf[8096]="";
-			snprintf(szBuf,8096,lang.getString("ModErrorGettingServerData").c_str(),curlError.c_str());
-			console.addLine(string("#1 ") + szBuf,true);
-	    }
-
-		if(curlResult == CURLE_OK ||
-			(curlResult != CURLE_COULDNT_RESOLVE_HOST &&
-			 curlResult != CURLE_COULDNT_CONNECT)) {
-
-			tilesetsMetaData = SystemFlags::getHTTP(baseURL + "showTilesetsForGlest.php"+phpVersionParam+gameVersion,handle,-1,&curlResult);
-			if(SystemFlags::VERBOSE_MODE_ENABLED) printf("tilesetsMetaData [%s]\n",tilesetsMetaData.c_str());
-
-		    if(callingThread->getQuitStatus() == true || safeMutexThreadOwner.isValidMutex() == false) {
-		    	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-		        return;
-		    }
-
-		    if(curlResult != CURLE_OK) {
-				string curlError = curl_easy_strerror(curlResult);
-				char szBuf[8096]="";
-				snprintf(szBuf,8096,lang.getString("ModErrorGettingServerData").c_str(),curlError.c_str());
-				console.addLine(string("#2 ") + szBuf,true);
-		    }
-
-			mapsMetaData = SystemFlags::getHTTP(baseURL + "showMapsForGlest.php"+phpVersionParam+gameVersion,handle,-1,&curlResult);
-			if(SystemFlags::VERBOSE_MODE_ENABLED) printf("mapsMetaData [%s]\n",mapsMetaData.c_str());
-
-		    if(callingThread->getQuitStatus() == true || safeMutexThreadOwner.isValidMutex() == false) {
-		    	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-		        return;
-		    }
-
-		    if(curlResult != CURLE_OK) {
-				string curlError = curl_easy_strerror(curlResult);
-				char szBuf[8096]="";
-				snprintf(szBuf,8096,lang.getString("ModErrorGettingServerData").c_str(),curlError.c_str());
-				console.addLine(string("#3 ") + szBuf,true);
-		    }
-
-			scenariosMetaData = SystemFlags::getHTTP(baseURL + "showScenariosForGlest.php"+phpVersionParam+gameVersion,handle,-1,&curlResult);
-			if(SystemFlags::VERBOSE_MODE_ENABLED) printf("scenariosMetaData [%s]\n",scenariosMetaData.c_str());
-
-		    if(curlResult != CURLE_OK) {
-				string curlError = curl_easy_strerror(curlResult);
-				char szBuf[8096]="";
-				snprintf(szBuf,8096,lang.getString("ModErrorGettingServerData").c_str(),curlError.c_str());
-				console.addLine(string("#4 ") + szBuf,true);
-		    }
-		}
-		SystemFlags::cleanupHTTP(&handle);
-	}
-	else {
-        console.addLine(lang.getString("MasterServerMissing"),true);
-	}
-
-	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-
-    if(callingThread->getQuitStatus() == true || safeMutexThreadOwner.isValidMutex() == false) {
-    	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-        return;
-    }
-
-    if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-
-    MutexSafeWrapper safeMutex(callingThread->getMutexThreadObjectAccessor(),string(__FILE__) + "_" + intToStr(__LINE__));
-	tilesetListRemote.clear();
-	Tokenize(tilesetsMetaData,tilesetListRemote,"\n");
-	safeMutex.ReleaseLock(true);
-
-	for(unsigned int i=0; i < tilesetListRemote.size(); i++) {
-
-	    if(callingThread->getQuitStatus() == true || safeMutexThreadOwner.isValidMutex() == false) {
-	    	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-	        return;
-	    }
-
-	    safeMutex.Lock();
-		string result=refreshTilesetModInfo(tilesetListRemote[i]);
-		safeMutex.ReleaseLock(true);
-	}
-
-    if(callingThread->getQuitStatus() == true || safeMutexThreadOwner.isValidMutex() == false) {
-    	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-        return;
-    }
-
-	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-
-    if(callingThread->getQuitStatus() == true || safeMutexThreadOwner.isValidMutex() == false) {
-    	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-        return;
-    }
-
-    if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-
-    safeMutex.Lock();
-	techListRemote.clear();
-	Tokenize(techsMetaData,techListRemote,"\n");
-	safeMutex.ReleaseLock(true);
-
-    if(callingThread->getQuitStatus() == true || safeMutexThreadOwner.isValidMutex() == false) {
-    	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-        return;
-    }
-
-	for(unsigned int i=0; i < techListRemote.size(); i++) {
-
-	    if(callingThread->getQuitStatus() == true || safeMutexThreadOwner.isValidMutex() == false) {
-	    	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-	        return;
-	    }
-
-	    safeMutex.Lock();
-		string result=refreshTechModInfo(techListRemote[i]);
-		safeMutex.ReleaseLock(true);
-	}
-
-    if(callingThread->getQuitStatus() == true || safeMutexThreadOwner.isValidMutex() == false) {
-    	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-        return;
-    }
-
-	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-
-    if(callingThread->getQuitStatus() == true || safeMutexThreadOwner.isValidMutex() == false) {
-    	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-        return;
-    }
-
-    if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-
-    safeMutex.Lock();
-	mapListRemote.clear();
-	Tokenize(mapsMetaData,mapListRemote,"\n");
-	safeMutex.ReleaseLock(true);
-
-	for(unsigned int i=0; i < mapListRemote.size(); i++) {
-
-	    if(callingThread->getQuitStatus() == true || safeMutexThreadOwner.isValidMutex() == false) {
-	    	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-	        return;
-	    }
-
-	    safeMutex.Lock();
-		string result=refreshMapModInfo(mapListRemote[i]);
-		safeMutex.ReleaseLock(true);
-	}
-
-    if(callingThread->getQuitStatus() == true || safeMutexThreadOwner.isValidMutex() == false) {
-    	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-        return;
-    }
-
-    if(callingThread->getQuitStatus() == true || safeMutexThreadOwner.isValidMutex() == false) {
-    	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-        return;
-    }
-
-    if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-    if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",__FILE__,__FUNCTION__,__LINE__);
-
-	if(modHttpServerThread != NULL) {
-		modHttpServerThread->signalQuit();
-	}
-
-	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-}
-
-void MenuStateConnectedGame::mouseClick(int x, int y, MouseButton mouseButton){
-
-	CoreData &coreData= CoreData::getInstance();
-	SoundRenderer &soundRenderer= SoundRenderer::getInstance();
-	NetworkManager &networkManager= NetworkManager::getInstance();
-	ClientInterface* clientInterface= networkManager.getClientInterface();
-	Lang &lang= Lang::getInstance();
-
-	string advanceToItemStartingWith = "";
-	if(mainMessageBox.getEnabled() == false) {
-    	if(::Shared::Platform::Window::isKeyStateModPressed(KMOD_SHIFT) == true) {
-    		wchar_t lastKey = ::Shared::Platform::Window::extractLastKeyPressed();
-    		//printf("lastKey = %d [%c]\n",lastKey,lastKey);
-    		advanceToItemStartingWith = lastKey;
-    	}
-	}
-
-	if(mapPreviewTexture != NULL) {
-//        		printf("X: %d Y: %d      [%d, %d, %d, %d]\n",
-//        				x, y,
-//        				this->render_mapPreviewTexture_X, this->render_mapPreviewTexture_X + this->render_mapPreviewTexture_W,
-//        				this->render_mapPreviewTexture_Y, this->render_mapPreviewTexture_Y + this->render_mapPreviewTexture_H);
-
-		if( x >= this->render_mapPreviewTexture_X && x <= this->render_mapPreviewTexture_X + this->render_mapPreviewTexture_W &&
-			y >= this->render_mapPreviewTexture_Y && y <= this->render_mapPreviewTexture_Y + this->render_mapPreviewTexture_H) {
-
-			if( this->render_mapPreviewTexture_X == mapPreviewTexture_X &&
-				this->render_mapPreviewTexture_Y == mapPreviewTexture_Y &&
-				this->render_mapPreviewTexture_W == mapPreviewTexture_W &&
-				this->render_mapPreviewTexture_H == mapPreviewTexture_H) {
-
-				const Metrics &metrics= Metrics::getInstance();
-
-				this->render_mapPreviewTexture_X = 0;
-				this->render_mapPreviewTexture_Y = 0;
-				this->render_mapPreviewTexture_W = metrics.getVirtualW();
-				this->render_mapPreviewTexture_H = metrics.getVirtualH();
-				this->zoomedMap = true;
-
-				cleanupMapPreviewTexture();
-			}
-			else {
-				this->render_mapPreviewTexture_X = mapPreviewTexture_X;
-				this->render_mapPreviewTexture_Y = mapPreviewTexture_Y;
-				this->render_mapPreviewTexture_W = mapPreviewTexture_W;
-				this->render_mapPreviewTexture_H = mapPreviewTexture_H;
-				this->zoomedMap = false;
-
-				cleanupMapPreviewTexture();
-			}
-			return;
-		}
-    	if(this->zoomedMap==true){
-    		return;
-    	}
-	}
-
-	if(mainMessageBox.getEnabled()) {
-		int button= 0;
-		if(mainMessageBox.mouseClick(x, y, button)) {
-			soundRenderer.playFx(coreData.getClickSoundA());
-			if(button == 0) {
-				mainMessageBox.setEnabled(false);
-			}
-		}
-	}
-	else if(ftpMessageBox.getEnabled()) {
-		int button= 0;
-		if(ftpMessageBox.mouseClick(x, y, button)) {
-			soundRenderer.playFx(coreData.getClickSoundA());
-			ftpMessageBox.setEnabled(false);
-
-			if(button == 0 || (button == 1 && ftpMessageBox.getButtonCount() == 3)) {
-			    if(ftpMissingDataType == ftpmsg_MissingMap) {
-                    getMissingMapFromFTPServerInProgress = true;
-
-    		    	Lang &lang= Lang::getInstance();
-    		    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-    		    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-						char szMsg[8096]="";
-						if(lang.hasString("DataMissingMapNowDownloading",languageList[i]) == true) {
-							snprintf(szMsg,8096,lang.getString("DataMissingMapNowDownloading",languageList[i]).c_str(),getHumanPlayerName().c_str(),getMissingMapFromFTPServer.c_str());
-						}
-						else {
-							snprintf(szMsg,8096,"Player: %s is attempting to download the map: %s",getHumanPlayerName().c_str(),getMissingMapFromFTPServer.c_str());
-						}
-						bool localEcho = lang.isLanguageLocal(languageList[i]);
-						clientInterface->sendTextMessage(szMsg,-1, localEcho,languageList[i]);
-    		    	}
-
-                    if(ftpClientThread != NULL) {
-                    	if(button == 0 && ftpMessageBox.getButtonCount() == 3) {
-							string mapName = getMissingMapFromFTPServer;
-
-							MutexSafeWrapper safeMutexThread((modHttpServerThread != NULL ? modHttpServerThread->getMutexThreadObjectAccessor() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-							string mapURL = mapCacheList[mapName].url;
-							safeMutexThread.ReleaseLock();
-
-							if(ftpClientThread != NULL) ftpClientThread->addMapToRequests(mapName,mapURL);
-                    		MutexSafeWrapper safeMutexFTPProgress((ftpClientThread != NULL ? ftpClientThread->getProgressMutex() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-                    		fileFTPProgressList[getMissingMapFromFTPServer] = pair<int,string>(0,"");
-                    		safeMutexFTPProgress.ReleaseLock();
-                    	}
-                    	else {
-                    		ftpClientThread->addMapToRequests(getMissingMapFromFTPServer);
-                    		MutexSafeWrapper safeMutexFTPProgress((ftpClientThread != NULL ? ftpClientThread->getProgressMutex() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-                    		fileFTPProgressList[getMissingMapFromFTPServer] = pair<int,string>(0,"");
-                    		safeMutexFTPProgress.ReleaseLock();
-                    	}
-                    }
-			    }
-			    else if(ftpMissingDataType == ftpmsg_MissingTileset) {
-                    getMissingTilesetFromFTPServerInProgress = true;
-
-    		    	Lang &lang= Lang::getInstance();
-    		    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-    		    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-						char szMsg[8096]="";
-						if(lang.hasString("DataMissingTilesetNowDownloading",languageList[i]) == true) {
-							snprintf(szMsg,8096,lang.getString("DataMissingTilesetNowDownloading",languageList[i]).c_str(),getHumanPlayerName().c_str(),getMissingTilesetFromFTPServer.c_str());
-						}
-						else {
-							snprintf(szMsg,8096,"Player: %s is attempting to download the tileset: %s",getHumanPlayerName().c_str(),getMissingTilesetFromFTPServer.c_str());
-						}
-						bool localEcho = lang.isLanguageLocal(languageList[i]);
-						clientInterface->sendTextMessage(szMsg,-1, localEcho,languageList[i]);
-    		    	}
-
-                    if(ftpClientThread != NULL) {
-                    	if(button == 0 && ftpMessageBox.getButtonCount() == 3) {
-    						string tilesetName = getMissingTilesetFromFTPServer;
-
-    						MutexSafeWrapper safeMutexThread((modHttpServerThread != NULL ? modHttpServerThread->getMutexThreadObjectAccessor() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-    						string tilesetURL = tilesetCacheList[tilesetName].url;
-    						safeMutexThread.ReleaseLock();
-
-    						if(ftpClientThread != NULL) ftpClientThread->addTilesetToRequests(tilesetName,tilesetURL);
-                    		MutexSafeWrapper safeMutexFTPProgress((ftpClientThread != NULL ? ftpClientThread->getProgressMutex() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-                    		fileFTPProgressList[getMissingTilesetFromFTPServer] = pair<int,string>(0,"");
-                    		safeMutexFTPProgress.ReleaseLock();
-                    	}
-                    	else {
-							ftpClientThread->addTilesetToRequests(getMissingTilesetFromFTPServer);
-							MutexSafeWrapper safeMutexFTPProgress((ftpClientThread != NULL ? ftpClientThread->getProgressMutex() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-							fileFTPProgressList[getMissingTilesetFromFTPServer] = pair<int,string>(0,"");
-							safeMutexFTPProgress.ReleaseLock();
-                    	}
-                    }
-			    }
-			    else if(ftpMissingDataType == ftpmsg_MissingTechtree) {
-                    getMissingTechtreeFromFTPServerInProgress = true;
-
-    		    	Lang &lang= Lang::getInstance();
-    		    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-    		    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-						char szMsg[8096]="";
-						if(lang.hasString("DataMissingTechtreeNowDownloading",languageList[i]) == true) {
-							snprintf(szMsg,8096,lang.getString("DataMissingTechtreeNowDownloading",languageList[i]).c_str(),getHumanPlayerName().c_str(),getMissingTechtreeFromFTPServer.c_str());
-						}
-						else {
-							snprintf(szMsg,8096,"Player: %s is attempting to download the techtree: %s",getHumanPlayerName().c_str(),getMissingTechtreeFromFTPServer.c_str());
-						}
-						bool localEcho = lang.isLanguageLocal(languageList[i]);
-						clientInterface->sendTextMessage(szMsg,-1, localEcho,languageList[i]);
-    		    	}
-
-                    if(ftpClientThread != NULL) {
-                    	if(button == 0 && ftpMessageBox.getButtonCount() == 3) {
-    						string techName = getMissingTechtreeFromFTPServer;
-
-    						MutexSafeWrapper safeMutexThread((modHttpServerThread != NULL ? modHttpServerThread->getMutexThreadObjectAccessor() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-    						string techURL = techCacheList[techName].url;
-    						safeMutexThread.ReleaseLock();
-
-    						if(ftpClientThread != NULL) ftpClientThread->addTechtreeToRequests(techName,techURL);
-                    		MutexSafeWrapper safeMutexFTPProgress((ftpClientThread != NULL ? ftpClientThread->getProgressMutex() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-                    		fileFTPProgressList[getMissingTechtreeFromFTPServer] = pair<int,string>(0,"");
-                    		safeMutexFTPProgress.ReleaseLock();
-                    	}
-                    	else {
-							ftpClientThread->addTechtreeToRequests(getMissingTechtreeFromFTPServer);
-							MutexSafeWrapper safeMutexFTPProgress((ftpClientThread != NULL ? ftpClientThread->getProgressMutex() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-							fileFTPProgressList[getMissingTechtreeFromFTPServer] = pair<int,string>(0,"");
-							safeMutexFTPProgress.ReleaseLock();
-                    	}
-                    }
-			    }
-			}
-		}
-	}
-	else if(buttonCancelDownloads.mouseClick(x,y)) {
-		soundRenderer.playFx(coreData.getClickSoundA());
-
-        if(ftpClientThread != NULL && fileFTPProgressList.empty() == false) {
-
-			ftpClientThread->setCallBackObject(NULL);
-			ftpClientThread->signalQuit();
-			sleep(0);
-			if(ftpClientThread->canShutdown(true) == true &&
-					ftpClientThread->shutdownAndWait() == true) {
-				delete ftpClientThread;
-			}
-			else {
-				char szBuf[8096]="";
-				snprintf(szBuf,8096,"In [%s::%s %d] Error cannot shutdown ftpClientThread\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-				if(SystemFlags::VERBOSE_MODE_ENABLED) printf("%s",szBuf);
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"%s",szBuf);
-			}
-			ftpClientThread = NULL;
-
-            fileFTPProgressList.clear();
-            getMissingMapFromFTPServerInProgress 		= false;
-            getMissingTilesetFromFTPServerInProgress 	= false;
-            getMissingTechtreeFromFTPServerInProgress 	= false;
-            getMissingMapFromFTPServer					= "";
-            getMissingTilesetFromFTPServer				= "";
-            getMissingTechtreeFromFTPServer				= "";
-            getMissingMapFromFTPServerLastPrompted		= 0;
-            getMissingTilesetFromFTPServerLastPrompted	= 0;
-            getMissingTechtreeFromFTPServerLastPrompted	= 0;
-
-            ClientInterface *clientInterface = networkManager.getClientInterface();
-            if(clientInterface == NULL) {
-            	throw megaglest_runtime_error("clientInterface == NULL");
-            }
-            if(getInProgressSavedGameFromFTPServerInProgress == true) {
-            	if(clientInterface != NULL) {
-            		clientInterface->close();
-            		return;
-            	}
-            }
-
-        	getInProgressSavedGameFromFTPServer = "";
-        	getInProgressSavedGameFromFTPServerInProgress = false;
-
-            string serverUrl = clientInterface->getServerIpAddress();
-            int portNumber   = clientInterface->getServerFTPPort();
-
-            if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d] Using FTP port #: %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,portNumber);
-
-            Config &config = Config::getInstance();
-            vector<string> mapPathList = config.getPathListForType(ptMaps);
-            std::pair<string,string> mapsPath;
-            if(mapPathList.empty() == false) {
-                mapsPath.first = mapPathList[0];
-            }
-            if(mapPathList.size() > 1) {
-                mapsPath.second = mapPathList[1];
-            }
-            std::pair<string,string> tilesetsPath;
-            vector<string> tilesetsList = Config::getInstance().getPathListForType(ptTilesets);
-            if(tilesetsList.empty() == false) {
-                tilesetsPath.first = tilesetsList[0];
-                if(tilesetsList.size() > 1) {
-                    tilesetsPath.second = tilesetsList[1];
-                }
-            }
-
-            std::pair<string,string> techtreesPath;
-            vector<string> techtreesList = Config::getInstance().getPathListForType(ptTechs);
-            if(techtreesList.empty() == false) {
-            	techtreesPath.first = techtreesList[0];
-                if(techtreesList.size() > 1) {
-                	techtreesPath.second = techtreesList[1];
-                }
-            }
-
-            std::pair<string,string> scenariosPath;
-            vector<string> scenariosList = Config::getInstance().getPathListForType(ptScenarios);
-            if(scenariosList.empty() == false) {
-            	scenariosPath.first = scenariosList[0];
-                if(scenariosList.size() > 1) {
-                	scenariosPath.second = scenariosList[1];
-                }
-            }
-
-            string fileArchiveExtension = config.getString("FileArchiveExtension","");
-            string fileArchiveExtractCommand = config.getString("FileArchiveExtractCommand","");
-            string fileArchiveExtractCommandParameters = config.getString("FileArchiveExtractCommandParameters","");
-            int32 fileArchiveExtractCommandSuccessResult = config.getInt("FileArchiveExtractCommandSuccessResult","0");
-
-        	// Get path to temp files
-        	string tempFilePath = "temp/";
-        	if(getGameReadWritePath(GameConstants::path_logs_CacheLookupKey) != "") {
-        		tempFilePath = getGameReadWritePath(GameConstants::path_logs_CacheLookupKey) + tempFilePath;
-        	}
-        	else {
-                string userData = config.getString("UserData_Root","");
-                if(userData != "") {
-                	endPathWithSlash(userData);
-                }
-                tempFilePath = userData + tempFilePath;
-        	}
-        	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("Temp files path [%s]\n",tempFilePath.c_str());
-
-            ftpClientThread = new FTPClientThread(portNumber,serverUrl,
-            		mapsPath,tilesetsPath,techtreesPath,scenariosPath,
-            		this,fileArchiveExtension,fileArchiveExtractCommand,
-            		fileArchiveExtractCommandParameters,
-            		fileArchiveExtractCommandSuccessResult,
-            		tempFilePath);
-            ftpClientThread->start();
-
-	    	Lang &lang= Lang::getInstance();
-	    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-	    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-				char szMsg[8096]="";
-	            if(lang.hasString("CancelDownloadsMsg",languageList[i]) == true) {
-	            	snprintf(szMsg,8096,lang.getString("CancelDownloadsMsg",languageList[i]).c_str(),getHumanPlayerName().c_str());
-	            }
-	            else {
-	            	snprintf(szMsg,8096,"Player: %s cancelled all file downloads.",getHumanPlayerName().c_str());
-	            }
-	            clientInterface->sendTextMessage(szMsg,-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-	    	}
-        }
-	}
-	else if(buttonDisconnect.mouseClick(x,y)){
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-		disconnectFromServer();
-		networkManager.end();
-		returnToJoinMenu();
-		return;
-    }
-
-	if (initialSettingsReceivedFromServer == false) {
-		return;
-	}
-
-	if(activeInputLabel != NULL && activeInputLabel->mouseClick(x,y) == false){
-		setActiveInputLabel(NULL);
-	}
-
-	// Only allow changes after we get game settings from the server
-	if(clientInterface != NULL && clientInterface->isConnected() == true) {
-		int myCurrentIndex= -1;
-		for(int i= 0; i < GameConstants::maxPlayers; ++i) {// find my current index by looking at editable listBoxes
-			if(//listBoxFactions[i].getEditable() &&
-				clientInterface->getGameSettings()->getStartLocationIndex(clientInterface->getGameSettings()->getThisFactionIndex()) == i) {
-				myCurrentIndex= i;
-			}
-		}
-
-		//printf("myCurrentIndex = %d thisFactionIndex = %d\n",myCurrentIndex,clientInterface->getGameSettings()->getThisFactionIndex());
-
-		if(myCurrentIndex != -1)
-			for(int i= 0; i < GameConstants::maxPlayers; ++i) {
-				if(listBoxFactions[i].getEditable() &&
-					clientInterface->getGameSettings()->getStartLocationIndex(clientInterface->getGameSettings()->getThisFactionIndex()) == i) {
-					if(listBoxFactions[i].mouseClick(x, y,advanceToItemStartingWith)) {
-						soundRenderer.playFx(coreData.getClickSoundA());
-						ClientInterface* clientInterface= NetworkManager::getInstance().getClientInterface();
-						if(clientInterface->isConnected()) {
-							clientInterface->setGameSettingsReceived(false);
-							clientInterface->sendSwitchSetupRequest(
-									listBoxFactions[i].getSelectedItem(),
-									i,
-									-1,
-							        listBoxTeams[i].getSelectedItemIndex(),
-							        getHumanPlayerName(),
-							        getNetworkPlayerStatus(),
-							        switchSetupRequestFlagType,
-							        lang.getLanguage());
-							switchSetupRequestFlagType= ssrft_None;
-							noReceiveTimer=time(NULL);
-						}
-						break;
-					}
-				}
-				if(listBoxTeams[i].getEditable() &&
-						clientInterface->getGameSettings()->getStartLocationIndex(clientInterface->getGameSettings()->getThisFactionIndex()) == i) {
-					if(listBoxTeams[i].mouseClick(x, y)){
-						soundRenderer.playFx(coreData.getClickSoundA());
-						if(clientInterface->isConnected()){
-							clientInterface->setGameSettingsReceived(false);
-							clientInterface->sendSwitchSetupRequest(
-									listBoxFactions[i].getSelectedItem(),
-									i,
-									-1,
-							        listBoxTeams[i].getSelectedItemIndex(),
-							        getHumanPlayerName(),
-							        getNetworkPlayerStatus(),
-							        switchSetupRequestFlagType,
-							        lang.getLanguage());
-							switchSetupRequestFlagType= ssrft_None;
-						}
-						break;
-					}
-				}
-
-				bool canGrabSlot = false;
-				ClientInterface *clientInterface = networkManager.getClientInterface();
-				if(clientInterface != NULL && clientInterface->getJoinGameInProgress() == true) {
-					canGrabSlot = ((listBoxControls[i].getSelectedItemIndex() == ctNetwork &&
-							labelNetStatus[i].getText() == GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME) ||
-							(listBoxControls[i].getSelectedItemIndex() != ctHuman &&
-							 listBoxControls[i].getSelectedItemIndex() != ctClosed &&
-							 listBoxControls[i].getSelectedItemIndex() != ctNetwork));
-				}
-				else {
-					canGrabSlot = (listBoxControls[i].getSelectedItemIndex() == ctNetwork &&
-										labelNetStatus[i].getText() == GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME);
-				}
-
-				if(canGrabSlot == true) {
-					if(clientInterface != NULL && i < mapInfo.players && grabSlotButton[i].mouseClick(x, y)) {
-						//printf("Send slot switch request for slot = %d, myCurrentIndex = %d\n",i,myCurrentIndex);
-
-						soundRenderer.playFx(coreData.getClickSoundB());
-						clientInterface->setGameSettingsReceived(false);
-						settingsReceivedFromServer= false;
-
-						if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d] sending a switchSlot request from %d to %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,clientInterface->getGameSettings()->getThisFactionIndex(),i);
-
-						//printf("Switch slot from %d to %d\n",myCurrentIndex,i);
-
-						string desiredFactionName = listBoxFactions[myCurrentIndex].getSelectedItem();
-						int desiredTeamIndex = listBoxTeams[myCurrentIndex].getSelectedItemIndex();
-						if(checkBoxScenario.getValue() == true) {
-							desiredFactionName = listBoxFactions[i].getSelectedItem();
-							desiredTeamIndex = listBoxTeams[i].getSelectedItemIndex();
-						}
-
-						//printf("Sending switch slot request to server...\n");
-
-						clientInterface->sendSwitchSetupRequest(
-								desiredFactionName,
-						        myCurrentIndex,
-						        i,
-						        desiredTeamIndex,
-						        getHumanPlayerName(),
-						        getNetworkPlayerStatus(),
-						        switchSetupRequestFlagType,
-						        lang.getLanguage());
-						labelPlayerNames[myCurrentIndex].setText("");
-						labelPlayerNames[i].setText("");
-						switchSetupRequestFlagType= ssrft_None;
-						break;
-					}
-				}
-
-				if(labelPlayerNames[i].mouseClick(x, y) && (activeInputLabel != &labelPlayerNames[i])){
-					if(clientInterface != NULL && i == clientInterface->getPlayerIndex()){
-						setActiveInputLabel(&labelPlayerNames[i]);
-					}
-				}
-			}
-
-		if(listBoxPlayerStatus.mouseClick(x,y)) {
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-			soundRenderer.playFx(coreData.getClickSoundC());
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-			if(getNetworkPlayerStatus()==npst_PickSettings)
-			{
-				listBoxPlayerStatus.setTextColor(Vec3f(1.0f,0.0f,0.0f));
-				listBoxPlayerStatus.setLighted(true);
-			}
-			else if(getNetworkPlayerStatus()==npst_BeRightBack)
-			{
-				listBoxPlayerStatus.setTextColor(Vec3f(1.0f,1.0f,0.0f));
-				listBoxPlayerStatus.setLighted(true);
-			}
-			else if(getNetworkPlayerStatus()==npst_Ready)
-			{
-				listBoxPlayerStatus.setTextColor(Vec3f(0.0f,1.0f,0.0f));
-				listBoxPlayerStatus.setLighted(false);
-			}
-
-			ClientInterface* clientInterface= NetworkManager::getInstance().getClientInterface();
-			if(clientInterface != NULL && clientInterface->isConnected()) {
-				clientInterface->setGameSettingsReceived(false);
-				clientInterface->sendSwitchSetupRequest(
-						listBoxFactions[clientInterface->getPlayerIndex()].getSelectedItem(),
-						clientInterface->getPlayerIndex(),-1,
-						listBoxTeams[clientInterface->getPlayerIndex()].getSelectedItemIndex(),
-						getHumanPlayerName(),
-						getNetworkPlayerStatus(),
-						switchSetupRequestFlagType,
-						lang.getLanguage());
-				switchSetupRequestFlagType=ssrft_None;
-			}
-		}
-
-		if(isHeadlessAdmin() == true) {
-			//printf("#1 admin key [%d] client key [%d]\n",settings->getMasterserver_admin(),clientInterface->getSessionKey());
-			mouseClickAdmin(x, y, mouseButton,advanceToItemStartingWith);
-		}
-		else if(clientInterface != NULL && clientInterface->getJoinGameInProgress() == true) {
-	        if(buttonPlayNow.mouseClick(x,y) && buttonPlayNow.getEnabled()) {
-	        	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-	        	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-                uint32 tilesetCRC = lastCheckedCRCTilesetValue;
-                uint32 techCRC = lastCheckedCRCTechtreeValue;
-                uint32 mapCRC = lastCheckedCRCMapValue;
-                const GameSettings *gameSettings = clientInterface->getGameSettings();
-
-                bool dataSynchMismatch = ((mapCRC != 0 && mapCRC != gameSettings->getMapCRC()) ||
-                						  (tilesetCRC != 0 && tilesetCRC != gameSettings->getTilesetCRC()) ||
-                						  (techCRC != 0 && techCRC != gameSettings->getTechCRC()));
-	        	if(dataSynchMismatch == false) {
-	        		PlayNow(true);
-	        		return;
-	        	}
-	        	else {
-	        		showMessageBox("You cannot start the game because\none or more clients do not have the same game data!", "Data Mismatch Error", false);
-	        	}
-	        }
-		}
-	}
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-}
-
-bool MenuStateConnectedGame::isHeadlessAdmin() {
-	bool result = false;
-
-	ClientInterface* clientInterface= NetworkManager::getInstance().getClientInterface();
-	if(clientInterface != NULL && clientInterface->isConnected()) {
-		const GameSettings *settings = clientInterface->getGameSettings();
-		if(settings != NULL) {
-			//printf("#1 admin key [%d] client key [%d]\n",settings->getMasterserver_admin(),clientInterface->getSessionKey());
-
-			if(settings->getMasterserver_admin() == clientInterface->getSessionKey()) {
-				result = true;
-			}
-		}
-	}
-
-	return result;
-}
-
-void MenuStateConnectedGame::broadCastGameSettingsToHeadlessServer(bool forceNow) {
-	if(isHeadlessAdmin() == false) {
-		return;
-	}
-
-	if(forceNow == true ||
-		((needToBroadcastServerSettings == true ) && ( difftime((long int)time(NULL),broadcastServerSettingsDelayTimer) >= HEADLESSSERVER_BROADCAST_SETTINGS_SECONDS))) {
-		//printf("In [%s:%s] Line: %d forceNow = %d broadcastServerSettingsDelayTimer = " MG_SIZE_T_SPECIFIER ", now =" MG_SIZE_T_SPECIFIER "\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,forceNow,broadcastServerSettingsDelayTimer,time(NULL));
-
-		needToBroadcastServerSettings = false;
-		broadcastServerSettingsDelayTimer = time(NULL);
-
-		NetworkManager &networkManager= NetworkManager::getInstance();
-		ClientInterface *clientInterface = networkManager.getClientInterface();
-
-		for(int i = 0; i < mapInfo.players; ++i) {
-			if(listBoxControls[i].getSelectedItemIndex() == ctNetworkUnassigned) {
-				listBoxControls[i].setSelectedItemIndex(ctNetwork);
-			}
-		}
-		for(int i = mapInfo.players; i < GameConstants::maxPlayers; ++i) {
-			if(listBoxControls[i].getSelectedItemIndex() == ctNetwork) {
-				listBoxControls[i].setSelectedItemIndex(ctNetworkUnassigned);
-			}
-		}
-
-		if(validDisplayedGamesettings){
-			loadGameSettings(&displayedGamesettings);
-
-
-			if(SystemFlags::VERBOSE_MODE_ENABLED) printf("broadcast settings:\n%s\n",displayedGamesettings.toString().c_str());
-
-			//printf("Client sending map [%s] admin key [%d]\n",gameSettings.getMap().c_str(),gameSettings.getMasterserver_admin());
-			//printf("sending Settings map filter=%d\n",displayedGamesettings.getMapFilter());
-			clientInterface->broadcastGameSetup(&displayedGamesettings);
-			noReceiveTimer=time(NULL);
-		}
-	}
-}
-
-void MenuStateConnectedGame::updateResourceMultiplier(const int index) {
-		ControlType ct= static_cast<ControlType>(listBoxControls[index].getSelectedItemIndex());
-		if(ct == ctCpuEasy || ct == ctNetworkCpuEasy)
-		{
-			listBoxRMultiplier[index].setSelectedItem(floatToStr(GameConstants::easyMultiplier,1));
-			listBoxRMultiplier[index].setEnabled(true);
-		}
-		else if(ct == ctCpu || ct == ctNetworkCpu) {
-			listBoxRMultiplier[index].setSelectedItem(floatToStr(GameConstants::normalMultiplier,1));
-			listBoxRMultiplier[index].setEnabled(true);
-		}
-		else if(ct == ctCpuUltra || ct == ctNetworkCpuUltra)
-		{
-			listBoxRMultiplier[index].setSelectedItem(floatToStr(GameConstants::ultraMultiplier,1));
-			listBoxRMultiplier[index].setEnabled(true);
-		}
-		else if(ct == ctCpuMega || ct == ctNetworkCpuMega)
-		{
-			listBoxRMultiplier[index].setSelectedItem(floatToStr(GameConstants::megaMultiplier,1));
-			listBoxRMultiplier[index].setEnabled(true);
-		}
-		else {
-			listBoxRMultiplier[index].setSelectedItem(floatToStr(GameConstants::normalMultiplier,1));
-			listBoxRMultiplier[index].setEnabled(false);
-		}
-
-		listBoxRMultiplier[index].setEditable(listBoxRMultiplier[index].getEnabled());
-		listBoxRMultiplier[index].setVisible(listBoxRMultiplier[index].getEnabled());
-}
-
-void MenuStateConnectedGame::mouseClickAdmin(int x, int y, MouseButton mouseButton,string advanceToItemStartingWith) {
-
-    try {
-    	int oldListBoxMapfilterIndex=listBoxMapFilter.getSelectedItemIndex();
-        if(buttonPlayNow.mouseClick(x,y) && buttonPlayNow.getEnabled()) {
-        	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-        	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-            PlayNow(true);
-            return;
-        }
-        else if(buttonRestoreLastSettings.mouseClick(x,y) && buttonRestoreLastSettings.getEnabled()) {
-        	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-        	CoreData &coreData= CoreData::getInstance();
-        	SoundRenderer &soundRenderer= SoundRenderer::getInstance();
-        	soundRenderer.playFx(coreData.getClickSoundB());
-
-        	RestoreLastGameSettings();
-        }
-        else if (checkBoxAllowNativeLanguageTechtree.mouseClick(x, y)) {
-        	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-        	needToBroadcastServerSettings=true;
-        	broadcastServerSettingsDelayTimer=time(NULL);
-        }
-        else if(listBoxMap.mouseClick(x, y,advanceToItemStartingWith)) {
-        	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-        	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"%s\n", getCurrentMapFile().c_str());
-
-            if(loadMapInfo(Config::getMapPath(getCurrentMapFile(),"",false), &mapInfo, true) == true) {
-            	labelMapInfo.setText(mapInfo.desc);
-            }
-            else {
-            	labelMapInfo.setText("???");
-            }
-
-        	needToBroadcastServerSettings=true;
-        	broadcastServerSettingsDelayTimer=time(NULL);
-        }
-        else if(listBoxFogOfWar.mouseClick(x, y)) {
-        	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-        	needToBroadcastServerSettings=true;
-        	broadcastServerSettingsDelayTimer=time(NULL);
-        }
-        else if(checkBoxAllowObservers.mouseClick(x, y)) {
-#ifdef DEBUG
-PRINT_DEBUG("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-#endif
-        	needToBroadcastServerSettings=true;
-        	broadcastServerSettingsDelayTimer=time(NULL);
-        }
-        else if (checkBoxEnableSwitchTeamMode.mouseClick(x, y)) {
-        	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-        	needToBroadcastServerSettings=true;
-        	broadcastServerSettingsDelayTimer=time(NULL);
-        }
-        else if(listBoxAISwitchTeamAcceptPercent.getEnabled() && listBoxAISwitchTeamAcceptPercent.mouseClick(x, y)) {
-        	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-        	needToBroadcastServerSettings=true;
-        	broadcastServerSettingsDelayTimer=time(NULL);
-        }
-        else if(listBoxFallbackCpuMultiplier.getEnabled() && listBoxFallbackCpuMultiplier.mouseClick(x, y)) {
-        	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-        	needToBroadcastServerSettings=true;
-        	broadcastServerSettingsDelayTimer=time(NULL);
-        }
-        else if(listBoxTileset.mouseClick(x, y,advanceToItemStartingWith)) {
-        	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-        	needToBroadcastServerSettings=true;
-        	broadcastServerSettingsDelayTimer=time(NULL);
-        }
-
-		else if(listBoxMapFilter.mouseClick(x, y)){
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"%s\n", getCurrentMapFile().c_str());
-			switchToNextMapGroup(listBoxMapFilter.getSelectedItemIndex()-oldListBoxMapfilterIndex);
-            if(loadMapInfo(Config::getMapPath(getCurrentMapFile(),"",false), &mapInfo, true) == true) {
-            	labelMapInfo.setText(mapInfo.desc);
-            }
-            else {
-            	labelMapInfo.setText("???");
-            }
-        	needToBroadcastServerSettings=true;
-        	broadcastServerSettingsDelayTimer=time(NULL);
-		}
-        else if(listBoxTechTree.mouseClick(x, y,advanceToItemStartingWith)) {
-        	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-            reloadFactions(false,"");
-        	needToBroadcastServerSettings=true;
-        	broadcastServerSettingsDelayTimer=time(NULL);
-        }
-
-		else if (checkBoxAllowTeamUnitSharing.mouseClick(x, y)) {
-        	needToBroadcastServerSettings=true;
-        	broadcastServerSettingsDelayTimer=time(NULL);
-		}
-		else if (checkBoxAllowTeamResourceSharing.mouseClick(x, y)) {
-        	needToBroadcastServerSettings=true;
-        	broadcastServerSettingsDelayTimer=time(NULL);
-		}
-        else {
-        	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-        	NetworkManager &networkManager= NetworkManager::getInstance();
-        	ClientInterface* clientInterface= networkManager.getClientInterface();
-
-            for(int i=0; i<mapInfo.players; ++i) {
-				// set multiplier
-				if(listBoxRMultiplier[i].mouseClick(x, y)) {
-					if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-					//broadCastGameSettingsToMasterserver();
-					needToBroadcastServerSettings=true;
-					broadcastServerSettingsDelayTimer=time(NULL);
-				}
-
-                //ensure that only 1 human player is present
-                if(clientInterface != NULL && clientInterface->getGameSettings() != NULL &&
-                		clientInterface->getGameSettings()->getStartLocationIndex(clientInterface->getGameSettings()->getThisFactionIndex()) != i &&
-                		listBoxControls[i].mouseClick(x, y)) {
-                	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-                	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-                	//!! this must be done two times!""
-                	if(listBoxControls[i].getSelectedItemIndex() == ctNetworkUnassigned) {
-                		listBoxControls[i].mouseClick(x, y);
-                	}
-                	if( (isHeadlessAdmin()==true) && (listBoxControls[i].getSelectedItemIndex() == ctHuman)){
-                		listBoxControls[i].mouseClick(x, y);
-                	}
-                	//!! this must be done two times!""
-                	if(listBoxControls[i].getSelectedItemIndex() == ctNetworkUnassigned) {
-                		listBoxControls[i].mouseClick(x, y);
-                	}
-
-                    updateResourceMultiplier(i);
-
-                	needToBroadcastServerSettings=true;
-                	broadcastServerSettingsDelayTimer=time(NULL);
-                }
-                else if(clientInterface != NULL && clientInterface->getGameSettings()->getStartLocationIndex(clientInterface->getGameSettings()->getThisFactionIndex()) != i &&
-                		listBoxFactions[i].mouseClick(x, y,advanceToItemStartingWith)) {
-                	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-                    // Disallow CPU players to be observers
-        			if(factionFiles[listBoxFactions[i].getSelectedItemIndex()] == formatString(GameConstants::OBSERVER_SLOTNAME) &&
-        				(listBoxControls[i].getSelectedItemIndex() == ctCpuEasy || listBoxControls[i].getSelectedItemIndex() == ctCpu ||
-        				 listBoxControls[i].getSelectedItemIndex() == ctCpuUltra || listBoxControls[i].getSelectedItemIndex() == ctCpuMega)) {
-        				if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-        				listBoxFactions[i].setSelectedItemIndex(0);
-        			}
-
-                	needToBroadcastServerSettings=true;
-                	broadcastServerSettingsDelayTimer=time(NULL);
-                }
-                else if(clientInterface != NULL && clientInterface->getGameSettings()->getStartLocationIndex(clientInterface->getGameSettings()->getThisFactionIndex()) != i &&
-                		listBoxTeams[i].mouseClick(x, y)) {
-#ifdef DEBUG
-PRINT_DEBUG("In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-#endif
-                    if(factionFiles[listBoxFactions[i].getSelectedItemIndex()] != formatString(GameConstants::OBSERVER_SLOTNAME)) {
-                        if(listBoxTeams[i].getSelectedItemIndex() + 1 != (GameConstants::maxPlayers + fpt_Observer)) {
-                            //lastSelectedTeamIndex[i] = listBoxTeams[i].getSelectedItemIndex();
-                        }
-                    }
-
-                	needToBroadcastServerSettings=true;
-                	broadcastServerSettingsDelayTimer=time(NULL);
-                }
-            }
-        }
-    }
-	catch(const std::exception &ex) {
-		char szBuf[8096]="";
-		snprintf(szBuf,8096,"In [%s::%s %d]\nError detected:\n%s\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,ex.what());
-		SystemFlags::OutputDebug(SystemFlags::debugError,szBuf);
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"%s",szBuf);
-
-		showMessageBox( szBuf, "Error", false);
-	}
-
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-}
-
-void MenuStateConnectedGame::PlayNow(bool saveGame) {
-	NetworkManager &networkManager= NetworkManager::getInstance();
-	ClientInterface *clientInterface = networkManager.getClientInterface();
-
-	GameSettings gameSettings = *clientInterface->getGameSettings();
-	loadGameSettings(&gameSettings);
-
-	if(saveGame == true) {
-		CoreData::getInstance().saveGameSettingsToFile(HEADLESS_SAVED_GAME_FILENAME,&gameSettings,true);
-	}
-
-	CoreData &coreData= CoreData::getInstance();
-	SoundRenderer &soundRenderer= SoundRenderer::getInstance();
-	soundRenderer.playFx(coreData.getClickSoundC());
-
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-	//printf("Client sending map [%s] admin key [%d]\n",gameSettings.getMap().c_str(),gameSettings.getMasterserver_admin());
-
-	if(clientInterface->getJoinGameInProgress() == true) {
-		if(readyToJoinInProgressGame == false && launchingNewGame == false) {
-			Lang &lang= Lang::getInstance();
-			const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-			for(unsigned int i = 0; i < languageList.size(); ++i) {
-				char szMsg[8096]="";
-				if(lang.hasString("JoinPlayerToCurrentGameLaunch",languageList[i]) == true) {
-					snprintf(szMsg,8096,lang.getString("JoinPlayerToCurrentGameLaunch",languageList[i]).c_str(),getHumanPlayerName().c_str());
-				}
-				else {
-					snprintf(szMsg,8096,"Player: %s is about to join the game, please wait...",getHumanPlayerName().c_str());
-				}
-				bool localEcho = lang.isLanguageLocal(languageList[i]);
-				clientInterface->sendTextMessage(szMsg,-1, localEcho,languageList[i]);
-			}
-
-			sleep(1);
-			launchingNewGame = true;
-			clientInterface->broadcastGameStart(&gameSettings);
-		}
-		return;
-	}
-	else {
-		launchingNewGame = true;
-		broadCastGameSettingsToHeadlessServer(needToBroadcastServerSettings);
-		clientInterface->broadcastGameStart(&gameSettings);
-	}
-}
-
-void MenuStateConnectedGame::switchToNextMapGroup(const int direction){
-	int i=listBoxMapFilter.getSelectedItemIndex();
-	// if there are no maps for the current selection we switch to next selection
-	while(formattedPlayerSortedMaps[i].empty()){
-		i=i+direction;
-		if(i>GameConstants::maxPlayers){
-			i=0;
-		}
-		if(i<0){
-			i=GameConstants::maxPlayers;
-		}
-	}
-	switchToMapGroup(i);
-}
-
-void MenuStateConnectedGame::switchToMapGroup(int filterIndex){
-	int i = filterIndex;
-	listBoxMapFilter.setSelectedItemIndex(i);
-	listBoxMap.setItems(formattedPlayerSortedMaps[i]);
-//	printf("switching map group to filter=%d mapgroup has %d maps. map=%s \n",i,
-//			(int)formattedPlayerSortedMaps[i].size(),formattedPlayerSortedMaps[i][0].c_str());
-}
-
-string MenuStateConnectedGame::getCurrentMapFile(){
-	int i=listBoxMapFilter.getSelectedItemIndex();
-	int mapIndex=listBoxMap.getSelectedItemIndex();
-	if(playerSortedMaps[i].empty() == false) {
-		return playerSortedMaps[i].at(mapIndex);
-	}
-	return "";
-}
-
-void MenuStateConnectedGame::reloadFactions(bool keepExistingSelectedItem, string scenario) {
-	vector<string> results;
-    Config &config = Config::getInstance();
-	Lang &lang= Lang::getInstance();
-
-    string scenarioDir = Scenario::getScenarioDir(dirList, scenario);
-    vector<string> techPaths = config.getPathListForType(ptTechs,scenarioDir);
-    for(int idx = 0; idx < (int)techPaths.size(); idx++) {
-        string &techPath = techPaths[idx];
-        endPathWithSlash(techPath);
-
-        if(listBoxTechTree.getSelectedItemIndex() >= 0 && listBoxTechTree.getSelectedItemIndex() < (int)techTreeFiles.size()) {
-			findDirs(techPath + techTreeFiles[listBoxTechTree.getSelectedItemIndex()] + "/factions/", results, false, false);
-        }
-        if(results.empty() == false) {
-            break;
-        }
-    }
-
-    if(results.empty() == true) {
-        //throw megaglest_runtime_error("(2)There are no factions for the tech tree [" + techTreeFiles[listBoxTechTree.getSelectedItemIndex()] + "]");
-		//showGeneralError=true;
-		//generalErrorToShow = "[#2] There are no factions for the tech tree [" + techTreeFiles[listBoxTechTree.getSelectedItemIndex()] + "]";
-    }
-
-	vector<string> translatedFactionNames;
-	factionFiles= results;
-	for(int i = 0; i < (int)results.size(); ++i) {
-		results[i]= formatString(results[i]);
-		string translatedString=techTree->getTranslatedFactionName(techTreeFiles[listBoxTechTree.getSelectedItemIndex()],factionFiles[i]);
-		if(toLower(translatedString)==toLower(results[i])){
-			translatedFactionNames.push_back(results[i]);
-		}
-		else {
-			translatedFactionNames.push_back(results[i]+" ("+translatedString+")");
-		}
-		//printf("FACTIONS i = %d results [%s]\n",i,results[i].c_str());
-
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"Tech [%s] has faction [%s]\n",techTreeFiles[listBoxTechTree.getSelectedItemIndex()].c_str(),results[i].c_str());
-	}
-
-	results.push_back(formatString(GameConstants::RANDOMFACTION_SLOTNAME));
-	factionFiles.push_back(formatString(GameConstants::RANDOMFACTION_SLOTNAME));
-	translatedFactionNames.push_back("*"+lang.getString("Random","",true)+"*");
-
-	// Add special Observer Faction
-	if(checkBoxAllowObservers.getValue() == 1) {
-		results.push_back(formatString(GameConstants::OBSERVER_SLOTNAME));
-		factionFiles.push_back(formatString(GameConstants::OBSERVER_SLOTNAME));
-		translatedFactionNames.push_back("*"+lang.getString("Observer","",true)+"*");
-	}
-
-    for(int i=0; i<GameConstants::maxPlayers; ++i){
-		int originalIndex = listBoxFactions[i].getSelectedItemIndex();
-		string originalValue = (listBoxFactions[i].getItemCount() > 0 ? listBoxFactions[i].getSelectedItem() : "");
-
-    	listBoxFactions[i].setItems(results,translatedFactionNames);
-        if( keepExistingSelectedItem == false ||
-        	(checkBoxAllowObservers.getValue() == true &&
-        			originalValue == formatString(GameConstants::OBSERVER_SLOTNAME)) ) {
-        	listBoxFactions[i].setSelectedItemIndex(i % results.size());
-
-        	if( originalValue == formatString(GameConstants::OBSERVER_SLOTNAME) &&
-        		listBoxFactions[i].getSelectedItem() != formatString(GameConstants::OBSERVER_SLOTNAME)) {
-    			if(listBoxTeams[i].getSelectedItem() == intToStr(GameConstants::maxPlayers + fpt_Observer)) {
-    				listBoxTeams[i].setSelectedItem(intToStr(1));
-    			}
-        	}
-        }
-        else if(originalIndex < (int)results.size()) {
-        	listBoxFactions[i].setSelectedItemIndex(originalIndex);
-        }
-    }
-}
-
-void MenuStateConnectedGame::loadGameSettings(GameSettings *gameSettings) {
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-	int factionCount= 0;
-
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s] Line: %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-    // Test flags values
-    //gameSettings->setFlagTypes1(ft1_show_map_resources);
-    //
-
-	if(checkBoxScenario.getValue() == true) {
-		gameSettings->setScenario(scenarioInfo.name);
-		gameSettings->setScenarioDir(Scenario::getScenarioPath(dirList, scenarioInfo.name));
-
-		gameSettings->setDefaultResources(scenarioInfo.defaultResources);
-		gameSettings->setDefaultUnits(scenarioInfo.defaultUnits);
-		gameSettings->setDefaultVictoryConditions(scenarioInfo.defaultVictoryConditions);
-	}
-	else {
-		gameSettings->setScenario("");
-		gameSettings->setScenarioDir("");
-	}
-
-	gameSettings->setNetworkAllowNativeLanguageTechtree(checkBoxAllowNativeLanguageTechtree.getValue());
-
-	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d] listBoxMap.getSelectedItemIndex() = %d, mapFiles.size() = " MG_SIZE_T_SPECIFIER ", getCurrentMapFile() [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,listBoxMap.getSelectedItemIndex(),mapFiles.size(),getCurrentMapFile().c_str());
-
-	if(listBoxMap.getSelectedItemIndex() >= 0 && listBoxMap.getSelectedItemIndex() < (int)mapFiles.size()) {
-		gameSettings->setDescription(formatString(getCurrentMapFile()));
-		gameSettings->setMap(getCurrentMapFile());
-		gameSettings->setMapFilter(listBoxMapFilter.getSelectedItemIndex());
-	}
-	else {
-    	Lang &lang= Lang::getInstance();
-    	NetworkManager &networkManager= NetworkManager::getInstance();
-    	ClientInterface *clientInterface = networkManager.getClientInterface();
-    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-			char szMsg[8096]="";
-			if(lang.hasString("DataMissingMap=Player",languageList[i]) == true) {
-				snprintf(szMsg,8096,lang.getString("DataMissingMap=Player",languageList[i]).c_str(),getHumanPlayerName().c_str(),listBoxMap.getSelectedItem().c_str());
-			}
-			else {
-				snprintf(szMsg,8096,"Player: %s is missing the map: %s",getHumanPlayerName().c_str(),listBoxMap.getSelectedItem().c_str());
-			}
-			bool localEcho = lang.isLanguageLocal(languageList[i]);
-			clientInterface->sendTextMessage(szMsg,-1, localEcho,languageList[i]);
-    	}
-	}
-
-	if(listBoxTileset.getSelectedItemIndex() >= 0 && listBoxTileset.getSelectedItemIndex() < (int)tilesetFiles.size()) {
-		gameSettings->setTileset(tilesetFiles[listBoxTileset.getSelectedItemIndex()]);
-	}
-	else {
-		//printf("A loadGameSettings listBoxTileset.getSelectedItemIndex() = %d tilesetFiles.size() = %d\n",listBoxTileset.getSelectedItemIndex(),tilesetFiles.size());
-
-    	Lang &lang= Lang::getInstance();
-    	NetworkManager &networkManager= NetworkManager::getInstance();
-    	ClientInterface *clientInterface = networkManager.getClientInterface();
-    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-			char szMsg[8096]="";
-			if(lang.hasString("DataMissingTileset=Player",languageList[i]) == true) {
-				snprintf(szMsg,8096,lang.getString("DataMissingTileset=Player",languageList[i]).c_str(),getHumanPlayerName().c_str(),listBoxTileset.getSelectedItem().c_str());
-			}
-			else {
-				snprintf(szMsg,8096,"Player: %s is missing the tileset: %s",getHumanPlayerName().c_str(),listBoxTileset.getSelectedItem().c_str());
-			}
-			bool localEcho = lang.isLanguageLocal(languageList[i]);
-			clientInterface->sendTextMessage(szMsg,-1, localEcho,languageList[i]);
-    	}
-	}
-	if(listBoxTechTree.getSelectedItemIndex() >= 0 && listBoxTechTree.getSelectedItemIndex() < (int)techTreeFiles.size()) {
-		gameSettings->setTech(techTreeFiles[listBoxTechTree.getSelectedItemIndex()]);
-	}
-	else {
-    	Lang &lang= Lang::getInstance();
-    	NetworkManager &networkManager= NetworkManager::getInstance();
-    	ClientInterface *clientInterface = networkManager.getClientInterface();
-    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-			char szMsg[8096]="";
-			if(lang.hasString("DataMissingTechtree=Player",languageList[i]) == true) {
-				snprintf(szMsg,8096,lang.getString("DataMissingTechtree=Player",languageList[i]).c_str(),getHumanPlayerName().c_str(),listBoxTechTree.getSelectedItem().c_str());
-			}
-			else {
-				snprintf(szMsg,8096,"Player: %s is missing the techtree: %s",getHumanPlayerName().c_str(),listBoxTechTree.getSelectedItem().c_str());
-			}
-			bool localEcho = lang.isLanguageLocal(languageList[i]);
-			clientInterface->sendTextMessage(szMsg,-1, localEcho,languageList[i]);
-    	}
-	}
-
-	if(checkBoxScenario.getValue() == false) {
-		gameSettings->setDefaultUnits(true);
-		gameSettings->setDefaultResources(true);
-		gameSettings->setDefaultVictoryConditions(true);
-	}
-
-	gameSettings->setFogOfWar(listBoxFogOfWar.getSelectedItemIndex() == 0 ||
-								listBoxFogOfWar.getSelectedItemIndex() == 1 );
-
-	gameSettings->setAllowObservers(checkBoxAllowObservers.getValue() == true);
-
-	uint32 valueFlags1 = gameSettings->getFlagTypes1();
-	if(listBoxFogOfWar.getSelectedItemIndex() == 1 ||
-		listBoxFogOfWar.getSelectedItemIndex() == 2 ) {
-        valueFlags1 |= ft1_show_map_resources;
-        gameSettings->setFlagTypes1(valueFlags1);
-	}
-	else {
-        valueFlags1 &= ~ft1_show_map_resources;
-        gameSettings->setFlagTypes1(valueFlags1);
-	}
-
-	//gameSettings->setEnableObserverModeAtEndGame(listBoxEnableObserverMode.getSelectedItemIndex() == 0);
-	gameSettings->setEnableObserverModeAtEndGame(true);
-	//gameSettings->setPathFinderType(static_cast<PathFinderType>(listBoxPathFinderType.getSelectedItemIndex()));
-
-	valueFlags1 = gameSettings->getFlagTypes1();
-	if(checkBoxEnableSwitchTeamMode.getValue() == true) {
-        valueFlags1 |= ft1_allow_team_switching;
-        gameSettings->setFlagTypes1(valueFlags1);
-	}
-	else {
-        valueFlags1 &= ~ft1_allow_team_switching;
-        gameSettings->setFlagTypes1(valueFlags1);
-	}
-	gameSettings->setAiAcceptSwitchTeamPercentChance(strToInt(listBoxAISwitchTeamAcceptPercent.getSelectedItem()));
-	gameSettings->setFallbackCpuMultiplier(listBoxFallbackCpuMultiplier.getSelectedItemIndex());
-
-	valueFlags1 = gameSettings->getFlagTypes1();
-	if(checkBoxAllowTeamUnitSharing.getValue() == true) {
-        valueFlags1 |= ft1_allow_shared_team_units;
-        gameSettings->setFlagTypes1(valueFlags1);
-	}
-	else {
-        valueFlags1 &= ~ft1_allow_shared_team_units;
-        gameSettings->setFlagTypes1(valueFlags1);
-	}
-
-	valueFlags1 = gameSettings->getFlagTypes1();
-	if(checkBoxAllowTeamResourceSharing.getValue() == true) {
-        valueFlags1 |= ft1_allow_shared_team_resources;
-        gameSettings->setFlagTypes1(valueFlags1);
-	}
-	else {
-        valueFlags1 &= ~ft1_allow_shared_team_resources;
-        gameSettings->setFlagTypes1(valueFlags1);
-	}
-
-	// First save Used slots
-    //for(int i=0; i<mapInfo.players; ++i)
-	int AIPlayerCount = 0;
-	for(int i = 0; i < GameConstants::maxPlayers; ++i) {
-		ControlType ct= static_cast<ControlType>(listBoxControls[i].getSelectedItemIndex());
-
-		if(ct != ctClosed) {
-			int slotIndex = factionCount;
-			ControlType oldControlType=gameSettings->getFactionControl(slotIndex);
-			gameSettings->setFactionControl(slotIndex, ct);
-			if(ct == ctHuman) {
-				//if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] i = %d, slotIndex = %d, getHumanPlayerName(i) [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,i,slotIndex,getHumanPlayerName(i).c_str());
-
-				gameSettings->setThisFactionIndex(slotIndex);
-				gameSettings->setNetworkPlayerName(slotIndex, getHumanPlayerName());
-				gameSettings->setNetworkPlayerUUID(slotIndex,Config::getInstance().getString("PlayerId",""));
-				gameSettings->setNetworkPlayerPlatform(slotIndex,getPlatformNameString());
-				gameSettings->setNetworkPlayerStatuses(slotIndex, getNetworkPlayerStatus());
-				Lang &lang= Lang::getInstance();
-				gameSettings->setNetworkPlayerLanguages(slotIndex, lang.getLanguage());
-
-				gameSettings->setResourceMultiplierIndex(slotIndex, 5);
-			}
-			else {
-				gameSettings->setResourceMultiplierIndex(slotIndex, listBoxRMultiplier[i].getSelectedItemIndex());
-			}
-
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] i = %d, factionFiles[listBoxFactions[i].getSelectedItemIndex()] [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,i,factionFiles[listBoxFactions[i].getSelectedItemIndex()].c_str());
-
-			gameSettings->setFactionTypeName(slotIndex, factionFiles[listBoxFactions[i].getSelectedItemIndex()]);
-			if(factionFiles[listBoxFactions[i].getSelectedItemIndex()] == formatString(GameConstants::OBSERVER_SLOTNAME)) {
-				listBoxTeams[i].setSelectedItem(intToStr(GameConstants::maxPlayers + fpt_Observer));
-			}
-
-			gameSettings->setTeam(slotIndex, listBoxTeams[i].getSelectedItemIndex());
-			gameSettings->setStartLocationIndex(slotIndex, i);
-			//printf("!!! setStartLocationIndex #1 slotIndex = %d, i = %d\n",slotIndex, i);
-
-			if(listBoxControls[i].getSelectedItemIndex() == ctNetwork || listBoxControls[i].getSelectedItemIndex() == ctNetworkUnassigned) {
-				if(oldControlType!=ctNetwork && oldControlType!=ctNetworkUnassigned ){
-					gameSettings->setNetworkPlayerName(slotIndex,"");
-				}
-			}
-			else if (listBoxControls[i].getSelectedItemIndex() != ctHuman) {
-				AIPlayerCount++;
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] i = %d, playername is AI (blank)\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,i);
-
-				Lang &lang= Lang::getInstance();
-				gameSettings->setNetworkPlayerName(slotIndex, lang.getString("AI") + intToStr(AIPlayerCount));
-				labelPlayerNames[i].setText("");
-			}
-
-			factionCount++;
-		}
-		else {
-			labelPlayerNames[i].setText("");
-		}
-    }
-
-	// Next save closed slots
-	int closedCount = 0;
-	for(int i = 0; i < GameConstants::maxPlayers; ++i) {
-		ControlType ct= static_cast<ControlType>(listBoxControls[i].getSelectedItemIndex());
-		if(ct == ctClosed) {
-			int slotIndex = factionCount + closedCount;
-
-			gameSettings->setFactionControl(slotIndex, ct);
-			gameSettings->setTeam(slotIndex, listBoxTeams[i].getSelectedItemIndex());
-			gameSettings->setStartLocationIndex(slotIndex, i);
-			//printf("!!! setStartLocationIndex #2 slotIndex = %d, i = %d\n",slotIndex, i);
-
-			gameSettings->setResourceMultiplierIndex(slotIndex, 5);
-
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] i = %d, factionFiles[listBoxFactions[i].getSelectedItemIndex()] [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,i,factionFiles[listBoxFactions[i].getSelectedItemIndex()].c_str());
-
-			gameSettings->setFactionTypeName(slotIndex, factionFiles[listBoxFactions[i].getSelectedItemIndex()]);
-			gameSettings->setNetworkPlayerStatuses(slotIndex, npst_None);
-			gameSettings->setNetworkPlayerName(slotIndex, GameConstants::NETWORK_SLOT_CLOSED_SLOTNAME);
-
-			closedCount++;
-		}
-    }
-
-	gameSettings->setFactionCount(factionCount);
-
-	Config &config = Config::getInstance();
-	gameSettings->setEnableServerControlledAI(config.getBool("ServerControlledAI","true"));
-	gameSettings->setNetworkFramePeriod(config.getInt("NetworkSendFrameCount","20"));
-
-	if(hasNetworkGameSettings() == true) {
-		if( gameSettings->getTileset() != "") {
-			if(lastCheckedCRCTilesetName != gameSettings->getTileset()) {
-				//console.addLine("Checking tileset CRC [" + gameSettings->getTileset() + "]");
-				lastCheckedCRCTilesetValue = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTilesets,""), string("/") + gameSettings->getTileset() + string("/*"), ".xml", NULL);
-				if(lastCheckedCRCTilesetValue == 0 || lastCheckedCRCTilesetValue != gameSettings->getTilesetCRC()) {
-					lastCheckedCRCTilesetValue = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTilesets,""), string("/") + gameSettings->getTileset() + string("/*"), ".xml", NULL, true);
-				}
-				lastCheckedCRCTilesetName = gameSettings->getTileset();
-			}
-			gameSettings->setTilesetCRC(lastCheckedCRCTilesetValue);
-		}
-
-		if(config.getBool("DisableServerLobbyTechtreeCRCCheck","false") == false) {
-			if(gameSettings->getTech() != "") {
-				if(lastCheckedCRCTechtreeName != gameSettings->getTech()) {
-					//console.addLine("Checking techtree CRC [" + gameSettings->getTech() + "]");
-					lastCheckedCRCTechtreeValue = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTechs,""), "/" + gameSettings->getTech() + "/*", ".xml", NULL);
-					if(lastCheckedCRCTechtreeValue == 0 || lastCheckedCRCTechtreeValue != gameSettings->getTechCRC()) {
-						lastCheckedCRCTechtreeValue = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTechs,""), "/" + gameSettings->getTech() + "/*", ".xml", NULL, true);
-					}
-
-					reloadFactions(true,gameSettings->getScenario());
-					factionCRCList.clear();
-					for(unsigned int factionIdx = 0; factionIdx < factionFiles.size(); ++factionIdx) {
-						string factionName = factionFiles[factionIdx];
-						if(factionName != GameConstants::RANDOMFACTION_SLOTNAME &&
-							factionName != GameConstants::OBSERVER_SLOTNAME) {
-							//factionCRC   = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTechs,""), "/" + gameSettings->getTech() + "/factions/" + factionName + "/*", ".xml", NULL, true);
-							uint32 factionCRC   = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTechs,""), "/" + gameSettings->getTech() + "/factions/" + factionName + "/*", ".xml", NULL);
-							if(factionCRC == 0) {
-								factionCRC   = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTechs,""), "/" + gameSettings->getTech() + "/factions/" + factionName + "/*", ".xml", NULL, true);
-							}
-							factionCRCList.push_back(make_pair(factionName,factionCRC));
-						}
-					}
-					//console.addLine("Found factions: " + intToStr(factionCRCList.size()));
-					lastCheckedCRCTechtreeName = gameSettings->getTech();
-				}
-
-				gameSettings->setFactionCRCList(factionCRCList);
-				gameSettings->setTechCRC(lastCheckedCRCTechtreeValue);
-			}
-		}
-
-		if(gameSettings->getMap() != "") {
-			if(lastCheckedCRCMapName != gameSettings->getMap()) {
-				Checksum checksum;
-				string file = Config::getMapPath(gameSettings->getMap(),"",false);
-				//console.addLine("Checking map CRC [" + file + "]");
-				checksum.addFile(file);
-				lastCheckedCRCMapValue = checksum.getSum();
-				lastCheckedCRCMapName = gameSettings->getMap();
-			}
-			gameSettings->setMapCRC(lastCheckedCRCMapValue);
-		}
-	}
-
-    //replace server player by network
-    for(int i= 0; i< gameSettings->getFactionCount(); ++i) {
-        //replace by network
-        if(gameSettings->getFactionControl(i)==ctHuman) {
-            gameSettings->setFactionControl(i, ctNetwork);
-        }
-    }
-
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s] Line: %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-}
-
-void MenuStateConnectedGame::returnToJoinMenu() {
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-	if(modHttpServerThread != NULL) {
-		if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-
-		modHttpServerThread->setSimpleTaskInterfaceValid(false);
-		modHttpServerThread->signalQuit();
-		//modHttpServerThread->setThreadOwnerValid(false);
-
-		if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-		if( modHttpServerThread->canShutdown(true) == true &&
-			modHttpServerThread->shutdownAndWait() == true) {
-			delete modHttpServerThread;
-		}
-		if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-		modHttpServerThread = NULL;
-	}
-
-	if(ftpClientThread != NULL) {
-
-		ftpClientThread->setCallBackObject(NULL);
-		ftpClientThread->signalQuit();
-		sleep(0);
-		if(ftpClientThread->canShutdown(true) == true &&
-				ftpClientThread->shutdownAndWait() == true) {
-			delete ftpClientThread;
-		}
-		else {
-			char szBuf[8096]="";
-			snprintf(szBuf,8096,"In [%s::%s %d] Error cannot shutdown ftpClientThread\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-			if(SystemFlags::VERBOSE_MODE_ENABLED) printf("%s",szBuf);
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"%s",szBuf);
-		}
-		ftpClientThread = NULL;
-	}
-
-	if(returnMenuInfo == jmSimple) {
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-        launchingNewGame = true;
-        disconnectFromServer();
-		mainMenu->setState(new MenuStateJoinGame(program, mainMenu));
-	}
-	else {
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-        launchingNewGame = true;
-        disconnectFromServer();
-		mainMenu->setState(new MenuStateMasterserver(program, mainMenu));
-	}
-}
-
-void MenuStateConnectedGame::mouseMove(int x, int y, const MouseState *ms) {
-	if (mainMessageBox.getEnabled()) {
-		mainMessageBox.mouseMove(x, y);
-	}
-
-	if (ftpMessageBox.getEnabled()) {
-		ftpMessageBox.mouseMove(x, y);
-	}
-
-	buttonCancelDownloads.mouseMove(x, y);
-	buttonDisconnect.mouseMove(x, y);
-
-	for(int i = 0; i < GameConstants::maxPlayers; ++i) {
-        listBoxControls[i].mouseMove(x, y);
-        listBoxFactions[i].mouseMove(x, y);
-		listBoxTeams[i].mouseMove(x, y);
-		grabSlotButton[i].mouseMove(x, y);
-    }
-
-	listBoxMap.mouseMove(x, y);
-	listBoxFogOfWar.mouseMove(x, y);
-	checkBoxAllowObservers.mouseMove(x, y);
-	listBoxTileset.mouseMove(x, y);
-	listBoxMapFilter.mouseMove(x, y);
-	listBoxTechTree.mouseMove(x, y);
-	listBoxPlayerStatus.mouseMove(x,y);
-
-	checkBoxScenario.mouseMove(x, y);
-	listBoxScenario.mouseMove(x, y);
-
-	labelAllowTeamUnitSharing.mouseMove(x,y);
-	checkBoxAllowTeamUnitSharing.mouseMove(x,y);
-	labelAllowTeamResourceSharing.mouseMove(x,y);
-	checkBoxAllowTeamResourceSharing.mouseMove(x,y);
-
-	checkBoxAllowNativeLanguageTechtree.mouseMove(x, y);
-
-	buttonPlayNow.mouseMove(x, y);
-	buttonRestoreLastSettings.mouseMove(x, y);
-}
-
-bool MenuStateConnectedGame::isVideoPlaying() {
-	bool result = false;
-	if(factionVideo != NULL) {
-		result = factionVideo->isPlaying();
-	}
-	return result;
-}
-
-void MenuStateConnectedGame::render() {
-	try {
-		Renderer &renderer= Renderer::getInstance();
-
-		if(mainMessageBox.getEnabled()) {
-			renderer.renderMessageBox(&mainMessageBox);
-		}
-
-		renderer.renderButton(&buttonDisconnect);
-
-		if (initialSettingsReceivedFromServer == false) {
-			return;
-		}
-
-		if(factionTexture != NULL) {
-			if(factionVideo == NULL || factionVideo->isPlaying() == false) {
-				renderer.renderTextureQuad(800,600,200,150,factionTexture,1);
-			}
-		}
-		if(factionVideo != NULL) {
-			if(factionVideo->isPlaying() == true) {
-				factionVideo->playFrame(false);
-			}
-			else {
-				if(GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false &&
-					::Shared::Graphics::VideoPlayer::hasBackEndVideoPlayer() == true) {
-					if(factionVideo != NULL) {
-						factionVideo->closePlayer();
-						delete factionVideo;
-						factionVideo = NULL;
-
-						if(validDisplayedGamesettings) {
-							initFactionPreview(&displayedGamesettings);
-						}
-					}
-				}
-			}
-		}
-
-		if(mapPreviewTexture != NULL) {
-			//renderer.renderTextureQuad(5,185,150,150,mapPreviewTexture,1.0f);
-			renderer.renderTextureQuad(	this->render_mapPreviewTexture_X,
-										this->render_mapPreviewTexture_Y,
-										this->render_mapPreviewTexture_W,
-										this->render_mapPreviewTexture_H,
-										mapPreviewTexture,1.0f);
-			if(this->zoomedMap==true) {
-				return;
-			}
-			//printf("=================> Rendering map preview texture\n");
-		}
-
-		if(scenarioLogoTexture != NULL) {
-			renderer.renderTextureQuad(300,350,400,300,scenarioLogoTexture,1.0f);
-			//renderer.renderBackground(scenarioLogoTexture);
-		}
-
-		renderer.renderButton(&buttonDisconnect);
-
-		// Get a reference to the player texture cache
-		std::map<int,Texture2D *> &crcPlayerTextureCache = CacheManager::getCachedItem< std::map<int,Texture2D *> >(GameConstants::playerTextureCacheLookupKey);
-
-		// START - this code ensure player title and player names don't overlap
-		int offsetPosition=0;
-	    for(int i=0; i < GameConstants::maxPlayers; ++i) {
-			const Metrics &metrics= Metrics::getInstance();
-			FontMetrics *fontMetrics= NULL;
-			if(Renderer::renderText3DEnabled == false) {
-				fontMetrics = CoreData::getInstance().getMenuFontNormal()->getMetrics();
-			}
-			else {
-				fontMetrics = CoreData::getInstance().getMenuFontNormal3D()->getMetrics();
-			}
-
-			if(fontMetrics == NULL) {
-				throw megaglest_runtime_error("fontMetrics == NULL");
-			}
-			int curWidth = (metrics.toVirtualX(fontMetrics->getTextWidth(labelPlayers[i].getText())));
-
-			if(labelPlayers[i].getX() + curWidth >= labelPlayerNames[i].getX()) {
-				int newOffsetPosition = labelPlayers[i].getX() + curWidth + 2;
-				if(offsetPosition < newOffsetPosition) {
-					offsetPosition = newOffsetPosition;
-				}
-			}
-	    }
-	    // END
-
-	    renderer.renderListBox(&listBoxPlayerStatus);
-
-	    NetworkManager &networkManager= NetworkManager::getInstance();
-	    ClientInterface *clientInterface = networkManager.getClientInterface();
-		for(int i = 0; i < GameConstants::maxPlayers; ++i) {
-	    	if(listBoxControls[i].getSelectedItemIndex() == ctNetworkUnassigned) {
-	    		bool renderIt=true;
-	    		//printf("Player #%d [%s] control = %d\n",i,labelPlayerNames[i].getText().c_str(),listBoxControls[i].getSelectedItemIndex());
-	    		if(labelNetStatus[i].getText() == GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME){
-	    			renderIt=false;
-	    		}
-				labelPlayers[i].setVisible(renderIt);
-				labelPlayerNames[i].setVisible(renderIt);
-				listBoxControls[i].setVisible(renderIt);
-				listBoxRMultiplier[i].setVisible(renderIt);
-				listBoxFactions[i].setVisible(renderIt);
-				listBoxTeams[i].setVisible(renderIt);
-				labelNetStatus[i].setVisible(renderIt);
-	    	}
-
-			if(listBoxControls[i].getSelectedItemIndex() != ctClosed) {
-				renderer.renderLabel(&labelPlayerStatus[i]);
-			}
-
-			if(crcPlayerTextureCache[i] != NULL) {
-				// Render the player # label the player's color
-
-				Vec3f playerColor = crcPlayerTextureCache[i]->getPixmap()->getPixel3f(0, 0);
-				if(clientInterface != NULL &&
-					clientInterface->getGameSettings() != NULL &&
-					clientInterface->getGameSettings()->getMasterserver_admin() > 0 &&
-					clientInterface->getGameSettings()->getMasterserver_admin_faction_index() == i) {
-
-					if(difftime((long int)time(NULL),timerLabelFlash) < 1) {
-						renderer.renderLabel(&labelPlayers[i],&playerColor);
-					}
-					else {
-						Vec4f flashColor=Vec4f(playerColor.x, playerColor.y, playerColor.z, 0.45f);
-			            renderer.renderLabel(&labelPlayers[i],&flashColor);
-					}
-
-				}
-				else {
-					renderer.renderLabel(&labelPlayers[i],&playerColor);
-				}
-
-				// Blend the color with white so make it more readable
-				//Vec4f newColor(1.f, 1.f, 1.f, 0.57f);
-				//renderer.renderLabel(&labelPlayers[i],&newColor);
-
-				//int quadWidth = labelPlayerNames[i].getX() - labelPlayers[i].getX() - 5;
-				//renderer.renderTextureQuad(labelPlayers[i].getX(), labelPlayers[i].getY(), quadWidth, labelPlayers[i].getH(), crcPlayerTextureCache[i],1.0f,&playerColor);
-			}
-			else {
-				renderer.renderLabel(&labelPlayers[i]);
-			}
-
-			if(offsetPosition > 0) {
-				labelPlayerNames[i].setX(offsetPosition);
-			}
-
-			renderer.renderListBox(&listBoxControls[i]);
-			if(listBoxControls[i].getSelectedItemIndex() != ctClosed) {
-				renderer.renderListBox(&listBoxRMultiplier[i]);
-				renderer.renderListBox(&listBoxFactions[i]);
-				int teamnumber=listBoxTeams[i].getSelectedItemIndex();
-				Vec3f teamcolor=Vec3f(1.0f,1.0f,1.0f);
-				if(teamnumber>=0 && teamnumber<8){
-					teamcolor=crcPlayerTextureCache[teamnumber]->getPixmap()->getPixel3f(0, 0);
-				}
-				listBoxTeams[i].setTextColor(teamcolor);
-				renderer.renderListBox(&listBoxTeams[i]);
-
-				bool canGrabSlot = false;
-				ClientInterface *clientInterface = networkManager.getClientInterface();
-				if(clientInterface != NULL && clientInterface->getJoinGameInProgress() == true) {
-					canGrabSlot = ((listBoxControls[i].getSelectedItemIndex() == ctNetwork &&
-							labelNetStatus[i].getText() == GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME) ||
-							(listBoxControls[i].getSelectedItemIndex() != ctHuman &&
-							 listBoxControls[i].getSelectedItemIndex() != ctClosed &&
-							 listBoxControls[i].getSelectedItemIndex() != ctNetwork));
-				}
-				else {
-					canGrabSlot = (listBoxControls[i].getSelectedItemIndex() == ctNetwork &&
-										labelNetStatus[i].getText() == GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME);
-				}
-
-				if(canGrabSlot == true) {
-					if(i < mapInfo.players) {
-						renderer.renderButton(&grabSlotButton[i]);
-					}
-				}
-				else if(listBoxControls[i].getSelectedItemIndex() == ctNetwork ||
-						listBoxControls[i].getSelectedItemIndex() == ctNetworkUnassigned ||
-					    listBoxControls[i].getSelectedItemIndex() == ctHuman){
-					renderer.renderLabel(&labelNetStatus[i]);
-				}
-
-				if(listBoxControls[i].getSelectedItemIndex() == ctNetwork ||
-				   listBoxControls[i].getSelectedItemIndex() == ctNetworkUnassigned ||
-				   listBoxControls[i].getSelectedItemIndex() == ctHuman){
-					if(labelNetStatus[i].getText() != GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME) {
-						renderer.renderLabel(&labelPlayerNames[i]);
-					}
-				}
-			}
-		}
-		renderer.renderLabel(&labelStatus);
-		renderer.renderLabel(&labelInfo);
-
-		if(difftime((long int)time(NULL),timerLabelFlash) < 1) {
-		    renderer.renderLabel(&labelDataSynchInfo,&RED);
-		    renderer.renderLabel(&labelWaitingForPlayers,&YELLOW);
-		}
-		else {
-            renderer.renderLabel(&labelDataSynchInfo,&WHITE);
-		    renderer.renderLabel(&labelWaitingForPlayers,&WHITE);
-		}
-
-		renderer.renderLabel(&labelMap);
-		renderer.renderLabel(&labelMapFilter);
-		renderer.renderLabel(&labelFogOfWar);
-		renderer.renderLabel(&labelAllowObservers);
-		renderer.renderLabel(&labelFallbackCpuMultiplier);
-		renderer.renderLabel(&labelTileset);
-		renderer.renderLabel(&labelTechTree);
-		renderer.renderLabel(&labelControl);
-		renderer.renderLabel(&labelFaction);
-		renderer.renderLabel(&labelTeam);
-		renderer.renderLabel(&labelMapInfo);
-
-		renderer.renderListBox(&listBoxMap);
-		renderer.renderListBox(&listBoxMapFilter);
-		renderer.renderListBox(&listBoxFogOfWar);
-		renderer.renderCheckBox(&checkBoxAllowObservers);
-		renderer.renderListBox(&listBoxTileset);
-		renderer.renderListBox(&listBoxTechTree);
-
-		renderer.renderLabel(&labelEnableSwitchTeamMode);
-		renderer.renderLabel(&labelAISwitchTeamAcceptPercent);
-
-		renderer.renderCheckBox(&checkBoxEnableSwitchTeamMode);
-		renderer.renderListBox(&listBoxAISwitchTeamAcceptPercent);
-		renderer.renderListBox(&listBoxFallbackCpuMultiplier);
-
-		renderer.renderLabel(&labelAllowTeamUnitSharing);
-		renderer.renderCheckBox(&checkBoxAllowTeamUnitSharing);
-
-		renderer.renderLabel(&labelAllowTeamResourceSharing);
-		renderer.renderCheckBox(&checkBoxAllowTeamResourceSharing);
-
-		renderer.renderButton(&buttonPlayNow);
-		renderer.renderButton(&buttonRestoreLastSettings);
-
-		renderer.renderCheckBox(&checkBoxScenario);
-		renderer.renderLabel(&labelScenario);
-		if(checkBoxScenario.getValue() == true) {
-			renderer.renderListBox(&listBoxScenario);
-		}
-
-		renderer.renderLabel(&labelAllowNativeLanguageTechtree);
-		renderer.renderCheckBox(&checkBoxAllowNativeLanguageTechtree);
-
-        MutexSafeWrapper safeMutexFTPProgress((ftpClientThread != NULL ? ftpClientThread->getProgressMutex() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-
-        // !!! START TEMP MV
-        //renderer.renderButton(&buttonCancelDownloads);
-        //fileFTPProgressList.clear();
-        //fileFTPProgressList["test1a dsa asd asda sdasd asd ad ad"] = make_pair(1,"testa");
-        //fileFTPProgressList["test2 asdasdasdadas dasdasdasda"] = make_pair(1,"testb");
-        //fileFTPProgressList["test3 asdasdad asd ada dasdadasdada"] = make_pair(1,"testc");
-        // !!! END TEMP MV
-
-        if(fileFTPProgressList.empty() == false) {
-        	Lang &lang= Lang::getInstance();
-        	renderer.renderButton(&buttonCancelDownloads);
-        	int xLocation = buttonCancelDownloads.getX();
-            int yLocation = buttonCancelDownloads.getY() - 20;
-            for(std::map<string,pair<int,string> >::iterator iterMap = fileFTPProgressList.begin();
-                iterMap != fileFTPProgressList.end(); ++iterMap) {
-                string progressLabelPrefix = lang.getString("ModDownloading") + " " + iterMap->first + " ";
-                //if(SystemFlags::VERBOSE_MODE_ENABLED) printf("\nRendering file progress with the following prefix [%s]\n",progressLabelPrefix.c_str());
-
-                if(Renderer::renderText3DEnabled) {
-					renderer.renderProgressBar3D(
-						iterMap->second.first,
-						xLocation,
-						//10,
-						yLocation,
-						CoreData::getInstance().getDisplayFontSmall3D(),
-						//350,progressLabelPrefix);
-						300,progressLabelPrefix);
-                }
-                else {
-					renderer.renderProgressBar(
-						iterMap->second.first,
-						//10,
-						xLocation,
-						yLocation,
-						CoreData::getInstance().getDisplayFontSmall(),
-						//350,progressLabelPrefix);
-						300,progressLabelPrefix);
-                }
-
-                yLocation -= 20;
-            }
-        }
-        safeMutexFTPProgress.ReleaseLock();
-
-		if(mainMessageBox.getEnabled()) {
-			renderer.renderMessageBox(&mainMessageBox);
-		}
-		if(ftpMessageBox.getEnabled()) {
-			renderer.renderMessageBox(&ftpMessageBox);
-		}
-
-		if(program != NULL) program->renderProgramMsgBox();
-
-		if(enableMapPreview && (mapPreview.hasFileLoaded() == true)) {
-
-			int mouseX = mainMenu->getMouseX();
-			int mouseY = mainMenu->getMouseY();
-			int mouse2dAnim = mainMenu->getMouse2dAnim();
-
-			if(mapPreviewTexture == NULL) {
-				renderer.renderMouse2d(mouseX, mouseY, mouse2dAnim);
-
-				bool renderAll = (listBoxFogOfWar.getSelectedItemIndex() == 2);
-				//renderer.renderMapPreview(&mapPreview, renderAll, 10, 350, &mapPreviewTexture);
-		    	renderer.renderMapPreview(&mapPreview, renderAll,
-		    			this->render_mapPreviewTexture_X,
-		    			this->render_mapPreviewTexture_Y,
-		    			&mapPreviewTexture);
-			}
-		}
-		renderer.renderChatManager(&chatManager);
-		renderer.renderConsole(&console,showFullConsole?consoleFull:consoleStoredAndNormal);
-
-        if(difftime((long int)time(NULL),timerLabelFlash) > 2) {
-            timerLabelFlash = time(NULL);
-        }
-	}
-	catch(const std::exception &ex) {
-		char szBuf[8096]="";
-		snprintf(szBuf,8096,"In [%s::%s %d]\nError detected:\n%s\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,ex.what());
-		SystemFlags::OutputDebug(SystemFlags::debugError,szBuf);
-		throw megaglest_runtime_error(szBuf);
-	}
-}
-
-void MenuStateConnectedGame::update() {
-	Chrono chrono;
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled) chrono.start();
-
-	Lang &lang= Lang::getInstance();
-	ClientInterface *clientInterface= NetworkManager::getInstance().getClientInterface();
-
-	string newLabelConnectionInfo = lang.getString("WaitingHost");
-	if(clientInterface != NULL && clientInterface->getJoinGameInProgress() == true) {
-		newLabelConnectionInfo = lang.getString("MGGameStatus2");
-	}
-	// Test progress bar
-    //MutexSafeWrapper safeMutexFTPProgress((ftpClientThread != NULL ? ftpClientThread->getProgressMutex() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-    //fileFTPProgressList["test"] = pair<int,string>(difftime(time(NULL),lastNetworkSendPing) * 20,"test file 123");
-    //safeMutexFTPProgress.ReleaseLock();
-    //
-
-	if(clientInterface != NULL && clientInterface->isConnected()) {
-		//printf("#2 admin key [%d] client key [%d]\n",settings->getMasterserver_admin(),clientInterface->getSessionKey());
-		broadCastGameSettingsToHeadlessServer(false);
-
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-		bool notCurrentlySwitching=(( difftime((long int) time(NULL), broadcastServerSettingsDelayTimer)) >= HEADLESSSERVER_BROADCAST_SETTINGS_SECONDS );
-		bool receiveAllowedNow=difftime((long int) time(NULL), noReceiveTimer) > 2 ;
-		bool newMessage= lastGameSettingsReceivedCount < clientInterface->getGameSettingsReceivedCount();
-		if (validDisplayedGamesettings == false
-				|| ( notCurrentlySwitching
-				&& newMessage
-				&& receiveAllowedNow )) {
-
-			//printf("I take the whole settings top broadcastDelay=%d noReceiveTimer=%d\n", (int)difftime((long int) time(NULL), broadcastServerSettingsDelayTimer),(int)difftime((long int) time(NULL), noReceiveTimer));
-
-			displayedGamesettings = *(clientInterface->getGameSettings());
-			originalGamesettings = displayedGamesettings;
-			validDisplayedGamesettings = true;
-		}
-
-		checkBoxAllowNativeLanguageTechtree.setEditable(isHeadlessAdmin());
-		checkBoxAllowNativeLanguageTechtree.setEnabled(isHeadlessAdmin());
-
-		listBoxMap.setEditable(isHeadlessAdmin());
-		listBoxMapFilter.setEditable(isHeadlessAdmin());
-		buttonPlayNow.setVisible(isHeadlessAdmin() ||
-				clientInterface->getJoinGameInProgress() == true);
-		buttonRestoreLastSettings.setVisible(isHeadlessAdmin());
-		listBoxTechTree.setEditable(isHeadlessAdmin());
-		listBoxTileset.setEditable(isHeadlessAdmin());
-		checkBoxEnableSwitchTeamMode.setEditable(isHeadlessAdmin());
-		listBoxAISwitchTeamAcceptPercent.setEditable(isHeadlessAdmin());
-		listBoxFallbackCpuMultiplier.setEditable(isHeadlessAdmin());
-		listBoxFogOfWar.setEditable(isHeadlessAdmin());
-		checkBoxAllowObservers.setEditable(isHeadlessAdmin());
-
-		checkBoxAllowTeamUnitSharing.setEditable(isHeadlessAdmin());
-		checkBoxAllowTeamResourceSharing.setEditable(isHeadlessAdmin());
-
-		if(isHeadlessAdmin() == true) {
-			bool hasOtherPlayer=false;
-			bool hasOpenSlot=false;
-			for(unsigned int i = 0; i < (unsigned int)GameConstants::maxPlayers; ++i) {
-				if(displayedGamesettings.getFactionControl(i)==ctNetwork && clientInterface->getPlayerIndex()!=(int)i){
-					hasOpenSlot=true;
-				}
-				if(displayedGamesettings.getFactionControl(i)==ctNetwork &&
-						displayedGamesettings.getNetworkPlayerNameByPlayerIndex(i)!= GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME &&
-						displayedGamesettings.getNetworkPlayerNameByPlayerIndex(i)!= GameConstants::NETWORK_SLOT_CLOSED_SLOTNAME   ){
-					listBoxControls[i].setEditable(false);
-					if(clientInterface->getPlayerIndex()!=(int)i){
-						hasOtherPlayer=true;
-					}
-				}
-				else if(clientInterface->getPlayerIndex()==(int)i){
-					listBoxControls[i].setEditable(false);
-				}
-				else {
-					listBoxControls[i].setEditable(true);
-				}
-				listBoxRMultiplier[i].setEditable(isHeadlessAdmin());
-				listBoxFactions[i].setEditable(isHeadlessAdmin());
-				listBoxTeams[i].setEditable(isHeadlessAdmin());
-			}
-			if (hasOtherPlayer) {
-				labelWaitingForPlayers.setText("");
-				labelWaitingForPlayers.setVisible(false);
-			} else if (hasOpenSlot) {
-				labelWaitingForPlayers.setText(lang.getString("WaitingForPlayers"));
-				labelWaitingForPlayers.setVisible(true);
-			} else {
-				labelWaitingForPlayers.setText(lang.getString("OpenANetworkSLot"));
-				labelWaitingForPlayers.setVisible(true);
-			}
-		}
-		else {
-			labelWaitingForPlayers.setText("");
-			labelWaitingForPlayers.setVisible(false);
-		}
-
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-		if(difftime((long int)time(NULL),lastNetworkSendPing) >= GameConstants::networkPingInterval) {
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] about to sendPingMessage...\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-			lastNetworkSendPing = time(NULL);
-			clientInterface->sendPingMessage(GameConstants::networkPingInterval, (int64)time(NULL));
-
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] pingCount = %d, clientInterface->getLastPingLag() = %f, GameConstants::networkPingInterval = %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,pingCount, clientInterface->getLastPingLag(),GameConstants::networkPingInterval);
-
-			// Starting checking timeout after sending at least 3 pings to server
-			if(clientInterface->isConnected() &&
-				pingCount >= MAX_PING_LAG_COUNT && clientInterface->getLastPingLag() >= (GameConstants::networkPingInterval * MAX_PING_LAG_COUNT)) {
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-				clientInterface->updateLobby();
-
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-				if(clientInterface->isConnected() && clientInterface->getJoinGameInProgress() == false &&
-					pingCount >= MAX_PING_LAG_COUNT && clientInterface->getLastPingLag() >= (GameConstants::networkPingInterval * MAX_PING_LAG_COUNT)) {
-					MutexSafeWrapper safeMutexFTPProgress((ftpClientThread != NULL ? ftpClientThread->getProgressMutex() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-					if(fileFTPProgressList.empty() == true) {
-						Lang &lang= Lang::getInstance();
-						const vector<string> languageList = displayedGamesettings.getUniqueNetworkPlayerLanguages();
-						for(unsigned int i = 0; i < languageList.size(); ++i) {
-							clientInterface->sendTextMessage(lang.getString("ConnectionTimedOut",languageList[i]) + " : " + doubleToStr(clientInterface->getLastPingLag(),2),-1,false,languageList[i]);
-							sleep(1);
-							clientInterface->close();
-						}
-					}
-				}
-			}
-
-			pingCount++;
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-		}
-
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-		buttonDisconnect.setText(lang.getString("Disconnect"));
-
-		if(clientInterface->getAllowDownloadDataSynch() == false) {
-		    string label = lang.getString("ConnectedToServer");
-
-            if(clientInterface->getServerName().empty() == false) {
-                label = label + " " + clientInterface->getServerName();
-            }
-
-            label = label + ", " + clientInterface->getVersionString();
-
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-            if(clientInterface->getAllowGameDataSynchCheck() == false &&
-            	displayedGamesettings.getTileset() != "" &&
-            	displayedGamesettings.getTech() != "" &&
-            	displayedGamesettings.getMap() != "") {
-                Config &config = Config::getInstance();
-
-                MutexSafeWrapper safeMutexFTPProgress(ftpClientThread != NULL ? ftpClientThread->getProgressMutex() : NULL,string(__FILE__) + "_" + intToStr(__LINE__));
-
-                uint32 tilesetCRC = lastCheckedCRCTilesetValue;
-                if(lastCheckedCRCTilesetName != displayedGamesettings.getTileset() &&
-                	displayedGamesettings.getTileset() != "") {
-					//console.addLine("Checking tileset CRC [" + displayedGamesettings.getTileset() + "]");
-                	tilesetCRC = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTilesets,""), string("/") + displayedGamesettings.getTileset() + string("/*"), ".xml", NULL);
-                	if(tilesetCRC == 0 || tilesetCRC != displayedGamesettings.getTilesetCRC()) {
-                		tilesetCRC = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTilesets,""), string("/") + displayedGamesettings.getTileset() + string("/*"), ".xml", NULL, true);
-                	}
-
-					// Test data synch
-					//tilesetCRC++;
-					lastCheckedCRCTilesetValue = tilesetCRC;
-					lastCheckedCRCTilesetName = displayedGamesettings.getTileset();
-                }
-
-    			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-    			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-                uint32 techCRC = lastCheckedCRCTechtreeValue;
-                if(lastCheckedCRCTechtreeName != displayedGamesettings.getTech() &&
-                	displayedGamesettings.getTech() != "") {
-					//console.addLine("Checking techtree CRC [" + displayedGamesettings.getTech() + "]");
-					techCRC = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTechs,""), string("/") + displayedGamesettings.getTech() + string("/*"), ".xml", NULL);
-					//clientInterface->sendTextMessage("#1 TechCRC = " + intToStr(techCRC) + " remoteCRC = " + intToStr(displayedGamesettings.getTechCRC()),-1, true, "");
-
-					if(techCRC == 0 || techCRC != displayedGamesettings.getTechCRC()) {
-						techCRC = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTechs,""), string("/") + displayedGamesettings.getTech() + string("/*"), ".xml", NULL, true);
-						//clientInterface->sendTextMessage("#2 TechCRC = " + intToStr(techCRC) + " remoteCRC = " + intToStr(displayedGamesettings.getTechCRC()),-1, true, "");
-					}
-
-
-                    if(techCRC != 0 && techCRC != displayedGamesettings.getTechCRC() &&
-                    	listBoxTechTree.getSelectedItemIndex() >= 0 &&
-                    	listBoxTechTree.getSelectedItem() != Lang::getInstance().getString("DataMissing","",true)) {
-
-                    	//time_t now = time(NULL);
-                    	time_t lastUpdateDate = getFolderTreeContentsCheckSumRecursivelyLastGenerated(config.getPathListForType(ptTechs,""), string("/") + displayedGamesettings.getTech() + string("/*"), ".xml");
-
-                    	const time_t REFRESH_CRC_DAY_SECONDS = 60 * 60 * 1;
-            			if(	lastUpdateDate <= 0 ||
-            				difftime((long int)time(NULL),lastUpdateDate) >= REFRESH_CRC_DAY_SECONDS) {
-            				techCRC = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTechs,""), string("/") + displayedGamesettings.getTech() + string("/*"), ".xml", NULL, true);
-            				//clientInterface->sendTextMessage("#3 TechCRC = " + intToStr(techCRC) + " remoteCRC = " + intToStr(displayedGamesettings.getTechCRC()),-1, true, "");
-            			}
-                    }
-
-        			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-        			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-					// Test data synch
-					//techCRC++;
-					lastCheckedCRCTechtreeValue = techCRC;
-					lastCheckedCRCTechtreeName = displayedGamesettings.getTech();
-
-					loadFactions(&displayedGamesettings,false);
-
-					if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-					if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-	    			factionCRCList.clear();
-	    			for(unsigned int factionIdx = 0; factionIdx < factionFiles.size(); ++factionIdx) {
-	    				string factionName = factionFiles[factionIdx];
-	    				if(factionName != GameConstants::RANDOMFACTION_SLOTNAME &&
-	    					factionName != GameConstants::OBSERVER_SLOTNAME &&
-	    					factionName != Lang::getInstance().getString("DataMissing","",true)) {
-
-	    					uint32 factionCRC   = 0;
-	                    	//time_t now = time(NULL);
-	                    	time_t lastUpdateDate = getFolderTreeContentsCheckSumRecursivelyLastGenerated(config.getPathListForType(ptTechs,""), "/" + displayedGamesettings.getTech() + "/factions/" + factionName + "/*", ".xml");
-
-	                    	const time_t REFRESH_CRC_DAY_SECONDS = 60 * 60 * 24;
-	            			if(	lastUpdateDate <= 0 ||
-	            				difftime((long int)time(NULL),lastUpdateDate) >= REFRESH_CRC_DAY_SECONDS ||
-	            				(techCRC != 0 && techCRC != displayedGamesettings.getTechCRC())) {
-	            				factionCRC   = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTechs,""), "/" + displayedGamesettings.getTech() + "/factions/" + factionName + "/*", ".xml", NULL, true);
-	            			}
-	            			else {
-	            				factionCRC   = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTechs,""), "/" + displayedGamesettings.getTech() + "/factions/" + factionName + "/*", ".xml", NULL);
-	            			}
-	            			if(factionCRC == 0) {
-	            				factionCRC   = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTechs,""), "/" + displayedGamesettings.getTech() + "/factions/" + factionName + "/*", ".xml", NULL, true);
-	            			}
-
-	            			if(factionCRC != 0) {
-								vector<pair<string,uint32> > serverFactionCRCList = displayedGamesettings.getFactionCRCList();
-								for(unsigned int factionIdx1 = 0; factionIdx1 < serverFactionCRCList.size(); ++factionIdx1) {
-									pair<string,uint32> &serverFaction = serverFactionCRCList[factionIdx1];
-									if(serverFaction.first == factionName) {
-										if(serverFaction.second != factionCRC) {
-											factionCRC   = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTechs,""), "/" + displayedGamesettings.getTech() + "/factions/" + factionName + "/*", ".xml", NULL, true);
-										}
-										break;
-									}
-								}
-	            			}
-	            			factionCRCList.push_back(make_pair(factionName,factionCRC));
-	    				}
-	    			}
-	    			//console.addLine("Found factions: " + intToStr(factionCRCList.size()));
-	    			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-	    			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-                }
-
-    			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-    			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-                uint32 mapCRC = lastCheckedCRCMapValue;
-                if(lastCheckedCRCMapName != displayedGamesettings.getMap() &&
-                	displayedGamesettings.getMap() != "") {
-					Checksum checksum;
-					string file = Config::getMapPath(displayedGamesettings.getMap(),"",false);
-					//console.addLine("Checking map CRC [" + file + "]");
-					checksum.addFile(file);
-					mapCRC = checksum.getSum();
-					// Test data synch
-					//mapCRC++;
-
-					lastCheckedCRCMapValue = mapCRC;
-					lastCheckedCRCMapName = displayedGamesettings.getMap();
-                }
-                safeMutexFTPProgress.ReleaseLock();
-
-    			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-    			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-                bool dataSynchMismatch = ((mapCRC != 0 && mapCRC != displayedGamesettings.getMapCRC()) ||
-                						  (tilesetCRC != 0 && tilesetCRC != displayedGamesettings.getTilesetCRC()) ||
-                						  (techCRC != 0 && techCRC != displayedGamesettings.getTechCRC()));
-
-                //if(SystemFlags::VERBOSE_MODE_ENABLED) printf("\nmapCRC [%d] displayedGamesettings.getMapCRC() [%d]\ntilesetCRC [%d] displayedGamesettings.getTilesetCRC() [%d]\ntechCRC [%d] displayedGamesettings.getTechCRC() [%d]\n",mapCRC,displayedGamesettings.getMapCRC(),tilesetCRC,displayedGamesettings.getTilesetCRC(),techCRC,displayedGamesettings.getTechCRC());
-
-                if(dataSynchMismatch == true &&
-                		( difftime((long int)time(NULL),broadcastServerSettingsDelayTimer) >= HEADLESSSERVER_BROADCAST_SETTINGS_SECONDS)) {
-                    //printf("Data not synched: lmap %u rmap: %u ltile: %d rtile: %u ltech: %u rtech: %u\n",mapCRC,displayedGamesettings.getMapCRC(),tilesetCRC,displayedGamesettings.getTilesetCRC(),techCRC,displayedGamesettings.getTechCRC());
-
-                    string labelSynch = lang.getString("DataNotSynchedTitle");
-
-                    if(mapCRC != 0 && mapCRC != displayedGamesettings.getMapCRC() &&
-                    		listBoxMap.getSelectedItemIndex() >= 0 &&
-                    		listBoxMap.getSelectedItem() != Lang::getInstance().getString("DataMissing","",true)) {
-                        labelSynch = labelSynch + " " + lang.getString("Map");
-
-                        if(updateDataSynchDetailText == true &&
-                            lastMapDataSynchError != lang.getString("DataNotSynchedMap") + " " + listBoxMap.getSelectedItem()) {
-                            lastMapDataSynchError = lang.getString("DataNotSynchedMap") + " " + listBoxMap.getSelectedItem();
-
-            		    	Lang &lang= Lang::getInstance();
-            		    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-            		    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-            		    		string msg = lang.getString("DataNotSynchedMap",languageList[i]) + " " + listBoxMap.getSelectedItem();
-            		    		bool localEcho = lang.isLanguageLocal(languageList[i]);
-            		    		clientInterface->sendTextMessage(msg,-1,localEcho,languageList[i]);
-            		    	}
-                        }
-                    }
-
-                    if(tilesetCRC != 0 && tilesetCRC != displayedGamesettings.getTilesetCRC() &&
-                    		listBoxTileset.getSelectedItemIndex() >= 0 &&
-                    		listBoxTileset.getSelectedItem() != Lang::getInstance().getString("DataMissing","",true)) {
-                        labelSynch = labelSynch + " " + lang.getString("Tileset");
-                        if(updateDataSynchDetailText == true &&
-                            lastTileDataSynchError != lang.getString("DataNotSynchedTileset") + " " + listBoxTileset.getSelectedItem()) {
-                            lastTileDataSynchError = lang.getString("DataNotSynchedTileset") + " " + listBoxTileset.getSelectedItem();
-
-            		    	Lang &lang= Lang::getInstance();
-            		    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-            		    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-            		    		string msg = lang.getString("DataNotSynchedTileset",languageList[i]) + " " + listBoxTileset.getSelectedItem();
-            		    		bool localEcho = lang.isLanguageLocal(languageList[i]);
-            		    		clientInterface->sendTextMessage(msg,-1,localEcho,languageList[i]);
-            		    	}
-                        }
-                    }
-
-                    if(techCRC != 0 && techCRC != displayedGamesettings.getTechCRC() &&
-                    		listBoxTechTree.getSelectedItemIndex() >= 0 &&
-                    		listBoxTechTree.getSelectedItem() != Lang::getInstance().getString("DataMissing","",true)) {
-                        labelSynch = labelSynch + " " + lang.getString("TechTree");
-                        if(updateDataSynchDetailText == true &&
-                        	lastTechtreeDataSynchError != lang.getString("DataNotSynchedTechtree") + " " + listBoxTechTree.getSelectedItem()) {
-                        	lastTechtreeDataSynchError = lang.getString("DataNotSynchedTechtree") + " " + listBoxTechTree.getSelectedItem();
-
-            		    	Lang &lang= Lang::getInstance();
-            		    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-            		    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-            		    		string msg = lang.getString("DataNotSynchedTechtree",languageList[i]) + " " + listBoxTechTree.getSelectedItem();
-            		    		bool localEcho = lang.isLanguageLocal(languageList[i]);
-            		    		clientInterface->sendTextMessage(msg,-1,localEcho,languageList[i]);
-            		    	}
-
-            				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-            				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-            		    	const int MAX_CHAT_TEXT_LINE_LENGTH = 110;
-            		    	//const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-            		    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-            		    		bool localEcho = lang.isLanguageLocal(languageList[i]);
-
-								string mismatchedFactionText = "";
-								vector<string> mismatchedFactionTextList;
-								vector<pair<string,uint32> > serverFactionCRCList = displayedGamesettings.getFactionCRCList();
-
-								for(unsigned int factionIdx = 0; factionIdx < serverFactionCRCList.size(); ++factionIdx) {
-									pair<string,uint32> &serverFaction = serverFactionCRCList[factionIdx];
-
-									bool foundFaction = false;
-									for(unsigned int clientFactionIdx = 0; clientFactionIdx < factionCRCList.size(); ++clientFactionIdx) {
-										pair<string,uint32> &clientFaction = factionCRCList[clientFactionIdx];
-
-										if(serverFaction.first == clientFaction.first) {
-											foundFaction = true;
-											if(serverFaction.second != clientFaction.second) {
-												if(mismatchedFactionText.length() >= 10) {
-													mismatchedFactionTextList.push_back(mismatchedFactionText);
-													mismatchedFactionText = "";
-												}
-												if(mismatchedFactionText == "") {
-													mismatchedFactionText = "The following factions are mismatched: ";
-													if(lang.hasString("MismatchedFactions",languageList[i]) == true) {
-														mismatchedFactionText = lang.getString("MismatchedFactions",languageList[i]);
-													}
-
-													mismatchedFactionText += " ["+ intToStr(factionCRCList.size()) + "][" + intToStr(serverFactionCRCList.size()) + "] - ";
-												}
-												else {
-													mismatchedFactionText += ", ";
-												}
-												mismatchedFactionText += serverFaction.first;
-											}
-											break;
-										}
-									}
-
-									if(foundFaction == false) {
-										if((int)mismatchedFactionText.length() > MAX_CHAT_TEXT_LINE_LENGTH) {
-											mismatchedFactionTextList.push_back(mismatchedFactionText);
-											mismatchedFactionText = "";
-										}
-
-										if(mismatchedFactionText == "") {
-											mismatchedFactionText = "The following factions are mismatched: ";
-											if(lang.hasString("MismatchedFactions",languageList[i]) == true) {
-												mismatchedFactionText = lang.getString("MismatchedFactions",languageList[i]);
-											}
-
-											mismatchedFactionText += " ["+ intToStr(factionCRCList.size()) + "][" + intToStr(serverFactionCRCList.size()) + "] - ";
-										}
-										else {
-											mismatchedFactionText += ", ";
-										}
-
-										if(lang.hasString("MismatchedFactionsMissing",languageList[i]) == true) {
-											mismatchedFactionText += serverFaction.first + " " + lang.getString("MismatchedFactionsMissing",languageList[i]);
-										}
-										else {
-											mismatchedFactionText += serverFaction.first + " (missing)";
-										}
-									}
-								}
-
-								for(unsigned int clientFactionIdx = 0; clientFactionIdx < factionCRCList.size(); ++clientFactionIdx) {
-									pair<string,uint32> &clientFaction = factionCRCList[clientFactionIdx];
-
-									bool foundFaction = false;
-									for(unsigned int factionIdx = 0; factionIdx < serverFactionCRCList.size(); ++factionIdx) {
-										pair<string,uint32> &serverFaction = serverFactionCRCList[factionIdx];
-
-										if(serverFaction.first == clientFaction.first) {
-											foundFaction = true;
-											break;
-										}
-									}
-
-									if(foundFaction == false) {
-										if((int)mismatchedFactionText.length() > MAX_CHAT_TEXT_LINE_LENGTH) {
-											mismatchedFactionTextList.push_back(mismatchedFactionText);
-											mismatchedFactionText = "";
-										}
-
-										if(mismatchedFactionText == "") {
-											mismatchedFactionText = "The following factions are mismatched: ";
-											if(lang.hasString("MismatchedFactions",languageList[i]) == true) {
-												mismatchedFactionText = lang.getString("MismatchedFactions",languageList[i]);
-											}
-
-											mismatchedFactionText += " ["+ intToStr(factionCRCList.size()) + "][" + intToStr(serverFactionCRCList.size()) + "] - ";
-										}
-										else {
-											mismatchedFactionText += ", ";
-										}
-
-										if(lang.hasString("MismatchedFactionsExtra",languageList[i]) == true) {
-											mismatchedFactionText += clientFaction.first + " " + lang.getString("MismatchedFactionsExtra",languageList[i]);
-										}
-										else {
-											mismatchedFactionText += clientFaction.first + " (extra)";
-										}
-									}
-								}
-
-								if(mismatchedFactionText != "") {
-									if(mismatchedFactionTextList.empty() == false) {
-										if(mismatchedFactionText != "") {
-											mismatchedFactionText += ".";
-											mismatchedFactionTextList.push_back(mismatchedFactionText);
-										}
-										for(unsigned int splitIdx = 0; splitIdx < mismatchedFactionTextList.size(); ++splitIdx) {
-											clientInterface->sendTextMessage(mismatchedFactionTextList[splitIdx],-1,localEcho,languageList[i]);
-										}
-									}
-									else {
-										mismatchedFactionText += ".";
-										clientInterface->sendTextMessage(mismatchedFactionText,-1,localEcho,languageList[i]);
-									}
-								}
-            		    	}
-
-            				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-            				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-                        }
-                    }
-
-                    updateDataSynchDetailText = false;
-                    labelDataSynchInfo.setText(labelSynch);
-                }
-                else {
-                    labelDataSynchInfo.setText("");
-                }
-            }
-
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-            if(clientInterface->getAllowGameDataSynchCheck() == true &&
-               clientInterface->getNetworkGameDataSynchCheckOk() == false) {
-                label = label + " -synch mismatch for:";
-
-                if(clientInterface->getNetworkGameDataSynchCheckOkMap() == false) {
-                    label = label + " map";
-
-                    if(updateDataSynchDetailText == true &&
-                    	clientInterface->getReceivedDataSynchCheck() &&
-                    	lastMapDataSynchError != "map CRC mismatch, " + listBoxMap.getSelectedItem()) {
-                    	lastMapDataSynchError = "map CRC mismatch, " + listBoxMap.getSelectedItem();
-                    	clientInterface->sendTextMessage(lastMapDataSynchError,-1,true, "");
-                    }
-                }
-
-    			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-    			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-                if(clientInterface->getNetworkGameDataSynchCheckOkTile() == false) {
-                    label = label + " tile";
-                    if(updateDataSynchDetailText == true &&
-                    	clientInterface->getReceivedDataSynchCheck() &&
-                    	lastTileDataSynchError != "tile CRC mismatch, " + listBoxTileset.getSelectedItem()) {
-                    	lastTileDataSynchError = "tile CRC mismatch, " + listBoxTileset.getSelectedItem();
-                    	clientInterface->sendTextMessage(lastTileDataSynchError,-1,true,"");
-                    }
-                }
-
-    			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-    			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-                if(clientInterface->getNetworkGameDataSynchCheckOkTech() == false) {
-                    label = label + " techtree";
-
-                    if(updateDataSynchDetailText == true &&
-                    	clientInterface->getReceivedDataSynchCheck()) {
-
-                    	string report = clientInterface->getNetworkGameDataSynchCheckTechMismatchReport();
-						if(lastTechtreeDataSynchError != "techtree CRC mismatch" + report) {
-							lastTechtreeDataSynchError = "techtree CRC mismatch" + report;
-
-							if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] report: %s\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,report.c_str());
-
-							clientInterface->sendTextMessage("techtree CRC mismatch",-1,true,"");
-							vector<string> reportLineTokens;
-							Tokenize(report,reportLineTokens,"\n");
-							for(int reportLine = 0; reportLine < (int)reportLineTokens.size(); ++reportLine) {
-								clientInterface->sendTextMessage(reportLineTokens[reportLine],-1,true,"");
-							}
-						}
-                    }
-                }
-
-    			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-    			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-                if(clientInterface->getReceivedDataSynchCheck() == true) {
-                	updateDataSynchDetailText = false;
-                }
-            }
-            else if(clientInterface->getAllowGameDataSynchCheck() == true) {
-                label += " - data synch is ok";
-            }
-
-            labelStatus.setText(label);
-
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-		}
-		else {
-		    string label = lang.getString("ConnectedToServer");
-
-            if(!clientInterface->getServerName().empty()) {
-                label = label + " " + clientInterface->getServerName();
-            }
-
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-
-            if(clientInterface->getAllowGameDataSynchCheck() == true &&
-               clientInterface->getNetworkGameDataSynchCheckOk() == false) {
-                label = label + " -waiting to synch:";
-                if(clientInterface->getNetworkGameDataSynchCheckOkMap() == false) {
-                    label = label + " map";
-                }
-                if(clientInterface->getNetworkGameDataSynchCheckOkTile() == false) {
-                    label = label + " tile";
-                }
-                if(clientInterface->getNetworkGameDataSynchCheckOkTech() == false) {
-                    label = label + " techtree";
-                }
-            }
-            else if(clientInterface->getAllowGameDataSynchCheck() == true)
+          }
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("Temp files path [%s]\n", tempFilePath.c_str ());
+
+          ftpClientThread = new FTPClientThread (portNumber, serverUrl,
+                                                 mapsPath, tilesetsPath,
+                                                 techtreesPath, scenariosPath,
+                                                 this, fileArchiveExtension,
+                                                 fileArchiveExtractCommand,
+                                                 fileArchiveExtractCommandParameters,
+                                                 fileArchiveExtractCommandSuccessResult,
+                                                 tempFilePath);
+          ftpClientThread->start ();
+
+          Lang & lang = Lang::getInstance ();
+          const
+            vector <
+            string >
+            languageList =
+            clientInterface->
+            getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+          for (unsigned int i = 0; i < languageList.size (); ++i)
+          {
+            char
+              szMsg[8096] = "";
+            if (lang.hasString ("CancelDownloadsMsg", languageList[i]) ==
+                true)
             {
-                label += " - data synch is ok";
+              snprintf (szMsg, 8096,
+                        lang.getString ("CancelDownloadsMsg",
+                                        languageList[i]).c_str (),
+                        getHumanPlayerName ().c_str ());
+            }
+            else
+            {
+              snprintf (szMsg, 8096,
+                        "Player: %s cancelled all file downloads.",
+                        getHumanPlayerName ().c_str ());
+            }
+            clientInterface->sendTextMessage (szMsg, -1,
+                                              lang.isLanguageLocal
+                                              (languageList[i]),
+                                              languageList[i]);
+          }
+        }
+      }
+      else if (buttonDisconnect.mouseClick (x, y))
+      {
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                    "In [%s::%s Line %d]\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__);
+
+        disconnectFromServer ();
+        networkManager.end ();
+        returnToJoinMenu ();
+        return;
+      }
+
+      if (initialSettingsReceivedFromServer == false)
+      {
+        return;
+      }
+
+      if (activeInputLabel != NULL
+          && activeInputLabel->mouseClick (x, y) == false)
+      {
+        setActiveInputLabel (NULL);
+      }
+
+// Only allow changes after we get game settings from the server
+      if (clientInterface != NULL && clientInterface->isConnected () == true)
+      {
+        int
+          myCurrentIndex = -1;
+        for (int i = 0; i < GameConstants::maxPlayers; ++i)
+        {                       // find my current index by looking at editable listBoxes
+          if (                  //listBoxFactions[i].getEditable() &&
+               clientInterface->
+               getGameSettings ()->getStartLocationIndex (clientInterface->
+                                                          getGameSettings
+                                                          ()->getThisFactionIndex
+                                                          ()) == i)
+          {
+            myCurrentIndex = i;
+          }
+        }
+
+//printf("myCurrentIndex = %d thisFactionIndex = %d\n",myCurrentIndex,clientInterface->getGameSettings()->getThisFactionIndex());
+
+        if (myCurrentIndex != -1)
+          for (int i = 0; i < GameConstants::maxPlayers; ++i)
+          {
+            if (listBoxFactions[i].getEditable () &&
+                clientInterface->
+                getGameSettings ()->getStartLocationIndex (clientInterface->
+                                                           getGameSettings
+                                                           ()->getThisFactionIndex
+                                                           ()) == i)
+            {
+              if (listBoxFactions[i].mouseClick
+                  (x, y, advanceToItemStartingWith))
+              {
+                soundRenderer.playFx (coreData.getClickSoundA ());
+                ClientInterface *
+                  clientInterface =
+                  NetworkManager::getInstance ().getClientInterface ();
+                if (clientInterface->isConnected ())
+                {
+                  clientInterface->setGameSettingsReceived (false);
+                  clientInterface->
+                    sendSwitchSetupRequest (listBoxFactions[i].getSelectedItem
+                                            (), i, -1,
+                                            listBoxTeams
+                                            [i].getSelectedItemIndex (),
+                                            getHumanPlayerName (),
+                                            getNetworkPlayerStatus (),
+                                            switchSetupRequestFlagType,
+                                            lang.getLanguage ());
+                  switchSetupRequestFlagType = ssrft_None;
+                  noReceiveTimer = time (NULL);
+                }
+                break;
+              }
+            }
+            if (listBoxTeams[i].getEditable () &&
+                clientInterface->
+                getGameSettings ()->getStartLocationIndex (clientInterface->
+                                                           getGameSettings
+                                                           ()->getThisFactionIndex
+                                                           ()) == i)
+            {
+              if (listBoxTeams[i].mouseClick (x, y))
+              {
+                soundRenderer.playFx (coreData.getClickSoundA ());
+                if (clientInterface->isConnected ())
+                {
+                  clientInterface->setGameSettingsReceived (false);
+                  clientInterface->
+                    sendSwitchSetupRequest (listBoxFactions[i].getSelectedItem
+                                            (), i, -1,
+                                            listBoxTeams
+                                            [i].getSelectedItemIndex (),
+                                            getHumanPlayerName (),
+                                            getNetworkPlayerStatus (),
+                                            switchSetupRequestFlagType,
+                                            lang.getLanguage ());
+                  switchSetupRequestFlagType = ssrft_None;
+                }
+                break;
+              }
             }
 
-            labelStatus.setText(label);
-		}
+            bool canGrabSlot = false;
+            ClientInterface *
+              clientInterface = networkManager.getClientInterface ();
+            if (clientInterface != NULL
+                && clientInterface->getJoinGameInProgress () == true)
+            {
+              canGrabSlot =
+                ((listBoxControls[i].getSelectedItemIndex () == ctNetwork
+                  && labelNetStatus[i].getText () ==
+                  GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME)
+                 || (listBoxControls[i].getSelectedItemIndex () != ctHuman
+                     && listBoxControls[i].getSelectedItemIndex () != ctClosed
+                     && listBoxControls[i].getSelectedItemIndex () !=
+                     ctNetwork));
+            }
+            else
+            {
+              canGrabSlot =
+                (listBoxControls[i].getSelectedItemIndex () == ctNetwork
+                 && labelNetStatus[i].getText () ==
+                 GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME);
+            }
 
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-	}
-	else {
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
+            if (canGrabSlot == true)
+            {
+              if (clientInterface != NULL && i < mapInfo.players
+                  && grabSlotButton[i].mouseClick (x, y))
+              {
+//printf("Send slot switch request for slot = %d, myCurrentIndex = %d\n",i,myCurrentIndex);
 
-		if(clientInterface != NULL && clientInterface->isConnected() == true) {
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-		    clientInterface->close();
-		}
+                soundRenderer.playFx (coreData.getClickSoundB ());
+                clientInterface->setGameSettingsReceived (false);
+                settingsReceivedFromServer = false;
 
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+                if (SystemFlags::getSystemSettingType
+                    (SystemFlags::debugSystem).enabled)
+                  SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                            "In [%s::%s Line %d] sending a switchSlot request from %d to %d\n",
+                                            extractFileFromDirectoryPath
+                                            (__FILE__).c_str (), __FUNCTION__,
+                                            __LINE__,
+                                            clientInterface->getGameSettings
+                                            ()->getThisFactionIndex (), i);
 
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-		returnToJoinMenu();
-		return;
-	}
+//printf("Switch slot from %d to %d\n",myCurrentIndex,i);
 
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+                string
+                  desiredFactionName =
+                  listBoxFactions[myCurrentIndex].getSelectedItem ();
+                int
+                  desiredTeamIndex =
+                  listBoxTeams[myCurrentIndex].getSelectedItemIndex ();
+                if (checkBoxScenario.getValue () == true)
+                {
+                  desiredFactionName = listBoxFactions[i].getSelectedItem ();
+                  desiredTeamIndex = listBoxTeams[i].getSelectedItemIndex ();
+                }
 
-	//process network messages
-	if(clientInterface != NULL && clientInterface->isConnected()) {
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+//printf("Sending switch slot request to server...\n");
 
-		try {
-			if(clientInterface->getGameSettingsReceived() && validDisplayedGamesettings &&
-					lastGameSettingsReceivedCount != clientInterface->getGameSettingsReceivedCount()) {
-				lastGameSettingsReceivedCount = clientInterface->getGameSettingsReceivedCount();
-				bool errorOnMissingData = (clientInterface->getAllowGameDataSynchCheck() == false);
+                clientInterface->sendSwitchSetupRequest (desiredFactionName,
+                                                         myCurrentIndex,
+                                                         i,
+                                                         desiredTeamIndex,
+                                                         getHumanPlayerName
+                                                         (),
+                                                         getNetworkPlayerStatus
+                                                         (),
+                                                         switchSetupRequestFlagType,
+                                                         lang.getLanguage ());
+                labelPlayerNames[myCurrentIndex].setText ("");
+                labelPlayerNames[i].setText ("");
+                switchSetupRequestFlagType = ssrft_None;
+                break;
+              }
+            }
 
-				const GameSettings *receivedGameSettings= clientInterface->getGameSettings();
+            if (labelPlayerNames[i].mouseClick (x, y)
+                && (activeInputLabel != &labelPlayerNames[i]))
+            {
+              if (clientInterface != NULL
+                  && i == clientInterface->getPlayerIndex ())
+              {
+                setActiveInputLabel (&labelPlayerNames[i]);
+              }
+            }
+          }
 
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+        if (listBoxPlayerStatus.mouseClick (x, y))
+        {
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                      "In [%s::%s Line %d]\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__);
+          soundRenderer.playFx (coreData.getClickSoundC ());
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                      "In [%s::%s Line %d]\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__);
 
-				//printf("Menu got new settings thisfactionindex = %d startlocation: %d control = %d\n",displayedGamesettings.getThisFactionIndex(),clientInterface->getGameSettings()->getStartLocationIndex(clientInterface->getGameSettings()->getThisFactionIndex()),displayedGamesettings.getFactionControl(clientInterface->getGameSettings()->getThisFactionIndex()));
-				if ( difftime((long int)time(NULL),noReceiveTimer) < 3 || difftime((long int)time(NULL),broadcastServerSettingsDelayTimer) < HEADLESSSERVER_BROADCAST_SETTINGS_SECONDS){
-					// copy my current settings in UI to displayedSettings;
-					loadGameSettings(&displayedGamesettings);
+          if (getNetworkPlayerStatus () == npst_PickSettings)
+          {
+            listBoxPlayerStatus.setTextColor (Vec3f (1.0f, 0.0f, 0.0f));
+            listBoxPlayerStatus.setLighted (true);
+          }
+          else if (getNetworkPlayerStatus () == npst_BeRightBack)
+          {
+            listBoxPlayerStatus.setTextColor (Vec3f (1.0f, 1.0f, 0.0f));
+            listBoxPlayerStatus.setLighted (true);
+          }
+          else if (getNetworkPlayerStatus () == npst_Ready)
+          {
+            listBoxPlayerStatus.setTextColor (Vec3f (0.0f, 1.0f, 0.0f));
+            listBoxPlayerStatus.setLighted (false);
+          }
 
-					if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-					if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+          ClientInterface *
+            clientInterface =
+            NetworkManager::getInstance ().getClientInterface ();
+          if (clientInterface != NULL && clientInterface->isConnected ())
+          {
+            clientInterface->setGameSettingsReceived (false);
+            clientInterface->sendSwitchSetupRequest (listBoxFactions
+                                                     [clientInterface->
+                                                      getPlayerIndex ()].
+                                                     getSelectedItem (),
+                                                     clientInterface->
+                                                     getPlayerIndex (), -1,
+                                                     listBoxTeams
+                                                     [clientInterface->getPlayerIndex
+                                                      ()].getSelectedItemIndex
+                                                     (),
+                                                     getHumanPlayerName (),
+                                                     getNetworkPlayerStatus
+                                                     (),
+                                                     switchSetupRequestFlagType,
+                                                     lang.getLanguage ());
+            switchSetupRequestFlagType = ssrft_None;
+          }
+        }
 
-					// check if there are any changed fields from others clients
-					if(isHeadlessAdmin()){
-						//printf("I am headless admin and will restore only some parts\n");
-						// only copy those parts which are editable by normal clients
-						for (int i=0;i<receivedGameSettings->getFactionCount();i++){
-							if(displayedGamesettings.getFactionControl(i)==ctNetwork){
-								if(originalGamesettings.getTeam(i)==displayedGamesettings.getTeam(i)){
-									displayedGamesettings.setTeam(i,receivedGameSettings->getTeam(i));
-									originalGamesettings.setTeam(i,receivedGameSettings->getTeam(i));
-								}
-								if(originalGamesettings.getFactionTypeName(i)==displayedGamesettings.getFactionTypeName(i)){
-									displayedGamesettings.setFactionTypeName(i,receivedGameSettings->getFactionTypeName(i));
-									originalGamesettings.setFactionTypeName(i,receivedGameSettings->getFactionTypeName(i));
-								}
-								displayedGamesettings.setNetworkPlayerGameStatus(i,receivedGameSettings->getNetworkPlayerGameStatus(i));
-								originalGamesettings.setNetworkPlayerGameStatus(i,receivedGameSettings->getNetworkPlayerGameStatus(i));
-								displayedGamesettings.setNetworkPlayerName(i,receivedGameSettings->getNetworkPlayerName(i));
-								originalGamesettings.setNetworkPlayerName(i,receivedGameSettings->getNetworkPlayerName(i));
-							}
-						}
-					}
-					else{
-						//printf("I am client and restore everything but not my line\n");
-						// copy all received fields just not those which are editable for normal client
-						//store my changes
-						int i=clientInterface->getPlayerIndex();
-						int team=displayedGamesettings.getTeam(i);
-						string faction=displayedGamesettings.getFactionTypeName(i);
-						int status=displayedGamesettings.getNetworkPlayerGameStatus(i);
-						string networkPlayerName=displayedGamesettings.getNetworkPlayerName(i);
-						displayedGamesettings=*receivedGameSettings;
-						originalGamesettings=*receivedGameSettings;
+        if (isHeadlessAdmin () == true)
+        {
+//printf("#1 admin key [%d] client key [%d]\n",settings->getMasterserver_admin(),clientInterface->getSessionKey());
+          mouseClickAdmin (x, y, mouseButton, advanceToItemStartingWith);
+        }
+        else if (clientInterface != NULL
+                 && clientInterface->getJoinGameInProgress () == true)
+        {
+          if (buttonPlayNow.mouseClick (x, y) && buttonPlayNow.getEnabled ())
+          {
+            if (SystemFlags::VERBOSE_MODE_ENABLED)
+              printf ("In [%s::%s Line %d]\n",
+                      extractFileFromDirectoryPath (__FILE__).c_str (),
+                      __FUNCTION__, __LINE__);
+            if (SystemFlags::
+                getSystemSettingType (SystemFlags::debugSystem).enabled)
+              SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                        "In [%s::%s Line %d]\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__);
 
-						displayedGamesettings.setTeam(i,team);
-						originalGamesettings.setTeam(i,team);
-						displayedGamesettings.setFactionTypeName(i,faction);
-						originalGamesettings.setFactionTypeName(i,faction);
-						displayedGamesettings.setNetworkPlayerGameStatus(i,status);
-						originalGamesettings.setNetworkPlayerGameStatus(i,status);
-						displayedGamesettings.setNetworkPlayerName(i,networkPlayerName);
-						originalGamesettings.setNetworkPlayerName(i,networkPlayerName);
+            uint32 tilesetCRC = lastCheckedCRCTilesetValue;
+            uint32 techCRC = lastCheckedCRCTechtreeValue;
+            uint32 mapCRC = lastCheckedCRCMapValue;
+            const GameSettings *
+              gameSettings = clientInterface->getGameSettings ();
 
-					}
+            bool
+              dataSynchMismatch =
+              ((mapCRC != 0 && mapCRC != gameSettings->getMapCRC ())
+               || (tilesetCRC != 0
+                   && tilesetCRC != gameSettings->getTilesetCRC ())
+               || (techCRC != 0 && techCRC != gameSettings->getTechCRC ()));
+            if (dataSynchMismatch == false)
+            {
+              PlayNow (true);
+              return;
+            }
+            else
+            {
+              showMessageBox
+                ("You cannot start the game because\none or more clients do not have the same game data!",
+                 "Data Mismatch Error", false);
+            }
+          }
+        }
+      }
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s Line %d]\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__,
+                                  __LINE__);
+    }
 
-					if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-					if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+    bool MenuStateConnectedGame::isHeadlessAdmin ()
+    {
+      bool result = false;
 
-					setupUIFromGameSettings(&displayedGamesettings, errorOnMissingData);
-				}
-				else {
-					// do nothing
-					if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-					if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+      ClientInterface *
+        clientInterface =
+        NetworkManager::getInstance ().getClientInterface ();
+      if (clientInterface != NULL && clientInterface->isConnected ())
+      {
+        const GameSettings *
+          settings = clientInterface->getGameSettings ();
+        if (settings != NULL)
+        {
+//printf("#1 admin key [%d] client key [%d]\n",settings->getMasterserver_admin(),clientInterface->getSessionKey());
 
-					setupUIFromGameSettings(&displayedGamesettings, errorOnMissingData);
-				}
+          if (settings->getMasterserver_admin () ==
+              clientInterface->getSessionKey ())
+          {
+            result = true;
+          }
+        }
+      }
 
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+      return result;
+    }
 
-				broadCastGameSettingsToHeadlessServer(needToBroadcastServerSettings);
-			}
+    void
+    MenuStateConnectedGame::broadCastGameSettingsToHeadlessServer (bool
+                                                                   forceNow)
+    {
+      if (isHeadlessAdmin () == false)
+      {
+        return;
+      }
 
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+      if (forceNow == true ||
+          ((needToBroadcastServerSettings == true)
+           &&
+           (difftime
+            ((long int) time (NULL),
+             broadcastServerSettingsDelayTimer) >=
+            HEADLESSSERVER_BROADCAST_SETTINGS_SECONDS)))
+      {
+//printf("In [%s:%s] Line: %d forceNow = %d broadcastServerSettingsDelayTimer = " MG_SIZE_T_SPECIFIER ", now =" MG_SIZE_T_SPECIFIER "\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,forceNow,broadcastServerSettingsDelayTimer,time(NULL));
 
-			// check if we are joining an in progress game
-			if( clientInterface->getJoinGameInProgress() == true &&
-				clientInterface->getJoinGameInProgressLaunch() == true &&
-			    clientInterface->getReadyForInGameJoin() == true &&
-			   ftpClientThread != NULL) {
+        needToBroadcastServerSettings = false;
+        broadcastServerSettingsDelayTimer = time (NULL);
 
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+        NetworkManager & networkManager = NetworkManager::getInstance ();
+        ClientInterface *
+          clientInterface = networkManager.getClientInterface ();
 
-				MutexSafeWrapper safeMutexFTPProgress((ftpClientThread != NULL ? ftpClientThread->getProgressMutex() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-				if(readyToJoinInProgressGame == false) {
-					if(getInProgressSavedGameFromFTPServer == "") {
+        for (int i = 0; i < mapInfo.players; ++i)
+        {
+          if (listBoxControls[i].getSelectedItemIndex () ==
+              ctNetworkUnassigned)
+          {
+            listBoxControls[i].setSelectedItemIndex (ctNetwork);
+          }
+        }
+        for (int i = mapInfo.players; i < GameConstants::maxPlayers; ++i)
+        {
+          if (listBoxControls[i].getSelectedItemIndex () == ctNetwork)
+          {
+            listBoxControls[i].setSelectedItemIndex (ctNetworkUnassigned);
+          }
+        }
 
-						getInProgressSavedGameFromFTPServerInProgress = true;
-						ftpClientThread->addTempFileToRequests(
-								GameConstants::saveNetworkGameFileClientCompressed,
-								GameConstants::saveNetworkGameFileServerCompressed);
+        if (validDisplayedGamesettings)
+        {
+          loadGameSettings (&displayedGamesettings);
 
-						getInProgressSavedGameFromFTPServer = GameConstants::saveNetworkGameFileServerCompressed;
-						fileFTPProgressList[getInProgressSavedGameFromFTPServer] = pair<int,string>(0,"");
-					}
-					safeMutexFTPProgress.ReleaseLock();
-				}
-				else {
-					safeMutexFTPProgress.ReleaseLock();
 
-					string saveGameFile = "temp/" + string(GameConstants::saveNetworkGameFileClient);
-					if(getGameReadWritePath(GameConstants::path_logs_CacheLookupKey) != "") {
-						saveGameFile = getGameReadWritePath(GameConstants::path_logs_CacheLookupKey) + saveGameFile;
-					}
-					else {
-						string userData = Config::getInstance().getString("UserData_Root","");
-						if(userData != "") {
-							endPathWithSlash(userData);
-						}
-						saveGameFile = userData + saveGameFile;
-					}
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("broadcast settings:\n%s\n",
+                    displayedGamesettings.toString ().c_str ());
 
-					//printf("Loading saved game file [%s]\n",saveGameFile.c_str());
+//printf("Client sending map [%s] admin key [%d]\n",gameSettings.getMap().c_str(),gameSettings.getMasterserver_admin());
+//printf("sending Settings map filter=%d\n",displayedGamesettings.getMapFilter());
+          clientInterface->broadcastGameSetup (&displayedGamesettings);
+          noReceiveTimer = time (NULL);
+        }
+      }
+    }
 
-					GameSettings gameSettings = *clientInterface->getGameSettings();
-					loadGameSettings(&gameSettings);
+    void
+    MenuStateConnectedGame::updateResourceMultiplier (const int index)
+    {
+      ControlType
+        ct =
+        static_cast < ControlType >
+        (listBoxControls[index].getSelectedItemIndex ());
+      if (ct == ctCpuEasy || ct == ctNetworkCpuEasy)
+      {
+        listBoxRMultiplier[index].setSelectedItem (floatToStr
+                                                   (GameConstants::
+                                                    easyMultiplier, 1));
+        listBoxRMultiplier[index].setEnabled (true);
+      }
+      else if (ct == ctCpu || ct == ctNetworkCpu)
+      {
+        listBoxRMultiplier[index].setSelectedItem (floatToStr
+                                                   (GameConstants::
+                                                    normalMultiplier, 1));
+        listBoxRMultiplier[index].setEnabled (true);
+      }
+      else if (ct == ctCpuUltra || ct == ctNetworkCpuUltra)
+      {
+        listBoxRMultiplier[index].setSelectedItem (floatToStr
+                                                   (GameConstants::
+                                                    ultraMultiplier, 1));
+        listBoxRMultiplier[index].setEnabled (true);
+      }
+      else if (ct == ctCpuMega || ct == ctNetworkCpuMega)
+      {
+        listBoxRMultiplier[index].setSelectedItem (floatToStr
+                                                   (GameConstants::
+                                                    megaMultiplier, 1));
+        listBoxRMultiplier[index].setEnabled (true);
+      }
+      else
+      {
+        listBoxRMultiplier[index].setSelectedItem (floatToStr
+                                                   (GameConstants::
+                                                    normalMultiplier, 1));
+        listBoxRMultiplier[index].setEnabled (false);
+      }
 
-					if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-					if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+      listBoxRMultiplier[index].
+        setEditable (listBoxRMultiplier[index].getEnabled ());
+      listBoxRMultiplier[index].
+        setVisible (listBoxRMultiplier[index].getEnabled ());
+    }
 
-					Game::loadGame(saveGameFile,program,false,&gameSettings);
-					return;
-				}
-			}
+    void
+    MenuStateConnectedGame::mouseClickAdmin (int x, int y,
+                                             MouseButton mouseButton,
+                                             string advanceToItemStartingWith)
+    {
 
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+      try
+      {
+        int
+          oldListBoxMapfilterIndex = listBoxMapFilter.getSelectedItemIndex ();
+        if (buttonPlayNow.mouseClick (x, y) && buttonPlayNow.getEnabled ())
+        {
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("In [%s::%s Line %d]\n",
+                    extractFileFromDirectoryPath (__FILE__).c_str (),
+                    __FUNCTION__, __LINE__);
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                      "In [%s::%s Line %d]\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__);
 
-			//update lobby
-			clientInterface= NetworkManager::getInstance().getClientInterface();
-			if(clientInterface != NULL && clientInterface->isConnected()) {
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+          PlayNow (true);
+          return;
+        }
+        else if (buttonRestoreLastSettings.mouseClick (x, y)
+                 && buttonRestoreLastSettings.getEnabled ())
+        {
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("In [%s::%s Line %d]\n",
+                    extractFileFromDirectoryPath (__FILE__).c_str (),
+                    __FUNCTION__, __LINE__);
 
-				clientInterface->updateLobby();
+          CoreData & coreData = CoreData::getInstance ();
+          SoundRenderer & soundRenderer = SoundRenderer::getInstance ();
+          soundRenderer.playFx (coreData.getClickSoundB ());
 
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-			}
+          RestoreLastGameSettings ();
+        }
+        else if (checkBoxAllowNativeLanguageTechtree.mouseClick (x, y))
+        {
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("In [%s::%s Line %d]\n",
+                    extractFileFromDirectoryPath (__FILE__).c_str (),
+                    __FUNCTION__, __LINE__);
+          needToBroadcastServerSettings = true;
+          broadcastServerSettingsDelayTimer = time (NULL);
+        }
+        else if (listBoxMap.mouseClick (x, y, advanceToItemStartingWith))
+        {
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("In [%s::%s Line %d]\n",
+                    extractFileFromDirectoryPath (__FILE__).c_str (),
+                    __FUNCTION__, __LINE__);
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem, "%s\n",
+                                      getCurrentMapFile ().c_str ());
 
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+          if (loadMapInfo
+              (Config::getMapPath (getCurrentMapFile (), "", false), &mapInfo,
+               true) == true)
+          {
+            labelMapInfo.setText (mapInfo.desc);
+          }
+          else
+          {
+            labelMapInfo.setText ("???");
+          }
 
-			clientInterface= NetworkManager::getInstance().getClientInterface();
-			if(clientInterface != NULL && clientInterface->isConnected()) {
-				if(	initialSettingsReceivedFromServer == true &&
-					clientInterface->getIntroDone() == true &&
-					(switchSetupRequestFlagType & ssrft_NetworkPlayerName) == ssrft_NetworkPlayerName) {
-					if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] getHumanPlayerName() = [%s], clientInterface->getGameSettings()->getThisFactionIndex() = %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,getHumanPlayerName().c_str(),clientInterface->getGameSettings()->getThisFactionIndex());
-					clientInterface->sendSwitchSetupRequest(
-							"",
-							clientInterface->getPlayerIndex(),
-							-1,
-							-1,
-							getHumanPlayerName(),
-							getNetworkPlayerStatus(),
-							switchSetupRequestFlagType,
-							lang.getLanguage());
+          needToBroadcastServerSettings = true;
+          broadcastServerSettingsDelayTimer = time (NULL);
+        }
+        else if (listBoxFogOfWar.mouseClick (x, y))
+        {
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("In [%s::%s Line %d]\n",
+                    extractFileFromDirectoryPath (__FILE__).c_str (),
+                    __FUNCTION__, __LINE__);
+          needToBroadcastServerSettings = true;
+          broadcastServerSettingsDelayTimer = time (NULL);
+        }
+        else if (checkBoxAllowObservers.mouseClick (x, y))
+        {
+#ifdef DEBUG
+          PRINT_DEBUG ("In [%s::%s Line %d]\n",
+                       extractFileFromDirectoryPath (__FILE__).c_str (),
+                       __FUNCTION__, __LINE__);
+#endif
+          needToBroadcastServerSettings = true;
+          broadcastServerSettingsDelayTimer = time (NULL);
+        }
+        else if (checkBoxEnableSwitchTeamMode.mouseClick (x, y))
+        {
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("In [%s::%s Line %d]\n",
+                    extractFileFromDirectoryPath (__FILE__).c_str (),
+                    __FUNCTION__, __LINE__);
+          needToBroadcastServerSettings = true;
+          broadcastServerSettingsDelayTimer = time (NULL);
+        }
+        else if (listBoxAISwitchTeamAcceptPercent.getEnabled ()
+                 && listBoxAISwitchTeamAcceptPercent.mouseClick (x, y))
+        {
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("In [%s::%s Line %d]\n",
+                    extractFileFromDirectoryPath (__FILE__).c_str (),
+                    __FUNCTION__, __LINE__);
+          needToBroadcastServerSettings = true;
+          broadcastServerSettingsDelayTimer = time (NULL);
+        }
+        else if (listBoxFallbackCpuMultiplier.getEnabled ()
+                 && listBoxFallbackCpuMultiplier.mouseClick (x, y))
+        {
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("In [%s::%s Line %d]\n",
+                    extractFileFromDirectoryPath (__FILE__).c_str (),
+                    __FUNCTION__, __LINE__);
+          needToBroadcastServerSettings = true;
+          broadcastServerSettingsDelayTimer = time (NULL);
+        }
+        else if (listBoxTileset.mouseClick (x, y, advanceToItemStartingWith))
+        {
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("In [%s::%s Line %d]\n",
+                    extractFileFromDirectoryPath (__FILE__).c_str (),
+                    __FUNCTION__, __LINE__);
+          needToBroadcastServerSettings = true;
+          broadcastServerSettingsDelayTimer = time (NULL);
+        }
 
-					switchSetupRequestFlagType=ssrft_None;
-				}
+        else if (listBoxMapFilter.mouseClick (x, y))
+        {
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem, "%s\n",
+                                      getCurrentMapFile ().c_str ());
+          switchToNextMapGroup (listBoxMapFilter.getSelectedItemIndex () -
+                                oldListBoxMapfilterIndex);
+          if (loadMapInfo
+              (Config::getMapPath (getCurrentMapFile (), "", false), &mapInfo,
+               true) == true)
+          {
+            labelMapInfo.setText (mapInfo.desc);
+          }
+          else
+          {
+            labelMapInfo.setText ("???");
+          }
+          needToBroadcastServerSettings = true;
+          broadcastServerSettingsDelayTimer = time (NULL);
+        }
+        else if (listBoxTechTree.mouseClick (x, y, advanceToItemStartingWith))
+        {
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("In [%s::%s Line %d]\n",
+                    extractFileFromDirectoryPath (__FILE__).c_str (),
+                    __FUNCTION__, __LINE__);
+          reloadFactions (false, "");
+          needToBroadcastServerSettings = true;
+          broadcastServerSettingsDelayTimer = time (NULL);
+        }
 
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+        else if (checkBoxAllowTeamUnitSharing.mouseClick (x, y))
+        {
+          needToBroadcastServerSettings = true;
+          broadcastServerSettingsDelayTimer = time (NULL);
+        }
+        else if (checkBoxAllowTeamResourceSharing.mouseClick (x, y))
+        {
+          needToBroadcastServerSettings = true;
+          broadcastServerSettingsDelayTimer = time (NULL);
+        }
+        else
+        {
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("In [%s::%s Line %d]\n",
+                    extractFileFromDirectoryPath (__FILE__).c_str (),
+                    __FUNCTION__, __LINE__);
 
-				//intro
-				if(clientInterface->getIntroDone()) {
-					if(newLabelConnectionInfo != labelInfo.getText()) {
-						if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d]\n",__FILE__,__FUNCTION__,__LINE__);
-						labelInfo.setText(newLabelConnectionInfo);
-					}
-				}
+          NetworkManager & networkManager = NetworkManager::getInstance ();
+          ClientInterface *
+            clientInterface = networkManager.getClientInterface ();
 
-				//launch
-				if(clientInterface->getLaunchGame()) {
-					if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
+          for (int i = 0; i < mapInfo.players; ++i)
+          {
+// set multiplier
+            if (listBoxRMultiplier[i].mouseClick (x, y))
+            {
+              if (SystemFlags::VERBOSE_MODE_ENABLED)
+                printf ("In [%s::%s Line %d]\n",
+                        extractFileFromDirectoryPath (__FILE__).c_str (),
+                        __FUNCTION__, __LINE__);
+//broadCastGameSettingsToMasterserver();
+              needToBroadcastServerSettings = true;
+              broadcastServerSettingsDelayTimer = time (NULL);
+            }
 
-					assert(clientInterface != NULL);
+//ensure that only 1 human player is present
+            if (clientInterface != NULL
+                && clientInterface->getGameSettings () != NULL
+                && clientInterface->
+                getGameSettings ()->getStartLocationIndex (clientInterface->
+                                                           getGameSettings
+                                                           ()->getThisFactionIndex
+                                                           ()) != i
+                && listBoxControls[i].mouseClick (x, y))
+            {
+              if (SystemFlags::VERBOSE_MODE_ENABLED)
+                printf ("In [%s::%s Line %d]\n",
+                        extractFileFromDirectoryPath (__FILE__).c_str (),
+                        __FUNCTION__, __LINE__);
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugSystem).enabled)
+                SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                          "In [%s::%s Line %d]\n",
+                                          extractFileFromDirectoryPath
+                                          (__FILE__).c_str (), __FUNCTION__,
+                                          __LINE__);
 
-					if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
+//!! this must be done two times!""
+              if (listBoxControls[i].getSelectedItemIndex () ==
+                  ctNetworkUnassigned)
+              {
+                listBoxControls[i].mouseClick (x, y);
+              }
+              if ((isHeadlessAdmin () == true)
+                  && (listBoxControls[i].getSelectedItemIndex () == ctHuman))
+              {
+                listBoxControls[i].mouseClick (x, y);
+              }
+//!! this must be done two times!""
+              if (listBoxControls[i].getSelectedItemIndex () ==
+                  ctNetworkUnassigned)
+              {
+                listBoxControls[i].mouseClick (x, y);
+              }
 
-					if(modHttpServerThread != NULL) {
-						if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-						if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-						modHttpServerThread->setSimpleTaskInterfaceValid(false);
-						modHttpServerThread->signalQuit();
+              updateResourceMultiplier (i);
 
-						if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-						if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-						if( modHttpServerThread->canShutdown(true) == true &&
-							modHttpServerThread->shutdownAndWait() == true) {
-							delete modHttpServerThread;
-						}
-						if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d]\n",__FILE__,__FUNCTION__,__LINE__);
-						modHttpServerThread = NULL;
-					}
+              needToBroadcastServerSettings = true;
+              broadcastServerSettingsDelayTimer = time (NULL);
+            }
+            else if (clientInterface != NULL
+                     && clientInterface->
+                     getGameSettings ()->getStartLocationIndex
+                     (clientInterface->getGameSettings ()->getThisFactionIndex
+                      ()) != i
+                     && listBoxFactions[i].mouseClick (x, y,
+                                                       advanceToItemStartingWith))
+            {
+              if (SystemFlags::VERBOSE_MODE_ENABLED)
+                printf ("In [%s::%s Line %d]\n",
+                        extractFileFromDirectoryPath (__FILE__).c_str (),
+                        __FUNCTION__, __LINE__);
+// Disallow CPU players to be observers
+              if (factionFiles[listBoxFactions[i].getSelectedItemIndex ()] ==
+                  formatString (GameConstants::OBSERVER_SLOTNAME)
+                  && (listBoxControls[i].getSelectedItemIndex () == ctCpuEasy
+                      || listBoxControls[i].getSelectedItemIndex () == ctCpu
+                      || listBoxControls[i].getSelectedItemIndex () ==
+                      ctCpuUltra
+                      || listBoxControls[i].getSelectedItemIndex () ==
+                      ctCpuMega))
+              {
+                if (SystemFlags::VERBOSE_MODE_ENABLED)
+                  printf ("In [%s::%s Line %d]\n",
+                          extractFileFromDirectoryPath (__FILE__).c_str (),
+                          __FUNCTION__, __LINE__);
+                listBoxFactions[i].setSelectedItemIndex (0);
+              }
 
-					if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-					if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+              needToBroadcastServerSettings = true;
+              broadcastServerSettingsDelayTimer = time (NULL);
+            }
+            else if (clientInterface != NULL
+                     && clientInterface->
+                     getGameSettings ()->getStartLocationIndex
+                     (clientInterface->getGameSettings ()->getThisFactionIndex
+                      ()) != i && listBoxTeams[i].mouseClick (x, y))
+            {
+#ifdef DEBUG
+              PRINT_DEBUG ("In [%s::%s Line %d]\n",
+                           extractFileFromDirectoryPath (__FILE__).c_str (),
+                           __FUNCTION__, __LINE__);
+#endif
+              if (factionFiles[listBoxFactions[i].getSelectedItemIndex ()] !=
+                  formatString (GameConstants::OBSERVER_SLOTNAME))
+              {
+                if (listBoxTeams[i].getSelectedItemIndex () + 1 !=
+                    (GameConstants::maxPlayers + fpt_Observer))
+                {
+//lastSelectedTeamIndex[i] = listBoxTeams[i].getSelectedItemIndex();
+                }
+              }
 
-                    if(ftpClientThread != NULL) {
-						ftpClientThread->setCallBackObject(NULL);
-						ftpClientThread->signalQuit();
-						sleep(0);
-						if(ftpClientThread->canShutdown(true) == true &&
-								ftpClientThread->shutdownAndWait() == true) {
-							delete ftpClientThread;
-						}
-						else {
-							char szBuf[8096]="";
-							snprintf(szBuf,8096,"In [%s::%s %d] Error cannot shutdown ftpClientThread\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-							if(SystemFlags::VERBOSE_MODE_ENABLED) printf("%s",szBuf);
-							if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"%s",szBuf);
-						}
-						ftpClientThread = NULL;
-                    }
+              needToBroadcastServerSettings = true;
+              broadcastServerSettingsDelayTimer = time (NULL);
+            }
+          }
+        }
+      }
+      catch (const std::exception & ex)
+      {
+        char
+          szBuf[8096] = "";
+        snprintf (szBuf, 8096, "In [%s::%s %d]\nError detected:\n%s\n",
+                  extractFileFromDirectoryPath (__FILE__).c_str (),
+                  __FUNCTION__, __LINE__, ex.what ());
+        SystemFlags::OutputDebug (SystemFlags::debugError, szBuf);
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem, "%s", szBuf);
 
-                    if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
+        showMessageBox (szBuf, "Error", false);
+      }
 
-    				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-    				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s Line %d]\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__,
+                                  __LINE__);
+    }
 
-                    launchingNewGame = true;
+    void
+    MenuStateConnectedGame::PlayNow (bool saveGame)
+    {
+      NetworkManager & networkManager = NetworkManager::getInstance ();
+      ClientInterface *
+        clientInterface = networkManager.getClientInterface ();
 
-                    GameSettings gameSettings = *clientInterface->getGameSettings();
-                    // complete game settings with local stuff
-                    if(gameSettings.getScenario()!="")
+      GameSettings gameSettings = *clientInterface->getGameSettings ();
+      loadGameSettings (&gameSettings);
+
+      if (saveGame == true)
+      {
+        CoreData::
+          getInstance ().saveGameSettingsToFile (HEADLESS_SAVED_GAME_FILENAME,
+                                                 &gameSettings, true);
+      }
+
+      CoreData & coreData = CoreData::getInstance ();
+      SoundRenderer & soundRenderer = SoundRenderer::getInstance ();
+      soundRenderer.playFx (coreData.getClickSoundC ());
+
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s Line %d]\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__,
+                                  __LINE__);
+
+//printf("Client sending map [%s] admin key [%d]\n",gameSettings.getMap().c_str(),gameSettings.getMasterserver_admin());
+
+      if (clientInterface->getJoinGameInProgress () == true)
+      {
+        if (readyToJoinInProgressGame == false && launchingNewGame == false)
+        {
+          Lang & lang = Lang::getInstance ();
+          const
+            vector <
+            string >
+            languageList =
+            clientInterface->
+            getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+          for (unsigned int i = 0; i < languageList.size (); ++i)
+          {
+            char
+              szMsg[8096] = "";
+            if (lang.hasString ("JoinPlayerToCurrentGameLaunch",
+                                languageList[i]) == true)
+            {
+              snprintf (szMsg, 8096,
+                        lang.getString ("JoinPlayerToCurrentGameLaunch",
+                                        languageList[i]).c_str (),
+                        getHumanPlayerName ().c_str ());
+            }
+            else
+            {
+              snprintf (szMsg, 8096,
+                        "Player: %s is about to join the game, please wait...",
+                        getHumanPlayerName ().c_str ());
+            }
+            bool localEcho = lang.isLanguageLocal (languageList[i]);
+            clientInterface->sendTextMessage (szMsg, -1, localEcho,
+                                              languageList[i]);
+          }
+
+          sleep (1);
+          launchingNewGame = true;
+          clientInterface->broadcastGameStart (&gameSettings);
+        }
+        return;
+      }
+      else
+      {
+        launchingNewGame = true;
+        broadCastGameSettingsToHeadlessServer (needToBroadcastServerSettings);
+        clientInterface->broadcastGameStart (&gameSettings);
+      }
+    }
+
+    void
+    MenuStateConnectedGame::switchToNextMapGroup (const int direction)
+    {
+      int
+        i = listBoxMapFilter.getSelectedItemIndex ();
+// if there are no maps for the current selection we switch to next selection
+      while (formattedPlayerSortedMaps[i].empty ())
+      {
+        i = i + direction;
+        if (i > GameConstants::maxPlayers)
+        {
+          i = 0;
+        }
+        if (i < 0)
+        {
+          i = GameConstants::maxPlayers;
+        }
+      }
+      switchToMapGroup (i);
+    }
+
+    void
+    MenuStateConnectedGame::switchToMapGroup (int filterIndex)
+    {
+      int
+        i = filterIndex;
+      listBoxMapFilter.setSelectedItemIndex (i);
+      listBoxMap.setItems (formattedPlayerSortedMaps[i]);
+//      printf("switching map group to filter=%d mapgroup has %d maps. map=%s \n",i,
+//                      (int)formattedPlayerSortedMaps[i].size(),formattedPlayerSortedMaps[i][0].c_str());
+    }
+
+    string MenuStateConnectedGame::getCurrentMapFile ()
+    {
+      int
+        i = listBoxMapFilter.getSelectedItemIndex ();
+      int
+        mapIndex = listBoxMap.getSelectedItemIndex ();
+      if (playerSortedMaps[i].empty () == false)
+      {
+        return playerSortedMaps[i].at (mapIndex);
+      }
+      return "";
+    }
+
+    void
+    MenuStateConnectedGame::reloadFactions (bool keepExistingSelectedItem,
+                                            string scenario)
+    {
+      vector < string > results;
+      Config & config = Config::getInstance ();
+      Lang & lang = Lang::getInstance ();
+
+      string scenarioDir = Scenario::getScenarioDir (dirList, scenario);
+      vector < string > techPaths =
+        config.getPathListForType (ptTechs, scenarioDir);
+      for (int idx = 0; idx < (int) techPaths.size (); idx++)
+      {
+        string & techPath = techPaths[idx];
+        endPathWithSlash (techPath);
+
+        if (listBoxTechTree.getSelectedItemIndex () >= 0
+            && listBoxTechTree.getSelectedItemIndex () <
+            (int) techTreeFiles.size ())
+        {
+          findDirs (techPath +
+                    techTreeFiles[listBoxTechTree.getSelectedItemIndex ()] +
+                    "/factions/", results, false, false);
+        }
+        if (results.empty () == false)
+        {
+          break;
+        }
+      }
+
+      if (results.empty () == true)
+      {
+//throw megaglest_runtime_error("(2)There are no factions for the tech tree [" + techTreeFiles[listBoxTechTree.getSelectedItemIndex()] + "]");
+//showGeneralError=true;
+//generalErrorToShow = "[#2] There are no factions for the tech tree [" + techTreeFiles[listBoxTechTree.getSelectedItemIndex()] + "]";
+      }
+
+      vector < string > translatedFactionNames;
+      factionFiles = results;
+      for (int i = 0; i < (int) results.size (); ++i)
+      {
+        results[i] = formatString (results[i]);
+        string
+          translatedString =
+          techTree->getTranslatedFactionName (techTreeFiles
+                                              [listBoxTechTree.
+                                               getSelectedItemIndex ()],
+                                              factionFiles[i]);
+        if (toLower (translatedString) == toLower (results[i]))
+        {
+          translatedFactionNames.push_back (results[i]);
+        }
+        else
+        {
+          translatedFactionNames.push_back (results[i] + " (" +
+                                            translatedString + ")");
+        }
+//printf("FACTIONS i = %d results [%s]\n",i,results[i].c_str());
+
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                    "Tech [%s] has faction [%s]\n",
+                                    techTreeFiles
+                                    [listBoxTechTree.getSelectedItemIndex
+                                     ()].c_str (), results[i].c_str ());
+      }
+
+      results.push_back (formatString
+                         (GameConstants::RANDOMFACTION_SLOTNAME));
+      factionFiles.push_back (formatString
+                              (GameConstants::RANDOMFACTION_SLOTNAME));
+      translatedFactionNames.push_back ("*" +
+                                        lang.getString ("Random", "",
+                                                        true) + "*");
+
+// Add special Observer Faction
+      if (checkBoxAllowObservers.getValue () == 1)
+      {
+        results.push_back (formatString (GameConstants::OBSERVER_SLOTNAME));
+        factionFiles.push_back (formatString
+                                (GameConstants::OBSERVER_SLOTNAME));
+        translatedFactionNames.push_back ("*" +
+                                          lang.getString ("Observer", "",
+                                                          true) + "*");
+      }
+
+      for (int i = 0; i < GameConstants::maxPlayers; ++i)
+      {
+        int
+          originalIndex = listBoxFactions[i].getSelectedItemIndex ();
+        string
+          originalValue =
+          (listBoxFactions[i].getItemCount () >
+           0 ? listBoxFactions[i].getSelectedItem () : "");
+
+        listBoxFactions[i].setItems (results, translatedFactionNames);
+        if (keepExistingSelectedItem == false ||
+            (checkBoxAllowObservers.getValue () == true &&
+             originalValue ==
+             formatString (GameConstants::OBSERVER_SLOTNAME)))
+        {
+          listBoxFactions[i].setSelectedItemIndex (i % results.size ());
+
+          if (originalValue == formatString (GameConstants::OBSERVER_SLOTNAME)
+              && listBoxFactions[i].getSelectedItem () !=
+              formatString (GameConstants::OBSERVER_SLOTNAME))
+          {
+            if (listBoxTeams[i].getSelectedItem () ==
+                intToStr (GameConstants::maxPlayers + fpt_Observer))
+            {
+              listBoxTeams[i].setSelectedItem (intToStr (1));
+            }
+          }
+        }
+        else if (originalIndex < (int) results.size ())
+        {
+          listBoxFactions[i].setSelectedItemIndex (originalIndex);
+        }
+      }
+    }
+
+    void
+    MenuStateConnectedGame::loadGameSettings (GameSettings * gameSettings)
+    {
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s Line: %d\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__,
+                                  __LINE__);
+
+      int
+        factionCount = 0;
+
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s] Line: %d\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__,
+                                  __LINE__);
+
+// Test flags values
+//gameSettings->setFlagTypes1(ft1_show_map_resources);
+//
+
+      if (checkBoxScenario.getValue () == true)
+      {
+        gameSettings->setScenario (scenarioInfo.name);
+        gameSettings->setScenarioDir (Scenario::getScenarioPath
+                                      (dirList, scenarioInfo.name));
+
+        gameSettings->setDefaultResources (scenarioInfo.defaultResources);
+        gameSettings->setDefaultUnits (scenarioInfo.defaultUnits);
+        gameSettings->
+          setDefaultVictoryConditions (scenarioInfo.defaultVictoryConditions);
+      }
+      else
+      {
+        gameSettings->setScenario ("");
+        gameSettings->setScenarioDir ("");
+      }
+
+      gameSettings->setNetworkAllowNativeLanguageTechtree
+        (checkBoxAllowNativeLanguageTechtree.getValue ());
+
+      if (SystemFlags::VERBOSE_MODE_ENABLED)
+        printf
+          ("In [%s::%s Line %d] listBoxMap.getSelectedItemIndex() = %d, mapFiles.size() = "
+           MG_SIZE_T_SPECIFIER ", getCurrentMapFile() [%s]\n",
+           extractFileFromDirectoryPath (__FILE__).c_str (), __FUNCTION__,
+           __LINE__, listBoxMap.getSelectedItemIndex (), mapFiles.size (),
+           getCurrentMapFile ().c_str ());
+
+      if (listBoxMap.getSelectedItemIndex () >= 0
+          && listBoxMap.getSelectedItemIndex () < (int) mapFiles.size ())
+      {
+        gameSettings->setDescription (formatString (getCurrentMapFile ()));
+        gameSettings->setMap (getCurrentMapFile ());
+        gameSettings->setMapFilter (listBoxMapFilter.getSelectedItemIndex ());
+      }
+      else
+      {
+        Lang & lang = Lang::getInstance ();
+        NetworkManager & networkManager = NetworkManager::getInstance ();
+        ClientInterface *
+          clientInterface = networkManager.getClientInterface ();
+        const
+          vector <
+          string >
+          languageList =
+          clientInterface->
+          getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+        for (unsigned int i = 0; i < languageList.size (); ++i)
+        {
+          char
+            szMsg[8096] = "";
+          if (lang.hasString ("DataMissingMap=Player", languageList[i]) ==
+              true)
+          {
+            snprintf (szMsg, 8096,
+                      lang.getString ("DataMissingMap=Player",
+                                      languageList[i]).c_str (),
+                      getHumanPlayerName ().c_str (),
+                      listBoxMap.getSelectedItem ().c_str ());
+          }
+          else
+          {
+            snprintf (szMsg, 8096, "Player: %s is missing the map: %s",
+                      getHumanPlayerName ().c_str (),
+                      listBoxMap.getSelectedItem ().c_str ());
+          }
+          bool localEcho = lang.isLanguageLocal (languageList[i]);
+          clientInterface->sendTextMessage (szMsg, -1, localEcho,
+                                            languageList[i]);
+        }
+      }
+
+      if (listBoxTileset.getSelectedItemIndex () >= 0
+          && listBoxTileset.getSelectedItemIndex () <
+          (int) tilesetFiles.size ())
+      {
+        gameSettings->setTileset (tilesetFiles
+                                  [listBoxTileset.getSelectedItemIndex ()]);
+      }
+      else
+      {
+//printf("A loadGameSettings listBoxTileset.getSelectedItemIndex() = %d tilesetFiles.size() = %d\n",listBoxTileset.getSelectedItemIndex(),tilesetFiles.size());
+
+        Lang & lang = Lang::getInstance ();
+        NetworkManager & networkManager = NetworkManager::getInstance ();
+        ClientInterface *
+          clientInterface = networkManager.getClientInterface ();
+        const
+          vector <
+          string >
+          languageList =
+          clientInterface->
+          getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+        for (unsigned int i = 0; i < languageList.size (); ++i)
+        {
+          char
+            szMsg[8096] = "";
+          if (lang.hasString ("DataMissingTileset=Player", languageList[i]) ==
+              true)
+          {
+            snprintf (szMsg, 8096,
+                      lang.getString ("DataMissingTileset=Player",
+                                      languageList[i]).c_str (),
+                      getHumanPlayerName ().c_str (),
+                      listBoxTileset.getSelectedItem ().c_str ());
+          }
+          else
+          {
+            snprintf (szMsg, 8096, "Player: %s is missing the tileset: %s",
+                      getHumanPlayerName ().c_str (),
+                      listBoxTileset.getSelectedItem ().c_str ());
+          }
+          bool localEcho = lang.isLanguageLocal (languageList[i]);
+          clientInterface->sendTextMessage (szMsg, -1, localEcho,
+                                            languageList[i]);
+        }
+      }
+      if (listBoxTechTree.getSelectedItemIndex () >= 0
+          && listBoxTechTree.getSelectedItemIndex () <
+          (int) techTreeFiles.size ())
+      {
+        gameSettings->setTech (techTreeFiles
+                               [listBoxTechTree.getSelectedItemIndex ()]);
+      }
+      else
+      {
+        Lang & lang = Lang::getInstance ();
+        NetworkManager & networkManager = NetworkManager::getInstance ();
+        ClientInterface *
+          clientInterface = networkManager.getClientInterface ();
+        const
+          vector <
+          string >
+          languageList =
+          clientInterface->
+          getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+        for (unsigned int i = 0; i < languageList.size (); ++i)
+        {
+          char
+            szMsg[8096] = "";
+          if (lang.hasString ("DataMissingTechtree=Player",
+                              languageList[i]) == true)
+          {
+            snprintf (szMsg, 8096,
+                      lang.getString ("DataMissingTechtree=Player",
+                                      languageList[i]).c_str (),
+                      getHumanPlayerName ().c_str (),
+                      listBoxTechTree.getSelectedItem ().c_str ());
+          }
+          else
+          {
+            snprintf (szMsg, 8096, "Player: %s is missing the techtree: %s",
+                      getHumanPlayerName ().c_str (),
+                      listBoxTechTree.getSelectedItem ().c_str ());
+          }
+          bool localEcho = lang.isLanguageLocal (languageList[i]);
+          clientInterface->sendTextMessage (szMsg, -1, localEcho,
+                                            languageList[i]);
+        }
+      }
+
+      if (checkBoxScenario.getValue () == false)
+      {
+        gameSettings->setDefaultUnits (true);
+        gameSettings->setDefaultResources (true);
+        gameSettings->setDefaultVictoryConditions (true);
+      }
+
+      gameSettings->setFogOfWar (listBoxFogOfWar.getSelectedItemIndex () == 0
+                                 || listBoxFogOfWar.getSelectedItemIndex () ==
+                                 1);
+
+      gameSettings->setAllowObservers (checkBoxAllowObservers.getValue () ==
+                                       true);
+
+      uint32 valueFlags1 = gameSettings->getFlagTypes1 ();
+      if (listBoxFogOfWar.getSelectedItemIndex () == 1 ||
+          listBoxFogOfWar.getSelectedItemIndex () == 2)
+      {
+        valueFlags1 |= ft1_show_map_resources;
+        gameSettings->setFlagTypes1 (valueFlags1);
+      }
+      else
+      {
+        valueFlags1 &= ~ft1_show_map_resources;
+        gameSettings->setFlagTypes1 (valueFlags1);
+      }
+
+//gameSettings->setEnableObserverModeAtEndGame(listBoxEnableObserverMode.getSelectedItemIndex() == 0);
+      gameSettings->setEnableObserverModeAtEndGame (true);
+//gameSettings->setPathFinderType(static_cast<PathFinderType>(listBoxPathFinderType.getSelectedItemIndex()));
+
+      valueFlags1 = gameSettings->getFlagTypes1 ();
+      if (checkBoxEnableSwitchTeamMode.getValue () == true)
+      {
+        valueFlags1 |= ft1_allow_team_switching;
+        gameSettings->setFlagTypes1 (valueFlags1);
+      }
+      else
+      {
+        valueFlags1 &= ~ft1_allow_team_switching;
+        gameSettings->setFlagTypes1 (valueFlags1);
+      }
+      gameSettings->setAiAcceptSwitchTeamPercentChance (strToInt
+                                                        (listBoxAISwitchTeamAcceptPercent.getSelectedItem
+                                                         ()));
+      gameSettings->
+        setFallbackCpuMultiplier
+        (listBoxFallbackCpuMultiplier.getSelectedItemIndex ());
+
+      valueFlags1 = gameSettings->getFlagTypes1 ();
+      if (checkBoxAllowTeamUnitSharing.getValue () == true)
+      {
+        valueFlags1 |= ft1_allow_shared_team_units;
+        gameSettings->setFlagTypes1 (valueFlags1);
+      }
+      else
+      {
+        valueFlags1 &= ~ft1_allow_shared_team_units;
+        gameSettings->setFlagTypes1 (valueFlags1);
+      }
+
+      valueFlags1 = gameSettings->getFlagTypes1 ();
+      if (checkBoxAllowTeamResourceSharing.getValue () == true)
+      {
+        valueFlags1 |= ft1_allow_shared_team_resources;
+        gameSettings->setFlagTypes1 (valueFlags1);
+      }
+      else
+      {
+        valueFlags1 &= ~ft1_allow_shared_team_resources;
+        gameSettings->setFlagTypes1 (valueFlags1);
+      }
+
+// First save Used slots
+//for(int i=0; i<mapInfo.players; ++i)
+      int
+        AIPlayerCount = 0;
+      for (int i = 0; i < GameConstants::maxPlayers; ++i)
+      {
+        ControlType
+          ct =
+          static_cast < ControlType >
+          (listBoxControls[i].getSelectedItemIndex ());
+
+        if (ct != ctClosed)
+        {
+          int
+            slotIndex = factionCount;
+          ControlType
+            oldControlType = gameSettings->getFactionControl (slotIndex);
+          gameSettings->setFactionControl (slotIndex, ct);
+          if (ct == ctHuman)
+          {
+//if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] i = %d, slotIndex = %d, getHumanPlayerName(i) [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,i,slotIndex,getHumanPlayerName(i).c_str());
+
+            gameSettings->setThisFactionIndex (slotIndex);
+            gameSettings->setNetworkPlayerName (slotIndex,
+                                                getHumanPlayerName ());
+            gameSettings->setNetworkPlayerUUID (slotIndex,
+                                                Config::
+                                                getInstance ().getString
+                                                ("PlayerId", ""));
+            gameSettings->setNetworkPlayerPlatform (slotIndex,
+                                                    getPlatformNameString ());
+            gameSettings->setNetworkPlayerStatuses (slotIndex,
+                                                    getNetworkPlayerStatus
+                                                    ());
+            Lang & lang = Lang::getInstance ();
+            gameSettings->setNetworkPlayerLanguages (slotIndex,
+                                                     lang.getLanguage ());
+
+            gameSettings->setResourceMultiplierIndex (slotIndex, 5);
+          }
+          else
+          {
+            gameSettings->setResourceMultiplierIndex (slotIndex,
+                                                      listBoxRMultiplier
+                                                      [i].getSelectedItemIndex
+                                                      ());
+          }
+
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                      "In [%s::%s Line: %d] i = %d, factionFiles[listBoxFactions[i].getSelectedItemIndex()] [%s]\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__, i,
+                                      factionFiles[listBoxFactions
+                                                   [i].getSelectedItemIndex
+                                                   ()].c_str ());
+
+          gameSettings->setFactionTypeName (slotIndex,
+                                            factionFiles[listBoxFactions
+                                                         [i].getSelectedItemIndex
+                                                         ()]);
+          if (factionFiles[listBoxFactions[i].getSelectedItemIndex ()] ==
+              formatString (GameConstants::OBSERVER_SLOTNAME))
+          {
+            listBoxTeams[i].setSelectedItem (intToStr
+                                             (GameConstants::maxPlayers +
+                                              fpt_Observer));
+          }
+
+          gameSettings->setTeam (slotIndex,
+                                 listBoxTeams[i].getSelectedItemIndex ());
+          gameSettings->setStartLocationIndex (slotIndex, i);
+//printf("!!! setStartLocationIndex #1 slotIndex = %d, i = %d\n",slotIndex, i);
+
+          if (listBoxControls[i].getSelectedItemIndex () == ctNetwork
+              || listBoxControls[i].getSelectedItemIndex () ==
+              ctNetworkUnassigned)
+          {
+            if (oldControlType != ctNetwork
+                && oldControlType != ctNetworkUnassigned)
+            {
+              gameSettings->setNetworkPlayerName (slotIndex, "");
+            }
+          }
+          else if (listBoxControls[i].getSelectedItemIndex () != ctHuman)
+          {
+            AIPlayerCount++;
+            if (SystemFlags::
+                getSystemSettingType (SystemFlags::debugSystem).enabled)
+              SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                        "In [%s::%s Line: %d] i = %d, playername is AI (blank)\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__, i);
+
+            Lang & lang = Lang::getInstance ();
+            gameSettings->setNetworkPlayerName (slotIndex,
+                                                lang.getString ("AI") +
+                                                intToStr (AIPlayerCount));
+            labelPlayerNames[i].setText ("");
+          }
+
+          factionCount++;
+        }
+        else
+        {
+          labelPlayerNames[i].setText ("");
+        }
+      }
+
+// Next save closed slots
+      int
+        closedCount = 0;
+      for (int i = 0; i < GameConstants::maxPlayers; ++i)
+      {
+        ControlType
+          ct =
+          static_cast < ControlType >
+          (listBoxControls[i].getSelectedItemIndex ());
+        if (ct == ctClosed)
+        {
+          int
+            slotIndex = factionCount + closedCount;
+
+          gameSettings->setFactionControl (slotIndex, ct);
+          gameSettings->setTeam (slotIndex,
+                                 listBoxTeams[i].getSelectedItemIndex ());
+          gameSettings->setStartLocationIndex (slotIndex, i);
+//printf("!!! setStartLocationIndex #2 slotIndex = %d, i = %d\n",slotIndex, i);
+
+          gameSettings->setResourceMultiplierIndex (slotIndex, 5);
+
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                      "In [%s::%s Line: %d] i = %d, factionFiles[listBoxFactions[i].getSelectedItemIndex()] [%s]\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__, i,
+                                      factionFiles[listBoxFactions
+                                                   [i].getSelectedItemIndex
+                                                   ()].c_str ());
+
+          gameSettings->setFactionTypeName (slotIndex,
+                                            factionFiles[listBoxFactions
+                                                         [i].getSelectedItemIndex
+                                                         ()]);
+          gameSettings->setNetworkPlayerStatuses (slotIndex, npst_None);
+          gameSettings->setNetworkPlayerName (slotIndex,
+                                              GameConstants::NETWORK_SLOT_CLOSED_SLOTNAME);
+
+          closedCount++;
+        }
+      }
+
+      gameSettings->setFactionCount (factionCount);
+
+      Config & config = Config::getInstance ();
+      gameSettings->setEnableServerControlledAI (config.getBool
+                                                 ("ServerControlledAI",
+                                                  "true"));
+      gameSettings->
+        setNetworkFramePeriod (config.getInt ("NetworkSendFrameCount", "20"));
+
+      if (hasNetworkGameSettings () == true)
+      {
+        if (gameSettings->getTileset () != "")
+        {
+          if (lastCheckedCRCTilesetName != gameSettings->getTileset ())
+          {
+//console.addLine("Checking tileset CRC [" + gameSettings->getTileset() + "]");
+            lastCheckedCRCTilesetValue =
+              getFolderTreeContentsCheckSumRecursively
+              (config.getPathListForType (ptTilesets, ""),
+               string ("/") + gameSettings->getTileset () + string ("/*"),
+               ".xml", NULL);
+            if (lastCheckedCRCTilesetValue == 0
+                || lastCheckedCRCTilesetValue !=
+                gameSettings->getTilesetCRC ())
+            {
+              lastCheckedCRCTilesetValue =
+                getFolderTreeContentsCheckSumRecursively
+                (config.getPathListForType (ptTilesets, ""),
+                 string ("/") + gameSettings->getTileset () + string ("/*"),
+                 ".xml", NULL, true);
+            }
+            lastCheckedCRCTilesetName = gameSettings->getTileset ();
+          }
+          gameSettings->setTilesetCRC (lastCheckedCRCTilesetValue);
+        }
+
+        if (config.getBool ("DisableServerLobbyTechtreeCRCCheck", "false") ==
+            false)
+        {
+          if (gameSettings->getTech () != "")
+          {
+            if (lastCheckedCRCTechtreeName != gameSettings->getTech ())
+            {
+//console.addLine("Checking techtree CRC [" + gameSettings->getTech() + "]");
+              lastCheckedCRCTechtreeValue =
+                getFolderTreeContentsCheckSumRecursively
+                (config.getPathListForType (ptTechs, ""),
+                 "/" + gameSettings->getTech () + "/*", ".xml", NULL);
+              if (lastCheckedCRCTechtreeValue == 0
+                  || lastCheckedCRCTechtreeValue !=
+                  gameSettings->getTechCRC ())
+              {
+                lastCheckedCRCTechtreeValue =
+                  getFolderTreeContentsCheckSumRecursively
+                  (config.getPathListForType (ptTechs, ""),
+                   "/" + gameSettings->getTech () + "/*", ".xml", NULL, true);
+              }
+
+              reloadFactions (true, gameSettings->getScenario ());
+              factionCRCList.clear ();
+              for (unsigned int factionIdx = 0;
+                   factionIdx < factionFiles.size (); ++factionIdx)
+              {
+                string factionName = factionFiles[factionIdx];
+                if (factionName != GameConstants::RANDOMFACTION_SLOTNAME &&
+                    factionName != GameConstants::OBSERVER_SLOTNAME)
+                {
+//factionCRC   = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTechs,""), "/" + gameSettings->getTech() + "/factions/" + factionName + "/*", ".xml", NULL, true);
+                  uint32
+                    factionCRC =
+                    getFolderTreeContentsCheckSumRecursively
+                    (config.getPathListForType (ptTechs, ""),
+                     "/" + gameSettings->getTech () + "/factions/" +
+                     factionName + "/*", ".xml", NULL);
+                  if (factionCRC == 0)
+                  {
+                    factionCRC =
+                      getFolderTreeContentsCheckSumRecursively
+                      (config.getPathListForType (ptTechs, ""),
+                       "/" + gameSettings->getTech () + "/factions/" +
+                       factionName + "/*", ".xml", NULL, true);
+                  }
+                  factionCRCList.push_back (make_pair
+                                            (factionName, factionCRC));
+                }
+              }
+//console.addLine("Found factions: " + intToStr(factionCRCList.size()));
+              lastCheckedCRCTechtreeName = gameSettings->getTech ();
+            }
+
+            gameSettings->setFactionCRCList (factionCRCList);
+            gameSettings->setTechCRC (lastCheckedCRCTechtreeValue);
+          }
+        }
+
+        if (gameSettings->getMap () != "")
+        {
+          if (lastCheckedCRCMapName != gameSettings->getMap ())
+          {
+            Checksum checksum;
+            string
+              file = Config::getMapPath (gameSettings->getMap (), "", false);
+//console.addLine("Checking map CRC [" + file + "]");
+            checksum.addFile (file);
+            lastCheckedCRCMapValue = checksum.getSum ();
+            lastCheckedCRCMapName = gameSettings->getMap ();
+          }
+          gameSettings->setMapCRC (lastCheckedCRCMapValue);
+        }
+      }
+
+//replace server player by network
+      for (int i = 0; i < gameSettings->getFactionCount (); ++i)
+      {
+//replace by network
+        if (gameSettings->getFactionControl (i) == ctHuman)
+        {
+          gameSettings->setFactionControl (i, ctNetwork);
+        }
+      }
+
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s] Line: %d\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__,
+                                  __LINE__);
+    }
+
+    void
+    MenuStateConnectedGame::returnToJoinMenu ()
+    {
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s Line %d]\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__,
+                                  __LINE__);
+
+      if (modHttpServerThread != NULL)
+      {
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                    "In [%s::%s Line %d]\n", __FILE__,
+                                    __FUNCTION__, __LINE__);
+
+        modHttpServerThread->setSimpleTaskInterfaceValid (false);
+        modHttpServerThread->signalQuit ();
+//modHttpServerThread->setThreadOwnerValid(false);
+
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                    "In [%s::%s Line %d]\n", __FILE__,
+                                    __FUNCTION__, __LINE__);
+        if (modHttpServerThread->canShutdown (true) == true
+            && modHttpServerThread->shutdownAndWait () == true)
+        {
+          delete modHttpServerThread;
+        }
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
+        modHttpServerThread = NULL;
+      }
+
+      if (ftpClientThread != NULL)
+      {
+
+        ftpClientThread->setCallBackObject (NULL);
+        ftpClientThread->signalQuit ();
+        sleep (0);
+        if (ftpClientThread->canShutdown (true) == true &&
+            ftpClientThread->shutdownAndWait () == true)
+        {
+          delete ftpClientThread;
+        }
+        else
+        {
+          char
+            szBuf[8096] = "";
+          snprintf (szBuf, 8096,
+                    "In [%s::%s %d] Error cannot shutdown ftpClientThread\n",
+                    extractFileFromDirectoryPath (__FILE__).c_str (),
+                    __FUNCTION__, __LINE__);
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf ("%s", szBuf);
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem, "%s", szBuf);
+        }
+        ftpClientThread = NULL;
+      }
+
+      if (returnMenuInfo == jmSimple)
+      {
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                    "In [%s::%s Line %d]\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__);
+
+        launchingNewGame = true;
+        disconnectFromServer ();
+        mainMenu->setState (new MenuStateJoinGame (program, mainMenu));
+      }
+      else
+      {
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                    "In [%s::%s Line %d]\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__);
+
+        launchingNewGame = true;
+        disconnectFromServer ();
+        mainMenu->setState (new MenuStateMasterserver (program, mainMenu));
+      }
+    }
+
+    void
+    MenuStateConnectedGame::mouseMove (int x, int y, const MouseState * ms)
+    {
+      if (mainMessageBox.getEnabled ())
+      {
+        mainMessageBox.mouseMove (x, y);
+      }
+
+      if (ftpMessageBox.getEnabled ())
+      {
+        ftpMessageBox.mouseMove (x, y);
+      }
+
+      buttonCancelDownloads.mouseMove (x, y);
+      buttonDisconnect.mouseMove (x, y);
+
+      for (int i = 0; i < GameConstants::maxPlayers; ++i)
+      {
+        listBoxControls[i].mouseMove (x, y);
+        listBoxFactions[i].mouseMove (x, y);
+        listBoxTeams[i].mouseMove (x, y);
+        grabSlotButton[i].mouseMove (x, y);
+      }
+
+      listBoxMap.mouseMove (x, y);
+      listBoxFogOfWar.mouseMove (x, y);
+      checkBoxAllowObservers.mouseMove (x, y);
+      listBoxTileset.mouseMove (x, y);
+      listBoxMapFilter.mouseMove (x, y);
+      listBoxTechTree.mouseMove (x, y);
+      listBoxPlayerStatus.mouseMove (x, y);
+
+      checkBoxScenario.mouseMove (x, y);
+      listBoxScenario.mouseMove (x, y);
+
+      labelAllowTeamUnitSharing.mouseMove (x, y);
+      checkBoxAllowTeamUnitSharing.mouseMove (x, y);
+      labelAllowTeamResourceSharing.mouseMove (x, y);
+      checkBoxAllowTeamResourceSharing.mouseMove (x, y);
+
+      checkBoxAllowNativeLanguageTechtree.mouseMove (x, y);
+
+      buttonPlayNow.mouseMove (x, y);
+      buttonRestoreLastSettings.mouseMove (x, y);
+    }
+
+    bool MenuStateConnectedGame::isVideoPlaying ()
+    {
+      bool result = false;
+      if (factionVideo != NULL)
+      {
+        result = factionVideo->isPlaying ();
+      }
+      return result;
+    }
+
+    void
+    MenuStateConnectedGame::render ()
+    {
+      try
+      {
+        Renderer & renderer = Renderer::getInstance ();
+
+        if (mainMessageBox.getEnabled ())
+        {
+          renderer.renderMessageBox (&mainMessageBox);
+        }
+
+        renderer.renderButton (&buttonDisconnect);
+
+        if (initialSettingsReceivedFromServer == false)
+        {
+          return;
+        }
+
+        if (factionTexture != NULL)
+        {
+          if (factionVideo == NULL || factionVideo->isPlaying () == false)
+          {
+            renderer.renderTextureQuad (800, 600, 200, 150, factionTexture,
+                                        1);
+          }
+        }
+        if (factionVideo != NULL)
+        {
+          if (factionVideo->isPlaying () == true)
+          {
+            factionVideo->playFrame (false);
+          }
+          else
+          {
+            if (GlobalStaticFlags::getIsNonGraphicalModeEnabled () == false
+                &&::Shared::Graphics::VideoPlayer::hasBackEndVideoPlayer () ==
+                true)
+            {
+              if (factionVideo != NULL)
+              {
+                factionVideo->closePlayer ();
+                delete factionVideo;
+                factionVideo = NULL;
+
+                if (validDisplayedGamesettings)
+                {
+                  initFactionPreview (&displayedGamesettings);
+                }
+              }
+            }
+          }
+        }
+
+        if (mapPreviewTexture != NULL)
+        {
+//renderer.renderTextureQuad(5,185,150,150,mapPreviewTexture,1.0f);
+          renderer.renderTextureQuad (this->render_mapPreviewTexture_X,
+                                      this->render_mapPreviewTexture_Y,
+                                      this->render_mapPreviewTexture_W,
+                                      this->render_mapPreviewTexture_H,
+                                      mapPreviewTexture, 1.0f);
+          if (this->zoomedMap == true)
+          {
+            return;
+          }
+//printf("=================> Rendering map preview texture\n");
+        }
+
+        if (scenarioLogoTexture != NULL)
+        {
+          renderer.renderTextureQuad (300, 350, 400, 300, scenarioLogoTexture,
+                                      1.0f);
+//renderer.renderBackground(scenarioLogoTexture);
+        }
+
+        renderer.renderButton (&buttonDisconnect);
+
+// Get a reference to the player texture cache
+        std::map < int,
+        Texture2D * >&
+          crcPlayerTextureCache =
+          CacheManager::getCachedItem < std::map < int,
+        Texture2D * >>(GameConstants::playerTextureCacheLookupKey);
+
+// START - this code ensure player title and player names don't overlap
+        int
+          offsetPosition = 0;
+        for (int i = 0; i < GameConstants::maxPlayers; ++i)
+        {
+          const
+            Metrics &
+            metrics = Metrics::getInstance ();
+          FontMetrics *
+            fontMetrics = NULL;
+          if (Renderer::renderText3DEnabled == false)
+          {
+            fontMetrics =
+              CoreData::getInstance ().getMenuFontNormal ()->getMetrics ();
+          }
+          else
+          {
+            fontMetrics =
+              CoreData::getInstance ().getMenuFontNormal3D ()->getMetrics ();
+          }
+
+          if (fontMetrics == NULL)
+          {
+            throw megaglest_runtime_error ("fontMetrics == NULL");
+          }
+          int
+            curWidth =
+            (metrics.toVirtualX
+             (fontMetrics->getTextWidth (labelPlayers[i].getText ())));
+
+          if (labelPlayers[i].getX () + curWidth >=
+              labelPlayerNames[i].getX ())
+          {
+            int
+              newOffsetPosition = labelPlayers[i].getX () + curWidth + 2;
+            if (offsetPosition < newOffsetPosition)
+            {
+              offsetPosition = newOffsetPosition;
+            }
+          }
+        }
+// END
+
+        renderer.renderListBox (&listBoxPlayerStatus);
+
+        NetworkManager & networkManager = NetworkManager::getInstance ();
+        ClientInterface *
+          clientInterface = networkManager.getClientInterface ();
+        for (int i = 0; i < GameConstants::maxPlayers; ++i)
+        {
+          if (listBoxControls[i].getSelectedItemIndex () ==
+              ctNetworkUnassigned)
+          {
+            bool renderIt = true;
+//printf("Player #%d [%s] control = %d\n",i,labelPlayerNames[i].getText().c_str(),listBoxControls[i].getSelectedItemIndex());
+            if (labelNetStatus[i].getText () ==
+                GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME)
+            {
+              renderIt = false;
+            }
+            labelPlayers[i].setVisible (renderIt);
+            labelPlayerNames[i].setVisible (renderIt);
+            listBoxControls[i].setVisible (renderIt);
+            listBoxRMultiplier[i].setVisible (renderIt);
+            listBoxFactions[i].setVisible (renderIt);
+            listBoxTeams[i].setVisible (renderIt);
+            labelNetStatus[i].setVisible (renderIt);
+          }
+
+          if (listBoxControls[i].getSelectedItemIndex () != ctClosed)
+          {
+            renderer.renderLabel (&labelPlayerStatus[i]);
+          }
+
+          if (crcPlayerTextureCache[i] != NULL)
+          {
+// Render the player # label the player's color
+
+            Vec3f
+              playerColor =
+              crcPlayerTextureCache[i]->getPixmap ()->getPixel3f (0, 0);
+            if (clientInterface != NULL
+                && clientInterface->getGameSettings () != NULL
+                && clientInterface->
+                getGameSettings ()->getMasterserver_admin () > 0
+                && clientInterface->
+                getGameSettings ()->getMasterserver_admin_faction_index () ==
+                i)
+            {
+
+              if (difftime ((long int) time (NULL), timerLabelFlash) < 1)
+              {
+                renderer.renderLabel (&labelPlayers[i], &playerColor);
+              }
+              else
+              {
+                Vec4f
+                  flashColor =
+                  Vec4f (playerColor.x, playerColor.y, playerColor.z, 0.45f);
+                renderer.renderLabel (&labelPlayers[i], &flashColor);
+              }
+
+            }
+            else
+            {
+              renderer.renderLabel (&labelPlayers[i], &playerColor);
+            }
+
+// Blend the color with white so make it more readable
+//Vec4f newColor(1.f, 1.f, 1.f, 0.57f);
+//renderer.renderLabel(&labelPlayers[i],&newColor);
+
+//int quadWidth = labelPlayerNames[i].getX() - labelPlayers[i].getX() - 5;
+//renderer.renderTextureQuad(labelPlayers[i].getX(), labelPlayers[i].getY(), quadWidth, labelPlayers[i].getH(), crcPlayerTextureCache[i],1.0f,&playerColor);
+          }
+          else
+          {
+            renderer.renderLabel (&labelPlayers[i]);
+          }
+
+          if (offsetPosition > 0)
+          {
+            labelPlayerNames[i].setX (offsetPosition);
+          }
+
+          renderer.renderListBox (&listBoxControls[i]);
+          if (listBoxControls[i].getSelectedItemIndex () != ctClosed)
+          {
+            renderer.renderListBox (&listBoxRMultiplier[i]);
+            renderer.renderListBox (&listBoxFactions[i]);
+            int
+              teamnumber = listBoxTeams[i].getSelectedItemIndex ();
+            Vec3f teamcolor = Vec3f (1.0f, 1.0f, 1.0f);
+            if (teamnumber >= 0 && teamnumber < 8)
+            {
+              teamcolor =
+                crcPlayerTextureCache[teamnumber]->
+                getPixmap ()->getPixel3f (0, 0);
+            }
+            listBoxTeams[i].setTextColor (teamcolor);
+            renderer.renderListBox (&listBoxTeams[i]);
+
+            bool canGrabSlot = false;
+            ClientInterface *
+              clientInterface = networkManager.getClientInterface ();
+            if (clientInterface != NULL
+                && clientInterface->getJoinGameInProgress () == true)
+            {
+              canGrabSlot =
+                ((listBoxControls[i].getSelectedItemIndex () == ctNetwork
+                  && labelNetStatus[i].getText () ==
+                  GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME)
+                 || (listBoxControls[i].getSelectedItemIndex () != ctHuman
+                     && listBoxControls[i].getSelectedItemIndex () != ctClosed
+                     && listBoxControls[i].getSelectedItemIndex () !=
+                     ctNetwork));
+            }
+            else
+            {
+              canGrabSlot =
+                (listBoxControls[i].getSelectedItemIndex () == ctNetwork
+                 && labelNetStatus[i].getText () ==
+                 GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME);
+            }
+
+            if (canGrabSlot == true)
+            {
+              if (i < mapInfo.players)
+              {
+                renderer.renderButton (&grabSlotButton[i]);
+              }
+            }
+            else if (listBoxControls[i].getSelectedItemIndex () == ctNetwork
+                     || listBoxControls[i].getSelectedItemIndex () ==
+                     ctNetworkUnassigned
+                     || listBoxControls[i].getSelectedItemIndex () == ctHuman)
+            {
+              renderer.renderLabel (&labelNetStatus[i]);
+            }
+
+            if (listBoxControls[i].getSelectedItemIndex () == ctNetwork ||
+                listBoxControls[i].getSelectedItemIndex () ==
+                ctNetworkUnassigned
+                || listBoxControls[i].getSelectedItemIndex () == ctHuman)
+            {
+              if (labelNetStatus[i].getText () !=
+                  GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME)
+              {
+                renderer.renderLabel (&labelPlayerNames[i]);
+              }
+            }
+          }
+        }
+        renderer.renderLabel (&labelStatus);
+        renderer.renderLabel (&labelInfo);
+
+        if (difftime ((long int) time (NULL), timerLabelFlash) < 1)
+        {
+          renderer.renderLabel (&labelDataSynchInfo, &RED);
+          renderer.renderLabel (&labelWaitingForPlayers, &YELLOW);
+        }
+        else
+        {
+          renderer.renderLabel (&labelDataSynchInfo, &WHITE);
+          renderer.renderLabel (&labelWaitingForPlayers, &WHITE);
+        }
+
+        renderer.renderLabel (&labelMap);
+        renderer.renderLabel (&labelMapFilter);
+        renderer.renderLabel (&labelFogOfWar);
+        renderer.renderLabel (&labelAllowObservers);
+        renderer.renderLabel (&labelFallbackCpuMultiplier);
+        renderer.renderLabel (&labelTileset);
+        renderer.renderLabel (&labelTechTree);
+        renderer.renderLabel (&labelControl);
+        renderer.renderLabel (&labelFaction);
+        renderer.renderLabel (&labelTeam);
+        renderer.renderLabel (&labelMapInfo);
+
+        renderer.renderListBox (&listBoxMap);
+        renderer.renderListBox (&listBoxMapFilter);
+        renderer.renderListBox (&listBoxFogOfWar);
+        renderer.renderCheckBox (&checkBoxAllowObservers);
+        renderer.renderListBox (&listBoxTileset);
+        renderer.renderListBox (&listBoxTechTree);
+
+        renderer.renderLabel (&labelEnableSwitchTeamMode);
+        renderer.renderLabel (&labelAISwitchTeamAcceptPercent);
+
+        renderer.renderCheckBox (&checkBoxEnableSwitchTeamMode);
+        renderer.renderListBox (&listBoxAISwitchTeamAcceptPercent);
+        renderer.renderListBox (&listBoxFallbackCpuMultiplier);
+
+        renderer.renderLabel (&labelAllowTeamUnitSharing);
+        renderer.renderCheckBox (&checkBoxAllowTeamUnitSharing);
+
+        renderer.renderLabel (&labelAllowTeamResourceSharing);
+        renderer.renderCheckBox (&checkBoxAllowTeamResourceSharing);
+
+        renderer.renderButton (&buttonPlayNow);
+        renderer.renderButton (&buttonRestoreLastSettings);
+
+        renderer.renderCheckBox (&checkBoxScenario);
+        renderer.renderLabel (&labelScenario);
+        if (checkBoxScenario.getValue () == true)
+        {
+          renderer.renderListBox (&listBoxScenario);
+        }
+
+        renderer.renderLabel (&labelAllowNativeLanguageTechtree);
+        renderer.renderCheckBox (&checkBoxAllowNativeLanguageTechtree);
+
+        MutexSafeWrapper
+          safeMutexFTPProgress ((ftpClientThread !=
+                                 NULL ? ftpClientThread->getProgressMutex () :
+                                 NULL),
+                                string (__FILE__) + "_" +
+                                intToStr (__LINE__));
+
+// !!! START TEMP MV
+//renderer.renderButton(&buttonCancelDownloads);
+//fileFTPProgressList.clear();
+//fileFTPProgressList["test1a dsa asd asda sdasd asd ad ad"] = make_pair(1,"testa");
+//fileFTPProgressList["test2 asdasdasdadas dasdasdasda"] = make_pair(1,"testb");
+//fileFTPProgressList["test3 asdasdad asd ada dasdadasdada"] = make_pair(1,"testc");
+// !!! END TEMP MV
+
+        if (fileFTPProgressList.empty () == false)
+        {
+          Lang & lang = Lang::getInstance ();
+          renderer.renderButton (&buttonCancelDownloads);
+          int
+            xLocation = buttonCancelDownloads.getX ();
+          int
+            yLocation = buttonCancelDownloads.getY () - 20;
+          for (std::map < string, pair < int, string > >::iterator iterMap =
+               fileFTPProgressList.begin ();
+               iterMap != fileFTPProgressList.end (); ++iterMap)
+          {
+            string
+              progressLabelPrefix =
+              lang.getString ("ModDownloading") + " " + iterMap->first + " ";
+//if(SystemFlags::VERBOSE_MODE_ENABLED) printf("\nRendering file progress with the following prefix [%s]\n",progressLabelPrefix.c_str());
+
+            if (Renderer::renderText3DEnabled)
+            {
+              renderer.renderProgressBar3D (iterMap->second.first, xLocation,
+//10,
+                                            yLocation,
+                                            CoreData::getInstance
+                                            ().getDisplayFontSmall3D (),
+//350,progressLabelPrefix);
+                                            300, progressLabelPrefix);
+            }
+            else
+            {
+              renderer.renderProgressBar (iterMap->second.first,
+//10,
+                                          xLocation,
+                                          yLocation,
+                                          CoreData::
+                                          getInstance ().getDisplayFontSmall
+                                          (),
+//350,progressLabelPrefix);
+                                          300, progressLabelPrefix);
+            }
+
+            yLocation -= 20;
+          }
+        }
+        safeMutexFTPProgress.ReleaseLock ();
+
+        if (mainMessageBox.getEnabled ())
+        {
+          renderer.renderMessageBox (&mainMessageBox);
+        }
+        if (ftpMessageBox.getEnabled ())
+        {
+          renderer.renderMessageBox (&ftpMessageBox);
+        }
+
+        if (program != NULL)
+          program->renderProgramMsgBox ();
+
+        if (enableMapPreview && (mapPreview.hasFileLoaded () == true))
+        {
+
+          int
+            mouseX = mainMenu->getMouseX ();
+          int
+            mouseY = mainMenu->getMouseY ();
+          int
+            mouse2dAnim = mainMenu->getMouse2dAnim ();
+
+          if (mapPreviewTexture == NULL)
+          {
+            renderer.renderMouse2d (mouseX, mouseY, mouse2dAnim);
+
+            bool renderAll = (listBoxFogOfWar.getSelectedItemIndex () == 2);
+//renderer.renderMapPreview(&mapPreview, renderAll, 10, 350, &mapPreviewTexture);
+            renderer.renderMapPreview (&mapPreview, renderAll,
+                                       this->render_mapPreviewTexture_X,
+                                       this->render_mapPreviewTexture_Y,
+                                       &mapPreviewTexture);
+          }
+        }
+        renderer.renderChatManager (&chatManager);
+        renderer.renderConsole (&console,
+                                showFullConsole ? consoleFull :
+                                consoleStoredAndNormal);
+
+        if (difftime ((long int) time (NULL), timerLabelFlash) > 2)
+        {
+          timerLabelFlash = time (NULL);
+        }
+      }
+      catch (const std::exception & ex)
+      {
+        char
+          szBuf[8096] = "";
+        snprintf (szBuf, 8096, "In [%s::%s %d]\nError detected:\n%s\n",
+                  extractFileFromDirectoryPath (__FILE__).c_str (),
+                  __FUNCTION__, __LINE__, ex.what ());
+        SystemFlags::OutputDebug (SystemFlags::debugError, szBuf);
+        throw megaglest_runtime_error (szBuf);
+      }
+    }
+
+    void
+    MenuStateConnectedGame::update ()
+    {
+      Chrono chrono;
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugPerformance).enabled)
+        chrono.start ();
+
+      Lang & lang = Lang::getInstance ();
+      ClientInterface *
+        clientInterface =
+        NetworkManager::getInstance ().getClientInterface ();
+
+      string newLabelConnectionInfo = lang.getString ("WaitingHost");
+      if (clientInterface != NULL
+          && clientInterface->getJoinGameInProgress () == true)
+      {
+        newLabelConnectionInfo = lang.getString ("MGGameStatus2");
+      }
+// Test progress bar
+//MutexSafeWrapper safeMutexFTPProgress((ftpClientThread != NULL ? ftpClientThread->getProgressMutex() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
+//fileFTPProgressList["test"] = pair<int,string>(difftime(time(NULL),lastNetworkSendPing) * 20,"test file 123");
+//safeMutexFTPProgress.ReleaseLock();
+//
+
+      if (clientInterface != NULL && clientInterface->isConnected ())
+      {
+//printf("#2 admin key [%d] client key [%d]\n",settings->getMasterserver_admin(),clientInterface->getSessionKey());
+        broadCastGameSettingsToHeadlessServer (false);
+
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugPerformance).enabled
+            && chrono.getMillis () > 0)
+          SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                    "In [%s::%s Line: %d] took msecs: %lld\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, chrono.getMillis ());
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugPerformance).enabled
+            && chrono.getMillis () > 0)
+          chrono.start ();
+
+        bool
+          notCurrentlySwitching =
+          ((difftime
+            ((long int) time (NULL),
+             broadcastServerSettingsDelayTimer)) >=
+           HEADLESSSERVER_BROADCAST_SETTINGS_SECONDS);
+        bool
+          receiveAllowedNow =
+          difftime ((long int) time (NULL), noReceiveTimer) > 2;
+        bool
+          newMessage =
+          lastGameSettingsReceivedCount <
+          clientInterface->getGameSettingsReceivedCount ();
+        if (validDisplayedGamesettings == false
+            || (notCurrentlySwitching && newMessage && receiveAllowedNow))
+        {
+
+//printf("I take the whole settings top broadcastDelay=%d noReceiveTimer=%d\n", (int)difftime((long int) time(NULL), broadcastServerSettingsDelayTimer),(int)difftime((long int) time(NULL), noReceiveTimer));
+
+          displayedGamesettings = *(clientInterface->getGameSettings ());
+          originalGamesettings = displayedGamesettings;
+          validDisplayedGamesettings = true;
+        }
+
+        checkBoxAllowNativeLanguageTechtree.setEditable (isHeadlessAdmin ());
+        checkBoxAllowNativeLanguageTechtree.setEnabled (isHeadlessAdmin ());
+
+        listBoxMap.setEditable (isHeadlessAdmin ());
+        listBoxMapFilter.setEditable (isHeadlessAdmin ());
+        buttonPlayNow.setVisible (isHeadlessAdmin () ||
+                                  clientInterface->getJoinGameInProgress () ==
+                                  true);
+        buttonRestoreLastSettings.setVisible (isHeadlessAdmin ());
+        listBoxTechTree.setEditable (isHeadlessAdmin ());
+        listBoxTileset.setEditable (isHeadlessAdmin ());
+        checkBoxEnableSwitchTeamMode.setEditable (isHeadlessAdmin ());
+        listBoxAISwitchTeamAcceptPercent.setEditable (isHeadlessAdmin ());
+        listBoxFallbackCpuMultiplier.setEditable (isHeadlessAdmin ());
+        listBoxFogOfWar.setEditable (isHeadlessAdmin ());
+        checkBoxAllowObservers.setEditable (isHeadlessAdmin ());
+
+        checkBoxAllowTeamUnitSharing.setEditable (isHeadlessAdmin ());
+        checkBoxAllowTeamResourceSharing.setEditable (isHeadlessAdmin ());
+
+        if (isHeadlessAdmin () == true)
+        {
+          bool hasOtherPlayer = false;
+          bool hasOpenSlot = false;
+          for (unsigned int i = 0;
+               i < (unsigned int) GameConstants::maxPlayers; ++i)
+          {
+            if (displayedGamesettings.getFactionControl (i) == ctNetwork
+                && clientInterface->getPlayerIndex () != (int) i)
+            {
+              hasOpenSlot = true;
+            }
+            if (displayedGamesettings.getFactionControl (i) == ctNetwork &&
+                displayedGamesettings.getNetworkPlayerNameByPlayerIndex (i) !=
+                GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME
+                && displayedGamesettings.getNetworkPlayerNameByPlayerIndex (i)
+                != GameConstants::NETWORK_SLOT_CLOSED_SLOTNAME)
+            {
+              listBoxControls[i].setEditable (false);
+              if (clientInterface->getPlayerIndex () != (int) i)
+              {
+                hasOtherPlayer = true;
+              }
+            }
+            else if (clientInterface->getPlayerIndex () == (int) i)
+            {
+              listBoxControls[i].setEditable (false);
+            }
+            else
+            {
+              listBoxControls[i].setEditable (true);
+            }
+            listBoxRMultiplier[i].setEditable (isHeadlessAdmin ());
+            listBoxFactions[i].setEditable (isHeadlessAdmin ());
+            listBoxTeams[i].setEditable (isHeadlessAdmin ());
+          }
+          if (hasOtherPlayer)
+          {
+            labelWaitingForPlayers.setText ("");
+            labelWaitingForPlayers.setVisible (false);
+          }
+          else if (hasOpenSlot)
+          {
+            labelWaitingForPlayers.
+              setText (lang.getString ("WaitingForPlayers"));
+            labelWaitingForPlayers.setVisible (true);
+          }
+          else
+          {
+            labelWaitingForPlayers.
+              setText (lang.getString ("OpenANetworkSLot"));
+            labelWaitingForPlayers.setVisible (true);
+          }
+        }
+        else
+        {
+          labelWaitingForPlayers.setText ("");
+          labelWaitingForPlayers.setVisible (false);
+        }
+
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugPerformance).enabled
+            && chrono.getMillis () > 0)
+          SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                    "In [%s::%s Line: %d] took msecs: %lld\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, chrono.getMillis ());
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugPerformance).enabled
+            && chrono.getMillis () > 0)
+          chrono.start ();
+
+        if (difftime ((long int) time (NULL), lastNetworkSendPing) >=
+            GameConstants::networkPingInterval)
+        {
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                      "In [%s::%s Line: %d] about to sendPingMessage...\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__);
+
+          lastNetworkSendPing = time (NULL);
+          clientInterface->sendPingMessage (GameConstants::
+                                            networkPingInterval,
+                                            (int64) time (NULL));
+
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                      "In [%s::%s Line: %d] pingCount = %d, clientInterface->getLastPingLag() = %f, GameConstants::networkPingInterval = %d\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__, pingCount,
+                                      clientInterface->getLastPingLag (),
+                                      GameConstants::networkPingInterval);
+
+// Starting checking timeout after sending at least 3 pings to server
+          if (clientInterface->isConnected () &&
+              pingCount >= MAX_PING_LAG_COUNT
+              && clientInterface->getLastPingLag () >=
+              (GameConstants::networkPingInterval * MAX_PING_LAG_COUNT))
+          {
+            if (SystemFlags::
+                getSystemSettingType (SystemFlags::debugSystem).enabled)
+              SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                        "In [%s::%s Line: %d]\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__);
+
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                        "In [%s::%s Line: %d] took msecs: %lld\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__, chrono.getMillis ());
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              chrono.start ();
+
+            clientInterface->updateLobby ();
+
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                        "In [%s::%s Line: %d] took msecs: %lld\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__, chrono.getMillis ());
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              chrono.start ();
+
+            if (clientInterface->isConnected ()
+                && clientInterface->getJoinGameInProgress () == false
+                && pingCount >= MAX_PING_LAG_COUNT
+                && clientInterface->getLastPingLag () >=
+                (GameConstants::networkPingInterval * MAX_PING_LAG_COUNT))
+            {
+              MutexSafeWrapper
+                safeMutexFTPProgress ((ftpClientThread !=
+                                       NULL ?
+                                       ftpClientThread->getProgressMutex () :
+                                       NULL),
+                                      string (__FILE__) + "_" +
+                                      intToStr (__LINE__));
+              if (fileFTPProgressList.empty () == true)
+              {
+                Lang & lang = Lang::getInstance ();
+                const
+                  vector <
+                  string >
+                  languageList =
+                  displayedGamesettings.getUniqueNetworkPlayerLanguages ();
+                for (unsigned int i = 0; i < languageList.size (); ++i)
+                {
+                  clientInterface->sendTextMessage (lang.getString
+                                                    ("ConnectionTimedOut",
+                                                     languageList[i]) +
+                                                    " : " +
+                                                    doubleToStr
+                                                    (clientInterface->getLastPingLag
+                                                     (), 2), -1, false,
+                                                    languageList[i]);
+                  sleep (1);
+                  clientInterface->close ();
+                }
+              }
+            }
+          }
+
+          pingCount++;
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                      "In [%s::%s Line: %d]\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__);
+        }
+
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugPerformance).enabled
+            && chrono.getMillis () > 0)
+          SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                    "In [%s::%s Line: %d] took msecs: %lld\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, chrono.getMillis ());
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugPerformance).enabled
+            && chrono.getMillis () > 0)
+          chrono.start ();
+
+        buttonDisconnect.setText (lang.getString ("Disconnect"));
+
+        if (clientInterface->getAllowDownloadDataSynch () == false)
+        {
+          string label = lang.getString ("ConnectedToServer");
+
+          if (clientInterface->getServerName ().empty () == false)
+          {
+            label = label + " " + clientInterface->getServerName ();
+          }
+
+          label = label + ", " + clientInterface->getVersionString ();
+
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugPerformance).enabled
+              && chrono.getMillis () > 0)
+            SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                      "In [%s::%s Line: %d] took msecs: %lld\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__, chrono.getMillis ());
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugPerformance).enabled
+              && chrono.getMillis () > 0)
+            chrono.start ();
+
+          if (clientInterface->getAllowGameDataSynchCheck () == false &&
+              displayedGamesettings.getTileset () != "" &&
+              displayedGamesettings.getTech () != "" &&
+              displayedGamesettings.getMap () != "")
+          {
+            Config & config = Config::getInstance ();
+
+            MutexSafeWrapper
+              safeMutexFTPProgress (ftpClientThread !=
+                                    NULL ?
+                                    ftpClientThread->getProgressMutex () :
+                                    NULL,
+                                    string (__FILE__) + "_" +
+                                    intToStr (__LINE__));
+
+            uint32 tilesetCRC = lastCheckedCRCTilesetValue;
+            if (lastCheckedCRCTilesetName !=
+                displayedGamesettings.getTileset ()
+                && displayedGamesettings.getTileset () != "")
+            {
+//console.addLine("Checking tileset CRC [" + displayedGamesettings.getTileset() + "]");
+              tilesetCRC =
+                getFolderTreeContentsCheckSumRecursively
+                (config.getPathListForType (ptTilesets, ""),
+                 string ("/") + displayedGamesettings.getTileset () +
+                 string ("/*"), ".xml", NULL);
+              if (tilesetCRC == 0
+                  || tilesetCRC != displayedGamesettings.getTilesetCRC ())
+              {
+                tilesetCRC =
+                  getFolderTreeContentsCheckSumRecursively
+                  (config.getPathListForType (ptTilesets, ""),
+                   string ("/") + displayedGamesettings.getTileset () +
+                   string ("/*"), ".xml", NULL, true);
+              }
+
+// Test data synch
+//tilesetCRC++;
+              lastCheckedCRCTilesetValue = tilesetCRC;
+              lastCheckedCRCTilesetName = displayedGamesettings.getTileset ();
+            }
+
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                        "In [%s::%s Line: %d] took msecs: %lld\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__, chrono.getMillis ());
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              chrono.start ();
+
+            uint32 techCRC = lastCheckedCRCTechtreeValue;
+            if (lastCheckedCRCTechtreeName != displayedGamesettings.getTech ()
+                && displayedGamesettings.getTech () != "")
+            {
+//console.addLine("Checking techtree CRC [" + displayedGamesettings.getTech() + "]");
+              techCRC =
+                getFolderTreeContentsCheckSumRecursively
+                (config.getPathListForType (ptTechs, ""),
+                 string ("/") + displayedGamesettings.getTech () +
+                 string ("/*"), ".xml", NULL);
+//clientInterface->sendTextMessage("#1 TechCRC = " + intToStr(techCRC) + " remoteCRC = " + intToStr(displayedGamesettings.getTechCRC()),-1, true, "");
+
+              if (techCRC == 0
+                  || techCRC != displayedGamesettings.getTechCRC ())
+              {
+                techCRC =
+                  getFolderTreeContentsCheckSumRecursively
+                  (config.getPathListForType (ptTechs, ""),
+                   string ("/") + displayedGamesettings.getTech () +
+                   string ("/*"), ".xml", NULL, true);
+//clientInterface->sendTextMessage("#2 TechCRC = " + intToStr(techCRC) + " remoteCRC = " + intToStr(displayedGamesettings.getTechCRC()),-1, true, "");
+              }
+
+
+              if (techCRC != 0
+                  && techCRC != displayedGamesettings.getTechCRC ()
+                  && listBoxTechTree.getSelectedItemIndex () >= 0
+                  && listBoxTechTree.getSelectedItem () !=
+                  Lang::getInstance ().getString ("DataMissing", "", true))
+              {
+
+//time_t now = time(NULL);
+                time_t
+                  lastUpdateDate =
+                  getFolderTreeContentsCheckSumRecursivelyLastGenerated
+                  (config.getPathListForType (ptTechs, ""),
+                   string ("/") + displayedGamesettings.getTech () +
+                   string ("/*"), ".xml");
+
+                const
+                  time_t
+                  REFRESH_CRC_DAY_SECONDS = 60 * 60 * 1;
+                if (lastUpdateDate <= 0 ||
+                    difftime ((long int) time (NULL),
+                              lastUpdateDate) >= REFRESH_CRC_DAY_SECONDS)
+                {
+                  techCRC =
+                    getFolderTreeContentsCheckSumRecursively
+                    (config.getPathListForType (ptTechs, ""),
+                     string ("/") + displayedGamesettings.getTech () +
+                     string ("/*"), ".xml", NULL, true);
+//clientInterface->sendTextMessage("#3 TechCRC = " + intToStr(techCRC) + " remoteCRC = " + intToStr(displayedGamesettings.getTechCRC()),-1, true, "");
+                }
+              }
+
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                          "In [%s::%s Line: %d] took msecs: %lld\n",
+                                          extractFileFromDirectoryPath
+                                          (__FILE__).c_str (), __FUNCTION__,
+                                          __LINE__, chrono.getMillis ());
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                chrono.start ();
+
+// Test data synch
+//techCRC++;
+              lastCheckedCRCTechtreeValue = techCRC;
+              lastCheckedCRCTechtreeName = displayedGamesettings.getTech ();
+
+              loadFactions (&displayedGamesettings, false);
+
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                          "In [%s::%s Line: %d] took msecs: %lld\n",
+                                          extractFileFromDirectoryPath
+                                          (__FILE__).c_str (), __FUNCTION__,
+                                          __LINE__, chrono.getMillis ());
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                chrono.start ();
+
+              factionCRCList.clear ();
+              for (unsigned int factionIdx = 0;
+                   factionIdx < factionFiles.size (); ++factionIdx)
+              {
+                string factionName = factionFiles[factionIdx];
+                if (factionName != GameConstants::RANDOMFACTION_SLOTNAME &&
+                    factionName != GameConstants::OBSERVER_SLOTNAME &&
+                    factionName !=
+                    Lang::getInstance ().getString ("DataMissing", "", true))
+                {
+
+                  uint32 factionCRC = 0;
+//time_t now = time(NULL);
+                  time_t
+                    lastUpdateDate =
+                    getFolderTreeContentsCheckSumRecursivelyLastGenerated
+                    (config.getPathListForType (ptTechs, ""),
+                     "/" + displayedGamesettings.getTech () + "/factions/" +
+                     factionName + "/*", ".xml");
+
+                  const
+                    time_t
+                    REFRESH_CRC_DAY_SECONDS = 60 * 60 * 24;
+                  if (lastUpdateDate <= 0 ||
+                      difftime ((long int) time (NULL),
+                                lastUpdateDate) >= REFRESH_CRC_DAY_SECONDS
+                      || (techCRC != 0
+                          && techCRC != displayedGamesettings.getTechCRC ()))
+                  {
+                    factionCRC =
+                      getFolderTreeContentsCheckSumRecursively
+                      (config.getPathListForType (ptTechs, ""),
+                       "/" + displayedGamesettings.getTech () + "/factions/" +
+                       factionName + "/*", ".xml", NULL, true);
+                  }
+                  else
+                  {
+                    factionCRC =
+                      getFolderTreeContentsCheckSumRecursively
+                      (config.getPathListForType (ptTechs, ""),
+                       "/" + displayedGamesettings.getTech () + "/factions/" +
+                       factionName + "/*", ".xml", NULL);
+                  }
+                  if (factionCRC == 0)
+                  {
+                    factionCRC =
+                      getFolderTreeContentsCheckSumRecursively
+                      (config.getPathListForType (ptTechs, ""),
+                       "/" + displayedGamesettings.getTech () + "/factions/" +
+                       factionName + "/*", ".xml", NULL, true);
+                  }
+
+                  if (factionCRC != 0)
+                  {
+                    vector < pair < string, uint32 > >serverFactionCRCList =
+                      displayedGamesettings.getFactionCRCList ();
+                    for (unsigned int factionIdx1 = 0;
+                         factionIdx1 < serverFactionCRCList.size ();
+                         ++factionIdx1)
                     {
-                		string scenario = gameSettings.getScenario();
-                		listBoxScenario.setSelectedItem(formatString(scenario));
-                		string file = Scenario::getScenarioPath(dirList, scenario);
+                      pair < string, uint32 > &serverFaction =
+                        serverFactionCRCList[factionIdx1];
+                      if (serverFaction.first == factionName)
+                      {
+                        if (serverFaction.second != factionCRC)
+                        {
+                          factionCRC =
+                            getFolderTreeContentsCheckSumRecursively
+                            (config.getPathListForType (ptTechs, ""),
+                             "/" + displayedGamesettings.getTech () +
+                             "/factions/" + factionName + "/*", ".xml", NULL,
+                             true);
+                        }
+                        break;
+                      }
+                    }
+                  }
+                  factionCRCList.push_back (make_pair
+                                            (factionName, factionCRC));
+                }
+              }
+//console.addLine("Found factions: " + intToStr(factionCRCList.size()));
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                          "In [%s::%s Line: %d] took msecs: %lld\n",
+                                          extractFileFromDirectoryPath
+                                          (__FILE__).c_str (), __FUNCTION__,
+                                          __LINE__, chrono.getMillis ());
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                chrono.start ();
 
-                		bool isTutorial = Scenario::isGameTutorial(file);
-                		Scenario::loadScenarioInfo(file, &scenarioInfo, isTutorial);
+            }
 
-                		gameSettings.setScenarioDir(Scenario::getScenarioPath(dirList, scenarioInfo.name));
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                        "In [%s::%s Line: %d] took msecs: %lld\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__, chrono.getMillis ());
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              chrono.start ();
 
-                		gameSettings.setDefaultResources(scenarioInfo.defaultResources);
-                		gameSettings.setDefaultUnits(scenarioInfo.defaultUnits);
-                		gameSettings.setDefaultVictoryConditions(scenarioInfo.defaultVictoryConditions);
+            uint32 mapCRC = lastCheckedCRCMapValue;
+            if (lastCheckedCRCMapName != displayedGamesettings.getMap () &&
+                displayedGamesettings.getMap () != "")
+            {
+              Checksum checksum;
+              string
+                file =
+                Config::getMapPath (displayedGamesettings.getMap (), "",
+                                    false);
+//console.addLine("Checking map CRC [" + file + "]");
+              checksum.addFile (file);
+              mapCRC = checksum.getSum ();
+// Test data synch
+//mapCRC++;
+
+              lastCheckedCRCMapValue = mapCRC;
+              lastCheckedCRCMapName = displayedGamesettings.getMap ();
+            }
+            safeMutexFTPProgress.ReleaseLock ();
+
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                        "In [%s::%s Line: %d] took msecs: %lld\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__, chrono.getMillis ());
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              chrono.start ();
+
+            bool
+              dataSynchMismatch =
+              ((mapCRC != 0 && mapCRC != displayedGamesettings.getMapCRC ())
+               || (tilesetCRC != 0
+                   && tilesetCRC != displayedGamesettings.getTilesetCRC ())
+               || (techCRC != 0
+                   && techCRC != displayedGamesettings.getTechCRC ()));
+
+//if(SystemFlags::VERBOSE_MODE_ENABLED) printf("\nmapCRC [%d] displayedGamesettings.getMapCRC() [%d]\ntilesetCRC [%d] displayedGamesettings.getTilesetCRC() [%d]\ntechCRC [%d] displayedGamesettings.getTechCRC() [%d]\n",mapCRC,displayedGamesettings.getMapCRC(),tilesetCRC,displayedGamesettings.getTilesetCRC(),techCRC,displayedGamesettings.getTechCRC());
+
+            if (dataSynchMismatch == true &&
+                (difftime
+                 ((long int) time (NULL),
+                  broadcastServerSettingsDelayTimer) >=
+                 HEADLESSSERVER_BROADCAST_SETTINGS_SECONDS))
+            {
+//printf("Data not synched: lmap %u rmap: %u ltile: %d rtile: %u ltech: %u rtech: %u\n",mapCRC,displayedGamesettings.getMapCRC(),tilesetCRC,displayedGamesettings.getTilesetCRC(),techCRC,displayedGamesettings.getTechCRC());
+
+              string labelSynch = lang.getString ("DataNotSynchedTitle");
+
+              if (mapCRC != 0 && mapCRC != displayedGamesettings.getMapCRC ()
+                  && listBoxMap.getSelectedItemIndex () >= 0
+                  && listBoxMap.getSelectedItem () !=
+                  Lang::getInstance ().getString ("DataMissing", "", true))
+              {
+                labelSynch = labelSynch + " " + lang.getString ("Map");
+
+                if (updateDataSynchDetailText == true &&
+                    lastMapDataSynchError !=
+                    lang.getString ("DataNotSynchedMap") + " " +
+                    listBoxMap.getSelectedItem ())
+                {
+                  lastMapDataSynchError =
+                    lang.getString ("DataNotSynchedMap") + " " +
+                    listBoxMap.getSelectedItem ();
+
+                  Lang & lang = Lang::getInstance ();
+                  const
+                    vector <
+                    string >
+                    languageList =
+                    clientInterface->
+                    getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+                  for (unsigned int i = 0; i < languageList.size (); ++i)
+                  {
+                    string
+                      msg =
+                      lang.getString ("DataNotSynchedMap",
+                                      languageList[i]) + " " +
+                      listBoxMap.getSelectedItem ();
+                    bool localEcho = lang.isLanguageLocal (languageList[i]);
+                    clientInterface->sendTextMessage (msg, -1, localEcho,
+                                                      languageList[i]);
+                  }
+                }
+              }
+
+              if (tilesetCRC != 0
+                  && tilesetCRC != displayedGamesettings.getTilesetCRC ()
+                  && listBoxTileset.getSelectedItemIndex () >= 0
+                  && listBoxTileset.getSelectedItem () !=
+                  Lang::getInstance ().getString ("DataMissing", "", true))
+              {
+                labelSynch = labelSynch + " " + lang.getString ("Tileset");
+                if (updateDataSynchDetailText == true &&
+                    lastTileDataSynchError !=
+                    lang.getString ("DataNotSynchedTileset") + " " +
+                    listBoxTileset.getSelectedItem ())
+                {
+                  lastTileDataSynchError =
+                    lang.getString ("DataNotSynchedTileset") + " " +
+                    listBoxTileset.getSelectedItem ();
+
+                  Lang & lang = Lang::getInstance ();
+                  const
+                    vector <
+                    string >
+                    languageList =
+                    clientInterface->
+                    getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+                  for (unsigned int i = 0; i < languageList.size (); ++i)
+                  {
+                    string
+                      msg =
+                      lang.getString ("DataNotSynchedTileset",
+                                      languageList[i]) + " " +
+                      listBoxTileset.getSelectedItem ();
+                    bool localEcho = lang.isLanguageLocal (languageList[i]);
+                    clientInterface->sendTextMessage (msg, -1, localEcho,
+                                                      languageList[i]);
+                  }
+                }
+              }
+
+              if (techCRC != 0
+                  && techCRC != displayedGamesettings.getTechCRC ()
+                  && listBoxTechTree.getSelectedItemIndex () >= 0
+                  && listBoxTechTree.getSelectedItem () !=
+                  Lang::getInstance ().getString ("DataMissing", "", true))
+              {
+                labelSynch = labelSynch + " " + lang.getString ("TechTree");
+                if (updateDataSynchDetailText == true &&
+                    lastTechtreeDataSynchError !=
+                    lang.getString ("DataNotSynchedTechtree") + " " +
+                    listBoxTechTree.getSelectedItem ())
+                {
+                  lastTechtreeDataSynchError =
+                    lang.getString ("DataNotSynchedTechtree") + " " +
+                    listBoxTechTree.getSelectedItem ();
+
+                  Lang & lang = Lang::getInstance ();
+                  const
+                    vector <
+                    string >
+                    languageList =
+                    clientInterface->
+                    getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+                  for (unsigned int i = 0; i < languageList.size (); ++i)
+                  {
+                    string
+                      msg =
+                      lang.getString ("DataNotSynchedTechtree",
+                                      languageList[i]) + " " +
+                      listBoxTechTree.getSelectedItem ();
+                    bool localEcho = lang.isLanguageLocal (languageList[i]);
+                    clientInterface->sendTextMessage (msg, -1, localEcho,
+                                                      languageList[i]);
+                  }
+
+                  if (SystemFlags::getSystemSettingType
+                      (SystemFlags::debugPerformance).enabled
+                      && chrono.getMillis () > 0)
+                    SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                              "In [%s::%s Line: %d] took msecs: %lld\n",
+                                              extractFileFromDirectoryPath
+                                              (__FILE__).c_str (),
+                                              __FUNCTION__, __LINE__,
+                                              chrono.getMillis ());
+                  if (SystemFlags::getSystemSettingType
+                      (SystemFlags::debugPerformance).enabled
+                      && chrono.getMillis () > 0)
+                    chrono.start ();
+
+                  const int
+                    MAX_CHAT_TEXT_LINE_LENGTH = 110;
+//const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
+                  for (unsigned int i = 0; i < languageList.size (); ++i)
+                  {
+                    bool localEcho = lang.isLanguageLocal (languageList[i]);
+
+                    string mismatchedFactionText = "";
+                    vector < string > mismatchedFactionTextList;
+                    vector < pair < string, uint32 > >serverFactionCRCList =
+                      displayedGamesettings.getFactionCRCList ();
+
+                    for (unsigned int factionIdx = 0;
+                         factionIdx < serverFactionCRCList.size ();
+                         ++factionIdx)
+                    {
+                      pair < string, uint32 > &serverFaction =
+                        serverFactionCRCList[factionIdx];
+
+                      bool foundFaction = false;
+                      for (unsigned int clientFactionIdx = 0;
+                           clientFactionIdx < factionCRCList.size ();
+                           ++clientFactionIdx)
+                      {
+                        pair < string, uint32 > &clientFaction =
+                          factionCRCList[clientFactionIdx];
+
+                        if (serverFaction.first == clientFaction.first)
+                        {
+                          foundFaction = true;
+                          if (serverFaction.second != clientFaction.second)
+                          {
+                            if (mismatchedFactionText.length () >= 10)
+                            {
+                              mismatchedFactionTextList.push_back
+                                (mismatchedFactionText);
+                              mismatchedFactionText = "";
+                            }
+                            if (mismatchedFactionText == "")
+                            {
+                              mismatchedFactionText =
+                                "The following factions are mismatched: ";
+                              if (lang.hasString ("MismatchedFactions",
+                                                  languageList[i]) == true)
+                              {
+                                mismatchedFactionText =
+                                  lang.getString ("MismatchedFactions",
+                                                  languageList[i]);
+                              }
+
+                              mismatchedFactionText +=
+                                " [" + intToStr (factionCRCList.size ()) +
+                                "][" +
+                                intToStr (serverFactionCRCList.size ()) +
+                                "] - ";
+                            }
+                            else
+                            {
+                              mismatchedFactionText += ", ";
+                            }
+                            mismatchedFactionText += serverFaction.first;
+                          }
+                          break;
+                        }
+                      }
+
+                      if (foundFaction == false)
+                      {
+                        if ((int) mismatchedFactionText.length () >
+                            MAX_CHAT_TEXT_LINE_LENGTH)
+                        {
+                          mismatchedFactionTextList.push_back
+                            (mismatchedFactionText);
+                          mismatchedFactionText = "";
+                        }
+
+                        if (mismatchedFactionText == "")
+                        {
+                          mismatchedFactionText =
+                            "The following factions are mismatched: ";
+                          if (lang.hasString ("MismatchedFactions",
+                                              languageList[i]) == true)
+                          {
+                            mismatchedFactionText =
+                              lang.getString ("MismatchedFactions",
+                                              languageList[i]);
+                          }
+
+                          mismatchedFactionText +=
+                            " [" + intToStr (factionCRCList.size ()) + "][" +
+                            intToStr (serverFactionCRCList.size ()) + "] - ";
+                        }
+                        else
+                        {
+                          mismatchedFactionText += ", ";
+                        }
+
+                        if (lang.hasString ("MismatchedFactionsMissing",
+                                            languageList[i]) == true)
+                        {
+                          mismatchedFactionText +=
+                            serverFaction.first + " " +
+                            lang.getString ("MismatchedFactionsMissing",
+                                            languageList[i]);
+                        }
+                        else
+                        {
+                          mismatchedFactionText +=
+                            serverFaction.first + " (missing)";
+                        }
+                      }
                     }
 
-    				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-    				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+                    for (unsigned int clientFactionIdx = 0;
+                         clientFactionIdx < factionCRCList.size ();
+                         ++clientFactionIdx)
+                    {
+                      pair < string, uint32 > &clientFaction =
+                        factionCRCList[clientFactionIdx];
 
-					program->setState(new Game(program, &gameSettings,false));
-					return;
-				}
-			}
+                      bool foundFaction = false;
+                      for (unsigned int factionIdx = 0;
+                           factionIdx < serverFactionCRCList.size ();
+                           ++factionIdx)
+                      {
+                        pair < string, uint32 > &serverFaction =
+                          serverFactionCRCList[factionIdx];
 
-			//call the chat manager
-			chatManager.updateNetwork();
+                        if (serverFaction.first == clientFaction.first)
+                        {
+                          foundFaction = true;
+                          break;
+                        }
+                      }
 
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
+                      if (foundFaction == false)
+                      {
+                        if ((int) mismatchedFactionText.length () >
+                            MAX_CHAT_TEXT_LINE_LENGTH)
+                        {
+                          mismatchedFactionTextList.push_back
+                            (mismatchedFactionText);
+                          mismatchedFactionText = "";
+                        }
 
-			//console732
-            console.update();
+                        if (mismatchedFactionText == "")
+                        {
+                          mismatchedFactionText =
+                            "The following factions are mismatched: ";
+                          if (lang.hasString ("MismatchedFactions",
+                                              languageList[i]) == true)
+                          {
+                            mismatchedFactionText =
+                              lang.getString ("MismatchedFactions",
+                                              languageList[i]);
+                          }
 
-            // check for need to switch music on again
-			if(clientInterface != NULL) {
-				int currentConnectionCount=0;
-				for(int i=0; i < GameConstants::maxPlayers; ++i) {
-					if(displayedGamesettings.getFactionControl(i)==ctNetwork &&
-							displayedGamesettings.getNetworkPlayerName(i) != "" &&
-							displayedGamesettings.getNetworkPlayerName(i) != GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME)
-					{
-						currentConnectionCount++;
-					}
-				}
-    			if(currentConnectionCount > soundConnectionCount){
-    				soundConnectionCount = currentConnectionCount;
-    				SoundRenderer::getInstance().playFx(CoreData::getInstance().getAttentionSound());
-    				//switch on music again!!
-    				Config &config = Config::getInstance();
-    				float configVolume = (config.getInt("SoundVolumeMusic") / 100.f);
-    				CoreData::getInstance().getMenuMusic()->setVolume(configVolume);
-    			}
-    			soundConnectionCount = currentConnectionCount;
-			}
+                          mismatchedFactionText +=
+                            " [" + intToStr (factionCRCList.size ()) + "][" +
+                            intToStr (serverFactionCRCList.size ()) + "] - ";
+                        }
+                        else
+                        {
+                          mismatchedFactionText += ", ";
+                        }
 
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-		}
-		catch(const runtime_error &ex) {
-			char szBuf[8096]="";
-			snprintf(szBuf,8096,"In [%s::%s %d]\nError detected:\n%s\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,ex.what());
-			SystemFlags::OutputDebug(SystemFlags::debugError,"In [%s::%s Line: %d] Error [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,ex.what());
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d] %s\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,szBuf);
-			showMessageBox( szBuf, "Error", false);
-		}
+                        if (lang.hasString ("MismatchedFactionsExtra",
+                                            languageList[i]) == true)
+                        {
+                          mismatchedFactionText +=
+                            clientFaction.first + " " +
+                            lang.getString ("MismatchedFactionsExtra",
+                                            languageList[i]);
+                        }
+                        else
+                        {
+                          mismatchedFactionText +=
+                            clientFaction.first + " (extra)";
+                        }
+                      }
+                    }
 
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
-	}
-}
+                    if (mismatchedFactionText != "")
+                    {
+                      if (mismatchedFactionTextList.empty () == false)
+                      {
+                        if (mismatchedFactionText != "")
+                        {
+                          mismatchedFactionText += ".";
+                          mismatchedFactionTextList.push_back
+                            (mismatchedFactionText);
+                        }
+                        for (unsigned int splitIdx = 0;
+                             splitIdx < mismatchedFactionTextList.size ();
+                             ++splitIdx)
+                        {
+                          clientInterface->sendTextMessage
+                            (mismatchedFactionTextList[splitIdx], -1,
+                             localEcho, languageList[i]);
+                        }
+                      }
+                      else
+                      {
+                        mismatchedFactionText += ".";
+                        clientInterface->sendTextMessage
+                          (mismatchedFactionText, -1, localEcho,
+                           languageList[i]);
+                      }
+                    }
+                  }
 
-bool MenuStateConnectedGame::loadFactions(const GameSettings *gameSettings, bool errorOnNoFactions) {
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
+                  if (SystemFlags::getSystemSettingType
+                      (SystemFlags::debugPerformance).enabled
+                      && chrono.getMillis () > 0)
+                    SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                              "In [%s::%s Line: %d] took msecs: %lld\n",
+                                              extractFileFromDirectoryPath
+                                              (__FILE__).c_str (),
+                                              __FUNCTION__, __LINE__,
+                                              chrono.getMillis ());
+                  if (SystemFlags::getSystemSettingType
+                      (SystemFlags::debugPerformance).enabled
+                      && chrono.getMillis () > 0)
+                    chrono.start ();
+                }
+              }
 
-	Lang &lang= Lang::getInstance();
-	bool foundFactions = false;
-	vector<string> results;
+              updateDataSynchDetailText = false;
+              labelDataSynchInfo.setText (labelSynch);
+            }
+            else
+            {
+              labelDataSynchInfo.setText ("");
+            }
+          }
 
-	string scenarioDir = Scenario::getScenarioDir(dirList, gameSettings->getScenario());
-	if(gameSettings->getTech() != "") {
-		Config &config = Config::getInstance();
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugPerformance).enabled
+              && chrono.getMillis () > 0)
+            SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                      "In [%s::%s Line: %d] took msecs: %lld\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__, chrono.getMillis ());
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugPerformance).enabled
+              && chrono.getMillis () > 0)
+            chrono.start ();
 
-		vector<string> techPaths = config.getPathListForType(ptTechs,scenarioDir);
-		for(int idx = 0; idx < (int)techPaths.size(); idx++) {
-			string &techPath = techPaths[idx];
-			endPathWithSlash(techPath);
-			//findAll(techPath + gameSettings->getTech() + "/factions/*.", results, false, false);
-			findDirs(techPath + gameSettings->getTech() + "/factions/", results, false, false);
-			if(results.empty() == false) {
-				break;
-			}
-		}
+          if (clientInterface->getAllowGameDataSynchCheck () == true &&
+              clientInterface->getNetworkGameDataSynchCheckOk () == false)
+          {
+            label = label + " -synch mismatch for:";
 
-		if(results.empty() == true) {
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
+            if (clientInterface->getNetworkGameDataSynchCheckOkMap () ==
+                false)
+            {
+              label = label + " map";
 
-			NetworkManager &networkManager= NetworkManager::getInstance();
-			ClientInterface* clientInterface= networkManager.getClientInterface();
-			if(clientInterface->getAllowGameDataSynchCheck() == false) {
-				if(errorOnNoFactions == true) {
-					throw megaglest_runtime_error("(2)There are no factions for the tech tree [" + gameSettings->getTech() + "]");
-				}
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] (2)There are no factions for the tech tree [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,gameSettings->getTech().c_str());
-			}
-			results.push_back(Lang::getInstance().getString("DataMissing","",true));
-			factionFiles = results;
-		    vector<string> translatedFactionNames;
-		    for(int i= 0; i < (int)factionFiles.size(); ++i) {
-		    	results[i]= formatString(results[i]);
-				string translatedString=techTree->getTranslatedFactionName(gameSettings->getTech(),factionFiles[i]);
-				if(toLower(translatedString)==toLower(results[i])){
-					translatedFactionNames.push_back(results[i]);
-				}
-				else {
-					translatedFactionNames.push_back(results[i]+" ("+translatedString+")");
-				}
-		    }
+              if (updateDataSynchDetailText == true &&
+                  clientInterface->getReceivedDataSynchCheck () &&
+                  lastMapDataSynchError !=
+                  "map CRC mismatch, " + listBoxMap.getSelectedItem ())
+              {
+                lastMapDataSynchError =
+                  "map CRC mismatch, " + listBoxMap.getSelectedItem ();
+                clientInterface->sendTextMessage (lastMapDataSynchError, -1,
+                                                  true, "");
+              }
+            }
 
-			for(int i=0; i<GameConstants::maxPlayers; ++i){
-				listBoxFactions[i].setItems(results,translatedFactionNames);
-			}
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                        "In [%s::%s Line: %d] took msecs: %lld\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__, chrono.getMillis ());
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              chrono.start ();
 
-			if(lastMissingTechtree != gameSettings->getTech() &&
-				gameSettings->getTech() != "") {
-				lastMissingTechtree = gameSettings->getTech();
+            if (clientInterface->getNetworkGameDataSynchCheckOkTile () ==
+                false)
+            {
+              label = label + " tile";
+              if (updateDataSynchDetailText == true &&
+                  clientInterface->getReceivedDataSynchCheck () &&
+                  lastTileDataSynchError !=
+                  "tile CRC mismatch, " + listBoxTileset.getSelectedItem ())
+              {
+                lastTileDataSynchError =
+                  "tile CRC mismatch, " + listBoxTileset.getSelectedItem ();
+                clientInterface->sendTextMessage (lastTileDataSynchError, -1,
+                                                  true, "");
+              }
+            }
 
-		    	Lang &lang= Lang::getInstance();
-		    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-		    	for(unsigned int i = 0; i < languageList.size(); ++i) {
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                        "In [%s::%s Line: %d] took msecs: %lld\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__, chrono.getMillis ());
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              chrono.start ();
 
-					char szMsg[8096]="";
-					if(lang.hasString("DataMissingTechtree",languageList[i]) == true) {
-						snprintf(szMsg,8096,lang.getString("DataMissingTechtree",languageList[i]).c_str(),getHumanPlayerName().c_str(),gameSettings->getTech().c_str());
-					}
-					else {
-						snprintf(szMsg,8096,"Player: %s is missing the techtree: %s",getHumanPlayerName().c_str(),gameSettings->getTech().c_str());
-					}
-					clientInterface->sendTextMessage(szMsg,-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-		    	}
-			}
+            if (clientInterface->getNetworkGameDataSynchCheckOkTech () ==
+                false)
+            {
+              label = label + " techtree";
 
-			foundFactions = false;
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-		}
-		else {
-			lastMissingTechtree = "";
-			getMissingTechtreeFromFTPServer = "";
+              if (updateDataSynchDetailText == true &&
+                  clientInterface->getReceivedDataSynchCheck ())
+              {
 
-			factionFiles= results;
-		    vector<string> translatedFactionNames;
-		    for(int i= 0; i < (int)factionFiles.size(); ++i) {
-		    	results[i]= formatString(results[i]);
-		    	string translatedString=techTree->getTranslatedFactionName(gameSettings->getTech(),factionFiles[i]);
-		    	if(toLower(translatedString)==toLower(results[i])){
-		    		translatedFactionNames.push_back(results[i]);
-		    	}
-		    	else {
-		    		translatedFactionNames.push_back(results[i]+" ("+translatedString+")");
-		    	}
-		    }
+                string
+                  report =
+                  clientInterface->getNetworkGameDataSynchCheckTechMismatchReport
+                  ();
+                if (lastTechtreeDataSynchError !=
+                    "techtree CRC mismatch" + report)
+                {
+                  lastTechtreeDataSynchError =
+                    "techtree CRC mismatch" + report;
 
-			results.push_back(formatString(GameConstants::RANDOMFACTION_SLOTNAME));
-			factionFiles.push_back(formatString(GameConstants::RANDOMFACTION_SLOTNAME));
-			translatedFactionNames.push_back("*"+lang.getString("Random","",true)+"*");
+                  if (SystemFlags::getSystemSettingType
+                      (SystemFlags::debugSystem).enabled)
+                    SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                              "In [%s::%s Line: %d] report: %s\n",
+                                              extractFileFromDirectoryPath
+                                              (__FILE__).c_str (),
+                                              __FUNCTION__, __LINE__,
+                                              report.c_str ());
 
-			// Add special Observer Faction
-			if(checkBoxAllowObservers.getValue() == 1) {
-				results.push_back(formatString(GameConstants::OBSERVER_SLOTNAME));
-				factionFiles.push_back(formatString(GameConstants::OBSERVER_SLOTNAME));
-				translatedFactionNames.push_back("*"+lang.getString("Observer","",true)+"*");
-			}
+                  clientInterface->sendTextMessage ("techtree CRC mismatch",
+                                                    -1, true, "");
+                  vector < string > reportLineTokens;
+                  Tokenize (report, reportLineTokens, "\n");
+                  for (int reportLine = 0;
+                       reportLine < (int) reportLineTokens.size ();
+                       ++reportLine)
+                  {
+                    clientInterface->sendTextMessage (reportLineTokens
+                                                      [reportLine], -1, true,
+                                                      "");
+                  }
+                }
+              }
+            }
+
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                        "In [%s::%s Line: %d] took msecs: %lld\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__, chrono.getMillis ());
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              chrono.start ();
+
+            if (clientInterface->getReceivedDataSynchCheck () == true)
+            {
+              updateDataSynchDetailText = false;
+            }
+          }
+          else if (clientInterface->getAllowGameDataSynchCheck () == true)
+          {
+            label += " - data synch is ok";
+          }
+
+          labelStatus.setText (label);
+
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugPerformance).enabled
+              && chrono.getMillis () > 0)
+            SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                      "In [%s::%s Line: %d] took msecs: %lld\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__, chrono.getMillis ());
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugPerformance).enabled
+              && chrono.getMillis () > 0)
+            chrono.start ();
+
+        }
+        else
+        {
+          string label = lang.getString ("ConnectedToServer");
+
+          if (!clientInterface->getServerName ().empty ())
+          {
+            label = label + " " + clientInterface->getServerName ();
+          }
+
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugPerformance).enabled
+              && chrono.getMillis () > 0)
+            SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                      "In [%s::%s Line: %d] took msecs: %lld\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__, chrono.getMillis ());
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugPerformance).enabled
+              && chrono.getMillis () > 0)
+            chrono.start ();
+
+          if (clientInterface->getAllowGameDataSynchCheck () == true &&
+              clientInterface->getNetworkGameDataSynchCheckOk () == false)
+          {
+            label = label + " -waiting to synch:";
+            if (clientInterface->getNetworkGameDataSynchCheckOkMap () ==
+                false)
+            {
+              label = label + " map";
+            }
+            if (clientInterface->getNetworkGameDataSynchCheckOkTile () ==
+                false)
+            {
+              label = label + " tile";
+            }
+            if (clientInterface->getNetworkGameDataSynchCheckOkTech () ==
+                false)
+            {
+              label = label + " techtree";
+            }
+          }
+          else if (clientInterface->getAllowGameDataSynchCheck () == true)
+          {
+            label += " - data synch is ok";
+          }
+
+          labelStatus.setText (label);
+        }
+
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugPerformance).enabled
+            && chrono.getMillis () > 0)
+          SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                    "In [%s::%s Line: %d] took msecs: %lld\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, chrono.getMillis ());
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugPerformance).enabled
+            && chrono.getMillis () > 0)
+          chrono.start ();
+      }
+      else
+      {
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                    "In [%s::%s Line: %d]\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__);
+
+        if (clientInterface != NULL
+            && clientInterface->isConnected () == true)
+        {
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                      "In [%s::%s Line: %d]\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__);
+          clientInterface->close ();
+        }
+
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugPerformance).enabled
+            && chrono.getMillis () > 0)
+          SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                    "In [%s::%s Line: %d] took msecs: %lld\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, chrono.getMillis ());
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugPerformance).enabled
+            && chrono.getMillis () > 0)
+          chrono.start ();
+
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                    "In [%s::%s Line: %d]\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__);
+        returnToJoinMenu ();
+        return;
+      }
+
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugPerformance).enabled
+          && chrono.getMillis () > 0)
+        SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                  "In [%s::%s Line: %d] took msecs: %lld\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__, __LINE__,
+                                  chrono.getMillis ());
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugPerformance).enabled
+          && chrono.getMillis () > 0)
+        chrono.start ();
+
+//process network messages
+      if (clientInterface != NULL && clientInterface->isConnected ())
+      {
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugPerformance).enabled
+            && chrono.getMillis () > 0)
+          SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                    "In [%s::%s Line: %d] took msecs: %lld\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, chrono.getMillis ());
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugPerformance).enabled
+            && chrono.getMillis () > 0)
+          chrono.start ();
+
+        try
+        {
+          if (clientInterface->getGameSettingsReceived ()
+              && validDisplayedGamesettings
+              && lastGameSettingsReceivedCount !=
+              clientInterface->getGameSettingsReceivedCount ())
+          {
+            lastGameSettingsReceivedCount =
+              clientInterface->getGameSettingsReceivedCount ();
+            bool
+              errorOnMissingData =
+              (clientInterface->getAllowGameDataSynchCheck () == false);
+
+            const GameSettings *
+              receivedGameSettings = clientInterface->getGameSettings ();
+
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                        "In [%s::%s Line: %d] took msecs: %lld\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__, chrono.getMillis ());
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              chrono.start ();
+
+//printf("Menu got new settings thisfactionindex = %d startlocation: %d control = %d\n",displayedGamesettings.getThisFactionIndex(),clientInterface->getGameSettings()->getStartLocationIndex(clientInterface->getGameSettings()->getThisFactionIndex()),displayedGamesettings.getFactionControl(clientInterface->getGameSettings()->getThisFactionIndex()));
+            if (difftime ((long int) time (NULL), noReceiveTimer) < 3
+                || difftime ((long int) time (NULL),
+                             broadcastServerSettingsDelayTimer) <
+                HEADLESSSERVER_BROADCAST_SETTINGS_SECONDS)
+            {
+// copy my current settings in UI to displayedSettings;
+              loadGameSettings (&displayedGamesettings);
+
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                          "In [%s::%s Line: %d] took msecs: %lld\n",
+                                          extractFileFromDirectoryPath
+                                          (__FILE__).c_str (), __FUNCTION__,
+                                          __LINE__, chrono.getMillis ());
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                chrono.start ();
+
+// check if there are any changed fields from others clients
+              if (isHeadlessAdmin ())
+              {
+//printf("I am headless admin and will restore only some parts\n");
+// only copy those parts which are editable by normal clients
+                for (int i = 0; i < receivedGameSettings->getFactionCount ();
+                     i++)
+                {
+                  if (displayedGamesettings.getFactionControl (i) ==
+                      ctNetwork)
+                  {
+                    if (originalGamesettings.getTeam (i) ==
+                        displayedGamesettings.getTeam (i))
+                    {
+                      displayedGamesettings.setTeam (i,
+                                                     receivedGameSettings->getTeam
+                                                     (i));
+                      originalGamesettings.setTeam (i,
+                                                    receivedGameSettings->getTeam
+                                                    (i));
+                    }
+                    if (originalGamesettings.getFactionTypeName (i) ==
+                        displayedGamesettings.getFactionTypeName (i))
+                    {
+                      displayedGamesettings.setFactionTypeName (i,
+                                                                receivedGameSettings->getFactionTypeName
+                                                                (i));
+                      originalGamesettings.setFactionTypeName (i,
+                                                               receivedGameSettings->getFactionTypeName
+                                                               (i));
+                    }
+                    displayedGamesettings.setNetworkPlayerGameStatus (i,
+                                                                      receivedGameSettings->getNetworkPlayerGameStatus
+                                                                      (i));
+                    originalGamesettings.setNetworkPlayerGameStatus (i,
+                                                                     receivedGameSettings->getNetworkPlayerGameStatus
+                                                                     (i));
+                    displayedGamesettings.setNetworkPlayerName (i,
+                                                                receivedGameSettings->getNetworkPlayerName
+                                                                (i));
+                    originalGamesettings.setNetworkPlayerName (i,
+                                                               receivedGameSettings->getNetworkPlayerName
+                                                               (i));
+                  }
+                }
+              }
+              else
+              {
+//printf("I am client and restore everything but not my line\n");
+// copy all received fields just not those which are editable for normal client
+//store my changes
+                int
+                  i = clientInterface->getPlayerIndex ();
+                int
+                  team = displayedGamesettings.getTeam (i);
+                string faction = displayedGamesettings.getFactionTypeName (i);
+                int
+                  status =
+                  displayedGamesettings.getNetworkPlayerGameStatus (i);
+                string
+                  networkPlayerName =
+                  displayedGamesettings.getNetworkPlayerName (i);
+                displayedGamesettings = *receivedGameSettings;
+                originalGamesettings = *receivedGameSettings;
+
+                displayedGamesettings.setTeam (i, team);
+                originalGamesettings.setTeam (i, team);
+                displayedGamesettings.setFactionTypeName (i, faction);
+                originalGamesettings.setFactionTypeName (i, faction);
+                displayedGamesettings.setNetworkPlayerGameStatus (i, status);
+                originalGamesettings.setNetworkPlayerGameStatus (i, status);
+                displayedGamesettings.setNetworkPlayerName (i,
+                                                            networkPlayerName);
+                originalGamesettings.setNetworkPlayerName (i,
+                                                           networkPlayerName);
+
+              }
+
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                          "In [%s::%s Line: %d] took msecs: %lld\n",
+                                          extractFileFromDirectoryPath
+                                          (__FILE__).c_str (), __FUNCTION__,
+                                          __LINE__, chrono.getMillis ());
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                chrono.start ();
+
+              setupUIFromGameSettings (&displayedGamesettings,
+                                       errorOnMissingData);
+            }
+            else
+            {
+// do nothing
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                          "In [%s::%s Line: %d] took msecs: %lld\n",
+                                          extractFileFromDirectoryPath
+                                          (__FILE__).c_str (), __FUNCTION__,
+                                          __LINE__, chrono.getMillis ());
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                chrono.start ();
+
+              setupUIFromGameSettings (&displayedGamesettings,
+                                       errorOnMissingData);
+            }
+
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                        "In [%s::%s Line: %d] took msecs: %lld\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__, chrono.getMillis ());
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              chrono.start ();
+
+            broadCastGameSettingsToHeadlessServer
+              (needToBroadcastServerSettings);
+          }
+
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugPerformance).enabled
+              && chrono.getMillis () > 0)
+            SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                      "In [%s::%s Line: %d] took msecs: %lld\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__, chrono.getMillis ());
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugPerformance).enabled
+              && chrono.getMillis () > 0)
+            chrono.start ();
+
+// check if we are joining an in progress game
+          if (clientInterface->getJoinGameInProgress () == true &&
+              clientInterface->getJoinGameInProgressLaunch () == true &&
+              clientInterface->getReadyForInGameJoin () == true &&
+              ftpClientThread != NULL)
+          {
+
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                        "In [%s::%s Line: %d] took msecs: %lld\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__, chrono.getMillis ());
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              chrono.start ();
+
+            MutexSafeWrapper
+              safeMutexFTPProgress ((ftpClientThread !=
+                                     NULL ?
+                                     ftpClientThread->getProgressMutex () :
+                                     NULL),
+                                    string (__FILE__) + "_" +
+                                    intToStr (__LINE__));
+            if (readyToJoinInProgressGame == false)
+            {
+              if (getInProgressSavedGameFromFTPServer == "")
+              {
+
+                getInProgressSavedGameFromFTPServerInProgress = true;
+                ftpClientThread->addTempFileToRequests
+                  (GameConstants::saveNetworkGameFileClientCompressed,
+                   GameConstants::saveNetworkGameFileServerCompressed);
+
+                getInProgressSavedGameFromFTPServer =
+                  GameConstants::saveNetworkGameFileServerCompressed;
+                fileFTPProgressList[getInProgressSavedGameFromFTPServer] =
+                  pair < int,
+                string > (0, "");
+              }
+              safeMutexFTPProgress.ReleaseLock ();
+            }
+            else
+            {
+              safeMutexFTPProgress.ReleaseLock ();
+
+              string
+                saveGameFile =
+                "temp/" + string (GameConstants::saveNetworkGameFileClient);
+              if (getGameReadWritePath
+                  (GameConstants::path_logs_CacheLookupKey) != "")
+              {
+                saveGameFile =
+                  getGameReadWritePath
+                  (GameConstants::path_logs_CacheLookupKey) + saveGameFile;
+              }
+              else
+              {
+                string
+                  userData =
+                  Config::getInstance ().getString ("UserData_Root", "");
+                if (userData != "")
+                {
+                  endPathWithSlash (userData);
+                }
+                saveGameFile = userData + saveGameFile;
+              }
+
+//printf("Loading saved game file [%s]\n",saveGameFile.c_str());
+
+              GameSettings
+                gameSettings = *clientInterface->getGameSettings ();
+              loadGameSettings (&gameSettings);
+
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                          "In [%s::%s Line: %d] took msecs: %lld\n",
+                                          extractFileFromDirectoryPath
+                                          (__FILE__).c_str (), __FUNCTION__,
+                                          __LINE__, chrono.getMillis ());
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                chrono.start ();
+
+              Game::loadGame (saveGameFile, program, false, &gameSettings);
+              return;
+            }
+          }
+
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugPerformance).enabled
+              && chrono.getMillis () > 0)
+            SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                      "In [%s::%s Line: %d] took msecs: %lld\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__, chrono.getMillis ());
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugPerformance).enabled
+              && chrono.getMillis () > 0)
+            chrono.start ();
+
+//update lobby
+          clientInterface =
+            NetworkManager::getInstance ().getClientInterface ();
+          if (clientInterface != NULL && clientInterface->isConnected ())
+          {
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                        "In [%s::%s Line: %d] took msecs: %lld\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__, chrono.getMillis ());
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              chrono.start ();
+
+            clientInterface->updateLobby ();
+
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                        "In [%s::%s Line: %d] took msecs: %lld\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__, chrono.getMillis ());
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              chrono.start ();
+          }
+
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugPerformance).enabled
+              && chrono.getMillis () > 0)
+            SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                      "In [%s::%s Line: %d] took msecs: %lld\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__, chrono.getMillis ());
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugPerformance).enabled
+              && chrono.getMillis () > 0)
+            chrono.start ();
+
+          clientInterface =
+            NetworkManager::getInstance ().getClientInterface ();
+          if (clientInterface != NULL && clientInterface->isConnected ())
+          {
+            if (initialSettingsReceivedFromServer == true &&
+                clientInterface->getIntroDone () == true &&
+                (switchSetupRequestFlagType & ssrft_NetworkPlayerName) ==
+                ssrft_NetworkPlayerName)
+            {
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugSystem).enabled)
+                SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                          "In [%s::%s Line: %d] getHumanPlayerName() = [%s], clientInterface->getGameSettings()->getThisFactionIndex() = %d\n",
+                                          extractFileFromDirectoryPath
+                                          (__FILE__).c_str (), __FUNCTION__,
+                                          __LINE__,
+                                          getHumanPlayerName ().c_str (),
+                                          clientInterface->getGameSettings
+                                          ()->getThisFactionIndex ());
+              clientInterface->sendSwitchSetupRequest ("",
+                                                       clientInterface->getPlayerIndex
+                                                       (), -1, -1,
+                                                       getHumanPlayerName (),
+                                                       getNetworkPlayerStatus
+                                                       (),
+                                                       switchSetupRequestFlagType,
+                                                       lang.getLanguage ());
+
+              switchSetupRequestFlagType = ssrft_None;
+            }
+
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                        "In [%s::%s Line: %d] took msecs: %lld\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__, chrono.getMillis ());
+            if (SystemFlags::getSystemSettingType
+                (SystemFlags::debugPerformance).enabled
+                && chrono.getMillis () > 0)
+              chrono.start ();
+
+//intro
+            if (clientInterface->getIntroDone ())
+            {
+              if (newLabelConnectionInfo != labelInfo.getText ())
+              {
+                if (SystemFlags::VERBOSE_MODE_ENABLED)
+                  printf ("In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__,
+                          __LINE__);
+                labelInfo.setText (newLabelConnectionInfo);
+              }
+            }
+
+//launch
+            if (clientInterface->getLaunchGame ())
+            {
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugSystem).enabled)
+                SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                          "In [%s::%s Line: %d]\n",
+                                          extractFileFromDirectoryPath
+                                          (__FILE__).c_str (), __FUNCTION__,
+                                          __LINE__);
+
+              assert (clientInterface != NULL);
+
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugSystem).enabled)
+                SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                          "In [%s::%s Line: %d]\n",
+                                          extractFileFromDirectoryPath
+                                          (__FILE__).c_str (), __FUNCTION__,
+                                          __LINE__);
+
+              if (modHttpServerThread != NULL)
+              {
+                if (SystemFlags::VERBOSE_MODE_ENABLED)
+                  printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__,
+                          __LINE__);
+                if (SystemFlags::getSystemSettingType
+                    (SystemFlags::debugSystem).enabled)
+                  SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                            "In [%s::%s Line %d]\n", __FILE__,
+                                            __FUNCTION__, __LINE__);
+                modHttpServerThread->setSimpleTaskInterfaceValid (false);
+                modHttpServerThread->signalQuit ();
+
+                if (SystemFlags::VERBOSE_MODE_ENABLED)
+                  printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__,
+                          __LINE__);
+                if (SystemFlags::getSystemSettingType
+                    (SystemFlags::debugSystem).enabled)
+                  SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                            "In [%s::%s Line %d]\n", __FILE__,
+                                            __FUNCTION__, __LINE__);
+                if (modHttpServerThread->canShutdown (true) == true
+                    && modHttpServerThread->shutdownAndWait () == true)
+                {
+                  delete modHttpServerThread;
+                }
+                if (SystemFlags::VERBOSE_MODE_ENABLED)
+                  printf ("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__,
+                          __LINE__);
+                modHttpServerThread = NULL;
+              }
+
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                          "In [%s::%s Line: %d] took msecs: %lld\n",
+                                          extractFileFromDirectoryPath
+                                          (__FILE__).c_str (), __FUNCTION__,
+                                          __LINE__, chrono.getMillis ());
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                chrono.start ();
+
+              if (ftpClientThread != NULL)
+              {
+                ftpClientThread->setCallBackObject (NULL);
+                ftpClientThread->signalQuit ();
+                sleep (0);
+                if (ftpClientThread->canShutdown (true) == true &&
+                    ftpClientThread->shutdownAndWait () == true)
+                {
+                  delete ftpClientThread;
+                }
+                else
+                {
+                  char
+                    szBuf[8096] = "";
+                  snprintf (szBuf, 8096,
+                            "In [%s::%s %d] Error cannot shutdown ftpClientThread\n",
+                            extractFileFromDirectoryPath (__FILE__).c_str (),
+                            __FUNCTION__, __LINE__);
+                  if (SystemFlags::VERBOSE_MODE_ENABLED)
+                    printf ("%s", szBuf);
+                  if (SystemFlags::getSystemSettingType
+                      (SystemFlags::debugSystem).enabled)
+                    SystemFlags::OutputDebug (SystemFlags::debugSystem, "%s",
+                                              szBuf);
+                }
+                ftpClientThread = NULL;
+              }
+
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugSystem).enabled)
+                SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                          "In [%s::%s Line: %d]\n",
+                                          extractFileFromDirectoryPath
+                                          (__FILE__).c_str (), __FUNCTION__,
+                                          __LINE__);
+
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                          "In [%s::%s Line: %d] took msecs: %lld\n",
+                                          extractFileFromDirectoryPath
+                                          (__FILE__).c_str (), __FUNCTION__,
+                                          __LINE__, chrono.getMillis ());
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                chrono.start ();
+
+              launchingNewGame = true;
+
+              GameSettings
+                gameSettings = *clientInterface->getGameSettings ();
+// complete game settings with local stuff
+              if (gameSettings.getScenario () != "")
+              {
+                string scenario = gameSettings.getScenario ();
+                listBoxScenario.setSelectedItem (formatString (scenario));
+                string file = Scenario::getScenarioPath (dirList, scenario);
+
+                bool isTutorial = Scenario::isGameTutorial (file);
+                Scenario::loadScenarioInfo (file, &scenarioInfo, isTutorial);
+
+                gameSettings.setScenarioDir (Scenario::getScenarioPath
+                                             (dirList, scenarioInfo.name));
+
+                gameSettings.
+                  setDefaultResources (scenarioInfo.defaultResources);
+                gameSettings.setDefaultUnits (scenarioInfo.defaultUnits);
+                gameSettings.setDefaultVictoryConditions
+                  (scenarioInfo.defaultVictoryConditions);
+              }
+
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                          "In [%s::%s Line: %d] took msecs: %lld\n",
+                                          extractFileFromDirectoryPath
+                                          (__FILE__).c_str (), __FUNCTION__,
+                                          __LINE__, chrono.getMillis ());
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugPerformance).enabled
+                  && chrono.getMillis () > 0)
+                chrono.start ();
+
+              program->setState (new Game (program, &gameSettings, false));
+              return;
+            }
+          }
+
+//call the chat manager
+          chatManager.updateNetwork ();
+
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugPerformance).enabled
+              && chrono.getMillis () > 0)
+            SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                      "In [%s::%s Line: %d] took msecs: %lld\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__, chrono.getMillis ());
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugPerformance).enabled
+              && chrono.getMillis () > 0)
+            chrono.start ();
+
+//console732
+          console.update ();
+
+// check for need to switch music on again
+          if (clientInterface != NULL)
+          {
+            int
+              currentConnectionCount = 0;
+            for (int i = 0; i < GameConstants::maxPlayers; ++i)
+            {
+              if (displayedGamesettings.getFactionControl (i) == ctNetwork &&
+                  displayedGamesettings.getNetworkPlayerName (i) != "" &&
+                  displayedGamesettings.getNetworkPlayerName (i) !=
+                  GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME)
+              {
+                currentConnectionCount++;
+              }
+            }
+            if (currentConnectionCount > soundConnectionCount)
+            {
+              soundConnectionCount = currentConnectionCount;
+              SoundRenderer::getInstance ().
+                playFx (CoreData::getInstance ().getAttentionSound ());
+//switch on music again!!
+              Config & config = Config::getInstance ();
+              float
+                configVolume = (config.getInt ("SoundVolumeMusic") / 100.f);
+              CoreData::getInstance ().
+                getMenuMusic ()->setVolume (configVolume);
+            }
+            soundConnectionCount = currentConnectionCount;
+          }
+
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugPerformance).enabled
+              && chrono.getMillis () > 0)
+            SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                      "In [%s::%s Line: %d] took msecs: %lld\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__, chrono.getMillis ());
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugPerformance).enabled
+              && chrono.getMillis () > 0)
+            chrono.start ();
+        }
+        catch (const runtime_error & ex)
+        {
+          char
+            szBuf[8096] = "";
+          snprintf (szBuf, 8096, "In [%s::%s %d]\nError detected:\n%s\n",
+                    extractFileFromDirectoryPath (__FILE__).c_str (),
+                    __FUNCTION__, __LINE__, ex.what ());
+          SystemFlags::OutputDebug (SystemFlags::debugError,
+                                    "In [%s::%s Line: %d] Error [%s]\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, ex.what ());
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                      "In [%s::%s Line %d] %s\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__, szBuf);
+          showMessageBox (szBuf, "Error", false);
+        }
+
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugPerformance).enabled
+            && chrono.getMillis () > 0)
+          SystemFlags::OutputDebug (SystemFlags::debugPerformance,
+                                    "In [%s::%s Line: %d] took msecs: %lld\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, chrono.getMillis ());
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugPerformance).enabled
+            && chrono.getMillis () > 0)
+          chrono.start ();
+      }
+    }
+
+    bool
+      MenuStateConnectedGame::loadFactions (const GameSettings * gameSettings,
+                                            bool errorOnNoFactions)
+    {
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s Line: %d]\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__,
+                                  __LINE__);
+
+      Lang & lang = Lang::getInstance ();
+      bool foundFactions = false;
+      vector < string > results;
+
+      string
+        scenarioDir =
+        Scenario::getScenarioDir (dirList, gameSettings->getScenario ());
+      if (gameSettings->getTech () != "")
+      {
+        Config & config = Config::getInstance ();
+
+        vector < string > techPaths =
+          config.getPathListForType (ptTechs, scenarioDir);
+        for (int idx = 0; idx < (int) techPaths.size (); idx++)
+        {
+          string & techPath = techPaths[idx];
+          endPathWithSlash (techPath);
+//findAll(techPath + gameSettings->getTech() + "/factions/*.", results, false, false);
+          findDirs (techPath + gameSettings->getTech () + "/factions/",
+                    results, false, false);
+          if (results.empty () == false)
+          {
+            break;
+          }
+        }
+
+        if (results.empty () == true)
+        {
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                      "In [%s::%s Line: %d]\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__);
+
+          NetworkManager & networkManager = NetworkManager::getInstance ();
+          ClientInterface *
+            clientInterface = networkManager.getClientInterface ();
+          if (clientInterface->getAllowGameDataSynchCheck () == false)
+          {
+            if (errorOnNoFactions == true)
+            {
+              throw
+                megaglest_runtime_error
+                ("(2)There are no factions for the tech tree [" +
+                 gameSettings->getTech () + "]");
+            }
+            if (SystemFlags::
+                getSystemSettingType (SystemFlags::debugSystem).enabled)
+              SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                        "In [%s::%s Line: %d] (2)There are no factions for the tech tree [%s]\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__,
+                                        gameSettings->getTech ().c_str ());
+          }
+          results.
+            push_back (Lang::
+                       getInstance ().getString ("DataMissing", "", true));
+          factionFiles = results;
+          vector < string > translatedFactionNames;
+          for (int i = 0; i < (int) factionFiles.size (); ++i)
+          {
+            results[i] = formatString (results[i]);
+            string
+              translatedString =
+              techTree->getTranslatedFactionName (gameSettings->getTech (),
+                                                  factionFiles[i]);
+            if (toLower (translatedString) == toLower (results[i]))
+            {
+              translatedFactionNames.push_back (results[i]);
+            }
+            else
+            {
+              translatedFactionNames.push_back (results[i] + " (" +
+                                                translatedString + ")");
+            }
+          }
+
+          for (int i = 0; i < GameConstants::maxPlayers; ++i)
+          {
+            listBoxFactions[i].setItems (results, translatedFactionNames);
+          }
+
+          if (lastMissingTechtree != gameSettings->getTech () &&
+              gameSettings->getTech () != "")
+          {
+            lastMissingTechtree = gameSettings->getTech ();
+
+            Lang & lang = Lang::getInstance ();
+            const
+              vector <
+              string >
+              languageList =
+              clientInterface->
+              getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+            for (unsigned int i = 0; i < languageList.size (); ++i)
+            {
+
+              char
+                szMsg[8096] = "";
+              if (lang.hasString ("DataMissingTechtree", languageList[i]) ==
+                  true)
+              {
+                snprintf (szMsg, 8096,
+                          lang.getString ("DataMissingTechtree",
+                                          languageList[i]).c_str (),
+                          getHumanPlayerName ().c_str (),
+                          gameSettings->getTech ().c_str ());
+              }
+              else
+              {
+                snprintf (szMsg, 8096,
+                          "Player: %s is missing the techtree: %s",
+                          getHumanPlayerName ().c_str (),
+                          gameSettings->getTech ().c_str ());
+              }
+              clientInterface->sendTextMessage (szMsg, -1,
+                                                lang.isLanguageLocal
+                                                (languageList[i]),
+                                                languageList[i]);
+            }
+          }
+
+          foundFactions = false;
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                      "In [%s::%s Line: %d]\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__);
+        }
+        else
+        {
+          lastMissingTechtree = "";
+          getMissingTechtreeFromFTPServer = "";
+
+          factionFiles = results;
+          vector < string > translatedFactionNames;
+          for (int i = 0; i < (int) factionFiles.size (); ++i)
+          {
+            results[i] = formatString (results[i]);
+            string
+              translatedString =
+              techTree->getTranslatedFactionName (gameSettings->getTech (),
+                                                  factionFiles[i]);
+            if (toLower (translatedString) == toLower (results[i]))
+            {
+              translatedFactionNames.push_back (results[i]);
+            }
+            else
+            {
+              translatedFactionNames.push_back (results[i] + " (" +
+                                                translatedString + ")");
+            }
+          }
+
+          results.push_back (formatString
+                             (GameConstants::RANDOMFACTION_SLOTNAME));
+          factionFiles.push_back (formatString
+                                  (GameConstants::RANDOMFACTION_SLOTNAME));
+          translatedFactionNames.push_back ("*" +
+                                            lang.getString ("Random", "",
+                                                            true) + "*");
+
+// Add special Observer Faction
+          if (checkBoxAllowObservers.getValue () == 1)
+          {
+            results.push_back (formatString
+                               (GameConstants::OBSERVER_SLOTNAME));
+            factionFiles.push_back (formatString
+                                    (GameConstants::OBSERVER_SLOTNAME));
+            translatedFactionNames.push_back ("*" +
+                                              lang.getString ("Observer", "",
+                                                              true) + "*");
+          }
 
 
-			for(int i=0; i<GameConstants::maxPlayers; ++i){
-				listBoxFactions[i].setItems(results,translatedFactionNames);
-			}
+          for (int i = 0; i < GameConstants::maxPlayers; ++i)
+          {
+            listBoxFactions[i].setItems (results, translatedFactionNames);
+          }
 
-			foundFactions = (results.empty() == false);
-		}
-	}
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-	return foundFactions;
-}
+          foundFactions = (results.empty () == false);
+        }
+      }
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s Line: %d]\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__,
+                                  __LINE__);
+      return foundFactions;
+    }
 
 // ============ PRIVATE ===========================
 
-bool MenuStateConnectedGame::hasNetworkGameSettings() {
-    bool hasNetworkSlot = false;
+    bool MenuStateConnectedGame::hasNetworkGameSettings ()
+    {
+      bool hasNetworkSlot = false;
 
-    try {
-		for(int i=0; i<mapInfo.players; ++i) {
-			ControlType ct= static_cast<ControlType>(listBoxControls[i].getSelectedItemIndex());
-			if(ct != ctClosed) {
-				if(ct == ctNetwork || ct == ctNetworkUnassigned) {
-					hasNetworkSlot = true;
-					break;
-				}
-			}
-		}
-		if(hasNetworkSlot == false) {
-			for(int i=0; i < GameConstants::maxPlayers; ++i) {
-				ControlType ct= static_cast<ControlType>(listBoxControls[i].getSelectedItemIndex());
-				if(ct != ctClosed) {
-					if(ct == ctNetworkUnassigned) {
-						hasNetworkSlot = true;
-						break;
-					}
-				}
-			}
-		}
-    }
-	catch(const std::exception &ex) {
-		char szBuf[8096]="";
-		snprintf(szBuf,8096,"In [%s::%s %d]\nError detected:\n%s\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,ex.what());
-		SystemFlags::OutputDebug(SystemFlags::debugError,"In [%s::%s Line: %d] Error [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,ex.what());
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d] %s\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,szBuf);
-		showMessageBox( szBuf, "Error", false);
-	}
-
-    return hasNetworkSlot;
-}
-
-void MenuStateConnectedGame::keyDown(SDL_KeyboardEvent key) {
-	if(activeInputLabel != NULL) {
-		bool handled = keyDownEditLabel(key, &activeInputLabel);
-		if(handled == true) {
-			switchSetupRequestFlagType |= ssrft_NetworkPlayerName;
-            needToSetChangedGameSettings = true;
-            lastSetChangedGameSettings   = time(NULL);
-		}
-	}
-	else {
-		//send key to the chat manager
-		NetworkManager &networkManager= NetworkManager::getInstance();
-		ClientInterface *clientInterface = networkManager.getClientInterface();
-		if(clientInterface != NULL &&
-				clientInterface->isConnected() == true &&
-				clientInterface->getIntroDone() == true) {
-			chatManager.keyDown(key);
-		}
-		if(chatManager.getEditEnabled() == false &&
-				(::Shared::Platform::Window::isKeyStateModPressed(KMOD_SHIFT) == false)) {
-			Config &configKeys = Config::getInstance(std::pair<ConfigType,ConfigType>(cfgMainKeys,cfgUserKeys));
-
-			if(isKeyPressed(configKeys.getSDLKey("ShowFullConsole"),key) == true) {
-				showFullConsole= true;
-			}
-			else if(isKeyPressed(configKeys.getSDLKey("ToggleMusic"),key) == true) {
-				Config &config = Config::getInstance();
-				Lang &lang= Lang::getInstance();
-
-				float configVolume = (config.getInt("SoundVolumeMusic") / 100.f);
-				float currentVolume = CoreData::getInstance().getMenuMusic()->getVolume();
-				if(currentVolume > 0) {
-					CoreData::getInstance().getMenuMusic()->setVolume(0.f);
-					console.addLine(lang.getString("GameMusic") + " " + lang.getString("Off"));
-				}
-				else {
-					CoreData::getInstance().getMenuMusic()->setVolume(configVolume);
-					//If the config says zero, use the default music volume
-					//gameMusic->setVolume(configVolume ? configVolume : 0.9);
-					console.addLine(lang.getString("GameMusic"));
-				}
-			}
-			//else if(key == configKeys.getCharKey("SaveGUILayout")) {
-			else if(isKeyPressed(configKeys.getSDLKey("SaveGUILayout"),key) == true) {
-				bool saved = GraphicComponent::saveAllCustomProperties(containerName);
-				Lang &lang= Lang::getInstance();
-				console.addLine(lang.getString("GUILayoutSaved") + " [" + (saved ? lang.getString("Yes") : lang.getString("No"))+ "]");
-			}
-		}
-	}
-}
-
-bool MenuStateConnectedGame::textInput(std::string text) {
-	if (activeInputLabel != NULL) {
-		bool handled = textInputEditLabel(text, &activeInputLabel);
-		if (handled == true) {
-			switchSetupRequestFlagType |= ssrft_NetworkPlayerName;
-			needToSetChangedGameSettings = true;
-			lastSetChangedGameSettings = time(NULL);
-		}
-		return handled;
-	} else {
-		NetworkManager &networkManager = NetworkManager::getInstance();
-		ClientInterface *clientInterface = networkManager.getClientInterface();
-		if (clientInterface != NULL && clientInterface->isConnected() == true
-				&& clientInterface->getIntroDone() == true) {
-			return chatManager.textInput(text);
-		}
-	}
-	return false;
-}
-
-void MenuStateConnectedGame::keyPress(SDL_KeyboardEvent c) {
-	if(activeInputLabel!=NULL) {
-		keyPressEditLabel( c, &activeInputLabel);
-	} else {
-		NetworkManager &networkManager = NetworkManager::getInstance();
-		ClientInterface *clientInterface = networkManager.getClientInterface();
-		if (clientInterface != NULL && clientInterface->isConnected() == true
-				&& clientInterface->getIntroDone() == true) {
-			chatManager.keyPress(c);
-		}
-	}
-}
-
-void MenuStateConnectedGame::keyUp(SDL_KeyboardEvent key) {
-	if(activeInputLabel==NULL) {
-		NetworkManager &networkManager= NetworkManager::getInstance();
-		ClientInterface *clientInterface = networkManager.getClientInterface();
-		if(clientInterface != NULL &&
-				clientInterface->isConnected() == true &&
-				clientInterface->getIntroDone() == true) {
-			chatManager.keyUp(key);
-		}
-
-		Config &configKeys = Config::getInstance(std::pair<ConfigType,ConfigType>(cfgMainKeys,cfgUserKeys));
-
-		if(chatManager.getEditEnabled()) {
-			//send key to the chat manager
-			chatManager.keyUp(key);
-		}
-		else if(isKeyPressed(configKeys.getSDLKey("ShowFullConsole"),key) == true) {
-			showFullConsole= false;
-		}
-	}
-}
-
-void MenuStateConnectedGame::setActiveInputLabel(GraphicLabel *newLable) {
-	MenuState::setActiveInputLabel(newLable,&activeInputLabel);
-}
-
-string MenuStateConnectedGame::getHumanPlayerName() {
-	string result = defaultPlayerName;
-
-	NetworkManager &networkManager= NetworkManager::getInstance();
-	ClientInterface* clientInterface= networkManager.getClientInterface();
-	for(int j=0; j<GameConstants::maxPlayers; ++j) {
-		if(	clientInterface != NULL &&
-			j == clientInterface->getPlayerIndex() &&
-			labelPlayerNames[j].getText() != "") {
-			result = labelPlayerNames[j].getText();
-
-			if(activeInputLabel != NULL) {
-				size_t found = result.find_last_of("_");
-				if (found != string::npos) {
-					result = result.substr(0,found);
-				}
-			}
-
-			break;
-		}
-	}
-
-	return result;
-}
-
-void MenuStateConnectedGame::loadFactionTexture(string filepath) {
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-	if(enableFactionTexturePreview == true) {
-		if(filepath == "") {
-			factionTexture=NULL;
-		}
-		else {
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] filepath = [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,filepath.c_str());
-			factionTexture = Renderer::findTexture(filepath);
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-		}
-	}
-}
-
-bool MenuStateConnectedGame::loadMapInfo(string file, MapInfo *mapInfo, bool loadMapPreview) {
-	bool mapLoaded = false;
-	try {
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] map [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,file.c_str());
-
-		if(file != "") {
-			if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-			lastMissingMap = file;
-
-			Lang &lang= Lang::getInstance();
-			if(MapPreview::loadMapInfo(file, mapInfo, lang.getString("MaxPlayers"),lang.getString("Size"),true) == true) {
-				for(int i = 0; i < GameConstants::maxPlayers; ++i) {
-					mapInfo->players = GameConstants::maxPlayers;
-					bool visible=i+1 <= mapInfo->players;
-					labelPlayers[i].setVisible(visible);
-					labelPlayerNames[i].setVisible(visible);
-					listBoxControls[i].setVisible(visible);
-					listBoxRMultiplier[i].setVisible(visible);
-					listBoxFactions[i].setVisible(visible);
-					listBoxTeams[i].setVisible(visible);
-					labelNetStatus[i].setVisible(visible);
-				}
-
-				// Not painting properly so this is on hold
-				if(loadMapPreview == true) {
-					if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-					if(mapPreview.getMapFileLoaded() != file) {
-						mapPreview.loadFromFile(file.c_str());
-						cleanupMapPreviewTexture();
-					}
-				}
-
-				mapLoaded = true;
-			}
-		}
-		else {
-			cleanupMapPreviewTexture();
-			mapInfo->desc = Lang::getInstance().getString("DataMissing","",true);
-
-			NetworkManager &networkManager= NetworkManager::getInstance();
-			ClientInterface* clientInterface= networkManager.getClientInterface();
-			const GameSettings *gameSettings = clientInterface->getGameSettings();
-
-			if(lastMissingMap != gameSettings->getMap()) {
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-				lastMissingMap = gameSettings->getMap();
-
-				Lang &lang= Lang::getInstance();
-				const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-				for(unsigned int i = 0; i < languageList.size(); ++i) {
-
-					char szMsg[8096]="";
-					if(lang.hasString("DataMissingMap",languageList[i]) == true) {
-						snprintf(szMsg,8096,lang.getString("DataMissingMap",languageList[i]).c_str(),getHumanPlayerName().c_str(),gameSettings->getMap().c_str());
-					}
-					else {
-						snprintf(szMsg,8096,"Player: %s is missing the map: %s",getHumanPlayerName().c_str(),gameSettings->getMap().c_str());
-					}
-					clientInterface->sendTextMessage(szMsg,-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-				}
-			}
-		}
-	}
-	catch(exception &e){
-		SystemFlags::OutputDebug(SystemFlags::debugError,"In [%s::%s Line: %d] Error [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,e.what());
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] error [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,e.what());
-
-		showMessageBox( "Error loading map file: "+file+'\n'+e.what(), "Error", false);
-	}
-
-	return mapLoaded;
-}
-
-void MenuStateConnectedGame::showMessageBox(const string &text, const string &header, bool toggle){
-	if(!toggle){
-		mainMessageBox.setEnabled(false);
-	}
-
-	if(!mainMessageBox.getEnabled()){
-		mainMessageBox.setText(text);
-		mainMessageBox.setHeader(header);
-		mainMessageBox.setEnabled(true);
-	}
-	else{
-		mainMessageBox.setEnabled(false);
-	}
-}
-
-void MenuStateConnectedGame::showFTPMessageBox(const string &text, const string &header, bool toggle) {
-	if(!toggle) {
-		ftpMessageBox.setEnabled(false);
-	}
-
-	if(!ftpMessageBox.getEnabled()) {
-		ftpMessageBox.setText(text);
-		ftpMessageBox.setHeader(header);
-		ftpMessageBox.setEnabled(true);
-	}
-	else {
-		ftpMessageBox.setEnabled(false);
-	}
-}
-
-int32 MenuStateConnectedGame::getNetworkPlayerStatus() {
-	int32 result = npst_None;
-	switch(listBoxPlayerStatus.getSelectedItemIndex()) {
-		case 2:
-			result = npst_Ready;
-			break;
-		case 1:
-			result = npst_BeRightBack;
-			break;
-		case 0:
-			result = npst_PickSettings;
-			break;
-	}
-
-	return result;
-}
-
-void MenuStateConnectedGame::cleanupMapPreviewTexture() {
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-	if(mapPreviewTexture != NULL) {
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-		mapPreviewTexture->end();
-
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-		delete mapPreviewTexture;
-		mapPreviewTexture = NULL;
-	}
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-}
-
-bool MenuStateConnectedGame::isInSpecialKeyCaptureEvent() {
-	bool result = (chatManager.getEditEnabled() || activeInputLabel != NULL);
-	return result;
-}
-
-void MenuStateConnectedGame::FTPClient_CallbackEvent(string itemName,
-		FTP_Client_CallbackType type, pair<FTP_Client_ResultType,string> result, void *userdata) {
-	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-    if(type == ftp_cct_DownloadProgress) {
-        FTPClientCallbackInterface::FtpProgressStats *stats = (FTPClientCallbackInterface::FtpProgressStats *)userdata;
-        if(stats != NULL) {
-            int fileProgress = 0;
-            if(stats->download_total > 0) {
-                fileProgress = ((stats->download_now / stats->download_total) * 100.0);
+      try
+      {
+        for (int i = 0; i < mapInfo.players; ++i)
+        {
+          ControlType
+            ct =
+            static_cast < ControlType >
+            (listBoxControls[i].getSelectedItemIndex ());
+          if (ct != ctClosed)
+          {
+            if (ct == ctNetwork || ct == ctNetworkUnassigned)
+            {
+              hasNetworkSlot = true;
+              break;
             }
-            //if(SystemFlags::VERBOSE_MODE_ENABLED) printf("Got FTP Callback for [%s] current file [%s] fileProgress = %d [now = %f, total = %f]\n",itemName.c_str(),stats->currentFilename.c_str(), fileProgress,stats->download_now,stats->download_total);
-
-            MutexSafeWrapper safeMutexFTPProgress((ftpClientThread != NULL ? ftpClientThread->getProgressMutex() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-            pair<int,string> lastProgress;
-            std::map<string,pair<int,string> >::iterator iterFind = fileFTPProgressList.find(itemName);
-            if(iterFind == fileFTPProgressList.end()) {
-            	iterFind = fileFTPProgressList.find(GameConstants::saveNetworkGameFileServerCompressed);
-                if(iterFind == fileFTPProgressList.end()) {
-                	iterFind = fileFTPProgressList.find(GameConstants::saveNetworkGameFileClientCompressed);
-                }
-            }
-            if(iterFind != fileFTPProgressList.end()) {
-            	lastProgress = iterFind->second;
-            	fileFTPProgressList[iterFind->first] = pair<int,string>(fileProgress,stats->currentFilename);
-            }
-            safeMutexFTPProgress.ReleaseLock();
-
-            if(itemName != "" && (lastProgress.first / 25) < (fileProgress / 25)) {
-		        NetworkManager &networkManager= NetworkManager::getInstance();
-		        ClientInterface* clientInterface= networkManager.getClientInterface();
-
-		    	Lang &lang= Lang::getInstance();
-		    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-		    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-					char szMsg[8096]="";
-		            if(lang.hasString("FileDownloadProgress",languageList[i]) == true) {
-		            	snprintf(szMsg,8096,lang.getString("FileDownloadProgress",languageList[i]).c_str(),getHumanPlayerName().c_str(),itemName.c_str(),fileProgress);
-		            }
-		            else {
-		            	snprintf(szMsg,8096,"Player: %s download progress for [%s] is %d %%",getHumanPlayerName().c_str(),itemName.c_str(),fileProgress);
-		            }
-		            if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d] szMsg [%s] lastProgress.first = %d, fileProgress = %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,szMsg,lastProgress.first,fileProgress);
-		            clientInterface->sendTextMessage(szMsg,-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-		    	}
-		    	sleep(1);
-            }
+          }
         }
-    }
-    else if(type == ftp_cct_ExtractProgress) {
-    	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("Got FTP extract Callback for [%s] result = %d [%s]\n",itemName.c_str(),result.first,result.second.c_str());
+        if (hasNetworkSlot == false)
+        {
+          for (int i = 0; i < GameConstants::maxPlayers; ++i)
+          {
+            ControlType
+              ct =
+              static_cast < ControlType >
+              (listBoxControls[i].getSelectedItemIndex ());
+            if (ct != ctClosed)
+            {
+              if (ct == ctNetworkUnassigned)
+              {
+                hasNetworkSlot = true;
+                break;
+              }
+            }
+          }
+        }
+      }
+      catch (const std::exception & ex)
+      {
+        char
+          szBuf[8096] = "";
+        snprintf (szBuf, 8096, "In [%s::%s %d]\nError detected:\n%s\n",
+                  extractFileFromDirectoryPath (__FILE__).c_str (),
+                  __FUNCTION__, __LINE__, ex.what ());
+        SystemFlags::OutputDebug (SystemFlags::debugError,
+                                  "In [%s::%s Line: %d] Error [%s]\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__, __LINE__,
+                                  ex.what ());
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                    "In [%s::%s Line %d] %s\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, szBuf);
+        showMessageBox (szBuf, "Error", false);
+      }
 
-    	if(userdata == NULL) {
-			NetworkManager &networkManager= NetworkManager::getInstance();
-			ClientInterface* clientInterface= networkManager.getClientInterface();
-
-			Lang &lang= Lang::getInstance();
-			const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-			for(unsigned int i = 0; i < languageList.size(); ++i) {
-				char szMsg[8096]="";
-				if(lang.hasString("DataMissingExtractDownload",languageList[i]) == true) {
-					snprintf(szMsg,8096,lang.getString("DataMissingExtractDownload",languageList[i]).c_str(),getHumanPlayerName().c_str(),itemName.c_str());
-				}
-				else {
-					snprintf(szMsg,8096,"Please wait, player: %s is extracting: %s",getHumanPlayerName().c_str(),itemName.c_str());
-				}
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d] szMsg [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,szMsg);
-				clientInterface->sendTextMessage(szMsg,-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-			}
-			sleep(1);
-    	}
-    	else {
-			char *szBuf = (char *)userdata;
-			//printf("%s\n",szBuf);
-			//console.addLine(szBuf);
-			console.addLine(szBuf, false,"");
-    	}
+      return hasNetworkSlot;
     }
-    else if(type == ftp_cct_Map) {
+
+    void
+    MenuStateConnectedGame::keyDown (SDL_KeyboardEvent key)
+    {
+      if (activeInputLabel != NULL)
+      {
+        bool handled = keyDownEditLabel (key, &activeInputLabel);
+        if (handled == true)
+        {
+          switchSetupRequestFlagType |= ssrft_NetworkPlayerName;
+          needToSetChangedGameSettings = true;
+          lastSetChangedGameSettings = time (NULL);
+        }
+      }
+      else
+      {
+//send key to the chat manager
+        NetworkManager & networkManager = NetworkManager::getInstance ();
+        ClientInterface *
+          clientInterface = networkManager.getClientInterface ();
+        if (clientInterface != NULL &&
+            clientInterface->isConnected () == true &&
+            clientInterface->getIntroDone () == true)
+        {
+          chatManager.keyDown (key);
+        }
+        if (chatManager.getEditEnabled () == false &&
+            (::Shared::Platform::Window::isKeyStateModPressed (KMOD_SHIFT) ==
+             false))
+        {
+          Config & configKeys =
+            Config::getInstance (std::pair < ConfigType,
+                                 ConfigType > (cfgMainKeys, cfgUserKeys));
+
+          if (isKeyPressed (configKeys.getSDLKey ("ShowFullConsole"), key) ==
+              true)
+          {
+            showFullConsole = true;
+          }
+          else if (isKeyPressed (configKeys.getSDLKey ("ToggleMusic"), key) ==
+                   true)
+          {
+            Config & config = Config::getInstance ();
+            Lang & lang = Lang::getInstance ();
+
+            float
+              configVolume = (config.getInt ("SoundVolumeMusic") / 100.f);
+            float
+              currentVolume =
+              CoreData::getInstance ().getMenuMusic ()->getVolume ();
+            if (currentVolume > 0)
+            {
+              CoreData::getInstance ().getMenuMusic ()->setVolume (0.f);
+              console.addLine (lang.getString ("GameMusic") + " " +
+                               lang.getString ("Off"));
+            }
+            else
+            {
+              CoreData::getInstance ().
+                getMenuMusic ()->setVolume (configVolume);
+//If the config says zero, use the default music volume
+//gameMusic->setVolume(configVolume ? configVolume : 0.9);
+              console.addLine (lang.getString ("GameMusic"));
+            }
+          }
+//else if(key == configKeys.getCharKey("SaveGUILayout")) {
+          else if (isKeyPressed (configKeys.getSDLKey ("SaveGUILayout"), key)
+                   == true)
+          {
+            bool
+              saved =
+              GraphicComponent::saveAllCustomProperties (containerName);
+            Lang & lang = Lang::getInstance ();
+            console.addLine (lang.getString ("GUILayoutSaved") + " [" +
+                             (saved ? lang.
+                              getString ("Yes") : lang.getString ("No")) +
+                             "]");
+          }
+        }
+      }
+    }
+
+    bool MenuStateConnectedGame::textInput (std::string text)
+    {
+      if (activeInputLabel != NULL)
+      {
+        bool handled = textInputEditLabel (text, &activeInputLabel);
+        if (handled == true)
+        {
+          switchSetupRequestFlagType |= ssrft_NetworkPlayerName;
+          needToSetChangedGameSettings = true;
+          lastSetChangedGameSettings = time (NULL);
+        }
+        return handled;
+      }
+      else
+      {
+        NetworkManager & networkManager = NetworkManager::getInstance ();
+        ClientInterface *
+          clientInterface = networkManager.getClientInterface ();
+        if (clientInterface != NULL && clientInterface->isConnected () == true
+            && clientInterface->getIntroDone () == true)
+        {
+          return chatManager.textInput (text);
+        }
+      }
+      return false;
+    }
+
+    void
+    MenuStateConnectedGame::keyPress (SDL_KeyboardEvent c)
+    {
+      if (activeInputLabel != NULL)
+      {
+        keyPressEditLabel (c, &activeInputLabel);
+      }
+      else
+      {
+        NetworkManager & networkManager = NetworkManager::getInstance ();
+        ClientInterface *
+          clientInterface = networkManager.getClientInterface ();
+        if (clientInterface != NULL && clientInterface->isConnected () == true
+            && clientInterface->getIntroDone () == true)
+        {
+          chatManager.keyPress (c);
+        }
+      }
+    }
+
+    void
+    MenuStateConnectedGame::keyUp (SDL_KeyboardEvent key)
+    {
+      if (activeInputLabel == NULL)
+      {
+        NetworkManager & networkManager = NetworkManager::getInstance ();
+        ClientInterface *
+          clientInterface = networkManager.getClientInterface ();
+        if (clientInterface != NULL &&
+            clientInterface->isConnected () == true &&
+            clientInterface->getIntroDone () == true)
+        {
+          chatManager.keyUp (key);
+        }
+
+        Config & configKeys =
+          Config::getInstance (std::pair < ConfigType,
+                               ConfigType > (cfgMainKeys, cfgUserKeys));
+
+        if (chatManager.getEditEnabled ())
+        {
+//send key to the chat manager
+          chatManager.keyUp (key);
+        }
+        else if (isKeyPressed (configKeys.getSDLKey ("ShowFullConsole"), key)
+                 == true)
+        {
+          showFullConsole = false;
+        }
+      }
+    }
+
+    void
+    MenuStateConnectedGame::setActiveInputLabel (GraphicLabel * newLable)
+    {
+      MenuState::setActiveInputLabel (newLable, &activeInputLabel);
+    }
+
+    string MenuStateConnectedGame::getHumanPlayerName ()
+    {
+      string result = defaultPlayerName;
+
+      NetworkManager & networkManager = NetworkManager::getInstance ();
+      ClientInterface *
+        clientInterface = networkManager.getClientInterface ();
+      for (int j = 0; j < GameConstants::maxPlayers; ++j)
+      {
+        if (clientInterface != NULL &&
+            j == clientInterface->getPlayerIndex () &&
+            labelPlayerNames[j].getText () != "")
+        {
+          result = labelPlayerNames[j].getText ();
+
+          if (activeInputLabel != NULL)
+          {
+            size_t found = result.find_last_of ("_");
+            if (found != string::npos)
+            {
+              result = result.substr (0, found);
+            }
+          }
+
+          break;
+        }
+      }
+
+      return result;
+    }
+
+    void
+    MenuStateConnectedGame::loadFactionTexture (string filepath)
+    {
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s Line: %d]\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__,
+                                  __LINE__);
+
+      if (enableFactionTexturePreview == true)
+      {
+        if (filepath == "")
+        {
+          factionTexture = NULL;
+        }
+        else
+        {
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                      "In [%s::%s Line: %d] filepath = [%s]\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__, filepath.c_str ());
+          factionTexture = Renderer::findTexture (filepath);
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                      "In [%s::%s Line: %d]\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__);
+        }
+      }
+    }
+
+    bool
+      MenuStateConnectedGame::loadMapInfo (string file, MapInfo * mapInfo,
+                                           bool loadMapPreview)
+    {
+      bool mapLoaded = false;
+      try
+      {
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                    "In [%s::%s Line: %d] map [%s]\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, file.c_str ());
+
+        if (file != "")
+        {
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugSystem).enabled)
+            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                      "In [%s::%s Line: %d]\n",
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__);
+
+          lastMissingMap = file;
+
+          Lang & lang = Lang::getInstance ();
+          if (MapPreview::loadMapInfo
+              (file, mapInfo, lang.getString ("MaxPlayers"),
+               lang.getString ("Size"), true) == true)
+          {
+            for (int i = 0; i < GameConstants::maxPlayers; ++i)
+            {
+              mapInfo->players = GameConstants::maxPlayers;
+              bool visible = i + 1 <= mapInfo->players;
+              labelPlayers[i].setVisible (visible);
+              labelPlayerNames[i].setVisible (visible);
+              listBoxControls[i].setVisible (visible);
+              listBoxRMultiplier[i].setVisible (visible);
+              listBoxFactions[i].setVisible (visible);
+              listBoxTeams[i].setVisible (visible);
+              labelNetStatus[i].setVisible (visible);
+            }
+
+// Not painting properly so this is on hold
+            if (loadMapPreview == true)
+            {
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugSystem).enabled)
+                SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                          "In [%s::%s Line: %d]\n",
+                                          extractFileFromDirectoryPath
+                                          (__FILE__).c_str (), __FUNCTION__,
+                                          __LINE__);
+              if (mapPreview.getMapFileLoaded () != file)
+              {
+                mapPreview.loadFromFile (file.c_str ());
+                cleanupMapPreviewTexture ();
+              }
+            }
+
+            mapLoaded = true;
+          }
+        }
+        else
+        {
+          cleanupMapPreviewTexture ();
+          mapInfo->desc =
+            Lang::getInstance ().getString ("DataMissing", "", true);
+
+          NetworkManager & networkManager = NetworkManager::getInstance ();
+          ClientInterface *
+            clientInterface = networkManager.getClientInterface ();
+          const GameSettings *
+            gameSettings = clientInterface->getGameSettings ();
+
+          if (lastMissingMap != gameSettings->getMap ())
+          {
+            if (SystemFlags::
+                getSystemSettingType (SystemFlags::debugSystem).enabled)
+              SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                        "In [%s::%s Line: %d]\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__);
+
+            lastMissingMap = gameSettings->getMap ();
+
+            Lang & lang = Lang::getInstance ();
+            const
+              vector <
+              string >
+              languageList =
+              clientInterface->
+              getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+            for (unsigned int i = 0; i < languageList.size (); ++i)
+            {
+
+              char
+                szMsg[8096] = "";
+              if (lang.hasString ("DataMissingMap", languageList[i]) == true)
+              {
+                snprintf (szMsg, 8096,
+                          lang.getString ("DataMissingMap",
+                                          languageList[i]).c_str (),
+                          getHumanPlayerName ().c_str (),
+                          gameSettings->getMap ().c_str ());
+              }
+              else
+              {
+                snprintf (szMsg, 8096, "Player: %s is missing the map: %s",
+                          getHumanPlayerName ().c_str (),
+                          gameSettings->getMap ().c_str ());
+              }
+              clientInterface->sendTextMessage (szMsg, -1,
+                                                lang.isLanguageLocal
+                                                (languageList[i]),
+                                                languageList[i]);
+            }
+          }
+        }
+      }
+      catch (exception & e)
+      {
+        SystemFlags::OutputDebug (SystemFlags::debugError,
+                                  "In [%s::%s Line: %d] Error [%s]\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__, __LINE__,
+                                  e.what ());
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                    "In [%s::%s Line: %d] error [%s]\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, e.what ());
+
+        showMessageBox ("Error loading map file: " + file + '\n' + e.what (),
+                        "Error", false);
+      }
+
+      return mapLoaded;
+    }
+
+    void
+    MenuStateConnectedGame::showMessageBox (const string & text,
+                                            const string & header,
+                                            bool toggle)
+    {
+      if (!toggle)
+      {
+        mainMessageBox.setEnabled (false);
+      }
+
+      if (!mainMessageBox.getEnabled ())
+      {
+        mainMessageBox.setText (text);
+        mainMessageBox.setHeader (header);
+        mainMessageBox.setEnabled (true);
+      }
+      else
+      {
+        mainMessageBox.setEnabled (false);
+      }
+    }
+
+    void
+    MenuStateConnectedGame::showFTPMessageBox (const string & text,
+                                               const string & header,
+                                               bool toggle)
+    {
+      if (!toggle)
+      {
+        ftpMessageBox.setEnabled (false);
+      }
+
+      if (!ftpMessageBox.getEnabled ())
+      {
+        ftpMessageBox.setText (text);
+        ftpMessageBox.setHeader (header);
+        ftpMessageBox.setEnabled (true);
+      }
+      else
+      {
+        ftpMessageBox.setEnabled (false);
+      }
+    }
+
+    int32 MenuStateConnectedGame::getNetworkPlayerStatus ()
+    {
+      int32 result = npst_None;
+      switch (listBoxPlayerStatus.getSelectedItemIndex ())
+      {
+      case 2:
+        result = npst_Ready;
+        break;
+      case 1:
+        result = npst_BeRightBack;
+        break;
+      case 0:
+        result = npst_PickSettings;
+        break;
+      }
+
+      return result;
+    }
+
+    void
+    MenuStateConnectedGame::cleanupMapPreviewTexture ()
+    {
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s Line: %d]\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__,
+                                  __LINE__);
+
+      if (mapPreviewTexture != NULL)
+      {
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                    "In [%s::%s Line: %d]\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__);
+
+        mapPreviewTexture->end ();
+
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                    "In [%s::%s Line: %d]\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__);
+        delete mapPreviewTexture;
+        mapPreviewTexture = NULL;
+      }
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s Line: %d]\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__,
+                                  __LINE__);
+    }
+
+    bool MenuStateConnectedGame::isInSpecialKeyCaptureEvent ()
+    {
+      bool
+        result = (chatManager.getEditEnabled () || activeInputLabel != NULL);
+      return result;
+    }
+
+    void
+    MenuStateConnectedGame::FTPClient_CallbackEvent (string itemName,
+                                                     FTP_Client_CallbackType
+                                                     type,
+                                                     pair <
+                                                     FTP_Client_ResultType,
+                                                     string > result,
+                                                     void *userdata)
+    {
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugSystem).enabled)
+        SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                  "In [%s::%s Line %d]\n",
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__,
+                                  __LINE__);
+
+      if (type == ftp_cct_DownloadProgress)
+      {
+        FTPClientCallbackInterface::FtpProgressStats * stats =
+          (FTPClientCallbackInterface::FtpProgressStats *) userdata;
+        if (stats != NULL)
+        {
+          int
+            fileProgress = 0;
+          if (stats->download_total > 0)
+          {
+            fileProgress =
+              ((stats->download_now / stats->download_total) * 100.0);
+          }
+//if(SystemFlags::VERBOSE_MODE_ENABLED) printf("Got FTP Callback for [%s] current file [%s] fileProgress = %d [now = %f, total = %f]\n",itemName.c_str(),stats->currentFilename.c_str(), fileProgress,stats->download_now,stats->download_total);
+
+          MutexSafeWrapper
+            safeMutexFTPProgress ((ftpClientThread !=
+                                   NULL ? ftpClientThread->getProgressMutex ()
+                                   : NULL),
+                                  string (__FILE__) + "_" +
+                                  intToStr (__LINE__));
+          pair < int,
+            string >
+            lastProgress;
+          std::map < string, pair < int,
+          string > >::iterator
+            iterFind = fileFTPProgressList.find (itemName);
+          if (iterFind == fileFTPProgressList.end ())
+          {
+            iterFind =
+              fileFTPProgressList.find (GameConstants::
+                                        saveNetworkGameFileServerCompressed);
+            if (iterFind == fileFTPProgressList.end ())
+            {
+              iterFind =
+                fileFTPProgressList.find (GameConstants::
+                                          saveNetworkGameFileClientCompressed);
+            }
+          }
+          if (iterFind != fileFTPProgressList.end ())
+          {
+            lastProgress = iterFind->second;
+            fileFTPProgressList[iterFind->first] = pair < int,
+            string > (fileProgress, stats->currentFilename);
+          }
+          safeMutexFTPProgress.ReleaseLock ();
+
+          if (itemName != ""
+              && (lastProgress.first / 25) < (fileProgress / 25))
+          {
+            NetworkManager & networkManager = NetworkManager::getInstance ();
+            ClientInterface *
+              clientInterface = networkManager.getClientInterface ();
+
+            Lang & lang = Lang::getInstance ();
+            const
+              vector <
+              string >
+              languageList =
+              clientInterface->
+              getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+            for (unsigned int i = 0; i < languageList.size (); ++i)
+            {
+              char
+                szMsg[8096] = "";
+              if (lang.hasString ("FileDownloadProgress", languageList[i]) ==
+                  true)
+              {
+                snprintf (szMsg, 8096,
+                          lang.getString ("FileDownloadProgress",
+                                          languageList[i]).c_str (),
+                          getHumanPlayerName ().c_str (), itemName.c_str (),
+                          fileProgress);
+              }
+              else
+              {
+                snprintf (szMsg, 8096,
+                          "Player: %s download progress for [%s] is %d %%",
+                          getHumanPlayerName ().c_str (), itemName.c_str (),
+                          fileProgress);
+              }
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugSystem).enabled)
+                SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                          "In [%s::%s Line %d] szMsg [%s] lastProgress.first = %d, fileProgress = %d\n",
+                                          extractFileFromDirectoryPath
+                                          (__FILE__).c_str (), __FUNCTION__,
+                                          __LINE__, szMsg, lastProgress.first,
+                                          fileProgress);
+              clientInterface->sendTextMessage (szMsg, -1,
+                                                lang.isLanguageLocal
+                                                (languageList[i]),
+                                                languageList[i]);
+            }
+            sleep (1);
+          }
+        }
+      }
+      else if (type == ftp_cct_ExtractProgress)
+      {
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("Got FTP extract Callback for [%s] result = %d [%s]\n",
+                  itemName.c_str (), result.first, result.second.c_str ());
+
+        if (userdata == NULL)
+        {
+          NetworkManager & networkManager = NetworkManager::getInstance ();
+          ClientInterface *
+            clientInterface = networkManager.getClientInterface ();
+
+          Lang & lang = Lang::getInstance ();
+          const
+            vector <
+            string >
+            languageList =
+            clientInterface->
+            getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+          for (unsigned int i = 0; i < languageList.size (); ++i)
+          {
+            char
+              szMsg[8096] = "";
+            if (lang.hasString ("DataMissingExtractDownload",
+                                languageList[i]) == true)
+            {
+              snprintf (szMsg, 8096,
+                        lang.getString ("DataMissingExtractDownload",
+                                        languageList[i]).c_str (),
+                        getHumanPlayerName ().c_str (), itemName.c_str ());
+            }
+            else
+            {
+              snprintf (szMsg, 8096,
+                        "Please wait, player: %s is extracting: %s",
+                        getHumanPlayerName ().c_str (), itemName.c_str ());
+            }
+            if (SystemFlags::
+                getSystemSettingType (SystemFlags::debugSystem).enabled)
+              SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                        "In [%s::%s Line %d] szMsg [%s]\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__, szMsg);
+            clientInterface->sendTextMessage (szMsg, -1,
+                                              lang.isLanguageLocal
+                                              (languageList[i]),
+                                              languageList[i]);
+          }
+          sleep (1);
+        }
+        else
+        {
+          char *
+            szBuf = (char *) userdata;
+//printf("%s\n",szBuf);
+//console.addLine(szBuf);
+          console.addLine (szBuf, false, "");
+        }
+      }
+      else if (type == ftp_cct_Map)
+      {
         getMissingMapFromFTPServerInProgress = false;
-        if(SystemFlags::VERBOSE_MODE_ENABLED) printf("Got FTP Callback for [%s] result = %d [%s]\n",itemName.c_str(),result.first,result.second.c_str());
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("Got FTP Callback for [%s] result = %d [%s]\n",
+                  itemName.c_str (), result.first, result.second.c_str ());
 
-        MutexSafeWrapper safeMutexFTPProgress((ftpClientThread != NULL ? ftpClientThread->getProgressMutex() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-        fileFTPProgressList.erase(itemName);
-        safeMutexFTPProgress.ReleaseLock();
+        MutexSafeWrapper
+          safeMutexFTPProgress ((ftpClientThread !=
+                                 NULL ? ftpClientThread->getProgressMutex () :
+                                 NULL),
+                                string (__FILE__) + "_" +
+                                intToStr (__LINE__));
+        fileFTPProgressList.erase (itemName);
+        safeMutexFTPProgress.ReleaseLock ();
 
-        NetworkManager &networkManager= NetworkManager::getInstance();
-        ClientInterface* clientInterface= networkManager.getClientInterface();
-        const GameSettings *gameSettings = clientInterface->getGameSettings();
+        NetworkManager & networkManager = NetworkManager::getInstance ();
+        ClientInterface *
+          clientInterface = networkManager.getClientInterface ();
+        const GameSettings *
+          gameSettings = clientInterface->getGameSettings ();
 
-        if(result.first == ftp_crt_SUCCESS) {
-            // Clear the CRC file Cache
-    		string file = Config::getMapPath(itemName,"",false);
+        if (result.first == ftp_crt_SUCCESS)
+        {
+// Clear the CRC file Cache
+          string file = Config::getMapPath (itemName, "", false);
 
-    		if(SystemFlags::VERBOSE_MODE_ENABLED) printf("Got map itemName [%s] file [%s] lastCheckedCRCMapName [%s] gameSettings->getMap() [%s]\n",
-    				itemName.c_str(),file.c_str(),lastCheckedCRCMapName.c_str(),gameSettings->getMap().c_str());
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf
+              ("Got map itemName [%s] file [%s] lastCheckedCRCMapName [%s] gameSettings->getMap() [%s]\n",
+               itemName.c_str (), file.c_str (),
+               lastCheckedCRCMapName.c_str (),
+               gameSettings->getMap ().c_str ());
 
-			if(gameSettings != NULL && itemName == gameSettings->getMap() &&
-					lastCheckedCRCMapName == gameSettings->getMap() &&
-					gameSettings->getMap() != "") {
-	            Checksum::clearFileCache();
-	    		Checksum checksum;
+          if (gameSettings != NULL && itemName == gameSettings->getMap () &&
+              lastCheckedCRCMapName == gameSettings->getMap () &&
+              gameSettings->getMap () != "")
+          {
+            Checksum::clearFileCache ();
+            Checksum checksum;
 
-				checksum.addFile(file);
-				lastCheckedCRCMapValue = checksum.getSum();
-			}
+            checksum.addFile (file);
+            lastCheckedCRCMapValue = checksum.getSum ();
+          }
 
-	    	Lang &lang= Lang::getInstance();
-	    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-	    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-				char szMsg[8096]="";
-	            if(lang.hasString("DataMissingMapSuccessDownload",languageList[i]) == true) {
-	            	snprintf(szMsg,8096,lang.getString("DataMissingMapSuccessDownload",languageList[i]).c_str(),getHumanPlayerName().c_str(),itemName.c_str());
-	            }
-	            else {
-	            	snprintf(szMsg,8096,"Player: %s SUCCESSFULLY downloaded the map: %s",getHumanPlayerName().c_str(),itemName.c_str());
-	            }
-	            clientInterface->sendTextMessage(szMsg,-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-	    	}
-	    	sleep(1);
-        }
-        else {
-    		printf("FAILED map itemName [%s] lastCheckedCRCMapName [%s] gameSettings->getMap() [%s]\n",
-    				itemName.c_str(),lastCheckedCRCMapName.c_str(),gameSettings->getMap().c_str());
-
-            curl_version_info_data *curlVersion= curl_version_info(CURLVERSION_NOW);
-
-	    	Lang &lang= Lang::getInstance();
-	    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-	    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-				char szMsg[8096]="";
-	            if(lang.hasString("DataMissingMapFailDownload",languageList[i]) == true) {
-	            	snprintf(szMsg,8096,lang.getString("DataMissingMapFailDownload",languageList[i]).c_str(),getHumanPlayerName().c_str(),itemName.c_str(),curlVersion->version);
-	            }
-	            else {
-	            	snprintf(szMsg,8096,"Player: %s FAILED to download the map: [%s] using CURL version [%s]",getHumanPlayerName().c_str(),itemName.c_str(),curlVersion->version);
-	            }
-	            clientInterface->sendTextMessage(szMsg,-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-
-	            if(result.first == ftp_crt_HOST_NOT_ACCEPTING) {
-		            if(lang.hasString("HostNotAcceptingDataConnections",languageList[i]) == true) {
-		            	clientInterface->sendTextMessage(lang.getString("HostNotAcceptingDataConnections",languageList[i]),-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-		            }
-		            else {
-		            	clientInterface->sendTextMessage("*Warning* the host is not accepting data connections.",-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-		            }
-	            }
-	    	}
-	    	sleep(1);
-
-            console.addLine(result.second,true);
-        }
-    }
-    else if(type == ftp_cct_Tileset) {
-        getMissingTilesetFromFTPServerInProgress = false;
-        if(SystemFlags::VERBOSE_MODE_ENABLED) printf("Got FTP Callback for [%s] result = %d [%s]\n",itemName.c_str(),result.first,result.second.c_str());
-
-        MutexSafeWrapper safeMutexFTPProgress((ftpClientThread != NULL ? ftpClientThread->getProgressMutex() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-        fileFTPProgressList.erase(itemName);
-        safeMutexFTPProgress.ReleaseLock(true);
-
-        NetworkManager &networkManager= NetworkManager::getInstance();
-        ClientInterface* clientInterface= networkManager.getClientInterface();
-        const GameSettings *gameSettings = clientInterface->getGameSettings();
-
-        if(result.first == ftp_crt_SUCCESS) {
-
-	    	Lang &lang= Lang::getInstance();
-	    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-	    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-				char szMsg[8096]="";
-	            if(lang.hasString("DataMissingTilesetSuccessDownload",languageList[i]) == true) {
-	            	snprintf(szMsg,8096,lang.getString("DataMissingTilesetSuccessDownload",languageList[i]).c_str(),getHumanPlayerName().c_str(),itemName.c_str());
-	            }
-	            else {
-	            	snprintf(szMsg,8096,"Player: %s SUCCESSFULLY downloaded the tileset: %s",getHumanPlayerName().c_str(),itemName.c_str());
-	            }
-	            clientInterface->sendTextMessage(szMsg,-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-	    	}
-	    	sleep(1);
-
-            // START
-            // Clear the CRC Cache if it is populated
-            //
-            // Clear the CRC file Cache
-            safeMutexFTPProgress.Lock();
-            Checksum::clearFileCache();
-
-            vector<string> paths        = Config::getInstance().getPathListForType(ptTilesets);
-            string pathSearchString     = string("/") + itemName + string("/*");
-            const string filterFileExt  = ".xml";
-            clearFolderTreeContentsCheckSum(paths, pathSearchString, filterFileExt);
-            clearFolderTreeContentsCheckSumList(paths, pathSearchString, filterFileExt);
-
-            // Refresh CRC
-
-    		//printf("Got map itemName [%s] file [%s] lastCheckedCRCMapName [%s] gameSettings->getMap() [%s]\n",
-    		//		itemName.c_str(),file.c_str(),lastCheckedCRCMapName.c_str(),gameSettings->getMap().c_str());
-
-			if(gameSettings != NULL && itemName == gameSettings->getTileset() &&
-					lastCheckedCRCTilesetName == gameSettings->getTileset() &&
-					gameSettings->getTileset() != "") {
-				Config &config = Config::getInstance();
-				lastCheckedCRCTilesetValue = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTilesets,""), string("/") + itemName + string("/*"), ".xml", NULL, true);
-			}
-
-            safeMutexFTPProgress.ReleaseLock();
-            // END
-
-            // Reload tilesets for the UI
-            string scenarioDir = Scenario::getScenarioDir(dirList, gameSettings->getScenario());
-            findDirs(Config::getInstance().getPathListForType(ptTilesets,scenarioDir), tilesetFiles);
-
-            std::vector<string> tilesetsFormatted = tilesetFiles;
-        	std::for_each(tilesetsFormatted.begin(), tilesetsFormatted.end(), FormatString());
-        	listBoxTileset.setItems(tilesetsFormatted);
-        }
-        else {
-            curl_version_info_data *curlVersion= curl_version_info(CURLVERSION_NOW);
-
-	    	Lang &lang= Lang::getInstance();
-	    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-	    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-				char szMsg[8096]="";
-	            if(lang.hasString("DataMissingTilesetFailDownload",languageList[i]) == true) {
-	            	snprintf(szMsg,8096,lang.getString("DataMissingTilesetFailDownload",languageList[i]).c_str(),getHumanPlayerName().c_str(),(itemName+"(.7z)").c_str(),curlVersion->version);
-	            }
-	            else {
-	            	snprintf(szMsg,8096,"Player: %s FAILED to download the tileset: [%s] using CURL version [%s]",getHumanPlayerName().c_str(),(itemName+"(.7z)").c_str(),curlVersion->version);
-	            }
-	            clientInterface->sendTextMessage(szMsg,-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-
-	            if(result.first == ftp_crt_HOST_NOT_ACCEPTING) {
-		            if(lang.hasString("HostNotAcceptingDataConnections",languageList[i]) == true) {
-		            	clientInterface->sendTextMessage(lang.getString("HostNotAcceptingDataConnections",languageList[i]),-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-		            }
-		            else {
-		            	clientInterface->sendTextMessage("*Warning* the host is not accepting data connections.",-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-		            }
-	            }
-	    	}
-	    	sleep(1);
-
-            console.addLine(result.second,true);
-        }
-    }
-    else if(type == ftp_cct_Techtree) {
-        getMissingTechtreeFromFTPServerInProgress = false;
-        if(SystemFlags::VERBOSE_MODE_ENABLED) printf("Got FTP Callback for [%s] result = %d [%s]\n",itemName.c_str(),result.first,result.second.c_str());
-
-        MutexSafeWrapper safeMutexFTPProgress((ftpClientThread != NULL ? ftpClientThread->getProgressMutex() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-        fileFTPProgressList.erase(itemName);
-        safeMutexFTPProgress.ReleaseLock(true);
-
-        NetworkManager &networkManager= NetworkManager::getInstance();
-        ClientInterface* clientInterface= networkManager.getClientInterface();
-        const GameSettings *gameSettings = clientInterface->getGameSettings();
-
-        if(result.first == ftp_crt_SUCCESS) {
-
-	    	Lang &lang= Lang::getInstance();
-	    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-	    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-				char szMsg[8096]="";
-	            if(lang.hasString("DataMissingTechtreeSuccessDownload",languageList[i]) == true) {
-	            	snprintf(szMsg,8096,lang.getString("DataMissingTechtreeSuccessDownload",languageList[i]).c_str(),getHumanPlayerName().c_str(),itemName.c_str());
-	            }
-	            else {
-	            	snprintf(szMsg,8096,"Player: %s SUCCESSFULLY downloaded the techtree: %s",getHumanPlayerName().c_str(),itemName.c_str());
-	            }
-	            clientInterface->sendTextMessage(szMsg,-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-	    	}
-	    	sleep(1);
-
-            // START
-            // Clear the CRC Cache if it is populated
-            //
-            // Clear the CRC file Cache
-            safeMutexFTPProgress.Lock();
-            Checksum::clearFileCache();
-
-            vector<string> paths        = Config::getInstance().getPathListForType(ptTechs);
-            string pathSearchString     = string("/") + itemName + string("/*");
-            const string filterFileExt  = ".xml";
-            clearFolderTreeContentsCheckSum(paths, pathSearchString, filterFileExt);
-            clearFolderTreeContentsCheckSumList(paths, pathSearchString, filterFileExt);
-
-            // Refresh CRC
-			if(gameSettings != NULL && itemName == gameSettings->getTech() &&
-					lastCheckedCRCTechtreeName == gameSettings->getTech() &&
-					gameSettings->getTech() != "") {
-				Config &config = Config::getInstance();
-				lastCheckedCRCTechtreeValue = getFolderTreeContentsCheckSumRecursively(config.getPathListForType(ptTechs,""), string("/") + itemName + string("/*"), ".xml", NULL, true);
-			}
-            safeMutexFTPProgress.ReleaseLock();
-            // END
-
-            // Reload techs for the UI
-            string scenarioDir = Scenario::getScenarioDir(dirList, gameSettings->getScenario());
-            findDirs(Config::getInstance().getPathListForType(ptTechs,scenarioDir), techTreeFiles);
-
-            vector<string> translatedTechs;
-            std::vector<string> techsFormatted = techTreeFiles;
-        	for(int i= 0; i < (int)techsFormatted.size(); i++){
-        		techsFormatted.at(i)= formatString(techsFormatted.at(i));
-
-    			string txTech = techTree->getTranslatedName(techTreeFiles.at(i), true);
-    			translatedTechs.push_back(formatString(txTech));
-        	}
-            listBoxTechTree.setItems(techsFormatted,translatedTechs);
-        }
-        else {
-            curl_version_info_data *curlVersion= curl_version_info(CURLVERSION_NOW);
-
-	    	Lang &lang= Lang::getInstance();
-	    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-	    	for(unsigned int i = 0; i < (unsigned int)languageList.size(); ++i) {
-				char szMsg[8096]="";
-	            if(lang.hasString("DataMissingTechtreeFailDownload",languageList[i]) == true) {
-	            	snprintf(szMsg,8096,lang.getString("DataMissingTechtreeFailDownload",languageList[i]).c_str(),getHumanPlayerName().c_str(),(itemName+"(.7z)").c_str(),curlVersion->version);
-	            }
-	            else {
-	            	snprintf(szMsg,8096,"Player: %s FAILED to download the techtree: [%s] using CURL version [%s]",getHumanPlayerName().c_str(),(itemName+"(.7z)").c_str(),curlVersion->version);
-	            }
-	            clientInterface->sendTextMessage(szMsg,-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-
-	            if(result.first == ftp_crt_HOST_NOT_ACCEPTING) {
-		            if(lang.hasString("HostNotAcceptingDataConnections",languageList[i]) == true) {
-		            	clientInterface->sendTextMessage(lang.getString("HostNotAcceptingDataConnections",languageList[i]),-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-		            }
-		            else {
-		            	clientInterface->sendTextMessage("*Warning* the host is not accepting data connections.",-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-		            }
-	            }
-	    	}
-	    	sleep(1);
-
-            console.addLine(result.second,true);
-        }
-    }
-    else if(type == ftp_cct_TempFile) {
-    	getInProgressSavedGameFromFTPServerInProgress = false;
-        if(SystemFlags::VERBOSE_MODE_ENABLED) printf("Got FTP Callback for [%s] result = %d [%s]\n",itemName.c_str(),result.first,result.second.c_str());
-
-        MutexSafeWrapper safeMutexFTPProgress((ftpClientThread != NULL ? ftpClientThread->getProgressMutex() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-        //fileFTPProgressList.erase(itemName);
-        std::map<string,pair<int,string> >::iterator iterFind = fileFTPProgressList.find(itemName);
-        if(iterFind == fileFTPProgressList.end()) {
-        	iterFind = fileFTPProgressList.find(GameConstants::saveNetworkGameFileServerCompressed);
-            if(iterFind == fileFTPProgressList.end()) {
-            	iterFind = fileFTPProgressList.find(GameConstants::saveNetworkGameFileClientCompressed);
+          Lang & lang = Lang::getInstance ();
+          const
+            vector <
+            string >
+            languageList =
+            clientInterface->
+            getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+          for (unsigned int i = 0; i < languageList.size (); ++i)
+          {
+            char
+              szMsg[8096] = "";
+            if (lang.hasString ("DataMissingMapSuccessDownload",
+                                languageList[i]) == true)
+            {
+              snprintf (szMsg, 8096,
+                        lang.getString ("DataMissingMapSuccessDownload",
+                                        languageList[i]).c_str (),
+                        getHumanPlayerName ().c_str (), itemName.c_str ());
             }
+            else
+            {
+              snprintf (szMsg, 8096,
+                        "Player: %s SUCCESSFULLY downloaded the map: %s",
+                        getHumanPlayerName ().c_str (), itemName.c_str ());
+            }
+            clientInterface->sendTextMessage (szMsg, -1,
+                                              lang.isLanguageLocal
+                                              (languageList[i]),
+                                              languageList[i]);
+          }
+          sleep (1);
         }
-        if(iterFind != fileFTPProgressList.end()) {
-        	fileFTPProgressList.erase(iterFind->first);
+        else
+        {
+          printf
+            ("FAILED map itemName [%s] lastCheckedCRCMapName [%s] gameSettings->getMap() [%s]\n",
+             itemName.c_str (), lastCheckedCRCMapName.c_str (),
+             gameSettings->getMap ().c_str ());
+
+          curl_version_info_data *
+            curlVersion = curl_version_info (CURLVERSION_NOW);
+
+          Lang & lang = Lang::getInstance ();
+          const
+            vector <
+            string >
+            languageList =
+            clientInterface->
+            getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+          for (unsigned int i = 0; i < languageList.size (); ++i)
+          {
+            char
+              szMsg[8096] = "";
+            if (lang.hasString ("DataMissingMapFailDownload",
+                                languageList[i]) == true)
+            {
+              snprintf (szMsg, 8096,
+                        lang.getString ("DataMissingMapFailDownload",
+                                        languageList[i]).c_str (),
+                        getHumanPlayerName ().c_str (), itemName.c_str (),
+                        curlVersion->version);
+            }
+            else
+            {
+              snprintf (szMsg, 8096,
+                        "Player: %s FAILED to download the map: [%s] using CURL version [%s]",
+                        getHumanPlayerName ().c_str (), itemName.c_str (),
+                        curlVersion->version);
+            }
+            clientInterface->sendTextMessage (szMsg, -1,
+                                              lang.isLanguageLocal
+                                              (languageList[i]),
+                                              languageList[i]);
+
+            if (result.first == ftp_crt_HOST_NOT_ACCEPTING)
+            {
+              if (lang.hasString ("HostNotAcceptingDataConnections",
+                                  languageList[i]) == true)
+              {
+                clientInterface->sendTextMessage (lang.getString
+                                                  ("HostNotAcceptingDataConnections",
+                                                   languageList[i]), -1,
+                                                  lang.isLanguageLocal
+                                                  (languageList[i]),
+                                                  languageList[i]);
+              }
+              else
+              {
+                clientInterface->sendTextMessage
+                  ("*Warning* the host is not accepting data connections.",
+                   -1, lang.isLanguageLocal (languageList[i]),
+                   languageList[i]);
+              }
+            }
+          }
+          sleep (1);
+
+          console.addLine (result.second, true);
         }
-        safeMutexFTPProgress.ReleaseLock();
+      }
+      else if (type == ftp_cct_Tileset)
+      {
+        getMissingTilesetFromFTPServerInProgress = false;
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("Got FTP Callback for [%s] result = %d [%s]\n",
+                  itemName.c_str (), result.first, result.second.c_str ());
 
-        //printf("Status update downloading saved game file: [%s]\n",itemName.c_str());
+        MutexSafeWrapper
+          safeMutexFTPProgress ((ftpClientThread !=
+                                 NULL ? ftpClientThread->getProgressMutex () :
+                                 NULL),
+                                string (__FILE__) + "_" +
+                                intToStr (__LINE__));
+        fileFTPProgressList.erase (itemName);
+        safeMutexFTPProgress.ReleaseLock (true);
 
-        NetworkManager &networkManager= NetworkManager::getInstance();
-        ClientInterface* clientInterface= networkManager.getClientInterface();
-        //const GameSettings *gameSettings = clientInterface->getGameSettings();
+        NetworkManager & networkManager = NetworkManager::getInstance ();
+        ClientInterface *
+          clientInterface = networkManager.getClientInterface ();
+        const GameSettings *
+          gameSettings = clientInterface->getGameSettings ();
 
-        if(result.first == ftp_crt_SUCCESS) {
-	    	Lang &lang= Lang::getInstance();
-	    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-	    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-				char szMsg[8096]="";
-	            if(lang.hasString("JoinPlayerToCurrentGameSuccessDownload",languageList[i]) == true) {
-	            	snprintf(szMsg,8096,lang.getString("JoinPlayerToCurrentGameSuccessDownload",languageList[i]).c_str(),getHumanPlayerName().c_str(),itemName.c_str());
-	            }
-	            else {
-	            	snprintf(szMsg,8096,"Player: %s SUCCESSFULLY downloaded the saved game: %s",getHumanPlayerName().c_str(),itemName.c_str());
-	            }
-	            clientInterface->sendTextMessage(szMsg,-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-	    	}
-	    	sleep(1);
+        if (result.first == ftp_crt_SUCCESS)
+        {
 
-	    	if(itemName == GameConstants::saveNetworkGameFileClientCompressed) {
-				string saveGameFilePath = "temp/";
-				string saveGameFile = saveGameFilePath + string(GameConstants::saveNetworkGameFileClientCompressed);
-				if(getGameReadWritePath(GameConstants::path_logs_CacheLookupKey) != "") {
-					saveGameFilePath = getGameReadWritePath(GameConstants::path_logs_CacheLookupKey) + saveGameFilePath;
-					saveGameFile = saveGameFilePath + string(GameConstants::saveNetworkGameFileClientCompressed);
-				}
-				else {
-					string userData = Config::getInstance().getString("UserData_Root","");
-					if(userData != "") {
-						endPathWithSlash(userData);
-					}
-					saveGameFilePath = userData + saveGameFilePath;
-					saveGameFile = saveGameFilePath + string(GameConstants::saveNetworkGameFileClientCompressed);
-				}
+          Lang & lang = Lang::getInstance ();
+          const
+            vector <
+            string >
+            languageList =
+            clientInterface->
+            getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+          for (unsigned int i = 0; i < languageList.size (); ++i)
+          {
+            char
+              szMsg[8096] = "";
+            if (lang.hasString ("DataMissingTilesetSuccessDownload",
+                                languageList[i]) == true)
+            {
+              snprintf (szMsg, 8096,
+                        lang.getString ("DataMissingTilesetSuccessDownload",
+                                        languageList[i]).c_str (),
+                        getHumanPlayerName ().c_str (), itemName.c_str ());
+            }
+            else
+            {
+              snprintf (szMsg, 8096,
+                        "Player: %s SUCCESSFULLY downloaded the tileset: %s",
+                        getHumanPlayerName ().c_str (), itemName.c_str ());
+            }
+            clientInterface->sendTextMessage (szMsg, -1,
+                                              lang.isLanguageLocal
+                                              (languageList[i]),
+                                              languageList[i]);
+          }
+          sleep (1);
 
-				string extractedFileName = saveGameFilePath + string(GameConstants::saveNetworkGameFileClient);
-				bool extract_result = extractFileFromZIPFile(saveGameFile,extractedFileName);
+// START
+// Clear the CRC Cache if it is populated
+//
+// Clear the CRC file Cache
+          safeMutexFTPProgress.Lock ();
+          Checksum::clearFileCache ();
 
-				if(SystemFlags::VERBOSE_MODE_ENABLED) printf("Saved game [%s] compressed to [%s] returned: %d\n",saveGameFile.c_str(),extractedFileName.c_str(), extract_result);
-	    	}
-	    	readyToJoinInProgressGame = true;
+          vector < string > paths =
+            Config::getInstance ().getPathListForType (ptTilesets);
+          string pathSearchString = string ("/") + itemName + string ("/*");
+          const
+            string
+            filterFileExt = ".xml";
+          clearFolderTreeContentsCheckSum (paths, pathSearchString,
+                                           filterFileExt);
+          clearFolderTreeContentsCheckSumList (paths, pathSearchString,
+                                               filterFileExt);
 
-	    	//printf("Success downloading saved game file: [%s]\n",itemName.c_str());
+// Refresh CRC
+
+//printf("Got map itemName [%s] file [%s] lastCheckedCRCMapName [%s] gameSettings->getMap() [%s]\n",
+//              itemName.c_str(),file.c_str(),lastCheckedCRCMapName.c_str(),gameSettings->getMap().c_str());
+
+          if (gameSettings != NULL && itemName == gameSettings->getTileset ()
+              && lastCheckedCRCTilesetName == gameSettings->getTileset ()
+              && gameSettings->getTileset () != "")
+          {
+            Config & config = Config::getInstance ();
+            lastCheckedCRCTilesetValue =
+              getFolderTreeContentsCheckSumRecursively
+              (config.getPathListForType (ptTilesets, ""),
+               string ("/") + itemName + string ("/*"), ".xml", NULL, true);
+          }
+
+          safeMutexFTPProgress.ReleaseLock ();
+// END
+
+// Reload tilesets for the UI
+          string
+            scenarioDir =
+            Scenario::getScenarioDir (dirList, gameSettings->getScenario ());
+          findDirs (Config::getInstance ().getPathListForType (ptTilesets,
+                                                               scenarioDir),
+                    tilesetFiles);
+
+          std::vector < string > tilesetsFormatted = tilesetFiles;
+          std::for_each (tilesetsFormatted.begin (), tilesetsFormatted.end (),
+                         FormatString ());
+          listBoxTileset.setItems (tilesetsFormatted);
         }
-        else {
-            curl_version_info_data *curlVersion= curl_version_info(CURLVERSION_NOW);
+        else
+        {
+          curl_version_info_data *
+            curlVersion = curl_version_info (CURLVERSION_NOW);
 
-	    	Lang &lang= Lang::getInstance();
-	    	const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-	    	for(unsigned int i = 0; i < languageList.size(); ++i) {
-				char szMsg[8096]="";
-	            if(lang.hasString("JoinPlayerToCurrentGameFailDownload",languageList[i]) == true) {
-	            	snprintf(szMsg,8096,lang.getString("JoinPlayerToCurrentGameFailDownload",languageList[i]).c_str(),getHumanPlayerName().c_str(),itemName.c_str(),curlVersion->version);
-	            }
-	            else {
-	            	snprintf(szMsg,8096,"Player: %s FAILED to download the saved game: [%s] using CURL version [%s]",getHumanPlayerName().c_str(),itemName.c_str(),curlVersion->version);
-	            }
-	            clientInterface->sendTextMessage(szMsg,-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
+          Lang & lang = Lang::getInstance ();
+          const
+            vector <
+            string >
+            languageList =
+            clientInterface->
+            getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+          for (unsigned int i = 0; i < languageList.size (); ++i)
+          {
+            char
+              szMsg[8096] = "";
+            if (lang.hasString ("DataMissingTilesetFailDownload",
+                                languageList[i]) == true)
+            {
+              snprintf (szMsg, 8096,
+                        lang.getString ("DataMissingTilesetFailDownload",
+                                        languageList[i]).c_str (),
+                        getHumanPlayerName ().c_str (),
+                        (itemName + "(.7z)").c_str (), curlVersion->version);
+            }
+            else
+            {
+              snprintf (szMsg, 8096,
+                        "Player: %s FAILED to download the tileset: [%s] using CURL version [%s]",
+                        getHumanPlayerName ().c_str (),
+                        (itemName + "(.7z)").c_str (), curlVersion->version);
+            }
+            clientInterface->sendTextMessage (szMsg, -1,
+                                              lang.isLanguageLocal
+                                              (languageList[i]),
+                                              languageList[i]);
 
-	            if(result.first == ftp_crt_HOST_NOT_ACCEPTING) {
-		            if(lang.hasString("HostNotAcceptingDataConnections",languageList[i]) == true) {
-		            	clientInterface->sendTextMessage(lang.getString("HostNotAcceptingDataConnections",languageList[i]),-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-		            }
-		            else {
-		            	clientInterface->sendTextMessage("*Warning* the host is not accepting data connections.",-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-		            }
-	            }
-	    	}
-	    	sleep(1);
+            if (result.first == ftp_crt_HOST_NOT_ACCEPTING)
+            {
+              if (lang.hasString ("HostNotAcceptingDataConnections",
+                                  languageList[i]) == true)
+              {
+                clientInterface->sendTextMessage (lang.getString
+                                                  ("HostNotAcceptingDataConnections",
+                                                   languageList[i]), -1,
+                                                  lang.isLanguageLocal
+                                                  (languageList[i]),
+                                                  languageList[i]);
+              }
+              else
+              {
+                clientInterface->sendTextMessage
+                  ("*Warning* the host is not accepting data connections.",
+                   -1, lang.isLanguageLocal (languageList[i]),
+                   languageList[i]);
+              }
+            }
+          }
+          sleep (1);
 
-            console.addLine(result.second,true);
+          console.addLine (result.second, true);
         }
+      }
+      else if (type == ftp_cct_Techtree)
+      {
+        getMissingTechtreeFromFTPServerInProgress = false;
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("Got FTP Callback for [%s] result = %d [%s]\n",
+                  itemName.c_str (), result.first, result.second.c_str ());
+
+        MutexSafeWrapper
+          safeMutexFTPProgress ((ftpClientThread !=
+                                 NULL ? ftpClientThread->getProgressMutex () :
+                                 NULL),
+                                string (__FILE__) + "_" +
+                                intToStr (__LINE__));
+        fileFTPProgressList.erase (itemName);
+        safeMutexFTPProgress.ReleaseLock (true);
+
+        NetworkManager & networkManager = NetworkManager::getInstance ();
+        ClientInterface *
+          clientInterface = networkManager.getClientInterface ();
+        const GameSettings *
+          gameSettings = clientInterface->getGameSettings ();
+
+        if (result.first == ftp_crt_SUCCESS)
+        {
+
+          Lang & lang = Lang::getInstance ();
+          const
+            vector <
+            string >
+            languageList =
+            clientInterface->
+            getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+          for (unsigned int i = 0; i < languageList.size (); ++i)
+          {
+            char
+              szMsg[8096] = "";
+            if (lang.hasString ("DataMissingTechtreeSuccessDownload",
+                                languageList[i]) == true)
+            {
+              snprintf (szMsg, 8096,
+                        lang.getString ("DataMissingTechtreeSuccessDownload",
+                                        languageList[i]).c_str (),
+                        getHumanPlayerName ().c_str (), itemName.c_str ());
+            }
+            else
+            {
+              snprintf (szMsg, 8096,
+                        "Player: %s SUCCESSFULLY downloaded the techtree: %s",
+                        getHumanPlayerName ().c_str (), itemName.c_str ());
+            }
+            clientInterface->sendTextMessage (szMsg, -1,
+                                              lang.isLanguageLocal
+                                              (languageList[i]),
+                                              languageList[i]);
+          }
+          sleep (1);
+
+// START
+// Clear the CRC Cache if it is populated
+//
+// Clear the CRC file Cache
+          safeMutexFTPProgress.Lock ();
+          Checksum::clearFileCache ();
+
+          vector < string > paths =
+            Config::getInstance ().getPathListForType (ptTechs);
+          string pathSearchString = string ("/") + itemName + string ("/*");
+          const
+            string
+            filterFileExt = ".xml";
+          clearFolderTreeContentsCheckSum (paths, pathSearchString,
+                                           filterFileExt);
+          clearFolderTreeContentsCheckSumList (paths, pathSearchString,
+                                               filterFileExt);
+
+// Refresh CRC
+          if (gameSettings != NULL && itemName == gameSettings->getTech () &&
+              lastCheckedCRCTechtreeName == gameSettings->getTech () &&
+              gameSettings->getTech () != "")
+          {
+            Config & config = Config::getInstance ();
+            lastCheckedCRCTechtreeValue =
+              getFolderTreeContentsCheckSumRecursively
+              (config.getPathListForType (ptTechs, ""),
+               string ("/") + itemName + string ("/*"), ".xml", NULL, true);
+          }
+          safeMutexFTPProgress.ReleaseLock ();
+// END
+
+// Reload techs for the UI
+          string
+            scenarioDir =
+            Scenario::getScenarioDir (dirList, gameSettings->getScenario ());
+          findDirs (Config::
+                    getInstance ().getPathListForType (ptTechs, scenarioDir),
+                    techTreeFiles);
+
+          vector < string > translatedTechs;
+          std::vector < string > techsFormatted = techTreeFiles;
+          for (int i = 0; i < (int) techsFormatted.size (); i++)
+          {
+            techsFormatted.at (i) = formatString (techsFormatted.at (i));
+
+            string
+              txTech =
+              techTree->getTranslatedName (techTreeFiles.at (i), true);
+            translatedTechs.push_back (formatString (txTech));
+          }
+          listBoxTechTree.setItems (techsFormatted, translatedTechs);
+        }
+        else
+        {
+          curl_version_info_data *
+            curlVersion = curl_version_info (CURLVERSION_NOW);
+
+          Lang & lang = Lang::getInstance ();
+          const
+            vector <
+            string >
+            languageList =
+            clientInterface->
+            getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+          for (unsigned int i = 0; i < (unsigned int) languageList.size ();
+               ++i)
+          {
+            char
+              szMsg[8096] = "";
+            if (lang.hasString ("DataMissingTechtreeFailDownload",
+                                languageList[i]) == true)
+            {
+              snprintf (szMsg, 8096,
+                        lang.getString ("DataMissingTechtreeFailDownload",
+                                        languageList[i]).c_str (),
+                        getHumanPlayerName ().c_str (),
+                        (itemName + "(.7z)").c_str (), curlVersion->version);
+            }
+            else
+            {
+              snprintf (szMsg, 8096,
+                        "Player: %s FAILED to download the techtree: [%s] using CURL version [%s]",
+                        getHumanPlayerName ().c_str (),
+                        (itemName + "(.7z)").c_str (), curlVersion->version);
+            }
+            clientInterface->sendTextMessage (szMsg, -1,
+                                              lang.isLanguageLocal
+                                              (languageList[i]),
+                                              languageList[i]);
+
+            if (result.first == ftp_crt_HOST_NOT_ACCEPTING)
+            {
+              if (lang.hasString ("HostNotAcceptingDataConnections",
+                                  languageList[i]) == true)
+              {
+                clientInterface->sendTextMessage (lang.getString
+                                                  ("HostNotAcceptingDataConnections",
+                                                   languageList[i]), -1,
+                                                  lang.isLanguageLocal
+                                                  (languageList[i]),
+                                                  languageList[i]);
+              }
+              else
+              {
+                clientInterface->sendTextMessage
+                  ("*Warning* the host is not accepting data connections.",
+                   -1, lang.isLanguageLocal (languageList[i]),
+                   languageList[i]);
+              }
+            }
+          }
+          sleep (1);
+
+          console.addLine (result.second, true);
+        }
+      }
+      else if (type == ftp_cct_TempFile)
+      {
+        getInProgressSavedGameFromFTPServerInProgress = false;
+        if (SystemFlags::VERBOSE_MODE_ENABLED)
+          printf ("Got FTP Callback for [%s] result = %d [%s]\n",
+                  itemName.c_str (), result.first, result.second.c_str ());
+
+        MutexSafeWrapper
+          safeMutexFTPProgress ((ftpClientThread !=
+                                 NULL ? ftpClientThread->getProgressMutex () :
+                                 NULL),
+                                string (__FILE__) + "_" +
+                                intToStr (__LINE__));
+//fileFTPProgressList.erase(itemName);
+        std::map < string, pair < int,
+        string > >::iterator
+          iterFind = fileFTPProgressList.find (itemName);
+        if (iterFind == fileFTPProgressList.end ())
+        {
+          iterFind =
+            fileFTPProgressList.find (GameConstants::
+                                      saveNetworkGameFileServerCompressed);
+          if (iterFind == fileFTPProgressList.end ())
+          {
+            iterFind =
+              fileFTPProgressList.find (GameConstants::
+                                        saveNetworkGameFileClientCompressed);
+          }
+        }
+        if (iterFind != fileFTPProgressList.end ())
+        {
+          fileFTPProgressList.erase (iterFind->first);
+        }
+        safeMutexFTPProgress.ReleaseLock ();
+
+//printf("Status update downloading saved game file: [%s]\n",itemName.c_str());
+
+        NetworkManager & networkManager = NetworkManager::getInstance ();
+        ClientInterface *
+          clientInterface = networkManager.getClientInterface ();
+//const GameSettings *gameSettings = clientInterface->getGameSettings();
+
+        if (result.first == ftp_crt_SUCCESS)
+        {
+          Lang & lang = Lang::getInstance ();
+          const
+            vector <
+            string >
+            languageList =
+            clientInterface->
+            getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+          for (unsigned int i = 0; i < languageList.size (); ++i)
+          {
+            char
+              szMsg[8096] = "";
+            if (lang.hasString ("JoinPlayerToCurrentGameSuccessDownload",
+                                languageList[i]) == true)
+            {
+              snprintf (szMsg, 8096,
+                        lang.getString
+                        ("JoinPlayerToCurrentGameSuccessDownload",
+                         languageList[i]).c_str (),
+                        getHumanPlayerName ().c_str (), itemName.c_str ());
+            }
+            else
+            {
+              snprintf (szMsg, 8096,
+                        "Player: %s SUCCESSFULLY downloaded the saved game: %s",
+                        getHumanPlayerName ().c_str (), itemName.c_str ());
+            }
+            clientInterface->sendTextMessage (szMsg, -1,
+                                              lang.isLanguageLocal
+                                              (languageList[i]),
+                                              languageList[i]);
+          }
+          sleep (1);
+
+          if (itemName == GameConstants::saveNetworkGameFileClientCompressed)
+          {
+            string saveGameFilePath = "temp/";
+            string
+              saveGameFile =
+              saveGameFilePath +
+              string (GameConstants::saveNetworkGameFileClientCompressed);
+            if (getGameReadWritePath (GameConstants::path_logs_CacheLookupKey)
+                != "")
+            {
+              saveGameFilePath =
+                getGameReadWritePath (GameConstants::path_logs_CacheLookupKey)
+                + saveGameFilePath;
+              saveGameFile =
+                saveGameFilePath +
+                string (GameConstants::saveNetworkGameFileClientCompressed);
+            }
+            else
+            {
+              string
+                userData =
+                Config::getInstance ().getString ("UserData_Root", "");
+              if (userData != "")
+              {
+                endPathWithSlash (userData);
+              }
+              saveGameFilePath = userData + saveGameFilePath;
+              saveGameFile =
+                saveGameFilePath +
+                string (GameConstants::saveNetworkGameFileClientCompressed);
+            }
+
+            string
+              extractedFileName =
+              saveGameFilePath +
+              string (GameConstants::saveNetworkGameFileClient);
+            bool
+              extract_result =
+              extractFileFromZIPFile (saveGameFile, extractedFileName);
+
+            if (SystemFlags::VERBOSE_MODE_ENABLED)
+              printf ("Saved game [%s] compressed to [%s] returned: %d\n",
+                      saveGameFile.c_str (), extractedFileName.c_str (),
+                      extract_result);
+          }
+          readyToJoinInProgressGame = true;
+
+//printf("Success downloading saved game file: [%s]\n",itemName.c_str());
+        }
+        else
+        {
+          curl_version_info_data *
+            curlVersion = curl_version_info (CURLVERSION_NOW);
+
+          Lang & lang = Lang::getInstance ();
+          const
+            vector <
+            string >
+            languageList =
+            clientInterface->
+            getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+          for (unsigned int i = 0; i < languageList.size (); ++i)
+          {
+            char
+              szMsg[8096] = "";
+            if (lang.hasString ("JoinPlayerToCurrentGameFailDownload",
+                                languageList[i]) == true)
+            {
+              snprintf (szMsg, 8096,
+                        lang.getString ("JoinPlayerToCurrentGameFailDownload",
+                                        languageList[i]).c_str (),
+                        getHumanPlayerName ().c_str (), itemName.c_str (),
+                        curlVersion->version);
+            }
+            else
+            {
+              snprintf (szMsg, 8096,
+                        "Player: %s FAILED to download the saved game: [%s] using CURL version [%s]",
+                        getHumanPlayerName ().c_str (), itemName.c_str (),
+                        curlVersion->version);
+            }
+            clientInterface->sendTextMessage (szMsg, -1,
+                                              lang.isLanguageLocal
+                                              (languageList[i]),
+                                              languageList[i]);
+
+            if (result.first == ftp_crt_HOST_NOT_ACCEPTING)
+            {
+              if (lang.hasString ("HostNotAcceptingDataConnections",
+                                  languageList[i]) == true)
+              {
+                clientInterface->sendTextMessage (lang.getString
+                                                  ("HostNotAcceptingDataConnections",
+                                                   languageList[i]), -1,
+                                                  lang.isLanguageLocal
+                                                  (languageList[i]),
+                                                  languageList[i]);
+              }
+              else
+              {
+                clientInterface->sendTextMessage
+                  ("*Warning* the host is not accepting data connections.",
+                   -1, lang.isLanguageLocal (languageList[i]),
+                   languageList[i]);
+              }
+            }
+          }
+          sleep (1);
+
+          console.addLine (result.second, true);
+        }
+      }
     }
-}
-
-void MenuStateConnectedGame::setupUIFromGameSettings(GameSettings *gameSettings, bool errorOnMissingData) {
-	NetworkManager &networkManager= NetworkManager::getInstance();
-	ClientInterface *clientInterface = networkManager.getClientInterface();
-
-	updateDataSynchDetailText = true;
-	vector<string> tilesets,techtree;
-
-	if(gameSettings == NULL) {
-		throw megaglest_runtime_error("gameSettings == NULL");
-	}
-
-
-	checkBoxScenario.setValue((gameSettings->getScenario() != ""));
-	if(checkBoxScenario.getValue() == true) {
-		int originalFOWValue = listBoxFogOfWar.getSelectedItemIndex();
-
-		string scenario = gameSettings->getScenario();
-		listBoxScenario.setSelectedItem(formatString(scenario));
-		string file = Scenario::getScenarioPath(dirList, scenario);
-
-		bool isTutorial = Scenario::isGameTutorial(file);
-		Scenario::loadScenarioInfo(file, &scenarioInfo, isTutorial);
-
-		gameSettings->setScenarioDir(Scenario::getScenarioPath(dirList, scenarioInfo.name));
-
-		gameSettings->setDefaultResources(scenarioInfo.defaultResources);
-		gameSettings->setDefaultUnits(scenarioInfo.defaultUnits);
-		gameSettings->setDefaultVictoryConditions(scenarioInfo.defaultVictoryConditions);
-
-		if(scenarioInfo.fogOfWar == false && scenarioInfo.fogOfWar_exploredFlag == false) {
-			listBoxFogOfWar.setSelectedItemIndex(2);
-		}
-		else if(scenarioInfo.fogOfWar_exploredFlag == true) {
-			listBoxFogOfWar.setSelectedItemIndex(1);
-		}
-		else {
-			listBoxFogOfWar.setSelectedItemIndex(0);
-		}
-
-		checkBoxAllowTeamUnitSharing.setValue(scenarioInfo.allowTeamUnitSharing);
-		checkBoxAllowTeamResourceSharing.setValue(scenarioInfo.allowTeamResourceSharing);
-
-		if(originalFOWValue != listBoxFogOfWar.getSelectedItemIndex()) {
-			cleanupMapPreviewTexture();
-		}
-	}
-
-	if( listBoxMapFilter.getSelectedItemIndex()!=gameSettings->getMapFilter()){
-		switchToMapGroup(gameSettings->getMapFilter());
-//		printf("Switching to Map filter group %d \n",gameSettings->getMapFilter());
-	}
-
-	string scenarioDir = Scenario::getScenarioDir(dirList, gameSettings->getScenario());
-	setupMapList(gameSettings->getScenario());
-	setupTechList(gameSettings->getScenario());
-	setupTilesetList(gameSettings->getScenario());
-
-
-	//printf("A gameSettings->getTileset() [%s]\n",gameSettings->getTileset().c_str());
-
-	if ( getMissingTilesetFromFTPServerInProgress == false
-			&& gameSettings->getTileset() != "") {
-		// tileset
-		tilesets = tilesetFiles;
-		std::for_each(tilesets.begin(), tilesets.end(), FormatString());
-
-		if(std::find(tilesetFiles.begin(),tilesetFiles.end(),gameSettings->getTileset()) != tilesetFiles.end()) {
-			lastMissingTileSet = "";
-			getMissingTilesetFromFTPServer = "";
-			listBoxTileset.setSelectedItem(formatString(gameSettings->getTileset()));
-		}
-		else {
-			// try to get the tileset via ftp
-			if(ftpClientThread != NULL &&
-					(getMissingTilesetFromFTPServer != gameSettings->getTileset() ||
-						difftime(time(NULL),getMissingTilesetFromFTPServerLastPrompted) > REPROMPT_DOWNLOAD_SECONDS)) {
-				if(ftpMessageBox.getEnabled() == false) {
-					getMissingTilesetFromFTPServerLastPrompted = time(NULL);
-					getMissingTilesetFromFTPServer = gameSettings->getTileset();
-					Lang &lang= Lang::getInstance();
-
-					char szBuf[8096]="";
-					snprintf(szBuf,8096,"%s %s ?",lang.getString("DownloadMissingTilesetQuestion").c_str(),gameSettings->getTileset().c_str());
-
-					// Is the item in the mod center?
-					MutexSafeWrapper safeMutexThread((modHttpServerThread != NULL ? modHttpServerThread->getMutexThreadObjectAccessor() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-					if(tilesetCacheList.find(getMissingTilesetFromFTPServer) == tilesetCacheList.end()) {
-						ftpMessageBox.init(lang.getString("Yes"),lang.getString("NoDownload"));
-					}
-					else {
-						ftpMessageBox.init(lang.getString("ModCenter"),lang.getString("GameHost"));
-						ftpMessageBox.addButton(lang.getString("NoDownload"));
-					}
-					safeMutexThread.ReleaseLock();
-
-					ftpMissingDataType = ftpmsg_MissingTileset;
-					showFTPMessageBox(szBuf, lang.getString("Question"), false);
-				}
-			}
-
-			tilesets.push_back(Lang::getInstance().getString("DataMissing","",true));
-
-			NetworkManager &networkManager= NetworkManager::getInstance();
-			ClientInterface* clientInterface= networkManager.getClientInterface();
-			const GameSettings *gameSettings = clientInterface->getGameSettings();
-
-			if(lastMissingTileSet != gameSettings->getTileset()) {
-				lastMissingTileSet = gameSettings->getTileset();
-
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-				Lang &lang= Lang::getInstance();
-				const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-				for(unsigned int i = 0; i < languageList.size(); ++i) {
-
-					char szMsg[8096]="";
-					if(lang.hasString("DataMissingTileset",languageList[i]) == true) {
-						snprintf(szMsg,8096,lang.getString("DataMissingTileset",languageList[i]).c_str(),getHumanPlayerName().c_str(),gameSettings->getTileset().c_str());
-					}
-					else {
-						snprintf(szMsg,8096,"Player: %s is missing the tileset: %s",getHumanPlayerName().c_str(),gameSettings->getTileset().c_str());
-					}
-					clientInterface->sendTextMessage(szMsg,-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-				}
-			}
-
-			listBoxTileset.setItems(tilesets);
-			listBoxTileset.setSelectedItem(Lang::getInstance().getString("DataMissing","",true));
-		}
-
-	}
-
-	if(getMissingTechtreeFromFTPServerInProgress == false &&
-			gameSettings->getTech() != "") {
-		// techtree
-		techtree = techTreeFiles;
-		std::for_each(techtree.begin(), techtree.end(), FormatString());
-
-		if(std::find(techTreeFiles.begin(),techTreeFiles.end(),gameSettings->getTech()) != techTreeFiles.end()) {
-
-			lastMissingTechtree = "";
-			getMissingTechtreeFromFTPServer = "";
-			reloadFactions(true,gameSettings->getScenario());
-			listBoxTechTree.setSelectedItem(formatString(gameSettings->getTech()));
-		}
-		else {
-			// try to get the tileset via ftp
-			if(ftpClientThread != NULL && (getMissingTechtreeFromFTPServer != gameSettings->getTech() ||
-					difftime(time(NULL),getMissingTechtreeFromFTPServerLastPrompted) > REPROMPT_DOWNLOAD_SECONDS)) {
-				if(ftpMessageBox.getEnabled() == false) {
-					getMissingTechtreeFromFTPServerLastPrompted = time(NULL);
-					getMissingTechtreeFromFTPServer = gameSettings->getTech();
-					Lang &lang= Lang::getInstance();
-
-					char szBuf[8096]="";
-					snprintf(szBuf,8096,"%s %s ?",lang.getString("DownloadMissingTechtreeQuestion").c_str(),gameSettings->getTech().c_str());
-
-					// Is the item in the mod center?
-					MutexSafeWrapper safeMutexThread((modHttpServerThread != NULL ? modHttpServerThread->getMutexThreadObjectAccessor() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-					if(techCacheList.find(getMissingTechtreeFromFTPServer) == techCacheList.end()) {
-						ftpMessageBox.init(lang.getString("Yes"),lang.getString("NoDownload"));
-					}
-					else {
-						ftpMessageBox.init(lang.getString("ModCenter"),lang.getString("GameHost"));
-						ftpMessageBox.addButton(lang.getString("NoDownload"));
-					}
-					safeMutexThread.ReleaseLock();
-
-					ftpMissingDataType = ftpmsg_MissingTechtree;
-					showFTPMessageBox(szBuf, lang.getString("Question"), false);
-				}
-			}
-
-			techtree.push_back(Lang::getInstance().getString("DataMissing","",true));
-
-			NetworkManager &networkManager= NetworkManager::getInstance();
-			ClientInterface* clientInterface= networkManager.getClientInterface();
-			const GameSettings *gameSettings = clientInterface->getGameSettings();
-
-			if(lastMissingTechtree != gameSettings->getTech()) {
-				lastMissingTechtree = gameSettings->getTech();
-
-				if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-				Lang &lang= Lang::getInstance();
-				const vector<string> languageList = clientInterface->getGameSettings()->getUniqueNetworkPlayerLanguages();
-				for(unsigned int i = 0; i < languageList.size(); ++i) {
-
-					char szMsg[8096]="";
-					if(lang.hasString("DataMissingTechtree",languageList[i]) == true) {
-						snprintf(szMsg,8096,lang.getString("DataMissingTechtree",languageList[i]).c_str(),getHumanPlayerName().c_str(),gameSettings->getTech().c_str());
-					}
-					else {
-						snprintf(szMsg,8096,"Player: %s is missing the techtree: %s",getHumanPlayerName().c_str(),gameSettings->getTech().c_str());
-					}
-					clientInterface->sendTextMessage(szMsg,-1, lang.isLanguageLocal(languageList[i]),languageList[i]);
-				}
-			}
-
-			vector<string> translatedTechs;
-			for(unsigned int i= 0; i < techTreeFiles.size(); i++) {
-				string txTech = techTree->getTranslatedName(techTreeFiles.at(i));
-				translatedTechs.push_back(txTech);
-			}
-			listBoxTechTree.setItems(techtree,translatedTechs);
-			listBoxTechTree.setSelectedItem(Lang::getInstance().getString("DataMissing","",true));
-		}
-	}
-
-	// factions
-	bool hasFactions = true;
-	if(currentFactionName != gameSettings->getTech() && gameSettings->getTech() != "") {
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] hasFactions = %d, currentFactionName [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,hasFactions,currentFactionName.c_str());
-		currentFactionName = gameSettings->getTech();
-		hasFactions = loadFactions(gameSettings,false);
-	}
-	else {
-		// do this to process special faction types like observers
-		loadFactions(gameSettings,false);
-	}
-
-
-	if(getMissingMapFromFTPServerInProgress == false &&
-			gameSettings->getMap() != "" && gameSettings->getMapFilter()==listBoxMapFilter.getSelectedItemIndex())
-					{
-		// map
-		bool missingMap=false;
-		string mapFile = gameSettings->getMap();
-		mapFile = formatString(mapFile);
-
-		if(currentMap != gameSettings->getMap()) {// load the setup again
-			currentMap = gameSettings->getMap();
-		}
-		bool mapLoaded = loadMapInfo(Config::getMapPath(currentMap,scenarioDir,false), &mapInfo, true);
-		if(mapLoaded == false) {
-			// try to get the map via ftp
-			if(ftpClientThread != NULL && (getMissingMapFromFTPServer != currentMap ||
-					difftime(time(NULL),getMissingMapFromFTPServerLastPrompted) > REPROMPT_DOWNLOAD_SECONDS)) {
-				if(ftpMessageBox.getEnabled() == false) {
-					getMissingMapFromFTPServerLastPrompted = time(NULL);
-					getMissingMapFromFTPServer = currentMap;
-					Lang &lang= Lang::getInstance();
-
-					char szBuf[8096]="";
-					snprintf(szBuf,8096,"%s %s ?",lang.getString("DownloadMissingMapQuestion").c_str(),currentMap.c_str());
-
-					// Is the item in the mod center?
-					MutexSafeWrapper safeMutexThread((modHttpServerThread != NULL ? modHttpServerThread->getMutexThreadObjectAccessor() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
-					if(mapCacheList.find(getMissingMapFromFTPServer) == mapCacheList.end()) {
-						ftpMessageBox.init(lang.getString("Yes"),lang.getString("NoDownload"));
-					}
-					else {
-						ftpMessageBox.init(lang.getString("ModCenter"),lang.getString("GameHost"));
-						ftpMessageBox.addButton(lang.getString("NoDownload"));
-					}
-					safeMutexThread.ReleaseLock();
-
-					ftpMissingDataType = ftpmsg_MissingMap;
-					showFTPMessageBox(szBuf, lang.getString("Question"), false);
-				}
-			}
-
-			formattedPlayerSortedMaps[gameSettings->getMapFilter()].push_back(Lang::getInstance().getString("DataMissing","",true));
-			mapFile = Lang::getInstance().getString("DataMissing","",true);
-			missingMap=true;
-		}
-
-		if( isHeadlessAdmin() && !missingMap && mapFile!=listBoxMap.getSelectedItem()){
-			//console.addLine("Headless server does not have map, switching to next one");
-			if(isfirstSwitchingMapMessage){
-				isfirstSwitchingMapMessage=false;
-			}else{
-				console.addLine(Lang::getInstance().getString("HeadlessServerDoesNotHaveMap","",true));
-			}
-		}
-		listBoxMap.setItems(formattedPlayerSortedMaps[gameSettings->getMapFilter()]);
-
-		//printf("Setting map from game settings map:%s , settingsfilter=%d , boxfilter=%d \n",gameSettings->getMap().c_str(),gameSettings->getMapFilter(),listBoxMapFilter.getSelectedItemIndex());
-		listBoxMap.setSelectedItem(mapFile);
-		labelMapInfo.setText(mapInfo.desc);
-	}
-
-	// FogOfWar
-	if(checkBoxScenario.getValue() == false) {
-		int originalFOWValue = listBoxFogOfWar.getSelectedItemIndex();
-		listBoxFogOfWar.setSelectedItemIndex(0); // default is 0!
-		if(gameSettings->getFogOfWar() == false){
-			listBoxFogOfWar.setSelectedItemIndex(2);
-		}
-		if((gameSettings->getFlagTypes1() & ft1_show_map_resources) == ft1_show_map_resources){
-			if(gameSettings->getFogOfWar() == true){
-				listBoxFogOfWar.setSelectedItemIndex(1);
-			}
-		}
-		if(originalFOWValue != listBoxFogOfWar.getSelectedItemIndex()) {
-			cleanupMapPreviewTexture();
-		}
-	}
-
-	// Allow Observers
-	if(gameSettings->getAllowObservers()) {
-		checkBoxAllowObservers.setValue(true);
-	}
-	else
-	{
-		checkBoxAllowObservers.setValue(false);
-	}
-
-	if((gameSettings->getFlagTypes1() & ft1_allow_team_switching) == ft1_allow_team_switching){
-		checkBoxEnableSwitchTeamMode.setValue(true);
-	}
-	else {
-		checkBoxEnableSwitchTeamMode.setValue(false);
-	}
-	listBoxAISwitchTeamAcceptPercent.setSelectedItem(intToStr(gameSettings->getAiAcceptSwitchTeamPercentChance()));
-	listBoxFallbackCpuMultiplier.setSelectedItemIndex(gameSettings->getFallbackCpuMultiplier());
-
-	if((gameSettings->getFlagTypes1() & ft1_allow_shared_team_units) == ft1_allow_shared_team_units) {
-		checkBoxAllowTeamUnitSharing.setValue(true);
-	}
-	else {
-		checkBoxAllowTeamUnitSharing.setValue(false);
-	}
-
-	if((gameSettings->getFlagTypes1() & ft1_allow_shared_team_resources) == ft1_allow_shared_team_resources) {
-		checkBoxAllowTeamResourceSharing.setValue(true);
-	}
-	else {
-		checkBoxAllowTeamResourceSharing.setValue(false);
-	}
-
-	checkBoxAllowNativeLanguageTechtree.setValue(gameSettings->getNetworkAllowNativeLanguageTechtree());
-
-	// Control
-	for(int i=0; i<GameConstants::maxPlayers; ++i) {
-		listBoxControls[i].setSelectedItemIndex(ctClosed);
-
-		if(isHeadlessAdmin() == false) {
-			if(clientInterface->getJoinGameInProgress() == false) {
-				listBoxFactions[i].setEditable(false);
-				listBoxTeams[i].setEditable(false);
-			}
-		}
-
-		labelPlayerStatus[i].setTexture(NULL);;
-	}
-
-	if(hasFactions == true && gameSettings != NULL) {
-		NetworkManager &networkManager= NetworkManager::getInstance();
-		ClientInterface *clientInterface = networkManager.getClientInterface();
-
-		//for(int i=0; i < gameSettings->getFactionCount(); ++i){
-		for(int i=0; i < GameConstants::maxPlayers; ++i) {
-			int slot = gameSettings->getStartLocationIndex(i);
-
-			if(slot == clientInterface->getPlayerIndex()){
-				labelPlayerNames[slot].setEditable(true);
-			}
-			else {
-				labelPlayerNames[slot].setEditable(false);
-			}
-
-			if(i >= mapInfo.players) {
-				if( gameSettings->getFactionControl(i) != ctNetworkUnassigned) {
-					continue;
-				}
-				else if(clientInterface->getPlayerIndex() != slot) {
-					continue;
-				}
-			}
-
-			if(	gameSettings->getFactionControl(i) == ctNetwork ||
-				gameSettings->getFactionControl(i) == ctNetworkUnassigned ||
-				gameSettings->getFactionControl(i) == ctHuman) {
-				switch(gameSettings->getNetworkPlayerStatuses(i)) {
-					case npst_BeRightBack:
-						labelPlayerStatus[slot].setTexture(CoreData::getInstance().getStatusBRBTexture());
-						break;
-					case npst_Ready:
-						labelPlayerStatus[slot].setTexture(CoreData::getInstance().getStatusReadyTexture());
-						break;
-					case npst_PickSettings:
-						labelPlayerStatus[slot].setTexture(CoreData::getInstance().getStatusNotReadyTexture());
-						break;
-					case npst_Disconnected:
-						labelPlayerStatus[slot].setTexture(NULL);
-						break;
-
-					default:
-						labelPlayerStatus[slot].setTexture(NULL);
-						break;
-				}
-			}
-
-			listBoxControls[slot].setSelectedItemIndex(gameSettings->getFactionControl(i),errorOnMissingData);
-			listBoxRMultiplier[slot].setSelectedItemIndex(gameSettings->getResourceMultiplierIndex(i),errorOnMissingData);
-			listBoxTeams[slot].setSelectedItemIndex(gameSettings->getTeam(i),errorOnMissingData);
-			listBoxFactions[slot].setSelectedItem(formatString(gameSettings->getFactionTypeName(i)),false);
-
-			if( gameSettings->getFactionControl(i) == ctNetwork ||
-				gameSettings->getFactionControl(i) == ctNetworkUnassigned) {
-				labelNetStatus[slot].setText(gameSettings->getNetworkPlayerName(i));
-				if( gameSettings->getThisFactionIndex() != i &&
-					gameSettings->getNetworkPlayerName(i) != "" &&
-					gameSettings->getNetworkPlayerName(i) != GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME) {
-					labelPlayerNames[slot].setText(gameSettings->getNetworkPlayerName(i));
-				}
-			}
-
-			ControlType ct= gameSettings->getFactionControl(i);
-			if (ct == ctHuman || ct == ctNetwork || ct == ctClosed) {
-				listBoxRMultiplier[slot].setEnabled(false);
-				listBoxRMultiplier[slot].setVisible(false);
-			}
-			else {
-				listBoxRMultiplier[slot].setEnabled(true);
-				listBoxRMultiplier[slot].setVisible(true);
-			}
-
-			if((gameSettings->getFactionControl(i) == ctNetwork ||
-				gameSettings->getFactionControl(i) == ctNetworkUnassigned) &&
-				gameSettings->getThisFactionIndex() == i) {
-
-				// set my current slot to ctHuman
-				if(gameSettings->getFactionControl(i) != ctNetworkUnassigned) {
-					listBoxControls[slot].setSelectedItemIndex(ctHuman);
-				}
-				if(checkBoxScenario.getValue() == false) {
-					if(clientInterface->getJoinGameInProgress() == false) {
-						listBoxFactions[slot].setEditable(true);
-						listBoxTeams[slot].setEditable(true);
-					}
-				}
-
-				if(labelPlayerNames[slot].getText() == "" &&
-					gameSettings->getNetworkPlayerName(i) != "" &&
-					gameSettings->getNetworkPlayerName(i) != GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME) {
-					labelPlayerNames[slot].setText(gameSettings->getNetworkPlayerName(i));
-				}
-			}
-		}
-		settingsReceivedFromServer=true;
-		initialSettingsReceivedFromServer=true;
-
-		needToSetChangedGameSettings = true;
-		lastSetChangedGameSettings   = time(NULL);
-	}
-
-	if(enableFactionTexturePreview == true) {
-		if( clientInterface != NULL && clientInterface->isConnected() &&
-			gameSettings != NULL) {
-
-			if( currentTechName_factionPreview != gameSettings->getTech() ||
-				currentFactionName_factionPreview != gameSettings->getFactionTypeName(gameSettings->getThisFactionIndex())) {
-
-				currentTechName_factionPreview=gameSettings->getTech();
-				currentFactionName_factionPreview=gameSettings->getFactionTypeName(gameSettings->getThisFactionIndex());
-
-				initFactionPreview(gameSettings);
-			}
-		}
-	}
-
-}
-
-void MenuStateConnectedGame::initFactionPreview(const GameSettings *gameSettings) {
-	string factionVideoUrl = "";
-	string factionVideoUrlFallback = "";
-
-	string factionDefinitionXML = Game::findFactionLogoFile(gameSettings, NULL,currentFactionName_factionPreview + ".xml");
-	if(factionDefinitionXML != "" && currentFactionName_factionPreview != GameConstants::RANDOMFACTION_SLOTNAME &&
-			currentFactionName_factionPreview != GameConstants::OBSERVER_SLOTNAME && fileExists(factionDefinitionXML) == true) {
-		XmlTree	xmlTree;
-		std::map<string,string> mapExtraTagReplacementValues;
-		xmlTree.load(factionDefinitionXML, Properties::getTagReplacementValues(&mapExtraTagReplacementValues));
-		const XmlNode *factionNode= xmlTree.getRootNode();
-		if(factionNode->hasAttribute("faction-preview-video") == true) {
-			factionVideoUrl = factionNode->getAttribute("faction-preview-video")->getValue();
-		}
-
-		factionVideoUrlFallback = Game::findFactionLogoFile(gameSettings, NULL,"preview_video.*");
-		if(factionVideoUrl == "") {
-			factionVideoUrl = factionVideoUrlFallback;
-			factionVideoUrlFallback = "";
-		}
-	}
-
-	if(factionVideoUrl != "") {
-		if(CoreData::getInstance().getMenuMusic()->getVolume() != 0) {
-			CoreData::getInstance().getMenuMusic()->setVolume(0);
-			factionVideoSwitchedOffVolume=true;
-		}
-
-		if(currentFactionLogo != factionVideoUrl) {
-			currentFactionLogo = factionVideoUrl;
-			if(GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false &&
-				::Shared::Graphics::VideoPlayer::hasBackEndVideoPlayer() == true) {
-
-				if(factionVideo != NULL) {
-					factionVideo->closePlayer();
-					delete factionVideo;
-					factionVideo = NULL;
-				}
-				string introVideoFile = factionVideoUrl;
-				string introVideoFileFallback = factionVideoUrlFallback;
-
-				Context *c= GraphicsInterface::getInstance().getCurrentContext();
-				PlatformContextGl *glCtx = static_cast<ContextGl*>(c)->getPlatformContextGlPtr();
-				SDL_Window *window = glCtx->getScreenWindow();
-				SDL_Surface *screen = glCtx->getScreenSurface();
-
-				string vlcPluginsPath = Config::getInstance().getString("VideoPlayerPluginsPath","");
-				//printf("screen->w = %d screen->h = %d screen->format->BitsPerPixel = %d\n",screen->w,screen->h,screen->format->BitsPerPixel);
-				factionVideo = new VideoPlayer(
-						&Renderer::getInstance(),
-						introVideoFile,
-						introVideoFileFallback,
-						window,
-						0,0,
-						screen->w,
-						screen->h,
-						screen->format->BitsPerPixel,
-						true,
-						vlcPluginsPath,
-						SystemFlags::VERBOSE_MODE_ENABLED);
-				factionVideo->initPlayer();
-			}
-		}
-	}
-	else {
-		//switch on music again!!
-		Config &config = Config::getInstance();
-		float configVolume = (config.getInt("SoundVolumeMusic") / 100.f);
-		if(factionVideoSwitchedOffVolume){
-			if(CoreData::getInstance().getMenuMusic()->getVolume() != configVolume) {
-				CoreData::getInstance().getMenuMusic()->setVolume(configVolume);
-			}
-			factionVideoSwitchedOffVolume=false;
-		}
-
-		if(factionVideo != NULL) {
-			factionVideo->closePlayer();
-			delete factionVideo;
-			factionVideo = NULL;
-		}
-	}
-
-	if(factionVideo == NULL) {
-		string factionLogo = Game::findFactionLogoFile(gameSettings, NULL,GameConstants::PREVIEW_SCREEN_FILE_FILTER);
-		if(factionLogo == "") {
-			factionLogo = Game::findFactionLogoFile(gameSettings, NULL);
-		}
-		if(currentFactionLogo != factionLogo) {
-			currentFactionLogo = factionLogo;
-			loadFactionTexture(currentFactionLogo);
-		}
-	}
-}
-
-void MenuStateConnectedGame::RestoreLastGameSettings() {
-	// Ensure we have set the gamesettings at least once
-	NetworkManager &networkManager= NetworkManager::getInstance();
-	ClientInterface* clientInterface= networkManager.getClientInterface();
-	GameSettings gameSettings = *clientInterface->getGameSettings();
-	CoreData::getInstance().loadGameSettingsFromFile(HEADLESS_SAVED_GAME_FILENAME,&gameSettings);
-	if(gameSettings.getMap() == "") {
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
-		loadGameSettings(&gameSettings);
-	}
-
-	setupUIFromGameSettings(&gameSettings, false);
-
-	needToBroadcastServerSettings=true;
-	broadcastServerSettingsDelayTimer=time(NULL);
-	noReceiveTimer=time(NULL);
-
-}
-
-int MenuStateConnectedGame::setupMapList(string scenario) {
-	int initialMapSelection = 0;
-
-	try {
-		Config &config = Config::getInstance();
-		vector<string> invalidMapList;
-		string scenarioDir = Scenario::getScenarioDir(dirList, scenario);
-		vector<string> pathList = config.getPathListForType(ptMaps,scenarioDir);
-		vector<string> allMaps = MapPreview::findAllValidMaps(pathList,scenarioDir,false,true,&invalidMapList);
-		// sort map list non case sensitive
-		std::sort(allMaps.begin(),allMaps.end(),compareNonCaseSensitive);
-		if(scenario != "") {
-			vector<string> allMaps2 = MapPreview::findAllValidMaps(config.getPathListForType(ptMaps,""),"",false,true,&invalidMapList);
-			copy(allMaps2.begin(), allMaps2.end(), std::inserter(allMaps, allMaps.begin()));
-			std::sort(allMaps.begin(),allMaps.end(),compareNonCaseSensitive);
-		}
-
-		if (allMaps.empty()) {
-			throw megaglest_runtime_error("No maps were found!");
-		}
-		vector<string> results;
-		copy(allMaps.begin(), allMaps.end(), std::back_inserter(results));
-		mapFiles = results;
-
-		for(unsigned int i = 0; i < GameConstants::maxPlayers+1; ++i) {
-			playerSortedMaps[i].clear();
-			formattedPlayerSortedMaps[i].clear();
-		}
-
-		copy(mapFiles.begin(), mapFiles.end(), std::back_inserter(playerSortedMaps[0]));
-		copy(playerSortedMaps[0].begin(), playerSortedMaps[0].end(), std::back_inserter(formattedPlayerSortedMaps[0]));
-		std::for_each(formattedPlayerSortedMaps[0].begin(), formattedPlayerSortedMaps[0].end(), FormatString());
-
-		formattedMapFiles.clear();
-		for(int i= 0; i < (int)mapFiles.size(); i++){// fetch info and put map in right list
-			loadMapInfo(Config::getMapPath(mapFiles.at(i), scenarioDir, false), &mapInfo, false);
-
-			if(GameConstants::maxPlayers+1 <= mapInfo.players) {
-				char szBuf[8096]="";
-				snprintf(szBuf,8096,"Sorted map list [%d] does not match\ncurrent map playercount [%d]\nfor file [%s]\nmap [%s]",GameConstants::maxPlayers+1,mapInfo.players,Config::getMapPath(mapFiles.at(i), "", false).c_str(),mapInfo.desc.c_str());
-				throw megaglest_runtime_error(szBuf);
-			}
-			playerSortedMaps[mapInfo.players].push_back(mapFiles.at(i));
-			formattedPlayerSortedMaps[mapInfo.players].push_back(formatString(mapFiles.at(i)));
-			if(config.getString("InitialMap", "Conflict") == formattedPlayerSortedMaps[mapInfo.players].back()){
-				initialMapSelection= i;
-			}
-			formattedMapFiles.push_back(formatString(mapFiles.at(i)));
-		}
-
-		if(scenario != "") {
-			string file = Scenario::getScenarioPath(dirList, scenario);
-			loadScenarioInfo(file, &scenarioInfo);
-
-			loadMapInfo(Config::getMapPath(scenarioInfo.mapName, scenarioDir, true), &mapInfo, false);
-
-			if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d] listBoxMap.getSelectedItemIndex() = %d, mapFiles.size() = " MG_SIZE_T_SPECIFIER ", mapInfo.players = %d, formattedPlayerSortedMaps[mapInfo.players].size() = " MG_SIZE_T_SPECIFIER ", scenarioInfo.mapName [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,listBoxMap.getSelectedItemIndex(),mapFiles.size(),mapInfo.players,formattedPlayerSortedMaps[mapInfo.players].size(),scenarioInfo.mapName.c_str());
-			listBoxMap.setItems(formattedPlayerSortedMaps[mapInfo.players]);
-		}
-	}
-	catch(const std::exception &ex) {
-		char szBuf[8096]="";
-		snprintf(szBuf,8096,"In [%s::%s %d]\nError detected:\n%s\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,ex.what());
-		SystemFlags::OutputDebug(SystemFlags::debugError,szBuf);
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"%s",szBuf);
-
-		throw megaglest_runtime_error(szBuf);
-		//abort();
-	}
-
-	return initialMapSelection;
-}
-
-int MenuStateConnectedGame::setupTechList(string scenario, bool forceLoad) {
-	int initialTechSelection = 0;
-	try {
-		Config &config = Config::getInstance();
-
-		string scenarioDir = Scenario::getScenarioDir(dirList, scenario);
-		vector<string> results;
-		vector<string> techPaths = config.getPathListForType(ptTechs,scenarioDir);
-		findDirs(techPaths, results);
-
-		if(results.empty()) {
-			throw megaglest_runtime_error("No tech-trees were found!");
-		}
-
-		techTreeFiles= results;
-
-		vector<string> translatedTechs;
-
-		for(unsigned int i= 0; i < results.size(); i++) {
-			//printf("TECHS i = %d results [%s] scenario [%s]\n",i,results[i].c_str(),scenario.c_str());
-
-			results.at(i)= formatString(results.at(i));
-			if(config.getString("InitialTechTree", "Megapack") == results.at(i)) {
-				initialTechSelection= i;
-			}
-			string txTech = techTree->getTranslatedName(techTreeFiles.at(i), forceLoad);
-			translatedTechs.push_back(formatString(txTech));
-		}
-
-
-		listBoxTechTree.setItems(results,translatedTechs);
-	}
-	catch(const std::exception &ex) {
-		char szBuf[8096]="";
-		snprintf(szBuf,8096,"In [%s::%s %d]\nError detected:\n%s\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,ex.what());
-		SystemFlags::OutputDebug(SystemFlags::debugError,szBuf);
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"%s",szBuf);
-
-		throw megaglest_runtime_error(szBuf);
-	}
-
-	return initialTechSelection;
-}
-
-void MenuStateConnectedGame::setupTilesetList(string scenario) {
-	try {
-		Config &config = Config::getInstance();
-
-		string scenarioDir = Scenario::getScenarioDir(dirList, scenario);
-
-		vector<string> results;
-		findDirs(config.getPathListForType(ptTilesets,scenarioDir), results);
-		if (results.empty()) {
-			//throw megaglest_runtime_error("No tile-sets were found!");
-			showMessageBox( "No tile-sets were found!", "Error", false);
-		}
-		else {
-			tilesetFiles= results;
-			std::for_each(results.begin(), results.end(), FormatString());
-
-			listBoxTileset.setItems(results);
-		}
-	}
-	catch(const std::exception &ex) {
-		char szBuf[8096]="";
-		snprintf(szBuf,8096,"In [%s::%s %d]\nError detected:\n%s\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,ex.what());
-		SystemFlags::OutputDebug(SystemFlags::debugError,szBuf);
-		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"%s",szBuf);
-
-		throw megaglest_runtime_error(szBuf);
-	}
-}
-
-void MenuStateConnectedGame::loadScenarioInfo(string file, ScenarioInfo *scenarioInfo) {
-	bool isTutorial = Scenario::isGameTutorial(file);
-	Scenario::loadScenarioInfo(file, scenarioInfo, isTutorial);
-
-	previewLoadDelayTimer=time(NULL);
-	needToLoadTextures=true;
-}
-
-}}//end namespace
+
+    void
+    MenuStateConnectedGame::setupUIFromGameSettings (GameSettings *
+                                                     gameSettings,
+                                                     bool errorOnMissingData)
+    {
+      NetworkManager & networkManager = NetworkManager::getInstance ();
+      ClientInterface *
+        clientInterface = networkManager.getClientInterface ();
+
+      updateDataSynchDetailText = true;
+      vector < string > tilesets, techtree;
+
+      if (gameSettings == NULL)
+      {
+        throw megaglest_runtime_error ("gameSettings == NULL");
+      }
+
+
+      checkBoxScenario.setValue ((gameSettings->getScenario () != ""));
+      if (checkBoxScenario.getValue () == true)
+      {
+        int
+          originalFOWValue = listBoxFogOfWar.getSelectedItemIndex ();
+
+        string scenario = gameSettings->getScenario ();
+        listBoxScenario.setSelectedItem (formatString (scenario));
+        string file = Scenario::getScenarioPath (dirList, scenario);
+
+        bool isTutorial = Scenario::isGameTutorial (file);
+        Scenario::loadScenarioInfo (file, &scenarioInfo, isTutorial);
+
+        gameSettings->setScenarioDir (Scenario::getScenarioPath
+                                      (dirList, scenarioInfo.name));
+
+        gameSettings->setDefaultResources (scenarioInfo.defaultResources);
+        gameSettings->setDefaultUnits (scenarioInfo.defaultUnits);
+        gameSettings->
+          setDefaultVictoryConditions (scenarioInfo.defaultVictoryConditions);
+
+        if (scenarioInfo.fogOfWar == false
+            && scenarioInfo.fogOfWar_exploredFlag == false)
+        {
+          listBoxFogOfWar.setSelectedItemIndex (2);
+        }
+        else if (scenarioInfo.fogOfWar_exploredFlag == true)
+        {
+          listBoxFogOfWar.setSelectedItemIndex (1);
+        }
+        else
+        {
+          listBoxFogOfWar.setSelectedItemIndex (0);
+        }
+
+        checkBoxAllowTeamUnitSharing.
+          setValue (scenarioInfo.allowTeamUnitSharing);
+        checkBoxAllowTeamResourceSharing.
+          setValue (scenarioInfo.allowTeamResourceSharing);
+
+        if (originalFOWValue != listBoxFogOfWar.getSelectedItemIndex ())
+        {
+          cleanupMapPreviewTexture ();
+        }
+      }
+
+      if (listBoxMapFilter.getSelectedItemIndex () !=
+          gameSettings->getMapFilter ())
+      {
+        switchToMapGroup (gameSettings->getMapFilter ());
+//              printf("Switching to Map filter group %d \n",gameSettings->getMapFilter());
+      }
+
+      string
+        scenarioDir =
+        Scenario::getScenarioDir (dirList, gameSettings->getScenario ());
+      setupMapList (gameSettings->getScenario ());
+      setupTechList (gameSettings->getScenario ());
+      setupTilesetList (gameSettings->getScenario ());
+
+
+//printf("A gameSettings->getTileset() [%s]\n",gameSettings->getTileset().c_str());
+
+      if (getMissingTilesetFromFTPServerInProgress == false
+          && gameSettings->getTileset () != "")
+      {
+// tileset
+        tilesets = tilesetFiles;
+        std::for_each (tilesets.begin (), tilesets.end (), FormatString ());
+
+        if (std::find (tilesetFiles.begin (), tilesetFiles.end (),
+                       gameSettings->getTileset ()) != tilesetFiles.end ())
+        {
+          lastMissingTileSet = "";
+          getMissingTilesetFromFTPServer = "";
+          listBoxTileset.setSelectedItem (formatString
+                                          (gameSettings->getTileset ()));
+        }
+        else
+        {
+// try to get the tileset via ftp
+          if (ftpClientThread != NULL &&
+              (getMissingTilesetFromFTPServer != gameSettings->getTileset ()
+               || difftime (time (NULL),
+                            getMissingTilesetFromFTPServerLastPrompted) >
+               REPROMPT_DOWNLOAD_SECONDS))
+          {
+            if (ftpMessageBox.getEnabled () == false)
+            {
+              getMissingTilesetFromFTPServerLastPrompted = time (NULL);
+              getMissingTilesetFromFTPServer = gameSettings->getTileset ();
+              Lang & lang = Lang::getInstance ();
+
+              char
+                szBuf[8096] = "";
+              snprintf (szBuf, 8096, "%s %s ?",
+                        lang.
+                        getString ("DownloadMissingTilesetQuestion").c_str (),
+                        gameSettings->getTileset ().c_str ());
+
+// Is the item in the mod center?
+              MutexSafeWrapper
+                safeMutexThread ((modHttpServerThread !=
+                                  NULL ?
+                                  modHttpServerThread->getMutexThreadObjectAccessor
+                                  () : NULL),
+                                 string (__FILE__) + "_" +
+                                 intToStr (__LINE__));
+              if (tilesetCacheList.find (getMissingTilesetFromFTPServer) ==
+                  tilesetCacheList.end ())
+              {
+                ftpMessageBox.init (lang.getString ("Yes"),
+                                    lang.getString ("NoDownload"));
+              }
+              else
+              {
+                ftpMessageBox.init (lang.getString ("ModCenter"),
+                                    lang.getString ("GameHost"));
+                ftpMessageBox.addButton (lang.getString ("NoDownload"));
+              }
+              safeMutexThread.ReleaseLock ();
+
+              ftpMissingDataType = ftpmsg_MissingTileset;
+              showFTPMessageBox (szBuf, lang.getString ("Question"), false);
+            }
+          }
+
+          tilesets.
+            push_back (Lang::
+                       getInstance ().getString ("DataMissing", "", true));
+
+          NetworkManager & networkManager = NetworkManager::getInstance ();
+          ClientInterface *
+            clientInterface = networkManager.getClientInterface ();
+          const GameSettings *
+            gameSettings = clientInterface->getGameSettings ();
+
+          if (lastMissingTileSet != gameSettings->getTileset ())
+          {
+            lastMissingTileSet = gameSettings->getTileset ();
+
+            if (SystemFlags::
+                getSystemSettingType (SystemFlags::debugSystem).enabled)
+              SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                        "In [%s::%s Line: %d]\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__);
+
+            Lang & lang = Lang::getInstance ();
+            const
+              vector <
+              string >
+              languageList =
+              clientInterface->
+              getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+            for (unsigned int i = 0; i < languageList.size (); ++i)
+            {
+
+              char
+                szMsg[8096] = "";
+              if (lang.hasString ("DataMissingTileset", languageList[i]) ==
+                  true)
+              {
+                snprintf (szMsg, 8096,
+                          lang.getString ("DataMissingTileset",
+                                          languageList[i]).c_str (),
+                          getHumanPlayerName ().c_str (),
+                          gameSettings->getTileset ().c_str ());
+              }
+              else
+              {
+                snprintf (szMsg, 8096,
+                          "Player: %s is missing the tileset: %s",
+                          getHumanPlayerName ().c_str (),
+                          gameSettings->getTileset ().c_str ());
+              }
+              clientInterface->sendTextMessage (szMsg, -1,
+                                                lang.isLanguageLocal
+                                                (languageList[i]),
+                                                languageList[i]);
+            }
+          }
+
+          listBoxTileset.setItems (tilesets);
+          listBoxTileset.
+            setSelectedItem (Lang::
+                             getInstance ().getString ("DataMissing", "",
+                                                       true));
+        }
+
+      }
+
+      if (getMissingTechtreeFromFTPServerInProgress == false &&
+          gameSettings->getTech () != "")
+      {
+// techtree
+        techtree = techTreeFiles;
+        std::for_each (techtree.begin (), techtree.end (), FormatString ());
+
+        if (std::find (techTreeFiles.begin (), techTreeFiles.end (),
+                       gameSettings->getTech ()) != techTreeFiles.end ())
+        {
+
+          lastMissingTechtree = "";
+          getMissingTechtreeFromFTPServer = "";
+          reloadFactions (true, gameSettings->getScenario ());
+          listBoxTechTree.setSelectedItem (formatString
+                                           (gameSettings->getTech ()));
+        }
+        else
+        {
+// try to get the tileset via ftp
+          if (ftpClientThread != NULL
+              && (getMissingTechtreeFromFTPServer != gameSettings->getTech ()
+                  || difftime (time (NULL),
+                               getMissingTechtreeFromFTPServerLastPrompted) >
+                  REPROMPT_DOWNLOAD_SECONDS))
+          {
+            if (ftpMessageBox.getEnabled () == false)
+            {
+              getMissingTechtreeFromFTPServerLastPrompted = time (NULL);
+              getMissingTechtreeFromFTPServer = gameSettings->getTech ();
+              Lang & lang = Lang::getInstance ();
+
+              char
+                szBuf[8096] = "";
+              snprintf (szBuf, 8096, "%s %s ?",
+                        lang.
+                        getString ("DownloadMissingTechtreeQuestion").c_str
+                        (), gameSettings->getTech ().c_str ());
+
+// Is the item in the mod center?
+              MutexSafeWrapper
+                safeMutexThread ((modHttpServerThread !=
+                                  NULL ?
+                                  modHttpServerThread->getMutexThreadObjectAccessor
+                                  () : NULL),
+                                 string (__FILE__) + "_" +
+                                 intToStr (__LINE__));
+              if (techCacheList.find (getMissingTechtreeFromFTPServer) ==
+                  techCacheList.end ())
+              {
+                ftpMessageBox.init (lang.getString ("Yes"),
+                                    lang.getString ("NoDownload"));
+              }
+              else
+              {
+                ftpMessageBox.init (lang.getString ("ModCenter"),
+                                    lang.getString ("GameHost"));
+                ftpMessageBox.addButton (lang.getString ("NoDownload"));
+              }
+              safeMutexThread.ReleaseLock ();
+
+              ftpMissingDataType = ftpmsg_MissingTechtree;
+              showFTPMessageBox (szBuf, lang.getString ("Question"), false);
+            }
+          }
+
+          techtree.
+            push_back (Lang::
+                       getInstance ().getString ("DataMissing", "", true));
+
+          NetworkManager & networkManager = NetworkManager::getInstance ();
+          ClientInterface *
+            clientInterface = networkManager.getClientInterface ();
+          const GameSettings *
+            gameSettings = clientInterface->getGameSettings ();
+
+          if (lastMissingTechtree != gameSettings->getTech ())
+          {
+            lastMissingTechtree = gameSettings->getTech ();
+
+            if (SystemFlags::
+                getSystemSettingType (SystemFlags::debugSystem).enabled)
+              SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                        "In [%s::%s Line: %d]\n",
+                                        extractFileFromDirectoryPath
+                                        (__FILE__).c_str (), __FUNCTION__,
+                                        __LINE__);
+
+            Lang & lang = Lang::getInstance ();
+            const
+              vector <
+              string >
+              languageList =
+              clientInterface->
+              getGameSettings ()->getUniqueNetworkPlayerLanguages ();
+            for (unsigned int i = 0; i < languageList.size (); ++i)
+            {
+
+              char
+                szMsg[8096] = "";
+              if (lang.hasString ("DataMissingTechtree", languageList[i]) ==
+                  true)
+              {
+                snprintf (szMsg, 8096,
+                          lang.getString ("DataMissingTechtree",
+                                          languageList[i]).c_str (),
+                          getHumanPlayerName ().c_str (),
+                          gameSettings->getTech ().c_str ());
+              }
+              else
+              {
+                snprintf (szMsg, 8096,
+                          "Player: %s is missing the techtree: %s",
+                          getHumanPlayerName ().c_str (),
+                          gameSettings->getTech ().c_str ());
+              }
+              clientInterface->sendTextMessage (szMsg, -1,
+                                                lang.isLanguageLocal
+                                                (languageList[i]),
+                                                languageList[i]);
+            }
+          }
+
+          vector < string > translatedTechs;
+          for (unsigned int i = 0; i < techTreeFiles.size (); i++)
+          {
+            string
+              txTech = techTree->getTranslatedName (techTreeFiles.at (i));
+            translatedTechs.push_back (txTech);
+          }
+          listBoxTechTree.setItems (techtree, translatedTechs);
+          listBoxTechTree.
+            setSelectedItem (Lang::
+                             getInstance ().getString ("DataMissing", "",
+                                                       true));
+        }
+      }
+
+// factions
+      bool hasFactions = true;
+      if (currentFactionName != gameSettings->getTech ()
+          && gameSettings->getTech () != "")
+      {
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                    "In [%s::%s Line: %d] hasFactions = %d, currentFactionName [%s]\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, hasFactions,
+                                    currentFactionName.c_str ());
+        currentFactionName = gameSettings->getTech ();
+        hasFactions = loadFactions (gameSettings, false);
+      }
+      else
+      {
+// do this to process special faction types like observers
+        loadFactions (gameSettings, false);
+      }
+
+
+      if (getMissingMapFromFTPServerInProgress == false &&
+          gameSettings->getMap () != ""
+          && gameSettings->getMapFilter () ==
+          listBoxMapFilter.getSelectedItemIndex ())
+      {
+// map
+        bool missingMap = false;
+        string mapFile = gameSettings->getMap ();
+        mapFile = formatString (mapFile);
+
+        if (currentMap != gameSettings->getMap ())
+        {                       // load the setup again
+          currentMap = gameSettings->getMap ();
+        }
+        bool
+          mapLoaded =
+          loadMapInfo (Config::getMapPath (currentMap, scenarioDir, false),
+                       &mapInfo, true);
+        if (mapLoaded == false)
+        {
+// try to get the map via ftp
+          if (ftpClientThread != NULL
+              && (getMissingMapFromFTPServer != currentMap
+                  || difftime (time (NULL),
+                               getMissingMapFromFTPServerLastPrompted) >
+                  REPROMPT_DOWNLOAD_SECONDS))
+          {
+            if (ftpMessageBox.getEnabled () == false)
+            {
+              getMissingMapFromFTPServerLastPrompted = time (NULL);
+              getMissingMapFromFTPServer = currentMap;
+              Lang & lang = Lang::getInstance ();
+
+              char
+                szBuf[8096] = "";
+              snprintf (szBuf, 8096, "%s %s ?",
+                        lang.
+                        getString ("DownloadMissingMapQuestion").c_str (),
+                        currentMap.c_str ());
+
+// Is the item in the mod center?
+              MutexSafeWrapper
+                safeMutexThread ((modHttpServerThread !=
+                                  NULL ?
+                                  modHttpServerThread->getMutexThreadObjectAccessor
+                                  () : NULL),
+                                 string (__FILE__) + "_" +
+                                 intToStr (__LINE__));
+              if (mapCacheList.find (getMissingMapFromFTPServer) ==
+                  mapCacheList.end ())
+              {
+                ftpMessageBox.init (lang.getString ("Yes"),
+                                    lang.getString ("NoDownload"));
+              }
+              else
+              {
+                ftpMessageBox.init (lang.getString ("ModCenter"),
+                                    lang.getString ("GameHost"));
+                ftpMessageBox.addButton (lang.getString ("NoDownload"));
+              }
+              safeMutexThread.ReleaseLock ();
+
+              ftpMissingDataType = ftpmsg_MissingMap;
+              showFTPMessageBox (szBuf, lang.getString ("Question"), false);
+            }
+          }
+
+          formattedPlayerSortedMaps[gameSettings->
+                                    getMapFilter ()].push_back (Lang::
+                                                                getInstance
+                                                                ().getString
+                                                                ("DataMissing",
+                                                                 "", true));
+          mapFile = Lang::getInstance ().getString ("DataMissing", "", true);
+          missingMap = true;
+        }
+
+        if (isHeadlessAdmin () && !missingMap
+            && mapFile != listBoxMap.getSelectedItem ())
+        {
+//console.addLine("Headless server does not have map, switching to next one");
+          if (isfirstSwitchingMapMessage)
+          {
+            isfirstSwitchingMapMessage = false;
+          }
+          else
+          {
+            console.addLine (Lang::getInstance ().getString
+                             ("HeadlessServerDoesNotHaveMap", "", true));
+          }
+        }
+        listBoxMap.setItems (formattedPlayerSortedMaps
+                             [gameSettings->getMapFilter ()]);
+
+//printf("Setting map from game settings map:%s , settingsfilter=%d , boxfilter=%d \n",gameSettings->getMap().c_str(),gameSettings->getMapFilter(),listBoxMapFilter.getSelectedItemIndex());
+        listBoxMap.setSelectedItem (mapFile);
+        labelMapInfo.setText (mapInfo.desc);
+      }
+
+// FogOfWar
+      if (checkBoxScenario.getValue () == false)
+      {
+        int
+          originalFOWValue = listBoxFogOfWar.getSelectedItemIndex ();
+        listBoxFogOfWar.setSelectedItemIndex (0);       // default is 0!
+        if (gameSettings->getFogOfWar () == false)
+        {
+          listBoxFogOfWar.setSelectedItemIndex (2);
+        }
+        if ((gameSettings->getFlagTypes1 () & ft1_show_map_resources) ==
+            ft1_show_map_resources)
+        {
+          if (gameSettings->getFogOfWar () == true)
+          {
+            listBoxFogOfWar.setSelectedItemIndex (1);
+          }
+        }
+        if (originalFOWValue != listBoxFogOfWar.getSelectedItemIndex ())
+        {
+          cleanupMapPreviewTexture ();
+        }
+      }
+
+// Allow Observers
+      if (gameSettings->getAllowObservers ())
+      {
+        checkBoxAllowObservers.setValue (true);
+      }
+      else
+      {
+        checkBoxAllowObservers.setValue (false);
+      }
+
+      if ((gameSettings->getFlagTypes1 () & ft1_allow_team_switching) ==
+          ft1_allow_team_switching)
+      {
+        checkBoxEnableSwitchTeamMode.setValue (true);
+      }
+      else
+      {
+        checkBoxEnableSwitchTeamMode.setValue (false);
+      }
+      listBoxAISwitchTeamAcceptPercent.setSelectedItem (intToStr
+                                                        (gameSettings->getAiAcceptSwitchTeamPercentChance
+                                                         ()));
+      listBoxFallbackCpuMultiplier.
+        setSelectedItemIndex (gameSettings->getFallbackCpuMultiplier ());
+
+      if ((gameSettings->getFlagTypes1 () & ft1_allow_shared_team_units) ==
+          ft1_allow_shared_team_units)
+      {
+        checkBoxAllowTeamUnitSharing.setValue (true);
+      }
+      else
+      {
+        checkBoxAllowTeamUnitSharing.setValue (false);
+      }
+
+      if ((gameSettings->getFlagTypes1 () & ft1_allow_shared_team_resources)
+          == ft1_allow_shared_team_resources)
+      {
+        checkBoxAllowTeamResourceSharing.setValue (true);
+      }
+      else
+      {
+        checkBoxAllowTeamResourceSharing.setValue (false);
+      }
+
+      checkBoxAllowNativeLanguageTechtree.
+        setValue (gameSettings->getNetworkAllowNativeLanguageTechtree ());
+
+// Control
+      for (int i = 0; i < GameConstants::maxPlayers; ++i)
+      {
+        listBoxControls[i].setSelectedItemIndex (ctClosed);
+
+        if (isHeadlessAdmin () == false)
+        {
+          if (clientInterface->getJoinGameInProgress () == false)
+          {
+            listBoxFactions[i].setEditable (false);
+            listBoxTeams[i].setEditable (false);
+          }
+        }
+
+        labelPlayerStatus[i].setTexture (NULL);;
+      }
+
+      if (hasFactions == true && gameSettings != NULL)
+      {
+        NetworkManager & networkManager = NetworkManager::getInstance ();
+        ClientInterface *
+          clientInterface = networkManager.getClientInterface ();
+
+//for(int i=0; i < gameSettings->getFactionCount(); ++i){
+        for (int i = 0; i < GameConstants::maxPlayers; ++i)
+        {
+          int
+            slot = gameSettings->getStartLocationIndex (i);
+
+          if (slot == clientInterface->getPlayerIndex ())
+          {
+            labelPlayerNames[slot].setEditable (true);
+          }
+          else
+          {
+            labelPlayerNames[slot].setEditable (false);
+          }
+
+          if (i >= mapInfo.players)
+          {
+            if (gameSettings->getFactionControl (i) != ctNetworkUnassigned)
+            {
+              continue;
+            }
+            else if (clientInterface->getPlayerIndex () != slot)
+            {
+              continue;
+            }
+          }
+
+          if (gameSettings->getFactionControl (i) == ctNetwork ||
+              gameSettings->getFactionControl (i) == ctNetworkUnassigned ||
+              gameSettings->getFactionControl (i) == ctHuman)
+          {
+            switch (gameSettings->getNetworkPlayerStatuses (i))
+            {
+            case npst_BeRightBack:
+              labelPlayerStatus[slot].
+                setTexture (CoreData::getInstance ().getStatusBRBTexture ());
+              break;
+            case npst_Ready:
+              labelPlayerStatus[slot].
+                setTexture (CoreData::
+                            getInstance ().getStatusReadyTexture ());
+              break;
+            case npst_PickSettings:
+              labelPlayerStatus[slot].
+                setTexture (CoreData::
+                            getInstance ().getStatusNotReadyTexture ());
+              break;
+            case npst_Disconnected:
+              labelPlayerStatus[slot].setTexture (NULL);
+              break;
+
+            default:
+              labelPlayerStatus[slot].setTexture (NULL);
+              break;
+            }
+          }
+
+          listBoxControls[slot].
+            setSelectedItemIndex (gameSettings->getFactionControl (i),
+                                  errorOnMissingData);
+          listBoxRMultiplier[slot].
+            setSelectedItemIndex (gameSettings->getResourceMultiplierIndex
+                                  (i), errorOnMissingData);
+          listBoxTeams[slot].setSelectedItemIndex (gameSettings->getTeam (i),
+                                                   errorOnMissingData);
+          listBoxFactions[slot].setSelectedItem (formatString
+                                                 (gameSettings->
+                                                  getFactionTypeName (i)),
+                                                 false);
+
+          if (gameSettings->getFactionControl (i) == ctNetwork ||
+              gameSettings->getFactionControl (i) == ctNetworkUnassigned)
+          {
+            labelNetStatus[slot].
+              setText (gameSettings->getNetworkPlayerName (i));
+            if (gameSettings->getThisFactionIndex () != i
+                && gameSettings->getNetworkPlayerName (i) != ""
+                && gameSettings->getNetworkPlayerName (i) !=
+                GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME)
+            {
+              labelPlayerNames[slot].
+                setText (gameSettings->getNetworkPlayerName (i));
+            }
+          }
+
+          ControlType ct = gameSettings->getFactionControl (i);
+          if (ct == ctHuman || ct == ctNetwork || ct == ctClosed)
+          {
+            listBoxRMultiplier[slot].setEnabled (false);
+            listBoxRMultiplier[slot].setVisible (false);
+          }
+          else
+          {
+            listBoxRMultiplier[slot].setEnabled (true);
+            listBoxRMultiplier[slot].setVisible (true);
+          }
+
+          if ((gameSettings->getFactionControl (i) == ctNetwork ||
+               gameSettings->getFactionControl (i) == ctNetworkUnassigned) &&
+              gameSettings->getThisFactionIndex () == i)
+          {
+
+// set my current slot to ctHuman
+            if (gameSettings->getFactionControl (i) != ctNetworkUnassigned)
+            {
+              listBoxControls[slot].setSelectedItemIndex (ctHuman);
+            }
+            if (checkBoxScenario.getValue () == false)
+            {
+              if (clientInterface->getJoinGameInProgress () == false)
+              {
+                listBoxFactions[slot].setEditable (true);
+                listBoxTeams[slot].setEditable (true);
+              }
+            }
+
+            if (labelPlayerNames[slot].getText () == "" &&
+                gameSettings->getNetworkPlayerName (i) != "" &&
+                gameSettings->getNetworkPlayerName (i) !=
+                GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME)
+            {
+              labelPlayerNames[slot].
+                setText (gameSettings->getNetworkPlayerName (i));
+            }
+          }
+        }
+        settingsReceivedFromServer = true;
+        initialSettingsReceivedFromServer = true;
+
+        needToSetChangedGameSettings = true;
+        lastSetChangedGameSettings = time (NULL);
+      }
+
+      if (enableFactionTexturePreview == true)
+      {
+        if (clientInterface != NULL && clientInterface->isConnected () &&
+            gameSettings != NULL)
+        {
+
+          if (currentTechName_factionPreview != gameSettings->getTech () ||
+              currentFactionName_factionPreview !=
+              gameSettings->
+              getFactionTypeName (gameSettings->getThisFactionIndex ()))
+          {
+
+            currentTechName_factionPreview = gameSettings->getTech ();
+            currentFactionName_factionPreview =
+              gameSettings->
+              getFactionTypeName (gameSettings->getThisFactionIndex ());
+
+            initFactionPreview (gameSettings);
+          }
+        }
+      }
+
+    }
+
+    void
+    MenuStateConnectedGame::initFactionPreview (const GameSettings *
+                                                gameSettings)
+    {
+      string factionVideoUrl = "";
+      string factionVideoUrlFallback = "";
+
+      string
+        factionDefinitionXML =
+        Game::findFactionLogoFile (gameSettings, NULL,
+                                   currentFactionName_factionPreview +
+                                   ".xml");
+      if (factionDefinitionXML != ""
+          && currentFactionName_factionPreview !=
+          GameConstants::RANDOMFACTION_SLOTNAME
+          && currentFactionName_factionPreview !=
+          GameConstants::OBSERVER_SLOTNAME
+          && fileExists (factionDefinitionXML) == true)
+      {
+        XmlTree xmlTree;
+        std::map < string, string > mapExtraTagReplacementValues;
+        xmlTree.load (factionDefinitionXML,
+                      Properties::getTagReplacementValues
+                      (&mapExtraTagReplacementValues));
+        const XmlNode *
+          factionNode = xmlTree.getRootNode ();
+        if (factionNode->hasAttribute ("faction-preview-video") == true)
+        {
+          factionVideoUrl =
+            factionNode->getAttribute ("faction-preview-video")->getValue ();
+        }
+
+        factionVideoUrlFallback =
+          Game::findFactionLogoFile (gameSettings, NULL, "preview_video.*");
+        if (factionVideoUrl == "")
+        {
+          factionVideoUrl = factionVideoUrlFallback;
+          factionVideoUrlFallback = "";
+        }
+      }
+
+      if (factionVideoUrl != "")
+      {
+        if (CoreData::getInstance ().getMenuMusic ()->getVolume () != 0)
+        {
+          CoreData::getInstance ().getMenuMusic ()->setVolume (0);
+          factionVideoSwitchedOffVolume = true;
+        }
+
+        if (currentFactionLogo != factionVideoUrl)
+        {
+          currentFactionLogo = factionVideoUrl;
+          if (GlobalStaticFlags::getIsNonGraphicalModeEnabled () == false
+              &&::Shared::Graphics::VideoPlayer::hasBackEndVideoPlayer () ==
+              true)
+          {
+
+            if (factionVideo != NULL)
+            {
+              factionVideo->closePlayer ();
+              delete factionVideo;
+              factionVideo = NULL;
+            }
+            string introVideoFile = factionVideoUrl;
+            string introVideoFileFallback = factionVideoUrlFallback;
+
+            Context *
+              c = GraphicsInterface::getInstance ().getCurrentContext ();
+            PlatformContextGl *
+              glCtx =
+              static_cast < ContextGl * >(c)->getPlatformContextGlPtr ();
+            SDL_Window *
+              window = glCtx->getScreenWindow ();
+            SDL_Surface *
+              screen = glCtx->getScreenSurface ();
+
+            string
+              vlcPluginsPath =
+              Config::getInstance ().getString ("VideoPlayerPluginsPath", "");
+//printf("screen->w = %d screen->h = %d screen->format->BitsPerPixel = %d\n",screen->w,screen->h,screen->format->BitsPerPixel);
+            factionVideo = new VideoPlayer (&Renderer::getInstance (),
+                                            introVideoFile,
+                                            introVideoFileFallback,
+                                            window,
+                                            0, 0,
+                                            screen->w,
+                                            screen->h,
+                                            screen->format->BitsPerPixel,
+                                            true,
+                                            vlcPluginsPath,
+                                            SystemFlags::VERBOSE_MODE_ENABLED);
+            factionVideo->initPlayer ();
+          }
+        }
+      }
+      else
+      {
+//switch on music again!!
+        Config & config = Config::getInstance ();
+        float
+          configVolume = (config.getInt ("SoundVolumeMusic") / 100.f);
+        if (factionVideoSwitchedOffVolume)
+        {
+          if (CoreData::getInstance ().getMenuMusic ()->getVolume () !=
+              configVolume)
+          {
+            CoreData::getInstance ().
+              getMenuMusic ()->setVolume (configVolume);
+          }
+          factionVideoSwitchedOffVolume = false;
+        }
+
+        if (factionVideo != NULL)
+        {
+          factionVideo->closePlayer ();
+          delete factionVideo;
+          factionVideo = NULL;
+        }
+      }
+
+      if (factionVideo == NULL)
+      {
+        string
+          factionLogo =
+          Game::findFactionLogoFile (gameSettings, NULL,
+                                     GameConstants::PREVIEW_SCREEN_FILE_FILTER);
+        if (factionLogo == "")
+        {
+          factionLogo = Game::findFactionLogoFile (gameSettings, NULL);
+        }
+        if (currentFactionLogo != factionLogo)
+        {
+          currentFactionLogo = factionLogo;
+          loadFactionTexture (currentFactionLogo);
+        }
+      }
+    }
+
+    void
+    MenuStateConnectedGame::RestoreLastGameSettings ()
+    {
+// Ensure we have set the gamesettings at least once
+      NetworkManager & networkManager = NetworkManager::getInstance ();
+      ClientInterface *
+        clientInterface = networkManager.getClientInterface ();
+      GameSettings gameSettings = *clientInterface->getGameSettings ();
+      CoreData::
+        getInstance ().loadGameSettingsFromFile (HEADLESS_SAVED_GAME_FILENAME,
+                                                 &gameSettings);
+      if (gameSettings.getMap () == "")
+      {
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                    "In [%s::%s Line %d]\n",
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__);
+
+        loadGameSettings (&gameSettings);
+      }
+
+      setupUIFromGameSettings (&gameSettings, false);
+
+      needToBroadcastServerSettings = true;
+      broadcastServerSettingsDelayTimer = time (NULL);
+      noReceiveTimer = time (NULL);
+
+    }
+
+    int
+    MenuStateConnectedGame::setupMapList (string scenario)
+    {
+      int
+        initialMapSelection = 0;
+
+      try
+      {
+        Config & config = Config::getInstance ();
+        vector < string > invalidMapList;
+        string scenarioDir = Scenario::getScenarioDir (dirList, scenario);
+        vector < string > pathList =
+          config.getPathListForType (ptMaps, scenarioDir);
+        vector < string > allMaps =
+          MapPreview::findAllValidMaps (pathList, scenarioDir, false, true,
+                                        &invalidMapList);
+// sort map list non case sensitive
+        std::sort (allMaps.begin (), allMaps.end (), compareNonCaseSensitive);
+        if (scenario != "")
+        {
+          vector < string > allMaps2 =
+            MapPreview::
+            findAllValidMaps (config.getPathListForType (ptMaps, ""), "",
+                              false, true, &invalidMapList);
+          copy (allMaps2.begin (), allMaps2.end (),
+                std::inserter (allMaps, allMaps.begin ()));
+          std::sort (allMaps.begin (), allMaps.end (),
+                     compareNonCaseSensitive);
+        }
+
+        if (allMaps.empty ())
+        {
+          throw megaglest_runtime_error ("No maps were found!");
+        }
+        vector < string > results;
+        copy (allMaps.begin (), allMaps.end (), std::back_inserter (results));
+        mapFiles = results;
+
+        for (unsigned int i = 0; i < GameConstants::maxPlayers + 1; ++i)
+        {
+          playerSortedMaps[i].clear ();
+          formattedPlayerSortedMaps[i].clear ();
+        }
+
+        copy (mapFiles.begin (), mapFiles.end (),
+              std::back_inserter (playerSortedMaps[0]));
+        copy (playerSortedMaps[0].begin (), playerSortedMaps[0].end (),
+              std::back_inserter (formattedPlayerSortedMaps[0]));
+        std::for_each (formattedPlayerSortedMaps[0].begin (),
+                       formattedPlayerSortedMaps[0].end (), FormatString ());
+
+        formattedMapFiles.clear ();
+        for (int i = 0; i < (int) mapFiles.size (); i++)
+        {                       // fetch info and put map in right list
+          loadMapInfo (Config::getMapPath
+                       (mapFiles.at (i), scenarioDir, false), &mapInfo,
+                       false);
+
+          if (GameConstants::maxPlayers + 1 <= mapInfo.players)
+          {
+            char
+              szBuf[8096] = "";
+            snprintf (szBuf, 8096,
+                      "Sorted map list [%d] does not match\ncurrent map playercount [%d]\nfor file [%s]\nmap [%s]",
+                      GameConstants::maxPlayers + 1, mapInfo.players,
+                      Config::getMapPath (mapFiles.at (i), "",
+                                          false).c_str (),
+                      mapInfo.desc.c_str ());
+            throw megaglest_runtime_error (szBuf);
+          }
+          playerSortedMaps[mapInfo.players].push_back (mapFiles.at (i));
+          formattedPlayerSortedMaps[mapInfo.players].push_back (formatString
+                                                                (mapFiles.at
+                                                                 (i)));
+          if (config.getString ("InitialMap", "Conflict") ==
+              formattedPlayerSortedMaps[mapInfo.players].back ())
+          {
+            initialMapSelection = i;
+          }
+          formattedMapFiles.push_back (formatString (mapFiles.at (i)));
+        }
+
+        if (scenario != "")
+        {
+          string file = Scenario::getScenarioPath (dirList, scenario);
+          loadScenarioInfo (file, &scenarioInfo);
+
+          loadMapInfo (Config::getMapPath
+                       (scenarioInfo.mapName, scenarioDir, true), &mapInfo,
+                       false);
+
+          if (SystemFlags::VERBOSE_MODE_ENABLED)
+            printf
+              ("In [%s::%s Line %d] listBoxMap.getSelectedItemIndex() = %d, mapFiles.size() = "
+               MG_SIZE_T_SPECIFIER
+               ", mapInfo.players = %d, formattedPlayerSortedMaps[mapInfo.players].size() = "
+               MG_SIZE_T_SPECIFIER ", scenarioInfo.mapName [%s]\n",
+               extractFileFromDirectoryPath (__FILE__).c_str (), __FUNCTION__,
+               __LINE__, listBoxMap.getSelectedItemIndex (), mapFiles.size (),
+               mapInfo.players,
+               formattedPlayerSortedMaps[mapInfo.players].size (),
+               scenarioInfo.mapName.c_str ());
+          listBoxMap.setItems (formattedPlayerSortedMaps[mapInfo.players]);
+        }
+      }
+      catch (const std::exception & ex)
+      {
+        char
+          szBuf[8096] = "";
+        snprintf (szBuf, 8096, "In [%s::%s %d]\nError detected:\n%s\n",
+                  extractFileFromDirectoryPath (__FILE__).c_str (),
+                  __FUNCTION__, __LINE__, ex.what ());
+        SystemFlags::OutputDebug (SystemFlags::debugError, szBuf);
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem, "%s", szBuf);
+
+        throw megaglest_runtime_error (szBuf);
+//abort();
+      }
+
+      return initialMapSelection;
+    }
+
+    int
+    MenuStateConnectedGame::setupTechList (string scenario, bool forceLoad)
+    {
+      int
+        initialTechSelection = 0;
+      try
+      {
+        Config & config = Config::getInstance ();
+
+        string scenarioDir = Scenario::getScenarioDir (dirList, scenario);
+        vector < string > results;
+        vector < string > techPaths =
+          config.getPathListForType (ptTechs, scenarioDir);
+        findDirs (techPaths, results);
+
+        if (results.empty ())
+        {
+          throw megaglest_runtime_error ("No tech-trees were found!");
+        }
+
+        techTreeFiles = results;
+
+        vector < string > translatedTechs;
+
+        for (unsigned int i = 0; i < results.size (); i++)
+        {
+//printf("TECHS i = %d results [%s] scenario [%s]\n",i,results[i].c_str(),scenario.c_str());
+
+          results.at (i) = formatString (results.at (i));
+          if (config.getString ("InitialTechTree", "Megapack") ==
+              results.at (i))
+          {
+            initialTechSelection = i;
+          }
+          string
+            txTech =
+            techTree->getTranslatedName (techTreeFiles.at (i), forceLoad);
+          translatedTechs.push_back (formatString (txTech));
+        }
+
+
+        listBoxTechTree.setItems (results, translatedTechs);
+      }
+      catch (const std::exception & ex)
+      {
+        char
+          szBuf[8096] = "";
+        snprintf (szBuf, 8096, "In [%s::%s %d]\nError detected:\n%s\n",
+                  extractFileFromDirectoryPath (__FILE__).c_str (),
+                  __FUNCTION__, __LINE__, ex.what ());
+        SystemFlags::OutputDebug (SystemFlags::debugError, szBuf);
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem, "%s", szBuf);
+
+        throw megaglest_runtime_error (szBuf);
+      }
+
+      return initialTechSelection;
+    }
+
+    void
+    MenuStateConnectedGame::setupTilesetList (string scenario)
+    {
+      try
+      {
+        Config & config = Config::getInstance ();
+
+        string scenarioDir = Scenario::getScenarioDir (dirList, scenario);
+
+        vector < string > results;
+        findDirs (config.getPathListForType (ptTilesets, scenarioDir),
+                  results);
+        if (results.empty ())
+        {
+//throw megaglest_runtime_error("No tile-sets were found!");
+          showMessageBox ("No tile-sets were found!", "Error", false);
+        }
+        else
+        {
+          tilesetFiles = results;
+          std::for_each (results.begin (), results.end (), FormatString ());
+
+          listBoxTileset.setItems (results);
+        }
+      }
+      catch (const std::exception & ex)
+      {
+        char
+          szBuf[8096] = "";
+        snprintf (szBuf, 8096, "In [%s::%s %d]\nError detected:\n%s\n",
+                  extractFileFromDirectoryPath (__FILE__).c_str (),
+                  __FUNCTION__, __LINE__, ex.what ());
+        SystemFlags::OutputDebug (SystemFlags::debugError, szBuf);
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
+          SystemFlags::OutputDebug (SystemFlags::debugSystem, "%s", szBuf);
+
+        throw megaglest_runtime_error (szBuf);
+      }
+    }
+
+    void
+    MenuStateConnectedGame::loadScenarioInfo (string file,
+                                              ScenarioInfo * scenarioInfo)
+    {
+      bool isTutorial = Scenario::isGameTutorial (file);
+      Scenario::loadScenarioInfo (file, scenarioInfo, isTutorial);
+
+      previewLoadDelayTimer = time (NULL);
+      needToLoadTextures = true;
+    }
+
+}}                              //end namespace

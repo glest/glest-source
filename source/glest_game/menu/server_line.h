@@ -1,83 +1,94 @@
 // ==============================================================
-//	This file is part of Glest (www.glest.org)
+//      This file is part of Glest (www.glest.org)
 //
-//	Copyright (C) 2010-  by Titus Tscharntke
+//      Copyright (C) 2010-  by Titus Tscharntke
 //
-//	You can redistribute this code and/or modify it under
-//	the terms of the GNU General Public License as published
-//	by the Free Software Foundation; either version 2 of the
-//	License, or (at your option) any later version
+//      You can redistribute this code and/or modify it under
+//      the terms of the GNU General Public License as published
+//      by the Free Software Foundation; either version 2 of the
+//      License, or (at your option) any later version
 // ==============================================================
 
 #ifndef _GLEST_GAME_SERVERLINE_H_
-#define _GLEST_GAME_SERVERLINE_H_
+#   define _GLEST_GAME_SERVERLINE_H_
 
-#ifdef WIN32
-    #include <winsock2.h>
-    #include <winsock.h>
-#endif
+#   ifdef WIN32
+#      include <winsock2.h>
+#      include <winsock.h>
+#   endif
 
-#include "masterserver_info.h"
-#include "components.h"
-#include "lang.h"
-#include "world.h"
+#   include "masterserver_info.h"
+#   include "components.h"
+#   include "lang.h"
+#   include "world.h"
 
-#include "leak_dumper.h"
+#   include "leak_dumper.h"
 
-namespace Glest{ namespace Game{
+namespace Glest
+{
+  namespace Game
+  {
 
 // ===============================
-// 	ServerLine
+//      ServerLine
 // ===============================
 
-class ServerLine {
-private:
+    class ServerLine
+    {
+    private:
 
-	MasterServerInfo masterServerInfo;
-	int lineHeight;
-	int baseY;
-	bool compatible;
-	GraphicButton selectButton;
-	GraphicLabel wrongVersionLabel;
+      MasterServerInfo masterServerInfo;
+      int lineHeight;
+      int baseY;
+      bool compatible;
+      GraphicButton selectButton;
+      GraphicLabel wrongVersionLabel;
 
-	//general info:
-	GraphicLabel glestVersionLabel;
-	GraphicLabel platformLabel;
-	//GraphicLabel binaryCompileDateLabel;
+      //general info:
+      GraphicLabel glestVersionLabel;
+      GraphicLabel platformLabel;
+      //GraphicLabel binaryCompileDateLabel;
 
-	//game info:
-	GraphicLabel serverTitleLabel;
-	GraphicLabel ipAddressLabel;
+      //game info:
+      GraphicLabel serverTitleLabel;
+      GraphicLabel ipAddressLabel;
 
-	//game setup info:
-	GraphicLabel techLabel;
-	GraphicLabel mapLabel;
-	GraphicLabel tilesetLabel;
-	GraphicLabel activeSlotsLabel;
+      //game setup info:
+      GraphicLabel techLabel;
+      GraphicLabel mapLabel;
+      GraphicLabel tilesetLabel;
+      GraphicLabel activeSlotsLabel;
 
-	GraphicLabel externalConnectPort;
+      GraphicLabel externalConnectPort;
 
-	GraphicLabel country;
-	GraphicLabel status;
+      GraphicLabel country;
+      GraphicLabel status;
 
-	Texture2D *countryTexture;
+      Texture2D *countryTexture;
 
-	const char * containerName;
+      const char *containerName;
 
-public:
-	ServerLine( MasterServerInfo *mServerInfo, int lineIndex, int baseY, int lineHeight, const char *containerName);
-	virtual ~ServerLine();
-	MasterServerInfo *getMasterServerInfo() {return &masterServerInfo;}
-	const int getLineHeight() const	{return lineHeight;}
-	bool buttonMouseClick(int x, int y);
-	bool buttonMouseMove(int x, int y);
-	void setY(int y);
-	//void setIndex(int value);
-	void render();
+    public:
+        ServerLine (MasterServerInfo * mServerInfo, int lineIndex, int baseY,
+                    int lineHeight, const char *containerName);
+        virtual ~ ServerLine ();
+      MasterServerInfo *getMasterServerInfo ()
+      {
+        return &masterServerInfo;
+      }
+      const int getLineHeight () const
+      {
+        return lineHeight;
+      }
+      bool buttonMouseClick (int x, int y);
+      bool buttonMouseMove (int x, int y);
+      void setY (int y);
+      //void setIndex(int value);
+      void render ();
 
-	virtual void reloadUI();
-};
+      virtual void reloadUI ();
+    };
 
-}}//end namespace
+}}                              //end namespace
 
 #endif
