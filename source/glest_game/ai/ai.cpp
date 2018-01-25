@@ -401,20 +401,22 @@ void Ai::update() {
 		}
 
 		if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld [ruleIdx = %d]\n",__FILE__,__FUNCTION__,__LINE__,chrono.getMillis(),ruleIdx);
-
+        // Determines wether to process AI rules. Whether a particular rule is processed, is weighted by getTestInterval().
+        // Values returned by getTestInterval() are defined in ai_rule.h.
 		if((aiInterface->getTimer() % (rule->getTestInterval() * GameConstants::updateFps / 1000)) == 0) {
 
 			if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld [ruleIdx = %d, before rule->test()]\n",__FILE__,__FUNCTION__,__LINE__,chrono.getMillis(),ruleIdx);
 
 			//printf("Testing AI Faction # %d RULE Name[%s]\n",aiInterface->getFactionIndex(),rule->getName().c_str());
 
+            // Test to see if AI can execute rule e.g. is there a worker available to for harvesting wood?
 			if(rule->test()) {
 				if(outputAIBehaviourToConsole()) printf("\n\nYYYYY Executing AI Faction # %d RULE Name[%s]\n\n",aiInterface->getFactionIndex(),rule->getName().c_str());
 
 				aiInterface->printLog(3, intToStr(1000 * aiInterface->getTimer() / GameConstants::updateFps) + ": Executing rule: " + rule->getName() + '\n');
 
 				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld [ruleIdx = %d, before rule->execute() [%s]]\n",__FILE__,__FUNCTION__,__LINE__,chrono.getMillis(),ruleIdx,rule->getName().c_str());
-
+`               // Execute the rule.
 				rule->execute();
 
 				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld [ruleIdx = %d, after rule->execute() [%s]]\n",__FILE__,__FUNCTION__,__LINE__,chrono.getMillis(),ruleIdx,rule->getName().c_str());

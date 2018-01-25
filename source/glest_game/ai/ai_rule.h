@@ -44,6 +44,7 @@ class ResourceType;
 /// if the test succeeds
 // =====================================================
 
+// The general structure of the rules for an AI to do a task.
 class AiRule{
 protected:
 	Ai *ai;
@@ -63,13 +64,15 @@ public:
 //	class AiRuleWorkerHarvest
 // =====================================================
 
+// The rules for AI tasks inherit from the generic AiRule class.
 class AiRuleWorkerHarvest: public AiRule{
 private:
 	int stoppedWorkerIndex;
 
 public:
 	explicit AiRuleWorkerHarvest(Ai *ai);
-
+    // This value returned byt getTestInterval()
+    // is called in ai.cpp to determine the chance the rule is executed.
 	virtual int getTestInterval() const	{return 1000;}
 	virtual string getName() const		{return "Worker stopped => Order worker to harvest";}
 

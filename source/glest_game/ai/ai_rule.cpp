@@ -388,6 +388,7 @@ bool AiRuleAddTasks::test(){
 	return !ai->anyTask() || ai->getCountOfClass(ucWorker) < 4;
 }
 
+// This function is what triggers the AI to create new units.
 void AiRuleAddTasks::execute(){
 	int buildingCount= ai->getCountOfClass(ucBuilding);
 	UnitClass ucWorkerType = ucWorker;
@@ -408,6 +409,7 @@ void AiRuleAddTasks::execute(){
 
 		ai->addPriorityTask(new ProduceTask(ucWorker));
 	}
+	// The following rules are specific creation rules for different AI.
 	else{
 		if(	ai->getAiInterface()->getControlType() == ctCpuMega ||
 			ai->getAiInterface()->getControlType() == ctNetworkCpuMega)
