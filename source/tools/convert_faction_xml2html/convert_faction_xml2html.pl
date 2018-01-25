@@ -1411,7 +1411,7 @@ $outfile = "$out_path/$summary";
 
 open (HTML, "> $outfile") || die "can't write summary page $outfile\n";
 
-print HTML &header("MegaGlest Techtree Summary");
+print HTML &header("ZetaGlest Techtree Summary (zetapack)");
 print HTML &choose_faction_html()."<P>\n";
 print HTML &show_special_pages()."<P>\n";
 
