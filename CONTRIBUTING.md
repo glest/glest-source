@@ -69,7 +69,13 @@ repositories.
 4. Make your changes. If you're unsure of some details while you're making edits, you can
 discuss them on the ticket.
 5. Add yourself to the [AUTHORS.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/AUTHORS.md) file
+
 6. Commit your changes. [git-cola](https://git-cola.github.io/) is a nice GUI front-end for adding files and entering commit messages (git-cola is probably available from your OS repository).
+
+    * If you're updating only documention (or other files that don't
+    affect a build) add [skip ci] to the commit message (code integration
+    will be skipped)
+
 7. Push the working branch (e.g. issue_32) to your remote fork and make your
 [pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)
     * Do not merge it with the master branch on your fork. That would result in multiple, or
