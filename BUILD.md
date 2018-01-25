@@ -10,21 +10,10 @@ If you would like to contribute to development, you will need to
 
 ### Procedure for cloning your forks
 
-#### Source
-
-* clone zetaglest-source using the clone info provided by your fork
-(use "Clone or Download" link, but **do** select `clone` **not**
-`Download Zip`)
-
-#### Data
-
-After your clone of the source repo is complete:
-
-* cd to `zetaglest-source` * Important: clone your fork of the **data
-repo** by adding `data` after the clone command
-
-  Example: `git clone https://github.com/ZetaGlest/zetaglest-data data`
-  **Be sure to replace the URL with the URL of your fork**
+1. Create a new directory to clone your **zetaglest-source** and **zetaglest-data** into e.g. call it 'zetaglest'.
+2. Enter (or 'cd') into the new directory.
+3. clone **zetaglest-source** and **zetaglest-data** using the clone info provided by your fork. (Use "Clone or Download" link, but **do** select `clone` **not**
+`Download Zip`.)
 
 ### Note
 
