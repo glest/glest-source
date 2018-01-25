@@ -17,7 +17,9 @@ data can be downloaded from within the game at no cost.
 
 **[Screenshot](https://github.com/ZetaGlest/screenshots)**
 
-Open games and [Server list](https://zetaglest.dreamhosters.com/)
+Open games and [Server list and player stats](https://zetaglest.dreamhosters.com/)
+
+[Detailed information about units in the game](https://zetaglest.github.io/)
 
 ## Why this fork? (Project Goals)
 
