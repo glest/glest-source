@@ -416,7 +416,7 @@ void Ai::update() {
 				aiInterface->printLog(3, intToStr(1000 * aiInterface->getTimer() / GameConstants::updateFps) + ": Executing rule: " + rule->getName() + '\n');
 
 				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld [ruleIdx = %d, before rule->execute() [%s]]\n",__FILE__,__FUNCTION__,__LINE__,chrono.getMillis(),ruleIdx,rule->getName().c_str());
-`               // Execute the rule.
+               // Execute the rule.
 				rule->execute();
 
 				if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld [ruleIdx = %d, after rule->execute() [%s]]\n",__FILE__,__FUNCTION__,__LINE__,chrono.getMillis(),ruleIdx,rule->getName().c_str());
