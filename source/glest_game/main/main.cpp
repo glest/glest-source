@@ -379,7 +379,7 @@ namespace
       std::map < int,
       Texture2D * >&
         crcPlayerTextureCache = CacheManager::getCachedItem < std::map < int,
-      Texture2D * >>(GameConstants::playerTextureCacheLookupKey);
+      Texture2D * > >(GameConstants::playerTextureCacheLookupKey);
       crcPlayerTextureCache.clear ();
 
       std::map < string, Texture2D * >&crcFactionPreviewTextureCache =
@@ -8164,7 +8164,7 @@ namespace
         Texture2D * >&
           crcPlayerTextureCache =
           CacheManager::getCachedItem < std::map < int,
-        Texture2D * >>(GameConstants::playerTextureCacheLookupKey);
+        Texture2D * > >(GameConstants::playerTextureCacheLookupKey);
         for (int index = 0; index < GameConstants::maxPlayers; ++index)
         {
           string
