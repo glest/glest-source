@@ -47,15 +47,15 @@ See [Build instructions](https://github.com/ZetaGlest/zetaglest-source/blob/deve
 
 ### Try the game without contributing
 
-Use this command:
+Use these commands:
 
-    git clone https://github.com/ZetaGlest/zetaglest-source.git zetaglest
-    cd zetaglest
-    git clone https://github.com/ZetaGlest/zetaglest-data.git data
+    mkdir ZetaGlest
+    git clone https://github.com/ZetaGlest/zetaglest-source.git
+    git clone https://github.com/ZetaGlest/zetaglest-data.git
 
 Afterward, to
 [build](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md),
-change to the mk/ directory, select your operating system and run
+change to the zetaglest-source/mk/ directory, select your operating system and run
 
     ./build-zg.sh
 

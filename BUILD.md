@@ -10,9 +10,16 @@ If you would like to contribute to development, you will need to
 
 ### Procedure for cloning your forks
 
-1. Create a new directory to clone your **zetaglest-source** and **zetaglest-data** into e.g. call it `zetaglest`.
-2. Enter (or 'cd') into the new directory (`zetaglest` in the example).
-3. clone **zetaglest-source** and **zetaglest-data** using the clone info provided by your fork. (Use "Clone or Download" link, but **do** select `clone` **not** `Download Zip`.) Make sure the cloned repo directories are in the same directory, adjacent to each other (and **not** in a subdirectory).
+1. Create a new directory to clone your **zetaglest-source** and
+**zetaglest-data** into e.g. call it `ZetaGlest`.
+
+2. Enter (or 'cd') into the new directory (`ZetaGlest` in the example).
+
+3. clone **zetaglest-source** and **zetaglest-data** using the clone
+info provided by your fork. (Use the "Clone or Download" link, but
+**do** select `clone` **not** `Download Zip`.) Make sure the cloned
+repo directories are in the same directory, adjacent to each other (and
+**not** in a subdirectory).
 
 ### Note
 
