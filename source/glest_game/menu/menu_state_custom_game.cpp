@@ -3278,7 +3278,7 @@ namespace Glest
 // Get a reference to the player texture cache
           std::map < int, Texture2D * >&crcPlayerTextureCache =
             CacheManager::getCachedItem < std::map < int,
-            Texture2D * >>(GameConstants::playerTextureCacheLookupKey);
+            Texture2D * > >(GameConstants::playerTextureCacheLookupKey);
 
 // START - this code ensure player title and player names don't overlap
           int offsetPosition = 0;
