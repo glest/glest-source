@@ -6,6 +6,8 @@
 # Copyright (c) 2011-2015 under GNU GPL v3.0+
 # ----------------------------------------------------------------------------
 # Default to English language output so we can understand your bug reports
+#
+# Modified by Andy Alt for ZetaGlest <https://zetaglest.github.io/>
 export LANG=C
 
 SCRIPTDIR="$(cd "$(dirname "$0")"; pwd)"
@@ -74,17 +76,17 @@ cd ${SCRIPTDIR}
 if [ "$BUILD_BUNDLE" -eq "1" ] && [ -d "p7zip" ]; then rm -rf "p7zip"; fi
 if [ -e ".p7zip.zip" ] && [ "$(find ./ -name ".p7zip.zip" -mtime +90)" ]; then rm ".p7zip.zip"; rm -rf "p7zip"; fi
 if [ ! -e ".p7zip.zip" ]; then
-	curl -L -o .p7zip.zip https://github.com/MegaGlest/megaglest-source/releases/download/3.3.0/p7zip.zip 2>/dev/null
+	curl -L -o .p7zip.zip https://github.com/MegaGlest/zetaglest-source/releases/download/3.3.0/p7zip.zip 2>/dev/null
 	# ^sha256: 20ac3b0377054f8196c10e569bd6ec7c6ed06d519fa39e781ee6d27d7887588b
 	if [ -e ".p7zip.zip" ]; then touch -m ".p7zip.zip"; fi
 fi
 if [ ! -d "p7zip" ]; then unzip .p7zip.zip >/dev/null; fi
 
 if [ "$BUILD_BUNDLE" -eq "1" ]; then
-	if [ -e "megaglest" ] && [ "$(./megaglest --version >/dev/null; echo "$?")" -eq "0" ]; then
+	if [ -e "zetaglest" ] && [ "$(./zetaglest --version >/dev/null; echo "$?")" -eq "0" ]; then
 		if [ -d "lib" ]; then rm -rf "lib"; fi
 		mkdir -p "lib"
-		list_of_libs="$(otool -L megaglest | grep -v '/System/Library/Frameworks/' | grep -v '/usr/lib/' | awk '{print $1}' | sed '/:$/d')"
+		list_of_libs="$(otool -L zetaglest | grep -v '/System/Library/Frameworks/' | grep -v '/usr/lib/' | awk '{print $1}' | sed '/:$/d')"
 		for (( i=1; i<=50; i++ )); do
 		    for dyn_lib in $list_of_libs; do
 			if [ "$(echo "$list_of_checked_libs" | grep "$dyn_lib")" = "" ]; then
@@ -98,7 +100,7 @@ $list_of_libs2" | sed '/:$/d' | sed '/^$/d' | sort -u )"
 		for dyn_lib in $list_of_libs; do
 		    cp "$dyn_lib" "lib/"
 		done
-		
+
 		if [ "$(find lib -type f -name "libvlc.*")" != "" ]; then
 			LIBVLC_DIR_CHECK="$( echo "$list_of_checked_libs" | tr ' ' '\n' | grep "libvlc\." | sort -u | head -1 )"
 			if [ "$LIBVLC_DIR_CHECK" != "" ]; then
@@ -201,12 +203,12 @@ if [ "$MAKE_ONLY" -eq "0" ]; then
 			#EXTRA_CMAKE_OPTIONS="${EXTRA_CMAKE_OPTIONS} -DBUILD_MEGAGLEST_TESTS=ON"
 			#^ Uncomment when it will start working on clang
 		else
-			rm -f ../megaglest_tests
+			rm -f ../zetaglest_tests
 		fi
 		rm -f ../MegaGlest*.dmg
 	else
 		EXTRA_CMAKE_OPTIONS="${EXTRA_CMAKE_OPTIONS} -DCPACK_GENERATOR=Bundle -DWANT_SINGLE_INSTALL_DIRECTORY=ON"
-		rm -f ../megaglest_editor ../megaglest_g3dviewer ../megaglest_tests
+		rm -f ../zetaglest_editor ../zetaglest_g3dviewer ../zetaglest_tests
 	fi
 	echo "Calling cmake with EXTRA_CMAKE_OPTIONS = ${EXTRA_CMAKE_OPTIONS}"
 	if [ "$USE_XCODE" -eq "1" ]; then
@@ -231,8 +233,8 @@ else
 		if [ "$?" -ne "0" ]; then echo 'ERROR: MAKE failed.' >&2; exit 2; fi
 	fi
 
-	if [ -d "../Debug" ]; then mv -f ../Debug/megaglest* "$SCRIPTDIR"; rm -rf ../Debug
-	elif [ -d "../Release" ]; then mv -f ../Release/megaglest* "$SCRIPTDIR"; rm -rf ../Release; fi
+	if [ -d "../Debug" ]; then mv -f ../Debug/zetaglest* "$SCRIPTDIR"; rm -rf ../Debug
+	elif [ -d "../Release" ]; then mv -f ../Release/zetaglest* "$SCRIPTDIR"; rm -rf ../Release; fi
 
 	cd ..
 	if [ "$BUILD_BUNDLE" -ne "1" ]; then
@@ -241,23 +243,23 @@ else
 		echo ''
 		echo '- - - - - - - - - - - - - - - - - - - -'
 		echo 'Mini test:'
-		echo '>>> megaglest --version'
-		./megaglest --version | head -3
-		#echo '>>> megaglest_editor --help'
-		#./megaglest_editor --help | head -3
-		#echo '>>> megaglest_g3dviewer --help'
-		#./megaglest_g3dviewer --help | head -3
+		echo '>>> zetaglest --version'
+		./zetaglest --version | head -3
+		#echo '>>> zetaglest_editor --help'
+		#./zetaglest_editor --help | head -3
+		#echo '>>> zetaglest_g3dviewer --help'
+		#./zetaglest_g3dviewer --help | head -3
 		echo 'Dependencies:'
-		otool -L megaglest
+		otool -L zetaglest
 		echo '- - - - - - - - - - - - - - - - - - - -'
 		echo ''
 		echo 'To launch MegaGlest from the current directory, use:'
-		echo '  ./megaglest'
+		echo '  ./zetaglest'
 		echo ''
 	else
-		ls -lhA megaglest
+		ls -lhA zetaglest
 		echo ''
-		./megaglest --version
+		./zetaglest --version
 		echo ''
 	fi
 fi
