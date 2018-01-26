@@ -885,7 +885,7 @@ namespace Glest
           {
             listBoxControls[1].setSelectedItemIndex (ctCpu);
           }
-          updateControlers ();
+          updateControllers ();
           updateNetworkSlots ();
 
           if (SystemFlags::
@@ -1689,7 +1689,7 @@ namespace Glest
             loadMapInfo (Config::getMapPath (getCurrentMapFile (), "", false),
                          &mapInfo, true);
             labelMapInfo.setText (mapInfo.desc);
-            updateControlers ();
+            updateControllers ();
             updateNetworkSlots ();
 
             if (checkBoxPublishServer.getValue () == true)
@@ -2018,7 +2018,7 @@ namespace Glest
             loadMapInfo (Config::getMapPath (getCurrentMapFile ()),
                          &mapInfo, true);
             labelMapInfo.setText (mapInfo.desc);
-            updateControlers ();
+            updateControllers ();
             updateNetworkSlots ();
 
             if (checkBoxPublishServer.getValue () == true)
@@ -6648,7 +6648,7 @@ namespace Glest
 
 //SetActivePlayerNameEditor();
 
-      updateControlers ();
+      updateControllers ();
       updateNetworkSlots ();
 
       if (this->headlessServerMode == false && humanPlayerName != "")
@@ -6845,7 +6845,7 @@ namespace Glest
       }
     }
 
-    void MenuStateCustomGame::updateControlers ()
+    void MenuStateCustomGame::updateControllers ()
     {
       try
       {
@@ -7767,7 +7767,7 @@ namespace Glest
             }
           }
 
-          updateControlers ();
+          updateControllers ();
           updateNetworkSlots ();
 
           MutexSafeWrapper
@@ -7807,7 +7807,7 @@ namespace Glest
           setupTechList ("", false);
           reloadFactions (false, "");
           setupTilesetList ("");
-          updateControlers ();
+          updateControllers ();
         }
         SetupUIForScenarios ();
       }

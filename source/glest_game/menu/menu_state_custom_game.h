@@ -311,7 +311,7 @@ namespace Glest
       cleanupMapPreviewTexture ();
 
       void
-      updateControlers ();
+      updateControllers ();
       void
       closeUnusedSlots ();
       void
