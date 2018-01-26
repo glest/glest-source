@@ -418,7 +418,7 @@ namespace Glest
         checkBoxAllowObservers.registerGraphicComponent (containerName,
                                                          "checkBoxAllowObservers");
         checkBoxAllowObservers.init (xoffset + 325, aPos);
-        checkBoxAllowObservers.setValue (false);
+        checkBoxAllowObservers.setValue (checkBoxAllowObservers.getValue ());
 
         vector < string > rMultiplier;
         for (int i = 0; i < 45; ++i)
@@ -5687,14 +5687,17 @@ namespace Glest
           gameSettings->setFactionControl (slotIndex, ct);
           if (ct == ctHuman)
           {
-            if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
-                enabled)
-              SystemFlags::OutputDebug (SystemFlags::debugSystem,
+
+// I'm putting this inside a ppd for now. I don't see it needs to be
+// built in unless DEBUG is defined during building -andy5995 2018-01-26
+#ifdef DEBUG
+   SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                         "In [%s::%s Line: %d] i = %d, slotIndex = %d, getHumanPlayerName(i) [%s]\n",
                                         extractFileFromDirectoryPath
                                         (__FILE__).c_str (), __FUNCTION__,
                                         __LINE__, i, slotIndex,
                                         getHumanPlayerName (i).c_str ());
+#endif
 
             gameSettings->setThisFactionIndex (slotIndex);
             gameSettings->setNetworkPlayerName (slotIndex,
@@ -5722,24 +5725,22 @@ namespace Glest
                                                      ());
           }
 
-//if(slotIndex == 0) printf("slotIndex = %d, i = %d, multiplier = %d\n",slotIndex,i,listBoxRMultiplier[i].getSelectedItemIndex());
-
-//printf("Line: %d multiplier index: %d slotIndex: %d\n",__LINE__,listBoxRMultiplier[i].getSelectedItemIndex(),slotIndex);
           gameSettings->setResourceMultiplierIndex (slotIndex,
                                                     listBoxRMultiplier
                                                     [i].getSelectedItemIndex
                                                     ());
-//printf("Line: %d multiplier index: %d slotIndex: %d\n",__LINE__,gameSettings->getResourceMultiplierIndex(slotIndex),slotIndex);
 
-          if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
-              enabled)
-            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+// I'm putting this inside a ppd for now. I don't see it needs to be
+// built in unless DEBUG is defined during building -andy5995 2018-01-26
+#ifdef DEBUG
+   SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                       "In [%s::%s Line: %d] i = %d, factionFiles[listBoxFactions[i].getSelectedItemIndex()] [%s]\n",
                                       extractFileFromDirectoryPath (__FILE__).
                                       c_str (), __FUNCTION__, __LINE__, i,
                                       factionFiles[listBoxFactions
                                                    [i].getSelectedItemIndex
                                                    ()].c_str ());
+#endif
 
           gameSettings->setFactionTypeName (slotIndex,
                                             factionFiles[listBoxFactions
@@ -5812,9 +5813,10 @@ namespace Glest
                                                        true)->getNetworkPlayerStatus
                                                       ());
 
-              if (SystemFlags::getSystemSettingType
-                  (SystemFlags::debugSystem).enabled)
-                SystemFlags::OutputDebug (SystemFlags::debugSystem,
+// I'm putting this inside a ppd for now. I don't see it needs to be
+// built in unless DEBUG is defined during building -andy5995 2018-01-26
+#ifdef DEBUG
+   SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                           "In [%s::%s Line: %d] i = %d, connectionSlot->getName() [%s]\n",
                                           extractFileFromDirectoryPath
                                           (__FILE__).c_str (), __FUNCTION__,
@@ -5822,6 +5824,7 @@ namespace Glest
                                           serverInterface->getSlot (i,
                                                                     true)->getName
                                           ().c_str ());
+#endif
 
               gameSettings->setNetworkPlayerName (slotIndex,
                                                   serverInterface->getSlot (i,
@@ -5840,13 +5843,16 @@ namespace Glest
             }
             else
             {
-              if (SystemFlags::getSystemSettingType
-                  (SystemFlags::debugSystem).enabled)
-                SystemFlags::OutputDebug (SystemFlags::debugSystem,
+
+// I'm putting this inside a ppd for now. I don't see it needs to be
+// built in unless DEBUG is defined during building -andy5995 2018-01-26
+#ifdef DEBUG
+   SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                           "In [%s::%s Line: %d] i = %d, playername unconnected\n",
                                           extractFileFromDirectoryPath
                                           (__FILE__).c_str (), __FUNCTION__,
                                           __LINE__, i);
+#endif
 
               gameSettings->setNetworkPlayerName (slotIndex,
                                                   GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME);
@@ -5856,13 +5862,14 @@ namespace Glest
           else if (listBoxControls[i].getSelectedItemIndex () != ctHuman)
           {
             AIPlayerCount++;
-            if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
-                enabled)
-              SystemFlags::OutputDebug (SystemFlags::debugSystem,
+
+#ifdef DEBUG
+   SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                         "In [%s::%s Line: %d] i = %d, playername is AI (blank)\n",
                                         extractFileFromDirectoryPath
                                         (__FILE__).c_str (), __FUNCTION__,
                                         __LINE__, i);
+#endif
 
             Lang & lang = Lang::getInstance ();
             gameSettings->setNetworkPlayerName (slotIndex,
@@ -6091,16 +6098,16 @@ namespace Glest
       {
         time_t clientConnectedTime = 0;
         bool masterserver_admin_found = false;
-//printf("mapInfo.players [%d]\n",mapInfo.players);
 
         for (int i = 0; i < mapInfo.players; ++i)
         {
-          if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
-              enabled)
-            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+
+#ifdef DEBUG
+   SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                       "In [%s::%s Line %d]\n",
                                       extractFileFromDirectoryPath (__FILE__).
                                       c_str (), __FUNCTION__, __LINE__);
+#endif
 
           if (listBoxControls[i].getSelectedItemIndex () == ctNetwork
               || listBoxControls[i].getSelectedItemIndex () ==
@@ -6806,13 +6813,33 @@ namespace Glest
                 }
               }
             }
-            mapInfo->players = GameConstants::maxPlayers;
-            labelPlayers[i].setVisible (i + 1 <= mapInfo->players);
-            labelPlayerNames[i].setVisible (i + 1 <= mapInfo->players);
-            listBoxControls[i].setVisible (i + 1 <= mapInfo->players);
-            listBoxFactions[i].setVisible (i + 1 <= mapInfo->players);
-            listBoxTeams[i].setVisible (i + 1 <= mapInfo->players);
-            labelNetStatus[i].setVisible (i + 1 <= mapInfo->players);
+            if (checkBoxAllowObservers.getValue () != 1)
+            {
+              labelPlayers[i].setVisible (i + 1 <= mapInfo->players);
+              labelPlayerNames[i].setVisible (i + 1 <= mapInfo->players);
+              listBoxControls[i].setVisible (i + 1 <= mapInfo->players);
+              listBoxFactions[i].setVisible (i + 1 <= mapInfo->players);
+              listBoxTeams[i].setVisible (i + 1 <= mapInfo->players);
+              labelNetStatus[i].setVisible (i + 1 <= mapInfo->players );
+            }
+            else
+            {
+              labelPlayers[i].setVisible (true);
+              labelPlayerNames[i].setVisible (true);
+              listBoxControls[i].setVisible (true);
+              listBoxFactions[i].setVisible (true);
+              listBoxTeams[i].setVisible (true);
+              labelNetStatus[i].setVisible (true);
+
+              if (i > mapInfo->players)
+              {
+                // listBoxControls[i].setSelectedItemIndex (ctNetworkUnassigned);
+
+                // listBoxTeams[i].setSelectedItem (intToStr
+                                             //(GameConstants::maxPlayers +
+                                              //fpt_Observer));
+              }
+            }
           }
 
 // Not painting properly so this is on hold
