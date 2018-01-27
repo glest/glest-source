@@ -1337,7 +1337,7 @@ void Unit::setCurrSkill(const SkillType *currSkill) {
 		*/
 		checkCustomizedUnitParticleListTriggers(currSkill->unitParticleSystemTypes,true);
 	}
-	progress2= 0;
+
 	if(this->currSkill != currSkill) {
 		this->lastModelIndexForCurrSkillType = -1;
 		this->animationRandomCycleCount = 0;
@@ -1953,6 +1953,8 @@ std::pair<CommandResult,string> Unit::giveCommand(Command *command, bool tryQueu
 CommandResult Unit::finishCommand() {
 	changedActiveCommand = false;
 	retryCurrCommandCount=0;
+	// Reset the progress when task completed.
+	resetProgress2();
 	this->setCurrentUnitTitle("");
 	//is empty?
 	if(commands.empty()) {
@@ -1990,6 +1992,8 @@ CommandResult Unit::finishCommand() {
 CommandResult Unit::cancelCommand() {
 	changedActiveCommand = false;
 	retryCurrCommandCount=0;
+	// Reset the progress if the command (possibly a task) is cancelled.
+	resetProgress2();
 	this->setCurrentUnitTitle("");
 
 	//is empty?

@@ -305,7 +305,7 @@ bool UnitUpdater::updateUnit(Unit *unit) {
 				}
 			}
 		}
-		
+
 		//move unit in cells
 		if(unit->getCurrSkill()->getClass() == scMove) {
 			world->moveUnitCells(unit, true);
@@ -1823,7 +1823,7 @@ void UnitUpdater::updateHarvest(Unit *unit, int frameIndex) {
 
 					if (unit->getProgress2() >= hct->getHitsPerUnit()) {
 						if (unit->getLoadCount() < hct->getMaxLoad()) {
-							unit->setProgress2(0);
+							unit->resetProgress2();
 							unit->setLoadCount(unit->getLoadCount() + 1);
 
 							//if resource exausted, then delete it and stop
@@ -2359,7 +2359,9 @@ void UnitUpdater::updateProduce(Unit *unit, int frameIndex) {
 		if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s] Line: %d took msecs: %lld\n",__FILE__,__FUNCTION__,__LINE__,chrono.getMillis());
 
         if(unit->getProgress2() > pct->getProduced()->getProductionTime()){
+            // finish producing or upgrading if complete.
             unit->finishCommand();
+            // Stop the unit that finished upgrading.
             unit->setCurrSkill(scStop);
 
 			UnitPathInterface *newpath = NULL;
@@ -2682,7 +2684,7 @@ void UnitUpdater::damage(Unit *attacker, const AttackSkillType* ast, Unit *attac
 			int lootableResourceCount = attacked->getType()->getLootableResourceCount();
 			for(int i = 0; i < lootableResourceCount; i++) {
 				LootableResource resource = attacked->getType()->getLootableResource(i);
-			
+
 				// Figure out how much of the resource in question that the attacked unit's faction has
 				int factionTotalResource = 0;
 				for(int j = 0; j < attacked->getFaction()->getTechTree()->getResourceTypeCount(); j++) {
@@ -2691,7 +2693,7 @@ void UnitUpdater::damage(Unit *attacker, const AttackSkillType* ast, Unit *attac
 						break;
 					}
 				}
-			
+
 				if(resource.isNegativeAllowed()) {
 					attacked->getFaction()->incResourceAmount(resource.getResourceType(), -(factionTotalResource * resource.getLossFactionPercent() / 100));
 					attacked->getFaction()->incResourceAmount(resource.getResourceType(), -resource.getLossValue());

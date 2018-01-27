@@ -625,7 +625,7 @@ public:
 
     inline void setLoadCount(int loadCount)					{this->loadCount= loadCount;}
     inline void setLoadType(const ResourceType *loadType)		{this->loadType= loadType;}
-    inline void setProgress2(int progress2)					{this->progress2= progress2;}
+    inline void resetProgress2()					{this->progress2 = 0;}
 	void setPos(const Vec2i &pos,bool clearPathFinder=false, bool threaded=false);
 	void refreshPos(bool forceRefresh=false);
 	void setTargetPos(const Vec2i &targetPos, bool threaded=false);
