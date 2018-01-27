@@ -78,7 +78,7 @@ discuss them on the ticket.
 
 7. Push the working branch (e.g. issue_32) to your remote fork and make your
 [pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)
-    * Do not merge it with the master branch on your fork. That would result in multiple, or
+    * Do not merge it with the **develop** branch on your fork. That would result in multiple, or
     unrelated patches being included in a single PR.
 8. If any further changes need to be made, comments will be made on the pull request.
 
@@ -92,7 +92,7 @@ repo with the remote upstream. GitHub has instructions for doing this:
 1. [Configuring a remote for a fork](https://help.github.com/articles/configuring-a-remote-for-a-fork/)
     * For step 3 on that page, use https://github.com/ZetaGlest/zetaglest-source for the URL.
 2. [Syncing a Fork](https://help.github.com/articles/syncing-a-fork/)
-    * On that page, it shows how to merge the **master** branch (steps 4 & 5 of **Syncing a Fork**).
+    * On that page, it shows how to merge the **develop** branch (steps 4 & 5 of **Syncing a Fork**).
 
 Follow these steps if you are contributing to the
 [data](https://github.com/ZetaGlest/zetaglest-data) or
