@@ -2251,7 +2251,7 @@ const CommandType *Unit::computeCommandType(const Vec2i &pos, const Unit *target
 		}
 	}
 
-	// Default command is the class of the unit (i.e. attack for attackers, walk for walkers.
+	// Default command is the class of the unit (i.e. attack for attackers, walk for walkers).
 	if(commandType == NULL) {
             // Is the unit class warrior? if yes, attack by default, else walk.
             commandType = type->getFirstCtOfClass(this->getType()->isOfClass(ucWarrior) ? ccAttack : ccMove);
