@@ -2042,7 +2042,7 @@ void Unit::born(const CommandType *ct) {
 	checkItemInVault(&this->hp,this->hp);
 	int original_hp = this->hp;
 
-	
+
 	//set hp from start hp
 	checkItemInVault(&this->ep,this->ep);
 	if(type->getStartHpType() == UnitType::stValue) {
@@ -2251,9 +2251,10 @@ const CommandType *Unit::computeCommandType(const Vec2i &pos, const Unit *target
 		}
 	}
 
-	//default command is move command
+	// Default command is the class of the unit (i.e. attack for attackers, walk for walkers.
 	if(commandType == NULL) {
-		commandType= type->getFirstCtOfClass(ccMove);
+            // Is the unit class warrior? if yes, attack by default, else walk.
+            commandType = type->getFirstCtOfClass(this->getType()->isOfClass(ucWarrior) ? ccAttack : ccMove);
 	}
 
 	return commandType;
@@ -2731,7 +2732,7 @@ bool Unit::update() {
 		int64 heightFactor   = getHeightFactor(ANIMATION_SPEED_MULTIPLIER);
 		int64 speedDenominator = speedDivider *
 				game->getWorld()->getUpdateFps(this->getFactionIndex());
-		
+
 		// Override the animation speed for attacks that have upgraded the attack speed
 		int animSpeed = currSkill->getAnimSpeed();
 		if(currSkill->getClass() == scAttack) {
