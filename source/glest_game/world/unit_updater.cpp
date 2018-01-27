@@ -264,7 +264,7 @@ bool UnitUpdater::updateUnit(Unit *unit) {
 			unit->cancelCommand();
 
 			if(reQueueHoldPosition == true) {
-				//Search for a command that can produceproduce the unit
+				//Search for a command that can produce the unit
 				const UnitType *ut = unit->getType();
 				for(int i= 0; i < ut->getCommandTypeCount(); ++i) {
 					const CommandType* ct= ut->getCommandType(i);
