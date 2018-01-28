@@ -52,6 +52,7 @@ See [Build instructions](https://github.com/ZetaGlest/zetaglest-source/blob/deve
 Use these commands:
 
     mkdir ZetaGlest
+    cd ZetaGlest
     git clone https://github.com/ZetaGlest/zetaglest-source.git
     git clone https://github.com/ZetaGlest/zetaglest-data.git
 
