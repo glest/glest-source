@@ -432,6 +432,10 @@ void Gui::hotKey(SDL_KeyboardEvent key) {
 	else if(isKeyPressed(configKeys.getSDLKey("HotKeySelectedUnitsAttack"),key) == true) {
 		clickCommonCommand(ccAttack);
 	}
+	//else if(key == configKeys.getCharKey("HotKeySelectedUnitsAttack")) {
+	else if(isKeyPressed(configKeys.getSDLKey("HotKeySelectedUnitsMove"),key) == true) {
+		clickCommonCommand(ccMove);
+	}
 	//else if(key == configKeys.getCharKey("HotKeySelectedUnitsStop")) {
 	else if(isKeyPressed(configKeys.getSDLKey("HotKeySelectedUnitsStop"),key) == true) {
 		clickCommonCommand(ccStop);
