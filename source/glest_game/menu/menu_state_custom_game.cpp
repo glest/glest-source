@@ -4319,7 +4319,7 @@ namespace Glest
         {
           for (int i = 0; i < GameConstants::maxPlayers; ++i)
           {
-            if (i >= mapInfo.players)
+            if (i >= mapInfo.players && checkBoxAllowObservers.getValue () == 0)
             {
               listBoxControls[i].setEditable (false);
               listBoxControls[i].setEnabled (false);
@@ -4338,6 +4338,18 @@ namespace Glest
               {
                 listBoxControls[i].setEditable (true);
                 listBoxControls[i].setEnabled (true);
+
+                // This has no effect. I think because the slot is still "closed", not
+                // yet open to network players. I have to find out a better place for it
+                // -andy5995 2017-01-27
+
+/*                if (i >= mapInfo.players && checkBoxAllowObservers.getValue () == 1)
+                {
+                  gameSettings.setFactionTypeName (i, formatString (GameConstants::OBSERVER_SLOTNAME));
+
+                  listBoxTeams[i].setSelectedItem (intToStr (GameConstants::maxPlayers +
+                                                  fpt_Observer));
+                } */
               }
               else
               {
