@@ -366,6 +366,7 @@ private:
 	int64 lastAnimProgress;	//between 0 and 1
 	int64 animProgress;		//between 0 and 1
 	float highlight;
+	// Progress2 keeps track of update/ upgrade progress of a unit.
 	int32 progress2;
 	int32 kills;
 	int32 enemyKills;
@@ -625,6 +626,7 @@ public:
 
     inline void setLoadCount(int loadCount)					{this->loadCount= loadCount;}
     inline void setLoadType(const ResourceType *loadType)		{this->loadType= loadType;}
+    // resetProgress2 resets produce and upgrade progress.
     inline void resetProgress2()					{this->progress2 = 0;}
 	void setPos(const Vec2i &pos,bool clearPathFinder=false, bool threaded=false);
 	void refreshPos(bool forceRefresh=false);

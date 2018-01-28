@@ -1993,6 +1993,8 @@ CommandResult Unit::cancelCommand() {
 	changedActiveCommand = false;
 	retryCurrCommandCount=0;
 	// Reset the progress if the command (possibly a task) is cancelled.
+	/// TODO: this is not an optimal solution because progress is reset even if the task does not track progression
+	/// e.g. production/ upgrades keep track of progression but walking/ attacking does not.
 	resetProgress2();
 	this->setCurrentUnitTitle("");
 
@@ -2256,6 +2258,8 @@ const CommandType *Unit::computeCommandType(const Vec2i &pos, const Unit *target
 	}
 
 	// Default command is the class of the unit (i.e. attack for attackers, walk for walkers).
+	// The default command is executed when a unit is produced and sent to a meeting point
+	// or when the unit is selected and right clicked to a position.
 	if(commandType == NULL) {
             // Is the unit class warrior? if yes, attack by default, else walk.
             commandType = type->getFirstCtOfClass(this->getType()->isOfClass(ucWarrior) ? ccAttack : ccMove);

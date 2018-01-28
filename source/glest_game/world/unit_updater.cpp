@@ -2359,9 +2359,9 @@ void UnitUpdater::updateProduce(Unit *unit, int frameIndex) {
 		if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s] Line: %d took msecs: %lld\n",__FILE__,__FUNCTION__,__LINE__,chrono.getMillis());
 
         if(unit->getProgress2() > pct->getProduced()->getProductionTime()){
-            // finish producing or upgrading if complete.
+            // finish producing/ upgrading if complete.
             unit->finishCommand();
-            // Stop the unit that finished upgrading.
+            // Stop the unit that finished producing/ upgrading.
             unit->setCurrSkill(scStop);
 
 			UnitPathInterface *newpath = NULL;
