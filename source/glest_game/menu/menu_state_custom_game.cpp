@@ -876,6 +876,17 @@ namespace Glest
 
           if (openNetworkSlots == true)
           {
+
+            // Only enable all slots if AllowedObservers == 1
+            //
+            // This has no apparent effect. I think a combination of things
+            // must be set
+            //
+            /* int maxSlots;
+
+            maxSlots = checkBoxAllowObservers.getValue () ? GameConstants::maxPlayers : mapInfo.players;
+
+            for (int i = 1; i < maxSlots; ++i) */
             for (int i = 1; i < mapInfo.players; ++i)
             {
               listBoxControls[i].setSelectedItemIndex (ctNetwork);
@@ -5671,6 +5682,9 @@ namespace Glest
           static_cast < ControlType >
           (listBoxControls[i].getSelectedItemIndex ());
 
+        int maxSlots;
+        maxSlots = checkBoxAllowObservers.getValue () ? GameConstants::maxPlayers : mapInfo.players;
+
         if (forceCloseUnusedSlots == true
             && (ct == ctNetworkUnassigned || ct == ctNetwork))
         {
@@ -5687,8 +5701,14 @@ namespace Glest
             }
           }
         }
+
+        // This has no apparent effect
+        // else if (ct == ctNetworkUnassigned && i < maxSlots)
         else if (ct == ctNetworkUnassigned && i < mapInfo.players)
         {
+          SystemFlags::OutputDebug (SystemFlags::debugSystem,
+                                          "maxSlots = %d\n",
+                                          maxSlots);
           listBoxControls[i].setSelectedItemIndex (ctNetwork);
           ct = ctNetwork;
         }
