@@ -876,17 +876,6 @@ namespace Glest
 
           if (openNetworkSlots == true)
           {
-
-            // Only enable all slots if AllowedObservers == 1
-            //
-            // This has no apparent effect. I think a combination of things
-            // must be set
-            //
-            /* int maxSlots;
-
-            maxSlots = checkBoxAllowObservers.getValue () ? GameConstants::maxPlayers : mapInfo.players;
-
-            for (int i = 1; i < maxSlots; ++i) */
             for (int i = 1; i < mapInfo.players; ++i)
             {
               listBoxControls[i].setSelectedItemIndex (ctNetwork);
@@ -4331,7 +4320,17 @@ namespace Glest
           for (int i = 0; i < GameConstants::maxPlayers; ++i)
           {
             if (i >= mapInfo.players && checkBoxAllowObservers.getValue () == 0)
-            {
+            { // After observer mode was added, slots >= mapInfo.players didn't
+              // close, nor did the slots become invisible when unchecking "Allow Observers"
+              // I'm adding some lines
+              // to this block to make sure that happens
+              listBoxControls[i].setSelectedItemIndex (ctClosed);
+              labelPlayers[i].setVisible (false);
+              labelPlayerNames[i].setVisible (false);
+              listBoxControls[i].setVisible (false);
+              listBoxFactions[i].setVisible (false);
+              listBoxTeams[i].setVisible (false);
+              labelNetStatus[i].setVisible (false);
               listBoxControls[i].setEditable (false);
               listBoxControls[i].setEnabled (false);
 
@@ -4347,27 +4346,23 @@ namespace Glest
                       ctNetwork && (slot == NULL
                                     || slot->isConnected () == false)))
               {
-                listBoxControls[i].setEditable (true);
                 listBoxControls[i].setEnabled (true);
+                listBoxControls[i].setEditable (i < mapInfo.players);
 
-                // This has no effect. I think because the slot is still "closed", not
-                // yet open to network players. I have to find out a better place for it
-                // -andy5995 2017-01-27
-
-/*                if (i >= mapInfo.players && checkBoxAllowObservers.getValue () == 1)
+                if (i >= mapInfo.players && checkBoxAllowObservers.getValue () == 1)
                 {
-                  gameSettings.setFactionTypeName (i, formatString (GameConstants::OBSERVER_SLOTNAME));
-
+                  listBoxControls[i].setSelectedItemIndex (ctNetwork);
+                  listBoxFactions[i].setSelectedItem (GameConstants::OBSERVER_SLOTNAME);
+                  listBoxFactions[i].setEditable (false);
                   listBoxTeams[i].setSelectedItem (intToStr (GameConstants::maxPlayers +
                                                   fpt_Observer));
-                } */
+                  listBoxTeams[i].setEditable (false);
+                }
               }
               else
               {
                 listBoxControls[i].setEditable (false);
                 listBoxControls[i].setEnabled (false);
-
-//printf("In [%s::%s] Line: %d i = %d mapInfo.players = %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,i,mapInfo.players);
               }
             }
             else
@@ -5702,8 +5697,6 @@ namespace Glest
           }
         }
 
-        // This has no apparent effect
-        // else if (ct == ctNetworkUnassigned && i < maxSlots)
         else if (ct == ctNetworkUnassigned && i < mapInfo.players)
         {
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
