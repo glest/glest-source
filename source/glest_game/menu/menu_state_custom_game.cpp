@@ -5677,9 +5677,6 @@ namespace Glest
           static_cast < ControlType >
           (listBoxControls[i].getSelectedItemIndex ());
 
-        int maxSlots;
-        maxSlots = checkBoxAllowObservers.getValue () ? GameConstants::maxPlayers : mapInfo.players;
-
         if (forceCloseUnusedSlots == true
             && (ct == ctNetworkUnassigned || ct == ctNetwork))
         {
@@ -5699,9 +5696,6 @@ namespace Glest
 
         else if (ct == ctNetworkUnassigned && i < mapInfo.players)
         {
-          SystemFlags::OutputDebug (SystemFlags::debugSystem,
-                                          "maxSlots = %d\n",
-                                          maxSlots);
           listBoxControls[i].setSelectedItemIndex (ctNetwork);
           ct = ctNetwork;
         }
@@ -6855,15 +6849,6 @@ namespace Glest
               listBoxFactions[i].setVisible (true);
               listBoxTeams[i].setVisible (true);
               labelNetStatus[i].setVisible (true);
-
-              if (i > mapInfo->players)
-              {
-                // listBoxControls[i].setSelectedItemIndex (ctNetworkUnassigned);
-
-                // listBoxTeams[i].setSelectedItem (intToStr
-                                             //(GameConstants::maxPlayers +
-                                              //fpt_Observer));
-              }
             }
           }
 
