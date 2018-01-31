@@ -23,6 +23,8 @@ see the [MegaGlest home page](https://megaglest.org/) or view GitHub's
 
 [Julie Marchant](https://github.com/onpon4)
 
+[Keith Sammut](https://github.com/keithsammut)
+
 ## XML
 
 [Andy Alt](https://github.com/andy5995)
@@ -36,3 +38,7 @@ see the [MegaGlest home page](https://megaglest.org/) or view GitHub's
 [James Sherratt](https://github.com/Jammyjamjamman)
 
 [Andy Alt](https://github.com/andy5995)
+
+## General Help
+
+[MathuSum Mut](https://github.com/mathusummut)
