@@ -1,8 +1,9 @@
 # ChangeLog.md
 
-This documents people who have contributed to ZetaGlest. If you are
-looking for information about the game from which it was forked, please
-see the [MegaGlest home page](https://megaglest.org/).
+This documents notable or significant changes to
+[ZetaGlest](https://zetaglest.github.io/). If you are looking for
+information about the game from which it was forked, please see the
+[MegaGlest home page](https://megaglest.org/).
 
 ## 2018-01-31
 
