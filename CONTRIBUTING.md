@@ -32,6 +32,12 @@ ZetaGlest Issues are filed on these repositories:
 * [zetaglest-data Issues](https://github.com/ZetaGlest/zetaglest-data/issues)
 * [zetaglest-masterserver Issues](https://github.com/ZetaGlest/zetaglest-masterserver/issues)
 
+This link will display a combined list of issues across every
+repository in the ZetaGlest organization (hint: a good link to
+bookmark).
+
+[https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3AZetaGlest](https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3AZetaGlest)
+
 If you find an issue that interests you, please leave a note asking about it
 first. If you don't see that anyone has inquired about it, you can simply
 leave a note saying you are going to work on it. If people work on an issue
