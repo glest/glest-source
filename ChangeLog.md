@@ -4,6 +4,19 @@ This documents people who have contributed to ZetaGlest. If you are
 looking for information about the game from which it was forked, please
 see the [MegaGlest home page](https://megaglest.org/).
 
+## 2018-01-31
+
+[Replaced the sphinx with the scarab](https://github.com/ZetaGlest/zetaglest-data/commit/60e734180ecb7f925144c94bef339e6130f9ae20)
+(Egypt's starting units)
+
+## 2018-01-27
+
+[Changed default mouse right-click command: attack!](https://github.com/ZetaGlest/zetaglest-source/commit/2c4fc340de958f6b94b40ee62eabff015625e62b)
+(pressing "a" not needed anymore); ["m" key can be used for "move"](https://github.com/ZetaGlest/zetaglest-source/commit/bf5a04be18f2b16b8a565acff4baabc5fbfed293).
+
+I play-tested this earlier tonight. It takes some getting used to and
+I'm not convinced yet it makes things better. We'll get more feedback.
+
 ## 2018-01-24
 
 4 new tactical scenarios were added / Thanks @ [Julie Marchant](https://github.com/onpon4)
