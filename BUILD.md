@@ -70,6 +70,13 @@ libwxgtk3.0-dev libxml2-dev
 
 (Need editing/updating)
 
+### Arch Linux
+
+You can install the dependencies using `pacman`:
+
+`pacman -S curl ftgl glew glu icu libgl libircclient libvorbis libx11
+lua51 miniupnpc openal sdl2 wxgtk3 xerces-c cmake ftjam git mesa`
+
 ### Other (add sections)
 
 (Add other specific operating systems)
