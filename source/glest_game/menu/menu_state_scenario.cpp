@@ -598,15 +598,12 @@ namespace Glest
       bool isTutorial = Scenario::isGameTutorial (file);
 
       cleanupPreviewTexture ();
+      needToLoadTextures = false;
 
       if (Scenario::loadScenarioInfo (file, scenarioInfo, isTutorial) == true)
       {
         previewLoadDelayTimer = time (NULL);
         needToLoadTextures = true;
-      }
-      else
-      {
-        needToLoadTextures = false;
       }
     }
 
