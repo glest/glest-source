@@ -106,7 +106,7 @@ std::pair<CommandResult,string> Commander::tryGiveCommand(const Selection *selec
 
 				Vec2i usePos = currPos;
 				const CommandType *useCommandtype = commandType;
-				if(dynamic_cast<const BuildCommandType *>(commandType) != NULL) {
+                if(dynamic_cast<const BuildCommandType *>(commandType) != NULL) {
 					usePos = pos;
 					if(builderUnit->getId() != unitId) {
 						useCommandtype 		= unit->getType()->getFirstRepairCommand(unitType);
@@ -918,22 +918,26 @@ void Commander::giveNetworkCommand(NetworkCommand* networkCommand) const {
     if(SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance,"In [%s::%s Line: %d] took msecs: %lld [END]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis());
 }
 
+// Reconstruct a network command received.
 Command* Commander::buildCommand(const NetworkCommand* networkCommand) const {
+    // Check a new command is actually being given (and not a cancel command, switch team etc.).
 	assert(networkCommand->getNetworkCommandType()==nctGiveCommand);
 
 	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] networkCommand [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,networkCommand->toString().c_str());
 
+    // Check there is a world.
 	if(world == NULL) {
 	    char szBuf[8096]="";
 	    snprintf(szBuf,8096,"In [%s::%s Line: %d] world == NULL for unit with id: %d",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,networkCommand->getUnitId());
 		throw megaglest_runtime_error(szBuf);
 	}
 
+    // Get the unit.
 	Unit* target= NULL;
 	const CommandType* ct= NULL;
 	const Unit* unit= world->findUnitById(networkCommand->getUnitId());
 
-	//validate unit
+	// Validate unit is in game.
 	if(unit == NULL) {
 	    char szBuf[8096]="";
 	    snprintf(szBuf,8096,"In [%s::%s Line: %d] Can not find unit with id: %d. Game out of synch.",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,networkCommand->getUnitId());
@@ -950,8 +954,10 @@ Command* Commander::buildCommand(const NetworkCommand* networkCommand) const {
 		throw megaglest_runtime_error(szBuf);
 	}
 
+    // Get the command type for the unit.
     ct = unit->getType()->findCommandTypeById(networkCommand->getCommandTypeId());
 
+    // Check that the unit from the network command is the same faction as the unit in the local game.
 	if(unit->getFaction()->getIndex() != networkCommand->getUnitFactionIndex()) {
 
 	    char szBuf[8096]="";
@@ -963,6 +969,7 @@ Command* Commander::buildCommand(const NetworkCommand* networkCommand) const {
 	    //std::string worldLog = world->DumpWorldToLog();
 	    world->DumpWorldToLog();
 
+        // Broadcast the error if player is still connected and print locally.
         GameNetworkInterface *gameNetworkInterface= NetworkManager::getInstance().getGameNetworkInterface();
         if(gameNetworkInterface != NULL && gameNetworkInterface->isConnected() == true) {
             char szMsg[8096]="";
@@ -972,6 +979,8 @@ Command* Commander::buildCommand(const NetworkCommand* networkCommand) const {
             gameNetworkInterface->sendTextMessage(szMsg,-1, true, "");
 
         }
+
+        // Else if it's a network game but the user disconnected, print the error locally only.
         else if(gameNetworkInterface != NULL) {
             char szMsg[8096]="";
             snprintf(szMsg,8096,"Player detected an error: Connection lost, possible Unit / Faction mismatch for unitId: %d",networkCommand->getUnitId());
@@ -980,6 +989,7 @@ Command* Commander::buildCommand(const NetworkCommand* networkCommand) const {
             gameNetworkInterface->sendTextMessage(szMsg,-1, true,"");
         }
 
+        // Kill the game.
 	    std::string sError = "Error [#1]: Game is out of sync (Unit / Faction mismatch)\nplease check log files for details.";
 		throw megaglest_runtime_error(sError);
 	}
@@ -994,7 +1004,7 @@ Command* Commander::buildCommand(const NetworkCommand* networkCommand) const {
     // !!!Test out of synch behaviour
     //ct = NULL;
 
-    // Check if the command was for the unit before it morphed, if so cancel it
+    // Check if the command was for the unit before it morphed, if so cancel it.
     bool isCancelPreMorphCommand = false;
     if(ct == NULL && unit->getPreMorphType() != NULL) {
     	const CommandType *ctPreMorph = unit->getPreMorphType()->findCommandTypeById(networkCommand->getCommandTypeId());
@@ -1004,6 +1014,7 @@ Command* Commander::buildCommand(const NetworkCommand* networkCommand) const {
     	}
     }
 
+    // Throw an error if a valid command for the unit is still not found.
 	if(ct == NULL) {
 	    char szBuf[8096]="";
 	    snprintf(szBuf,8096,"In [%s::%s Line: %d]\nCan not find command type for network command = [%s]\n%s\nfor unit = %d\n[%s]\n[%s]\nactual local factionIndex = %d.\nUnit Type Info:\n[%s]\nNetwork unit type:\n[%s]\nisCancelPreMorphCommand: %d\nGame out of synch.",
@@ -1028,9 +1039,12 @@ Command* Commander::buildCommand(const NetworkCommand* networkCommand) const {
 	}
 
 	CardinalDir facing;
-	// get facing/target ... the target might be dead due to lag, cope with it
+	// Get direction of the command target unit.
 	if(isCancelPreMorphCommand == false) {
+        // If target is a building.
 		if(ct->getClass() == ccBuild) {
+            // Check the target building ID is valid. If not, throw an error.
+            /// TODO: What is happening here? The error returned does not match the condition. Why is there a constant of 4?
 			if(networkCommand->getTargetId() < 0 || networkCommand->getTargetId() >= 4) {
 				char szBuf[8096]="";
 				snprintf(szBuf,8096,"networkCommand->getTargetId() >= 0 && networkCommand->getTargetId() < 4, [%s]",networkCommand->toString().c_str());
@@ -1038,12 +1052,13 @@ Command* Commander::buildCommand(const NetworkCommand* networkCommand) const {
 			}
 			facing = CardinalDir(networkCommand->getTargetId());
 		}
+		// Get the target unit if the ID is valid.
 		else if (networkCommand->getTargetId() != Unit::invalidId ) {
 			target= world->findUnitById(networkCommand->getTargetId());
 		}
 	}
 
-	//create command
+	// Create the command.
 	Command *command= NULL;
 	if(isCancelPreMorphCommand == false) {
 		if(unitType != NULL) {

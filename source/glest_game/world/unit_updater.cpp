@@ -447,7 +447,7 @@ void UnitUpdater::updateUnitCommand(Unit *unit, int frameIndex) {
 	Chrono chrono;
 	if((minorDebugPerformance == true && frameIndex > 0) || SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled) chrono.start();
 
-	//if unit has command process it
+	//  If the unit has a command, process it.
     bool hasCommand = (unit->anyCommand());
 
     if((minorDebugPerformance && frameIndex > 0) && chrono.getMillis() >= 1) printf("UnitUpdate [%d - %s] #1-unit threaded updates on frame: %d took [%lld] msecs\n",unit->getId(),unit->getType()->getName(false).c_str(),frameIndex,(long long int)chrono.getMillis());
