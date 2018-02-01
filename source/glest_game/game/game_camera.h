@@ -105,7 +105,7 @@ namespace Glest
       float calculatedDefault;
 
         std::map < float, std::map < float, std::map < Vec3f,
-        Quad2i > >>cacheVisibleQuad;
+        Quad2i > > >cacheVisibleQuad;
       int MaxVisibleQuadItemCache;
 
     public:

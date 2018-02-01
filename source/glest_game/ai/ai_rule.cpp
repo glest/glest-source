@@ -1898,7 +1898,7 @@ namespace
           // Hold a list of units which can produce or morph
           // then a list of commandtypes for each unit
           map < int,
-          vector < const CommandType *>>
+          vector < const CommandType *> >
             producersDefaultCommandType;
           const CommandType *
             defCt = NULL;
@@ -3036,7 +3036,7 @@ namespace
           // Hold a list of units which can build
           // then a list of build commandtypes for each unit
           map < int,
-          vector < const BuildCommandType *>>
+          vector < const BuildCommandType *> >
             buildersDefaultCommandType;
           const BuildCommandType *
             defBct = NULL;

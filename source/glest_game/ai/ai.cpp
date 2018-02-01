@@ -1784,7 +1784,7 @@ namespace
                                 dist = unitPos.dist (adjacentUnit->getPos ());
 
                               std::map < float,
-                              std::map < int, const Unit *>>::iterator
+                              std::map < int, const Unit *> >::iterator
                                 iterFind1 = signalAdjacentUnits.find (dist);
                               if (iterFind1 == signalAdjacentUnits.end ())
                                 {
@@ -1843,7 +1843,7 @@ namespace
         map = aiInterface->getMap ();
       // Find blocked units and move surrounding units out of the way
       std::map < float,
-      std::map < int, const Unit *>>
+      std::map < int, const Unit *> >
         signalAdjacentUnits;
       for (int idx = 0; idx < unitCount; ++idx)
         {
