@@ -237,9 +237,25 @@ namespace Glest {
       return isTutorial;
     }
 
-    void Scenario::loadScenarioInfo(string file,
+    bool Scenario::loadScenarioInfo(string file,
                                     ScenarioInfo * scenarioInfo,
                                     bool isTutorial) {
+      if (fileExists (file) == false)
+      {
+        // FIXME: A new string will need a new translation; we haven't
+        // discussed how we'll deal with translations yet.
+        //
+        // this particular string is just a placeholder, and will hopefully
+        // get changed soon, when we can point a user to complete documentation
+        // on how to obtain a scenario
+        // -andy5995 2018-02-01
+        scenarioInfo->desc = "This scenario will be available soon.\n\n\
+Please contact the ZetaGlest team for more info.";
+
+        scenarioInfo->name = file;
+        return false;
+      }
+
       //printf("[%s:%s] Line: %d file [%s]\n",__FILE__,__FUNCTION__,__LINE__,file.c_str());
       if (SystemFlags::VERBOSE_MODE_ENABLED)
         printf("In [%s::%s Line: %d] file [%s]\n",
@@ -514,6 +530,8 @@ namespace Glest {
       scenarioInfo->file = file;
       scenarioInfo->name = extractFileFromDirectoryPath(file);
       scenarioInfo->name = cutLastExt(scenarioInfo->name);
+
+      return true;
 
       //scenarioLogoTexture = NULL;
       //cleanupPreviewTexture();
