@@ -341,7 +341,7 @@ namespace
             std::map < float,
             std::map <
             Vec3f,
-          Quad2i > >>::const_iterator
+          Quad2i > > >::const_iterator
             iterFind = cacheVisibleQuad.find (fov);
           if (iterFind != cacheVisibleQuad.end ())
             {
