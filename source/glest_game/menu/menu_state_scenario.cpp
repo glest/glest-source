@@ -597,13 +597,14 @@ namespace Glest
     {
       bool isTutorial = Scenario::isGameTutorial (file);
 
-      //printf("[%s:%s] Line: %d file [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,file.c_str());
-
-      Scenario::loadScenarioInfo (file, scenarioInfo, isTutorial);
-
       cleanupPreviewTexture ();
-      previewLoadDelayTimer = time (NULL);
-      needToLoadTextures = true;
+      needToLoadTextures = false;
+
+      if (Scenario::loadScenarioInfo (file, scenarioInfo, isTutorial) == true)
+      {
+        previewLoadDelayTimer = time (NULL);
+        needToLoadTextures = true;
+      }
     }
 
     void MenuStateScenario::loadScenarioPreviewTexture ()

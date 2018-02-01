@@ -172,7 +172,7 @@ namespace Glest {
       static string getScenarioDir(const vector < string > dir,
                                    const string & scenarioName);
 
-      static void loadScenarioInfo(string file,
+      static bool loadScenarioInfo(string file,
                                    ScenarioInfo * scenarioInfo,
                                    bool isTutorial);
       static ControlType strToControllerType(const string & str);
