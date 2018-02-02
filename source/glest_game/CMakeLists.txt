@@ -342,7 +342,7 @@ IF(BUILD_MEGAGLEST)
 
 		IF(UNIX)
 			INSTALL(PROGRAMS
-				"${PROJECT_SOURCE_DIR}/mk/linux/start_megaglest_gameserver"
+				"${PROJECT_SOURCE_DIR}/mk/linux/start_zetaglest_gameserver"
 				DESTINATION ${MEGAGLEST_INI_INSTALL_PATH})
 		ENDIF()
 		INSTALL(FILES
