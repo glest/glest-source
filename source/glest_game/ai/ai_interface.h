@@ -32,14 +32,11 @@
 #   include <map>
 #   include "leak_dumper.h"
 
-using
-  Shared::Util::intToStr;
+using Shared::Util::intToStr;
 
-namespace
-  Glest
+namespace Glest
 {
-  namespace
-    Game
+  namespace Game
   {
 
 // =====================================================
@@ -48,292 +45,218 @@ namespace
 ///     The AI will interact with the game through this interface
 // =====================================================
 
-    class
-      AiInterfaceThread:
-      public
-      BaseThread,
-      public
-      SlaveThreadControllerInterface
+  class AiInterfaceThread:
+    public BaseThread, public SlaveThreadControllerInterface
     {
     protected:
 
-      AiInterface *
-        aiIntf;
-      Semaphore
-        semTaskSignalled;
-      Mutex *
-        triggerIdMutex;
-      std::pair < int,
-        bool >
-        frameIndex;
-      MasterSlaveThreadController *
-        masterController;
+      AiInterface * aiIntf;
+      Semaphore semTaskSignalled;
+      Mutex *triggerIdMutex;
+      std::pair < int, bool > frameIndex;
+      MasterSlaveThreadController *masterController;
 
       virtual void
-      setQuitStatus (bool value);
+       setQuitStatus(bool value);
       virtual void
-      setTaskCompleted (int frameIndex);
+       setTaskCompleted(int frameIndex);
 
     public:
-      explicit
-      AiInterfaceThread (AiInterface * aiIntf);
-      virtual ~
-      AiInterfaceThread ();
+      explicit AiInterfaceThread(AiInterface * aiIntf);
+      virtual ~ AiInterfaceThread();
       virtual void
-      execute ();
+       execute();
       void
-      signal (int frameIndex);
-      bool
-      isSignalCompleted (int frameIndex);
+       signal(int frameIndex);
+      bool isSignalCompleted(int frameIndex);
 
       virtual void
-      setMasterController (MasterSlaveThreadController * master)
-      {
+       setMasterController(MasterSlaveThreadController * master) {
         masterController = master;
       }
       virtual void
-      signalSlave (void *userdata)
-      {
-        signal (*((int *) (userdata)));
+       signalSlave(void *userdata) {
+        signal(*((int *) (userdata)));
       }
 
       virtual void
-      signalQuit ();
-      virtual bool
-      canShutdown (bool deleteSelfIfShutdownDelayed = false);
+       signalQuit();
+      virtual bool canShutdown(bool deleteSelfIfShutdownDelayed = false);
     };
 
-    class
-      AiInterface
+    class AiInterface
     {
     private:
-      World *
-        world;
-      Commander *
-        commander;
-      Console *
-        console;
-      GameSettings *
-        gameSettings;
+      World * world;
+      Commander *commander;
+      Console *console;
+      GameSettings *gameSettings;
 
-      Ai
-        ai;
+      Ai ai;
 
       int
-        timer;
+       timer;
       int
-        factionIndex;
+       factionIndex;
       int
-        teamIndex;
+       teamIndex;
 
       //config
-      bool
-        redir;
+      bool redir;
       int
-        logLevel;
-      std::string
-        aiLogFile;
-      FILE *
-        fp;
+       logLevel;
+      std::string aiLogFile;
+      FILE *fp;
 
       std::map < const ResourceType *, int >
-        cacheUnitHarvestResourceLookup;
+          cacheUnitHarvestResourceLookup;
 
-      Mutex *
-        aiMutex;
+      Mutex *aiMutex;
 
-      AiInterfaceThread *
-        workerThread;
-      std::vector <
-        Vec2i >
-        enemyWarningPositionList;
+      AiInterfaceThread *workerThread;
+      std::vector < Vec2i > enemyWarningPositionList;
 
     public:
-      AiInterface (Game & game, int factionIndex, int teamIndex,
-                   int useStartLocation = -1);
-       ~
-      AiInterface ();
+      AiInterface(Game & game, int factionIndex, int teamIndex,
+                  int useStartLocation = -1);
+      ~AiInterface();
 
-      AiInterface (const AiInterface & obj)
-      {
-        init ();
+      AiInterface(const AiInterface & obj) {
+        init();
         throw
-        megaglest_runtime_error ("class AiInterface is NOT safe to copy!");
+            megaglest_runtime_error
+            ("class AiInterface is NOT safe to copy!");
       }
-      AiInterface &
-      operator= (const AiInterface & obj)
-      {
-        init ();
+      AiInterface & operator=(const AiInterface & obj) {
+        init();
         throw
-        megaglest_runtime_error ("class AiInterface is NOT safe to assign!");
+            megaglest_runtime_error
+            ("class AiInterface is NOT safe to assign!");
       }
 
       //main
       void
-      update ();
+       update();
 
-      std::vector < Vec2i > getEnemyWarningPositionList ()const
-      {
-        return
-          enemyWarningPositionList;
-      }
-      void
-      removeEnemyWarningPositionFromList (Vec2i & checkPos);
+      std::vector < Vec2i > getEnemyWarningPositionList()const {
+        return enemyWarningPositionList;
+      } void
+       removeEnemyWarningPositionFromList(Vec2i & checkPos);
 
-      inline Mutex *
-      getMutex ()
-      {
+      inline Mutex *getMutex() {
         return aiMutex;
       }
 
       void
-      signalWorkerThread (int frameIndex);
-      bool
-      isWorkerThreadSignalCompleted (int frameIndex);
-      AiInterfaceThread *
-      getWorkerThread ()
-      {
+       signalWorkerThread(int frameIndex);
+      bool isWorkerThreadSignalCompleted(int frameIndex);
+      AiInterfaceThread *getWorkerThread() {
         return workerThread;
       }
 
-      bool
-      isLogLevelEnabled (int level);
+      bool isLogLevelEnabled(int level);
 
       //get
       int
-      getTimer () const
-      {
-        return
-          timer;
+       getTimer() const {
+        return timer;
+      } int
+       getFactionIndex() const {
+        return factionIndex;
       }
-      int
-      getFactionIndex () const
-      {
-        return
-          factionIndex;
-      }
-
-      //misc
-      void
-      printLog (int logLevel, const string & s);
+      //misc void
+       printLog(int logLevel, const string & s);
 
       //interact
-      std::pair < CommandResult, string > giveCommand (int unitIndex,
-                                                       CommandClass
-                                                       commandClass,
-                                                       const Vec2i & pos =
-                                                       Vec2i (0));
-      std::pair < CommandResult, string > giveCommand (int unitIndex,
-                                                       const CommandType *
-                                                       commandType,
-                                                       const Vec2i & pos,
-                                                       const UnitType *
-                                                       unitType);
-      std::pair < CommandResult, string > giveCommand (int unitIndex,
-                                                       const CommandType *
-                                                       commandType,
-                                                       const Vec2i & pos,
-                                                       int
-                                                       unitGroupCommandId);
-      std::pair < CommandResult, string > giveCommand (int unitIndex,
-                                                       const CommandType *
-                                                       commandType, Unit * u =
-                                                       NULL);
-      std::pair < CommandResult, string > giveCommand (const Unit * unit,
-                                                       const CommandType *
-                                                       commandType,
-                                                       const Vec2i & pos,
-                                                       int
-                                                       unitGroupCommandId);
+      std::pair < CommandResult, string > giveCommand(int unitIndex,
+                                                      CommandClass
+                                                      commandClass,
+                                                      const Vec2i & pos =
+                                                      Vec2i(0));
+      std::pair < CommandResult, string > giveCommand(int unitIndex,
+                                                      const CommandType *
+                                                      commandType,
+                                                      const Vec2i & pos,
+                                                      const UnitType *
+                                                      unitType);
+      std::pair < CommandResult, string > giveCommand(int unitIndex,
+                                                      const CommandType *
+                                                      commandType,
+                                                      const Vec2i & pos,
+                                                      int
+                                                      unitGroupCommandId);
+      std::pair < CommandResult, string > giveCommand(int unitIndex,
+                                                      const CommandType *
+                                                      commandType,
+                                                      Unit * u = NULL);
+      std::pair < CommandResult, string > giveCommand(const Unit * unit,
+                                                      const CommandType *
+                                                      commandType,
+                                                      const Vec2i & pos,
+                                                      int
+                                                      unitGroupCommandId);
 
       std::pair < CommandResult,
-        string > giveCommandSwitchTeamVote (const Faction * faction,
-                                            SwitchTeamVote * vote);
+          string > giveCommandSwitchTeamVote(const Faction * faction,
+                                             SwitchTeamVote * vote);
 
       //get data
-      const ControlType
-      getControlType ();
+      const ControlType getControlType();
       int
-      getMapMaxPlayers ();
-      Vec2i
-      getHomeLocation ();
-      Vec2i
-      getStartLocation (int locationIndex);
+       getMapMaxPlayers();
+      Vec2i getHomeLocation();
+      Vec2i getStartLocation(int locationIndex);
       int
-      getFactionCount ();
+       getFactionCount();
       int
-      getMyUnitCount () const;
+       getMyUnitCount() const;
       int
-      getMyUpgradeCount () const;
+       getMyUpgradeCount() const;
       //int onSightUnitCount();
-      const Resource *
-      getResource (const ResourceType * rt);
-      const Unit *
-      getMyUnit (int unitIndex);
-      Unit *
-      getMyUnitPtr (int unitIndex);
+      const Resource *getResource(const ResourceType * rt);
+      const Unit *getMyUnit(int unitIndex);
+      Unit *getMyUnitPtr(int unitIndex);
       //const Unit *getOnSightUnit(int unitIndex);
-      const FactionType *
-      getMyFactionType ();
-      Faction *
-      getMyFaction ();
-      const TechTree *
-      getTechTree ();
-      bool
-      isResourceInRegion (const Vec2i & pos, const ResourceType * rt,
-                          Vec2i & resourcePos, int range) const;
-      bool
-      isResourceNear (const Vec2i & pos, const ResourceType * rt,
-                      Vec2i & resourcePos, Faction * faction,
-                      bool fallbackToPeersHarvestingSameResource) const;
-      bool
-      getNearestSightedResource (const ResourceType * rt, const Vec2i & pos,
-                                 Vec2i & resultPos,
-                                 bool usableResourceTypeOnly);
-      bool
-      isAlly (const Unit * unit) const;
-      bool
-      isAlly (int factionIndex) const;
-      bool
-      reqsOk (const RequirableType * rt);
-      bool
-      reqsOk (const CommandType * ct);
-      bool
-      checkCosts (const ProducibleType * pt, const CommandType * ct);
-      bool
-      isFreeCells (const Vec2i & pos, int size, Field field);
-      const Unit *
-      getFirstOnSightEnemyUnit (Vec2i & pos, Field & field, int radius);
-      Map *
-      getMap ();
-      World *
-      getWorld ()
-      {
+      const FactionType *getMyFactionType();
+      Faction *getMyFaction();
+      const TechTree *getTechTree();
+      bool isResourceInRegion(const Vec2i & pos, const ResourceType * rt,
+                              Vec2i & resourcePos, int range) const;
+      bool isResourceNear(const Vec2i & pos, const ResourceType * rt,
+                          Vec2i & resourcePos, Faction * faction,
+                          bool fallbackToPeersHarvestingSameResource)
+          const;
+      bool getNearestSightedResource(const ResourceType * rt,
+                                     const Vec2i & pos, Vec2i & resultPos,
+                                     bool usableResourceTypeOnly);
+      bool isAlly(const Unit * unit) const;
+      bool isAlly(int factionIndex) const;
+      bool reqsOk(const RequirableType * rt);
+      bool reqsOk(const CommandType * ct);
+      bool checkCosts(const ProducibleType * pt, const CommandType * ct);
+      bool isFreeCells(const Vec2i & pos, int size, Field field);
+      const Unit *getFirstOnSightEnemyUnit(Vec2i & pos, Field & field,
+                                           int radius);
+      Map *getMap();
+      World *getWorld() {
         return world;
       }
 
-      bool
-      factionUsesResourceType (const FactionType * factionType,
-                               const ResourceType * rt);
+      bool factionUsesResourceType(const FactionType * factionType,
+                                   const ResourceType * rt);
 
       void
-      saveGame (XmlNode * rootNode) const;
+       saveGame(XmlNode * rootNode) const;
       void
-      loadGame (const XmlNode * rootNode, Faction * faction);
+       loadGame(const XmlNode * rootNode, Faction * faction);
 
     private:
-      string getLogFilename ()const
-      {
-        return
-          "ai" +
-        intToStr (factionIndex) +
-          ".log";
-      }
-      bool
-      executeCommandOverNetwork ();
+      string getLogFilename()const {
+        return "ai" + intToStr(factionIndex) + ".log";
+      } bool executeCommandOverNetwork();
 
       void
-      init ();
+       init();
     };
 
 }}                              //end namespace
