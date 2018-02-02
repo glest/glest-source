@@ -6795,7 +6795,7 @@ namespace
                   SwitchSetupRequest ().getDataSize ());
         }
 
-        printf ("\nGIT: [%s]", getGITRevisionString ().c_str ());
+        printf ("\nversion: [%s]", glestVersionString.c_str());
 
 #ifdef USE_STREFLOP
 
@@ -6829,7 +6829,6 @@ namespace
       }
 
       setGameVersion (glestVersionString);
-      setGameGITVersion (getRAWGITRevisionString ());
 
 #ifdef WIN32
       CheckPacketThrottling ();

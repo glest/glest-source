@@ -49,8 +49,6 @@ namespace Glest {
     string getPlatformTypeNameString();
     string getPlatformArchTypeNameString();
     string getPlatformNameString();
-    string getGITRevisionString();
-    string getRAWGITRevisionString();
     string getCompilerNameString();
     string getNetworkVersionString();
     string getNetworkVersionGITString();

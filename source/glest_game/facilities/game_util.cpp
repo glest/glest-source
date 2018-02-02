@@ -47,21 +47,8 @@ namespace Glest {
     const string glestVersionString = "v0.8.01";
     const string lastCompatibleSaveGameVersionString = "v3.11.1";
 
-#if defined(GITVERSIONHEADER)
-#  include "gitversion.h"
-#endif
-#if defined(GITVERSION) || defined(GITVERSIONHEADER)
-    const string GIT_RawRev = string(GITVERSION);
-#else
-    const string GIT_RawRev = "$5733.147264d$";
-#endif
-    const string GIT_Rev = string("Rev: ") + string(GIT_RawRev);
-
-    string getRAWGITRevisionString() {
-      return GIT_RawRev;
-    } string getCrashDumpFileName() {
-      return "megaglest" + glestVersionString + ".dmp";
-    } string getPlatformTypeNameString() {
+      string getCrashDumpFileName() {return "zetaglest" + glestVersionString + ".dmp";}
+      string getPlatformTypeNameString() {
       static string platform;
       if (platform == "") {
 #if defined(WIN32)
@@ -140,10 +127,6 @@ namespace Glest {
       return platform;
     }
 
-    string getGITRevisionString() {
-      return GIT_Rev;
-    }
-
     string getCompilerNameString() {
       static string version = "";
       if (version == "") {
@@ -205,8 +188,7 @@ namespace Glest {
       static string version = "";
       if (version == "") {
         version =
-            glestVersionString + "-" + getGITRevisionString() + "-" +
-            getCompilerNameString();
+            glestVersionString + getCompilerNameString();
       }
       return version;
     }
@@ -227,10 +209,10 @@ namespace Glest {
       //case 1: return "Built: " + string(__DATE__) + " " + GIT_Rev;
       switch (i) {
       case 0:
-        return "MegaGlest " + glestVersionString + " (" +
+        return "ZetaGlest " + glestVersionString + " (" +
             "Shared Library " + sharedLibVersionString + ")";
       case 1:
-        return GIT_Rev;
+        return glestVersionString;
       case 2:
         return "Copyright 2001-2010 The Glest Team";
       case 3:
@@ -414,7 +396,6 @@ namespace Glest {
     void initSpecialStrings() {
       getCrashDumpFileName();
       getPlatformNameString();
-      getGITRevisionString();
       getCompilerNameString();
       getNetworkVersionString();
       getNetworkVersionGITString();

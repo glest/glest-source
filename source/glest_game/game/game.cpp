@@ -8439,7 +8439,7 @@ namespace
               logFile << "World CRC debug information:" << std::endl;
               logFile << "============================" << std::endl;
               logFile << "Software version: " << glestVersionString << "-" <<
-                getCompilerNameString () << "-" << getGITRevisionString () <<
+                getCompilerNameString () <<
                 std::endl;
               logFile << "Maximum framecount: " << world.getFaction (0)->
                 getCRC_DetailsForWorldFrameCount () << std::endl;

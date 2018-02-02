@@ -81,8 +81,7 @@ namespace Glest
       {
         labelVersion.init (buttonXPosition, yPos);
         //labelVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
-        labelVersion.setText (glestVersionString + " [" +
-                              getGITRevisionString () + "]");
+        labelVersion.setText (glestVersionString);
       }
 
       labelGreeting.init (labelVersion.getX (), labelVersion.getY () - 16);
@@ -238,8 +237,7 @@ namespace Glest
       else
       {
         //labelVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
-        labelVersion.setText (glestVersionString + " [" +
-                              getGITRevisionString () + "]");
+        labelVersion.setText (glestVersionString);
       }
 
       buttonNewGame.setText (lang.getString ("NewGame"));
