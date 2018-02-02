@@ -47,28 +47,28 @@ namespace Glest
       class BadUnitNodeList
       {
       public:
-        BadUnitNodeList()
+        BadUnitNodeList ()
         {
           unitSize = -1;
           field = fLand;
         }
-        int
-         unitSize;
+        int unitSize;
         Field field;
         std::map < Vec2i, std::map < Vec2i, bool > >badPosList;
 
-        inline bool isPosBad(const Vec2i & pos1, const Vec2i & pos2) {
+        inline bool isPosBad (const Vec2i & pos1, const Vec2i & pos2)
+        {
           bool result = false;
 
           std::map <
-              Vec2i,
-              std::map <
-              Vec2i, bool > >::iterator iterFind = badPosList.find(pos1);
-          if (iterFind != badPosList.end())
+            Vec2i,
+            std::map <
+            Vec2i, bool > >::iterator iterFind = badPosList.find (pos1);
+          if (iterFind != badPosList.end ())
           {
             std::map < Vec2i, bool >::iterator iterFind2 =
-                iterFind->second.find(pos2);
-            if (iterFind2 != iterFind->second.end())
+              iterFind->second.find (pos2);
+            if (iterFind2 != iterFind->second.end ())
             {
               result = true;
             }
@@ -81,12 +81,12 @@ namespace Glest
       class Node
       {
       public:
-        Node()
+        Node ()
         {
-          clear();
+          clear ();
         }
-        void
-         clear() {
+        void clear ()
+        {
           pos.x = 0;
           pos.y = 0;
           next = NULL;
@@ -97,40 +97,40 @@ namespace Glest
         Vec2i pos;
         Node *next;
         Node *prev;
-        float
-         heuristic;
+        float heuristic;
         bool exploredCell;
       };
-      typedef
-       vector < Node * > Nodes;
+      typedef vector < Node * >Nodes;
 
       class FactionState
       {
       protected:
         Mutex * factionMutexPrecache;
       public:
-        explicit FactionState(int factionIndex):
-            //factionMutexPrecache(new Mutex) {
-        factionMutexPrecache(NULL) {    //, random(factionIndex) {
+        explicit FactionState (int factionIndex):
+          //factionMutexPrecache(new Mutex) {
+        factionMutexPrecache (NULL)
+        {                       //, random(factionIndex) {
 
-          openPosList.clear();
-          openNodesList.clear();
-          closedNodesList.clear();
-          nodePool.clear();
+          openPosList.clear ();
+          openNodesList.clear ();
+          closedNodesList.clear ();
+          nodePool.clear ();
           nodePoolCount = 0;
           this->factionIndex = factionIndex;
           useMaxNodeCount = 0;
 
-          precachedTravelState.clear();
-          precachedPath.clear();
+          precachedTravelState.clear ();
+          precachedPath.clear ();
         }
-        ~FactionState()
+        ~FactionState ()
         {
 
           delete factionMutexPrecache;
           factionMutexPrecache = NULL;
         }
-        Mutex *getMutexPreCache() {
+        Mutex *getMutexPreCache ()
+        {
           return factionMutexPrecache;
         }
 
@@ -139,83 +139,73 @@ namespace Glest
         std::map < float, Nodes > closedNodesList;
         std::vector < Node > nodePool;
 
-        int
-         nodePoolCount;
-        int
-         factionIndex;
+        int nodePoolCount;
+        int factionIndex;
         RandomGen random;
         //CRandomMersenne random;
-        int
-         useMaxNodeCount;
+        int useMaxNodeCount;
 
         std::map < int, TravelState > precachedTravelState;
-        std::map < int, std::vector < Vec2i > > precachedPath;
+        std::map < int, std::vector < Vec2i > >precachedPath;
       };
 
       class FactionStateManager
       {
       protected:
-        typedef
-         vector < FactionState * > FactionStateList;
+        typedef vector < FactionState * >FactionStateList;
         FactionStateList factions;
 
-        void
-         init() {
+        void init ()
+        {
           for (int index = 0; index < GameConstants::maxPlayers; ++index)
           {
-            factions.push_back(new FactionState(index));
+            factions.push_back (new FactionState (index));
           }
         }
 
       public:
-        FactionStateManager()
+        FactionStateManager ()
         {
-          init();
+          init ();
         }
-        ~FactionStateManager()
+        ~FactionStateManager ()
         {
-          clear();
+          clear ();
         }
 
-        FactionState & getFactionState(int index) {
+        FactionState & getFactionState (int index)
+        {
           FactionState *faction = factions[index];
           return *faction;
         }
-        void
-         clear() {
+        void clear ()
+        {
           for (unsigned int index = 0;
-               index < (unsigned int) factions.size(); ++index)
+               index < (unsigned int) factions.size (); ++index)
           {
             delete factions[index];
           }
 
-          factions.clear();
+          factions.clear ();
         }
-        int
-         size() {
-          return (int) factions.size();
+        int size ()
+        {
+          return (int) factions.size ();
         }
       };
 
     public:
-      static const int
-       maxFreeSearchRadius;
+      static const int maxFreeSearchRadius;
 
-      static const int
-       pathFindBailoutRadius;
-      static const int
-       pathFindExtendRefreshForNodeCount;
-      static const int
-       pathFindExtendRefreshNodeCountMin;
-      static const int
-       pathFindExtendRefreshNodeCountMax;
+      static const int pathFindBailoutRadius;
+      static const int pathFindExtendRefreshForNodeCount;
+      static const int pathFindExtendRefreshNodeCountMin;
+      static const int pathFindExtendRefreshNodeCountMax;
 
     private:
 
-      static int
-       pathFindNodesMax;
-      static int
-       pathFindNodesAbsoluteMax;
+      static int pathFindNodesMax;
+      static int pathFindNodesAbsoluteMax;
 
 
       FactionStateManager factions;
@@ -223,61 +213,53 @@ namespace Glest
       bool minorDebugPathfinder;
 
     public:
-      PathFinder();
-      explicit PathFinder(const Map * map);
-      ~PathFinder();
+      PathFinder ();
+      explicit PathFinder (const Map * map);
+      ~PathFinder ();
 
-      PathFinder(const PathFinder & obj) {
-        init();
+      PathFinder (const PathFinder & obj)
+      {
+        init ();
         throw
-            megaglest_runtime_error
-            ("class PathFinder is NOT safe to copy!");
+          megaglest_runtime_error ("class PathFinder is NOT safe to copy!");
       }
-      PathFinder & operator=(const PathFinder & obj) {
-        init();
+      PathFinder & operator= (const PathFinder & obj)
+      {
+        init ();
         throw
-            megaglest_runtime_error
-            ("class PathFinder is NOT safe to assign!");
+          megaglest_runtime_error ("class PathFinder is NOT safe to assign!");
       }
 
-      void
-       init(const Map * map);
+      void init (const Map * map);
       TravelState
-          findPath(Unit * unit, const Vec2i & finalPos, bool * wasStuck =
-                   NULL, int frameIndex = -1);
-      void
-       clearUnitPrecache(Unit * unit);
-      void
-       removeUnitPrecache(Unit * unit);
-      void
-       clearCaches();
+        findPath (Unit * unit, const Vec2i & finalPos, bool * wasStuck =
+                  NULL, int frameIndex = -1);
+      void clearUnitPrecache (Unit * unit);
+      void removeUnitPrecache (Unit * unit);
+      void clearCaches ();
 
       //bool unitCannotMove(Unit *unit);
 
-      int
-       findNodeIndex(Node * node, Nodes & nodeList);
-      int
-       findNodeIndex(Node * node, std::vector < Node > &nodeList);
+      int findNodeIndex (Node * node, Nodes & nodeList);
+      int findNodeIndex (Node * node, std::vector < Node > &nodeList);
 
-      void
-       saveGame(XmlNode * rootNode);
-      void
-       loadGame(const XmlNode * rootNode);
+      void saveGame (XmlNode * rootNode);
+      void loadGame (const XmlNode * rootNode);
 
     private:
-      void
-       init();
+      void init ();
 
       TravelState
-          aStar(Unit * unit, const Vec2i & finalPos, bool inBailout,
-                int frameIndex, int maxNodeCount =
-                -1, uint32 * searched_node_count = NULL);
-      inline static Node *newNode(FactionState & faction, int maxNodeCount) {
-        if (faction.nodePoolCount < (int) faction.nodePool.size() &&
+        aStar (Unit * unit, const Vec2i & finalPos, bool inBailout,
+               int frameIndex, int maxNodeCount =
+               -1, uint32 * searched_node_count = NULL);
+      inline static Node *newNode (FactionState & faction, int maxNodeCount)
+      {
+        if (faction.nodePoolCount < (int) faction.nodePool.size () &&
             faction.nodePoolCount < maxNodeCount)
         {
           Node *node = &(faction.nodePool[faction.nodePoolCount]);
-          node->clear();
+          node->clear ();
           faction.nodePoolCount++;
           return node;
         }
@@ -285,127 +267,120 @@ namespace Glest
       }
 
       Vec2i
-          computeNearestFreePos(const Unit * unit,
-                                const Vec2i & targetPos);
+        computeNearestFreePos (const Unit * unit, const Vec2i & targetPos);
 
       inline static float
-       heuristic(const Vec2i & pos, const Vec2i & finalPos) {
-        return pos.dist(finalPos);
+        heuristic (const Vec2i & pos, const Vec2i & finalPos)
+      {
+        return pos.dist (finalPos);
       }
 
       inline static bool
-          openPos(const Vec2i & sucPos, FactionState & faction) {
-        if (faction.openPosList.find(sucPos) == faction.openPosList.end())
+        openPos (const Vec2i & sucPos, FactionState & faction)
+      {
+        if (faction.openPosList.find (sucPos) == faction.openPosList.end ())
         {
           return false;
         }
         return true;
       }
 
-      inline static Node *minHeuristicFastLookup(FactionState & faction) {
-        if (faction.openNodesList.empty() == true)
+      inline static Node *minHeuristicFastLookup (FactionState & faction)
+      {
+        if (faction.openNodesList.empty () == true)
         {
-          throw megaglest_runtime_error("openNodesList.empty() == true");
+          throw megaglest_runtime_error ("openNodesList.empty() == true");
         }
 
-        Node *result = faction.openNodesList.begin()->second.front();
-        faction.openNodesList.begin()->second.erase(faction.
-                                                    openNodesList.begin()->
-                                                    second.begin());
-        if (faction.openNodesList.begin()->second.empty())
+        Node *result = faction.openNodesList.begin ()->second.front ();
+        faction.openNodesList.begin ()->second.erase (faction.openNodesList.
+                                                      begin ()->second.
+                                                      begin ());
+        if (faction.openNodesList.begin ()->second.empty ())
         {
-          faction.openNodesList.erase(faction.openNodesList.begin());
+          faction.openNodesList.erase (faction.openNodesList.begin ());
         }
         return result;
       }
 
       inline bool
-          processNode(Unit * unit, Node * node, const Vec2i finalPos,
-                      int x, int y, bool & nodeLimitReached,
-                      int maxNodeCount) {
+        processNode (Unit * unit, Node * node, const Vec2i finalPos,
+                     int x, int y, bool & nodeLimitReached, int maxNodeCount)
+      {
         bool result = false;
-        Vec2i sucPos = node->pos + Vec2i(x, y);
+        Vec2i sucPos = node->pos + Vec2i (x, y);
 
-        int
-         unitFactionIndex = unit->getFactionIndex();
-        FactionState & faction =
-            factions.getFactionState(unitFactionIndex);
+        int unitFactionIndex = unit->getFactionIndex ();
+        FactionState & faction = factions.getFactionState (unitFactionIndex);
 
-        bool foundOpenPosForPos = openPos(sucPos, faction);
-        bool allowUnitMoveSoon = canUnitMoveSoon(unit, node->pos, sucPos);
-        if (SystemFlags::
-            getSystemSettingType(SystemFlags::debugWorldSynch).enabled ==
-            true
-            && SystemFlags::
-            getSystemSettingType(SystemFlags::debugWorldSynchMax).enabled
-            == true)
+        bool foundOpenPosForPos = openPos (sucPos, faction);
+        bool allowUnitMoveSoon = canUnitMoveSoon (unit, node->pos, sucPos);
+        if (SystemFlags::getSystemSettingType (SystemFlags::debugWorldSynch).
+            enabled == true
+            && SystemFlags::getSystemSettingType (SystemFlags::
+                                                  debugWorldSynchMax).
+            enabled == true)
         {
-          char
-           szBuf[8096] = "";
-          snprintf(szBuf, 8096,
-                   "In processNode() nodeLimitReached %d unitFactionIndex %d foundOpenPosForPos %d allowUnitMoveSoon %d maxNodeCount %d node->pos = %s finalPos = %s sucPos = %s faction.openPosList.size() %lu closedNodesList.size() %lu",
-                   nodeLimitReached, unitFactionIndex, foundOpenPosForPos,
-                   allowUnitMoveSoon, maxNodeCount,
-                   node->pos.getString().c_str(),
-                   finalPos.getString().c_str(),
-                   sucPos.getString().c_str(),
-                   faction.openPosList.size(),
-                   faction.closedNodesList.size());
+          char szBuf[8096] = "";
+          snprintf (szBuf, 8096,
+                    "In processNode() nodeLimitReached %d unitFactionIndex %d foundOpenPosForPos %d allowUnitMoveSoon %d maxNodeCount %d node->pos = %s finalPos = %s sucPos = %s faction.openPosList.size() %lu closedNodesList.size() %lu",
+                    nodeLimitReached, unitFactionIndex, foundOpenPosForPos,
+                    allowUnitMoveSoon, maxNodeCount,
+                    node->pos.getString ().c_str (),
+                    finalPos.getString ().c_str (),
+                    sucPos.getString ().c_str (),
+                    faction.openPosList.size (),
+                    faction.closedNodesList.size ());
 
-          if (Thread::isCurrentThreadMainThread() == false)
+          if (Thread::isCurrentThreadMainThread () == false)
           {
-            unit->logSynchDataThreaded(__FILE__, __LINE__, szBuf);
+            unit->logSynchDataThreaded (__FILE__, __LINE__, szBuf);
           }
           else
           {
-            unit->logSynchData(__FILE__, __LINE__, szBuf);
+            unit->logSynchData (__FILE__, __LINE__, szBuf);
           }
         }
 
         if (foundOpenPosForPos == false && allowUnitMoveSoon)
         {
           //if node is not open and canMove then generate another node
-          Node *sucNode = newNode(faction, maxNodeCount);
+          Node *sucNode = newNode (faction, maxNodeCount);
           if (sucNode != NULL)
           {
             sucNode->pos = sucPos;
-            sucNode->heuristic = heuristic(sucNode->pos, finalPos);
+            sucNode->heuristic = heuristic (sucNode->pos, finalPos);
             sucNode->prev = node;
             sucNode->next = NULL;
             sucNode->exploredCell =
-                map->
-                getSurfaceCell(Map::
-                               toSurfCoords(sucPos))->isExplored(unit->
-                                                                 getTeam
-                                                                 ());
-            if (faction.openNodesList.find(sucNode->heuristic) ==
-                faction.openNodesList.end())
+              map->getSurfaceCell (Map::toSurfCoords (sucPos))->
+              isExplored (unit->getTeam ());
+            if (faction.openNodesList.find (sucNode->heuristic) ==
+                faction.openNodesList.end ())
             {
-              faction.openNodesList[sucNode->heuristic].clear();
+              faction.openNodesList[sucNode->heuristic].clear ();
             }
-            faction.openNodesList[sucNode->heuristic].push_back(sucNode);
+            faction.openNodesList[sucNode->heuristic].push_back (sucNode);
             faction.openPosList[sucNode->pos] = true;
 
             result = true;
 
             if (SystemFlags::getSystemSettingType
                 (SystemFlags::debugWorldSynch).enabled == true
-                && SystemFlags::
-                getSystemSettingType
+                && SystemFlags::getSystemSettingType
                 (SystemFlags::debugWorldSynchMax).enabled == true)
             {
-              char
-               szBuf[8096] = "";
-              snprintf(szBuf, 8096, "In processNode() sucPos = %s",
-                       sucPos.getString().c_str());
+              char szBuf[8096] = "";
+              snprintf (szBuf, 8096, "In processNode() sucPos = %s",
+                        sucPos.getString ().c_str ());
 
-              if (Thread::isCurrentThreadMainThread() == false)
+              if (Thread::isCurrentThreadMainThread () == false)
               {
-                unit->logSynchDataThreaded(__FILE__, __LINE__, szBuf);
+                unit->logSynchDataThreaded (__FILE__, __LINE__, szBuf);
               }
               else
               {
-                unit->logSynchData(__FILE__, __LINE__, szBuf);
+                unit->logSynchData (__FILE__, __LINE__, szBuf);
               }
             }
 
@@ -420,112 +395,106 @@ namespace Glest
       }
 
       void
-       processNearestFreePos(const Vec2i & finalPos, int i, int j,
-                             int size, Field field, int teamIndex,
-                             Vec2i unitPos, Vec2i & nearestPos,
-                             float &nearestDist);
-      int
-       getPathFindExtendRefreshNodeCount(FactionState & faction);
+        processNearestFreePos (const Vec2i & finalPos, int i, int j,
+                               int size, Field field, int teamIndex,
+                               Vec2i unitPos, Vec2i & nearestPos,
+                               float &nearestDist);
+      int getPathFindExtendRefreshNodeCount (FactionState & faction);
 
       inline bool
-          canUnitMoveSoon(Unit * unit, const Vec2i & pos1,
-                          const Vec2i & pos2) {
-        bool result = map->aproxCanMoveSoon(unit, pos1, pos2);
+        canUnitMoveSoon (Unit * unit, const Vec2i & pos1, const Vec2i & pos2)
+      {
+        bool result = map->aproxCanMoveSoon (unit, pos1, pos2);
         return result;
       }
 
       inline void
-       doAStarPathSearch(bool & nodeLimitReached, int &whileLoopCount,
-                         int &unitFactionIndex, bool & pathFound,
-                         Node * &node, const Vec2i & finalPos,
-                         const std::map < Vec2i, bool > &closedNodes,
-                         const std::map < Vec2i, Vec2i > &cameFrom,
-                         const std::map < std::pair < Vec2i, Vec2i >,
-                         bool > &canAddNode, Unit * &unit,
-                         int &maxNodeCount, int curFrameIndex) {
+        doAStarPathSearch (bool & nodeLimitReached, int &whileLoopCount,
+                           int &unitFactionIndex, bool & pathFound,
+                           Node * &node, const Vec2i & finalPos,
+                           const std::map < Vec2i, bool > &closedNodes,
+                           const std::map < Vec2i, Vec2i > &cameFrom,
+                           const std::map < std::pair < Vec2i, Vec2i >,
+                           bool > &canAddNode, Unit * &unit,
+                           int &maxNodeCount, int curFrameIndex)
+      {
 
-        if (SystemFlags::
-            getSystemSettingType(SystemFlags::debugWorldSynch).enabled ==
-            true
-            && SystemFlags::
-            getSystemSettingType(SystemFlags::debugWorldSynchMax).enabled
-            == true)
+        if (SystemFlags::getSystemSettingType (SystemFlags::debugWorldSynch).
+            enabled == true
+            && SystemFlags::getSystemSettingType (SystemFlags::
+                                                  debugWorldSynchMax).
+            enabled == true)
         {
-          char
-           szBuf[8096] = "";
-          snprintf(szBuf, 8096,
-                   "In doAStarPathSearch() nodeLimitReached %d whileLoopCount %d unitFactionIndex %d pathFound %d maxNodeCount %d",
-                   nodeLimitReached, whileLoopCount, unitFactionIndex,
-                   pathFound, maxNodeCount);
+          char szBuf[8096] = "";
+          snprintf (szBuf, 8096,
+                    "In doAStarPathSearch() nodeLimitReached %d whileLoopCount %d unitFactionIndex %d pathFound %d maxNodeCount %d",
+                    nodeLimitReached, whileLoopCount, unitFactionIndex,
+                    pathFound, maxNodeCount);
 
           if (curFrameIndex >= 0)
           {
-            unit->logSynchDataThreaded(__FILE__, __LINE__, szBuf);
+            unit->logSynchDataThreaded (__FILE__, __LINE__, szBuf);
           }
           else
           {
-            unit->logSynchData(__FILE__, __LINE__, szBuf);
+            unit->logSynchData (__FILE__, __LINE__, szBuf);
           }
         }
 
-        FactionState & faction =
-            factions.getFactionState(unitFactionIndex);
+        FactionState & faction = factions.getFactionState (unitFactionIndex);
 
         while (nodeLimitReached == false)
         {
           whileLoopCount++;
-          if (faction.openNodesList.empty() == true)
+          if (faction.openNodesList.empty () == true)
           {
             if (SystemFlags::getSystemSettingType
                 (SystemFlags::debugWorldSynch).enabled == true
-                && SystemFlags::
-                getSystemSettingType
+                && SystemFlags::getSystemSettingType
                 (SystemFlags::debugWorldSynchMax).enabled == true)
             {
-              char
-               szBuf[8096] = "";
-              snprintf(szBuf, 8096,
-                       "In doAStarPathSearch() nodeLimitReached %d whileLoopCount %d unitFactionIndex %d pathFound %d maxNodeCount %d",
-                       nodeLimitReached, whileLoopCount,
-                       unitFactionIndex, pathFound, maxNodeCount);
+              char szBuf[8096] = "";
+              snprintf (szBuf, 8096,
+                        "In doAStarPathSearch() nodeLimitReached %d whileLoopCount %d unitFactionIndex %d pathFound %d maxNodeCount %d",
+                        nodeLimitReached, whileLoopCount,
+                        unitFactionIndex, pathFound, maxNodeCount);
 
               if (curFrameIndex >= 0)
               {
-                unit->logSynchDataThreaded(__FILE__, __LINE__, szBuf);
+                unit->logSynchDataThreaded (__FILE__, __LINE__, szBuf);
               }
               else
               {
-                unit->logSynchData(__FILE__, __LINE__, szBuf);
+                unit->logSynchData (__FILE__, __LINE__, szBuf);
               }
             }
 
             pathFound = false;
             break;
           }
-          node = minHeuristicFastLookup(faction);
+          node = minHeuristicFastLookup (faction);
 
           if (SystemFlags::getSystemSettingType
               (SystemFlags::debugWorldSynch).enabled == true
-              && SystemFlags::
-              getSystemSettingType(SystemFlags::debugWorldSynchMax).enabled
-              == true)
+              && SystemFlags::getSystemSettingType (SystemFlags::
+                                                    debugWorldSynchMax).
+              enabled == true)
           {
-            char
-             szBuf[8096] = "";
-            snprintf(szBuf, 8096,
-                     "In doAStarPathSearch() nodeLimitReached %d whileLoopCount %d unitFactionIndex %d pathFound %d maxNodeCount %d node->pos = %s finalPos = %s node->exploredCell = %d",
-                     nodeLimitReached, whileLoopCount, unitFactionIndex,
-                     pathFound, maxNodeCount,
-                     node->pos.getString().c_str(),
-                     finalPos.getString().c_str(), node->exploredCell);
+            char szBuf[8096] = "";
+            snprintf (szBuf, 8096,
+                      "In doAStarPathSearch() nodeLimitReached %d whileLoopCount %d unitFactionIndex %d pathFound %d maxNodeCount %d node->pos = %s finalPos = %s node->exploredCell = %d",
+                      nodeLimitReached, whileLoopCount, unitFactionIndex,
+                      pathFound, maxNodeCount,
+                      node->pos.getString ().c_str (),
+                      finalPos.getString ().c_str (), node->exploredCell);
 
             if (curFrameIndex >= 0)
             {
-              unit->logSynchDataThreaded(__FILE__, __LINE__, szBuf);
+              unit->logSynchDataThreaded (__FILE__, __LINE__, szBuf);
             }
             else
             {
-              unit->logSynchData(__FILE__, __LINE__, szBuf);
+              unit->logSynchData (__FILE__, __LINE__, szBuf);
             }
           }
 
@@ -535,18 +504,16 @@ namespace Glest
             break;
           }
 
-          if (faction.closedNodesList.find(node->heuristic) ==
-              faction.closedNodesList.end())
+          if (faction.closedNodesList.find (node->heuristic) ==
+              faction.closedNodesList.end ())
           {
-            faction.closedNodesList[node->heuristic].clear();
+            faction.closedNodesList[node->heuristic].clear ();
           }
-          faction.closedNodesList[node->heuristic].push_back(node);
+          faction.closedNodesList[node->heuristic].push_back (node);
           faction.openPosList[node->pos] = true;
 
-          int
-           failureCount = 0;
-          int
-           cellCount = 0;
+          int failureCount = 0;
+          int cellCount = 0;
 
 //                      if(Thread::isCurrentThreadMainThread() == false) {
 //                              throw megaglest_runtime_error("#1 Invalid access to FactionState random from outside main thread current id = " +
@@ -555,29 +522,26 @@ namespace Glest
 
           //int tryDirection      = 1;
           //int tryDirection      = faction.random.IRandomX(1, 4);
-          int
-           tryDirection = faction.random.randRange(1, 4);
+          int tryDirection = faction.random.randRange (1, 4);
           //int tryDirection      = unit->getRandom(true)->randRange(1, 4);
 
           if (SystemFlags::getSystemSettingType
               (SystemFlags::debugWorldSynch).enabled == true
-              && SystemFlags::
-              getSystemSettingType(SystemFlags::debugWorldSynchMax).enabled
-              == true)
+              && SystemFlags::getSystemSettingType (SystemFlags::
+                                                    debugWorldSynchMax).
+              enabled == true)
           {
-            char
-             szBuf[8096] = "";
-            snprintf(szBuf, 8096,
-                     "In doAStarPathSearch() tryDirection %d",
-                     tryDirection);
+            char szBuf[8096] = "";
+            snprintf (szBuf, 8096,
+                      "In doAStarPathSearch() tryDirection %d", tryDirection);
 
             if (curFrameIndex >= 0)
             {
-              unit->logSynchDataThreaded(__FILE__, __LINE__, szBuf);
+              unit->logSynchDataThreaded (__FILE__, __LINE__, szBuf);
             }
             else
             {
-              unit->logSynchData(__FILE__, __LINE__, szBuf);
+              unit->logSynchData (__FILE__, __LINE__, szBuf);
             }
           }
 
@@ -647,27 +611,25 @@ namespace Glest
           }
         }
 
-        if (SystemFlags::
-            getSystemSettingType(SystemFlags::debugWorldSynch).enabled ==
-            true
-            && SystemFlags::
-            getSystemSettingType(SystemFlags::debugWorldSynchMax).enabled
-            == true)
+        if (SystemFlags::getSystemSettingType (SystemFlags::debugWorldSynch).
+            enabled == true
+            && SystemFlags::getSystemSettingType (SystemFlags::
+                                                  debugWorldSynchMax).
+            enabled == true)
         {
-          char
-           szBuf[8096] = "";
-          snprintf(szBuf, 8096,
-                   "In doAStarPathSearch() nodeLimitReached %d whileLoopCount %d unitFactionIndex %d pathFound %d maxNodeCount %d",
-                   nodeLimitReached, whileLoopCount, unitFactionIndex,
-                   pathFound, maxNodeCount);
+          char szBuf[8096] = "";
+          snprintf (szBuf, 8096,
+                    "In doAStarPathSearch() nodeLimitReached %d whileLoopCount %d unitFactionIndex %d pathFound %d maxNodeCount %d",
+                    nodeLimitReached, whileLoopCount, unitFactionIndex,
+                    pathFound, maxNodeCount);
 
           if (curFrameIndex >= 0)
           {
-            unit->logSynchDataThreaded(__FILE__, __LINE__, szBuf);
+            unit->logSynchDataThreaded (__FILE__, __LINE__, szBuf);
           }
           else
           {
-            unit->logSynchData(__FILE__, __LINE__, szBuf);
+            unit->logSynchData (__FILE__, __LINE__, szBuf);
           }
         }
 

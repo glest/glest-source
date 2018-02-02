@@ -40,7 +40,8 @@ namespace Glest
 ///     An action that has to be performed by the IA
 // =====================================================
 
-    enum TaskClass {
+    enum TaskClass
+    {
       tcProduce,
       tcBuild,
       tcUpgrade
@@ -52,52 +53,56 @@ namespace Glest
       TaskClass taskClass;
 
     public:
-      Task();
-      virtual ~ Task()
+      Task ();
+      virtual ~ Task ()
       {
       }
-      TaskClass getClass()const {
+      TaskClass getClass () const
+      {
         return taskClass;
-      } virtual string toString() const = 0;
+      }
+      virtual string toString () const = 0;
 
-      virtual void
-       saveGame(XmlNode * rootNode) const = 0;
+      virtual void saveGame (XmlNode * rootNode) const = 0;
     };
 
 // ==================== ProduceTask ====================
 
-  class ProduceTask:
-    public Task
+    class ProduceTask: public Task
     {
     private:
       UnitClass unitClass;
       const UnitType *unitType;
       const ResourceType *resourceType;
 
-      ProduceTask();
+      ProduceTask ();
     public:
-      explicit ProduceTask(UnitClass unitClass);
-      explicit ProduceTask(const UnitType * unitType);
-      explicit ProduceTask(const ResourceType * resourceType);
+      explicit ProduceTask (UnitClass unitClass);
+      explicit ProduceTask (const UnitType * unitType);
+      explicit ProduceTask (const ResourceType * resourceType);
 
-      UnitClass getUnitClass()const {
+      UnitClass getUnitClass () const
+      {
         return unitClass;
-      } const UnitType *getUnitType() const {
+      }
+      const UnitType *getUnitType () const
+      {
         return unitType;
-      } const ResourceType *getResourceType() const {
+      }
+      const ResourceType *getResourceType () const
+      {
         return resourceType;
-      } virtual string toString() const;
+      }
+      virtual string toString () const;
 
-      virtual void
-       saveGame(XmlNode * rootNode) const;
-      static ProduceTask *loadGame(const XmlNode * rootNode,
-                                   Faction * faction);
+      virtual void saveGame (XmlNode * rootNode) const;
+      static ProduceTask *loadGame (const XmlNode * rootNode,
+                                    Faction * faction);
     };
 
 // ==================== BuildTask ====================
 
-  class BuildTask:
-    public Task
+    class BuildTask:public Task
     {
     private:
       const UnitType *unitType;
@@ -105,48 +110,55 @@ namespace Glest
       bool forcePos;
       Vec2i pos;
 
-      BuildTask();
+      BuildTask ();
 
     public:
-      explicit BuildTask(const UnitType * unitType);
-      explicit BuildTask(const ResourceType * resourceType);
-      BuildTask(const UnitType * unitType, const Vec2i & pos);
+      explicit BuildTask (const UnitType * unitType);
+      explicit BuildTask (const ResourceType * resourceType);
+      BuildTask (const UnitType * unitType, const Vec2i & pos);
 
-      const UnitType *getUnitType() const {
+      const UnitType *getUnitType () const
+      {
         return unitType;
-      } const ResourceType *getResourceType() const {
+      }
+      const ResourceType *getResourceType () const
+      {
         return resourceType;
-      } bool getForcePos() const {
+      }
+      bool getForcePos () const
+      {
         return forcePos;
-      } Vec2i getPos() const {
+      }
+      Vec2i getPos () const
+      {
         return pos;
-      } virtual string toString() const;
+      }
+      virtual string toString () const;
 
-      virtual void
-       saveGame(XmlNode * rootNode) const;
-      static BuildTask *loadGame(const XmlNode * rootNode,
-                                 Faction * faction);
+      virtual void saveGame (XmlNode * rootNode) const;
+      static BuildTask *loadGame (const XmlNode * rootNode,
+                                  Faction * faction);
     };
 
 // ==================== UpgradeTask ====================
 
-  class UpgradeTask:
-    public Task
+    class UpgradeTask:public Task
     {
     private:
       const UpgradeType *upgradeType;
 
-      UpgradeTask();
+      UpgradeTask ();
     public:
-      explicit UpgradeTask(const UpgradeType * upgradeType);
-      const UpgradeType *getUpgradeType() const {
+      explicit UpgradeTask (const UpgradeType * upgradeType);
+      const UpgradeType *getUpgradeType () const
+      {
         return upgradeType;
-      } virtual string toString() const;
+      }
+      virtual string toString () const;
 
-      virtual void
-       saveGame(XmlNode * rootNode) const;
-      static UpgradeTask *loadGame(const XmlNode * rootNode,
-                                   Faction * faction);
+      virtual void saveGame (XmlNode * rootNode) const;
+      static UpgradeTask *loadGame (const XmlNode * rootNode,
+                                    Faction * faction);
     };
 
 // ===============================
@@ -158,35 +170,24 @@ namespace Glest
     class Ai
     {
     private:
-      int
-       maxBuildRadius;
+      int maxBuildRadius;
 
-      int
-       minMinWarriors;
-      int
-       minMinWarriorsExpandCpuEasy;
-      int
-       minMinWarriorsExpandCpuMega;
-      int
-       minMinWarriorsExpandCpuUltra;
-      int
-       minMinWarriorsExpandCpuNormal;
-      int
-       maxMinWarriors;
+      int minMinWarriors;
+      int minMinWarriorsExpandCpuEasy;
+      int minMinWarriorsExpandCpuMega;
+      int minMinWarriorsExpandCpuUltra;
+      int minMinWarriorsExpandCpuNormal;
+      int maxMinWarriors;
 
-      int
-       maxExpansions;
-      int
-       villageRadius;
-      int
-       scoutResourceRange;
-      int
-       minWorkerAttackersHarvesting;
-      int
-       minBuildSpacing;
+      int maxExpansions;
+      int villageRadius;
+      int scoutResourceRange;
+      int minWorkerAttackersHarvesting;
+      int minBuildSpacing;
 
     public:
-      enum ResourceUsage {
+      enum ResourceUsage
+      {
         ruHarvester,
         ruWarrior,
         ruBuilding,
@@ -194,32 +195,27 @@ namespace Glest
       };
 
     private:
-      typedef
-       vector < AiRule * > AiRules;
-      typedef
-       list < const Task *> Tasks;
-      typedef
-       deque < Vec2i > Positions;
+      typedef vector < AiRule * >AiRules;
+      typedef list < const Task *>Tasks;
+      typedef deque < Vec2i > Positions;
 
     private:
       AiInterface * aiInterface;
       AiRules aiRules;
-      int
-       startLoc;
+      int startLoc;
       bool randomMinWarriorsReached;
       Tasks tasks;
       Positions expansionPositions;
       RandomGen random;
-      std::map < int, int > factionSwitchTeamRequestCount;
-      int
-       minWarriors;
+      std::map < int, int >factionSwitchTeamRequestCount;
+      int minWarriors;
 
-      bool getAdjacentUnits(std::map < float, std::map < int,
-                            const Unit * > >&signalAdjacentUnits,
-                            const Unit * unit);
+      bool getAdjacentUnits (std::map < float, std::map < int,
+                             const Unit * > >&signalAdjacentUnits,
+                             const Unit * unit);
 
     public:
-      Ai()
+      Ai ()
       {
         // Defaults that used to be static which can now be overriden
         maxBuildRadius = 40;
@@ -240,83 +236,71 @@ namespace Glest
         randomMinWarriorsReached = false;
         minWarriors = 0;
       }
-      ~Ai();
+      ~Ai ();
 
-      void
-       init(AiInterface * aiInterface, int useStartLocation = -1);
-      void
-       update();
+      void init (AiInterface * aiInterface, int useStartLocation = -1);
+      void update ();
 
       //state requests
-      AiInterface *getAiInterface() const {
+      AiInterface *getAiInterface () const
+      {
         return aiInterface;
-      } RandomGen *getRandom();
-      int
-       getCountOfType(const UnitType * ut);
+      }
+      RandomGen *getRandom ();
+      int getCountOfType (const UnitType * ut);
 
-      int
-       getMinWarriors() const {
+      int getMinWarriors () const
+      {
         return minWarriors;
-      } int
-       getCountOfClass(UnitClass uc,
-                       UnitClass * additionalUnitClassToExcludeFromCount =
-                       NULL);
+      }
+      int
+        getCountOfClass (UnitClass uc,
+                         UnitClass * additionalUnitClassToExcludeFromCount =
+                         NULL);
       float
-       getRatioOfClass(UnitClass uc,
-                       UnitClass * additionalUnitClassToExcludeFromCount =
-                       NULL);
+        getRatioOfClass (UnitClass uc,
+                         UnitClass * additionalUnitClassToExcludeFromCount =
+                         NULL);
 
-      const ResourceType *getNeededResource(int unitIndex);
-      bool isStableBase();
-      bool findPosForBuilding(const UnitType * building,
-                              const Vec2i & searchPos, Vec2i & pos);
-      bool findAbleUnit(int *unitIndex, CommandClass ability,
-                        bool idleOnly);
-      bool findAbleUnit(int *unitIndex, CommandClass ability,
-                        CommandClass currentCommand);
+      const ResourceType *getNeededResource (int unitIndex);
+      bool isStableBase ();
+      bool findPosForBuilding (const UnitType * building,
+                               const Vec2i & searchPos, Vec2i & pos);
+      bool findAbleUnit (int *unitIndex, CommandClass ability, bool idleOnly);
+      bool findAbleUnit (int *unitIndex, CommandClass ability,
+                         CommandClass currentCommand);
       //vector<int> findUnitsDoingCommand(CommandClass currentCommand);
       vector < int >
-          findUnitsHarvestingResourceType(const ResourceType * rt);
+        findUnitsHarvestingResourceType (const ResourceType * rt);
 
-      bool beingAttacked(Vec2i & pos, Field & field, int radius);
+      bool beingAttacked (Vec2i & pos, Field & field, int radius);
 
       //tasks
-      void
-       addTask(const Task * task);
-      void
-       addPriorityTask(const Task * task);
-      bool anyTask();
-      const Task *getTask() const;
-      void
-       removeTask(const Task * task);
-      void
-       retryTask(const Task * task);
+      void addTask (const Task * task);
+      void addPriorityTask (const Task * task);
+      bool anyTask ();
+      const Task *getTask () const;
+      void removeTask (const Task * task);
+      void retryTask (const Task * task);
 
       //expansions
-      void
-       addExpansion(const Vec2i & pos);
-      Vec2i getRandomHomePosition();
+      void addExpansion (const Vec2i & pos);
+      Vec2i getRandomHomePosition ();
 
       //actions
+      void sendScoutPatrol ();
       void
-       sendScoutPatrol();
-      void
-       massiveAttack(const Vec2i & pos, Field field, bool ultraAttack =
-                     false);
-      void
-       returnBase(int unitIndex);
-      void
-       harvest(int unitIndex);
-      bool haveBlockedUnits();
-      void
-       unblockUnits();
+        massiveAttack (const Vec2i & pos, Field field, bool ultraAttack =
+                       false);
+      void returnBase (int unitIndex);
+      void harvest (int unitIndex);
+      bool haveBlockedUnits ();
+      void unblockUnits ();
 
-      bool outputAIBehaviourToConsole()const;
+      bool outputAIBehaviourToConsole () const;
 
-      void
-       saveGame(XmlNode * rootNode) const;
-      void
-       loadGame(const XmlNode * rootNode, Faction * faction);
+      void saveGame (XmlNode * rootNode) const;
+      void loadGame (const XmlNode * rootNode, Faction * faction);
     };
 
 }}                              //end namespace
