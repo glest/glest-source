@@ -113,6 +113,8 @@ namespace Glest
       GraphicLabel labelAllowObservers;
       GraphicCheckBox checkBoxAllowObservers;
 
+      bool observersAllowed;
+
       GraphicLabel *
         activeInputLabel;
 

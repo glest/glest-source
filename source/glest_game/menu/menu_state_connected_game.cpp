@@ -898,6 +898,21 @@ namespace Glest
                                   extractFileFromDirectoryPath
                                   (__FILE__).c_str (), __FUNCTION__,
                                   __LINE__);
+
+      // I moved this block from loadMapInfo(), and modified it. It was
+      // setting the slots visible based on the number of hardMaxPlayers
+      // every time a new map was loaded. Trying it here instead, so the
+      // labels are made visible only once. Below, we'll be disabling slots
+      // that exceed hardMaxPlayers
+      for (int i = 0; i < GameConstants::maxPlayers; i++)
+      {
+        labelPlayers[i].setVisible (true);
+        labelPlayerNames[i].setVisible (true);
+        listBoxControls[i].setVisible (true);
+        listBoxFactions[i].setVisible (true);
+        listBoxTeams[i].setVisible (true);
+        labelNetStatus[i].setVisible (true);
+      }
     }
 
     void
@@ -6910,18 +6925,7 @@ namespace Glest
               (file, mapInfo, lang.getString ("MaxPlayers"),
                lang.getString ("Size"), true) == true)
           {
-            for (int i = 0; i < GameConstants::maxPlayers; ++i)
-            {
-              mapInfo->players = GameConstants::maxPlayers;
-              bool visible = i + 1 <= mapInfo->players;
-              labelPlayers[i].setVisible (visible);
-              labelPlayerNames[i].setVisible (visible);
-              listBoxControls[i].setVisible (visible);
-              listBoxRMultiplier[i].setVisible (visible);
-              listBoxFactions[i].setVisible (visible);
-              listBoxTeams[i].setVisible (visible);
-              labelNetStatus[i].setVisible (visible);
-            }
+            mapInfo->players = GameConstants::maxPlayers;
 
 // Not painting properly so this is on hold
             if (loadMapPreview == true)
@@ -8953,12 +8957,12 @@ namespace Glest
                       mapInfo.desc.c_str ());
             throw megaglest_runtime_error (szBuf);
           }
-          playerSortedMaps[mapInfo.players].push_back (mapFiles.at (i));
-          formattedPlayerSortedMaps[mapInfo.players].push_back (formatString
+          playerSortedMaps[mapInfo.hardMaxPlayers].push_back (mapFiles.at (i));
+          formattedPlayerSortedMaps[mapInfo.hardMaxPlayers].push_back (formatString
                                                                 (mapFiles.at
                                                                  (i)));
           if (config.getString ("InitialMap", "Conflict") ==
-              formattedPlayerSortedMaps[mapInfo.players].back ())
+              formattedPlayerSortedMaps[mapInfo.hardMaxPlayers].back ())
           {
             initialMapSelection = i;
           }

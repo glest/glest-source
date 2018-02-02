@@ -1107,6 +1107,10 @@ bool MapPreview::loadMapInfo(string file, MapInfo *mapInfo, string i18nMaxMapPla
 				mapInfo->size.y	= header.height;
 				mapInfo->players= header.maxFactions;
 
+				// hardMaxPlayers is used in menu_state_custom_game, as part of
+				// enhanced observer mode (issue #13)
+				mapInfo->hardMaxPlayers = mapInfo->players;
+
 				mapInfo->desc 	=  i18nMaxMapPlayersTitle 	+ ": " + intToStr(mapInfo->players) + "\n";
 				mapInfo->desc 	+= i18nMapSizeTitle 		+ ": " + intToStr(mapInfo->size.x) + " x " + intToStr(mapInfo->size.y);
 
