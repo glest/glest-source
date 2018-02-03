@@ -9,20 +9,20 @@ LANG=C
 SCRIPTLOCATION="$(readlink -f "$0")"
 GAMEDIR="$(dirname "$SCRIPTLOCATION")"
 ARCHITECTURE="$(uname -m | tr '[A-Z]' '[a-z]')"
-BugReportEngine="https://github.com/MegaGlest/megaglest-source/issues"
-BugReportBoth="https://forum.megaglest.org/index.php?board=23.0"
+BugReportEngine="https://github.com/ZetaGlest/zetaglest-source/issues"
+BugReportBoth="https://github.com/ZetaGlest"
 # -------
 # useful for mods
 BugReportBoth2="$BugReportBoth"
-BugReportData="https://github.com/MegaGlest/megaglest-data/issues"
+BugReportData="https://github.com/ZetaGlest/zetaglest-data/issues"
 
-EXC_BINARY="megaglest"
-if [ -f "${GAMEDIR}/megaglest_shim" ]; then EXC_BINARY="megaglest_shim"
+EXC_BINARY="zetaglest"
+if [ -f "${GAMEDIR}/zetaglest_shim" ]; then EXC_BINARY="zetaglest_shim"
 
-SHORT_GAME_NAME="megaglest"
+SHORT_GAME_NAME="zetaglest"
 # if long game name contain spaces then write it inside quotes
 # e.g. "\"long name with spaces\""
-LONG_GAME_NAME="MegaGlest"
+LONG_GAME_NAME="ZetaGlest"
 
 # -------
 LIBDIR="lib"; ExitStatus=0; LibsWarnings=""; IgnoredLibs=""; FirstLnError=""
