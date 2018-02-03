@@ -2261,8 +2261,17 @@ const CommandType *Unit::computeCommandType(const Vec2i &pos, const Unit *target
 	// The default command is executed when a unit is produced and sent to a meeting point
 	// or when the unit is selected and right clicked to a position.
 	if(commandType == NULL) {
-            // Is the unit class warrior? if yes, attack by default, else walk.
-            commandType = type->getFirstCtOfClass(this->getType()->isOfClass(ucWarrior) ? ccAttack : ccMove);
+		// The default command is move command
+		commandType= type->getFirstCtOfClass(ccMove);
+
+		// To change the default to attack, comment the line above, and uncomment
+		// the line of code below
+
+		// Is the unit class warrior? if yes, attack by default, else walk.
+		//commandType = type->getFirstCtOfClass(this->getType()->isOfClass(ucWarrior) ? ccAttack : ccMove);
+
+		// FIXME: I think a better solution would be to have a hotkey for this,
+		// the user can decide, and toggle in-game -andy5995 2018-02-03
 	}
 
 	return commandType;
