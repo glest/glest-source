@@ -44,7 +44,7 @@ B_SCRIPT_DIR="$GAMEDIR"
 # useful for mods
 BASIC_SCRIPT="start_zetaglest"
 FAKE_EXC_BINARY_MAC="ZetaGlest"
-EXC_BINARY="ZetaGlest"
+EXC_BINARY="zetaglest"
 EXC_BINARY_DISTRO="zetaglest"
 SHORT_GAME_NAME="zetaglest"
 # -------
