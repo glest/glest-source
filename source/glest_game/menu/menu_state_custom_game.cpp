@@ -243,11 +243,11 @@ namespace Glest
 
         techTree.reset (new TechTree (config.getPathListForType (ptTechs)));
 
-        int labelOffset = 23;
+        int labelOffset = 23; // 23
         int setupPos = 605;
-        int mapHeadPos = 300;   //330;
+        int mapHeadPos = 310;   //330;
         int mapPos = mapHeadPos - labelOffset;
-        int aHeadPos = 240;
+        int aHeadPos = mapHeadPos - 90; //240
         int aPos = aHeadPos - labelOffset;
         int networkHeadPos = 700;
         int networkPos = networkHeadPos - labelOffset;
@@ -255,7 +255,7 @@ namespace Glest
 
 //create
         int buttonx = 165;
-        int buttony = 180;
+        int buttony = mapHeadPos - 150; //180
 
 // player status
         listBoxPlayerStatus.registerGraphicComponent (containerName,
@@ -417,8 +417,7 @@ namespace Glest
         checkBoxAllowObservers.registerGraphicComponent (containerName,
                                                          "checkBoxAllowObservers");
         checkBoxAllowObservers.init (xoffset + 325, aPos);
-        observersAllowed = checkBoxAllowObservers.getValue ();
-        checkBoxAllowObservers.setValue (observersAllowed);
+        checkBoxAllowObservers.setValue (checkBoxAllowObservers.getValue ());
 
         vector < string > rMultiplier;
         for (int i = 0; i < 45; ++i)
@@ -3345,13 +3344,12 @@ namespace Glest
                 ctNetworkUnassigned)
             {
 //printf("Player #%d [%s] control = %d\n",i,labelPlayerNames[i].getText().c_str(),listBoxControls[i].getSelectedItemIndex());
-
-              labelPlayers[i].setVisible (true);
-              labelPlayerNames[i].setVisible (true);
-              listBoxControls[i].setVisible (true);
-              listBoxFactions[i].setVisible (true);
-              listBoxTeams[i].setVisible (true);
-              labelNetStatus[i].setVisible (true);
+                labelPlayers[i].setVisible (true);
+                labelPlayerNames[i].setVisible (true);
+                listBoxControls[i].setVisible (true);
+                listBoxFactions[i].setVisible (true);
+                listBoxTeams[i].setVisible (true);
+                labelNetStatus[i].setVisible (true);
             }
 
             if (hasNetworkGameSettings () == true &&
@@ -3617,7 +3615,7 @@ namespace Glest
                           && switchSetupRequests[i]->getSelectedFactionName ()
                           != "???DataMissing???"))
                   {
-                    // I don't believe we need to check to see of Observers
+                    // I don't believe we need to check to see if Observers
                     // are allowed. If it's not, there should be not button on the client
                     // side that would allow them to switch to a slot > mapInfo.hardMaxPlayers
                     if (newFactionIdx <= mapInfo.hardMaxPlayers)
@@ -4353,8 +4351,9 @@ namespace Glest
         {
           for (int i = 0; i < GameConstants::maxPlayers; ++i)
           {
-            if (i >= mapInfo.hardMaxPlayers && observersAllowed == 0)
+            if (i >= mapInfo.hardMaxPlayers && checkBoxAllowObservers.getValue() == false)
             {
+              listBoxControls[i].setSelectedItemIndex (ctClosed);
               listBoxControls[i].setEditable (false);
               listBoxControls[i].setEnabled (false);
 
@@ -4370,18 +4369,26 @@ namespace Glest
                       ctNetwork && (slot == NULL
                                     || slot->isConnected () == false)))
               {
-                listBoxControls[i].setEditable (true);
-                listBoxControls[i].setEnabled (true);
-
-                if (i >= mapInfo.hardMaxPlayers && observersAllowed)
+                // for enhanced observer mode (issue #13), set factions
+                // to observers and disable the controls
+                // https://github.com/ZetaGlest/zetaglest-source/issues/13
+                if (i >= mapInfo.hardMaxPlayers)
                 {
-                  listBoxControls[i].setSelectedItemIndex (ctNetwork);
-                  listBoxControls[i].setEditable (false);
-                  listBoxFactions[i].setSelectedItem (GameConstants::OBSERVER_SLOTNAME);
-                  listBoxFactions[i].setEditable (false);
-                  listBoxTeams[i].setSelectedItem (intToStr (GameConstants::maxPlayers +
-                                                  fpt_Observer));
-                  listBoxTeams[i].setEditable (false);
+                  if (checkBoxAllowObservers.getValue() == false)
+                  {
+                    listBoxControls[i].setEditable (true);
+                    listBoxControls[i].setEnabled (true);
+                  }
+                  else
+                  {
+                    listBoxControls[i].setSelectedItemIndex (ctNetwork);
+                    listBoxControls[i].setEditable (false);
+                    listBoxFactions[i].setSelectedItem (GameConstants::OBSERVER_SLOTNAME);
+                    listBoxFactions[i].setEditable (false);
+                    listBoxTeams[i].setSelectedItem (intToStr (GameConstants::maxPlayers +
+                                                    fpt_Observer));
+                    listBoxTeams[i].setEditable (false);
+                  }
                 }
               }
               else
@@ -6843,7 +6850,10 @@ namespace Glest
           // the actual value from mapInfo.hardMaxPlayers. Changing it here means
           // not having to change a variable name in many places of this file
           // to implement enhanced observer mode (issue #13)'
-          mapInfo->players = GameConstants::maxPlayers;
+          if (checkBoxAllowObservers.getValue () == 1)
+          {
+            mapInfo->players = GameConstants::maxPlayers;
+          }
 
           ServerInterface *serverInterface =
             NetworkManager::getInstance ().getServerInterface ();
@@ -8248,7 +8258,6 @@ namespace Glest
                originalValue ==
                formatString (GameConstants::OBSERVER_SLOTNAME)))
           {
-
             listBoxFactions[i].setSelectedItemIndex (i % results.size ());
 
             if (originalValue ==
