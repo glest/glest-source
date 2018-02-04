@@ -4376,9 +4376,12 @@ namespace Glest
                 if (i >= mapInfo.hardMaxPlayers && observersAllowed)
                 {
                   listBoxControls[i].setSelectedItemIndex (ctNetwork);
+                  listBoxControls[i].setEditable (false);
                   listBoxFactions[i].setSelectedItem (GameConstants::OBSERVER_SLOTNAME);
+                  listBoxFactions[i].setEditable (false);
                   listBoxTeams[i].setSelectedItem (intToStr (GameConstants::maxPlayers +
                                                   fpt_Observer));
+                  listBoxTeams[i].setEditable (false);
                 }
               }
               else
