@@ -300,7 +300,8 @@ namespace Glest
       checkBoxAllowObservers.registerGraphicComponent (containerName,
                                                        "checkBoxAllowObservers");
       checkBoxAllowObservers.init (xoffset + 325, aPos);
-      checkBoxAllowObservers.setValue (false);
+      checkBoxAllowObservers.setValue (checkBoxAllowObservers.getValue ());
+
       checkBoxAllowObservers.setEditable (false);
 
       for (int i = 0; i < 45; ++i)
@@ -4531,8 +4532,8 @@ namespace Glest
         {
           bool hasOtherPlayer = false;
           bool hasOpenSlot = false;
-          for (unsigned int i = 0;
-               i < (unsigned int) GameConstants::maxPlayers; ++i)
+          for (int i = 0;
+               i < GameConstants::maxPlayers; ++i)
           {
             if (displayedGamesettings.getFactionControl (i) == ctNetwork
                 && clientInterface->getPlayerIndex () != (int) i)
@@ -8671,8 +8672,16 @@ namespace Glest
             {
               if (clientInterface->getJoinGameInProgress () == false)
               {
-                listBoxFactions[slot].setEditable (true);
-                listBoxTeams[slot].setEditable (true);
+                if (i + 1 <= mapInfo.hardMaxPlayers)
+                {
+                  listBoxFactions[slot].setEditable (true);
+                  listBoxTeams[slot].setEditable (true);
+                }
+                else
+                {
+                  listBoxFactions[slot].setEditable (false);
+                  listBoxTeams[slot].setEditable (false);
+                }
               }
             }
 

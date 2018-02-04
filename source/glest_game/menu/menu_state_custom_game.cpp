@@ -3617,13 +3617,33 @@ namespace Glest
                           && switchSetupRequests[i]->getSelectedFactionName ()
                           != "???DataMissing???"))
                   {
-                    listBoxFactions[newFactionIdx].setSelectedItem
-                      (switchSetupRequests[i]->getSelectedFactionName ());
+                    // I don't believe we need to check to see of Observers
+                    // are allowed. If it's not, there should be not button on the client
+                    // side that would allow them to switch to a slot > mapInfo.hardMaxPlayers
+                    if (newFactionIdx <= mapInfo.hardMaxPlayers)
+                    {
+
+                      listBoxFactions[newFactionIdx].setSelectedItem
+                        (switchSetupRequests[i]->getSelectedFactionName ());
+                    }
+                    else
+                    {
+                      listBoxFactions[newFactionIdx].setSelectedItem (GameConstants::OBSERVER_SLOTNAME);
+                    }
+
                   }
                   if (switchSetupRequests[i]->getToTeam () != -1)
                   {
-                    listBoxTeams[newFactionIdx].setSelectedItemIndex
-                      (switchSetupRequests[i]->getToTeam ());
+                    if (newFactionIdx <= mapInfo.hardMaxPlayers)
+                    {
+                      listBoxTeams[newFactionIdx].setSelectedItemIndex
+                        (switchSetupRequests[i]->getToTeam ());
+                    }
+                    else
+                    {
+                      listBoxTeams[i].setSelectedItem (intToStr (GameConstants::maxPlayers +
+                              fpt_Observer));
+                    }
                   }
                   if (switchSetupRequests[i]->getNetworkPlayerName () != "")
                   {
