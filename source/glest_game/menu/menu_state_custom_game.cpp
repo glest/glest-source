@@ -243,11 +243,12 @@ namespace Glest
 
         techTree.reset (new TechTree (config.getPathListForType (ptTechs)));
 
-        int labelOffset = 23; // 23
+        int labelOffset = 23;
         int setupPos = 605;
-        int mapHeadPos = 310;   //330;
+        // mapHeadPos is the placement of the text "map", not the map itself
+        int mapHeadPos = 310;
         int mapPos = mapHeadPos - labelOffset;
-        int aHeadPos = mapHeadPos - 90; //240
+        int aHeadPos = mapHeadPos - 90;
         int aPos = aHeadPos - labelOffset;
         int networkHeadPos = 700;
         int networkPos = networkHeadPos - labelOffset;
@@ -653,9 +654,16 @@ namespace Glest
           (checkBoxAllowTeamResourceSharing.getX (), networkHeadPos);
         checkBoxNetworkPauseGameForLaggedClients.setValue (true);
 
-//list boxes
+        //list boxes
         xoffset = 5;
         int rowHeight = 27;
+
+        buttonClearBlockedPlayers.registerGraphicComponent (containerName,
+                                                            "buttonClearBlockedPlayers");
+        buttonClearBlockedPlayers.init (xoffset + 740,
+                                        setupPos - 30,
+                                        174 + 2 + 70);
+
         for (int i = 0; i < GameConstants::maxPlayers; ++i)
         {
 
@@ -728,12 +736,6 @@ namespace Glest
           labelNetStatus[i].
             setFont3D (CoreData::getInstance ().getDisplayFontSmall3D ());
         }
-
-        buttonClearBlockedPlayers.registerGraphicComponent (containerName,
-                                                            "buttonClearBlockedPlayers");
-        buttonClearBlockedPlayers.init (xoffset + 160,
-                                        setupPos - 30 - 8 * rowHeight,
-                                        174 + 2 + 70);
 
         labelControl.registerGraphicComponent (containerName, "labelControl");
         labelControl.init (xoffset + 160, setupPos, 50, GraphicListBox::defH,
@@ -4408,6 +4410,16 @@ namespace Glest
             }
           }
         }
+        else // if this is a scenario...
+        {
+          int i = mapInfo.players;
+          do
+          {
+            listBoxControls[i].setSelectedItemIndex (ctClosed);
+            listBoxControls[i].setEditable (false);
+            listBoxControls[i].setEnabled (false);
+          } while (++i < GameConstants::maxPlayers);
+        }
 
         bool checkDataSynch =
           (serverInterface->getAllowGameDataSynchCheck () == true
@@ -7633,6 +7645,8 @@ namespace Glest
           listBoxTileset.setSelectedItem (formatString
                                           (scenarioInfo.tilesetName));
 
+          checkBoxAllowObservers.setValue (false);
+
           setupMapList (scenarioInfo.name);
           listBoxMap.setSelectedItem (formatString (scenarioInfo.mapName));
           loadMapInfo (Config::getMapPath
@@ -7864,6 +7878,7 @@ namespace Glest
                                       (formattedPlayerSortedMaps[0][0]));
           loadMapInfo (Config::getMapPath (getCurrentMapFile (), "", true),
                        &mapInfo, true);
+
           labelMapInfo.setText (mapInfo.desc);
 
           setupTechList ("", false);
