@@ -201,16 +201,19 @@ namespace Glest
       vector <
         string >
         teamItems, controlItems, results, rMultiplier, playerStatuses;
+
+      // Some of these values must also be changed to match those in
+      // menu_state_custom_game.cpp
       int
         labelOffset = 23;
       int
-        setupPos = 590;
-      int
-        mapHeadPos = 300;       //330;
+        setupPos = 605;
+      // mapHeadPos is the placement of the text "map", not the map itself
+      int mapHeadPos = 310;
       int
         mapPos = mapHeadPos - labelOffset;
       int
-        aHeadPos = 240;
+        aHeadPos = mapHeadPos - 90;
       int
         aPos = aHeadPos - labelOffset;
       int
@@ -630,7 +633,7 @@ namespace Glest
       int
         buttonx = 165;
       int
-        buttony = 180;
+        buttony = 150;
 
       listBoxPlayerStatus.registerGraphicComponent (containerName,
                                                     "listBoxPlayerStatus");

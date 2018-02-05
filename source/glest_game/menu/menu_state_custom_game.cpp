@@ -243,6 +243,8 @@ namespace Glest
 
         techTree.reset (new TechTree (config.getPathListForType (ptTechs)));
 
+        // Some of these values must also be changed to match those in
+        // menu_state_connected_game.cpp
         int labelOffset = 23;
         int setupPos = 605;
         // mapHeadPos is the placement of the text "map", not the map itself
@@ -256,7 +258,7 @@ namespace Glest
 
 //create
         int buttonx = 165;
-        int buttony = mapHeadPos - 150; //180
+        int buttony = mapHeadPos - 150;
 
 // player status
         listBoxPlayerStatus.registerGraphicComponent (containerName,
@@ -660,9 +662,9 @@ namespace Glest
 
         buttonClearBlockedPlayers.registerGraphicComponent (containerName,
                                                             "buttonClearBlockedPlayers");
-        buttonClearBlockedPlayers.init (xoffset + 740,
+        buttonClearBlockedPlayers.init (xoffset + 800,
                                         setupPos - 30,
-                                        174 + 2 + 70);
+                                        134 + 2 + 50);
 
         for (int i = 0; i < GameConstants::maxPlayers; ++i)
         {
@@ -2342,6 +2344,31 @@ namespace Glest
                   }
                 }
               }
+              else if (labelPlayers[i].mouseClick (x, y))
+              {
+                int s;
+                bool masterserver_admin_found = false;
+                GameSettings gameSettings;
+                SwitchSetupRequest ** switchSetupRequests;
+
+                for (s = 0; s < mapInfo.players; s++)
+                {
+                  if (serverInterface->getSlot (s, true)->getSessionKey () ==
+                    gameSettings.getMasterserver_admin ())
+                  {
+                    masterserver_admin_found = true;
+                    break;
+                  }
+                }
+
+                if (i != s && masterserver_admin_found)
+                {
+                  int newFactionIdx = switchSetupRequests[i]->getToSlotIndex ();
+                  int switchFactionIdx = switchSetupRequests[i]->getCurrentSlotIndex ();
+                  serverInterface->switchSlot (switchFactionIdx, newFactionIdx);
+                }
+
+              }
               else if (buttonBlockPlayers[i].mouseClick (x, y))
               {
                 soundRenderer.playFx (coreData.getClickSoundB ());
@@ -3346,12 +3373,12 @@ namespace Glest
                 ctNetworkUnassigned)
             {
 //printf("Player #%d [%s] control = %d\n",i,labelPlayerNames[i].getText().c_str(),listBoxControls[i].getSelectedItemIndex());
-                labelPlayers[i].setVisible (true);
-                labelPlayerNames[i].setVisible (true);
-                listBoxControls[i].setVisible (true);
-                listBoxFactions[i].setVisible (true);
-                listBoxTeams[i].setVisible (true);
-                labelNetStatus[i].setVisible (true);
+              labelPlayers[i].setVisible (true);
+              labelPlayerNames[i].setVisible (true);
+              listBoxControls[i].setVisible (true);
+              listBoxFactions[i].setVisible (true);
+              listBoxTeams[i].setVisible (true);
+              labelNetStatus[i].setVisible (true);
             }
 
             if (hasNetworkGameSettings () == true &&
@@ -4420,6 +4447,8 @@ namespace Glest
             listBoxControls[i].setEnabled (false);
           } while (++i < GameConstants::maxPlayers);
         }
+
+        updateNetworkSlots ();
 
         bool checkDataSynch =
           (serverInterface->getAllowGameDataSynchCheck () == true
