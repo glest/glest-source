@@ -8675,15 +8675,18 @@ namespace Glest
             {
               if (clientInterface->getJoinGameInProgress () == false)
               {
-                if (i + 1 <= mapInfo.hardMaxPlayers)
+                if (i <= mapInfo.hardMaxPlayers)
                 {
                   listBoxFactions[slot].setEditable (true);
                   listBoxTeams[slot].setEditable (true);
                 }
                 else
                 {
-                  listBoxFactions[slot].setEditable (false);
-                  listBoxTeams[slot].setEditable (false);
+                  // looks more must be done to allow people to take an observer
+                  // slot after the game has started. Extra network slots close
+                  // when the game starts.
+                  listBoxFactions[slot].setEditable (checkBoxAllowObservers.getValue ());
+                  listBoxTeams[slot].setEditable (checkBoxAllowObservers.getValue ());
                 }
               }
             }
