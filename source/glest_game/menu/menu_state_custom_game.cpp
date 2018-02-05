@@ -324,8 +324,7 @@ namespace Glest
         else
         {
 //labelLocalGameVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
-          labelLocalGameVersion.setText (glestVersionString + " [" +
-                                         getGITRevisionString () + "]");
+          labelLocalGameVersion.setText (glestVersionString);
         }
 
         xoffset = 65;
@@ -1033,8 +1032,7 @@ namespace Glest
       else
       {
 //labelLocalGameVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
-        labelLocalGameVersion.setText (glestVersionString + " [" +
-                                       getGITRevisionString () + "]");
+        labelLocalGameVersion.setText (glestVersionString);
       }
 
 //vector<string> teamItems, controlItems, results , rMultiplier;
@@ -4898,7 +4896,7 @@ namespace Glest
 //?status=waiting&system=linux&info=titus
       publishToServerInfo["glestVersion"] = glestVersionString;
       publishToServerInfo["platform"] =
-        getPlatformNameString () + "-" + getGITRevisionString ();
+        getPlatformNameString ();
       publishToServerInfo["binaryCompileDate"] = getCompileDateTime ();
 
 //game info:

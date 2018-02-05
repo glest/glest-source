@@ -1,13 +1,24 @@
-// ==============================================================
-//	This file is part of Glest (www.glest.org)
 //
-//	Copyright (C) 2001-2008 Martiño Figueroa
+//      config.cpp:
 //
-//	You can redistribute this code and/or modify it under
-//	the terms of the GNU General Public License as published
-//	by the Free Software Foundation; either version 2 of the
-//	License, or (at your option) any later version
-// ==============================================================
+//      This file is part of ZetaGlest <https://github.com/ZetaGlest>
+//
+//      Copyright (C) 2018  The ZetaGlest team
+//
+//      ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+//
+//      This program is free software: you can redistribute it and/or modify
+//      it under the terms of the GNU General Public License as published by
+//      the Free Software Foundation, either version 3 of the License, or
+//      (at your option) any later version.
+//
+//      This program is distributed in the hope that it will be useful,
+//      but WITHOUT ANY WARRANTY; without even the implied warranty of
+//      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//      GNU General Public License for more details.
+//
+//      You should have received a copy of the GNU General Public License
+//      along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 #include "config.h"
 
@@ -57,7 +68,7 @@ const char *GameConstants::ircClientCacheLookupKey  			= "ircClientCache";
 const char *GameConstants::playerTextureCacheLookupKey  		= "playerTextureCache";
 const char *GameConstants::factionPreviewTextureCacheLookupKey  = "factionPreviewTextureCache";
 const char *GameConstants::characterMenuScreenPositionListCacheLookupKey  = "characterMenuScreenPositionListCache";
-const char *GameConstants::application_name				= "MegaGlest";
+const char *GameConstants::application_name				= "ZetaGlest";
 
 const char * GameConstants::LOADING_SCREEN_FILE 	   = "loading_screen";
 const char * GameConstants::LOADING_SCREEN_FILE_FILTER = "loading_screen*.*";
@@ -72,15 +83,15 @@ const char *GameConstants::path_data_CacheLookupKey     = "data";
 const char *GameConstants::path_ini_CacheLookupKey      = "ini";
 const char *GameConstants::path_logs_CacheLookupKey     = "logs";
 
-const char *GameConstants::saveNetworkGameFileServer			= "megaglest-saved-server.xml";
-const char *GameConstants::saveNetworkGameFileServerCompressed 	= "megaglest-saved-server.zip";
+const char *GameConstants::saveNetworkGameFileServer			= "zetaglest-saved-server.xml";
+const char *GameConstants::saveNetworkGameFileServerCompressed 	= "zetaglest-saved-server.zip";
 
-const char *GameConstants::saveNetworkGameFileClient			= "megaglest-saved-client.xml";
-const char *GameConstants::saveNetworkGameFileClientCompressed 	= "megaglest-saved-client.zip";
+const char *GameConstants::saveNetworkGameFileClient			= "zetaglest-saved-client.xml";
+const char *GameConstants::saveNetworkGameFileClientCompressed 	= "zetaglest-saved-client.zip";
 
-const char *GameConstants::saveGameFileDefault 			= "megaglest-saved.xml";
-const char *GameConstants::saveGameFileAutoTestDefault 	= "megaglest-auto-saved_%s.xml";
-const char *GameConstants::saveGameFilePattern 			= "megaglest-saved_%s.xml";
+const char *GameConstants::saveGameFileDefault 			= "zetaglest-saved.xml";
+const char *GameConstants::saveGameFileAutoTestDefault 	= "zetaglest-auto-saved_%s.xml";
+const char *GameConstants::saveGameFilePattern 			= "zetaglest-saved_%s.xml";
 
 const char *Config::glest_ini_filename                  = "glest.ini";
 const char *Config::glestuser_ini_filename              = "glestuser.ini";
@@ -195,16 +206,16 @@ Config::Config(std::pair<ConfigType,ConfigType> type, std::pair<string,string> f
 // Look in standard linux shared paths for ini files
 #if defined(__linux__)
     if(foundPath == false) {
-    	foundPath = tryCustomPath(cfgType, fileName, "/usr/share/megaglest/");
+    	foundPath = tryCustomPath(cfgType, fileName, "/usr/share/zetaglest/");
     }
     if(foundPath == false) {
-    	foundPath = tryCustomPath(cfgType, fileName, "/usr/share/games/megaglest/");
+    	foundPath = tryCustomPath(cfgType, fileName, "/usr/share/games/zetaglest/");
     }
     if(foundPath == false) {
-    	foundPath = tryCustomPath(cfgType, fileName, "/usr/local/share/megaglest/");
+    	foundPath = tryCustomPath(cfgType, fileName, "/usr/local/share/zetaglest/");
     }
     if(foundPath == false) {
-    	foundPath = tryCustomPath(cfgType, fileName, "/usr/local/share/games/megaglest/");
+    	foundPath = tryCustomPath(cfgType, fileName, "/usr/local/share/games/zetaglest/");
     }
 #endif
 
@@ -216,7 +227,7 @@ Config::Config(std::pair<ConfigType,ConfigType> type, std::pair<string,string> f
     }
 
 #if defined(WIN32)
-	//string test = "C:\\Code\\megaglest\\mk\\windows\\.\\..\\..\\data\\glest_game\\glest.ini";
+	//string test = "C:\\Code\\zetaglest\\mk\\windows\\.\\..\\..\\data\\glest_game\\glest.ini";
 	//updatePathClimbingParts(test);
 
 	updatePathClimbingParts(fileName.first);

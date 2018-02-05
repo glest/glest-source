@@ -8,6 +8,8 @@ SET(TARGET_NAME_MANPAGE "${TARGET_NAME}.6")
 IF(BUILD_MEGAGLEST)
 	MESSAGE(STATUS "Will try to build ZetaGlest game")
 
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+
 	IF(WIN32)
 		SET(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH}
 				       ${PROJECT_SOURCE_DIR}/source/win32_deps/lib
@@ -254,13 +256,6 @@ IF(BUILD_MEGAGLEST)
 		ENDIF(APPLE)
 	ENDFOREACH(DIR)
 
-	# Force the git revision stamp (${GIT_COMMIT_COUNT}.${GIT_SHA1}) file to be touched so the compile stamp is always right
-	IF(UNIX AND GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git/")
-		add_custom_command(OUTPUT mg.tmp
-			COMMAND touch ${PROJECT_SOURCE_DIR}/source/glest_game/facilities/game_util.cpp)
-		add_custom_target(run ALL DEPENDS mg.tmp)
-	ENDIF()
-
 	IF(WIN32)
 		SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,-subsystem,console -mconsole")
 	ENDIF()
@@ -347,7 +342,7 @@ IF(BUILD_MEGAGLEST)
 
 		IF(UNIX)
 			INSTALL(PROGRAMS
-				"${PROJECT_SOURCE_DIR}/mk/linux/start_megaglest_gameserver"
+				"${PROJECT_SOURCE_DIR}/mk/linux/start_zetaglest_gameserver"
 				DESTINATION ${MEGAGLEST_INI_INSTALL_PATH})
 		ENDIF()
 		INSTALL(FILES

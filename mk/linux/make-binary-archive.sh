@@ -1,5 +1,5 @@
 #!/bin/bash
-# Use this script to build MegaGlest Binary Archive for a Version Release
+# Use this script to build ZetaGlest Binary Archive for a Version Release
 # ----------------------------------------------------------------------------
 # Written by Mark Vejvoda <mark_vejvoda@hotmail.com>
 # Copyright (c) 2011 Mark Vejvoda under GNU GPL v3.0+
@@ -9,7 +9,7 @@ CURRENTDIR="$(dirname "$(readlink -f "$0")")"
 # set this to non 0 to skip building the binary
 skipbinarybuild=0
 if [ "$1" = "-CI" ] || ( [ "$1" = "--installer" ] && \
-    [ "$(find "$CURRENTDIR" -maxdepth 1 -name 'megaglest' -mmin -60)" ] ); then
+    [ "$(find "$CURRENTDIR" -maxdepth 1 -name 'zetaglest' -mmin -60)" ] ); then
     skipbinarybuild=1
 fi
 
@@ -28,7 +28,7 @@ architecture=`uname -m  | tr '[A-Z]' '[a-z]'`
 RELEASEDIR_ROOT="$CURRENTDIR/../../../release/"
 PROJDIR="$CURRENTDIR/"
 REPODIR="$CURRENTDIR/../../"
-REPO_DATADIR="$REPODIR/data/glest_game"
+REPO_DATADIR="$REPODIR../zetaglest-data"
 if [ -d "$REPODIR/.git" ] && [ "$(which git 2>/dev/null)" != "" ]; then
     cd "$REPODIR"
     if [ "$SOURCE_BRANCH" = "" ]; then SOURCE_BRANCH="$(git branch | awk -F '* ' '/^* / {print $2}')"; fi
@@ -37,7 +37,7 @@ fi
 ARCHIVE_TYPE="tar.xz"
 SNAPSHOTNAME="mg-binary-$kernel-$architecture"
 SN_PACKAGE="$SNAPSHOTNAME-$VERSION-$SOURCE_BRANCH.$ARCHIVE_TYPE"
-RELEASENAME="megaglest-binary-$kernel-$architecture"
+RELEASENAME="zetaglest-binary-$kernel-$architecture"
 PACKAGE="$RELEASENAME-$VERSION.$ARCHIVE_TYPE"
 if [ "$SOURCE_BRANCH" != "" ] && [ "$SOURCE_BRANCH" != "master" ] && [ "$(echo "$VERSION" | grep '\-dev$')" != "" ]; then
     RELEASENAME="$SNAPSHOTNAME"; PACKAGE="$SN_PACKAGE"
@@ -71,58 +71,152 @@ mkdir -p "$RELEASEDIR/lib"
 
 if [ -d "lib" ]; then rm -rf "lib"; fi
 echo "building binary dependencies ..."
-for mg_bin in megaglest megaglest_editor megaglest_g3dviewer; do
-    ./makedeps_folder.sh "$mg_bin"
-    if [ "$?" -ne "0" ]; then echo "ERROR: \"./makedeps_folder.sh $mg_bin\" failed." >&2; exit 2; fi
+for zg_bin in zetaglest zetaglest_editor zetaglest_g3dviewer; do
+    ./makedeps_folder.sh "$zg_bin"
+    if [ "$?" -ne "0" ]; then echo "ERROR: \"./makedeps_folder.sh $zg_bin\" failed." >&2; exit 2; fi
 done
 
 # copy binary info
 cd $PROJDIR
 echo "copying binaries ..."
 cp -r lib/* "$RELEASEDIR/lib"
+if [ $? != 0 ]; then
+    exit $?
+fi
+
 cp ../shared/*.ico {../shared/,}*.ini "$RELEASEDIR/"
-if [ -e "$RELEASEDIR/glest-dev.ini" ]; then rm -f "$RELEASEDIR/glest-dev.ini"; fi
+if [ $? != 0 ]; then
+    exit $?
+fi
+
+if [ -e "$RELEASEDIR/glest-dev.ini" ]; then
+    rm -f "$RELEASEDIR/glest-dev.ini"
+    if [ $? != 0 ]; then
+        exit $?
+    fi
+fi
+
 cd $REPO_DATADIR/others/icons
+if [ $? != 0 ]; then
+    exit $?
+fi
+
 cp *.bmp *.png *.xpm "$RELEASEDIR/"
-if [ "$1" != "--installer" ]; then cd $REPO_DATADIR/others/desktop; cp *.desktop "$RELEASEDIR/"; fi
+if [ $? != 0 ]; then
+    exit $?
+fi
+
+if [ "$1" != "--installer" ]; then
+    cd $REPO_DATADIR/others/desktop
+    if [ $? != 0 ]; then
+        exit $?
+    fi
+
+    cp *.desktop "$RELEASEDIR/"
+    if [ $? != 0 ]; then
+        exit $?
+    fi
+fi
+
 cd $PROJDIR
-cp megaglest megaglest_editor megaglest_g3dviewer start_megaglest_gameserver "$RELEASEDIR/"
+if [ $? != 0 ]; then
+    exit $?
+fi
+
+cp zetaglest zetaglest_editor zetaglest_g3dviewer start_zetaglest_gameserver "$RELEASEDIR/"
+if [ $? != 0 ]; then
+    exit $?
+fi
 
 cd "$CURRENTDIR/tools-for-standalone-client"
-cp start_megaglest start_megaglest_mapeditor start_megaglest_g3dviewer "$RELEASEDIR/"
-if [ "$1" != "--installer" ]; then cp megaglest-configure-desktop.sh "$RELEASEDIR/"; fi
+
+if [ $? != 0 ]; then
+    exit $?
+fi
+
+cp start_zetaglest start_zetaglest_mapeditor start_zetaglest_g3dviewer "$RELEASEDIR/"
+if [ $? != 0 ]; then
+    exit $?
+fi
+
+if [ "$1" != "--installer" ]; then
+    cp zetaglest-configure-desktop.sh "$RELEASEDIR/"
+    if [ $? != 0 ]; then
+        exit $?
+    fi
+fi
 
 if [ "$(echo "$VERSION" | grep -v '\-dev$')" != "" ]; then
     ./prepare-mini-update.sh --only_script; sleep 0.5s
-    cp megaglest-mini-update.sh "$RELEASEDIR/"
-    if [ -e "megaglest-mini-update.sh" ]; then rm -f "megaglest-mini-update.sh"; fi
+
+    cp zetaglest-mini-update.sh "$RELEASEDIR/"
+    if [ $? != 0 ]; then
+        exit $?
+    fi
+
+    if [ -e "zetaglest-mini-update.sh" ]; then
+        rm -f "zetaglest-mini-update.sh"
+        if [ $? != 0 ]; then
+            exit $?
+        fi
+    fi
 
     cd $CURRENTDIR
-    if [ -e "megaglest" ] && [ "$1" != "--installer" ]; then
+    if [ -e "zetaglest" ] && [ "$1" != "--installer" ]; then
 	ldd_log="$(echo "$VERSION - $kernel - $architecture - $(date +%F)")"
-	ldd_log="$(echo -e "$ldd_log\n\nmegaglest:\n$(ldd megaglest | awk '{print $1}')")"
-	if [ -e "megaglest_editor" ]; then
-	    ldd_log="$(echo -e "$ldd_log\n\nmegaglest_editor:\n$(ldd megaglest_editor | awk '{print $1}')")"
+	ldd_log="$(echo -e "$ldd_log\n\nzetaglest:\n$(ldd zetaglest | awk '{print $1}')")"
+	if [ -e "zetaglest_editor" ]; then
+	    ldd_log="$(echo -e "$ldd_log\n\nzetaglest_editor:\n$(ldd zetaglest_editor | awk '{print $1}')")"
 	fi
-	if [ -e "megaglest_g3dviewer" ]; then
-	    ldd_log="$(echo -e "$ldd_log\n\nmegaglest_g3dviewer:\n$(ldd megaglest_g3dviewer | awk '{print $1}')")"
+	if [ -e "zetaglest_g3dviewer" ]; then
+	    ldd_log="$(echo -e "$ldd_log\n\nzetaglest_g3dviewer:\n$(ldd zetaglest_g3dviewer | awk '{print $1}')")"
 	fi
-	echo "$ldd_log" > "$RELEASEDIR/ldd-megaglest.log"
+	echo "$ldd_log" > "$RELEASEDIR/ldd-zetaglest.log"
     fi
     echo "$(date -u)" > "$RELEASEDIR/build-time.log"
 fi
 
 mkdir -p "$RELEASEDIR/blender/"
+if [ $? != 0 ]; then
+    exit $?
+fi
+
 cp "$CURRENTDIR/../../source/tools/glexemel/"*.py "$RELEASEDIR/blender/"
+if [ $? != 0 ]; then
+    exit $?
+fi
 
 if [ "$1" != "--installer" ]; then
     echo "creating $PACKAGE"
     cd $CURRENTDIR
+    if [ $? != 0 ]; then
+        exit $?
+    fi
+
     [[ -f "${RELEASEDIR_ROOT}/$PACKAGE" ]] && rm -f "${RELEASEDIR_ROOT}/$PACKAGE"
     cd $RELEASEDIR
+    if [ $? != 0 ]; then
+        exit $?
+    fi
+
     tar -cf - * | xz > ../$PACKAGE
+    if [ $? != 0 ]; then
+        exit $?
+    fi
 
     cd $CURRENTDIR
+    if [ $? != 0 ]; then
+        exit $?
+    fi
+
     ls -la ${RELEASEDIR_ROOT}/$PACKAGE
+    if [ $? != 0 ]; then
+        exit $?
+    fi
 fi
-if [ "$1" = "-CI" ] && [ -d "$RELEASEDIR" ]; then rm -rf "$RELEASEDIR"; fi
+if [ "$1" = "-CI" ] && [ -d "$RELEASEDIR" ]; then
+    rm -rf "$RELEASEDIR"
+    if [ $? != 0 ]; then
+        exit $?
+    fi
+fi

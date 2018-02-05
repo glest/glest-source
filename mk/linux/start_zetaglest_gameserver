@@ -21,10 +21,8 @@
 # user connecting to a headless server controls it. If this user disconnects,
 # the next user who connects (or had already connected) takes control.
 #
-# Please read https://docs.megaglest.org/MG/Dedicated_Server for more information
-#
 # ----------------------------------------------------------------------------
-# 2013 Written by Tom Reynolds <tomreyn[at]megaglest.org>
+# 2013 Written by Tom Reynolds <tomreyn[at]zetaglest.org>
 # 2015 Rewritten by filux <heross(@@)o2.pl>
 # Copyright (c) 2013-2017 under GNU GPL v3.0+
 # ----------------------------------------------------------------------------
@@ -44,7 +42,7 @@ B_SCRIPT_DIR="$GAMEDIR"
 # useful for mods
 BASIC_SCRIPT="start_zetaglest"
 FAKE_EXC_BINARY_MAC="ZetaGlest"
-EXC_BINARY="ZetaGlest"
+EXC_BINARY="zetaglest"
 EXC_BINARY_DISTRO="zetaglest"
 SHORT_GAME_NAME="zetaglest"
 # -------

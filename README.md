@@ -83,6 +83,12 @@ same amount of computer resources as a running game. Therefore, it is
 recommended not to try connecting your ZG client to a headless server
 running on the same computer.
 
+### Extra Tech trees, mods, tilesets, scenarious (not yet available on the ZetaGlest server)
+
+* [MODS.md](https://github.com/ZetaGlest/zetaglest-data/blob/develop/MODS.md)
+* [TILESETS.md](https://github.com/ZetaGlest/zetaglest-data/blob/develop/TILESETS.md)
+* [SCENARIOS.md](https://github.com/ZetaGlest/zetaglest-data/blob/develop/SCENARIOS.md)
+
 ### Contributing and Testing
 
 If you'll be contributing code or changes to data, the procedures for

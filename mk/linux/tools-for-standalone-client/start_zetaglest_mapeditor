@@ -8,8 +8,8 @@ SCRIPTLOCATION="$(readlink -f "$0")"
 GAMEDIR="$(dirname "$SCRIPTLOCATION")"
 # -------
 # useful for mods
-EXC_BINARY="megaglest_editor"
-BASIC_SCRIPT="start_megaglest"
+EXC_BINARY="zetaglest_editor"
+BASIC_SCRIPT="start_zetaglest"
 # -------
 LIBDIR="lib"
 WARNINGS="$("$GAMEDIR/$BASIC_SCRIPT" --tool-editor "$EXC_BINARY" 2>&1)"

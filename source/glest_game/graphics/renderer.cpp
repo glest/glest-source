@@ -350,10 +350,7 @@ Renderer::~Renderer() {
 		SystemFlags::OutputDebug(SystemFlags::debugError,szBuf);
 		if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,szBuf);
 
-		// FIXME: this always gives a warning that "throw will always call terminate".
-		// Is it needed? -andy5995
-
-		// throw megaglest_runtime_error(szBuf);
+		throw megaglest_runtime_error(szBuf);
 	}
 }
 

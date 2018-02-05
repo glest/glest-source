@@ -1,61 +1,71 @@
-// ==============================================================
-//	This file is part of Glest (www.glest.org)
 //
-//	Copyright (C) 2001-2008 Martiño Figueroa
+//      game_util.h:
 //
-//	You can redistribute this code and/or modify it under
-//	the terms of the GNU General Public License as published
-//	by the Free Software Foundation; either version 2 of the
-//	License, or (at your option) any later version
-// ==============================================================
+//      This file is part of ZetaGlest <https://github.com/ZetaGlest>
+//
+//      Copyright (C) 2018  The ZetaGlest team
+//
+//      ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+//
+//      This program is free software: you can redistribute it and/or modify
+//      it under the terms of the GNU General Public License as published by
+//      the Free Software Foundation, either version 3 of the License, or
+//      (at your option) any later version.
+//
+//      This program is distributed in the hope that it will be useful,
+//      but WITHOUT ANY WARRANTY; without even the implied warranty of
+//      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//      GNU General Public License for more details.
+//
+//      You should have received a copy of the GNU General Public License
+//      along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 #ifndef _GLEST_GAME_GAMEUTIL_H_
-#define _GLEST_GAME_GAMEUTIL_H_
+#  define _GLEST_GAME_GAMEUTIL_H_
 
-#ifdef WIN32
-    #include <winsock2.h>
-    #include <winsock.h>
-#endif
+#  ifdef WIN32
+#    include <winsock2.h>
+#    include <winsock.h>
+#  endif
 
-#include <string>
-#include <vector>
-#include "util.h"
-#include "leak_dumper.h"
+#  include <string>
+#  include <vector>
+#  include "util.h"
+#  include "leak_dumper.h"
 
 using std::string;
 using Shared::Util::sharedLibVersionString;
 
-namespace Glest{ namespace Game{
+namespace Glest {
+  namespace Game {
 
-extern const char *mailString;
-extern const string glestVersionString;
-extern const string lastCompatibleSaveGameVersionString;
-extern const string networkVersionString;
+    extern const char *mailString;
+    extern const string glestVersionString;
+    extern const string lastCompatibleSaveGameVersionString;
+    extern const string networkVersionString;
 
-void initSpecialStrings();
-string getCrashDumpFileName();
-string getPlatformTypeNameString();
-string getPlatformArchTypeNameString();
-string getPlatformNameString();
-string getGITRevisionString();
-string getRAWGITRevisionString();
-string getCompilerNameString();
-string getNetworkVersionString();
-string getNetworkVersionGITString();
-string getNetworkPlatformFreeVersionString();
-string getAboutString1(int i);
-string getAboutString2(int i);
-string getTeammateName(int i);
-string getTeammateRole(int i);
-string getCompileDateTime();
+    void initSpecialStrings();
+    string getCrashDumpFileName();
+    string getPlatformTypeNameString();
+    string getPlatformArchTypeNameString();
+    string getPlatformNameString();
+    string getCompilerNameString();
+    string getNetworkVersionString();
+    string getNetworkVersionGITString();
+    string getNetworkPlatformFreeVersionString();
+    string getAboutString1(int i);
+    string getAboutString2(int i);
+    string getTeammateName(int i);
+    string getTeammateRole(int i);
+    string getCompileDateTime();
 
-string formatString(string str);
+    string formatString(string str);
 
-string getGameReadWritePath(const string &lookupKey="");
-string getGameCustomCoreDataPath(string originalBasePath, string uniqueFilePath);
+    string getGameReadWritePath(const string & lookupKey = "");
+    string getGameCustomCoreDataPath(string originalBasePath,
+                                     string uniqueFilePath);
 
-bool upgradeFilesInTemp();
+    bool upgradeFilesInTemp();
 
-}}//end namespace
-
+}}                              //end namespace
 #endif

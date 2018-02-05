@@ -1,29 +1,40 @@
-// ==============================================================
-//	This file is part of Glest (www.glest.org)
 //
-//	Copyright (C) 2001-2005 Martiño Figueroa
+//      scenario.h:
 //
-//	You can redistribute this code and/or modify it under
-//	the terms of the GNU General Public License as published
-//	by the Free Software Foundation; either version 2 of the
-//	License, or (at your option) any later version
-// ==============================================================
+//      This file is part of ZetaGlest <https://github.com/ZetaGlest>
+//
+//      Copyright (C) 2018  The ZetaGlest team
+//
+//      ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+//
+//      This program is free software: you can redistribute it and/or modify
+//      it under the terms of the GNU General Public License as published by
+//      the Free Software Foundation, either version 3 of the License, or
+//      (at your option) any later version.
+//
+//      This program is distributed in the hope that it will be useful,
+//      but WITHOUT ANY WARRANTY; without even the implied warranty of
+//      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//      GNU General Public License for more details.
+//
+//      You should have received a copy of the GNU General Public License
+//      along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 #ifndef _GLEST_GAME_SCENARIO_H_
-#define _GLEST_GAME_SCENARIO_H_
+#  define _GLEST_GAME_SCENARIO_H_
 
-#ifdef WIN32
-    #include <winsock2.h>
-    #include <winsock.h>
-#endif
+#  ifdef WIN32
+#    include <winsock2.h>
+#    include <winsock.h>
+#  endif
 
-#include <string>
-#include <vector>
-#include "xml_parser.h"
-#include "checksum.h"
-#include "game_settings.h"
+#  include <string>
+#  include <vector>
+#  include "xml_parser.h"
+#  include "checksum.h"
+#  include "game_settings.h"
 
-#include "leak_dumper.h"
+#  include "leak_dumper.h"
 
 using std::string;
 using std::vector;
@@ -32,131 +43,150 @@ using std::pair;
 using Shared::Xml::XmlNode;
 using namespace Shared::Util;
 
-namespace Glest { namespace Game {
+namespace Glest {
+  namespace Game {
 
-enum Difficulty {
-    dVeryEasy,
-    dEasy,
-    dMedium,
-    dHard,
-    dVeryHard,
-    dInsane
-};
+    enum Difficulty {
+      dVeryEasy,
+      dEasy,
+      dMedium,
+      dHard,
+      dVeryHard,
+      dInsane
+    };
 
-class ScenarioInfo {
+    class ScenarioInfo {
 
-public:
-	ScenarioInfo() {
-		difficulty = 0;
-		for(unsigned int i = 0; i < (unsigned int)GameConstants::maxPlayers; ++i) {
-			factionControls[i] = ctClosed;
-			teams[i] = 0;
-			factionTypeNames[i] = "";
-			resourceMultipliers[i] = 0;
-		}
+    public:
+      ScenarioInfo() {
+        difficulty = 0;
+        for (unsigned int i = 0;
+             i < (unsigned int) GameConstants::maxPlayers; ++i) {
+          factionControls[i] = ctClosed;
+          teams[i] = 0;
+          factionTypeNames[i] = "";
+          resourceMultipliers[i] = 0;
+        } mapName = "";
+        tilesetName = "";
+        techTreeName = "";
 
-	    mapName = "";
-	    tilesetName = "";
-	    techTreeName = "";
+        defaultUnits = false;
+        defaultResources = false;
+        defaultVictoryConditions = false;
 
-		defaultUnits = false;
-		defaultResources = false;
-		defaultVictoryConditions = false;
+        desc = "";
 
-	    desc = "";
+        fogOfWar = false;
+        fogOfWar_exploredFlag = false;
 
-	    fogOfWar = false;
-	    fogOfWar_exploredFlag = false;
+        allowTeamUnitSharing = false;
+        allowTeamResourceSharing = false;
 
-	    allowTeamUnitSharing = false;
-	    allowTeamResourceSharing = false;
+        file = "";
+        name = "";
+        namei18n = "";
+      } int difficulty;
+      ControlType factionControls[GameConstants::maxPlayers];
+      int teams[GameConstants::maxPlayers];
+      string factionTypeNames[GameConstants::maxPlayers];
+      float resourceMultipliers[GameConstants::maxPlayers];
 
-	    file = "";
-	    name = "";
-	    namei18n = "";
-	}
-	int difficulty;
-    ControlType factionControls[GameConstants::maxPlayers];
-    int teams[GameConstants::maxPlayers];
-    string factionTypeNames[GameConstants::maxPlayers];
-    float resourceMultipliers[GameConstants::maxPlayers];
+      string mapName;
+      string tilesetName;
+      string techTreeName;
 
-    string mapName;
-    string tilesetName;
-    string techTreeName;
+      bool defaultUnits;
+      bool defaultResources;
+      bool defaultVictoryConditions;
 
-	bool defaultUnits;
-	bool defaultResources;
-	bool defaultVictoryConditions;
+      string desc;
 
-    string desc;
+      bool fogOfWar;
+      bool fogOfWar_exploredFlag;
 
-    bool fogOfWar;
-    bool fogOfWar_exploredFlag;
+      bool allowTeamUnitSharing;
+      bool allowTeamResourceSharing;
 
-    bool allowTeamUnitSharing;
-    bool allowTeamResourceSharing;
-
-    string file;
-    string name;
-    string namei18n;
-};
-
-// =====================================================
-//	class Script
-// =====================================================
-
-class Script {
-private:
-	string name;
-	string code;
-
-public:
-	Script(const string &name, const string &code)	{this->name= name; this->code= code;}
-
-	const string &getName() const	{return name;}
-	const string &getCode() const	{return code;}
-};
+      string file;
+      string name;
+      string namei18n;
+    };
 
 // =====================================================
-//	class Scenario
+//      class Script
 // =====================================================
 
-class Scenario {
-private:
-	typedef pair<string, string> NameScriptPair;
-	typedef vector<Script> Scripts;
+    class Script {
+    private:
+      string name;
+      string code;
 
-	ScenarioInfo info;
-	Scripts scripts;
-	Checksum checksumValue;
+    public:
+      Script(const string & name, const string & code) {
+        this->name = name;
+        this->code = code;
+      } const string & getName() const {
+        return name;
+      }
+      const string & getCode() const {
+        return code;
+      }
+    };
 
-public:
-    ~Scenario();
-	Checksum load(const string &path);
-	Checksum * getChecksumValue() { return &checksumValue; }
+// =====================================================
+//      class Scenario
+// =====================================================
 
-	int getScriptCount() const				{return (int)scripts.size();}
-	const Script* getScript(int i) const	{return &scripts[i];}
+    class Scenario {
+    private:
+      typedef pair < string, string > NameScriptPair;
+      typedef vector < Script > Scripts;
 
-	ScenarioInfo getInfo() const { return info; }
+      ScenarioInfo info;
+      Scripts scripts;
+      Checksum checksumValue;
 
-	static bool isGameTutorial(string path);
-	static string getScenarioPath(const vector<string> dir, const string &scenarioName, bool getMatchingRootScenarioPathOnly=false);
-	static string getScenarioPath(const string &dir, const string &scenarioName);
-	static int getScenarioPathIndex(const vector<string> dirList, const string &scenarioName);
-	static string getScenarioDir(const vector<string> dir, const string &scenarioName);
+    public:
+      ~Scenario();
+      Checksum load(const string & path);
+      Checksum *getChecksumValue() {
+        return &checksumValue;
+      }
+      int getScriptCount() const {
+        return (int) scripts.size();
+      } const Script *getScript(int i) const {
+        return &scripts[i];
+      }
+      ScenarioInfo getInfo() const {
+        return info;
+      }
+      static bool isGameTutorial(string path);
+      static string getScenarioPath(const vector < string > dir,
+                                    const string & scenarioName,
+                                    bool getMatchingRootScenarioPathOnly =
+                                    false);
+      static string getScenarioPath(const string & dir,
+                                    const string & scenarioName);
+      static int getScenarioPathIndex(const vector < string > dirList,
+                                      const string & scenarioName);
+      static string getScenarioDir(const vector < string > dir,
+                                   const string & scenarioName);
 
-	static void loadScenarioInfo(string file, ScenarioInfo *scenarioInfo,bool isTutorial);
-	static ControlType strToControllerType(const string &str);
-	static string controllerTypeToStr(const ControlType &ct);
+      static bool loadScenarioInfo(string file,
+                                   ScenarioInfo * scenarioInfo,
+                                   bool isTutorial);
+      static ControlType strToControllerType(const string & str);
+      static string controllerTypeToStr(const ControlType & ct);
 
-	static void loadGameSettings(const vector<string> &dirList, const ScenarioInfo *scenarioInfo, GameSettings *gameSettings, string scenarioDescription);
+      static void loadGameSettings(const vector < string > &dirList,
+                                   const ScenarioInfo * scenarioInfo,
+                                   GameSettings * gameSettings,
+                                   string scenarioDescription);
 
-private:
-	string getFunctionName(const XmlNode *scriptNode);
-};
+    private:
+      string getFunctionName(const XmlNode * scriptNode);
+    };
 
-}}//end namespace
+}}                              //end namespace
 
 #endif

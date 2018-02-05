@@ -1,16 +1,16 @@
 #!/bin/bash
-# Use this script to build MegaGlest Source Code Archive for a Version Release
+# Use this script to build ZetaGlest Source Code Archive for a Version Release
 # (Source archive for 'make install', without embedded content)
 # ----------------------------------------------------------------------------
 # Written by Mark Vejvoda <mark_vejvoda@hotmail.com>
 # Copyright (c) 2011 Mark Vejvoda under GNU GPL v3.0+
 
 VERSION=$(./mg-version.sh --version)
-RELEASENAME=megaglest-source
+RELEASENAME=zetaglest-binary
 PACKAGE="$RELEASENAME-$VERSION.tar.xz"
 CURRENTDIR="$(dirname $(readlink -f $0))"
 RELEASEDIR_ROOT="$CURRENTDIR/../../../release"
-RELEASEDIR="$RELEASEDIR_ROOT/$RELEASENAME-$VERSION/megaglest-$VERSION"
+RELEASEDIR="$RELEASEDIR_ROOT/$RELEASENAME-$VERSION/zetaglest-$VERSION"
 SOURCEDIR="$CURRENTDIR/../../source/"
 REPODIR="$CURRENTDIR/../../"
 
@@ -55,7 +55,7 @@ rm -rf "$RELEASEDIR/source/shared_lib/include/platform/miniupnpc/"
 cd ${CURRENTDIR}
 echo "Creating $PACKAGE"
 [[ -f "$RELEASEDIR_ROOT/$PACKAGE" ]] && rm "$RELEASEDIR_ROOT/$PACKAGE"
-tar cJf "$RELEASEDIR_ROOT/$PACKAGE" -C "$RELEASEDIR_ROOT/$RELEASENAME-$VERSION" "megaglest-$VERSION"
+tar cJf "$RELEASEDIR_ROOT/$PACKAGE" -C "$RELEASEDIR_ROOT/$RELEASENAME-$VERSION" "zetaglest-$VERSION"
+tar cJf "$RELEASEDIR_ROOT/$PACKAGE" -C "$RELEASEDIR_ROOT/$RELEASENAME-$VERSION" "zetaglest-$VERSION"
 
 ls -la $RELEASEDIR_ROOT/$PACKAGE
-
