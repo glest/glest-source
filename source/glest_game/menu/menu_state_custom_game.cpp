@@ -2346,17 +2346,10 @@ namespace Glest
               }
               else if (labelPlayers[i].mouseClick (x, y))
               {
-                int s;
-                GameSettings gameSettings;
-                SwitchSetupRequest ** switchSetupRequests;
-
-                int newFactionIdx = switchSetupRequests[i]->getToSlotIndex ();
-                int switchFactionIdx = switchSetupRequests[i]->getCurrentSlotIndex ();
-                listBoxControls[i].setSelectedItemIndex (ctHuman);
                 listBoxControls[i].setEditable (true);
                 listBoxControls[i].setEnabled (true);
-                serverInterface->switchSlot (switchFactionIdx, newFactionIdx);
-                updateNetworkSlots ();
+                listBoxControls[i].setSelectedItemIndex (ctHuman);
+                //updateNetworkSlots ();
 
               }
               else if (buttonBlockPlayers[i].mouseClick (x, y))
@@ -4368,6 +4361,12 @@ namespace Glest
 
         if (checkBoxScenario.getValue () == false)
         {
+          // When scenario is checked the value for mapInfo.players is reset to
+          // hardMaxPlayers. This resets it.
+          mapInfo.players = checkBoxAllowObservers.getValue () == true ?
+                                                        GameConstants::maxPlayers :
+                                                        mapInfo.hardMaxPlayers;
+
           for (int i = 0; i < GameConstants::maxPlayers; ++i)
           {
             if (i >= mapInfo.hardMaxPlayers && checkBoxAllowObservers.getValue() == false)
@@ -4375,8 +4374,21 @@ namespace Glest
               listBoxControls[i].setSelectedItemIndex (ctClosed);
               listBoxControls[i].setEditable (false);
               listBoxControls[i].setEnabled (false);
-
-//printf("In [%s::%s] Line: %d i = %d mapInfo.players = %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,i,mapInfo.players);
+              listBoxRMultiplier[i].setEditable (false);
+              listBoxRMultiplier[i].setEnabled (false);
+            }
+            else if (i >= mapInfo.hardMaxPlayers && checkBoxAllowObservers.getValue() == true)
+            {
+              listBoxControls[i].setSelectedItemIndex (ctNetwork);
+              listBoxControls[i].setEditable (false);
+              listBoxFactions[i].setSelectedItem (GameConstants::OBSERVER_SLOTNAME);
+              listBoxFactions[i].setEditable (false);
+              listBoxTeams[i].setSelectedItem (intToStr (GameConstants::maxPlayers +
+                                              fpt_Observer));
+              listBoxTeams[i].setEditable (false);
+              listBoxRMultiplier[i].setEditable (false);
+              listBoxRMultiplier[i].setEnabled (false);
+              listBoxRMultiplier[i].setVisible (false);
             }
             else if (listBoxControls[i].getSelectedItemIndex () !=
                      ctNetworkUnassigned)
@@ -4388,27 +4400,10 @@ namespace Glest
                       ctNetwork && (slot == NULL
                                     || slot->isConnected () == false)))
               {
-                // for enhanced observer mode (issue #13), set factions
-                // to observers and disable the controls
-                // https://github.com/ZetaGlest/zetaglest-source/issues/13
-                if (i >= mapInfo.hardMaxPlayers)
-                {
-                  if (checkBoxAllowObservers.getValue() == false)
-                  {
-                    listBoxControls[i].setEditable (true);
-                    listBoxControls[i].setEnabled (true);
-                  }
-                  else
-                  {
-                    listBoxControls[i].setSelectedItemIndex (ctNetwork);
-                    listBoxControls[i].setEditable (false);
-                    listBoxFactions[i].setSelectedItem (GameConstants::OBSERVER_SLOTNAME);
-                    listBoxFactions[i].setEditable (false);
-                    listBoxTeams[i].setSelectedItem (intToStr (GameConstants::maxPlayers +
-                                                    fpt_Observer));
-                    listBoxTeams[i].setEditable (false);
-                  }
-                }
+                listBoxControls[i].setEditable (true);
+                listBoxControls[i].setEnabled (true);
+                listBoxFactions[i].setEditable (true);
+                listBoxTeams[i].setEditable (true);
               }
               else
               {
