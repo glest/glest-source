@@ -99,11 +99,13 @@ public:
 
 	Vec2i size;
 	int players;
+	int hardMaxPlayers;
 	string desc;
 
 	MapInfo() {
 		size 	= Vec2i(0,0);
 		players = 0;
+		hardMaxPlayers = 0;
 		desc 	= "";
 	}
 };

@@ -391,21 +391,13 @@ void Map::end(){
 }
 
 Vec2i Map::getStartLocation(int locationIndex) const {
-	//	if(locationIndex >= maxPlayers) {
-	//	char szBuf[8096]="";
-	//	snprintf(szBuf,8096,"locationIndex >= maxPlayers [%d] [%d]",locationIndex, maxPlayers);
-	//	printf("%s\n",szBuf);
-	//	throw megaglest_runtime_error(szBuf);
-	//	assert(locationIndex < maxPlayers);
-	//	}
-	// else if(startLocations == NULL) {
-	// throw megaglest_runtime_error("startLocations == NULL");
-	// }
-
 	if(locationIndex < hardMaxPlayers) // maxPlayers for a map, not the Game
 		return startLocations[locationIndex];
 	else if (locationIndex < maxPlayers) {
-		return startLocations[1];
+		// needed for enhanced observer mode (issue #13)
+		// observer may be in slot 6 of a 4-player map. Just set the
+		// startLocation to 0
+		return startLocations[0];
 	}
 	else {
 		char szBuf[8096]="";
