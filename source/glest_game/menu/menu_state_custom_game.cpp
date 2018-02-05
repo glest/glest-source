@@ -2347,26 +2347,16 @@ namespace Glest
               else if (labelPlayers[i].mouseClick (x, y))
               {
                 int s;
-                bool masterserver_admin_found = false;
                 GameSettings gameSettings;
                 SwitchSetupRequest ** switchSetupRequests;
 
-                for (s = 0; s < mapInfo.players; s++)
-                {
-                  if (serverInterface->getSlot (s, true)->getSessionKey () ==
-                    gameSettings.getMasterserver_admin ())
-                  {
-                    masterserver_admin_found = true;
-                    break;
-                  }
-                }
-
-                if (i != s && masterserver_admin_found)
-                {
-                  int newFactionIdx = switchSetupRequests[i]->getToSlotIndex ();
-                  int switchFactionIdx = switchSetupRequests[i]->getCurrentSlotIndex ();
-                  serverInterface->switchSlot (switchFactionIdx, newFactionIdx);
-                }
+                int newFactionIdx = switchSetupRequests[i]->getToSlotIndex ();
+                int switchFactionIdx = switchSetupRequests[i]->getCurrentSlotIndex ();
+                listBoxControls[i].setSelectedItemIndex (ctHuman);
+                listBoxControls[i].setEditable (true);
+                listBoxControls[i].setEnabled (true);
+                serverInterface->switchSlot (switchFactionIdx, newFactionIdx);
+                updateNetworkSlots ();
 
               }
               else if (buttonBlockPlayers[i].mouseClick (x, y))
