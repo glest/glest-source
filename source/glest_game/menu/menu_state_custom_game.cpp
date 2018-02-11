@@ -4369,26 +4369,29 @@ namespace Glest
 
           for (int i = 0; i < GameConstants::maxPlayers; ++i)
           {
-            if (i >= mapInfo.hardMaxPlayers && checkBoxAllowObservers.getValue() == false)
+            if (i >= mapInfo.hardMaxPlayers)
             {
-              listBoxControls[i].setSelectedItemIndex (ctClosed);
-              listBoxControls[i].setEditable (false);
-              listBoxControls[i].setEnabled (false);
-              listBoxRMultiplier[i].setEditable (false);
-              listBoxRMultiplier[i].setEnabled (false);
-            }
-            else if (i >= mapInfo.hardMaxPlayers && checkBoxAllowObservers.getValue() == true)
-            {
-              listBoxControls[i].setSelectedItemIndex (ctNetwork);
-              listBoxControls[i].setEditable (false);
-              listBoxFactions[i].setSelectedItem (GameConstants::OBSERVER_SLOTNAME);
-              listBoxFactions[i].setEditable (false);
-              listBoxTeams[i].setSelectedItem (intToStr (GameConstants::maxPlayers +
-                                              fpt_Observer));
-              listBoxTeams[i].setEditable (false);
-              listBoxRMultiplier[i].setEditable (false);
-              listBoxRMultiplier[i].setEnabled (false);
-              listBoxRMultiplier[i].setVisible (false);
+              if (checkBoxAllowObservers.getValue() == false)
+              {
+                listBoxControls[i].setSelectedItemIndex (ctClosed);
+                listBoxControls[i].setEditable (false);
+                listBoxControls[i].setEnabled (false);
+                listBoxRMultiplier[i].setEditable (false);
+                listBoxRMultiplier[i].setEnabled (false);
+              }
+              else
+              {
+                listBoxControls[i].setSelectedItemIndex (ctNetwork);
+                listBoxControls[i].setEditable (false);
+                listBoxFactions[i].setSelectedItem (GameConstants::OBSERVER_SLOTNAME);
+                listBoxFactions[i].setEditable (false);
+                listBoxTeams[i].setSelectedItem (intToStr (GameConstants::maxPlayers +
+                                                fpt_Observer));
+                listBoxTeams[i].setEditable (false);
+                listBoxRMultiplier[i].setEditable (false);
+                listBoxRMultiplier[i].setEnabled (false);
+                listBoxRMultiplier[i].setVisible (false);
+              }
             }
             else if (listBoxControls[i].getSelectedItemIndex () !=
                      ctNetworkUnassigned)
