@@ -4555,17 +4555,37 @@ namespace Glest
                 hasOtherPlayer = true;
               }
             }
-            else if (clientInterface->getPlayerIndex () == (int) i)
+            else if (clientInterface->getPlayerIndex () == (int) i ||
+                      i >= mapInfo.hardMaxPlayers)
             {
+              // Most of the code that handles how to show the set up
+              // when observers are allowed is in the update() function
+              // in menu_state_custom_game.cpp. Explicitly stating to change
+              // players to observers, changing teams to the special "observer"
+              // team is done in that function. So basically, the update() function
+              // in this file receives the info from update() in
+              // menu_state_custom_game.cpp
+              //
+              // Mostly what needs to be done here is disable observer slots
+              // so the info can't be changed by the headless admin. We don't want
+              // him or her to accidently enable a non-observer into an observer slot
+              // that's > mapInfo.hardMaxPlayers, or to change the team.
+              //
               listBoxControls[i].setEditable (false);
             }
             else
             {
-              listBoxControls[i].setEditable (true);
+              if (i < mapInfo.hardMaxPlayers)
+              {
+                listBoxControls[i].setEditable (true);
+              }
             }
-            listBoxRMultiplier[i].setEditable (isHeadlessAdmin ());
-            listBoxFactions[i].setEditable (isHeadlessAdmin ());
-            listBoxTeams[i].setEditable (isHeadlessAdmin ());
+            if (i < mapInfo.hardMaxPlayers)
+            {
+              listBoxRMultiplier[i].setEditable (isHeadlessAdmin ());
+              listBoxFactions[i].setEditable (isHeadlessAdmin ());
+              listBoxTeams[i].setEditable (isHeadlessAdmin ());
+            }
           }
           if (hasOtherPlayer)
           {
