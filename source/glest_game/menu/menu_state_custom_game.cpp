@@ -4369,6 +4369,10 @@ namespace Glest
 
           for (int i = 0; i < GameConstants::maxPlayers; ++i)
           {
+            // FIXME: The contents of this if block could be refactored;
+            // Some of same statements are used in each condtion.
+            // please test afteward.
+            //
             if (i >= mapInfo.hardMaxPlayers)
             {
               if (checkBoxAllowObservers.getValue() == false)
