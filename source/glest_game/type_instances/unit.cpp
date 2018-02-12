@@ -3113,9 +3113,11 @@ namespace Glest
       // Default command is the class of the unit (i.e. attack for attackers, walk for walkers).
       // The default command is executed when a unit is produced and sent to a meeting point
       // or when the unit is selected and right clicked to a position.
-      if (commandType == NULL)
+      if (commandType == NULL ||
+          commandType == type->getFirstCtOfClass (ccMove) ||
+          commandType == type->getFirstCtOfClass(this->getType()->isOfClass(ucWarrior) ? ccAttack : ccMove))
       {
-        if (Game::toggleMoveAttack == 0)
+        if (!game->toggleMoveAttack ())
         {
         // move
           commandType = type->getFirstCtOfClass (ccMove);

@@ -6954,13 +6954,12 @@ namespace Glest
 
     void Game::keyDown (SDL_KeyboardEvent key)
     {
-      SDL_keysym
-        keystate = key.keysym;
-
       if (this->masterserverMode == true)
       {
         return;
       }
+
+      SDL_keysym keystate = key.keysym;
 
       //printf("In game checking keypress for key [%d]\n",key.keysym.sym);
 
@@ -7348,6 +7347,14 @@ namespace Glest
           {
             startCameraFollowUnit ();
           }
+          else if ((keystate.mod & (KMOD_LCTRL | KMOD_RCTRL)) &&
+                    isKeyPressed ('A', key) == true)
+          {
+            bool t = toggleMoveAttack ();
+            static string action = "move";
+            action = (t == 0) ? "move" : "attack";
+            console.addLine("Default command is now " + action);
+          }
           //exit
           else
             if (isKeyPressed (configKeys.getSDLKey ("ExitKey"), key, false)
@@ -7356,11 +7363,7 @@ namespace Glest
             popupMenu.setEnabled (!popupMenu.getEnabled ());
             popupMenu.setVisible (popupMenu.getEnabled ());
           }
-          else if ((keystate.mod & (KMOD_LCTRL | KMOD_RCTRL)) &&
-                    isKeyPressed ('A', key) == true)
-          {
-            toggleMoveAttack = (toggleMoveAttack == 0) ? 1 : 0;
-          }
+
           //hotkeys
           if (SystemFlags::
               getSystemSettingType (SystemFlags::debugSystem).enabled)
@@ -8530,6 +8533,8 @@ namespace Glest
           break;
         case ctCpuMega:
           factionInfo += " CPU Mega" + multiplier;
+          break;
+        default:
           break;
         }
 

@@ -298,6 +298,13 @@ namespace Glest
       {
         return masterserverMode;
       }
+
+      bool toggleMoveAttack ()const
+      {
+        static bool t = 0;
+        return t = (t == false) ? true : false;
+      }
+
       //get
       GameSettings *getGameSettings ()
       {
@@ -517,9 +524,6 @@ namespace Glest
       {
         return renderInGamePerformance;
       }
-
-      // 0 for move, 1 for attack
-      bool toggleMoveAttack = 0;
 
     private:
       //render
