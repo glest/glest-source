@@ -6954,6 +6954,9 @@ namespace Glest
 
     void Game::keyDown (SDL_KeyboardEvent key)
     {
+      SDL_keysym
+        keystate = key.keysym;
+
       if (this->masterserverMode == true)
       {
         return;
@@ -7353,7 +7356,11 @@ namespace Glest
             popupMenu.setEnabled (!popupMenu.getEnabled ());
             popupMenu.setVisible (popupMenu.getEnabled ());
           }
-
+          else if ((keystate.mod & (KMOD_LCTRL | KMOD_RCTRL)) &&
+                    isKeyPressed ('A', key) == true)
+          {
+            toggleMoveAttack = (toggleMoveAttack == 0) ? 1 : 0;
+          }
           //hotkeys
           if (SystemFlags::
               getSystemSettingType (SystemFlags::debugSystem).enabled)

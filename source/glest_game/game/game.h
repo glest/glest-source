@@ -518,6 +518,9 @@ namespace Glest
         return renderInGamePerformance;
       }
 
+      // 0 for move, 1 for attack
+      bool toggleMoveAttack = 0;
+
     private:
       //render
       void render3d ();
