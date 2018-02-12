@@ -61,14 +61,17 @@ libwxgtk3.0-dev libxml2-dev
 ### Mac OS X
 
 (Needs editing/updating)
+[Current Status](https://github.com/ZetaGlest/zetaglest-source/issues/25)
 
 ### Windows
 
 (Need editing/updating)
+[Current Status](https://github.com/ZetaGlest/zetaglest-source/issues/37)
 
 ### *BSD
 
 (Need editing/updating)
+[Current Status](https://github.com/ZetaGlest/zetaglest-source/issues/56)
 
 ### Arch Linux
 
