@@ -5,6 +5,17 @@ This documents notable or significant changes to
 information about the game from which it was forked, please see the
 [MegaGlest home page](https://megaglest.org/).
 
+## 2018-02-03
+
+Temporarily (or maybe permanently) reverted the default command back to
+"move" (see entry dated 2018-01-27).
+
+Hotkey changes:
+  M -> H (Show console/chat history)
+  H -> T (Toggle team chat
+  T -> Z (Cycle between store units)
+  M is now the hotkey for "move" when units are selected
+
 ## 2018-01-31
 
 [Replaced the sphinx with the scarab](https://github.com/ZetaGlest/zetaglest-data/commit/60e734180ecb7f925144c94bef339e6130f9ae20)
