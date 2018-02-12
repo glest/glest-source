@@ -6959,6 +6959,8 @@ namespace Glest
         return;
       }
 
+      SDL_keysym keystate = key.keysym;
+
       //printf("In game checking keypress for key [%d]\n",key.keysym.sym);
 
       try
@@ -7344,6 +7346,14 @@ namespace Glest
                  false) == true)
           {
             startCameraFollowUnit ();
+          }
+          else if ((keystate.mod & (KMOD_LCTRL | KMOD_RCTRL)) &&
+                    isKeyPressed ('A', key) == true)
+          {
+            bool t = toggleMoveAttack ();
+            static string action = "move";
+            action = (t == 0) ? "move" : "attack";
+            console.addLine("Default command is now " + action);
           }
           //exit
           else
@@ -8523,6 +8533,8 @@ namespace Glest
           break;
         case ctCpuMega:
           factionInfo += " CPU Mega" + multiplier;
+          break;
+        default:
           break;
         }
 

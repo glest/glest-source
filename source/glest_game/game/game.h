@@ -298,6 +298,13 @@ namespace Glest
       {
         return masterserverMode;
       }
+
+      bool toggleMoveAttack ()const
+      {
+        static bool t = 0;
+        return t = (t == false) ? true : false;
+      }
+
       //get
       GameSettings *getGameSettings ()
       {
