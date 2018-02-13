@@ -73,7 +73,7 @@ To run your own headless (dedicated) server:
 
 To start a server and host a game:
 
-    Forward TCP ports 61357-61366
+    Forward TCP ports 61357-61368
     Enter the ZetaGlest lobby and click "Host Game"
 
 ### Note
