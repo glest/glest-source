@@ -139,8 +139,9 @@ namespace Glest
                                          intToStr (map->getW ()) + " " +
                                          intToStr (map->getH ()));
         }
-        else if (this->map->
-                 isInsideSurface (this->map->toSurfCoords (path)) == false)
+        else if (this->
+                 map->isInsideSurface (this->map->toSurfCoords (path)) ==
+                 false)
         {
           throw
             megaglest_runtime_error ("Invalid map surface path position = " +
@@ -397,8 +398,9 @@ namespace Glest
           vector < UnitParticleSystem * >particleSystemToRemove;
           particleSystemToRemove.push_back (ups);
 
-          Renderer::getInstance ().
-            cleanupUnitParticleSystems (particleSystemToRemove, rsGame);
+          Renderer::
+            getInstance ().cleanupUnitParticleSystems (particleSystemToRemove,
+                                                       rsGame);
           ups = NULL;
         }
       }
@@ -453,12 +455,14 @@ namespace Glest
           unit->setMeshPosInParticleSystem (ups);
           if (unit->getFaction ()->getTexture ())
           {
-            ups->setFactionColor (unit->getFaction ()->getTexture ()->
-                                  getPixmapConst ()->getPixel3f (0, 0));
+            ups->setFactionColor (unit->getFaction ()->
+                                  getTexture ()->getPixmapConst ()->
+                                  getPixel3f (0, 0));
           }
           //printf("Adding attack boost particle to deferred buffer: %p\n",ups);
-          Renderer::getInstance ().
-            addToDeferredParticleSystemList (make_pair (ups, rsGame));
+          Renderer::
+            getInstance ().addToDeferredParticleSystemList (make_pair
+                                                            (ups, rsGame));
         }
       }
     }
@@ -484,18 +488,18 @@ namespace Glest
       if (unitAttackBoostEffectNode->hasAttribute ("source-faction") == true)
       {
         string factionName =
-          unitAttackBoostEffectNode->getAttribute ("source-faction")->
-          getValue ();
+          unitAttackBoostEffectNode->
+          getAttribute ("source-faction")->getValue ();
         string unitTypeName =
-          unitAttackBoostEffectNode->getAttribute ("source-unit-type")->
-          getValue ();
+          unitAttackBoostEffectNode->
+          getAttribute ("source-unit-type")->getValue ();
         string skillTypeName =
-          unitAttackBoostEffectNode->getAttribute ("source-skill-type")->
-          getValue ();
+          unitAttackBoostEffectNode->
+          getAttribute ("source-skill-type")->getValue ();
         SkillClass skillClass =
           static_cast < SkillClass >
-          (unitAttackBoostEffectNode->getAttribute ("source-skill-class")->
-           getIntValue ());
+          (unitAttackBoostEffectNode->
+           getAttribute ("source-skill-class")->getIntValue ());
 
         const UnitType *unitType =
           world->findUnitTypeByName (factionName, unitTypeName);
@@ -521,15 +525,15 @@ namespace Glest
 
         if (applyToOriginator == true)
         {
-          applyLoadedAttackBoostParticles (boost->
-                                           unitParticleSystemTypeForSourceUnit,
-                                           unitAttackBoostEffectNode, unit);
+          applyLoadedAttackBoostParticles
+            (boost->unitParticleSystemTypeForSourceUnit,
+             unitAttackBoostEffectNode, unit);
         }
         else
         {
-          applyLoadedAttackBoostParticles (boost->
-                                           unitParticleSystemTypeForAffectedUnit,
-                                           unitAttackBoostEffectNode, unit);
+          applyLoadedAttackBoostParticles
+            (boost->unitParticleSystemTypeForAffectedUnit,
+             unitAttackBoostEffectNode, unit);
         }
       }
       else
@@ -556,26 +560,27 @@ namespace Glest
       if (getSource () != NULL)
       {
         unitAttackBoostEffectNode->addAttribute ("source",
-                                                 intToStr (getSource ()->
-                                                           getId ()),
+                                                 intToStr (getSource ()->getId
+                                                           ()),
                                                  mapTagReplacements);
 
         unitAttackBoostEffectNode->addAttribute ("source-faction",
-                                                 getSource ()->getFaction ()->
-                                                 getType ()->getName (false),
-                                                 mapTagReplacements);
-        unitAttackBoostEffectNode->addAttribute ("source-unit-type",
-                                                 getSource ()->getType ()->
+                                                 getSource ()->
+                                                 getFaction ()->getType ()->
                                                  getName (false),
                                                  mapTagReplacements);
-        unitAttackBoostEffectNode->addAttribute ("source-skill-type",
+        unitAttackBoostEffectNode->addAttribute ("source-unit-type",
                                                  getSource ()->
-                                                 getCurrSkill ()->getName (),
+                                                 getType ()->getName (false),
+                                                 mapTagReplacements);
+        unitAttackBoostEffectNode->addAttribute ("source-skill-type",
+                                                 getSource ()->getCurrSkill
+                                                 ()->getName (),
                                                  mapTagReplacements);
         unitAttackBoostEffectNode->addAttribute ("source-skill-class",
-                                                 intToStr (getSource ()->
-                                                           getCurrSkill ()->
-                                                           getClass ()),
+                                                 intToStr (getSource
+                                                           ()->getCurrSkill
+                                                           ()->getClass ()),
                                                  mapTagReplacements);
       }
 //      UnitParticleSystem *ups;
@@ -615,8 +620,8 @@ namespace Glest
 
       SkillClass skillClass = scStop;
       string skillTypeName =
-        unitAttackBoostEffectOriginatorNode->getAttribute ("skillType")->
-        getValue ();
+        unitAttackBoostEffectOriginatorNode->
+        getAttribute ("skillType")->getValue ();
       if (unitAttackBoostEffectOriginatorNode->hasAttribute ("skillClass") ==
           false)
       {
@@ -635,19 +640,19 @@ namespace Glest
       {
         skillClass =
           static_cast < SkillClass >
-          (unitAttackBoostEffectOriginatorNode->getAttribute ("skillClass")->
-           getIntValue ());
+          (unitAttackBoostEffectOriginatorNode->
+           getAttribute ("skillClass")->getIntValue ());
       }
 
       this->skillType =
         unit->getType ()->getSkillType (skillTypeName, skillClass);
 
-      if (unitAttackBoostEffectOriginatorNode->
-          hasChild ("currentAttackBoostUnits") == true)
+      if (unitAttackBoostEffectOriginatorNode->hasChild
+          ("currentAttackBoostUnits") == true)
       {
         vector < XmlNode * >currentAttackBoostUnitsNodeList =
-          unitAttackBoostEffectOriginatorNode->
-          getChildList ("currentAttackBoostUnits");
+          unitAttackBoostEffectOriginatorNode->getChildList
+          ("currentAttackBoostUnits");
         for (unsigned int i = 0; i < currentAttackBoostUnitsNodeList.size ();
              ++i)
         {
@@ -658,8 +663,8 @@ namespace Glest
         }
       }
 
-      if (unitAttackBoostEffectOriginatorNode->
-          hasChild ("UnitAttackBoostEffect") == true)
+      if (unitAttackBoostEffectOriginatorNode->hasChild
+          ("UnitAttackBoostEffect") == true)
       {
         currentAppliedEffect = new UnitAttackBoostEffect ();
         currentAppliedEffect->loadGame (unitAttackBoostEffectOriginatorNode,
@@ -677,21 +682,21 @@ namespace Glest
       if (skillType != NULL)
       {
         unitAttackBoostEffectOriginatorNode->addAttribute ("skillType",
-                                                           skillType->
-                                                           getName (),
+                                                           skillType->getName
+                                                           (),
                                                            mapTagReplacements);
         unitAttackBoostEffectOriginatorNode->addAttribute ("skillClass",
                                                            intToStr
-                                                           (skillType->
-                                                            getClass ()),
+                                                           (skillType->getClass
+                                                            ()),
                                                            mapTagReplacements);
       }
 //      std::vector<int> currentAttackBoostUnits;
       for (unsigned int i = 0; i < currentAttackBoostUnits.size (); ++i)
       {
         XmlNode *currentAttackBoostUnitsNode =
-          unitAttackBoostEffectOriginatorNode->
-          addChild ("currentAttackBoostUnits");
+          unitAttackBoostEffectOriginatorNode->addChild
+          ("currentAttackBoostUnits");
         currentAttackBoostUnitsNode->addAttribute ("value",
                                                    intToStr
                                                    (currentAttackBoostUnits
@@ -943,15 +948,17 @@ namespace Glest
     void Unit::cleanupAllParticlesystems ()
     {
 
-      Renderer::getInstance ().
-        cleanupUnitParticleSystems (unitParticleSystems, rsGame);
+      Renderer::
+        getInstance ().cleanupUnitParticleSystems (unitParticleSystems,
+                                                   rsGame);
 
       Renderer::getInstance ().cleanupParticleSystems (fireParticleSystems,
                                                        rsGame);
       // Must set this to null of it will be used below in stopDamageParticles()
 
-      if (Renderer::getInstance ().
-          validateParticleSystemStillExists (this->fire, rsGame) == false)
+      if (Renderer::
+          getInstance ().validateParticleSystemStillExists (this->fire,
+                                                            rsGame) == false)
       {
         this->fire = NULL;
       }
@@ -960,9 +967,9 @@ namespace Glest
       queuedUnitParticleSystemTypes.clear ();
       while (unitParticleSystems.empty () == false)
       {
-        if (Renderer::getInstance ().
-            validateParticleSystemStillExists (unitParticleSystems.back (),
-                                               rsGame) == true)
+        if (Renderer::
+            getInstance ().validateParticleSystemStillExists
+            (unitParticleSystems.back (), rsGame) == true)
         {
           unitParticleSystems.back ()->fade ();
         }
@@ -975,10 +982,8 @@ namespace Glest
     ParticleSystem *Unit::getFire () const
     {
       if (this->fire != NULL &&
-          Renderer::getInstance ().validateParticleSystemStillExists (this->
-                                                                      fire,
-                                                                      rsGame)
-          == false)
+          Renderer::getInstance ().
+          validateParticleSystemStillExists (this->fire, rsGame) == false)
       {
         return NULL;
       }
@@ -1252,10 +1257,9 @@ namespace Glest
 
 #ifdef USE_STREFLOP
         targetRotationZ =
-          radToDeg (streflop::
-                    atan2 (static_cast < streflop::Simple > (abs (normal.x)),
-                           static_cast < streflop::Simple >
-                           (abs (normal.y))));
+          radToDeg (streflop::atan2
+                    (static_cast < streflop::Simple > (abs (normal.x)),
+                     static_cast < streflop::Simple > (abs (normal.y))));
 #else
         targetRotationZ = radToDeg (atan2 (abs (normal.x), abs (normal.y)));
 #endif
@@ -1268,10 +1272,9 @@ namespace Glest
 
 #ifdef USE_STREFLOP
         targetRotationX =
-          radToDeg (streflop::
-                    atan2 (static_cast < streflop::Simple > (abs (normal.z)),
-                           static_cast < streflop::Simple >
-                           (abs (normal.y))));
+          radToDeg (streflop::atan2
+                    (static_cast < streflop::Simple > (abs (normal.z)),
+                     static_cast < streflop::Simple > (abs (normal.y))));
 #else
         targetRotationX = radToDeg (atan2 (abs (normal.z), abs (normal.y)));
 #endif
@@ -1710,9 +1713,9 @@ namespace Glest
         queuedUnitParticleSystemTypes.clear ();
         while (unitParticleSystems.empty () == false)
         {
-          if (Renderer::getInstance ().
-              validateParticleSystemStillExists (unitParticleSystems.back (),
-                                                 rsGame) == true)
+          if (Renderer::
+              getInstance ().validateParticleSystemStillExists
+              (unitParticleSystems.back (), rsGame) == true)
           {
             unitParticleSystems.back ()->fade ();
           }
@@ -1723,8 +1726,8 @@ namespace Glest
 
         // Set mew fog of war skill type if need be
         if (cmd != NULL && cmd->getCommandType () != NULL &&
-            cmd->getCommandType ()->hasFogOfWarSkillType (currSkill->
-                                                          getName ()))
+            cmd->getCommandType ()->
+            hasFogOfWarSkillType (currSkill->getName ()))
         {
           const FogOfWarSkillType *fowst =
             cmd->getCommandType ()->getFogOfWarSkillType ();
@@ -1773,9 +1776,8 @@ namespace Glest
            }
            }
          */
-        checkCustomizedUnitParticleListTriggers (currSkill->
-                                                 unitParticleSystemTypes,
-                                                 true);
+        checkCustomizedUnitParticleListTriggers
+          (currSkill->unitParticleSystemTypes, true);
       }
 
       if (this->currSkill != currSkill)
@@ -1864,8 +1866,8 @@ namespace Glest
 
       if (threaded)
       {
-        logSynchDataThreaded (extractFileFromDirectoryPath (__FILE__).
-                              c_str (), __LINE__);
+        logSynchDataThreaded (extractFileFromDirectoryPath (__FILE__).c_str
+                              (), __LINE__);
       }
       else
       {
@@ -1891,8 +1893,8 @@ namespace Glest
 
       if (threaded)
       {
-        logSynchDataThreaded (extractFileFromDirectoryPath (__FILE__).
-                              c_str (), __LINE__);
+        logSynchDataThreaded (extractFileFromDirectoryPath (__FILE__).c_str
+                              (), __LINE__);
       }
       else
       {
@@ -1986,9 +1988,9 @@ namespace Glest
       Vec2f relPosf = Vec2f ((float) relPos.x, (float) relPos.y);
 #ifdef USE_STREFLOP
       targetRotation =
-        radToDeg (streflop::
-                  atan2 (static_cast < streflop::Simple > (relPosf.x),
-                         static_cast < streflop::Simple > (relPosf.y)));
+        radToDeg (streflop::atan2
+                  (static_cast < streflop::Simple > (relPosf.x),
+                   static_cast < streflop::Simple > (relPosf.y)));
 #else
       targetRotation = radToDeg (atan2 (relPosf.x, relPosf.y));
 #endif
@@ -2001,8 +2003,8 @@ namespace Glest
 
       if (threaded)
       {
-        logSynchDataThreaded (extractFileFromDirectoryPath (__FILE__).
-                              c_str (), __LINE__);
+        logSynchDataThreaded (extractFileFromDirectoryPath (__FILE__).c_str
+                              (), __LINE__);
       }
       else
       {
@@ -2025,8 +2027,10 @@ namespace Glest
         for (UnitParticleSystems::iterator it = unitParticleSystems.begin ();
              it != unitParticleSystems.end (); ++it)
         {
-          if (Renderer::getInstance ().
-              validateParticleSystemStillExists ((*it), rsGame) == true)
+          if (Renderer::
+              getInstance ().validateParticleSystemStillExists ((*it),
+                                                                rsGame) ==
+              true)
           {
             (*it)->setVisible (visible);
           }
@@ -2038,8 +2042,10 @@ namespace Glest
              damageParticleSystems.begin ();
              it != damageParticleSystems.end (); ++it)
         {
-          if (Renderer::getInstance ().
-              validateParticleSystemStillExists ((*it), rsGame) == true)
+          if (Renderer::
+              getInstance ().validateParticleSystemStillExists ((*it),
+                                                                rsGame) ==
+              true)
           {
             (*it)->setVisible (visible);
           }
@@ -2050,8 +2056,10 @@ namespace Glest
         for (UnitParticleSystems::iterator it = smokeParticleSystems.begin ();
              it != smokeParticleSystems.end (); ++it)
         {
-          if (Renderer::getInstance ().
-              validateParticleSystemStillExists ((*it), rsGame) == true)
+          if (Renderer::
+              getInstance ().validateParticleSystemStillExists ((*it),
+                                                                rsGame) ==
+              true)
           {
             if ((*it)->getVisible () != visible)
             {
@@ -2080,8 +2088,9 @@ namespace Glest
           if (effect != NULL && effect->ups != NULL)
           {
             bool particleValid =
-              Renderer::getInstance ().
-              validateParticleSystemStillExists (effect->ups, rsGame);
+              Renderer::
+              getInstance ().validateParticleSystemStillExists (effect->ups,
+                                                                rsGame);
             if (particleValid == true)
             {
               effect->ups->setVisible (visible);
@@ -2095,14 +2104,13 @@ namespace Glest
             NULL)
         {
           bool particleValid =
-            Renderer::getInstance ().
-            validateParticleSystemStillExists
+            Renderer::getInstance ().validateParticleSystemStillExists
             (currentAttackBoostOriginatorEffect.currentAppliedEffect->ups,
              rsGame);
           if (particleValid == true)
           {
-            currentAttackBoostOriginatorEffect.currentAppliedEffect->ups->
-              setVisible (visible);
+            currentAttackBoostOriginatorEffect.currentAppliedEffect->
+              ups->setVisible (visible);
           }
         }
       }
@@ -2413,8 +2421,8 @@ namespace Glest
     std::pair < CommandResult, string > Unit::giveCommand (Command * command,
                                                            bool tryQueue)
     {
-      if (SystemFlags::getSystemSettingType (SystemFlags::debugUnitCommands).
-          enabled)
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugUnitCommands).enabled)
         SystemFlags::OutputDebug (SystemFlags::debugUnitCommands,
                                   "\n======================\nUnit Command tryQueue = %d\nUnit Info:\n%s\nCommand Info:\n%s\n",
                                   tryQueue, this->toString ().c_str (),
@@ -2424,8 +2432,8 @@ namespace Glest
       changedActiveCommand = false;
 
       Chrono chrono;
-      if (SystemFlags::getSystemSettingType (SystemFlags::debugPerformance).
-          enabled)
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugPerformance).enabled)
         chrono.start ();
 
       if (command == NULL)
@@ -2439,12 +2447,13 @@ namespace Glest
 
       const int command_priority = command->getPriority ();
 
-      if (SystemFlags::getSystemSettingType (SystemFlags::debugPerformance).
-          enabled && chrono.getMillis () > 0)
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugPerformance).enabled
+          && chrono.getMillis () > 0)
         SystemFlags::OutputDebug (SystemFlags::debugPerformance,
                                   "In [%s::%s] Line: %d took msecs: %lld\n",
-                                  extractFileFromDirectoryPath (__FILE__).
-                                  c_str (), __FUNCTION__, __LINE__,
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__, __LINE__,
                                   chrono.getMillis ());
 
       //printf("In [%s::%s] Line: %d unit [%d - %s] command [%s] tryQueue = %d command->getCommandType()->isQueuable(tryQueue) = %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,this->getId(),this->getType()->getName().c_str(), command->getCommandType()->getName().c_str(), tryQueue,command->getCommandType()->isQueuable(tryQueue));
@@ -2452,19 +2461,21 @@ namespace Glest
 
       if (command->getCommandType ()->isQueuable (tryQueue))
       {
-        if (SystemFlags::getSystemSettingType (SystemFlags::debugPerformance).
-            enabled && chrono.getMillis () > 0)
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugPerformance).enabled
+            && chrono.getMillis () > 0)
           SystemFlags::OutputDebug (SystemFlags::debugPerformance,
                                     "In [%s::%s] Line: %d took msecs: %lld\n",
-                                    extractFileFromDirectoryPath (__FILE__).
-                                    c_str (), __FUNCTION__, __LINE__,
-                                    chrono.getMillis ());
-        if (SystemFlags::
-            getSystemSettingType (SystemFlags::debugUnitCommands).enabled)
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, chrono.getMillis ());
+        if (SystemFlags::getSystemSettingType
+            (SystemFlags::debugUnitCommands).enabled)
           SystemFlags::OutputDebug (SystemFlags::debugUnitCommands,
                                     "In [%s::%s Line: %d] Command is Queable\n",
-                                    extractFileFromDirectoryPath (__FILE__).
-                                    c_str (), __FUNCTION__, __LINE__);
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__);
 
         if (command->getCommandType ()->isQueuable () == qAlways && tryQueue)
         {
@@ -2481,9 +2492,8 @@ namespace Glest
           {
             if ((*i)->getPriority () < command_priority)
             {
-              if (SystemFlags::
-                  getSystemSettingType (SystemFlags::debugUnitCommands).
-                  enabled)
+              if (SystemFlags::getSystemSettingType
+                  (SystemFlags::debugUnitCommands).enabled)
                 SystemFlags::OutputDebug (SystemFlags::debugUnitCommands,
                                           "In [%s::%s Line: %d] Deleting lower priority command [%s]\n",
                                           extractFileFromDirectoryPath
@@ -2506,48 +2516,52 @@ namespace Glest
             }
           }
         }
-        if (SystemFlags::getSystemSettingType (SystemFlags::debugPerformance).
-            enabled && chrono.getMillis () > 0)
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugPerformance).enabled
+            && chrono.getMillis () > 0)
           SystemFlags::OutputDebug (SystemFlags::debugPerformance,
                                     "In [%s::%s] Line: %d took msecs: %lld\n",
-                                    extractFileFromDirectoryPath (__FILE__).
-                                    c_str (), __FUNCTION__, __LINE__,
-                                    chrono.getMillis ());
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, chrono.getMillis ());
 
         //cancel current command if it is not queuable
         if (commands.empty () == false &&
             commands.back ()->getCommandType ()->isQueueAppendable () ==
             false)
         {
-          if (SystemFlags::
-              getSystemSettingType (SystemFlags::debugUnitCommands).enabled)
+          if (SystemFlags::getSystemSettingType
+              (SystemFlags::debugUnitCommands).enabled)
             SystemFlags::OutputDebug (SystemFlags::debugUnitCommands,
                                       "In [%s::%s Line: %d] Cancel command because last one is NOT queable [%s]\n",
-                                      extractFileFromDirectoryPath (__FILE__).
-                                      c_str (), __FUNCTION__, __LINE__,
-                                      commands.back ()->toString (false).
-                                      c_str ());
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__,
+                                      commands.back ()->
+                                      toString (false).c_str ());
 
           cancelCommand ();
         }
 
-        if (SystemFlags::getSystemSettingType (SystemFlags::debugPerformance).
-            enabled && chrono.getMillis () > 0)
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugPerformance).enabled
+            && chrono.getMillis () > 0)
           SystemFlags::OutputDebug (SystemFlags::debugPerformance,
                                     "In [%s::%s] Line: %d took msecs: %lld\n",
-                                    extractFileFromDirectoryPath (__FILE__).
-                                    c_str (), __FUNCTION__, __LINE__,
-                                    chrono.getMillis ());
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, chrono.getMillis ());
       }
       else
       {
         //empty command queue
-        if (SystemFlags::
-            getSystemSettingType (SystemFlags::debugUnitCommands).enabled)
+        if (SystemFlags::getSystemSettingType
+            (SystemFlags::debugUnitCommands).enabled)
           SystemFlags::OutputDebug (SystemFlags::debugUnitCommands,
                                     "In [%s::%s Line: %d] Clear commands because current is NOT queable.\n",
-                                    extractFileFromDirectoryPath (__FILE__).
-                                    c_str (), __FUNCTION__, __LINE__);
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__);
 
         bool willChangedActiveCommand = (commands.empty () == false);
         if (willChangedActiveCommand == true)
@@ -2589,41 +2603,44 @@ namespace Glest
 
         //printf("In [%s::%s] Line: %d cleared existing commands\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
 
-        if (SystemFlags::getSystemSettingType (SystemFlags::debugPerformance).
-            enabled && chrono.getMillis () > 0)
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugPerformance).enabled
+            && chrono.getMillis () > 0)
           SystemFlags::OutputDebug (SystemFlags::debugPerformance,
                                     "In [%s::%s] Line: %d took msecs: %lld\n",
-                                    extractFileFromDirectoryPath (__FILE__).
-                                    c_str (), __FUNCTION__, __LINE__,
-                                    chrono.getMillis ());
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, chrono.getMillis ());
       }
 
-      if (SystemFlags::getSystemSettingType (SystemFlags::debugPerformance).
-          enabled && chrono.getMillis () > 0)
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugPerformance).enabled
+          && chrono.getMillis () > 0)
         SystemFlags::OutputDebug (SystemFlags::debugPerformance,
                                   "In [%s::%s] Line: %d took msecs: %lld\n",
-                                  extractFileFromDirectoryPath (__FILE__).
-                                  c_str (), __FUNCTION__, __LINE__,
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__, __LINE__,
                                   chrono.getMillis ());
 
       //check command
       result = checkCommand (command);
-      if (SystemFlags::getSystemSettingType (SystemFlags::debugUnitCommands).
-          enabled)
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugUnitCommands).enabled)
         SystemFlags::OutputDebug (SystemFlags::debugUnitCommands,
                                   "In [%s::%s Line: %d] checkCommand returned: [%d]\n",
-                                  extractFileFromDirectoryPath (__FILE__).
-                                  c_str (), __FUNCTION__, __LINE__,
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__, __LINE__,
                                   result.first);
 
       //printf("In [%s::%s] Line: %d check command returned %d, commands.size() = %d\n[%s]\n\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,result,commands.size(),command->toString().c_str());
 
-      if (SystemFlags::getSystemSettingType (SystemFlags::debugPerformance).
-          enabled && chrono.getMillis () > 0)
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugPerformance).enabled
+          && chrono.getMillis () > 0)
         SystemFlags::OutputDebug (SystemFlags::debugPerformance,
                                   "In [%s::%s] Line: %d took msecs: %lld\n",
-                                  extractFileFromDirectoryPath (__FILE__).
-                                  c_str (), __FUNCTION__, __LINE__,
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__, __LINE__,
                                   chrono.getMillis ());
 
       if (result.first == crSuccess)
@@ -2631,12 +2648,13 @@ namespace Glest
         applyCommand (command);
       }
 
-      if (SystemFlags::getSystemSettingType (SystemFlags::debugPerformance).
-          enabled && chrono.getMillis () > 0)
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugPerformance).enabled
+          && chrono.getMillis () > 0)
         SystemFlags::OutputDebug (SystemFlags::debugPerformance,
                                   "In [%s::%s] Line: %d took msecs: %lld\n",
-                                  extractFileFromDirectoryPath (__FILE__).
-                                  c_str (), __FUNCTION__, __LINE__,
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__, __LINE__,
                                   chrono.getMillis ());
 
       //push back command
@@ -2656,12 +2674,13 @@ namespace Glest
         changedActiveCommand = false;
       }
 
-      if (SystemFlags::getSystemSettingType (SystemFlags::debugPerformance).
-          enabled && chrono.getMillis () > 0)
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugPerformance).enabled
+          && chrono.getMillis () > 0)
         SystemFlags::OutputDebug (SystemFlags::debugPerformance,
                                   "In [%s::%s] Line: %d took msecs: %lld\n",
-                                  extractFileFromDirectoryPath (__FILE__).
-                                  c_str (), __FUNCTION__, __LINE__,
+                                  extractFileFromDirectoryPath
+                                  (__FILE__).c_str (), __FUNCTION__, __LINE__,
                                   chrono.getMillis ());
 
       return result;
@@ -2681,8 +2700,9 @@ namespace Glest
         if (SystemFlags::getSystemSettingType (SystemFlags::debugLUA).enabled)
           SystemFlags::OutputDebug (SystemFlags::debugLUA,
                                     "In [%s::%s Line: %d]\n",
-                                    extractFileFromDirectoryPath (__FILE__).
-                                    c_str (), __FUNCTION__, __LINE__);
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__);
         return crFailUndefined;
       }
 
@@ -2701,8 +2721,9 @@ namespace Glest
       while (commands.empty () == false)
       {
         if (commands.front ()->getUnit () != NULL
-            && this->faction->isUnitInLivingUnitsp (commands.front ()->
-                                                    getUnit ()) == false)
+            && this->faction->isUnitInLivingUnitsp (commands.
+                                                    front ()->getUnit ()) ==
+            false)
         {
           safeMutex.Lock ();
           delete commands.front ();
@@ -2735,8 +2756,9 @@ namespace Glest
         if (SystemFlags::getSystemSettingType (SystemFlags::debugLUA).enabled)
           SystemFlags::OutputDebug (SystemFlags::debugLUA,
                                     "In [%s::%s Line: %d]\n",
-                                    extractFileFromDirectoryPath (__FILE__).
-                                    c_str (), __FUNCTION__, __LINE__);
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__);
         return crFailUndefined;
       }
 
@@ -2835,15 +2857,17 @@ namespace Glest
       {
         faction->deApplyStaticConsumption (type,
                                            (getCurrCommand () !=
-                                            NULL ? getCurrCommand ()->
-                                            getCommandType () : NULL));
+                                            NULL ?
+                                            getCurrCommand ()->getCommandType
+                                            () : NULL));
       }
       else
       {
         faction->deApplyStaticCosts (type,
                                      (getCurrCommand () !=
-                                      NULL ? getCurrCommand ()->
-                                      getCommandType () : NULL));
+                                      NULL ?
+                                      getCurrCommand ()->getCommandType () :
+                                      NULL));
       }
 
       //do the cleaning
@@ -2869,25 +2893,25 @@ namespace Glest
     {
       try
       {
-        if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
-            enabled)
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                     "In [%s::%s Line: %d] about to undertake unit id = %d [%s] [%s]\n",
-                                    extractFileFromDirectoryPath (__FILE__).
-                                    c_str (), __FUNCTION__, __LINE__,
-                                    this->id,
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, this->id,
                                     this->getFullName (false).c_str (),
                                     this->getDesc (false).c_str ());
 
         // Remove any units that were previously in attack-boost range
-        if (currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-            empty () == false
+        if (currentAttackBoostOriginatorEffect.
+            currentAttackBoostUnits.empty () == false
             && currentAttackBoostOriginatorEffect.skillType != NULL)
         {
           for (unsigned int i = 0;
                i <
-               currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-               size (); ++i)
+               currentAttackBoostOriginatorEffect.
+               currentAttackBoostUnits.size (); ++i)
           {
             // Remove attack boost upgrades from unit
             int findUnitId =
@@ -2895,9 +2919,9 @@ namespace Glest
             Unit *affectedUnit = game->getWorld ()->findUnitById (findUnitId);
             if (affectedUnit != NULL)
             {
-              affectedUnit->
-                deapplyAttackBoost (currentAttackBoostOriginatorEffect.
-                                    skillType->getAttackBoost (), this);
+              affectedUnit->deapplyAttackBoost
+                (currentAttackBoostOriginatorEffect.skillType->
+                 getAttackBoost (), this);
             }
 
             //printf("!!!! DE-APPLY ATTACK BOOST from unit [%s - %d]\n",affectedUnit->getType()->getName().c_str(),affectedUnit->getId());
@@ -2905,41 +2929,45 @@ namespace Glest
           currentAttackBoostOriginatorEffect.currentAttackBoostUnits.clear ();
         }
 
-        if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
-            enabled)
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                     "In [%s::%s Line: %d]\n",
-                                    extractFileFromDirectoryPath (__FILE__).
-                                    c_str (), __FUNCTION__, __LINE__);
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__);
 
         UnitUpdater *unitUpdater = game->getWorld ()->getUnitUpdater ();
 
-        if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
-            enabled)
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                     "In [%s::%s Line: %d]\n",
-                                    extractFileFromDirectoryPath (__FILE__).
-                                    c_str (), __FUNCTION__, __LINE__);
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__);
 
         //unitUpdater->clearUnitPrecache(this);
         unitUpdater->removeUnitPrecache (this);
 
-        if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
-            enabled)
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                     "In [%s::%s Line: %d]\n",
-                                    extractFileFromDirectoryPath (__FILE__).
-                                    c_str (), __FUNCTION__, __LINE__);
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__);
 
         this->faction->deleteLivingUnits (id);
         this->faction->deleteLivingUnitsp (this);
 
-        if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
-            enabled)
+        if (SystemFlags::
+            getSystemSettingType (SystemFlags::debugSystem).enabled)
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                     "In [%s::%s Line: %d]\n",
-                                    extractFileFromDirectoryPath (__FILE__).
-                                    c_str (), __FUNCTION__, __LINE__);
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__);
 
         faction->removeUnit (this);
       }
@@ -3097,8 +3125,8 @@ namespace Glest
                  || targetUnit->isDamaged () == true))
             {
               const RepairCommandType *rct =
-                this->getType ()->getFirstRepairCommand (targetUnit->
-                                                         getType ());
+                this->getType ()->
+                getFirstRepairCommand (targetUnit->getType ());
               if (rct != NULL)
               {
                 commandType =
@@ -3120,7 +3148,9 @@ namespace Glest
 
         // attack
         // Is the unit class warrior? if yes, attack by default, else walk.
-        commandType = type->getFirstCtOfClass(this->getType()->isOfClass(ucWarrior) ? ccAttack : ccMove);
+        commandType =
+          type->getFirstCtOfClass (this->getType ()->
+                                   isOfClass (ucWarrior) ? ccAttack : ccMove);
 
         // FIXME: I think a better solution would be to have a hotkey for this,
         // the user can decide, and toggle in-game -andy5995 2018-02-03
@@ -3240,12 +3270,13 @@ namespace Glest
           throw megaglest_runtime_error ("targetCell == NULL");
         }
 
-        int64 heightDiff =
-          ((truncateDecimal <
-            float >(unitCell->getHeight (),
-                    2) * speedMultiplier) -(truncateDecimal <
-                                            float >(targetCell->getHeight (),
-                                                    2) * speedMultiplier));
+        int64 heightDiff = ((truncateDecimal < float >(unitCell->getHeight (),
+                                                       2) *
+                             speedMultiplier) -(truncateDecimal <
+                                                float >(targetCell->
+                                                        getHeight (),
+                                                        2) *
+                                                speedMultiplier));
         //heightFactor= clamp(speedMultiplier + heightDiff / (5.f * speedMultiplier), 0.2f * speedMultiplier, 5.f * speedMultiplier);
         heightFactor =
           clamp (speedMultiplier + heightDiff / (5 * speedMultiplier),
@@ -3343,8 +3374,8 @@ namespace Glest
            MG_SIZE_T_SPECIFIER "\n", this->id,
            this->getType ()->getName (false).c_str (),
            currSkill->getBoostDesc (false).c_str (),
-           currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-           size ());
+           currentAttackBoostOriginatorEffect.
+           currentAttackBoostUnits.size ());
 
       if (currSkill != currentAttackBoostOriginatorEffect.skillType)
       {
@@ -3352,8 +3383,8 @@ namespace Glest
         if (debugBoost)
           printf ("Line: %d new [%s]\n", __LINE__,
                   (currentAttackBoostOriginatorEffect.skillType !=
-                   NULL ? currentAttackBoostOriginatorEffect.skillType->
-                   getBoostDesc (false).c_str () : ""));
+                   NULL ? currentAttackBoostOriginatorEffect.
+                   skillType->getBoostDesc (false).c_str () : ""));
 
         if (currentAttackBoostOriginatorEffect.currentAppliedEffect != NULL)
         {
@@ -3364,14 +3395,14 @@ namespace Glest
         }
 
         // Remove any units that were previously in range
-        if (currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-            empty () == false
+        if (currentAttackBoostOriginatorEffect.
+            currentAttackBoostUnits.empty () == false
             && currentAttackBoostOriginatorEffect.skillType != NULL)
         {
           for (unsigned int i = 0;
                i <
-               currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-               size (); ++i)
+               currentAttackBoostOriginatorEffect.
+               currentAttackBoostUnits.size (); ++i)
           {
             // Remove attack boost upgrades from unit
 
@@ -3380,9 +3411,9 @@ namespace Glest
             Unit *affectedUnit = game->getWorld ()->findUnitById (findUnitId);
             if (affectedUnit != NULL)
             {
-              affectedUnit->
-                deapplyAttackBoost (currentAttackBoostOriginatorEffect.
-                                    skillType->getAttackBoost (), this);
+              affectedUnit->deapplyAttackBoost
+                (currentAttackBoostOriginatorEffect.skillType->
+                 getAttackBoost (), this);
             }
 
             //printf("- #1 DE-APPLY ATTACK BOOST from unit [%s - %d]\n",affectedUnit->getType()->getName().c_str(),affectedUnit->getId());
@@ -3393,8 +3424,8 @@ namespace Glest
         if (debugBoost)
           printf ("Line: %d affected unit size: " MG_SIZE_T_SPECIFIER "\n",
                   __LINE__,
-                  currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-                  size ());
+                  currentAttackBoostOriginatorEffect.
+                  currentAttackBoostUnits.size ());
 
         currentAttackBoostOriginatorEffect.skillType = currSkill;
 
@@ -3403,8 +3434,8 @@ namespace Glest
           if (debugBoost)
             printf ("Line: %d affected unit size: " MG_SIZE_T_SPECIFIER "\n",
                     __LINE__,
-                    currentAttackBoostOriginatorEffect.
-                    currentAttackBoostUnits.size ());
+                    currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
+                    size ());
 
           // Search for units in range of this unit which apply to the
           // attack-boost and temporarily upgrade them
@@ -3413,8 +3444,7 @@ namespace Glest
 
           const AttackBoost *attackBoost = currSkill->getAttackBoost ();
           vector < Unit * >candidates = unitUpdater->findUnitsInRange (this,
-                                                                       attackBoost->
-                                                                       radius);
+                                                                       attackBoost->radius);
 
           if (debugBoost)
             printf ("Line: %d candidates unit size: " MG_SIZE_T_SPECIFIER
@@ -3427,8 +3457,8 @@ namespace Glest
             {
               if (affectedUnit->applyAttackBoost (attackBoost, this) == true)
               {
-                currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-                  push_back (affectedUnit->getId ());
+                currentAttackBoostOriginatorEffect.
+                  currentAttackBoostUnits.push_back (affectedUnit->getId ());
                 //printf("+ #1 APPLY ATTACK BOOST to unit [%s - %d]\n",affectedUnit->getType()->getName().c_str(),affectedUnit->getId());
               }
             }
@@ -3437,53 +3467,58 @@ namespace Glest
           if (debugBoost)
             printf ("Line: %d affected unit size: " MG_SIZE_T_SPECIFIER "\n",
                     __LINE__,
-                    currentAttackBoostOriginatorEffect.
-                    currentAttackBoostUnits.size ());
+                    currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
+                    size ());
 
           if (showUnitParticles == true)
           {
-            if (currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-                empty () == false)
+            if (currentAttackBoostOriginatorEffect.
+                currentAttackBoostUnits.empty () == false)
             {
               if (attackBoost->unitParticleSystemTypeForSourceUnit != NULL)
               {
                 currentAttackBoostOriginatorEffect.currentAppliedEffect =
                   new UnitAttackBoostEffect ();
-                currentAttackBoostOriginatorEffect.currentAppliedEffect->
-                  upst = new UnitParticleSystemType ();
-                *currentAttackBoostOriginatorEffect.currentAppliedEffect->
-                  upst = *attackBoost->unitParticleSystemTypeForSourceUnit;
+                currentAttackBoostOriginatorEffect.
+                  currentAppliedEffect->upst = new UnitParticleSystemType ();
+                *currentAttackBoostOriginatorEffect.
+                  currentAppliedEffect->upst =
+                  *attackBoost->unitParticleSystemTypeForSourceUnit;
                 //effect.upst = boost->unitParticleSystemTypeForAffectedUnit;
 
                 currentAttackBoostOriginatorEffect.currentAppliedEffect->ups =
                   new UnitParticleSystem (200);
-                currentAttackBoostOriginatorEffect.currentAppliedEffect->ups->
-                  setParticleOwner (this);
-                currentAttackBoostOriginatorEffect.currentAppliedEffect->ups->
-                  setParticleType (currentAttackBoostOriginatorEffect.
-                                   currentAppliedEffect->upst);
-
                 currentAttackBoostOriginatorEffect.currentAppliedEffect->
-                  upst->setValues (currentAttackBoostOriginatorEffect.
-                                   currentAppliedEffect->ups);
-                currentAttackBoostOriginatorEffect.currentAppliedEffect->ups->
-                  setPos (getCurrVectorForParticlesystems ());
-                currentAttackBoostOriginatorEffect.currentAppliedEffect->ups->
-                  setRotation (getRotation ());
-                setMeshPosInParticleSystem
+                  ups->setParticleOwner (this);
+                currentAttackBoostOriginatorEffect.currentAppliedEffect->
+                  ups->setParticleType
+                  (currentAttackBoostOriginatorEffect.currentAppliedEffect->
+                   upst);
+
+                currentAttackBoostOriginatorEffect.
+                  currentAppliedEffect->upst->
+                  setValues
                   (currentAttackBoostOriginatorEffect.currentAppliedEffect->
                    ups);
+                currentAttackBoostOriginatorEffect.currentAppliedEffect->
+                  ups->setPos (getCurrVectorForParticlesystems ());
+                currentAttackBoostOriginatorEffect.currentAppliedEffect->
+                  ups->setRotation (getRotation ());
+                setMeshPosInParticleSystem
+                  (currentAttackBoostOriginatorEffect.
+                   currentAppliedEffect->ups);
 
                 if (getFaction ()->getTexture ())
                 {
-                  currentAttackBoostOriginatorEffect.currentAppliedEffect->
-                    ups->setFactionColor (getFaction ()->
-                                          getTexture ()->getPixmapConst ()->
-                                          getPixel3f (0, 0));
+                  currentAttackBoostOriginatorEffect.
+                    currentAppliedEffect->ups->
+                    setFactionColor (getFaction ()->getTexture ()->
+                                     getPixmapConst ()->getPixel3f (0, 0));
                 }
-                Renderer::getInstance ().
-                  manageParticleSystem (currentAttackBoostOriginatorEffect.
-                                        currentAppliedEffect->ups, rsGame);
+                Renderer::
+                  getInstance ().manageParticleSystem
+                  (currentAttackBoostOriginatorEffect.currentAppliedEffect->
+                   ups, rsGame);
                 //printf("+ #1 APPLY ATTACK BOOST SELF PARTICLE to unit [%s - %d]\n",this->getType()->getName().c_str(),this->getId());
               }
             }
@@ -3497,8 +3532,8 @@ namespace Glest
           if (debugBoost)
             printf ("Line: %d affected unit size: " MG_SIZE_T_SPECIFIER "\n",
                     __LINE__,
-                    currentAttackBoostOriginatorEffect.
-                    currentAttackBoostUnits.size ());
+                    currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
+                    size ());
 
           // Search for units in range of this unit which apply to the
           // attack-boost and temporarily upgrade them
@@ -3522,23 +3557,26 @@ namespace Glest
             candidateValidIdList.push_back (affectedUnit->getId ());
 
             std::vector < int >::iterator iterFound =
-              std::find (currentAttackBoostOriginatorEffect.
-                         currentAttackBoostUnits.begin (),
-                         currentAttackBoostOriginatorEffect.
-                         currentAttackBoostUnits.end (),
-                         affectedUnit->getId ());
+              std::
+              find
+              (currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
+               begin (),
+               currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
+               end (),
+               affectedUnit->getId ());
 
             if (attackBoost->isAffected (this, affectedUnit) == true)
             {
               if (iterFound ==
-                  currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-                  end ())
+                  currentAttackBoostOriginatorEffect.
+                  currentAttackBoostUnits.end ())
               {
                 if (affectedUnit->applyAttackBoost (attackBoost, this) ==
                     true)
                 {
-                  currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-                    push_back (affectedUnit->getId ());
+                  currentAttackBoostOriginatorEffect.
+                    currentAttackBoostUnits.push_back (affectedUnit->
+                                                       getId ());
 
                   //printf("+ #2 APPLY ATTACK BOOST to unit [%s - %d]\n",affectedUnit->getType()->getName().c_str(),affectedUnit->getId());
                 }
@@ -3547,14 +3585,14 @@ namespace Glest
             else
             {
               if (iterFound !=
-                  currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-                  end ())
+                  currentAttackBoostOriginatorEffect.
+                  currentAttackBoostUnits.end ())
               {
-                affectedUnit->
-                  deapplyAttackBoost (currentAttackBoostOriginatorEffect.
-                                      skillType->getAttackBoost (), this);
-                currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-                  erase (iterFound);
+                affectedUnit->deapplyAttackBoost
+                  (currentAttackBoostOriginatorEffect.skillType->
+                   getAttackBoost (), this);
+                currentAttackBoostOriginatorEffect.
+                  currentAttackBoostUnits.erase (iterFound);
 
                 //printf("- #2 DE-APPLY ATTACK BOOST from unit [%s - %d]\n",affectedUnit->getType()->getName().c_str(),affectedUnit->getId());
               }
@@ -3563,12 +3601,13 @@ namespace Glest
 
           // Now remove any units that were in the list of boosted units but
           // are no longer in range
-          if (currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-              empty () == false)
+          if (currentAttackBoostOriginatorEffect.
+              currentAttackBoostUnits.empty () == false)
           {
             for (int i =
-                 (int)currentAttackBoostOriginatorEffect.
-                 currentAttackBoostUnits.size () - 1; i >= 0; --i)
+                 (int)
+                 currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
+                 size () - 1; i >= 0; --i)
             {
               int findUnitId =
                 currentAttackBoostOriginatorEffect.currentAttackBoostUnits[i];
@@ -3583,9 +3622,9 @@ namespace Glest
                   game->getWorld ()->findUnitById (findUnitId);
                 if (affectedUnit != NULL)
                 {
-                  affectedUnit->
-                    deapplyAttackBoost (currentAttackBoostOriginatorEffect.
-                                        skillType->getAttackBoost (), this);
+                  affectedUnit->deapplyAttackBoost
+                    (currentAttackBoostOriginatorEffect.skillType->
+                     getAttackBoost (), this);
 
                   if (debugBoost)
                     printf
@@ -3594,9 +3633,10 @@ namespace Glest
                        affectedUnit->getType ()->getName (false).c_str ());
 
                 }
-                currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-                  erase (currentAttackBoostOriginatorEffect.
-                         currentAttackBoostUnits.begin () + i);
+                currentAttackBoostOriginatorEffect.
+                  currentAttackBoostUnits.erase
+                  (currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
+                   begin () + i);
               }
             }
           }
@@ -3604,68 +3644,75 @@ namespace Glest
           if (debugBoost)
             printf ("Line: %d affected unit size: " MG_SIZE_T_SPECIFIER "\n",
                     __LINE__,
-                    currentAttackBoostOriginatorEffect.
-                    currentAttackBoostUnits.size ());
+                    currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
+                    size ());
 
           if (showUnitParticles == true)
           {
-            if (currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-                empty () == false)
+            if (currentAttackBoostOriginatorEffect.
+                currentAttackBoostUnits.empty () == false)
             {
               if (attackBoost->unitParticleSystemTypeForSourceUnit != NULL
-                  && currentAttackBoostOriginatorEffect.
-                  currentAppliedEffect == NULL)
+                  && currentAttackBoostOriginatorEffect.currentAppliedEffect
+                  == NULL)
               {
 
                 currentAttackBoostOriginatorEffect.currentAppliedEffect =
                   new UnitAttackBoostEffect ();
-                currentAttackBoostOriginatorEffect.currentAppliedEffect->
-                  upst = new UnitParticleSystemType ();
-                *currentAttackBoostOriginatorEffect.currentAppliedEffect->
-                  upst = *attackBoost->unitParticleSystemTypeForSourceUnit;
+                currentAttackBoostOriginatorEffect.
+                  currentAppliedEffect->upst = new UnitParticleSystemType ();
+                *currentAttackBoostOriginatorEffect.
+                  currentAppliedEffect->upst =
+                  *attackBoost->unitParticleSystemTypeForSourceUnit;
                 //effect.upst = boost->unitParticleSystemTypeForAffectedUnit;
 
                 currentAttackBoostOriginatorEffect.currentAppliedEffect->ups =
                   new UnitParticleSystem (200);
-                currentAttackBoostOriginatorEffect.currentAppliedEffect->ups->
-                  setParticleOwner (this);
-                currentAttackBoostOriginatorEffect.currentAppliedEffect->ups->
-                  setParticleType (currentAttackBoostOriginatorEffect.
-                                   currentAppliedEffect->upst);
-
                 currentAttackBoostOriginatorEffect.currentAppliedEffect->
-                  upst->setValues (currentAttackBoostOriginatorEffect.
-                                   currentAppliedEffect->ups);
-                currentAttackBoostOriginatorEffect.currentAppliedEffect->ups->
-                  setPos (getCurrVectorForParticlesystems ());
-                currentAttackBoostOriginatorEffect.currentAppliedEffect->ups->
-                  setRotation (getRotation ());
-                setMeshPosInParticleSystem
+                  ups->setParticleOwner (this);
+                currentAttackBoostOriginatorEffect.currentAppliedEffect->
+                  ups->setParticleType
+                  (currentAttackBoostOriginatorEffect.currentAppliedEffect->
+                   upst);
+
+                currentAttackBoostOriginatorEffect.
+                  currentAppliedEffect->upst->
+                  setValues
                   (currentAttackBoostOriginatorEffect.currentAppliedEffect->
                    ups);
+                currentAttackBoostOriginatorEffect.currentAppliedEffect->
+                  ups->setPos (getCurrVectorForParticlesystems ());
+                currentAttackBoostOriginatorEffect.currentAppliedEffect->
+                  ups->setRotation (getRotation ());
+                setMeshPosInParticleSystem
+                  (currentAttackBoostOriginatorEffect.
+                   currentAppliedEffect->ups);
 
                 if (getFaction ()->getTexture ())
                 {
-                  currentAttackBoostOriginatorEffect.currentAppliedEffect->
-                    ups->setFactionColor (getFaction ()->getTexture ()->
-                                          getPixmapConst ()->getPixel3f (0,
-                                                                         0));
+                  currentAttackBoostOriginatorEffect.
+                    currentAppliedEffect->ups->
+                    setFactionColor (getFaction ()->
+                                     getTexture ()->getPixmapConst ()->
+                                     getPixel3f (0, 0));
                 }
-                Renderer::getInstance ().
-                  manageParticleSystem (currentAttackBoostOriginatorEffect.
-                                        currentAppliedEffect->ups, rsGame);
+                Renderer::
+                  getInstance ().manageParticleSystem
+                  (currentAttackBoostOriginatorEffect.currentAppliedEffect->
+                   ups, rsGame);
 
                 //printf("+ #2 APPLY ATTACK BOOST SELF PARTICLE to unit [%s - %d]\n",this->getType()->getName().c_str(),this->getId());
               }
             }
-            else if (currentAttackBoostOriginatorEffect.
-                     currentAttackBoostUnits.empty () == true)
+            else
+              if (currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
+                  empty () == true)
             {
               if (currentAttackBoostOriginatorEffect.currentAppliedEffect !=
                   NULL)
               {
-                delete currentAttackBoostOriginatorEffect.
-                  currentAppliedEffect;
+                delete
+                  currentAttackBoostOriginatorEffect.currentAppliedEffect;
                 currentAttackBoostOriginatorEffect.currentAppliedEffect =
                   NULL;
 
@@ -3684,8 +3731,8 @@ namespace Glest
                   this->getType ()->getName (false).c_str (),
                   currSkill->getBoostDesc (false).c_str ());
 
-          if (currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-              empty () == false)
+          if (currentAttackBoostOriginatorEffect.
+              currentAttackBoostUnits.empty () == false)
           {
             printf
               ("Found affected units currentAttackBoostOriginatorEffect.skillType [%p]\n",
@@ -3693,8 +3740,8 @@ namespace Glest
 
             for (unsigned int i = 0;
                  i <
-                 currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-                 size (); ++i)
+                 currentAttackBoostOriginatorEffect.
+                 currentAttackBoostUnits.size (); ++i)
             {
               int unitnum =
                 currentAttackBoostOriginatorEffect.currentAttackBoostUnits[i];
@@ -3825,8 +3872,8 @@ namespace Glest
         if (currSkill->getClass () == scAttack)
         {
           int animSpeedBoost =
-            ((AttackSkillType *) currSkill)->
-            getAnimSpeedBoost (&totalUpgrade);
+            ((AttackSkillType *)
+             currSkill)->getAnimSpeedBoost (&totalUpgrade);
           animSpeed += animSpeedBoost;
         }
 
@@ -3882,8 +3929,9 @@ namespace Glest
         rotationX = .0f;
       }
 
-      if (Renderer::getInstance ().
-          validateParticleSystemStillExists (this->fire, rsGame) == false)
+      if (Renderer::
+          getInstance ().validateParticleSystemStillExists (this->fire,
+                                                            rsGame) == false)
       {
         this->fire = NULL;
       }
@@ -3895,8 +3943,9 @@ namespace Glest
       for (UnitParticleSystems::iterator it = unitParticleSystems.begin ();
            it != unitParticleSystems.end (); ++it)
       {
-        if (Renderer::getInstance ().
-            validateParticleSystemStillExists ((*it), rsGame) == true)
+        if (Renderer::
+            getInstance ().validateParticleSystemStillExists ((*it),
+                                                              rsGame) == true)
         {
           (*it)->setPos (getCurrVectorForParticlesystems ());
           (*it)->setRotation (getRotation ());
@@ -3906,8 +3955,9 @@ namespace Glest
       for (UnitParticleSystems::iterator it = damageParticleSystems.begin ();
            it != damageParticleSystems.end (); ++it)
       {
-        if (Renderer::getInstance ().
-            validateParticleSystemStillExists ((*it), rsGame) == true)
+        if (Renderer::
+            getInstance ().validateParticleSystemStillExists ((*it),
+                                                              rsGame) == true)
         {
           (*it)->setPos (getCurrVectorForParticlesystems ());
           (*it)->setRotation (getRotation ());
@@ -3918,8 +3968,9 @@ namespace Glest
       for (UnitParticleSystems::iterator it = smokeParticleSystems.begin ();
            it != smokeParticleSystems.end (); ++it)
       {
-        if (Renderer::getInstance ().
-            validateParticleSystemStillExists ((*it), rsGame) == true)
+        if (Renderer::
+            getInstance ().validateParticleSystemStillExists ((*it),
+                                                              rsGame) == true)
         {
           (*it)->setPos (getCurrMidHeightVector ());
           (*it)->setRotation (getRotation ());
@@ -3934,8 +3985,9 @@ namespace Glest
         if (effect != NULL && effect->ups != NULL)
         {
           bool particleValid =
-            Renderer::getInstance ().
-            validateParticleSystemStillExists (effect->ups, rsGame);
+            Renderer::
+            getInstance ().validateParticleSystemStillExists (effect->ups,
+                                                              rsGame);
           if (particleValid == true)
           {
             effect->ups->setPos (getCurrVectorForParticlesystems ());
@@ -3955,18 +4007,17 @@ namespace Glest
             NULL)
         {
           bool particleValid =
-            Renderer::getInstance ().
-            validateParticleSystemStillExists
+            Renderer::getInstance ().validateParticleSystemStillExists
             (currentAttackBoostOriginatorEffect.currentAppliedEffect->ups,
              rsGame);
           if (particleValid == true)
           {
-            currentAttackBoostOriginatorEffect.currentAppliedEffect->ups->
-              setPos (getCurrVectorForParticlesystems ());
-            currentAttackBoostOriginatorEffect.currentAppliedEffect->ups->
-              setRotation (getRotation ());
-            setMeshPosInParticleSystem (currentAttackBoostOriginatorEffect.
-                                        currentAppliedEffect->ups);
+            currentAttackBoostOriginatorEffect.currentAppliedEffect->
+              ups->setPos (getCurrVectorForParticlesystems ());
+            currentAttackBoostOriginatorEffect.currentAppliedEffect->
+              ups->setRotation (getRotation ());
+            setMeshPosInParticleSystem
+              (currentAttackBoostOriginatorEffect.currentAppliedEffect->ups);
           }
         }
       }
@@ -4043,20 +4094,21 @@ namespace Glest
 
               if (getFaction ()->getTexture ())
               {
-                ups->setFactionColor (getFaction ()->getTexture ()->
-                                      getPixmapConst ()->getPixel3f (0, 0));
+                ups->setFactionColor (getFaction ()->
+                                      getTexture ()->getPixmapConst ()->
+                                      getPixel3f (0, 0));
               }
               unitParticleSystems.push_back (ups);
               Renderer::getInstance ().manageParticleSystem (ups, rsGame);
 
-              queuedUnitParticleSystemTypes.
-                erase (queuedUnitParticleSystemTypes.begin () + i);
+              queuedUnitParticleSystemTypes.erase
+                (queuedUnitParticleSystemTypes.begin () + i);
             }
           }
           else
           {
-            queuedUnitParticleSystemTypes.
-              erase (queuedUnitParticleSystemTypes.begin () + i);
+            queuedUnitParticleSystemTypes.erase
+              (queuedUnitParticleSystemTypes.begin () + i);
           }
         }
       }
@@ -4069,8 +4121,10 @@ namespace Glest
           UnitParticleSystem *ps = unitParticleSystems[i];
           if (ps != NULL)
           {
-            if (Renderer::getInstance ().
-                validateParticleSystemStillExists (ps, rsGame) == true)
+            if (Renderer::
+                getInstance ().validateParticleSystemStillExists (ps,
+                                                                  rsGame) ==
+                true)
             {
               float pst = ps->getStartTime ();
               float pet = ps->getEndTime ();
@@ -4227,9 +4281,9 @@ namespace Glest
             setMeshPosInParticleSystem (effect->ups);
             if (getFaction ()->getTexture ())
             {
-              effect->ups->setFactionColor (getFaction ()->getTexture ()->
-                                            getPixmapConst ()->getPixel3f (0,
-                                                                           0));
+              effect->ups->setFactionColor (getFaction ()->
+                                            getTexture ()->getPixmapConst ()->
+                                            getPixel3f (0, 0));
             }
             Renderer::getInstance ().manageParticleSystem (effect->ups,
                                                            rsGame);
@@ -4263,8 +4317,8 @@ namespace Glest
             this->setLastAttackerUnitId (source->getId ());
             this->setCauseOfDeath (ucodAttackBoost);
             Unit::game->getWorld ()->getStats ()->die (getFactionIndex (),
-                                                       getType ()->
-                                                       getCountUnitDeathInStats
+                                                       getType
+                                                       ()->getCountUnitDeathInStats
                                                        ());
             game->getScriptManager ()->onUnitDied (this);
 
@@ -4275,9 +4329,11 @@ namespace Glest
             if (sound != NULL
                 && (this->getFactionIndex () ==
                     Unit::game->getWorld ()->getThisFactionIndex ()
-                    || (game->getWorld ()->
-                        showWorldForPlayer (game->getWorld ()->
-                                            getThisTeamIndex ()) == true)))
+                    || (game->
+                        getWorld ()->showWorldForPlayer (game->
+                                                         getWorld
+                                                         ()->getThisTeamIndex
+                                                         ()) == true)))
             {
               SoundRenderer::getInstance ().playFx (sound);
             }
@@ -4399,8 +4455,8 @@ namespace Glest
           this->setCauseOfDeath (ucodAttackBoost);
 
           Unit::game->getWorld ()->getStats ()->die (getFactionIndex (),
-                                                     getType ()->
-                                                     getCountUnitDeathInStats
+                                                     getType
+                                                     ()->getCountUnitDeathInStats
                                                      ());
           game->getScriptManager ()->onUnitDied (this);
 
@@ -4411,9 +4467,11 @@ namespace Glest
           if (sound != NULL
               && (this->getFactionIndex () ==
                   Unit::game->getWorld ()->getThisFactionIndex ()
-                  || (game->getWorld ()->
-                      showWorldForPlayer (game->getWorld ()->
-                                          getThisTeamIndex ()) == true)))
+                  || (game->
+                      getWorld ()->showWorldForPlayer (game->
+                                                       getWorld
+                                                       ()->getThisTeamIndex
+                                                       ()) == true)))
           {
             SoundRenderer::getInstance ().playFx (sound);
           }
@@ -4436,8 +4494,8 @@ namespace Glest
             && effect->getSource () == source)
         {
           delete effect;
-          currentAttackBoostEffects.erase (currentAttackBoostEffects.
-                                           begin () + i);
+          currentAttackBoostEffects.
+            erase (currentAttackBoostEffects.begin () + i);
           break;
         }
       }
@@ -4506,8 +4564,8 @@ namespace Glest
                 this->setCauseOfDeath (ucodStarvedRegeneration);
 
                 Unit::game->getWorld ()->getStats ()->die (getFactionIndex (),
-                                                           getType ()->
-                                                           getCountUnitDeathInStats
+                                                           getType
+                                                           ()->getCountUnitDeathInStats
                                                            ());
                 game->getScriptManager ()->onUnitDied (this);
               }
@@ -4518,9 +4576,11 @@ namespace Glest
               if (sound != NULL
                   && (this->getFactionIndex () ==
                       Unit::game->getWorld ()->getThisFactionIndex ()
-                      || (game->getWorld ()->
-                          showWorldForPlayer (game->getWorld ()->
-                                              getThisTeamIndex ()) == true)))
+                      || (game->
+                          getWorld ()->showWorldForPlayer (game->
+                                                           getWorld
+                                                           ()->getThisTeamIndex
+                                                           ()) == true)))
               {
                 SoundRenderer::getInstance ().playFx (sound);
               }
@@ -4564,8 +4624,8 @@ namespace Glest
               this->setCauseOfDeath (ucodStarvedRegeneration);
 
               Unit::game->getWorld ()->getStats ()->die (getFactionIndex (),
-                                                         getType ()->
-                                                         getCountUnitDeathInStats
+                                                         getType
+                                                         ()->getCountUnitDeathInStats
                                                          ());
               game->getScriptManager ()->onUnitDied (this);
             }
@@ -4576,9 +4636,11 @@ namespace Glest
             if (sound != NULL
                 && (this->getFactionIndex () ==
                     Unit::game->getWorld ()->getThisFactionIndex ()
-                    || (game->getWorld ()->
-                        showWorldForPlayer (game->getWorld ()->
-                                            getThisTeamIndex ()) == true)))
+                    || (game->
+                        getWorld ()->showWorldForPlayer (game->
+                                                         getWorld
+                                                         ()->getThisTeamIndex
+                                                         ()) == true)))
             {
               SoundRenderer::getInstance ().playFx (sound);
             }
@@ -5046,13 +5108,13 @@ namespace Glest
     void Unit::morphAttackBoosts (Unit * unit)
     {
       // Remove any units that were previously in range
-      if (currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-          empty () == false
+      if (currentAttackBoostOriginatorEffect.
+          currentAttackBoostUnits.empty () == false
           && currentAttackBoostOriginatorEffect.skillType != NULL)
       {
         for (int i =
-             (int)currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-             size () - 1; i >= 0; --i)
+             (int)currentAttackBoostOriginatorEffect.
+             currentAttackBoostUnits.size () - 1; i >= 0; --i)
         {
           // Remove attack boost upgrades from unit
 
@@ -5062,13 +5124,14 @@ namespace Glest
           if (affectedUnit != NULL
               && affectedUnit->getId () == unit->getId ())
           {
-            affectedUnit->
-              deapplyAttackBoost (currentAttackBoostOriginatorEffect.
-                                  skillType->getAttackBoost (), this);
+            affectedUnit->deapplyAttackBoost
+              (currentAttackBoostOriginatorEffect.skillType->
+               getAttackBoost (), this);
 
-            currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
-              erase (currentAttackBoostOriginatorEffect.
-                     currentAttackBoostUnits.begin () + i);
+            currentAttackBoostOriginatorEffect.
+              currentAttackBoostUnits.erase
+              (currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
+               begin () + i);
           }
 
           //printf("- #1 DE-APPLY ATTACK BOOST from unit [%s - %d]\n",affectedUnit->getType()->getName().c_str(),affectedUnit->getId());
@@ -5125,8 +5188,8 @@ namespace Glest
           if (effect != NULL)
           {
             Unit *sourceUnit =
-              game->getWorld ()->findUnitById (effect->getSource ()->
-                                               getId ());
+              game->getWorld ()->findUnitById (effect->
+                                               getSource ()->getId ());
             if (sourceUnit == NULL)
             {
               throw megaglest_runtime_error ("sourceUnit == NULL");
@@ -5219,9 +5282,8 @@ namespace Glest
         if (unit != NULL && unit->getType ()->getHeight () > airHeight)
         {
           height +=
-            (std::
-             min ((float) unit->getType ()->getHeight (),
-                  Tileset::standardAirHeight * 3) - airHeight);
+            (std::min ((float) unit->getType ()->getHeight (),
+                       Tileset::standardAirHeight * 3) - airHeight);
           height = truncateDecimal < float >(height, 6);
         }
         else
@@ -5233,9 +5295,8 @@ namespace Glest
             if (sc->getObject ()->getType ()->getHeight () > airHeight)
             {
               height +=
-                (std::
-                 min ((float) sc->getObject ()->getType ()->getHeight (),
-                      Tileset::standardAirHeight * 3) - airHeight);
+                (std::min ((float) sc->getObject ()->getType ()->getHeight (),
+                           Tileset::standardAirHeight * 3) - airHeight);
               height = truncateDecimal < float >(height, 6);
             }
           }
@@ -5263,9 +5324,9 @@ namespace Glest
         Vec2f relPosf = Vec2f ((float) relPos.x, (float) relPos.y);
 #ifdef USE_STREFLOP
         targetRotation =
-          radToDeg (streflop::
-                    atan2 (static_cast < streflop::Simple > (relPosf.x),
-                           static_cast < streflop::Simple > (relPosf.y)));
+          radToDeg (streflop::atan2
+                    (static_cast < streflop::Simple > (relPosf.x),
+                     static_cast < streflop::Simple > (relPosf.y)));
 #else
         targetRotation = radToDeg (atan2 (relPosf.x, relPosf.y));
 #endif
@@ -5331,15 +5392,15 @@ namespace Glest
         if (SystemFlags::getSystemSettingType (SystemFlags::debugLUA).enabled)
           SystemFlags::OutputDebug (SystemFlags::debugLUA,
                                     "In [%s::%s Line: %d] isOperative() = %d, command->getUnit() = %p, getType()->hasCommandType(command->getCommandType()) = %d, this->getFaction()->reqsOk(command->getCommandType()) = %d\n",
-                                    extractFileFromDirectoryPath (__FILE__).
-                                    c_str (), __FUNCTION__, __LINE__,
-                                    isOperative (), command->getUnit (),
-                                    getType ()->hasCommandType (command->
-                                                                getCommandType
-                                                                ()),
-                                    this->getFaction ()->reqsOk (command->
-                                                                 getCommandType
-                                                                 ()));
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__, isOperative (),
+                                    command->getUnit (),
+                                    getType ()->
+                                    hasCommandType (command->getCommandType
+                                                    ()),
+                                    this->getFaction ()->
+                                    reqsOk (command->getCommandType ()));
 
         // Allow self healing if able to heal own unit type
         if (command->getUnit () == this &&
@@ -5364,8 +5425,9 @@ namespace Glest
         if (SystemFlags::getSystemSettingType (SystemFlags::debugLUA).enabled)
           SystemFlags::OutputDebug (SystemFlags::debugLUA,
                                     "In [%s::%s Line: %d]\n",
-                                    extractFileFromDirectoryPath (__FILE__).
-                                    c_str (), __FUNCTION__, __LINE__);
+                                    extractFileFromDirectoryPath
+                                    (__FILE__).c_str (), __FUNCTION__,
+                                    __LINE__);
         //printf("In [%s::%s Line: %d] command = %p\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,command);
 
         result.first = crFailUndefined;
@@ -5398,8 +5460,8 @@ namespace Glest
           result.second =
             " - " + lang.getString ("Reqs") + " : " +
             produced->getUnitAndUpgradeReqDesc (false,
-                                                this->
-                                                showTranslatedTechTree ());
+                                                this->showTranslatedTechTree
+                                                ());
           return result;
         }
 
@@ -5443,8 +5505,8 @@ namespace Glest
           result.second =
             " - " + lang.getString ("Reqs") + " : " +
             builtUnit->getUnitAndUpgradeReqDesc (false,
-                                                 this->
-                                                 showTranslatedTechTree ());
+                                                 this->showTranslatedTechTree
+                                                 ());
           return result;
         }
         if (faction->checkCosts (builtUnit, NULL) == false)
@@ -5477,15 +5539,18 @@ namespace Glest
           throw megaglest_runtime_error (szBuf);
         }
 
-        if (faction->getUpgradeManager ()->
-            isUpgradingOrUpgraded (uct->getProducedUpgrade ()))
+        if (faction->
+            getUpgradeManager ()->isUpgradingOrUpgraded (uct->
+                                                         getProducedUpgrade
+                                                         ()))
         {
-          if (SystemFlags::getSystemSettingType (SystemFlags::debugLUA).
-              enabled)
+          if (SystemFlags::
+              getSystemSettingType (SystemFlags::debugLUA).enabled)
             SystemFlags::OutputDebug (SystemFlags::debugLUA,
                                       "In [%s::%s Line: %d]\n",
-                                      extractFileFromDirectoryPath (__FILE__).
-                                      c_str (), __FUNCTION__, __LINE__);
+                                      extractFileFromDirectoryPath
+                                      (__FILE__).c_str (), __FUNCTION__,
+                                      __LINE__);
           //printf("In [%s::%s Line: %d] command = %p\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,command);
           result.first = crFailUndefined;
           return result;
@@ -5631,8 +5696,10 @@ namespace Glest
       {
         //printf("Checking to stop damageparticles for unit [%s - %d] hp = %d\n",this->getType()->getName().c_str(),this->getId(),hp);
 
-        if (Renderer::getInstance ().
-            validateParticleSystemStillExists (this->fire, rsGame) == false)
+        if (Renderer::
+            getInstance ().validateParticleSystemStillExists (this->fire,
+                                                              rsGame) ==
+            false)
         {
           this->fire = NULL;
         }
@@ -5653,8 +5720,10 @@ namespace Glest
           for (int i = (int)smokeParticleSystems.size () - 1; i >= 0; --i)
           {
             UnitParticleSystem *ps = smokeParticleSystems[i];
-            if (Renderer::getInstance ().
-                validateParticleSystemStillExists (ps, rsGame) == true)
+            if (Renderer::
+                getInstance ().validateParticleSystemStillExists (ps,
+                                                                  rsGame) ==
+                true)
             {
               ps->fade ();
             }
@@ -5671,8 +5740,10 @@ namespace Glest
             UnitParticleSystem *ps = damageParticleSystems[i];
             UnitParticleSystemType *pst = NULL;
             int foundParticleIndexType = -2;
-            if (Renderer::getInstance ().
-                validateParticleSystemStillExists (ps, rsGame) == true)
+            if (Renderer::
+                getInstance ().validateParticleSystemStillExists (ps,
+                                                                  rsGame) ==
+                true)
             {
               for (std::map < int, UnitParticleSystem * >::iterator iterMap =
                    damageParticleSystemsInUse.begin ();
@@ -5694,8 +5765,10 @@ namespace Glest
                 || (pst != NULL && pst->getMinmaxEnabled () == false))
             {
               damageParticleSystemsInUse.erase (foundParticleIndexType);
-              if (Renderer::getInstance ().
-                  validateParticleSystemStillExists (ps, rsGame) == true)
+              if (Renderer::
+                  getInstance ().validateParticleSystemStillExists (ps,
+                                                                    rsGame) ==
+                  true)
               {
                 ps->fade ();
               }
@@ -5725,8 +5798,10 @@ namespace Glest
             UnitParticleSystem *ps = unitParticleSystems[index];
             if (ps != NULL)
             {
-              if (Renderer::getInstance ().
-                  validateParticleSystemStillExists (ps, rsGame) == true)
+              if (Renderer::
+                  getInstance ().validateParticleSystemStillExists (ps,
+                                                                    rsGame) ==
+                  true)
               {
 
                 bool stopParticle = false;
@@ -5843,8 +5918,9 @@ namespace Glest
                 setMeshPosInParticleSystem (ups);
                 if (getFaction ()->getTexture ())
                 {
-                  ups->setFactionColor (getFaction ()->getTexture ()->
-                                        getPixmapConst ()->getPixel3f (0, 0));
+                  ups->setFactionColor (getFaction ()->
+                                        getTexture ()->getPixmapConst ()->
+                                        getPixel3f (0, 0));
                 }
                 unitParticleSystems.push_back (ups);
                 Renderer::getInstance ().manageParticleSystem (ups, rsGame);
@@ -5907,9 +5983,8 @@ namespace Glest
             const InterpolationData *data =
               model->getMesh (i)->getInterpolationData ();
             const Vec3f *verticepos = data->getVertices ();
-            ups->
-              setMeshPos (Vec3f
-                          (verticepos->x, verticepos->y, verticepos->z));
+            ups->setMeshPos (Vec3f
+                             (verticepos->x, verticepos->y, verticepos->z));
             foundMesh = true;
             break;
           }
@@ -5936,9 +6011,8 @@ namespace Glest
     {
       if (currSkill != NULL)
       {
-        checkCustomizedUnitParticleListTriggers (currSkill->
-                                                 unitParticleSystemTypes,
-                                                 false);
+        checkCustomizedUnitParticleListTriggers
+          (currSkill->unitParticleSystemTypes, false);
       }
     }
 
@@ -5956,8 +6030,10 @@ namespace Glest
           UnitParticleSystem *ps = damageParticleSystems[i];
           UnitParticleSystemType *pst = NULL;
           int foundParticleIndexType = -2;
-          if (Renderer::getInstance ().
-              validateParticleSystemStillExists (ps, rsGame) == true)
+          if (Renderer::
+              getInstance ().validateParticleSystemStillExists (ps,
+                                                                rsGame) ==
+              true)
           {
             for (std::map < int, UnitParticleSystem * >::iterator iterMap =
                  damageParticleSystemsInUse.begin ();
@@ -6008,8 +6084,10 @@ namespace Glest
               //printf("STOPPING customized particle trigger by HP [%d to %d] current hp = %d\n",pst->getMinHp(),pst->getMaxHp(),hp);
 
               damageParticleSystemsInUse.erase (foundParticleIndexType);
-              if (Renderer::getInstance ().
-                  validateParticleSystemStillExists (ps, rsGame) == true)
+              if (Renderer::
+                  getInstance ().validateParticleSystemStillExists (ps,
+                                                                    rsGame) ==
+                  true)
               {
                 ps->fade ();
               }
@@ -6071,8 +6149,9 @@ namespace Glest
               setMeshPosInParticleSystem (ups);
               if (getFaction ()->getTexture ())
               {
-                ups->setFactionColor (getFaction ()->getTexture ()->
-                                      getPixmapConst ()->getPixel3f (0, 0));
+                ups->setFactionColor (getFaction ()->
+                                      getTexture ()->getPixmapConst ()->
+                                      getPixel3f (0, 0));
               }
               damageParticleSystems.push_back (ups);
               damageParticleSystemsInUse[i] = ups;
@@ -6113,8 +6192,9 @@ namespace Glest
               setMeshPosInParticleSystem (ups);
               if (getFaction ()->getTexture ())
               {
-                ups->setFactionColor (getFaction ()->getTexture ()->
-                                      getPixmapConst ()->getPixel3f (0, 0));
+                ups->setFactionColor (getFaction ()->
+                                      getTexture ()->getPixmapConst ()->
+                                      getPixel3f (0, 0));
               }
               damageParticleSystems.push_back (ups);
               damageParticleSystemsInUse[i] = ups;
@@ -6130,9 +6210,8 @@ namespace Glest
           fps->setParticleOwner (this);
           const Game *game = Renderer::getInstance ().getGame ();
           fps->setSpeed (2.5f /
-                         game->getWorld ()->getUpdateFps (this->
-                                                          getFactionIndex
-                                                          ()));
+                         game->getWorld ()->
+                         getUpdateFps (this->getFactionIndex ()));
           fps->setPos (getCurrBurnVector ());
           fps->setRadius (type->getSize () / 3.f);
           fps->setTexture (CoreData::getInstance ().getFireTexture ());
@@ -6159,9 +6238,8 @@ namespace Glest
             ups->setTexture (CoreData::getInstance ().getFireTexture ());
             const Game *game = Renderer::getInstance ().getGame ();
             ups->setSpeed (2.0f /
-                           game->getWorld ()->getUpdateFps (this->
-                                                            getFactionIndex
-                                                            ()));
+                           game->getWorld ()->
+                           getUpdateFps (this->getFactionIndex ()));
             ups->setGravity (0.0004f);
             ups->setEmissionRate (1);
             ups->setMaxParticleEnergy (150);
@@ -6265,8 +6343,8 @@ namespace Glest
     void Unit::logSynchDataCommon (string file, int line, string source,
                                    bool threadedMode)
     {
-      if (SystemFlags::getSystemSettingType (SystemFlags::debugWorldSynch).
-          enabled == true)
+      if (SystemFlags::
+          getSystemSettingType (SystemFlags::debugWorldSynch).enabled == true)
       {
         char szBuf[8096] = "";
         snprintf (szBuf, 8096,
@@ -6905,8 +6983,9 @@ namespace Glest
 //      ParticleSystem *fire;
       int linkFireIndex = -1;
       if (this->fire != NULL
-          && Renderer::getInstance ().
-          validateParticleSystemStillExists (this->fire, rsGame) == true)
+          && Renderer::
+          getInstance ().validateParticleSystemStillExists (this->fire,
+                                                            rsGame) == true)
       {
         //fire->saveGame(unitNode);
         bool fireInSystemList = false;
@@ -6957,8 +7036,10 @@ namespace Glest
         {
           UnitParticleSystem *ups = unitParticleSystems[i];
           if (ups != NULL
-              && Renderer::getInstance ().
-              validateParticleSystemStillExists (ups, rsGame) == true)
+              && Renderer::
+              getInstance ().validateParticleSystemStillExists (ups,
+                                                                rsGame) ==
+              true)
           {
             ups->saveGame (unitParticleSystemsNode);
           }
@@ -6988,8 +7069,10 @@ namespace Glest
         {
           UnitParticleSystem *ups = damageParticleSystems[i];
           if (ups != NULL
-              && Renderer::getInstance ().
-              validateParticleSystemStillExists (ups, rsGame) == true)
+              && Renderer::
+              getInstance ().validateParticleSystemStillExists (ups,
+                                                                rsGame) ==
+              true)
           {
             ups->saveGame (damageParticleSystemsNode);
           }
@@ -7006,17 +7089,19 @@ namespace Glest
              iterMap != damageParticleSystemsInUse.end (); ++iterMap)
         {
           if (iterMap->second != NULL
-              && Renderer::getInstance ().
-              validateParticleSystemStillExists (iterMap->second,
-                                                 rsGame) == true)
+              && Renderer::
+              getInstance ().validateParticleSystemStillExists (iterMap->
+                                                                second,
+                                                                rsGame) ==
+              true)
           {
             XmlNode *damageParticleSystemsInUseNode2 =
-              damageParticleSystemsInUseNode->
-              addChild ("damageParticleSystemsInUse");
+              damageParticleSystemsInUseNode->addChild
+              ("damageParticleSystemsInUse");
 
             damageParticleSystemsInUseNode2->addAttribute ("key",
-                                                           intToStr (iterMap->
-                                                                     first),
+                                                           intToStr
+                                                           (iterMap->first),
                                                            mapTagReplacements);
             iterMap->second->saveGame (damageParticleSystemsInUseNode2);
           }
@@ -7040,8 +7125,10 @@ namespace Glest
         {
           ParticleSystem *ps = fireParticleSystems[i];
           if (ps != NULL
-              && Renderer::getInstance ().
-              validateParticleSystemStillExists (ps, rsGame) == true)
+              && Renderer::
+              getInstance ().validateParticleSystemStillExists (ps,
+                                                                rsGame) ==
+              true)
           {
             ps->saveGame (fireParticleSystemsNode);
           }
@@ -7057,8 +7144,10 @@ namespace Glest
         {
           UnitParticleSystem *ups = smokeParticleSystems[i];
           if (ups != NULL
-              && Renderer::getInstance ().
-              validateParticleSystemStillExists (ups, rsGame) == true)
+              && Renderer::
+              getInstance ().validateParticleSystemStillExists (ups,
+                                                                rsGame) ==
+              true)
           {
             ups->saveGame (smokeParticleSystemsNode);
             //printf("Saving smoke particles:\n[%s]\n",ups->toString().c_str());
@@ -7122,13 +7211,12 @@ namespace Glest
       XmlNode *lastHarvestResourceTargetNode =
         unitNode->addChild ("lastHarvestResourceTarget");
       lastHarvestResourceTargetNode->addAttribute ("key",
-                                                   lastHarvestResourceTarget.
-                                                   first.getString (),
+                                                   lastHarvestResourceTarget.first.
+                                                   getString (),
                                                    mapTagReplacements);
       lastHarvestResourceTargetNode->addAttribute ("value",
                                                    intToStr
-                                                   (lastHarvestResourceTarget.
-                                                    second),
+                                                   (lastHarvestResourceTarget.second),
                                                    mapTagReplacements);
 
 //      //std::pair<Vec2i,std::vector<Vec2i> > currentTargetPathTaken;
@@ -7240,9 +7328,8 @@ namespace Glest
       newpath->loadGame (unitNode);
       //Unit *result = new Unit(getNextUnitId(f), newpath, Vec2i(0), ut, f, &map, CardinalDir::NORTH);
       //Unit(int id, UnitPathInterface *path, const Vec2i &pos, const UnitType *type, Faction *faction, Map *map, CardinalDir placeFacing);
-      Unit *result =
-        new Unit (newUnitId, newpath, newUnitPos, ut, faction,
-                  world->getMapPtr (), newModelFacing);
+      Unit *result = new Unit (newUnitId, newpath, newUnitPos, ut, faction,
+                               world->getMapPtr (), newModelFacing);
 
       if (unitNode->hasAttribute ("preMorph_name") == true)
       {
@@ -7428,8 +7515,8 @@ namespace Glest
 
 //    int lastModelIndexForCurrSkillType;
       result->lastModelIndexForCurrSkillType =
-        unitNode->getAttribute ("lastModelIndexForCurrSkillType")->
-        getIntValue ();
+        unitNode->
+        getAttribute ("lastModelIndexForCurrSkillType")->getIntValue ();
 //    int animationRandomCycleCount;
       result->animationRandomCycleCount =
         unitNode->getAttribute ("animationRandomCycleCount")->getIntValue ();
@@ -7459,8 +7546,10 @@ namespace Glest
 
         //printf("Load MAIN fire particle result->fire = %p\n",result->fire);
 
-        Renderer::getInstance ().
-          addToDeferredParticleSystemList (make_pair (result->fire, rsGame));
+        Renderer::
+          getInstance ().addToDeferredParticleSystemList (make_pair
+                                                          (result->fire,
+                                                           rsGame));
       }
 
 //      TotalUpgrade totalUpgrade;
@@ -7514,8 +7603,9 @@ namespace Glest
           result->unitParticleSystems.push_back (ups);
 
           //Renderer::getInstance().manageParticleSystem(result->fire, rsGame);
-          Renderer::getInstance ().
-            addToDeferredParticleSystemList (make_pair (ups, rsGame));
+          Renderer::
+            getInstance ().addToDeferredParticleSystemList (make_pair
+                                                            (ups, rsGame));
         }
       }
 
@@ -7547,8 +7637,9 @@ namespace Glest
           result->damageParticleSystemsInUse[i] = ups;
 
           //Renderer::getInstance().manageParticleSystem(result->fire, rsGame);
-          Renderer::getInstance ().
-            addToDeferredParticleSystemList (make_pair (ups, rsGame));
+          Renderer::
+            getInstance ().addToDeferredParticleSystemList (make_pair
+                                                            (ups, rsGame));
         }
       }
 
@@ -7595,8 +7686,8 @@ namespace Glest
             true)
         {
           linkFireIndex =
-            fireParticleSystemsNode->getAttribute ("fireParticleLink")->
-            getIntValue ();
+            fireParticleSystemsNode->
+            getAttribute ("fireParticleLink")->getIntValue ();
         }
 
         vector < XmlNode * >unitParticleSystemNodeList =
@@ -7620,8 +7711,9 @@ namespace Glest
             {
               result->fire = ups;
             }
-            Renderer::getInstance ().
-              addToDeferredParticleSystemList (make_pair (ups, rsGame));
+            Renderer::
+              getInstance ().addToDeferredParticleSystemList (make_pair
+                                                              (ups, rsGame));
           }
         }
       }
@@ -7648,8 +7740,9 @@ namespace Glest
           //ups->setTexture(CoreData::getInstance().getFireTexture());
           result->smokeParticleSystems.push_back (ups);
 
-          Renderer::getInstance ().
-            addToDeferredParticleSystemList (make_pair (ups, rsGame));
+          Renderer::
+            getInstance ().addToDeferredParticleSystemList (make_pair
+                                                            (ups, rsGame));
 
           //printf("Loading smoke particles:\n[%s]\n",ups->toString().c_str());
         }
@@ -7703,11 +7796,11 @@ namespace Glest
 //      lastHarvestResourceTargetNode->addAttribute("value",intToStr(lastHarvestResourceTarget.second), mapTagReplacements);
 
       result->lastHarvestResourceTarget =
-        make_pair (Vec2i::
-                   strToVec2 (lastHarvestResourceTargetNode->
-                              getAttribute ("key")->getValue ()),
-                   lastHarvestResourceTargetNode->getAttribute ("value")->
-                   getIntValue ());
+        make_pair (Vec2i::strToVec2
+                   (lastHarvestResourceTargetNode->getAttribute ("key")->
+                    getValue ()),
+                   lastHarvestResourceTargetNode->
+                   getAttribute ("value")->getIntValue ());
 
 //      //std::pair<Vec2i,std::vector<Vec2i> > currentTargetPathTaken;
 //      static Game *game;
@@ -7720,23 +7813,24 @@ namespace Glest
         unitNode->getAttribute ("lastStuckFrame")->getIntValue ();
 //      Vec2i lastStuckPos;
       result->lastStuckPos =
-        Vec2i::strToVec2 (unitNode->getAttribute ("lastStuckPos")->
-                          getValue ());
+        Vec2i::strToVec2 (unitNode->
+                          getAttribute ("lastStuckPos")->getValue ());
 //      uint32 lastPathfindFailedFrame;
       result->lastPathfindFailedFrame =
         unitNode->getAttribute ("lastPathfindFailedFrame")->getIntValue ();
 //      Vec2i lastPathfindFailedPos;
       result->lastPathfindFailedPos =
-        Vec2i::strToVec2 (unitNode->getAttribute ("lastPathfindFailedPos")->
-                          getValue ());
+        Vec2i::strToVec2 (unitNode->
+                          getAttribute ("lastPathfindFailedPos")->getValue
+                          ());
 //      bool usePathfinderExtendedMaxNodes;
       result->usePathfinderExtendedMaxNodes =
-        unitNode->getAttribute ("usePathfinderExtendedMaxNodes")->
-        getIntValue () != 0;
+        unitNode->
+        getAttribute ("usePathfinderExtendedMaxNodes")->getIntValue () != 0;
 //      int maxQueuedCommandDisplayCount;
       result->maxQueuedCommandDisplayCount =
-        unitNode->getAttribute ("maxQueuedCommandDisplayCount")->
-        getIntValue ();
+        unitNode->
+        getAttribute ("maxQueuedCommandDisplayCount")->getIntValue ();
 //      UnitAttackBoostEffectOriginator currentAttackBoostOriginatorEffect;
 
       // !!! TODO: Softcoder - in progress work to load attack boosts, not working properly yet
@@ -7788,8 +7882,8 @@ namespace Glest
         (unitNode->getAttribute ("causeOfDeath")->getIntValue ());
 
       result->pathfindFailedConsecutiveFrameCount =
-        unitNode->getAttribute ("pathfindFailedConsecutiveFrameCount")->
-        getIntValue ();
+        unitNode->
+        getAttribute ("pathfindFailedConsecutiveFrameCount")->getIntValue ();
 
       if (result->alive)
       {
@@ -7806,16 +7900,16 @@ namespace Glest
       if (unitNode->hasAttribute ("currentPathFinderDesiredFinalPos"))
       {
         result->currentPathFinderDesiredFinalPos =
-          Vec2i::strToVec2 (unitNode->
-                            getAttribute
-                            ("currentPathFinderDesiredFinalPos")->
-                            getValue ());
+          Vec2i::strToVec2 (unitNode->getAttribute
+                            ("currentPathFinderDesiredFinalPos")->getValue
+                            ());
       }
 
       if (unitNode->hasAttribute ("random"))
       {
-        result->random.setLastNumber (unitNode->getAttribute ("random")->
-                                      getIntValue ());
+        result->random.setLastNumber (unitNode->
+                                      getAttribute ("random")->getIntValue
+                                      ());
       }
       if (unitNode->hasAttribute ("pathFindRefreshCellCount"))
       {
@@ -8052,8 +8146,10 @@ namespace Glest
       //int maxQueuedCommandDisplayCount;
 
       //UnitAttackBoostEffectOriginator currentAttackBoostOriginatorEffect;
-      crcForUnit.addInt ((int) currentAttackBoostOriginatorEffect.
-                         currentAttackBoostUnits.size ());
+      crcForUnit.
+        addInt ((int)
+                currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
+                size ());
 
       if (consoleDebug)
         printf ("#15 Unit: %d CRC: %u\n", id, crcForUnit.getSum ());
@@ -8069,8 +8165,8 @@ namespace Glest
       //CauseOfDeathType causeOfDeath;
 
       //uint32 pathfindFailedConsecutiveFrameCount;
-      crcForUnit.addString (this->currentPathFinderDesiredFinalPos.
-                            getString ());
+      crcForUnit.addString (this->
+                            currentPathFinderDesiredFinalPos.getString ());
 
       crcForUnit.addInt (random.getLastNumber ());
       if (this->random.getLastCaller () != "")
