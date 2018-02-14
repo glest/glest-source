@@ -3115,14 +3115,12 @@ namespace Glest
       // or when the unit is selected and right clicked to a position.
       if (commandType == NULL)
       {
-        // The default command is move command
-        commandType = type->getFirstCtOfClass (ccMove);
+        // move
+        // commandType = type->getFirstCtOfClass (ccMove);
 
-        // To change the default to attack, comment the line above, and uncomment
-        // the line of code below
-
+        // attack
         // Is the unit class warrior? if yes, attack by default, else walk.
-        //commandType = type->getFirstCtOfClass(this->getType()->isOfClass(ucWarrior) ? ccAttack : ccMove);
+        commandType = type->getFirstCtOfClass(this->getType()->isOfClass(ucWarrior) ? ccAttack : ccMove);
 
         // FIXME: I think a better solution would be to have a hotkey for this,
         // the user can decide, and toggle in-game -andy5995 2018-02-03
