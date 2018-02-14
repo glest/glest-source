@@ -1635,7 +1635,7 @@ namespace Glest
       // For each Resource type we store in the int a total consumed value, then
       // a vector of units that consume the resource type
       std::map < const ResourceType *, std::pair < int,
-        std::vector < Unit * >>>resourceIntervalUsage;
+        std::vector <Unit *> > >resourceIntervalUsage;
 
       // count up consumables usage for the interval
       for (int j = 0; j < getUnitCount (); ++j)
@@ -1654,7 +1654,7 @@ namespace Glest
                   resourceIntervalUsage.end ())
               {
                 resourceIntervalUsage[resource->getType ()] =
-                  make_pair < int, std::vector < Unit * >>(0,
+                  make_pair < int, std::vector <Unit *> >(0,
                                                            std::vector <
                                                            Unit * >());
               }
