@@ -27,8 +27,8 @@ architecture=`uname -m  | tr '[A-Z]' '[a-z]'`
 
 RELEASEDIR_ROOT="$CURRENTDIR/../../../release/"
 PROJDIR="$CURRENTDIR/"
-REPODIR="$CURRENTDIR/../../"
-REPO_DATADIR="$REPODIR../zetaglest-data"
+REPODIR="$CURRENTDIR/../.."
+REPO_DATADIR="$REPODIR/../zetaglest-data"
 if [ -d "$REPODIR/.git" ] && [ "$(which git 2>/dev/null)" != "" ]; then
     cd "$REPODIR"
     if [ "$SOURCE_BRANCH" = "" ]; then SOURCE_BRANCH="$(git branch | awk -F '* ' '/^* / {print $2}')"; fi

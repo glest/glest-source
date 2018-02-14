@@ -19,7 +19,7 @@ if [ "$1" != "" ] && [ "$2" != "" ]; then SOURCE_BRANCH="$2"; fi
 VERSION=`./mg-version.sh --version`
 
 REPODIR="$CURRENTDIR/../../"
-REPO_DATADIR="$REPODIR/data/glest_game"
+REPO_DATADIR="$REPODIR/../zetaglest-data"
 if [ -f "$REPO_DATADIR/.git" ] && [ "$(which git 2>/dev/null)" != "" ]; then
     cd "$REPO_DATADIR"
     DATA_BRANCH="$(git branch | grep '^* ' | awk '{print $2}')"
