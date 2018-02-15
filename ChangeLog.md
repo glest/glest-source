@@ -10,11 +10,11 @@ information about the game from which it was forked, please see the
 These units can now heal mobile units from their own factions that are
 in range (8)
 
-  priest (Egypt)
-  wartime mechanic (Rome)
-  minstrel (Elves)
-  engineer (Greece)
-  magician (Persia)
+    priest (Egypt)
+    wartime mechanic (Rome)
+    minstrel (Elves)
+    engineer (Greece)
+    magician (Persia)
 
 For more information about this change, see
 
@@ -31,10 +31,11 @@ Temporarily (or maybe permanently) reverted the default command back to
 "move" (see entry dated 2018-01-27).
 
 Hotkey changes:
-  M -> H (Show console/chat history)
-  H -> T (Toggle team chat
-  T -> Z (Cycle between store units)
-  M is now the hotkey for "move" when units are selected
+
+    M -> H (Show console/chat history)
+    H -> T (Toggle team chat
+    T -> Z (Cycle between store units)
+    M is now the hotkey for "move" when units are selected
 
 ## 2018-01-31
 
