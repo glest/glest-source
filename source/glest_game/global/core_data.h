@@ -129,7 +129,7 @@ namespace Glest
 
         std::map < std::string,
         std::vector <
-        FontChangedCallbackInterface * >>registeredFontChangedCallbacks;
+        FontChangedCallbackInterface * > >registeredFontChangedCallbacks;
     public:
 
       enum TextureSystemType
