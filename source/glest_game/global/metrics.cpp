@@ -1,115 +1,132 @@
 // ==============================================================
-//	This file is part of Glest (www.glest.org)
+//      This file is part of Glest (www.glest.org)
 //
-//	Copyright (C) 2001-2008 Martiño Figueroa
+//      Copyright (C) 2001-2008 Martiño Figueroa
 //
-//	You can redistribute this code and/or modify it under 
-//	the terms of the GNU General Public License as published 
-//	by the Free Software Foundation; either version 2 of the 
-//	License, or (at your option) any later version
+//      You can redistribute this code and/or modify it under 
+//      the terms of the GNU General Public License as published 
+//      by the Free Software Foundation; either version 2 of the 
+//      License, or (at your option) any later version
 // ==============================================================
 
-#include "metrics.h"	
+#include "metrics.h"
 #include <stdexcept>
 #include "platform_util.h"
 #include "leak_dumper.h"
 
 using namespace std;
 
-namespace Glest{ namespace Game{
+namespace Glest
+{
+  namespace Game
+  {
 
 
 // =====================================================
-// 	class Metrics
+//      class Metrics
 // =====================================================
 
-Metrics::Metrics() {
-	reloadData();
-}
+    Metrics::Metrics ()
+    {
+      reloadData ();
+    }
 
-void Metrics::reload(int resWidth, int resHeight) {
-	Metrics *metrics = getInstancePtr();
-	metrics->reloadData(resWidth, resHeight);
-}
+    void Metrics::reload (int resWidth, int resHeight)
+    {
+      Metrics *metrics = getInstancePtr ();
+        metrics->reloadData (resWidth, resHeight);
+    }
 
-void Metrics::reloadData(int resWidth, int resHeight) {
-	Config &config = Config::getInstance();
-	
-	virtualW= 1000;
-	virtualH= 750;
+    void Metrics::reloadData (int resWidth, int resHeight)
+    {
+      Config & config = Config::getInstance ();
 
-	if(resWidth > 0) {
-		screenW= resWidth;
-	}
-	else {
-		screenW= config.getInt("ScreenWidth");
-	}
-	if(resHeight > 0) {
-		screenH= resHeight;
-	}
-	else {
-		screenH= config.getInt("ScreenHeight");
-	}
-	
-	minimapX= 10;
-	minimapY= 750-128-30+16;
-	minimapW= 128;
-	minimapH= 128;
+      virtualW = 1000;
+      virtualH = 750;
 
-	displayX= 800;
-	displayY= 250;
-	displayW= 128;
-	displayH= 480;	
-}
+      if (resWidth > 0)
+      {
+        screenW = resWidth;
+      }
+      else
+      {
+        screenW = config.getInt ("ScreenWidth");
+      }
+      if (resHeight > 0)
+      {
+        screenH = resHeight;
+      }
+      else
+      {
+        screenH = config.getInt ("ScreenHeight");
+      }
 
-Metrics * Metrics::getInstancePtr() {
-	static Metrics metrics;
-	return &metrics;
-}
+      minimapX = 10;
+      minimapY = 750 - 128 - 30 + 16;
+      minimapW = 128;
+      minimapH = 128;
 
-const Metrics &Metrics::getInstance(){
-	Metrics *metrics = getInstancePtr();
-	return *metrics;
-}
+      displayX = 800;
+      displayY = 250;
+      displayW = 128;
+      displayH = 480;
+    }
 
-float Metrics::getAspectRatio() const{
-	if(screenH == 0) {
-		throw megaglest_runtime_error("div by 0 screenH == 0");
-	}
-	return static_cast<float>(screenW)/screenH;
-}
+    Metrics *Metrics::getInstancePtr ()
+    {
+      static Metrics metrics;
+      return &metrics;
+    }
 
-int Metrics::toVirtualX(int w) const{
-	if(screenW == 0) {
-		throw megaglest_runtime_error("div by 0 screenW == 0");
-	}
-	return w*virtualW/screenW;
-}
+    const Metrics & Metrics::getInstance ()
+    {
+      Metrics *metrics = getInstancePtr ();
+      return *metrics;
+    }
 
-int Metrics::toVirtualY(int h) const{
-	if(screenH == 0) {
-		throw megaglest_runtime_error("div by 0 screenH == 0");
-	}
+    float Metrics::getAspectRatio () const
+    {
+      if (screenH == 0)
+      {
+        throw megaglest_runtime_error ("div by 0 screenH == 0");
+      }
+      return static_cast < float >(screenW) / screenH;
+    }
 
-	//printf("h [%d] virtualH [%d] screenH [%d] result = %d\n",h,virtualH,screenH,(h*virtualH/screenH));
+    int Metrics::toVirtualX (int w) const
+    {
+      if (screenW == 0)
+      {
+        throw megaglest_runtime_error ("div by 0 screenW == 0");
+      }
+      return w * virtualW / screenW;
+    }
 
-	return h*virtualH/screenH;
-}
+    int Metrics::toVirtualY (int h) const
+    {
+      if (screenH == 0)
+      {
+        throw megaglest_runtime_error ("div by 0 screenH == 0");
+      }
 
-bool Metrics::isInDisplay(int x, int y) const{
-	return 
+      //printf("h [%d] virtualH [%d] screenH [%d] result = %d\n",h,virtualH,screenH,(h*virtualH/screenH));
+
+      return h * virtualH / screenH;
+    }
+
+    bool Metrics::isInDisplay (int x, int y) const
+    {
+      return
         x > displayX &&
-        y > displayY &&
-        x < displayX+displayW &&
-        y < displayY+displayH;
-}
+        y > displayY && x < displayX + displayW && y < displayY + displayH;
+    }
 
-bool Metrics::isInMinimap(int x, int y) const{
-	return 
+    bool Metrics::isInMinimap (int x, int y) const
+    {
+      return
         x > minimapX &&
-        y > minimapY &&
-        x < minimapX+minimapW &&
-        y < minimapY+minimapH;
-}
+        y > minimapY && x < minimapX + minimapW && y < minimapY + minimapH;
+    }
 
-}}// end namespace
+  }
+}                               // end namespace
