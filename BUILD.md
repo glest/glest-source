@@ -47,12 +47,11 @@ we will attempt to document dependencies in more detail)
 Below is a list of most dependencies you will need. This document needs
 to indicate better which are optional and which are required.
 
-gcc gcc-c++ cmake libsdl2-dev libalut-dev libgl1-mesa-dev
-libglu1-mesa-dev libvorbis-dev libx11-dev liblua-dev libjpeg-dev
-libpng-dev libcurl-gnutls-dev libircclient-dev libglew-dev libftgl-dev
-libfribidi-dev libcppunit-dev libminiupnpc-dev libfreetype6-dev
-libgnutls28-dev libkrb5-dev libkrb5-dev libnghttp2-dev libopenal-dev
-libldap2-dev libwxgtk3.0-dev librtmp-dev libvlccore-dev libvlc-dev
+gcc g++ cmake libsdl2-dev libalut-dev libgl1-mesa-dev libglu1-mesa-dev libvorbis-dev
+ libx11-dev liblua5.2-dev libjpeg-dev libpng-dev libcurl4-gnutls-dev libircclient-dev
+ libglew-dev libftgl-dev libfribidi-dev libcppunit-dev libminiupnpc-dev libfreetype6-dev 
+libgnutls28-dev libkrb5-dev libkrb5-dev libnghttp2-dev libopenal-dev libldap2-dev 
+libwxgtk3.0-dev librtmp-dev libvlccore-dev libvlc-dev
 
 Additionally for map editor and model viewer:
 
