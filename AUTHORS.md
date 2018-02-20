@@ -39,3 +39,5 @@ which includes the _MegaGlest_ commit log.
 
 * [MathuSum Mut](https://github.com/mathusummut)
 * [Dan Kelley](https://github.com/dafky2000)
+* [Adam Kuhn](https://github.com/adam-kuhn)
+
