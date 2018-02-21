@@ -2770,8 +2770,10 @@ namespace Glest
       delete commands.back ();
       commands.pop_back ();
 
-      // Reset the progress if the last task in the queue was cancelled.
-      /// TODO: extra if statement needed adding to fix this bug. Can this be avoided?
+      // Reset the progress if the last command in the queue was cancelled.
+      // We don't want to reset the progress if we're not removing the last command,
+      // because then the progress of the actual command in progress.
+      /// TODO: extra if statement below needed adding make the reset function properly. Can this be avoided?
       if (commands.empty()) resetProgress2();
 
       safeMutex.ReleaseLock ();
