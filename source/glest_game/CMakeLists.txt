@@ -178,10 +178,10 @@ IF(BUILD_MEGAGLEST)
 	# megaglest game
 
 	SET(DIRS_WITH_SRC
-	   	ai
+		global
+		ai
 		facilities
 		game
-		global
 		graphics
 		gui
 		main

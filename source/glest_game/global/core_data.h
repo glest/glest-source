@@ -67,9 +67,6 @@ namespace Glest
       StaticSound clickSoundB;
       StaticSound clickSoundC;
       StaticSound iniPlaySound;
-      StaticSound attentionSound;
-      StaticSound newServerSound;
-      StaticSound highlightSound;
       StaticSound markerSound;
       SoundContainer waterSounds;
 
@@ -173,6 +170,10 @@ namespace Glest
       void cleanup ();
       void loadFonts ();
 
+      static const std::string sfxAttention;
+      static const std::string sfxHighlight;
+      static const std::string sfxNewServer;
+
       // Textures
       Texture2D *getTextureBySystemId (TextureSystemType type);
 
@@ -214,9 +215,6 @@ namespace Glest
       StaticSound *getClickSoundB ();
       StaticSound *getClickSoundC ();
       StaticSound *getSound (const std::string& iniPlaySoundVal);
-      StaticSound *getAttentionSound ();
-      StaticSound *getNewServerSound ();
-      StaticSound *getHighlightSound ();
       StaticSound *getMarkerSound ();
       StaticSound *getWaterSound ();
 

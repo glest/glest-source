@@ -63,6 +63,12 @@ namespace Glest
 
     static const string CORE_WATER_SOUNDS_PATH = CORE_PATH + "/water_sounds/";
 
+    // Sound effects
+    // These variables are specified in the ini file
+    static const std::string sfxAttention = "PlaySoundAttention";
+    static const std::string sfxHighlight = "PlaySoundHighlight";
+    static const std::string sfxNewServer = "PlaySoundNewServer";
+
     CoreData & CoreData::getInstance ()
     {
       static CoreData coreData;
@@ -748,80 +754,6 @@ namespace Glest
       return &iniPlaySound;
     }
 
-    StaticSound *CoreData::getAttentionSound ()
-    {
-      int loadAttemptLookupKey = tsyst_COUNT + 6;
-      if (itemLoadAttempted.find (loadAttemptLookupKey) ==
-          itemLoadAttempted.end ())
-      {
-
-        itemLoadAttempted[loadAttemptLookupKey] = true;
-
-        try
-        {
-          static Config & config = Config::getInstance ();
-          attentionSound.load (config.getString ("PlaySoundAttention", ""));
-        }
-        catch (const megaglest_runtime_error & ex)
-        {
-          message (ex.what (),
-                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
-                   tempDataLocation);
-        }
-      }
-
-      return &attentionSound;
-    }
-
-    StaticSound *CoreData::getNewServerSound ()
-    {
-      int loadAttemptLookupKey = tsyst_COUNT + 6;
-      if (itemLoadAttempted.find (loadAttemptLookupKey) ==
-          itemLoadAttempted.end ())
-      {
-
-        itemLoadAttempted[loadAttemptLookupKey] = true;
-
-        try
-        {
-          static Config & config = Config::getInstance ();
-          newServerSound.load (config.getString ("PlaySoundNewServer", ""));
-        }
-        catch (const megaglest_runtime_error & ex)
-        {
-          message (ex.what (),
-                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
-                   tempDataLocation);
-        }
-      }
-
-      return &newServerSound;
-    }
-
-    StaticSound *CoreData::getHighlightSound ()
-    {
-      int loadAttemptLookupKey = tsyst_COUNT + 7;
-      if (itemLoadAttempted.find (loadAttemptLookupKey) ==
-          itemLoadAttempted.end ())
-      {
-
-        itemLoadAttempted[loadAttemptLookupKey] = true;
-
-        try
-        {
-          static Config & config = Config::getInstance ();
-          highlightSound.load (config.getString ("PlaySoundHighlight", ""));
-        }
-        catch (const megaglest_runtime_error & ex)
-        {
-          message (ex.what (),
-                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
-                   tempDataLocation);
-        }
-      }
-
-      return &highlightSound;
-    }
     StaticSound *CoreData::getMarkerSound ()
     {
       int loadAttemptLookupKey = tsyst_COUNT + 8;
