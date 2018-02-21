@@ -67,6 +67,7 @@ namespace Glest
       StaticSound clickSoundB;
       StaticSound clickSoundC;
       StaticSound attentionSound;
+      StaticSound newServerSound;
       StaticSound highlightSound;
       StaticSound markerSound;
       SoundContainer waterSounds;
@@ -212,6 +213,7 @@ namespace Glest
       StaticSound *getClickSoundB ();
       StaticSound *getClickSoundC ();
       StaticSound *getAttentionSound ();
+      StaticSound *getNewServerSound ();
       StaticSound *getHighlightSound ();
       StaticSound *getMarkerSound ();
       StaticSound *getWaterSound ();
