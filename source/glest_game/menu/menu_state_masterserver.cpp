@@ -1216,8 +1216,8 @@ namespace Glest
 
       if (playServerFoundSound)
       {
-        SoundRenderer::getInstance ().playFx (CoreData::getInstance ().
-                                              getSound (CoreData::sfxNewServer));
+        SoundRenderer::getInstance ().playFx (CoreData::getInstance ().getSound (CoreData::sfxNewServer));
+
         //switch on music again!!
         Config & config = Config::getInstance ();
         float configVolume = (config.getInt ("SoundVolumeMusic") / 100.f);
