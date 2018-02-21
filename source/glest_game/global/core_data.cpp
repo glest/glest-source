@@ -722,6 +722,32 @@ namespace Glest
 
       return &clickSoundC;
     }
+
+    StaticSound *CoreData::getSound (const std::string& iniPlaySoundVal)
+    {
+      int loadAttemptLookupKey = tsyst_COUNT + 6;
+      if (itemLoadAttempted.find (loadAttemptLookupKey) ==
+          itemLoadAttempted.end ())
+      {
+
+        itemLoadAttempted[loadAttemptLookupKey] = true;
+
+        try
+        {
+          static Config & config = Config::getInstance ();
+          iniPlaySound.load (config.getString (iniPlaySoundVal, ""));
+        }
+        catch (const megaglest_runtime_error & ex)
+        {
+          message (ex.what (),
+                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
+                   tempDataLocation);
+        }
+      }
+
+      return &iniPlaySound;
+    }
+
     StaticSound *CoreData::getAttentionSound ()
     {
       int loadAttemptLookupKey = tsyst_COUNT + 6;

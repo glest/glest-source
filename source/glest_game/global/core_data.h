@@ -66,6 +66,7 @@ namespace Glest
       StaticSound clickSoundA;
       StaticSound clickSoundB;
       StaticSound clickSoundC;
+      StaticSound iniPlaySound;
       StaticSound attentionSound;
       StaticSound newServerSound;
       StaticSound highlightSound;
@@ -212,6 +213,7 @@ namespace Glest
       StaticSound *getClickSoundA ();
       StaticSound *getClickSoundB ();
       StaticSound *getClickSoundC ();
+      StaticSound *getSound (const std::string& iniPlaySoundVal);
       StaticSound *getAttentionSound ();
       StaticSound *getNewServerSound ();
       StaticSound *getHighlightSound ();
