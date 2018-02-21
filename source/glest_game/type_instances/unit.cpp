@@ -2744,10 +2744,7 @@ namespace Glest
     {
       changedActiveCommand = false;
       retryCurrCommandCount = 0;
-      // Reset the progress if the command (possibly a task) is cancelled.
-      /// TODO: this is not an optimal solution because progress is reset even if the task does not track progression
-      /// e.g. production/ upgrades keep track of progression but walking/ attacking does not.
-      resetProgress2 ();
+
       this->setCurrentUnitTitle ("");
 
       //is empty?
@@ -2772,6 +2769,10 @@ namespace Glest
 
       delete commands.back ();
       commands.pop_back ();
+
+      // Reset the progress if the last task in the queue was cancelled.
+      /// TODO: extra if statement needed adding to fix this bug. Can this be avoided?
+      if (commands.empty()) resetProgress2();
 
       safeMutex.ReleaseLock ();
 
