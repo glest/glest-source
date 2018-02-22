@@ -4820,7 +4820,8 @@ namespace Glest
             (faction->getTeam () ==
              getWorld ()->getThisFaction ()->getTeam ()))
         {
-          soundRenderer.playFx (coreData.getMarkerSound (), true);
+          static PlaySoundClip snd;
+          soundRenderer.playFx (snd.getSound (snd.sfxMarker), true);
         }
       }
     }

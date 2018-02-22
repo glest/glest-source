@@ -63,6 +63,16 @@ namespace Glest
 
     static const string CORE_WATER_SOUNDS_PATH = CORE_PATH + "/water_sounds/";
 
+    // Sound effects
+    // These variables are specified in the ini file
+    const string PlaySoundClip::sfxAttention = "PlaySoundAttention";
+    const string PlaySoundClip::sfxHighlight = "PlaySoundHighlight";
+    const string PlaySoundClip::sfxNewServer = "PlaySoundNewServer";
+    const string PlaySoundClip::sfxMarker = "PlaySoundMarker";
+    const string PlaySoundClip::sfxMenuClickA = "PlaySoundMenuClickA";
+    const string PlaySoundClip::sfxMenuClickB = "PlaySoundMenuClickB";
+    const string PlaySoundClip::sfxMenuClickC = "PlaySoundMenuClickC";
+
     CoreData & CoreData::getInstance ()
     {
       static CoreData coreData;
@@ -646,182 +656,20 @@ namespace Glest
 
     StaticSound *CoreData::getClickSoundA ()
     {
-      int loadAttemptLookupKey = tsyst_COUNT + 3;
-      if (itemLoadAttempted.find (loadAttemptLookupKey) ==
-          itemLoadAttempted.end ())
-      {
-
-        itemLoadAttempted[loadAttemptLookupKey] = true;
-
-        try
-        {
-          string data_path = getDataPath ();
-          clickSoundA.load (getGameCustomCoreDataPath (data_path,
-                                                       CORE_MENU_SOUND_PATH +
-                                                       "click_a.wav"));
-        }
-        catch (const megaglest_runtime_error & ex)
-        {
-          message (ex.what (),
-                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
-                   tempDataLocation);
-        }
-      }
-      return &clickSoundA;
+      static PlaySoundClip snd;
+      return snd.getSound (snd.sfxMenuClickA);
     }
 
     StaticSound *CoreData::getClickSoundB ()
     {
-      int loadAttemptLookupKey = tsyst_COUNT + 4;
-      if (itemLoadAttempted.find (loadAttemptLookupKey) ==
-          itemLoadAttempted.end ())
-      {
+      static PlaySoundClip snd;
+      return snd.getSound (snd.sfxMenuClickB);
 
-        itemLoadAttempted[loadAttemptLookupKey] = true;
-
-        try
-        {
-          string data_path = getDataPath ();
-          clickSoundB.load (getGameCustomCoreDataPath (data_path,
-                                                       CORE_MENU_SOUND_PATH +
-                                                       "click_b.wav"));
-        }
-        catch (const megaglest_runtime_error & ex)
-        {
-          message (ex.what (),
-                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
-                   tempDataLocation);
-        }
-      }
-
-      return &clickSoundB;
     }
     StaticSound *CoreData::getClickSoundC ()
     {
-      int loadAttemptLookupKey = tsyst_COUNT + 5;
-      if (itemLoadAttempted.find (loadAttemptLookupKey) ==
-          itemLoadAttempted.end ())
-      {
-
-        itemLoadAttempted[loadAttemptLookupKey] = true;
-
-        try
-        {
-          string data_path = getDataPath ();
-          clickSoundC.load (getGameCustomCoreDataPath (data_path,
-                                                       CORE_MENU_SOUND_PATH +
-                                                       "click_c.wav"));
-        }
-        catch (const megaglest_runtime_error & ex)
-        {
-          message (ex.what (),
-                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
-                   tempDataLocation);
-        }
-      }
-
-      return &clickSoundC;
-    }
-
-    StaticSound *CoreData::getSound (const std::string& iniPlaySoundVal)
-    {
-      int loadAttemptLookupKey = tsyst_COUNT + 6;
-      if (itemLoadAttempted.find (loadAttemptLookupKey) ==
-          itemLoadAttempted.end ())
-      {
-
-        itemLoadAttempted[loadAttemptLookupKey] = true;
-
-        try
-        {
-          static Config & config = Config::getInstance ();
-          iniPlaySound.load (config.getString (iniPlaySoundVal, ""));
-        }
-        catch (const megaglest_runtime_error & ex)
-        {
-          message (ex.what (),
-                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
-                   tempDataLocation);
-        }
-      }
-
-      return &iniPlaySound;
-    }
-
-    StaticSound *CoreData::getAttentionSound ()
-    {
-      int loadAttemptLookupKey = tsyst_COUNT + 6;
-      if (itemLoadAttempted.find (loadAttemptLookupKey) ==
-          itemLoadAttempted.end ())
-      {
-
-        itemLoadAttempted[loadAttemptLookupKey] = true;
-
-        try
-        {
-          static Config & config = Config::getInstance ();
-          attentionSound.load (config.getString ("PlaySoundAttention", ""));
-        }
-        catch (const megaglest_runtime_error & ex)
-        {
-          message (ex.what (),
-                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
-                   tempDataLocation);
-        }
-      }
-
-      return &attentionSound;
-    }
-
-    StaticSound *CoreData::getHighlightSound ()
-    {
-      int loadAttemptLookupKey = tsyst_COUNT + 7;
-      if (itemLoadAttempted.find (loadAttemptLookupKey) ==
-          itemLoadAttempted.end ())
-      {
-
-        itemLoadAttempted[loadAttemptLookupKey] = true;
-
-        try
-        {
-          static Config & config = Config::getInstance ();
-          highlightSound.load (config.getString ("PlaySoundHighlight", ""));
-        }
-        catch (const megaglest_runtime_error & ex)
-        {
-          message (ex.what (),
-                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
-                   tempDataLocation);
-        }
-      }
-
-      return &highlightSound;
-    }
-    StaticSound *CoreData::getMarkerSound ()
-    {
-      int loadAttemptLookupKey = tsyst_COUNT + 8;
-      if (itemLoadAttempted.find (loadAttemptLookupKey) ==
-          itemLoadAttempted.end ())
-      {
-
-        itemLoadAttempted[loadAttemptLookupKey] = true;
-
-        try
-        {
-          string data_path = getDataPath ();
-          markerSound.load (getGameCustomCoreDataPath (data_path,
-                                                       CORE_MENU_SOUND_PATH +
-                                                       "sonar.wav"));
-        }
-        catch (const megaglest_runtime_error & ex)
-        {
-          message (ex.what (),
-                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
-                   tempDataLocation);
-        }
-      }
-
-      return &markerSound;
+      static PlaySoundClip snd;
+      return snd.getSound (snd.sfxMenuClickC);
     }
 
     void CoreData::loadWaterSoundsIfRequired ()
@@ -2110,6 +1958,36 @@ namespace Glest
                                   __FUNCTION__, __LINE__);
 
       return fileWasFound;
+    }
+
+    PlaySoundClip::PlaySoundClip (void) {};
+
+    PlaySoundClip::~PlaySoundClip (void) {};
+
+    StaticSound *PlaySoundClip::getSound (const std::string& iniPlaySoundVal)
+    {
+      CoreData coreData;
+      int loadAttemptLookupKey = coreData.tsyst_COUNT + 6;
+      if (coreData.itemLoadAttempted.find (loadAttemptLookupKey) ==
+          coreData.itemLoadAttempted.end ())
+      {
+
+        coreData.itemLoadAttempted[loadAttemptLookupKey] = true;
+
+        try
+        {
+          static Config & config = Config::getInstance ();
+          iniPlaySound.load (config.getString (iniPlaySoundVal, ""));
+        }
+        catch (const megaglest_runtime_error & ex)
+        {
+          message (ex.what (),
+                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
+                   tempDataLocation);
+        }
+      }
+
+      return &iniPlaySound;
     }
 
 // ================== PRIVATE ========================

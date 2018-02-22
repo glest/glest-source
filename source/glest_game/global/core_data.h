@@ -58,19 +58,12 @@ namespace Glest
 
     class CoreData
     {
+    friend class PlaySoundClip;
     private:
       std::map < int, bool > itemLoadAttempted;
 
       StrSound introMusic;
       StrSound menuMusic;
-      StaticSound clickSoundA;
-      StaticSound clickSoundB;
-      StaticSound clickSoundC;
-      StaticSound iniPlaySound;
-      StaticSound attentionSound;
-      StaticSound newServerSound;
-      StaticSound highlightSound;
-      StaticSound markerSound;
       SoundContainer waterSounds;
 
       Texture2D *logoTexture;
@@ -210,14 +203,17 @@ namespace Glest
       StrSound *getIntroMusic ();
       StrSound *getMenuMusic ();
 
+      // When issue #63 was done
+      // <https://github.com/ZetaGlest/zetaglest-source/issues/63>
+      // and the PlaySoundFile class was created,
+      // these functions were kept because they were being called from many
+      // different places in the code base. Rather than trying to change
+      // all those locations, I made these three into "wrapper" functions.
+      // -andy5995 2018-02-22
       StaticSound *getClickSoundA ();
       StaticSound *getClickSoundB ();
       StaticSound *getClickSoundC ();
-      StaticSound *getSound (const std::string& iniPlaySoundVal);
-      StaticSound *getAttentionSound ();
-      StaticSound *getNewServerSound ();
-      StaticSound *getHighlightSound ();
-      StaticSound *getMarkerSound ();
+
       StaticSound *getWaterSound ();
 
       // Fonts
@@ -357,8 +353,27 @@ namespace Glest
                                               string fontType,
                                               string fontTypeFamily,
                                               string fontUniqueKey);
+
+
     };
 
+      class PlaySoundClip
+    {
+      private:
+            StaticSound iniPlaySound;
+      public:
+            StaticSound *getSound (const std::string& iniPlaySoundVal);
+            static const string sfxAttention;
+            static const string sfxHighlight;
+            static const string sfxNewServer;
+            static const string sfxMarker;
+            static const string sfxMenuClickA;
+            static const string sfxMenuClickB;
+            static const string sfxMenuClickC;
+            PlaySoundClip();
+            ~PlaySoundClip();
+
+      };
 }}                              //end namespace
 
 #endif
