@@ -58,6 +58,7 @@ namespace Glest
 
     class CoreData
     {
+    friend class PlaySoundClip;
     private:
       std::map < int, bool > itemLoadAttempted;
 
@@ -66,7 +67,6 @@ namespace Glest
       StaticSound clickSoundA;
       StaticSound clickSoundB;
       StaticSound clickSoundC;
-      StaticSound iniPlaySound;
       StaticSound markerSound;
       SoundContainer waterSounds;
 
@@ -210,13 +210,8 @@ namespace Glest
       StaticSound *getClickSoundA ();
       StaticSound *getClickSoundB ();
       StaticSound *getClickSoundC ();
-      StaticSound *getSound (const std::string& iniPlaySoundVal);
       StaticSound *getMarkerSound ();
       StaticSound *getWaterSound ();
-
-      static const string sfxAttention;
-      static const string sfxHighlight;
-      static const string sfxNewServer;
 
       // Fonts
       Font2D *getDisplayFont () const
@@ -355,8 +350,23 @@ namespace Glest
                                               string fontType,
                                               string fontTypeFamily,
                                               string fontUniqueKey);
+
+
     };
 
+      class PlaySoundClip
+    {
+      private:
+            StaticSound iniPlaySound;
+      public:
+            StaticSound *getSound (const std::string& iniPlaySoundVal);
+            static const string sfxAttention;
+            static const string sfxHighlight;
+            static const string sfxNewServer;
+            PlaySoundClip();
+            ~PlaySoundClip();
+
+      };
 }}                              //end namespace
 
 #endif

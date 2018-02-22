@@ -65,9 +65,9 @@ namespace Glest
 
     // Sound effects
     // These variables are specified in the ini file
-    const string CoreData::sfxAttention = "PlaySoundAttention";
-    const string CoreData::sfxHighlight = "PlaySoundHighlight";
-    const string CoreData::sfxNewServer = "PlaySoundNewServer";
+    const string PlaySoundClip::sfxAttention = "PlaySoundAttention";
+    const string PlaySoundClip::sfxHighlight = "PlaySoundHighlight";
+    const string PlaySoundClip::sfxNewServer = "PlaySoundNewServer";
 
     CoreData & CoreData::getInstance ()
     {
@@ -727,31 +727,6 @@ namespace Glest
       }
 
       return &clickSoundC;
-    }
-
-    StaticSound *CoreData::getSound (const std::string& iniPlaySoundVal)
-    {
-      int loadAttemptLookupKey = tsyst_COUNT + 6;
-      if (itemLoadAttempted.find (loadAttemptLookupKey) ==
-          itemLoadAttempted.end ())
-      {
-
-        itemLoadAttempted[loadAttemptLookupKey] = true;
-
-        try
-        {
-          static Config & config = Config::getInstance ();
-          iniPlaySound.load (config.getString (iniPlaySoundVal, ""));
-        }
-        catch (const megaglest_runtime_error & ex)
-        {
-          message (ex.what (),
-                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
-                   tempDataLocation);
-        }
-      }
-
-      return &iniPlaySound;
     }
 
     StaticSound *CoreData::getMarkerSound ()
@@ -2067,6 +2042,36 @@ namespace Glest
                                   __FUNCTION__, __LINE__);
 
       return fileWasFound;
+    }
+
+    PlaySoundClip::PlaySoundClip (void) {};
+
+    PlaySoundClip::~PlaySoundClip (void) {};
+
+    StaticSound *PlaySoundClip::getSound (const std::string& iniPlaySoundVal)
+    {
+      CoreData coreData;
+      int loadAttemptLookupKey = coreData.tsyst_COUNT + 6;
+      if (coreData.itemLoadAttempted.find (loadAttemptLookupKey) ==
+          coreData.itemLoadAttempted.end ())
+      {
+
+        coreData.itemLoadAttempted[loadAttemptLookupKey] = true;
+
+        try
+        {
+          static Config & config = Config::getInstance ();
+          iniPlaySound.load (config.getString (iniPlaySoundVal, ""));
+        }
+        catch (const megaglest_runtime_error & ex)
+        {
+          message (ex.what (),
+                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
+                   tempDataLocation);
+        }
+      }
+
+      return &iniPlaySound;
     }
 
 // ================== PRIVATE ========================

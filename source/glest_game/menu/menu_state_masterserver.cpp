@@ -555,8 +555,8 @@ namespace Glest
           {
             CoreData & coreData = CoreData::getInstance ();
             SoundRenderer & soundRenderer = SoundRenderer::getInstance ();
-
-            soundRenderer.playFx (coreData.getSound (CoreData::sfxHighlight));
+            PlaySoundClip snd;
+            soundRenderer.playFx (snd.getSound (snd.sfxHighlight));
           }
           consoleIRC.addLine (szBuf);
         }
@@ -1216,7 +1216,8 @@ namespace Glest
 
       if (playServerFoundSound)
       {
-        SoundRenderer::getInstance ().playFx (CoreData::getInstance ().getSound (CoreData::sfxNewServer));
+        static PlaySoundClip snd;
+        SoundRenderer::getInstance ().playFx (snd.getSound (snd.sfxNewServer));
 
         //switch on music again!!
         Config & config = Config::getInstance ();

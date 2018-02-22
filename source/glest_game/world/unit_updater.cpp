@@ -3142,8 +3142,9 @@ bool UnitUpdater::unitOnRange(Unit *unit, int range, Unit **rangedPtr,
 	    		attackWarnings.push_back(awd);
 
 	    		if(world->getAttackWarningsEnabled() == true) {
+						static PlaySoundClip snd;
 
-	    			SoundRenderer::getInstance().playFx(CoreData::getInstance().getSound(CoreData::sfxAttention),true);
+	    			SoundRenderer::getInstance().playFx(snd.getSound (snd.sfxAttention),true);
 	    			world->addAttackEffects(enemyUnit);
 	    		}
 	    	}

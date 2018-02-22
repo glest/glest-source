@@ -792,10 +792,10 @@ namespace
                               {
                                 CoreData & coreData =
                                   CoreData::getInstance ();
+                                PlaySoundClip play;
                                 SoundRenderer & soundRenderer =
                                   SoundRenderer::getInstance ();
-                                soundRenderer.playFx (coreData.
-                                                      getSound (CoreData::sfxHighlight),
+                                soundRenderer.playFx (play.getSound (play.sfxHighlight),
                                                       true);
                               }
                             console->addLine (msg.chatText.
