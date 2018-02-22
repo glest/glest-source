@@ -68,6 +68,10 @@ namespace Glest
     const string PlaySoundClip::sfxAttention = "PlaySoundAttention";
     const string PlaySoundClip::sfxHighlight = "PlaySoundHighlight";
     const string PlaySoundClip::sfxNewServer = "PlaySoundNewServer";
+    const string PlaySoundClip::sfxMarker = "PlaySoundMarker";
+    const string PlaySoundClip::sfxMenuClickA = "PlaySoundMenuClickA";
+    const string PlaySoundClip::sfxMenuClickB = "PlaySoundMenuClickB";
+    const string PlaySoundClip::sfxMenuClickC = "PlaySoundMenuClickC";
 
     CoreData & CoreData::getInstance ()
     {
@@ -652,108 +656,20 @@ namespace Glest
 
     StaticSound *CoreData::getClickSoundA ()
     {
-      int loadAttemptLookupKey = tsyst_COUNT + 3;
-      if (itemLoadAttempted.find (loadAttemptLookupKey) ==
-          itemLoadAttempted.end ())
-      {
-
-        itemLoadAttempted[loadAttemptLookupKey] = true;
-
-        try
-        {
-          string data_path = getDataPath ();
-          clickSoundA.load (getGameCustomCoreDataPath (data_path,
-                                                       CORE_MENU_SOUND_PATH +
-                                                       "click_a.wav"));
-        }
-        catch (const megaglest_runtime_error & ex)
-        {
-          message (ex.what (),
-                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
-                   tempDataLocation);
-        }
-      }
-      return &clickSoundA;
+      static PlaySoundClip snd;
+      return snd.getSound (snd.sfxMenuClickA);
     }
 
     StaticSound *CoreData::getClickSoundB ()
     {
-      int loadAttemptLookupKey = tsyst_COUNT + 4;
-      if (itemLoadAttempted.find (loadAttemptLookupKey) ==
-          itemLoadAttempted.end ())
-      {
+      static PlaySoundClip snd;
+      return snd.getSound (snd.sfxMenuClickB);
 
-        itemLoadAttempted[loadAttemptLookupKey] = true;
-
-        try
-        {
-          string data_path = getDataPath ();
-          clickSoundB.load (getGameCustomCoreDataPath (data_path,
-                                                       CORE_MENU_SOUND_PATH +
-                                                       "click_b.wav"));
-        }
-        catch (const megaglest_runtime_error & ex)
-        {
-          message (ex.what (),
-                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
-                   tempDataLocation);
-        }
-      }
-
-      return &clickSoundB;
     }
     StaticSound *CoreData::getClickSoundC ()
     {
-      int loadAttemptLookupKey = tsyst_COUNT + 5;
-      if (itemLoadAttempted.find (loadAttemptLookupKey) ==
-          itemLoadAttempted.end ())
-      {
-
-        itemLoadAttempted[loadAttemptLookupKey] = true;
-
-        try
-        {
-          string data_path = getDataPath ();
-          clickSoundC.load (getGameCustomCoreDataPath (data_path,
-                                                       CORE_MENU_SOUND_PATH +
-                                                       "click_c.wav"));
-        }
-        catch (const megaglest_runtime_error & ex)
-        {
-          message (ex.what (),
-                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
-                   tempDataLocation);
-        }
-      }
-
-      return &clickSoundC;
-    }
-
-    StaticSound *CoreData::getMarkerSound ()
-    {
-      int loadAttemptLookupKey = tsyst_COUNT + 8;
-      if (itemLoadAttempted.find (loadAttemptLookupKey) ==
-          itemLoadAttempted.end ())
-      {
-
-        itemLoadAttempted[loadAttemptLookupKey] = true;
-
-        try
-        {
-          string data_path = getDataPath ();
-          markerSound.load (getGameCustomCoreDataPath (data_path,
-                                                       CORE_MENU_SOUND_PATH +
-                                                       "sonar.wav"));
-        }
-        catch (const megaglest_runtime_error & ex)
-        {
-          message (ex.what (),
-                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
-                   tempDataLocation);
-        }
-      }
-
-      return &markerSound;
+      static PlaySoundClip snd;
+      return snd.getSound (snd.sfxMenuClickC);
     }
 
     void CoreData::loadWaterSoundsIfRequired ()

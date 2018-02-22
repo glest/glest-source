@@ -64,10 +64,6 @@ namespace Glest
 
       StrSound introMusic;
       StrSound menuMusic;
-      StaticSound clickSoundA;
-      StaticSound clickSoundB;
-      StaticSound clickSoundC;
-      StaticSound markerSound;
       SoundContainer waterSounds;
 
       Texture2D *logoTexture;
@@ -207,10 +203,17 @@ namespace Glest
       StrSound *getIntroMusic ();
       StrSound *getMenuMusic ();
 
+      // When issue #63 was done
+      // <https://github.com/ZetaGlest/zetaglest-source/issues/63>
+      // and the PlaySoundFile class was created,
+      // these functions were kept because they were being called from many
+      // different places in the code base. Rather than trying to change
+      // all those locations, I made these three into "wrapper" functions.
+      // -andy5995 2018-02-22
       StaticSound *getClickSoundA ();
       StaticSound *getClickSoundB ();
       StaticSound *getClickSoundC ();
-      StaticSound *getMarkerSound ();
+
       StaticSound *getWaterSound ();
 
       // Fonts
@@ -363,6 +366,10 @@ namespace Glest
             static const string sfxAttention;
             static const string sfxHighlight;
             static const string sfxNewServer;
+            static const string sfxMarker;
+            static const string sfxMenuClickA;
+            static const string sfxMenuClickB;
+            static const string sfxMenuClickC;
             PlaySoundClip();
             ~PlaySoundClip();
 
