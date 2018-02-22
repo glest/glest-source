@@ -170,10 +170,6 @@ namespace Glest
       void cleanup ();
       void loadFonts ();
 
-      static const std::string sfxAttention;
-      static const std::string sfxHighlight;
-      static const std::string sfxNewServer;
-
       // Textures
       Texture2D *getTextureBySystemId (TextureSystemType type);
 
@@ -217,6 +213,10 @@ namespace Glest
       StaticSound *getSound (const std::string& iniPlaySoundVal);
       StaticSound *getMarkerSound ();
       StaticSound *getWaterSound ();
+
+      static const string sfxAttention;
+      static const string sfxHighlight;
+      static const string sfxNewServer;
 
       // Fonts
       Font2D *getDisplayFont () const

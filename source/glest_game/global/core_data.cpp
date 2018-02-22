@@ -65,9 +65,9 @@ namespace Glest
 
     // Sound effects
     // These variables are specified in the ini file
-    static const std::string sfxAttention = "PlaySoundAttention";
-    static const std::string sfxHighlight = "PlaySoundHighlight";
-    static const std::string sfxNewServer = "PlaySoundNewServer";
+    const string CoreData::sfxAttention = "PlaySoundAttention";
+    const string CoreData::sfxHighlight = "PlaySoundHighlight";
+    const string CoreData::sfxNewServer = "PlaySoundNewServer";
 
     CoreData & CoreData::getInstance ()
     {
