@@ -6343,7 +6343,7 @@ namespace Glest
             if (currentConnectionCount > soundConnectionCount)
             {
               soundConnectionCount = currentConnectionCount;
-              PlaySoundClip snd;
+              static PlaySoundClip snd;
               SoundRenderer::getInstance ().
                 playFx (snd.getSound (snd.sfxAttention));
 //switch on music again!!

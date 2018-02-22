@@ -553,9 +553,8 @@ namespace Glest
           string helpSTr = szBuf;
           if (helpSTr.find (currentIrcNick) != string::npos)
           {
-            CoreData & coreData = CoreData::getInstance ();
             SoundRenderer & soundRenderer = SoundRenderer::getInstance ();
-            PlaySoundClip snd;
+            static PlaySoundClip snd;
             soundRenderer.playFx (snd.getSound (snd.sfxHighlight));
           }
           consoleIRC.addLine (szBuf);
