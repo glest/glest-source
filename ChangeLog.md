@@ -15,11 +15,12 @@ for detailed information, and see comments in
 * These units can now heal mobile units from their own factions that are
 in range
 
-    nurse (British, radius of 15)
-    archmage_tower (Magic, radius of 8)
+      nurse (British, radius of 15)
+      archmage_tower (Magic, radius of 8)
 
-    See [comparison](https://github.com/ZetaGlest/zetaglest-data/compare/e2d1ca55cb88...8762e708669e)
-    for detailed information and other related changes.
+See
+[comparison](https://github.com/ZetaGlest/zetaglest-data/compare/e2d1ca55cb88...8762e708669e)
+for detailed information and other related changes.
 
 ## 2018-02-16
 
