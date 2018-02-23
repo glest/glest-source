@@ -554,8 +554,7 @@ namespace Glest
           if (helpSTr.find (currentIrcNick) != string::npos)
           {
             SoundRenderer & soundRenderer = SoundRenderer::getInstance ();
-            static PlaySoundClip snd;
-            soundRenderer.playFx (snd.getSound (snd.sfxHighlight));
+            soundRenderer.playFx (sfxHighlight);
           }
           consoleIRC.addLine (szBuf);
         }
@@ -1215,8 +1214,7 @@ namespace Glest
 
       if (playServerFoundSound)
       {
-        static PlaySoundClip snd;
-        SoundRenderer::getInstance ().playFx (snd.getSound (snd.sfxNewServer));
+        SoundRenderer::getInstance ().playFx (sfxNewServer);
 
         //switch on music again!!
         Config & config = Config::getInstance ();

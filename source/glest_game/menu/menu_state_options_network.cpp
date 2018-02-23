@@ -397,7 +397,7 @@ namespace
           button = 0;
         if (mainMessageBox.mouseClick (x, y, button))
         {
-          soundRenderer.playFx (coreData.getClickSoundA ());
+          soundRenderer.playFx (sfxMenuClickA);
           if (button == 0)
           {
             if (mainMessageBoxState == 1)

@@ -65,13 +65,13 @@ namespace Glest
 
     // Sound effects
     // These variables are specified in the ini file
-    const string PlaySoundClip::sfxAttention = "PlaySoundAttention";
-    const string PlaySoundClip::sfxHighlight = "PlaySoundHighlight";
-    const string PlaySoundClip::sfxNewServer = "PlaySoundNewServer";
-    const string PlaySoundClip::sfxMarker = "PlaySoundMarker";
-    const string PlaySoundClip::sfxMenuClickA = "PlaySoundMenuClickA";
-    const string PlaySoundClip::sfxMenuClickB = "PlaySoundMenuClickB";
-    const string PlaySoundClip::sfxMenuClickC = "PlaySoundMenuClickC";
+    StaticSound sfxAttention = getSound("PlaySoundAttention");
+    StaticSound sfxHighlight = getSound("PlaySoundHighlight");
+    StaticSound sfxNewServer = getSound("PlaySoundNewServer");
+    StaticSound sfxMarker = getSound("PlaySoundMarker");
+    StaticSound sfxMenuClickA = getSound("PlaySoundMenuClickA");
+    StaticSound sfxMenuClickB = getSound("PlaySoundMenuClickB");
+    StaticSound sfxMenuClickC = getSound("PlaySoundMenuClickC");
 
     CoreData & CoreData::getInstance ()
     {
@@ -652,24 +652,6 @@ namespace Glest
       // Required to be loaded at program startup as they may be accessed in
       // threads or some other dangerous way so lazy loading is not an option
       getCustomTexture ();
-    }
-
-    StaticSound *CoreData::getClickSoundA ()
-    {
-      static PlaySoundClip snd;
-      return snd.getSound (snd.sfxMenuClickA);
-    }
-
-    StaticSound *CoreData::getClickSoundB ()
-    {
-      static PlaySoundClip snd;
-      return snd.getSound (snd.sfxMenuClickB);
-
-    }
-    StaticSound *CoreData::getClickSoundC ()
-    {
-      static PlaySoundClip snd;
-      return snd.getSound (snd.sfxMenuClickC);
     }
 
     void CoreData::loadWaterSoundsIfRequired ()
@@ -1960,31 +1942,19 @@ namespace Glest
       return fileWasFound;
     }
 
-    PlaySoundClip::PlaySoundClip (void) {};
-
-    PlaySoundClip::~PlaySoundClip (void) {};
-
-    StaticSound *PlaySoundClip::getSound (const std::string& iniPlaySoundVal)
+    StaticSound getSound (const string& iniPlaySoundVal)
     {
-      CoreData coreData;
-      int loadAttemptLookupKey = coreData.tsyst_COUNT + 6;
-      if (coreData.itemLoadAttempted.find (loadAttemptLookupKey) ==
-          coreData.itemLoadAttempted.end ())
+      StaticSound *iniPlaySound;
+      try
       {
-
-        coreData.itemLoadAttempted[loadAttemptLookupKey] = true;
-
-        try
-        {
-          static Config & config = Config::getInstance ();
-          iniPlaySound.load (config.getString (iniPlaySoundVal, ""));
-        }
-        catch (const megaglest_runtime_error & ex)
-        {
-          message (ex.what (),
-                   GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
-                   tempDataLocation);
-        }
+         static Config & config = Config::getInstance ();
+         iniPlaySound.load (config.getString (iniPlaySoundVal, ""));
+      }
+      catch (const megaglest_runtime_error & ex)
+      {
+        message (ex.what (),
+                 GlobalStaticFlags::getIsNonGraphicalModeEnabled (),
+                 tempDataLocation);
       }
 
       return &iniPlaySound;
