@@ -163,12 +163,11 @@ namespace Glest
     void MenuStateGraphicInfo::mouseClick (int x, int y,
                                            MouseButton mouseButton)
     {
-      CoreData & coreData = CoreData::getInstance ();
       SoundRenderer & soundRenderer = SoundRenderer::getInstance ();
 
       if (buttonReturn.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         mainMenu->setState (new MenuStateOptionsGraphics (program, mainMenu));
       }
     }

@@ -65,13 +65,6 @@ namespace Glest
 
     // Sound effects
     // These variables are specified in the ini file
-    StaticSound sfxAttention = getSound("PlaySoundAttention");
-    StaticSound sfxHighlight = getSound("PlaySoundHighlight");
-    StaticSound sfxNewServer = getSound("PlaySoundNewServer");
-    StaticSound sfxMarker = getSound("PlaySoundMarker");
-    StaticSound sfxMenuClickA = getSound("PlaySoundMenuClickA");
-    StaticSound sfxMenuClickB = getSound("PlaySoundMenuClickB");
-    StaticSound sfxMenuClickC = getSound("PlaySoundMenuClickC");
 
     CoreData & CoreData::getInstance ()
     {
@@ -1942,9 +1935,9 @@ namespace Glest
       return fileWasFound;
     }
 
-    StaticSound getSound (const string& iniPlaySoundVal)
+    const StaticSound getSound (const string& iniPlaySoundVal)
     {
-      StaticSound *iniPlaySound;
+      StaticSound iniPlaySound;
       try
       {
          static Config & config = Config::getInstance ();
@@ -1957,7 +1950,7 @@ namespace Glest
                  tempDataLocation);
       }
 
-      return &iniPlaySound;
+      return iniPlaySound;
     }
 
 // ================== PRIVATE ========================

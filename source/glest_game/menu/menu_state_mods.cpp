@@ -1708,7 +1708,7 @@ namespace Glest
                                     "In [%s::%s Line %d]\n", __FILE__,
                                     __FUNCTION__, __LINE__);
 
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
 
         if (fileFTPProgressList.empty () == false)
         {
@@ -1733,7 +1733,7 @@ namespace Glest
         int button = 0;
         if (mainMessageBox.mouseClick (x, y, button))
         {
-          soundRenderer.playFx (coreData.getClickSoundA ());
+          soundRenderer.playFx (sfxMenuClickA);
           mainMessageBox.setEnabled (false);
           mainMessageBox.init (lang.getString ("Yes"), lang.getString ("No"),
                                450);
@@ -2115,7 +2115,7 @@ namespace Glest
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                     "In [%s::%s Line: %d]\n", __FILE__,
                                     __FUNCTION__, __LINE__);
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
             enabled)
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
@@ -2129,7 +2129,7 @@ namespace Glest
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                     "In [%s::%s Line: %d]\n", __FILE__,
                                     __FUNCTION__, __LINE__);
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
             enabled)
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
@@ -2143,7 +2143,7 @@ namespace Glest
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                     "In [%s::%s Line: %d]\n", __FILE__,
                                     __FUNCTION__, __LINE__);
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
             enabled)
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
@@ -2157,7 +2157,7 @@ namespace Glest
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                     "In [%s::%s Line: %d]\n", __FILE__,
                                     __FUNCTION__, __LINE__);
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
             enabled)
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
@@ -2167,7 +2167,7 @@ namespace Glest
       else if (buttonInstallTech.mouseClick (x, y)
                && buttonInstallTech.getEnabled ())
       {
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         if (selectedTechName != "")
         {
           bool alreadyHasTech =
@@ -2261,7 +2261,7 @@ namespace Glest
       else if (buttonRemoveTech.mouseClick (x, y)
                && buttonRemoveTech.getEnabled ())
       {
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         if (selectedTechName != "")
         {
           bool alreadyHasTech =
@@ -2303,7 +2303,7 @@ namespace Glest
       else if (buttonInstallTileset.mouseClick (x, y)
                && buttonInstallTileset.getEnabled ())
       {
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         if (selectedTilesetName != "")
         {
           bool alreadyHasTileset =
@@ -2398,7 +2398,7 @@ namespace Glest
       else if (buttonRemoveTileset.mouseClick (x, y)
                && buttonRemoveTileset.getEnabled ())
       {
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         if (selectedTilesetName != "")
         {
           bool alreadyHasTileset =
@@ -2439,7 +2439,7 @@ namespace Glest
       else if (buttonInstallMap.mouseClick (x, y)
                && buttonInstallMap.getEnabled ())
       {
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         if (selectedMapName != "")
         {
           bool alreadyHasMap =
@@ -2509,7 +2509,7 @@ namespace Glest
       else if (buttonRemoveMap.mouseClick (x, y)
                && buttonRemoveMap.getEnabled ())
       {
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         if (selectedMapName != "")
         {
           bool alreadyHasMap =
@@ -2550,7 +2550,7 @@ namespace Glest
       else if (buttonInstallScenario.mouseClick (x, y)
                && buttonInstallScenario.getEnabled ())
       {
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         if (selectedScenarioName != "")
         {
           bool alreadyHasScenario =
@@ -2647,7 +2647,7 @@ namespace Glest
       else if (buttonRemoveScenario.mouseClick (x, y)
                && buttonRemoveScenario.getEnabled ())
       {
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         if (selectedScenarioName != "")
         {
           bool alreadyHasScenario =

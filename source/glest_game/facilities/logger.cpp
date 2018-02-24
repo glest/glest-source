@@ -188,8 +188,7 @@ void Logger::handleMouseClick(int x, int y) {
 		showNextHint();
 		//buttonNextHint.setLighted(false);
 		SoundRenderer &soundRenderer= SoundRenderer::getInstance();
-		CoreData &coreData= CoreData::getInstance();
-		soundRenderer.playFx(coreData.getClickSoundC());
+		soundRenderer.playFx(sfxMenuClickC);
 	}
 }
 

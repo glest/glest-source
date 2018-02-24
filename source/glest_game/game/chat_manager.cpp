@@ -792,7 +792,7 @@ namespace
                               {
                                 SoundRenderer & soundRenderer =
                                   SoundRenderer::getInstance ();
-                                soundRenderer.playFx (&sfxHighlight,
+                                soundRenderer.playFx (sfxHighlight,
                                                       true);
                               }
                             console->addLine (msg.chatText.

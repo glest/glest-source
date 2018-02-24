@@ -693,7 +693,7 @@ namespace
 
         if (mainMessageBox.mouseClick (x, y, button))
         {
-          soundRenderer.playFx (coreData.getClickSoundA ());
+          soundRenderer.playFx (sfxMenuClickA);
           if (button == 0)
           {
             if (mainMessageBoxState == 1)
@@ -731,7 +731,7 @@ namespace
       }
       else if (buttonOk.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         Lang & lang = Lang::getInstance ();
         bool
           selectedFullscreenWindowed = checkBoxFullscreenWindowed.getValue ();
@@ -828,7 +828,7 @@ namespace
       }
       else if (buttonReturn.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
 
         // reset the gamma to former value
         string
@@ -858,7 +858,7 @@ namespace
       }
       else if (buttonKeyboardSetup.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         //mainMenu->setState(new MenuStateKeysetup(program, mainMenu)); // open keyboard shortcuts setup screen
         //mainMenu->setState(new MenuStateOptionsGraphics(program, mainMenu)); // open keyboard shortcuts setup screen
         //mainMenu->setState(new MenuStateOptionsNetwork(program, mainMenu)); // open keyboard shortcuts setup screen
@@ -868,31 +868,31 @@ namespace
       }
       else if (buttonAudioSection.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         mainMenu->setState (new MenuStateOptionsSound (program, mainMenu, this->parentUI));     // open keyboard shortcuts setup screen
         return;
       }
       else if (buttonNetworkSettings.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         mainMenu->setState (new MenuStateOptionsNetwork (program, mainMenu, this->parentUI));   // open keyboard shortcuts setup screen
         return;
       }
       else if (buttonMiscSection.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         mainMenu->setState (new MenuStateOptions (program, mainMenu, this->parentUI));  // open keyboard shortcuts setup screen
         return;
       }
       else if (buttonVideoSection.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         //mainMenu->setState(new MenuStateOptionsGraphics(program, mainMenu,this->parentUI)); // open keyboard shortcuts setup screen
         return;
       }
       else if (buttonAutoConfig.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         Renderer::getInstance ().autoConfig ();
         //saveConfig();
         mainMenu->setState (new MenuStateOptionsGraphics (program, mainMenu));
@@ -900,7 +900,7 @@ namespace
       }
       else if (buttonVideoInfo.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         mainMenu->setState (new MenuStateGraphicInfo (program, mainMenu));
         return;
       }

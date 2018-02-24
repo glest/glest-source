@@ -1532,7 +1532,6 @@ namespace Glest
 
       try
       {
-        CoreData & coreData = CoreData::getInstance ();
         SoundRenderer & soundRenderer = SoundRenderer::getInstance ();
         int oldListBoxMapfilterIndex =
           listBoxMapFilter.getSelectedItemIndex ();
@@ -1542,7 +1541,7 @@ namespace Glest
           int button = 0;
           if (mainMessageBox.mouseClick (x, y, button))
           {
-            soundRenderer.playFx (coreData.getClickSoundA ());
+            soundRenderer.playFx (sfxMenuClickA);
             if (button == 0)
             {
               mainMessageBox.setEnabled (false);
@@ -1632,7 +1631,7 @@ namespace Glest
                                         (__FILE__).c_str (), __FUNCTION__,
                                         __LINE__);
 
-            soundRenderer.playFx (coreData.getClickSoundA ());
+            soundRenderer.playFx (sfxMenuClickA);
 
             MutexSafeWrapper
               safeMutex ((publishToMasterserverThread !=
@@ -1680,7 +1679,7 @@ namespace Glest
           else if (buttonRestoreLastSettings.mouseClick (x, y)
                    && buttonRestoreLastSettings.getEnabled ())
           {
-            soundRenderer.playFx (coreData.getClickSoundB ());
+            soundRenderer.playFx (sfxMenuClickB);
 
             RestoreLastGameSettings ();
           }
@@ -2100,7 +2099,7 @@ namespace Glest
                             string (__FILE__) + "_" + intToStr (__LINE__));
 
             needToRepublishToMasterserver = true;
-            soundRenderer.playFx (coreData.getClickSoundC ());
+            soundRenderer.playFx (sfxMenuClickC);
 
             ServerInterface *serverInterface =
               NetworkManager::getInstance ().getServerInterface ();
@@ -2139,7 +2138,7 @@ namespace Glest
               lastSetChangedGameSettings = time (NULL);
             }
 
-            soundRenderer.playFx (coreData.getClickSoundC ());
+            soundRenderer.playFx (sfxMenuClickC);
           }
           else if (listBoxScenario.mouseClick (x, y)
                    || checkBoxScenario.mouseClick (x, y))
@@ -2331,7 +2330,7 @@ namespace Glest
               }
               else if (buttonClearBlockedPlayers.mouseClick (x, y))
               {
-                soundRenderer.playFx (coreData.getClickSoundB ());
+                soundRenderer.playFx (sfxMenuClickB);
 
                 ServerInterface *serverInterface =
                   NetworkManager::getInstance ().getServerInterface ();
@@ -2355,7 +2354,7 @@ namespace Glest
               }
               else if (buttonBlockPlayers[i].mouseClick (x, y))
               {
-                soundRenderer.playFx (coreData.getClickSoundB ());
+                soundRenderer.playFx (sfxMenuClickB);
 
                 ServerInterface *serverInterface =
                   NetworkManager::getInstance ().getServerInterface ();
@@ -2494,7 +2493,7 @@ namespace Glest
                                       extractFileFromDirectoryPath (__FILE__).
                                       c_str (), __FUNCTION__, __LINE__);
 
-          soundRenderer.playFx (coreData.getClickSoundC ());
+          soundRenderer.playFx (sfxMenuClickC);
           if (getNetworkPlayerStatus () == npst_PickSettings)
           {
             listBoxPlayerStatus.setTextColor (Vec3f (1.0f, 0.0f, 0.0f));
@@ -2755,7 +2754,7 @@ namespace Glest
       closeUnusedSlots ();
       CoreData & coreData = CoreData::getInstance ();
       SoundRenderer & soundRenderer = SoundRenderer::getInstance ();
-      soundRenderer.playFx (coreData.getClickSoundC ());
+      soundRenderer.playFx (sfxMenuClickC);
 
       if (SystemFlags::
           getSystemSettingType (SystemFlags::debugSystem).enabled)
@@ -3906,7 +3905,7 @@ namespace Glest
 
             SoundRenderer & soundRenderer = SoundRenderer::getInstance ();
             CoreData & coreData = CoreData::getInstance ();
-            soundRenderer.playFx (coreData.getClickSoundC ());
+            soundRenderer.playFx (sfxMenuClickC);
 //launchGame();
             PlayNow (true);
             return;

@@ -744,7 +744,7 @@ namespace Glest
         int button = 0;
         if (mainMessageBox.mouseClick (x, y, button))
         {
-          soundRenderer.playFx (coreData.getClickSoundA ());
+          soundRenderer.playFx (sfxMenuClickA);
           if (button == 0)
           {
             mainMessageBox.setEnabled (false);
@@ -759,7 +759,7 @@ namespace Glest
                                     "In [%s::%s Line: %d]\n",
                                     extractFileFromDirectoryPath (__FILE__).
                                     c_str (), __FUNCTION__, __LINE__);
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
             enabled)
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
@@ -775,7 +775,7 @@ namespace Glest
                                     "In [%s::%s Line: %d]\n",
                                     extractFileFromDirectoryPath (__FILE__).
                                     c_str (), __FUNCTION__, __LINE__);
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
             enabled)
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
@@ -798,7 +798,7 @@ namespace Glest
                       getMutexThreadObjectAccessor () : NULL),
                      string (extractFileFromDirectoryPath (__FILE__).
                              c_str ()) + "_" + intToStr (__LINE__));
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         needUpdateFromServer = true;
 
         if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
@@ -817,7 +817,7 @@ namespace Glest
                                     extractFileFromDirectoryPath (__FILE__).
                                     c_str (), __FUNCTION__, __LINE__);
 
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
 
         if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
             enabled)
@@ -865,7 +865,7 @@ namespace Glest
                       getMutexThreadObjectAccessor () : NULL),
                      string (extractFileFromDirectoryPath (__FILE__).
                              c_str ()) + "_" + intToStr (__LINE__));
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         needUpdateFromServer = false;
         safeMutex.ReleaseLock ();
 
@@ -910,7 +910,7 @@ namespace Glest
                       getMutexThreadObjectAccessor () : NULL),
                      string (extractFileFromDirectoryPath (__FILE__).
                              c_str ()) + "_" + intToStr (__LINE__));
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         autoRefreshTime = 10 * listBoxAutoRefresh.getSelectedItemIndex ();
       }
       else
@@ -937,7 +937,7 @@ namespace Glest
                                           (__FILE__).c_str (), __FUNCTION__,
                                           __LINE__);
               clicked = true;
-              soundRenderer.playFx (coreData.getClickSoundB ());
+              soundRenderer.playFx (sfxMenuClickB);
               string connectServerIP =
                 serverLines[i]->getMasterServerInfo ()->getIpAddress ();
               int connectServerPort =
@@ -955,7 +955,7 @@ namespace Glest
               safeMutex.ReleaseLock ();
               if (connected)
               {
-                soundRenderer.playFx (coreData.getClickSoundB ());
+                soundRenderer.playFx (sfxMenuClickB);
 
                 if (ircClient != NULL && ircClient->isConnected () == true
                     && ircClient->getHasJoinedChannel () == true)

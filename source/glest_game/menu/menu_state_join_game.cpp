@@ -517,7 +517,7 @@ namespace Glest
 //return
       if (buttonReturn.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
 
         clientInterface->stopServerDiscovery ();
 
@@ -541,7 +541,7 @@ namespace Glest
         ClientInterface *clientInterface =
           networkManager.getClientInterface ();
 
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         labelInfo.setText ("");
 
         if (clientInterface->isConnected ())
@@ -563,7 +563,7 @@ namespace Glest
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                     "In [%s::%s Line: %d]\n", __FILE__,
                                     __FUNCTION__, __LINE__);
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
 
         clientInterface->stopServerDiscovery ();
         if (clientInterface->getSocket () != NULL)
@@ -588,7 +588,7 @@ namespace Glest
 
         ClientInterface *clientInterface =
           networkManager.getClientInterface ();
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
 
 // Triggers a thread which calls back into MenuStateJoinGame::DiscoveredServers
 // with the results

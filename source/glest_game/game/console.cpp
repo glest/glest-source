@@ -251,8 +251,7 @@ namespace Glest
       {
         if (playSound == true)
           {
-            SoundRenderer::getInstance ().playFx (CoreData::getInstance ().
-                                                  getClickSoundA ());
+            SoundRenderer::getInstance ().playFx (sfxMenuClickA);
           }
         ConsoleLineInfo info;
         info.text = line;

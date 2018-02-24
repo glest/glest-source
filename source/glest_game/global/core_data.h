@@ -209,9 +209,6 @@ namespace Glest
       // different places in the code base. Rather than trying to change
       // all those locations, I made these three into "wrapper" functions.
       // -andy5995 2018-02-22
-      StaticSound *getClickSoundA ();
-      StaticSound *getClickSoundB ();
-      StaticSound *getClickSoundC ();
 
       StaticSound *getWaterSound ();
 
@@ -356,15 +353,15 @@ namespace Glest
 
     };
 
-    StaticSound *getSound (const string& iniPlaySoundVal);
+    const StaticSound getSound (const string& iniPlaySoundVal);
 
-    StaticSound sfxAttention;
-    StaticSound sfxHighlight;
-    StaticSound sfxNewServer;
-    StaticSound sfxMarker;
-    StaticSound sfxMenuClickA;
-    StaticSound sfxMenuClickB;
-    StaticSound sfxMenuClickC;
+    static const StaticSound sfxAttention = getSound("PlaySoundAttention");
+    static const StaticSound sfxHighlight = getSound("PlaySoundHighlight");
+    static const StaticSound sfxNewServer = getSound("PlaySoundNewServer");
+    static const StaticSound sfxMarker = getSound("PlaySoundMarker");;
+    static const StaticSound sfxMenuClickA = getSound("PlaySoundMenuClickA");
+    static const StaticSound sfxMenuClickB = getSound("PlaySoundMenuClickB");
+    static const StaticSound sfxMenuClickC = getSound("PlaySoundMenuClickC");
 }}                              //end namespace
 
 #endif
