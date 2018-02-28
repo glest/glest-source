@@ -1,11 +1,11 @@
 #########################################################################################
-# megaglest_tests
+# zetaglest_tests
 
 SET(EXTERNAL_LIBS "")
-SET(TARGET_NAME "megaglest_tests")
+SET(TARGET_NAME "zetaglest_tests")
 
 IF(BUILD_MEGAGLEST_TESTS)
-	MESSAGE(STATUS "Will try to build MegaGlest unit tests")
+	MESSAGE(STATUS "Will try to build ZetaGlest unit tests")
 
 	INCLUDE (CheckIncludeFiles)
 
@@ -67,7 +67,7 @@ IF(BUILD_MEGAGLEST_TESTS)
     ENDIF()
 
 	#########################################################################################
-	# megaglest test code
+	# zetaglest test code
 
 	SET(DIRS_WITH_SRC
         ./
@@ -80,7 +80,7 @@ IF(BUILD_MEGAGLEST_TESTS)
             ${DIRS_WITH_SRC}
             shared_lib/streflop)
     ENDIF()
-	
+
 	SET(MG_INCLUDES_ROOT "./")
 	SET(MG_SOURCES_ROOT "./")
 	SET(MG_INCLUDE_FILES "")
@@ -146,7 +146,7 @@ IF(BUILD_MEGAGLEST_TESTS)
 		FILE(GLOB SRC_FILES_FROM_THIS_DIR ${SRC_DIR_TO_GLOB}/*.cpp)
 		#MESSAGE(STATUS "SRC_FILES_FROM_THIS_DIR: ${SRC_FILES_FROM_THIS_DIR}")
 		SET(MG_SOURCE_FILES ${MG_SOURCE_FILES} ${SRC_FILES_FROM_THIS_DIR})
-	
+
 		set(SRC_DIR_TO_GLOB ${MG_SOURCES_ROOT}${DIR})
 		#MESSAGE(STATUS "SRC_DIR_TO_GLOB: ${SRC_DIR_TO_GLOB}")
 		FILE(GLOB SRC_FILES_FROM_THIS_DIR ${SRC_DIR_TO_GLOB}/*.c)
@@ -159,7 +159,7 @@ IF(BUILD_MEGAGLEST_TESTS)
 			SET(MG_SOURCE_FILES ${MG_SOURCE_FILES} ${SRC_FILES_FROM_THIS_DIR})
 			FILE(GLOB SRC_FILES_FROM_THIS_DIR ${SRC_DIR_TO_GLOB}/*.m)
 			#MESSAGE(STATUS "SRC_FILES_FROM_THIS_DIR: ${SRC_FILES_FROM_THIS_DIR}")
-			SET(MG_SOURCE_FILES ${MG_SOURCE_FILES} ${SRC_FILES_FROM_THIS_DIR})	
+			SET(MG_SOURCE_FILES ${MG_SOURCE_FILES} ${SRC_FILES_FROM_THIS_DIR})
 		ENDIF(APPLE)
 	ENDFOREACH(DIR)
 
@@ -175,9 +175,9 @@ IF(BUILD_MEGAGLEST_TESTS)
 		SET(PLATFORM_SPECIFIC_DEFINES "-DX11_AVAILABLE -DHAVE_SYS_IOCTL_H")
 	ENDIF()
 
-	SET_SOURCE_FILES_PROPERTIES(${MG_SOURCE_FILES} PROPERTIES COMPILE_FLAGS 
+	SET_SOURCE_FILES_PROPERTIES(${MG_SOURCE_FILES} PROPERTIES COMPILE_FLAGS
 		"${PLATFORM_SPECIFIC_DEFINES} ${STREFLOP_PROPERTIES} ${CXXFLAGS}")
-	
+
 	SET_SOURCE_FILES_PROPERTIES(${MG_INCLUDE_FILES} PROPERTIES HEADER_FILE_ONLY 1)
 
 	IF(WANT_DEV_OUTPATH)
@@ -186,7 +186,7 @@ IF(BUILD_MEGAGLEST_TESTS)
 
 	MESSAGE(STATUS "EXTERNAL_LIBS = [${EXTERNAL_LIBS}]")
 
-        MESSAGE(STATUS "***Note: The final output path for the MegaGlest engine will be [${EXECUTABLE_OUTPUT_PATH}]")
+        MESSAGE(STATUS "***Note: The final output path for the ZetaGlest engine will be [${EXECUTABLE_OUTPUT_PATH}]")
 
 	SET_SOURCE_FILES_PROPERTIES(${MG_INCLUDE_FILES} PROPERTIES HEADER_FILE_ONLY 1)
 
@@ -207,11 +207,11 @@ IF(BUILD_MEGAGLEST_TESTS)
 
 			add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
 				COMMAND ${XVFB_EXEC} --auto-servernum --server-num=770 ${EXECUTABLE_OUTPUT_PATH}${TARGET_NAME}
-				COMMENT "***-- Found MegaGlest test runner: ${TARGET_NAME} about to run unit tests via xvfb...")
+				COMMENT "***-- Found ZetaGlest test runner: ${TARGET_NAME} about to run unit tests via xvfb...")
 		ELSE()
 			add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
 				COMMAND ${EXECUTABLE_OUTPUT_PATH}${TARGET_NAME}
-				COMMENT "***-- Found MegaGlest test runner: ${TARGET_NAME} about to run unit tests...")
+				COMMENT "***-- Found ZetaGlest test runner: ${TARGET_NAME} about to run unit tests...")
 		ENDIF()
 	ENDIF()
 

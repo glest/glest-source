@@ -23,7 +23,7 @@ Open games and [Server list and player stats](https://zetaglest.dreamhosters.com
 
 ## Why this fork? (Project Goals)
 
-ZetaGlest forked from MegaGlest at v3.13.0
+ZetaGlest forked from MegaGlest at v3.13.0-dev
 
 I noticed that there were some good feature requests in the MegaGlest
 forum, as well as some mods, but it seemed that implementing and
@@ -68,12 +68,12 @@ To execute the game:
 
 To run your own headless (dedicated) server:
 
-    Forward TCP ports 61357-61366
+    Forward TCP ports 61357-61368
     ./zetaglest --headless-server-mode
 
 To start a server and host a game:
 
-    Forward TCP ports 61357-61366
+    Forward TCP ports 61357-61368
     Enter the ZetaGlest lobby and click "Host Game"
 
 ### Note
@@ -99,6 +99,5 @@ for extended, important instructions and guidelines for contributing.
 
 ## Contact
 
-* IRC: [Freenode/#zetaglest-dev](http://webchat.freenode.net?channels=%23zetaglest-dev&uio=d4)
 * [Discord](https://discord.gg/WaAaXS7)
 * email: andy400-dev@yahoo.com

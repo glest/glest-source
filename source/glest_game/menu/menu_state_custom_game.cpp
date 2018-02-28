@@ -12,7 +12,7 @@
 //      it under the terms of the GNU General Public License as published by
 //      the Free Software Foundation, either version 3 of the License, or
 //      (at your option) any later version.
-
+//
 //      This program is distributed in the hope that it will be useful,
 //      but WITHOUT ANY WARRANTY; without even the implied warranty of
 //      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -20,6 +20,7 @@
 //
 //      You should have received a copy of the GNU General Public License
 //      along with this program.  If not, see <https://www.gnu.org/licenses/>
+
 #include "menu_state_custom_game.h"
 
 #include "renderer.h"
@@ -243,11 +244,14 @@ namespace Glest
 
         techTree.reset (new TechTree (config.getPathListForType (ptTechs)));
 
+        // Some of these values must also be changed to match those in
+        // menu_state_connected_game.cpp
         int labelOffset = 23;
         int setupPos = 605;
-        int mapHeadPos = 300;   //330;
+        // mapHeadPos is the placement of the text "map", not the map itself
+        int mapHeadPos = 310;
         int mapPos = mapHeadPos - labelOffset;
-        int aHeadPos = 240;
+        int aHeadPos = mapHeadPos - 90;
         int aPos = aHeadPos - labelOffset;
         int networkHeadPos = 700;
         int networkPos = networkHeadPos - labelOffset;
@@ -255,7 +259,7 @@ namespace Glest
 
 //create
         int buttonx = 165;
-        int buttony = 180;
+        int buttony = mapHeadPos - 150;
 
 // player status
         listBoxPlayerStatus.registerGraphicComponent (containerName,
@@ -417,7 +421,7 @@ namespace Glest
         checkBoxAllowObservers.registerGraphicComponent (containerName,
                                                          "checkBoxAllowObservers");
         checkBoxAllowObservers.init (xoffset + 325, aPos);
-        checkBoxAllowObservers.setValue (false);
+        checkBoxAllowObservers.setValue (checkBoxAllowObservers.getValue ());
 
         vector < string > rMultiplier;
         for (int i = 0; i < 45; ++i)
@@ -653,9 +657,16 @@ namespace Glest
           (checkBoxAllowTeamResourceSharing.getX (), networkHeadPos);
         checkBoxNetworkPauseGameForLaggedClients.setValue (true);
 
-//list boxes
+        //list boxes
         xoffset = 5;
         int rowHeight = 27;
+
+        buttonClearBlockedPlayers.registerGraphicComponent (containerName,
+                                                            "buttonClearBlockedPlayers");
+        buttonClearBlockedPlayers.init (xoffset + 800,
+                                        setupPos - 30,
+                                        134 + 2 + 50);
+
         for (int i = 0; i < GameConstants::maxPlayers; ++i)
         {
 
@@ -728,12 +739,6 @@ namespace Glest
           labelNetStatus[i].
             setFont3D (CoreData::getInstance ().getDisplayFontSmall3D ());
         }
-
-        buttonClearBlockedPlayers.registerGraphicComponent (containerName,
-                                                            "buttonClearBlockedPlayers");
-        buttonClearBlockedPlayers.init (xoffset + 160,
-                                        setupPos - 30 - 8 * rowHeight,
-                                        174 + 2 + 70);
 
         labelControl.registerGraphicComponent (containerName, "labelControl");
         labelControl.init (xoffset + 160, setupPos, 50, GraphicListBox::defH,
@@ -837,6 +842,21 @@ namespace Glest
           listBoxRMultiplier[i].setItems (rMultiplier);
           listBoxRMultiplier[i].setSelectedItem ("1.0");
           labelNetStatus[i].setText ("");
+        }
+
+        // I moved this block from loadMapInfo(), and modified it. It was
+        // setting the slots visible based on the number of hardMaxPlayers
+        // every time a new map was loaded. Trying it here instead, so the
+        // labels are made visible only once. Below, we'll be disabling slots
+        // that exceed hardMaxPlayers
+        for (int i = 0; i < GameConstants::maxPlayers; i++)
+        {
+          labelPlayers[i].setVisible (true);
+          labelPlayerNames[i].setVisible (true);
+          listBoxControls[i].setVisible (true);
+          listBoxFactions[i].setVisible (true);
+          listBoxTeams[i].setVisible (true);
+          labelNetStatus[i].setVisible (true);
         }
 
         loadMapInfo (Config::getMapPath (getCurrentMapFile ()), &mapInfo,
@@ -2325,6 +2345,14 @@ namespace Glest
                   }
                 }
               }
+              else if (labelPlayers[i].mouseClick (x, y))
+              {
+                listBoxControls[i].setEditable (true);
+                listBoxControls[i].setEnabled (true);
+                listBoxControls[i].setSelectedItemIndex (ctHuman);
+                //updateNetworkSlots ();
+
+              }
               else if (buttonBlockPlayers[i].mouseClick (x, y))
               {
                 soundRenderer.playFx (coreData.getClickSoundB ());
@@ -3329,7 +3357,6 @@ namespace Glest
                 ctNetworkUnassigned)
             {
 //printf("Player #%d [%s] control = %d\n",i,labelPlayerNames[i].getText().c_str(),listBoxControls[i].getSelectedItemIndex());
-
               labelPlayers[i].setVisible (true);
               labelPlayerNames[i].setVisible (true);
               listBoxControls[i].setVisible (true);
@@ -3601,13 +3628,33 @@ namespace Glest
                           && switchSetupRequests[i]->getSelectedFactionName ()
                           != "???DataMissing???"))
                   {
-                    listBoxFactions[newFactionIdx].setSelectedItem
-                      (switchSetupRequests[i]->getSelectedFactionName ());
+                    // I don't believe we need to check to see if Observers
+                    // are allowed. If it's not, there should be not button on the client
+                    // side that would allow them to switch to a slot > mapInfo.hardMaxPlayers
+                    if (newFactionIdx <= mapInfo.hardMaxPlayers)
+                    {
+
+                      listBoxFactions[newFactionIdx].setSelectedItem
+                        (switchSetupRequests[i]->getSelectedFactionName ());
+                    }
+                    else
+                    {
+                      listBoxFactions[newFactionIdx].setSelectedItem (GameConstants::OBSERVER_SLOTNAME);
+                    }
+
                   }
                   if (switchSetupRequests[i]->getToTeam () != -1)
                   {
-                    listBoxTeams[newFactionIdx].setSelectedItemIndex
-                      (switchSetupRequests[i]->getToTeam ());
+                    if (newFactionIdx <= mapInfo.hardMaxPlayers)
+                    {
+                      listBoxTeams[newFactionIdx].setSelectedItemIndex
+                        (switchSetupRequests[i]->getToTeam ());
+                    }
+                    else
+                    {
+                      listBoxTeams[i].setSelectedItem (intToStr (GameConstants::maxPlayers +
+                              fpt_Observer));
+                    }
                   }
                   if (switchSetupRequests[i]->getNetworkPlayerName () != "")
                   {
@@ -4315,14 +4362,41 @@ namespace Glest
 
         if (checkBoxScenario.getValue () == false)
         {
+          // When scenario is checked the value for mapInfo.players is reset to
+          // hardMaxPlayers. This resets it.
+          mapInfo.players = checkBoxAllowObservers.getValue () == true ?
+                                                        GameConstants::maxPlayers :
+                                                        mapInfo.hardMaxPlayers;
+
           for (int i = 0; i < GameConstants::maxPlayers; ++i)
           {
-            if (i >= mapInfo.players)
+            // FIXME: The contents of this if block could be refactored;
+            // Some of same statements are used in each condtion.
+            // please test afteward.
+            //
+            if (i >= mapInfo.hardMaxPlayers)
             {
-              listBoxControls[i].setEditable (false);
-              listBoxControls[i].setEnabled (false);
-
-//printf("In [%s::%s] Line: %d i = %d mapInfo.players = %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,i,mapInfo.players);
+              if (checkBoxAllowObservers.getValue() == false)
+              {
+                listBoxControls[i].setSelectedItemIndex (ctClosed);
+                listBoxControls[i].setEditable (false);
+                listBoxControls[i].setEnabled (false);
+                listBoxRMultiplier[i].setEditable (false);
+                listBoxRMultiplier[i].setEnabled (false);
+              }
+              else
+              {
+                listBoxControls[i].setSelectedItemIndex (ctNetwork);
+                listBoxControls[i].setEditable (false);
+                listBoxFactions[i].setSelectedItem (GameConstants::OBSERVER_SLOTNAME);
+                listBoxFactions[i].setEditable (false);
+                listBoxTeams[i].setSelectedItem (intToStr (GameConstants::maxPlayers +
+                                                fpt_Observer));
+                listBoxTeams[i].setEditable (false);
+                listBoxRMultiplier[i].setEditable (false);
+                listBoxRMultiplier[i].setEnabled (false);
+                listBoxRMultiplier[i].setVisible (false);
+              }
             }
             else if (listBoxControls[i].getSelectedItemIndex () !=
                      ctNetworkUnassigned)
@@ -4336,6 +4410,8 @@ namespace Glest
               {
                 listBoxControls[i].setEditable (true);
                 listBoxControls[i].setEnabled (true);
+                listBoxFactions[i].setEditable (true);
+                listBoxTeams[i].setEditable (true);
               }
               else
               {
@@ -4354,6 +4430,18 @@ namespace Glest
             }
           }
         }
+        else // if this is a scenario...
+        {
+          int i = mapInfo.players;
+          do
+          {
+            listBoxControls[i].setSelectedItemIndex (ctClosed);
+            listBoxControls[i].setEditable (false);
+            listBoxControls[i].setEnabled (false);
+          } while (++i < GameConstants::maxPlayers);
+        }
+
+        updateNetworkSlots ();
 
         bool checkDataSynch =
           (serverInterface->getAllowGameDataSynchCheck () == true
@@ -4586,8 +4674,9 @@ namespace Glest
         if (currentConnectionCount > soundConnectionCount)
         {
           soundConnectionCount = currentConnectionCount;
+          static PlaySoundClip snd;
           SoundRenderer::getInstance ().
-            playFx (CoreData::getInstance ().getAttentionSound ());
+            playFx (snd.getSound (snd.sfxAttention));
 //switch on music again!!
           Config & config = Config::getInstance ();
           float configVolume = (config.getInt ("SoundVolumeMusic") / 100.f);
@@ -5685,14 +5774,17 @@ namespace Glest
           gameSettings->setFactionControl (slotIndex, ct);
           if (ct == ctHuman)
           {
-            if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
-                enabled)
-              SystemFlags::OutputDebug (SystemFlags::debugSystem,
+
+// I'm putting this inside a ppd for now. I don't see it needs to be
+// built in unless DEBUG is defined during building -andy5995 2018-01-26
+#ifdef DEBUG
+   SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                         "In [%s::%s Line: %d] i = %d, slotIndex = %d, getHumanPlayerName(i) [%s]\n",
                                         extractFileFromDirectoryPath
                                         (__FILE__).c_str (), __FUNCTION__,
                                         __LINE__, i, slotIndex,
                                         getHumanPlayerName (i).c_str ());
+#endif
 
             gameSettings->setThisFactionIndex (slotIndex);
             gameSettings->setNetworkPlayerName (slotIndex,
@@ -5720,24 +5812,22 @@ namespace Glest
                                                      ());
           }
 
-//if(slotIndex == 0) printf("slotIndex = %d, i = %d, multiplier = %d\n",slotIndex,i,listBoxRMultiplier[i].getSelectedItemIndex());
-
-//printf("Line: %d multiplier index: %d slotIndex: %d\n",__LINE__,listBoxRMultiplier[i].getSelectedItemIndex(),slotIndex);
           gameSettings->setResourceMultiplierIndex (slotIndex,
                                                     listBoxRMultiplier
                                                     [i].getSelectedItemIndex
                                                     ());
-//printf("Line: %d multiplier index: %d slotIndex: %d\n",__LINE__,gameSettings->getResourceMultiplierIndex(slotIndex),slotIndex);
 
-          if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
-              enabled)
-            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+// I'm putting this inside a ppd for now. I don't see it needs to be
+// built in unless DEBUG is defined during building -andy5995 2018-01-26
+#ifdef DEBUG
+   SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                       "In [%s::%s Line: %d] i = %d, factionFiles[listBoxFactions[i].getSelectedItemIndex()] [%s]\n",
                                       extractFileFromDirectoryPath (__FILE__).
                                       c_str (), __FUNCTION__, __LINE__, i,
                                       factionFiles[listBoxFactions
                                                    [i].getSelectedItemIndex
                                                    ()].c_str ());
+#endif
 
           gameSettings->setFactionTypeName (slotIndex,
                                             factionFiles[listBoxFactions
@@ -5810,9 +5900,10 @@ namespace Glest
                                                        true)->getNetworkPlayerStatus
                                                       ());
 
-              if (SystemFlags::getSystemSettingType
-                  (SystemFlags::debugSystem).enabled)
-                SystemFlags::OutputDebug (SystemFlags::debugSystem,
+// I'm putting this inside a ppd for now. I don't see it needs to be
+// built in unless DEBUG is defined during building -andy5995 2018-01-26
+#ifdef DEBUG
+   SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                           "In [%s::%s Line: %d] i = %d, connectionSlot->getName() [%s]\n",
                                           extractFileFromDirectoryPath
                                           (__FILE__).c_str (), __FUNCTION__,
@@ -5820,6 +5911,7 @@ namespace Glest
                                           serverInterface->getSlot (i,
                                                                     true)->getName
                                           ().c_str ());
+#endif
 
               gameSettings->setNetworkPlayerName (slotIndex,
                                                   serverInterface->getSlot (i,
@@ -5838,13 +5930,16 @@ namespace Glest
             }
             else
             {
-              if (SystemFlags::getSystemSettingType
-                  (SystemFlags::debugSystem).enabled)
-                SystemFlags::OutputDebug (SystemFlags::debugSystem,
+
+// I'm putting this inside a ppd for now. I don't see it needs to be
+// built in unless DEBUG is defined during building -andy5995 2018-01-26
+#ifdef DEBUG
+   SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                           "In [%s::%s Line: %d] i = %d, playername unconnected\n",
                                           extractFileFromDirectoryPath
                                           (__FILE__).c_str (), __FUNCTION__,
                                           __LINE__, i);
+#endif
 
               gameSettings->setNetworkPlayerName (slotIndex,
                                                   GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME);
@@ -5854,13 +5949,14 @@ namespace Glest
           else if (listBoxControls[i].getSelectedItemIndex () != ctHuman)
           {
             AIPlayerCount++;
-            if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
-                enabled)
-              SystemFlags::OutputDebug (SystemFlags::debugSystem,
+
+#ifdef DEBUG
+   SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                         "In [%s::%s Line: %d] i = %d, playername is AI (blank)\n",
                                         extractFileFromDirectoryPath
                                         (__FILE__).c_str (), __FUNCTION__,
                                         __LINE__, i);
+#endif
 
             Lang & lang = Lang::getInstance ();
             gameSettings->setNetworkPlayerName (slotIndex,
@@ -6089,16 +6185,16 @@ namespace Glest
       {
         time_t clientConnectedTime = 0;
         bool masterserver_admin_found = false;
-//printf("mapInfo.players [%d]\n",mapInfo.players);
 
         for (int i = 0; i < mapInfo.players; ++i)
         {
-          if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
-              enabled)
-            SystemFlags::OutputDebug (SystemFlags::debugSystem,
+
+#ifdef DEBUG
+   SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                       "In [%s::%s Line %d]\n",
                                       extractFileFromDirectoryPath (__FILE__).
                                       c_str (), __FUNCTION__, __LINE__);
+#endif
 
           if (listBoxControls[i].getSelectedItemIndex () == ctNetwork
               || listBoxControls[i].getSelectedItemIndex () ==
@@ -6414,7 +6510,7 @@ namespace Glest
 //printf("#6.2\n");
 
         listBoxMapFilter.setSelectedItemIndex (0);
-        listBoxMap.setItems (formattedPlayerSortedMaps[mapInfo.players]);
+        listBoxMap.setItems (formattedPlayerSortedMaps[mapInfo.hardMaxPlayers]);
         listBoxMap.setSelectedItem (formatString (scenarioInfo.mapName));
       }
       else
@@ -6784,6 +6880,16 @@ namespace Glest
             (file, mapInfo, lang.getString ("MaxPlayers"),
              lang.getString ("Size"), true) == true)
         {
+          // Though we prefer not to change the actual value of mapInfo->players,
+          // which is the number of players assigned when making the map, we still know
+          // the actual value from mapInfo.hardMaxPlayers. Changing it here means
+          // not having to change a variable name in many places of this file
+          // to implement enhanced observer mode (issue #13)'
+          if (checkBoxAllowObservers.getValue () == 1)
+          {
+            mapInfo->players = GameConstants::maxPlayers;
+          }
+
           ServerInterface *serverInterface =
             NetworkManager::getInstance ().getServerInterface ();
           for (int i = 0; i < GameConstants::maxPlayers; ++i)
@@ -6804,13 +6910,6 @@ namespace Glest
                 }
               }
             }
-            mapInfo->players = GameConstants::maxPlayers;
-            labelPlayers[i].setVisible (i + 1 <= mapInfo->players);
-            labelPlayerNames[i].setVisible (i + 1 <= mapInfo->players);
-            listBoxControls[i].setVisible (i + 1 <= mapInfo->players);
-            listBoxFactions[i].setVisible (i + 1 <= mapInfo->players);
-            listBoxTeams[i].setVisible (i + 1 <= mapInfo->players);
-            labelNetStatus[i].setVisible (i + 1 <= mapInfo->players);
           }
 
 // Not painting properly so this is on hold
@@ -7569,6 +7668,8 @@ namespace Glest
           listBoxTileset.setSelectedItem (formatString
                                           (scenarioInfo.tilesetName));
 
+          checkBoxAllowObservers.setValue (false);
+
           setupMapList (scenarioInfo.name);
           listBoxMap.setSelectedItem (formatString (scenarioInfo.mapName));
           loadMapInfo (Config::getMapPath
@@ -7800,6 +7901,7 @@ namespace Glest
                                       (formattedPlayerSortedMaps[0][0]));
           loadMapInfo (Config::getMapPath (getCurrentMapFile (), "", true),
                        &mapInfo, true);
+
           labelMapInfo.setText (mapInfo.desc);
 
           setupTechList ("", false);
@@ -7960,12 +8062,12 @@ namespace Glest
                       mapInfo.desc.c_str ());
             throw megaglest_runtime_error (szBuf);
           }
-          playerSortedMaps[mapInfo.players].push_back (mapFiles.at (i));
-          formattedPlayerSortedMaps[mapInfo.players].push_back (formatString
+          playerSortedMaps[mapInfo.hardMaxPlayers].push_back (mapFiles.at (i));
+          formattedPlayerSortedMaps[mapInfo.hardMaxPlayers].push_back (formatString
                                                                 (mapFiles.at
                                                                  (i)));
           if (config.getString ("InitialMap", "Conflict") ==
-              formattedPlayerSortedMaps[mapInfo.players].back ())
+              formattedPlayerSortedMaps[mapInfo.hardMaxPlayers].back ())
           {
             initialMapSelection = i;
           }
@@ -7981,7 +8083,7 @@ namespace Glest
           loadMapInfo (Config::getMapPath
                        (scenarioInfo.mapName, scenarioDir, true), &mapInfo,
                        false);
-//printf("#6.2\n");
+
           listBoxMapFilter.setSelectedItem (intToStr (mapInfo.players));
           listBoxMap.setItems (formattedPlayerSortedMaps[mapInfo.players]);
         }
@@ -8194,7 +8296,6 @@ namespace Glest
                originalValue ==
                formatString (GameConstants::OBSERVER_SLOTNAME)))
           {
-
             listBoxFactions[i].setSelectedItemIndex (i % results.size ());
 
             if (originalValue ==

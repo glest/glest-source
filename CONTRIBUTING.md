@@ -3,7 +3,7 @@
 Welcome to the ZG project! Thank you for reading this document and
 considering contributing.
 
-Anyone is welcome to join our [Discord server](https://discord.gg/WaAaXS7) or [IRC channel](http://webchat.freenode.net/?channels=%23zetaglest-dev&uio=d4).
+Anyone is welcome to join our [Discord server](https://discord.gg/WaAaXS7).
 
 The Discord rooms are for players, developers, and curiosity/adventure-seekers.
 

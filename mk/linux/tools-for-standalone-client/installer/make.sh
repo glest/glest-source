@@ -1,5 +1,5 @@
 #!/bin/bash
-# Use this script to build MegaGlest Installer for a Version Release
+# Use this script to build ZetaGlest Installer for a Version Release
 # ----------------------------------------------------------------------------
 # Written by Mark Vejvoda <mark_vejvoda@hotmail.com>
 # Copyright (c) 2011 Mark Vejvoda under GNU GPL v3.0+
@@ -10,7 +10,7 @@
 #  (make sure you don't build in features you don't need, etc).
 
 # To install the installer silently you may run it like this:
-# ./megaglest-installer.run --noprompt --i-agree-to-all-licenses --destination /home/softcoder/megaglest-temp-test --noreadme --ui=stdio
+# ./zetaglest-installer.run --noprompt --i-agree-to-all-licenses --destination /home/softcoder/megaglest-temp-test --noreadme --ui=stdio
 
 # Consider setting this for small packages if there's plenty of RAM and CPU available:
 #export XZ_OPT="$XZ_OPT -9e"
@@ -19,14 +19,14 @@ CURRENTDIR="$(dirname "$(readlink -f "$0")")"
 cd "$CURRENTDIR"
 
 # below describe various folder paths relative to the installer root folder
-megaglest_linux_path="$CURRENTDIR/../.."
-BINARY_DIR="$($megaglest_linux_path/make-binary-archive.sh --show-result-path2)"
-DATA_DIR="$($megaglest_linux_path/make-data-archive.sh --show-result-path2)"
+zetaglest_linux_path="$CURRENTDIR/../.."
+BINARY_DIR="$($zetaglest_linux_path/make-binary-archive.sh --show-result-path2)"
+DATA_DIR="$($zetaglest_linux_path/make-data-archive.sh --show-result-path2)"
 
-VERSION=`$megaglest_linux_path/mg-version.sh --version`
+VERSION=`$zetaglest_linux_path/mg-version.sh --version`
 kernel=`uname -s | tr '[A-Z]' '[a-z]'`
 architecture=`uname -m  | tr '[A-Z]' '[a-z]'`
-mg_installer_bin_name=MegaGlest-Installer-${VERSION}_${architecture}_${kernel}.run
+zg_installer_bin_name=ZetaGlest-Installer-${VERSION}_${architecture}_${kernel}.run
 
 if [ "$(which zip 2>/dev/null)" = "" ]; then
     echo "Compression tool 'zip' DOES NOT EXIST on this system, please install it"; exit 1
@@ -42,19 +42,19 @@ fi
 # *NOTE: The filename's extension is of critical importance as the installer
 # does a patch on extension to figure out how to decompress!
 #
-#megaglest_archiver_app_data='tar -cf - * | xz > mgdata.tar.xz'
-megaglest_archivefilename_data="mgdata.tar.xz"
+#zetaglest_archiver_app_data='tar -cf - * | xz > mgdata.tar.xz'
+zetaglest_archivefilename_data="mgdata.tar.xz"
 
-#megaglest_archiver_app="zip -9r "
-#megaglest_archivefilename="mgdata.zip"
-megaglest_archiver_app="zip -0r "
-megaglest_archivefilename="mgpkg.zip"
-#megaglest_archiver_app="tar -c --bzip2 -f "
-#megaglest_archivefilename="mgdata.tar.bz2"
+#zetaglest_archiver_app="zip -9r "
+#zetaglest_archivefilename="mgdata.zip"
+zetaglest_archiver_app="zip -0r "
+zetaglest_archivefilename="mgpkg.zip"
+#zetaglest_archiver_app="tar -c --bzip2 -f "
+#zetaglest_archivefilename="mgdata.tar.bz2"
 
 # Grab the version #
 #
-echo "Linux project root path [$megaglest_linux_path]"
+echo "Linux project root path [$zetaglest_linux_path]"
 
 echo "About to build Installer for $VERSION"
 # Stop if anything produces an error.
@@ -71,7 +71,7 @@ if [ "$1" = "--repackonly" -o "$2" = "--repackonly" ]; then
     REPACKONLY=1
 fi
 
-APPNAME="MegaGlest Installer"
+APPNAME="ZetaGlest Installer"
 
 # I use a "cross compiler" to build binaries that are isolated from the
 #  particulars of my Linux workstation's current distribution. This both
@@ -122,32 +122,48 @@ fi
 
 # Clean up previous run, build fresh dirs for Base Archive.
 cd "$CURRENTDIR"
-rm -rf image ${mg_installer_bin_name} ${megaglest_archivefilename}
+rm -rf image ${zg_installer_bin_name} ${zetaglest_archivefilename}
+if [ $? != 0 ]; then
+    exit $?
+fi
 mkdir image
 mkdir image/guis
 mkdir image/scripts
 mkdir image/data
 mkdir image/meta
 
-# This next section copies live data from the MegaGlest directories
+# This next section copies live data from the ZetaGlest directories
 if [ $REPACKONLY -eq 0 ]; then
 	cd "$CURRENTDIR"
 	INSTALLDATADIR="data"
 	rm -rf $INSTALLDATADIR
 	mkdir $INSTALLDATADIR
 
-	echo Copying MegaGlest binary files...
-	$megaglest_linux_path/make-binary-archive.sh --installer
+	echo Copying ZetaGlest binary files...
+	$zetaglest_linux_path/make-binary-archive.sh --installer
 	cd "$BINARY_DIR"
 	cp -r * "$CURRENTDIR/$INSTALLDATADIR"
+    if [ $? != 0 ]; then
+        exit $?
+    fi
 
-	echo Copying MegaGlest data files...
-	$megaglest_linux_path/make-data-archive.sh --installer
+	echo Copying ZetaGlest data files...
+	$zetaglest_linux_path/make-data-archive.sh --installer
 	cd "$DATA_DIR"
+    if [ $? != 0 ]; then
+        exit $?
+    fi
+
 	cp -r * "$CURRENTDIR/$INSTALLDATADIR"
+    if [ $? != 0 ]; then
+        exit $?
+    fi
 
 	cd "$CURRENTDIR"
-	cp megaglest-uninstall.ico "$CURRENTDIR/$INSTALLDATADIR"
+	cp zetaglest-uninstall.ico "$CURRENTDIR/$INSTALLDATADIR"
+    if [ $? != 0 ]; then
+        exit $?
+    fi
 fi
 
 if [ ! -d data/docs ]; then
@@ -164,8 +180,12 @@ fi
 #cd mojosetup
 cd "$CURRENTDIR"
 rm -rf cmake-build
+if [ $? != 0 ]; then
+    exit $?
+fi
 mkdir cmake-build
 cd cmake-build
+
 # 'MOJOSETUP_GUI_*_STATIC=TRUE' > oddly it is not static after this, but isn't optional anymore so this kills portability
 cmake \
     -DCMAKE_BUILD_TYPE=$BUILDTYPE \
@@ -209,8 +229,11 @@ make -j$NCPU
 if [ "$DEBUG" != "1" ]; then
     strip ./mojosetup
 fi
+if [ $? != 0 ]; then
+    exit $?
+fi
 
-mv ./mojosetup ../${mg_installer_bin_name}
+mv ./mojosetup ../${zg_installer_bin_name}
 for feh in *.so *.dll *.dylib ; do
     if [ -f $feh ]; then
         if [ "$DEBUG" != "1" ]; then
@@ -241,21 +264,28 @@ shopt -s extglob
 if [ $REPACKONLY -eq 0 ]; then
     # Compress the main data archive
     cd data
-    #${megaglest_archiver_app_data} ${megaglest_archivefilename_data}
-    tar -cf - * | xz > ../$megaglest_archivefilename_data
+    #${zetaglest_archiver_app_data} ${zetaglest_archivefilename_data}
+    tar -cf - * | xz > ../$zetaglest_archivefilename_data
     # now remove everything except for the docs folder and the data archive
-    rm -rf !(docs|${megaglest_archivefilename_data})
+    rm -rf !(docs|${zetaglest_archivefilename_data})
     # now remove everything in the docs except files listed in config.lua
     cd docs
     rm -rf !(gnu_gpl_*.txt|cc-by-sa-*-unported.txt|README.txt)
     cd ..
 
     cd ..
-    mv -f $megaglest_archivefilename_data data/
+    mv -f $zetaglest_archivefilename_data data/
 fi
 
 cp -R data/* image/data/
+if [ $? != 0 ]; then
+    exit $?
+fi
+
 cp meta/* image/meta/
+if [ $? != 0 ]; then
+    exit $?
+fi
 
 # Need these scripts to do things like install menu items, etc, on Unix.
 if [ "$OSTYPE" = "Linux" ]; then
@@ -268,6 +298,9 @@ fi
 if [ "x$USE_XDG_UTILS" = "x1" ]; then
     mkdir image/meta/xdg-utils
     cp $CURRENTDIR/mojosetup/meta/xdg-utils/* image/meta/xdg-utils/
+    if [ $? != 0 ]; then
+        exit $?
+    fi
     chmod a+rx image/meta/xdg-utils/*
 fi
 
@@ -277,7 +310,7 @@ if [ "$OSTYPE" = "Darwin" ]; then
     rm -rf "$APPBUNDLE"
     cp -Rv ../misc/MacAppBundleSkeleton "$APPBUNDLE"
 	perl -w -pi -e 's/YOUR_APPLICATION_NAME_HERE/'"$APPNAME"'/g;' "${APPBUNDLE}/Contents/Info.plist"
-    mv megaglest-installer "${APPBUNDLE}/Contents/MacOS/mojosetup"
+    mv zetaglest-installer "${APPBUNDLE}/Contents/MacOS/mojosetup"
     mv image/* "${APPBUNDLE}/Contents/MacOS/"
     rmdir image
     ibtool --compile "${APPBUNDLE}/Contents/Resources/MojoSetup.nib" ../misc/MojoSetup.xib
@@ -287,21 +320,21 @@ else
     cd image
 
 # create the compressed image for the installer (this will use zip as a container)
-#    zip -9r ../${megaglest_archivefilename} *
-    ${megaglest_archiver_app} ../${megaglest_archivefilename} *
+#    zip -9r ../${zetaglest_archivefilename} *
+    ${zetaglest_archiver_app} ../${zetaglest_archivefilename} *
 
     cd ..
     rm -rf image
     # Append the archive to the mojosetup binary, so it's "self-extracting."
-    cat ${megaglest_archivefilename} >> ./${mg_installer_bin_name}
-    rm -f ${megaglest_archivefilename}
+    cat ${zetaglest_archivefilename} >> ./${zg_installer_bin_name}
+    rm -f ${zetaglest_archivefilename}
 fi
 
 # ...and that's that.
 set +e
 set +x
 echo "Successfully built!"
-ls -lha ${mg_installer_bin_name}
+ls -lha ${zg_installer_bin_name}
 
 if [ "$DEBUG" = "1" ]; then
     echo

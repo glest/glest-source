@@ -92,23 +92,6 @@ namespace Glest
       SystemFlags::OutputDebug (SystemFlags::debugSystem, "In [%s::%s %d]\n",
                                 __FILE__, __FUNCTION__, __LINE__);
 
-      if (stats->getVictory (stats->getThisFactionIndex ()) == true)
-      {
-        if (Config::
-            getInstance ().getString ("InternetGamesBlockScenario", "") != ""
-            && Config::getInstance ().getBool ("InternetGamesAllowed",
-                                               "false") == false)
-        {
-          if (Config::
-              getInstance ().getString ("InternetGamesBlockScenario") ==
-              gameSettings->getScenario ())
-          {
-            Config::getInstance ().setBool ("InternetGamesAllowed", true);
-            Config::getInstance ().save ();
-          }
-        }
-      }
-
       initBackgroundVideo ();
       initBackgroundMusic ();
 

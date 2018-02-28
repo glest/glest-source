@@ -5,6 +5,61 @@ This documents notable or significant changes to
 information about the game from which it was forked, please see the
 [MegaGlest home page](https://megaglest.org/).
 
+## 2018-02-22
+
+* Some sound effects can now be customized by players. See
+[diff](https://github.com/ZetaGlest/zetaglest-source/commit/73aa999de7f257b706f94c448a2fb7c2505fb746)
+for detailed information, and see comments in
+[glest.ini](https://github.com/ZetaGlest/zetaglest-source/blob/73aa999de7f257b706f94c448a2fb7c2505fb746/mk/linux/glest.ini#L98)
+
+* These units can now heal mobile units from their own factions that are
+in range
+
+      nurse (British, radius of 15)
+      archmage_tower (Magic, radius of 8)
+
+See
+[comparison](https://github.com/ZetaGlest/zetaglest-data/compare/e2d1ca55cb88...8762e708669e)
+for detailed information and other related changes.
+
+## 2018-02-16
+
+* auto-healing radius changed from 8 to 15 (with the exception of Valhalla)
+
+* Units standing near Valhalla (norse) are auto-healed (radius of 8)
+
+## 2018-02-15
+
+These units can now heal mobile units from their own factions that are
+in range (radius of 8)
+
+    priest (Egypt)
+    wartime mechanic (Rome)
+    minstrel (Elves)
+    engineer (Greece)
+    magician (Persia)
+
+For more information about this change, see
+
+https://github.com/ZetaGlest/zetaglest-data/compare/ac7d2af266cb...579ce1539bbb
+
+
+## 2018-02-14
+
+default command changed to "attack"
+
+## 2018-02-03
+
+Temporarily (or maybe permanently) reverted the default command back to
+"move" (see entry dated 2018-01-27).
+
+Hotkey changes:
+
+    M -> H (Show console/chat history)
+    H -> T (Toggle team chat
+    T -> Z (Cycle between store units)
+    M is now the hotkey for "move" when units are selected
+
 ## 2018-01-31
 
 [Replaced the sphinx with the scarab](https://github.com/ZetaGlest/zetaglest-data/commit/60e734180ecb7f925144c94bef339e6130f9ae20)

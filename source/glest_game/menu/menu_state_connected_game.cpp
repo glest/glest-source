@@ -9,7 +9,7 @@
 //      it under the terms of the GNU General Public License as published by
 //      the Free Software Foundation, either version 3 of the License, or
 //      (at your option) any later version.
-
+//
 //      This program is distributed in the hope that it will be useful,
 //      but WITHOUT ANY WARRANTY; without even the implied warranty of
 //      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -201,16 +201,19 @@ namespace Glest
       vector <
         string >
         teamItems, controlItems, results, rMultiplier, playerStatuses;
+
+      // Some of these values must also be changed to match those in
+      // menu_state_custom_game.cpp
       int
         labelOffset = 23;
       int
-        setupPos = 590;
-      int
-        mapHeadPos = 300;       //330;
+        setupPos = 605;
+      // mapHeadPos is the placement of the text "map", not the map itself
+      int mapHeadPos = 310;
       int
         mapPos = mapHeadPos - labelOffset;
       int
-        aHeadPos = 240;
+        aHeadPos = mapHeadPos - 90;
       int
         aPos = aHeadPos - labelOffset;
       int
@@ -300,7 +303,8 @@ namespace Glest
       checkBoxAllowObservers.registerGraphicComponent (containerName,
                                                        "checkBoxAllowObservers");
       checkBoxAllowObservers.init (xoffset + 325, aPos);
-      checkBoxAllowObservers.setValue (false);
+      checkBoxAllowObservers.setValue (checkBoxAllowObservers.getValue ());
+
       checkBoxAllowObservers.setEditable (false);
 
       for (int i = 0; i < 45; ++i)
@@ -629,7 +633,7 @@ namespace Glest
       int
         buttonx = 165;
       int
-        buttony = 180;
+        buttony = 150;
 
       listBoxPlayerStatus.registerGraphicComponent (containerName,
                                                     "listBoxPlayerStatus");
@@ -898,6 +902,21 @@ namespace Glest
                                   extractFileFromDirectoryPath
                                   (__FILE__).c_str (), __FUNCTION__,
                                   __LINE__);
+
+      // I moved this block from loadMapInfo(), and modified it. It was
+      // setting the slots visible based on the number of hardMaxPlayers
+      // every time a new map was loaded. Trying it here instead, so the
+      // labels are made visible only once. Below, we'll be disabling slots
+      // that exceed hardMaxPlayers
+      for (int i = 0; i < GameConstants::maxPlayers; i++)
+      {
+        labelPlayers[i].setVisible (true);
+        labelPlayerNames[i].setVisible (true);
+        listBoxControls[i].setVisible (true);
+        listBoxFactions[i].setVisible (true);
+        listBoxTeams[i].setVisible (true);
+        labelNetStatus[i].setVisible (true);
+      }
     }
 
     void
@@ -4516,8 +4535,8 @@ namespace Glest
         {
           bool hasOtherPlayer = false;
           bool hasOpenSlot = false;
-          for (unsigned int i = 0;
-               i < (unsigned int) GameConstants::maxPlayers; ++i)
+          for (int i = 0;
+               i < GameConstants::maxPlayers; ++i)
           {
             if (displayedGamesettings.getFactionControl (i) == ctNetwork
                 && clientInterface->getPlayerIndex () != (int) i)
@@ -4536,17 +4555,37 @@ namespace Glest
                 hasOtherPlayer = true;
               }
             }
-            else if (clientInterface->getPlayerIndex () == (int) i)
+            else if (clientInterface->getPlayerIndex () == (int) i ||
+                      i >= mapInfo.hardMaxPlayers)
             {
+              // Most of the code that handles how to show the set up
+              // when observers are allowed is in the update() function
+              // in menu_state_custom_game.cpp. Explicitly stating to change
+              // players to observers, changing teams to the special "observer"
+              // team is done in that function. So basically, the update() function
+              // in this file receives the info from update() in
+              // menu_state_custom_game.cpp
+              //
+              // Mostly what needs to be done here is disable observer slots
+              // so the info can't be changed by the headless admin. We don't want
+              // him or her to accidently enable a non-observer into an observer slot
+              // that's > mapInfo.hardMaxPlayers, or to change the team.
+              //
               listBoxControls[i].setEditable (false);
             }
             else
             {
-              listBoxControls[i].setEditable (true);
+              if (i < mapInfo.hardMaxPlayers)
+              {
+                listBoxControls[i].setEditable (true);
+              }
             }
-            listBoxRMultiplier[i].setEditable (isHeadlessAdmin ());
-            listBoxFactions[i].setEditable (isHeadlessAdmin ());
-            listBoxTeams[i].setEditable (isHeadlessAdmin ());
+            if (i < mapInfo.hardMaxPlayers)
+            {
+              listBoxRMultiplier[i].setEditable (isHeadlessAdmin ());
+              listBoxFactions[i].setEditable (isHeadlessAdmin ());
+              listBoxTeams[i].setEditable (isHeadlessAdmin ());
+            }
           }
           if (hasOtherPlayer)
           {
@@ -6304,8 +6343,9 @@ namespace Glest
             if (currentConnectionCount > soundConnectionCount)
             {
               soundConnectionCount = currentConnectionCount;
+              static PlaySoundClip snd;
               SoundRenderer::getInstance ().
-                playFx (CoreData::getInstance ().getAttentionSound ());
+                playFx (snd.getSound (snd.sfxAttention));
 //switch on music again!!
               Config & config = Config::getInstance ();
               float
@@ -6910,18 +6950,7 @@ namespace Glest
               (file, mapInfo, lang.getString ("MaxPlayers"),
                lang.getString ("Size"), true) == true)
           {
-            for (int i = 0; i < GameConstants::maxPlayers; ++i)
-            {
-              mapInfo->players = GameConstants::maxPlayers;
-              bool visible = i + 1 <= mapInfo->players;
-              labelPlayers[i].setVisible (visible);
-              labelPlayerNames[i].setVisible (visible);
-              listBoxControls[i].setVisible (visible);
-              listBoxRMultiplier[i].setVisible (visible);
-              listBoxFactions[i].setVisible (visible);
-              listBoxTeams[i].setVisible (visible);
-              labelNetStatus[i].setVisible (visible);
-            }
+            mapInfo->players = GameConstants::maxPlayers;
 
 // Not painting properly so this is on hold
             if (loadMapPreview == true)
@@ -8667,8 +8696,19 @@ namespace Glest
             {
               if (clientInterface->getJoinGameInProgress () == false)
               {
-                listBoxFactions[slot].setEditable (true);
-                listBoxTeams[slot].setEditable (true);
+                if (i <= mapInfo.hardMaxPlayers)
+                {
+                  listBoxFactions[slot].setEditable (true);
+                  listBoxTeams[slot].setEditable (true);
+                }
+                else
+                {
+                  // looks more must be done to allow people to take an observer
+                  // slot after the game has started. Extra network slots close
+                  // when the game starts.
+                  listBoxFactions[slot].setEditable (checkBoxAllowObservers.getValue ());
+                  listBoxTeams[slot].setEditable (checkBoxAllowObservers.getValue ());
+                }
               }
             }
 
@@ -8953,12 +8993,12 @@ namespace Glest
                       mapInfo.desc.c_str ());
             throw megaglest_runtime_error (szBuf);
           }
-          playerSortedMaps[mapInfo.players].push_back (mapFiles.at (i));
-          formattedPlayerSortedMaps[mapInfo.players].push_back (formatString
+          playerSortedMaps[mapInfo.hardMaxPlayers].push_back (mapFiles.at (i));
+          formattedPlayerSortedMaps[mapInfo.hardMaxPlayers].push_back (formatString
                                                                 (mapFiles.at
                                                                  (i)));
           if (config.getString ("InitialMap", "Conflict") ==
-              formattedPlayerSortedMaps[mapInfo.players].back ())
+              formattedPlayerSortedMaps[mapInfo.hardMaxPlayers].back ())
           {
             initialMapSelection = i;
           }
