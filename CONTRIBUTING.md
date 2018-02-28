@@ -9,7 +9,7 @@ The Discord rooms are for players, developers, and curiosity/adventure-seekers.
 
 ## Website Design
 
-Documentation for designing the websites is in [WEBSITE_DESIGN.md](https://github.com/ZetaGlest/zetaglest-source/WEBSITE_DESIGN.md).
+Documentation for designing the websites is in [WEBSITE_DESIGN.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/WEBSITE_DESIGN.md).
 
 ## Mods, tech trees, scenarios, tilesets, maps
 
