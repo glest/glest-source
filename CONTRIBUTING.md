@@ -92,12 +92,13 @@ you can practice at the repository [Practice Git](https://github.com/grayghostvi
 
 Follow the steps below if you are contributing to any of these repositories:
 
+* [source](https://github.com/ZetaGlest/zetaglest-source)
 * [data](https://github.com/ZetaGlest/zetaglest-data)
 * [masterserver](https://github.com/MegaGlest/megaglest-masterserver)
 * [website](https://github.com/ZetaGlest/zetaglest.github.io)
 
-Below, *zetaglest-source* for the example, but if you are working on another repository, be
-sure to replace **zetaglest-source** with the the appropriate repo url, using the URL of
+Below, *zetaglest-source* is used for the example, but if you are working on another repository,
+be sure to replace **zetaglest-source** with the the appropriate repo url, using the URL of
 your fork.
 
 1. [Fork the repo](https://github.com/ZetaGlest/zetaglest-source/fork) (if you haven't already done so)
