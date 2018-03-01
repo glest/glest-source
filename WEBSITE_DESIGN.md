@@ -1,12 +1,12 @@
 # WEBSITE DESIGN
 
-There are two websites for ZetaGlest
-
 ## Unit Documentation
 
 ### https://zetaglest.github.io/
 
 The repo is at https://github.com/ZetaGlest/zetaglest.github.io
+
+#### Files in the root folder
 
 Files are published to the web site automatically when the repo is updated.
 
@@ -19,6 +19,13 @@ changes).
 
 Part of the template for the site is in the perl script, and another part is in
 [an ini file](https://github.com/ZetaGlest/zetaglest.github.io/blob/master/convert_faction_xml2html/zetapack.ini).
+
+## Primary documentation
+
+### Files in [docs](https://github.com/ZetaGlest/zetaglest.github.io/tree/master/docs)
+
+See the [README in that folder](https://github.com/ZetaGlest/zetaglest.github.io/blob/master/docs/README) 
+for an explanation of how to edit the html files in zetaglest.github.io/docs.
 
 ## Server list and player stats
 
