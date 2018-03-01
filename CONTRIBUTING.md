@@ -98,7 +98,7 @@ Follow the steps below if you are contributing to any of these repositories:
 * [website](https://github.com/ZetaGlest/zetaglest.github.io)
 
 Below, *zetaglest-source* is used for the example, but if you are working on another repository,
-be sure to replace **zetaglest-source** with the the appropriate repo url, using the URL of
+be sure to replace **zetaglest-source** with the appropriate repo url, using the URL of
 your fork.
 
 1. [Fork the repo](https://github.com/ZetaGlest/zetaglest-source/fork) (if you haven't already done so)
