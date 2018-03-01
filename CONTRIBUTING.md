@@ -86,6 +86,10 @@ repositories.
 
 ## Pull Requests
 
+(If you have no experience making pull requests and are confused about the process,
+you can practice at the repository [Practice Git](https://github.com/grayghostvisuals/Practice-Git).
+(Note: It is not part of this project.))
+
 Follow the steps below if you are contributing to any of these repositories:
 
 * [data](https://github.com/ZetaGlest/zetaglest-data)
@@ -95,10 +99,6 @@ Follow the steps below if you are contributing to any of these repositories:
 Below, *zetaglest-source* for the example, but if you are working on another repository, be
 sure to replace **zetaglest-source** with the the appropriate repo url, using the URL of
 your fork.
-
-If you have no experience making pull requests and are confused about the process,
-you can look at the repository [Practice Git](https://github.com/grayghostvisuals/Practice-Git).
-(Note: It is not part of this project.)
 
 1. [Fork the repo](https://github.com/ZetaGlest/zetaglest-source/fork) (if you haven't already done so)
 2. Clone it to your computer
