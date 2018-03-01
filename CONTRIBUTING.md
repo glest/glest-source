@@ -55,10 +55,11 @@ If you find a problem for which no ticket has yet been created, please don't
 hesitate to open a new ticket, and let us know if you are going to work on
 that issue.
 
-If you would like to contribute something, it is advised to inquire
-first, to be sure it's a patch that would get accepted. We don't want
-anyone to spend their time and generosity working on something that we
-would be unable to accept.
+If you would like to contribute something, you will need to ask first if it's a desired
+patch, to be sure it will get accepted. We don't want anyone to spend their time and
+generosity working on something that would get rejected. Sometimes you may think a feature
+would be a good addition or desired by the development team, but there may be a reason why
+it's not. If you don't see a ticket for it, open a ticket and ask.
 
 Please leave another note if you change your mind or if you get busy with other
 things and are unable to finish it. That lets me and other people know the
@@ -69,7 +70,13 @@ Please match the existing style
 
 Sometimes a patch will be a single line in a single file; other times a single
 patch will consist of changes to several files. Keep unrelated patches separate
-from each other (i.e. a separate PR for each patch).
+from each other (i.e. a separate pull request for each patch).
+
+Problems arise when multiple patches are included in a single pull request:
+
+ * It makes the pull request more difficult to review
+ * If there's a problem with one patch, it holds up other patches within that pull request
+ from being merged 
 
 See the instructions in
 [BUILD.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
