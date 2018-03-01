@@ -75,6 +75,7 @@ from each other (i.e. a separate pull request for each patch).
 Problems arise when multiple patches are included in a single pull request:
 
  * It makes the pull request more difficult to review
+ * It makes reading the commit log more difficult
  * If there's a problem with one patch, it holds up other patches within that pull request
  from being merged 
 
