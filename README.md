@@ -2,7 +2,7 @@
 
 **This is the game engine source code repository.**
 
-[ZetaGlest](https://github.com/ZetaGlest) is a fork of [MegaGlest](http://megaglest.org/),
+[ZetaGlest](https://zetaglest.github.io/docs/) is a fork of [MegaGlest](http://megaglest.org/),
 a libre software cross platform real-time strategy game.
 
 ZetaGlest is an entertaining free (freeware and free software) and open
@@ -13,9 +13,9 @@ in one of 17 naturally looking settings, which, like the unit models,
 are crafted with great attention to detail. A lot of additional game
 data can be downloaded from within the game at no cost.
 
-**[System Requirements](https://github.com/ZetaGlest/zetaglest-source/blob/develop/system_requirements.txt)**
+**[System Requirements](https://zetaglest.github.io/docs/system_requirements.html)**
 
-**[Screenshot](https://github.com/ZetaGlest/screenshots)**
+**[Screenshots](https://github.com/ZetaGlest/screenshots)**
 
 Open games and [Server list and player stats](https://zetaglest.dreamhosters.com/)
 
