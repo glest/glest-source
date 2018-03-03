@@ -9,7 +9,7 @@ The Discord rooms are for players, developers, and curiosity/adventure-seekers.
 
 ## Website Design
 
-Documentation for designing the websites is in [WEBSITE_DESIGN.md](https://github.com/ZetaGlest/zetaglest-source/WEBSITE_DESIGN.md).
+Documentation for designing the websites is in [WEBSITE_DESIGN.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/WEBSITE_DESIGN.md).
 
 ## Mods, tech trees, scenarios, tilesets, maps
 
@@ -31,10 +31,17 @@ ZetaGlest Issues are filed on these repositories:
 * [zetaglest-source Issues](https://github.com/ZetaGlest/zetaglest-source/issues)
 * [zetaglest-data Issues](https://github.com/ZetaGlest/zetaglest-data/issues)
 * [zetaglest-masterserver Issues](https://github.com/ZetaGlest/zetaglest-masterserver/issues)
+* [ZetaGlest web site](https://github.com/ZetaGlest/zetaglest.github.io)
 
-This link will display a combined list of issues across every
-repository in the ZetaGlest organization (hint: a good link to
-bookmark).
+Don't worry about focusing on every repo in the above list. Each repo is separated by
+category. For example, zetaglest-source is for source code, zetaglest-data is for game data.
+We don't expect contributors to keep track of issues in every repository. If you stay
+with the project for a while, you will not have any problem finding your way around.
+
+For new users, it's recommended to focus on only one repository. However,
+if you are curious to get an overview of every issue filed from the repo list above, this
+link will display a combined list of issues across every repository in the ZetaGlest
+organization.
 
 [https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3AZetaGlest](https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3AZetaGlest)
 
@@ -48,10 +55,11 @@ If you find a problem for which no ticket has yet been created, please don't
 hesitate to open a new ticket, and let us know if you are going to work on
 that issue.
 
-If you would like to contribute something, it is advised to inquire
-first, to be sure it's a patch that would get accepted. We don't want
-anyone to spend their time and generosity working on something that we
-would be unable to accept.
+If you would like to contribute something, you will need to ask first if it's a desired
+patch, to be sure it will get accepted. We don't want anyone to spend their time and
+generosity working on something that would get rejected. Sometimes you may think a feature
+would be a good addition or desired by the development team, but there may be a reason why
+it's not. If you don't see a ticket for it, open a ticket and ask.
 
 Please leave another note if you change your mind or if you get busy with other
 things and are unable to finish it. That lets me and other people know the
@@ -62,7 +70,14 @@ Please match the existing style
 
 Sometimes a patch will be a single line in a single file; other times a single
 patch will consist of changes to several files. Keep unrelated patches separate
-from each other (i.e. a separate PR for each patch).
+from each other (i.e. a separate pull request for each patch).
+
+Problems arise when multiple patches are included in a single pull request:
+
+ * It makes the pull request more difficult to review
+ * It makes reading the commit log more difficult
+ * If there's a problem with one patch, it holds up other patches within that pull request
+ from being merged 
 
 See the instructions in
 [BUILD.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
@@ -71,6 +86,22 @@ easily contribute patches, graphics, or other content to the ZetaGlest
 repositories.
 
 ## Pull Requests
+
+(If you have no experience making pull requests and are confused about the process,
+you can practice at the repository [Practice Git](https://github.com/grayghostvisuals/Practice-Git).
+(Note: It is not part of this project.))
+
+Follow the steps below if you are contributing to any of these repositories:
+
+* [source](https://github.com/ZetaGlest/zetaglest-source)
+* [data](https://github.com/ZetaGlest/zetaglest-data)
+* [masterserver](https://github.com/MegaGlest/megaglest-masterserver)
+* [website](https://github.com/ZetaGlest/zetaglest.github.io)
+
+Below, *zetaglest-source* is used for the example, but if you are working on another repository,
+be sure to replace **zetaglest-source** with the appropriate repo url, using the URL of
+your fork.
+
 1. [Fork the repo](https://github.com/ZetaGlest/zetaglest-source/fork) (if you haven't already done so)
 2. Clone it to your computer
 3. When you're ready to work on an issue, be sure you're on the **develop** branch. From there,
@@ -103,8 +134,3 @@ repo with the remote upstream. GitHub has instructions for doing this:
     * For step 3 on that page, use https://github.com/ZetaGlest/zetaglest-source for the URL.
 2. [Syncing a Fork](https://help.github.com/articles/syncing-a-fork/)
     * On that page, it shows how to merge the **develop** branch (steps 4 & 5 of **Syncing a Fork**).
-
-Follow these steps if you are contributing to the
-[data](https://github.com/ZetaGlest/zetaglest-data) or
-[masterserver](https://github.com/MegaGlest/megaglest-masterserver)
-repository.

@@ -58,6 +58,7 @@ double maxClientLagTimeAllowedEver							= 25;
 double warnFrameCountLagPercent 							= 0.50;
 double LAG_CHECK_GRACE_PERIOD 								= 15;
 double LAG_CHECK_INTERVAL_PERIOD 							= 4;
+int GRACE_LAG_CTR_LIMIT = 5;
 
 const int MAX_CLIENT_WAIT_SECONDS_FOR_PAUSE_MILLISECONDS	= 15000;
 const int MAX_CLIENT_PAUSE_FOR_LAG_COUNT					= 3;
@@ -802,12 +803,16 @@ std::pair<bool,bool> ServerInterface::clientLagCheck(ConnectionSlot *connectionS
 						}
 			    	}
 
-					if(gameSettings.getNetworkPauseGameForLaggedClients() == false ||
+					if((gameSettings.getNetworkPauseGameForLaggedClients() == false ||
 						(maxFrameCountLagAllowedEver > 0 && clientLagCount > maxFrameCountLagAllowedEver) ||
-						(maxClientLagTimeAllowedEver > 0 && clientLagTime > maxClientLagTimeAllowedEver)) {
+						(maxClientLagTimeAllowedEver > 0 && clientLagTime > maxClientLagTimeAllowedEver) &&
+						connectionSlot->getGraceLagCtr() > GRACE_LAG_CTR_LIMIT)) {
 
 						//printf("Closing connection slot lagged out!\n");
 						connectionSlot->close();
+						// not needed now, but will be needed when in-game joins and rejoins
+						// are used
+						connectionSlot->resetGraceLagCtr();
 					}
 
 				}
@@ -1115,8 +1120,10 @@ void ServerInterface::checkForAutoPauseForLaggingClient(int index,ConnectionSlot
 						connectionSlot->incrementAutoPauseGameCountForLag();
 
 						this->clientsAutoPausedDueToLag = true;
-						if (this->clientLagCallbackInterface->clientLagHandler(index, true) == false) {
+						if ((this->clientLagCallbackInterface->clientLagHandler(index, true) == false) &&
+						connectionSlot->getGraceLagCtr() > GRACE_LAG_CTR_LIMIT) {
 							connectionSlot->close();
+							connectionSlot->resetGraceLagCtr();
 						}
 						else {
 							if (this->clientsAutoPausedDueToLagTimer.isStarted()== true) {
