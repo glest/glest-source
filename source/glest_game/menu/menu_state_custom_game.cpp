@@ -4370,10 +4370,6 @@ namespace Glest
 
           for (int i = 0; i < GameConstants::maxPlayers; ++i)
           {
-            // FIXME: The contents of this if block could be refactored;
-            // Some of same statements are used in each condtion.
-            // please test afteward.
-            //
             if (i >= mapInfo.hardMaxPlayers)
             {
               if (checkBoxAllowObservers.getValue() == false)
@@ -4381,8 +4377,6 @@ namespace Glest
                 listBoxControls[i].setSelectedItemIndex (ctClosed);
                 listBoxControls[i].setEditable (false);
                 listBoxControls[i].setEnabled (false);
-                listBoxRMultiplier[i].setEditable (false);
-                listBoxRMultiplier[i].setEnabled (false);
               }
               else
               {
@@ -4393,10 +4387,11 @@ namespace Glest
                 listBoxTeams[i].setSelectedItem (intToStr (GameConstants::maxPlayers +
                                                 fpt_Observer));
                 listBoxTeams[i].setEditable (false);
-                listBoxRMultiplier[i].setEditable (false);
-                listBoxRMultiplier[i].setEnabled (false);
-                listBoxRMultiplier[i].setVisible (false);
               }
+
+              listBoxRMultiplier[i].setEditable (false);
+              listBoxRMultiplier[i].setEnabled (false);
+              listBoxRMultiplier[i].setVisible (false);
             }
             else if (listBoxControls[i].getSelectedItemIndex () !=
                      ctNetworkUnassigned)
@@ -4412,6 +4407,7 @@ namespace Glest
                 listBoxControls[i].setEnabled (true);
                 listBoxFactions[i].setEditable (true);
                 listBoxTeams[i].setEditable (true);
+                listBoxFactions[i].setSelectedItemIndex (0);
               }
               else
               {
@@ -4441,7 +4437,7 @@ namespace Glest
           } while (++i < GameConstants::maxPlayers);
         }
 
-        updateNetworkSlots ();
+        // updateNetworkSlots ();
 
         bool checkDataSynch =
           (serverInterface->getAllowGameDataSynchCheck () == true
