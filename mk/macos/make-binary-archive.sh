@@ -69,7 +69,7 @@ fi
 cd "$CURRENTDIR"
 echo "copying binaries ..."
 cp ../shared/*.ico "$RELEASEDIR"
-if [ -e "$RELEASEDIR/glest.ico" ]; then rm "$RELEASEDIR/glest.ico"; fi
+if [ -e "$RELEASEDIR/zetaglest.ico" ]; then rm "$RELEASEDIR/zetaglest.ico"; fi
 #cp bundle_resources/*.icns "$RELEASEDIR"
 cp {../shared/,}*.ini "$RELEASEDIR"
 if [ -e "$RELEASEDIR/glest-dev.ini" ]; then rm "$RELEASEDIR/glest-dev.ini"; fi

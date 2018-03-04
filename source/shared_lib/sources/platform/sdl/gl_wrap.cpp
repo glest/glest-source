@@ -261,7 +261,7 @@ void PlatformContextGl::init(int colorBits, int depthBits, int stencilBits,
 				delete [] result.second;
 			}
 
-		//SDL_Surface *icon = IMG_Load("megaglest.ico");
+		//SDL_Surface *icon = IMG_Load("zetaglest.ico");
 
 
 	//#if !defined(MACOSX)

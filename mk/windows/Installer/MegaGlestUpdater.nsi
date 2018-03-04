@@ -11,10 +11,10 @@ Name "${APNAME} ${APVER_UPDATE}"
 SetCompressor /FINAL /SOLID lzma
 SetCompressorDictSize 64
 OutFile "${APNAME}-Updater-${APVER_UPDATE}_i386_win32.exe"
-Icon "..\megaglest.ico"
-UninstallIcon "..\megaglest.ico"
-!define MUI_ICON "..\megaglest.ico"
-!define MUI_UNICON "..\megaglest.ico"
+Icon "..\zetaglest.ico"
+UninstallIcon "..\zetaglest.ico"
+!define MUI_ICON "..\zetaglest.ico"
+!define MUI_UNICON "..\zetaglest.ico"
 InstallDir "$PROGRAMFILES\${APNAME}_${APVER}"
 ShowInstDetails show
 BGGradient 0xDF9437 0xffffff
@@ -24,12 +24,12 @@ BGGradient 0xDF9437 0xffffff
 RequestExecutionLevel none
 
 PageEx license
-       LicenseText "MegaGlest Game License"
+       LicenseText "ZetaGlest Game License"
        LicenseData "..\..\..\docs\gnu_gpl_3.0.txt"
 PageExEnd
 
 PageEx license
-       LicenseText "MegaGlest Data License"
+       LicenseText "ZetaGlest Data License"
        LicenseData "..\..\..\data\glest_game\docs\cc-by-sa-3.0-unported.txt"
 PageExEnd
 
@@ -222,7 +222,7 @@ Section "Uninstall"
   Delete "$INSTDIR\megaglest.exe"
   Delete "$INSTDIR\megaglest_editor.exe"
   Delete "$INSTDIR\megaglest_g3dviewer.exe"
-  Delete "$INSTDIR\megaglest.ico"
+  Delete "$INSTDIR\zetaglest.ico"
   Delete "$INSTDIR\glest.ini"
   Delete "$INSTDIR\glestkeys.ini"
   Delete "$INSTDIR\servers.ini"
