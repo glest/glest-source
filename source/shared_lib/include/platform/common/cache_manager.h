@@ -46,7 +46,7 @@ protected:
 		cacheItemSet
 	} CacheAccessorType;
 
-	template <typename T>
+
 	static Mutex & manageCachedItemMutex(string cacheKey) {
 		if(itemCacheMutexList.find(cacheKey) == itemCacheMutexList.end()) {
 			MutexSafeWrapper safeMutex(&mutexMap);
@@ -66,7 +66,7 @@ protected:
 		if(accessor == cacheItemSet) {
 			if(value == NULL) {
 				try {
-					Mutex &mutexCache = manageCachedItemMutex<T>(cacheKey);
+					Mutex &mutexCache = manageCachedItemMutex(cacheKey);
 					MutexSafeWrapper safeMutex(&mutexCache);
 					if(itemCache.find(cacheKey) != itemCache.end()) {
 						itemCache.erase(cacheKey);
@@ -80,7 +80,7 @@ protected:
 			}
 			if(value != NULL) {
 				try {
-					Mutex &mutexCache = manageCachedItemMutex<T>(cacheKey);
+					Mutex &mutexCache = manageCachedItemMutex(cacheKey);
 					MutexSafeWrapper safeMutex(&mutexCache);
 					itemCache[cacheKey] = *value;
 					safeMutex.ReleaseLock();
@@ -91,7 +91,7 @@ protected:
 			}
 		}
 		// If this is the first access we return a default object of the type
-		Mutex &mutexCache = manageCachedItemMutex<T>(cacheKey);
+		Mutex &mutexCache = manageCachedItemMutex(cacheKey);
 		MutexSafeWrapper safeMutex(&mutexCache);
 
 		return itemCache[cacheKey];
@@ -129,7 +129,7 @@ public:
 
 	template <typename T>
 	static Mutex & getMutexForItem(string cacheKey) {
-		return manageCachedItemMutex<T>(cacheKey);
+		return manageCachedItemMutex(cacheKey);
 	}
 };
 
