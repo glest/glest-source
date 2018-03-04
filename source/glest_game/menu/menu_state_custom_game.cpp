@@ -4407,7 +4407,12 @@ namespace Glest
                 listBoxControls[i].setEnabled (true);
                 listBoxFactions[i].setEditable (true);
                 listBoxTeams[i].setEditable (true);
-                listBoxFactions[i].setSelectedItemIndex (0);
+
+                if (listBoxFactions[i].getSelectedItem () ==
+                  formatString (GameConstants::OBSERVER_SLOTNAME))
+                {
+                  listBoxFactions[i].setSelectedItemIndex (0);
+                }
               }
               else
               {
