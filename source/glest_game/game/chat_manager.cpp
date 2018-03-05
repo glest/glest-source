@@ -790,10 +790,9 @@ namespace
                             if (msg.chatText.find (playerName) !=
                                 string::npos)
                               {
-                                 static PlaySoundClip snd;
                                 SoundRenderer & soundRenderer =
                                   SoundRenderer::getInstance ();
-                                soundRenderer.playFx (snd.getSound (snd.sfxHighlight),
+                                soundRenderer.playFx (sfxHighlight,
                                                       true);
                               }
                             console->addLine (msg.chatText.

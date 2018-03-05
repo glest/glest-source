@@ -241,7 +241,7 @@ namespace Glest
 
       if (mainMessageBox.getEnabled ())
       {
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         int button = 0;
         if (mainMessageBox.mouseClick (x, y, button))
         {
@@ -253,12 +253,12 @@ namespace Glest
       }
       if (abortButton.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         mainMenu->setState (new MenuStateRoot (program, mainMenu));
       }
       else if (deleteButton.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         if (selectedButton == NULL)
         {
           console.addStdMessage ("NothingSelected", true);
@@ -302,7 +302,7 @@ namespace Glest
       }
       else if (loadButton.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
 
         if (selectedButton == NULL)
         {
@@ -338,7 +338,7 @@ namespace Glest
       }
       else if (slotsScrollBar.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
       }
       else
       {
@@ -349,7 +349,7 @@ namespace Glest
           {
             if (slots[i]->mouseClick (x, y) && selectedButton != slots[i])
             {
-              soundRenderer.playFx (coreData.getClickSoundB ());
+              soundRenderer.playFx (sfxMenuClickB);
 
               Lang & lang = Lang::getInstance ();
               cleanupTexture (&previewTexture);

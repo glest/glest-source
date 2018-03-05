@@ -3,9 +3,9 @@
 //
 //      Copyright (C) 2001-2005 MartiC1o Figueroa
 //
-//      You can redistribute this code and/or modify it under 
-//      the terms of the GNU General Public License as published 
-//      by the Free Software Foundation; either version 2 of the 
+//      You can redistribute this code and/or modify it under
+//      the terms of the GNU General Public License as published
+//      by the Free Software Foundation; either version 2 of the
 //      License, or (at your option) any later version
 // ==============================================================
 
@@ -272,12 +272,11 @@ namespace Glest
     void MenuStateAbout::mouseClick (int x, int y, MouseButton mouseButton)
     {
 
-      CoreData & coreData = CoreData::getInstance ();
       SoundRenderer & soundRenderer = SoundRenderer::getInstance ();
 
       if (buttonReturn.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         mainMenu->setState (new MenuStateRoot (program, mainMenu));
       }
 

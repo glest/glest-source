@@ -4338,7 +4338,7 @@ namespace Glest
                                                          ()->getThisTeamIndex
                                                          ()) == true)))
             {
-              SoundRenderer::getInstance ().playFx (sound);
+              SoundRenderer::getInstance ().playFx (*sound);
             }
 
             if (this->isDead ()
@@ -4476,7 +4476,7 @@ namespace Glest
                                                        ()->getThisTeamIndex
                                                        ()) == true)))
           {
-            SoundRenderer::getInstance ().playFx (sound);
+            SoundRenderer::getInstance ().playFx (*sound);
           }
 
           if (this->isDead () && this->getCurrSkill ()->getClass () != scDie)
@@ -4585,7 +4585,7 @@ namespace Glest
                                                            ()->getThisTeamIndex
                                                            ()) == true)))
               {
-                SoundRenderer::getInstance ().playFx (sound);
+                SoundRenderer::getInstance ().playFx (*sound);
               }
             }
           }
@@ -4645,7 +4645,7 @@ namespace Glest
                                                          ()->getThisTeamIndex
                                                          ()) == true)))
             {
-              SoundRenderer::getInstance ().playFx (sound);
+              SoundRenderer::getInstance ().playFx (*sound);
             }
           }
         }

@@ -278,7 +278,7 @@ namespace Glest
         int button = 0;
         if (mainMessageBox.mouseClick (x, y, button))
         {
-          soundRenderer.playFx (coreData.getClickSoundA ());
+          soundRenderer.playFx (sfxMenuClickA);
           if (button == 0)
           {
             mainMessageBox.setEnabled (false);
@@ -308,13 +308,13 @@ namespace Glest
 
       if (buttonReturn.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         mainMenu->setState (new MenuStateNewGame (program, mainMenu));
         return;
       }
       else if (buttonPlayNow.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundC ());
+        soundRenderer.playFx (sfxMenuClickC);
         launchGame ();
         return;
       }
@@ -502,7 +502,7 @@ namespace Glest
 
               SoundRenderer & soundRenderer = SoundRenderer::getInstance ();
               CoreData & coreData = CoreData::getInstance ();
-              soundRenderer.playFx (coreData.getClickSoundC ());
+              soundRenderer.playFx (sfxMenuClickC);
               launchGame ();
               return;
             }

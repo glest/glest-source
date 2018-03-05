@@ -284,7 +284,7 @@ namespace Glest
                 SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                           "In [%s::%s Line: %d]\n", __FILE__,
                                           __FUNCTION__, __LINE__);
-              soundRenderer.playFx (coreData.getClickSoundA ());
+              soundRenderer.playFx (sfxMenuClickA);
               program->exit ();
             }
             else
@@ -355,36 +355,36 @@ namespace Glest
         else if (mainMessageBox.getEnabled () == false
                  && buttonNewGame.mouseClick (x, y))
         {
-          soundRenderer.playFx (coreData.getClickSoundB ());
+          soundRenderer.playFx (sfxMenuClickB);
           mainMenu->setState (new MenuStateNewGame (program, mainMenu));
         }
         else if (mainMessageBox.getEnabled () == false
                  && buttonLoadGame.mouseClick (x, y))
         {
-          soundRenderer.playFx (coreData.getClickSoundB ());
+          soundRenderer.playFx (sfxMenuClickB);
           mainMenu->setState (new MenuStateLoadGame (program, mainMenu));
         }
         else if (mainMessageBox.getEnabled () == false
                  && buttonMods.mouseClick (x, y))
         {
-          soundRenderer.playFx (coreData.getClickSoundB ());
+          soundRenderer.playFx (sfxMenuClickB);
           mainMenu->setState (new MenuStateMods (program, mainMenu));
         }
         else if (mainMessageBox.getEnabled () == false
                  && buttonOptions.mouseClick (x, y))
         {
-          soundRenderer.playFx (coreData.getClickSoundB ());
+          soundRenderer.playFx (sfxMenuClickB);
           mainMenu->setState (new MenuStateOptions (program, mainMenu));
         }
         else if (mainMessageBox.getEnabled () == false
                  && buttonAbout.mouseClick (x, y))
         {
-          soundRenderer.playFx (coreData.getClickSoundB ());
+          soundRenderer.playFx (sfxMenuClickB);
           mainMenu->setState (new MenuStateAbout (program, mainMenu));
         }
         else if (buttonExit.mouseClick (x, y))
         {
-          soundRenderer.playFx (coreData.getClickSoundA ());
+          soundRenderer.playFx (sfxMenuClickA);
           program->exit ();
         }
       }

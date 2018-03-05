@@ -1723,7 +1723,7 @@ namespace Glest
                                                       getThisTeamIndex ()) ==
                         true))
                 {
-                  SoundRenderer::getInstance ().playFx (sound);
+                  SoundRenderer::getInstance ().playFx (*sound);
                 }
               }
             }

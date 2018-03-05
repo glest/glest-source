@@ -344,7 +344,7 @@ namespace Glest
         int button = 0;
         if (mainMessageBox.mouseClick (x, y, button))
         {
-          soundRenderer.playFx (coreData.getClickSoundA ());
+          soundRenderer.playFx (sfxMenuClickA);
           if (button == 0)
           {
             mainMessageBox.setEnabled (false);
@@ -358,7 +358,7 @@ namespace Glest
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                     "In [%s::%s Line: %d]\n", __FILE__,
                                     __FUNCTION__, __LINE__);
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
             enabled)
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
@@ -372,7 +372,7 @@ namespace Glest
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                     "In [%s::%s Line: %d]\n", __FILE__,
                                     __FUNCTION__, __LINE__);
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
             enabled)
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
@@ -401,7 +401,7 @@ namespace Glest
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                     "In [%s::%s Line: %d]\n", __FILE__,
                                     __FUNCTION__, __LINE__);
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
             enabled)
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
@@ -449,7 +449,7 @@ namespace Glest
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
                                     "In [%s::%s Line: %d]\n", __FILE__,
                                     __FUNCTION__, __LINE__);
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         if (SystemFlags::getSystemSettingType (SystemFlags::debugSystem).
             enabled)
           SystemFlags::OutputDebug (SystemFlags::debugSystem,
@@ -514,30 +514,30 @@ namespace Glest
       {
         if (buttonKeyboardSetup.mouseClick (x, y))
         {
-          soundRenderer.playFx (coreData.getClickSoundA ());
+          soundRenderer.playFx (sfxMenuClickA);
           return;
         }
         else if (buttonAudioSection.mouseClick (x, y))
         {
-          soundRenderer.playFx (coreData.getClickSoundA ());
+          soundRenderer.playFx (sfxMenuClickA);
           mainMenu->setState (new MenuStateOptionsSound (program, mainMenu, this->parentUI));   // open keyboard shortcuts setup screen
           return;
         }
         else if (buttonNetworkSettings.mouseClick (x, y))
         {
-          soundRenderer.playFx (coreData.getClickSoundA ());
+          soundRenderer.playFx (sfxMenuClickA);
           mainMenu->setState (new MenuStateOptionsNetwork (program, mainMenu, this->parentUI)); // open keyboard shortcuts setup screen
           return;
         }
         else if (buttonMiscSection.mouseClick (x, y))
         {
-          soundRenderer.playFx (coreData.getClickSoundA ());
+          soundRenderer.playFx (sfxMenuClickA);
           mainMenu->setState (new MenuStateOptions (program, mainMenu, this->parentUI));        // open keyboard shortcuts setup screen
           return;
         }
         else if (buttonVideoSection.mouseClick (x, y))
         {
-          soundRenderer.playFx (coreData.getClickSoundA ());
+          soundRenderer.playFx (sfxMenuClickA);
           mainMenu->setState (new MenuStateOptionsGraphics (program, mainMenu, this->parentUI));        // open keyboard shortcuts setup screen
           return;
         }

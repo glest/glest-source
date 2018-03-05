@@ -3,9 +3,9 @@
 //
 //	Copyright (C) 2001-2008 Martiño Figueroa
 //
-//	You can redistribute this code and/or modify it under 
-//	the terms of the GNU General Public License as published 
-//	by the Free Software Foundation; either version 2 of the 
+//	You can redistribute this code and/or modify it under
+//	the terms of the GNU General Public License as published
+//	by the Free Software Foundation; either version 2 of the
 //	License, or (at your option) any later version
 // ==============================================================
 
@@ -77,11 +77,11 @@ void TimeFlow::update() {
 	UnitParticleSystem::lightColor=computeLightColor();
 
 	if((lastTime<dawn && time>=dawn) || firstTime){
-		
+
 		//day sound
 		if(ambientSounds != NULL) {
 			if(ambientSounds->isEnabledDayStart() && !firstTime){
-				soundRenderer.playFx(ambientSounds->getDayStart());
+				soundRenderer.playFx(*(ambientSounds->getDayStart()));
 			}
 			if(ambientSounds->isEnabledDay()){
 				if(ambientSounds->getAlwaysPlayDay() || tileset->getWeather()==wSunny){
@@ -100,11 +100,11 @@ void TimeFlow::update() {
 		UnitParticleSystem::isNight=true;
 	}
 
-	if(lastTime<dusk && time>=dusk){		
+	if(lastTime<dusk && time>=dusk){
 		//night
 		if(ambientSounds != NULL) {
 			if(ambientSounds->isEnabledNightStart()){
-				soundRenderer.playFx(ambientSounds->getNightStart());
+				soundRenderer.playFx(*(ambientSounds->getNightStart()));
 			}
 			if(ambientSounds->isEnabledNight()){
 				if(ambientSounds->getAlwaysPlayNight() || tileset->getWeather()==wSunny){

@@ -203,20 +203,18 @@ void SoundRenderer::playFx(StaticSound *staticSound, Vec3f soundPos, Vec3f camPo
 	}
 }
 
-void SoundRenderer::playFx(StaticSound *staticSound, bool force) {
-	if(staticSound!=NULL){
-		staticSound->setVolume(fxVolume);
-		if(soundPlayer != NULL) {
-	        MutexSafeWrapper safeMutex(NULL,string(__FILE__) + "_" + intToStr(__LINE__));
-            if(runThreadSafe == true) {
-                safeMutex.setMutex(mutex);
-            }
+void SoundRenderer::playFx(StaticSound staticSound, bool force) {
+    staticSound.setVolume(fxVolume);
+    if(soundPlayer != NULL) {
+        MutexSafeWrapper safeMutex(NULL,string(__FILE__) + "_" + intToStr(__LINE__));
+        if(runThreadSafe == true) {
+            safeMutex.setMutex(mutex);
+        }
 
-			if(soundPlayer) {
-				soundPlayer->play(staticSound, force);
-			}
-		}
-	}
+        if(soundPlayer) {
+            soundPlayer->play(&staticSound, force);
+        }
+    }
 }
 
 // ======================= Ambient ============================

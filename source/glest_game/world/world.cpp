@@ -1661,7 +1661,7 @@ void World::playStaticSound(const string &playSound) {
 	StaticSound *playSoundItem = staticSoundList[calculatedFilePath];
 
 	SoundRenderer &soundRenderer= SoundRenderer::getInstance();
-	soundRenderer.playFx(playSoundItem);
+	soundRenderer.playFx(*playSoundItem);
 }
 
 void World::playStreamingSound(const string &playSound) {

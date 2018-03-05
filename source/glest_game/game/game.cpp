@@ -4806,7 +4806,6 @@ namespace Glest
 
       if (this->masterserverMode == false)
       {
-        CoreData & coreData = CoreData::getInstance ();
         SoundRenderer & soundRenderer = SoundRenderer::getInstance ();
 
         const Faction *faction = mc.getFaction ();
@@ -4820,8 +4819,7 @@ namespace Glest
             (faction->getTeam () ==
              getWorld ()->getThisFaction ()->getTeam ()))
         {
-          static PlaySoundClip snd;
-          soundRenderer.playFx (snd.getSound (snd.sfxMarker), true);
+          soundRenderer.playFx (sfxMarker, true);
         }
       }
     }

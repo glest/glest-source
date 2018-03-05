@@ -1075,10 +1075,9 @@ namespace Glest
         clientInterface = networkManager.getClientInterface (false);
       if (clientInterface != NULL)
       {
-        CoreData & coreData = CoreData::getInstance ();
         SoundRenderer & soundRenderer = SoundRenderer::getInstance ();
 
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
         if (clientInterface->getSocket () != NULL)
         {
           if (clientInterface->isConnected () == true)
@@ -1713,7 +1712,6 @@ namespace Glest
     MenuStateConnectedGame::mouseClick (int x, int y, MouseButton mouseButton)
     {
 
-      CoreData & coreData = CoreData::getInstance ();
       SoundRenderer & soundRenderer = SoundRenderer::getInstance ();
       NetworkManager & networkManager = NetworkManager::getInstance ();
       ClientInterface *
@@ -1792,7 +1790,7 @@ namespace Glest
           button = 0;
         if (mainMessageBox.mouseClick (x, y, button))
         {
-          soundRenderer.playFx (coreData.getClickSoundA ());
+          soundRenderer.playFx (sfxMenuClickA);
           if (button == 0)
           {
             mainMessageBox.setEnabled (false);
@@ -1805,7 +1803,7 @@ namespace Glest
           button = 0;
         if (ftpMessageBox.mouseClick (x, y, button))
         {
-          soundRenderer.playFx (coreData.getClickSoundA ());
+          soundRenderer.playFx (sfxMenuClickA);
           ftpMessageBox.setEnabled (false);
 
           if (button == 0
@@ -2072,7 +2070,7 @@ namespace Glest
       }
       else if (buttonCancelDownloads.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundA ());
+        soundRenderer.playFx (sfxMenuClickA);
 
         if (ftpClientThread != NULL && fileFTPProgressList.empty () == false)
         {
@@ -2326,7 +2324,7 @@ namespace Glest
               if (listBoxFactions[i].mouseClick
                   (x, y, advanceToItemStartingWith))
               {
-                soundRenderer.playFx (coreData.getClickSoundA ());
+                soundRenderer.playFx (sfxMenuClickA);
                 ClientInterface *
                   clientInterface =
                   NetworkManager::getInstance ().getClientInterface ();
@@ -2357,7 +2355,7 @@ namespace Glest
             {
               if (listBoxTeams[i].mouseClick (x, y))
               {
-                soundRenderer.playFx (coreData.getClickSoundA ());
+                soundRenderer.playFx (sfxMenuClickA);
                 if (clientInterface->isConnected ())
                 {
                   clientInterface->setGameSettingsReceived (false);
@@ -2406,7 +2404,7 @@ namespace Glest
               {
 //printf("Send slot switch request for slot = %d, myCurrentIndex = %d\n",i,myCurrentIndex);
 
-                soundRenderer.playFx (coreData.getClickSoundB ());
+                soundRenderer.playFx (sfxMenuClickB);
                 clientInterface->setGameSettingsReceived (false);
                 settingsReceivedFromServer = false;
 
@@ -2473,7 +2471,7 @@ namespace Glest
                                       extractFileFromDirectoryPath
                                       (__FILE__).c_str (), __FUNCTION__,
                                       __LINE__);
-          soundRenderer.playFx (coreData.getClickSoundC ());
+          soundRenderer.playFx (sfxMenuClickC);
           if (SystemFlags::
               getSystemSettingType (SystemFlags::debugSystem).enabled)
             SystemFlags::OutputDebug (SystemFlags::debugSystem,
@@ -2749,9 +2747,9 @@ namespace Glest
                     extractFileFromDirectoryPath (__FILE__).c_str (),
                     __FUNCTION__, __LINE__);
 
-          CoreData & coreData = CoreData::getInstance ();
+
           SoundRenderer & soundRenderer = SoundRenderer::getInstance ();
-          soundRenderer.playFx (coreData.getClickSoundB ());
+          soundRenderer.playFx (sfxMenuClickB);
 
           RestoreLastGameSettings ();
         }
@@ -3059,9 +3057,9 @@ namespace Glest
                                                  &gameSettings, true);
       }
 
-      CoreData & coreData = CoreData::getInstance ();
+
       SoundRenderer & soundRenderer = SoundRenderer::getInstance ();
-      soundRenderer.playFx (coreData.getClickSoundC ());
+      soundRenderer.playFx (sfxMenuClickC);
 
       if (SystemFlags::
           getSystemSettingType (SystemFlags::debugSystem).enabled)
@@ -6343,9 +6341,8 @@ namespace Glest
             if (currentConnectionCount > soundConnectionCount)
             {
               soundConnectionCount = currentConnectionCount;
-              static PlaySoundClip snd;
               SoundRenderer::getInstance ().
-                playFx (snd.getSound (snd.sfxAttention));
+                playFx (sfxAttention);
 //switch on music again!!
               Config & config = Config::getInstance ();
               float

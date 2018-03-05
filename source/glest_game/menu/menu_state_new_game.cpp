@@ -106,12 +106,12 @@ namespace Glest
 
       if (buttonCustomGame.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         mainMenu->setState (new MenuStateCustomGame (program, mainMenu));
       }
       else if (buttonScenario.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         mainMenu->setState (new MenuStateScenario (program, mainMenu, false,
                                                    Config::getInstance ().
                                                    getPathListForType
@@ -119,17 +119,17 @@ namespace Glest
       }
       else if (buttonJoinGame.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         mainMenu->setState (new MenuStateJoinGame (program, mainMenu));
       }
       else if (buttonMasterserverGame.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         mainMenu->setState (new MenuStateMasterserver (program, mainMenu));
       }
       else if (buttonTutorial.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         mainMenu->setState (new MenuStateScenario (program, mainMenu, true,
                                                    Config::getInstance ().
                                                    getPathListForType
@@ -137,7 +137,7 @@ namespace Glest
       }
       else if (buttonReturn.mouseClick (x, y))
       {
-        soundRenderer.playFx (coreData.getClickSoundB ());
+        soundRenderer.playFx (sfxMenuClickB);
         mainMenu->setState (new MenuStateRoot (program, mainMenu));
       }
     }
