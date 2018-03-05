@@ -14,10 +14,10 @@ Name "${APNAME} ${APVER}"
 SetCompressor /FINAL /SOLID lzma
 SetCompressorDictSize 64
 OutFile "${APNAME}-Installer-${APVER}_windows_XXbit.exe"
-Icon "..\..\shared\megaglest.ico"
-UninstallIcon "..\..\shared\megaglest.ico"
-!define MUI_ICON "..\..\shared\megaglest.ico"
-!define MUI_UNICON "..\..\shared\megaglest.ico"
+Icon "..\..\shared\zetaglest.ico"
+UninstallIcon "..\..\shared\zetaglest.ico"
+!define MUI_ICON "..\..\shared\zetaglest.ico"
+!define MUI_UNICON "..\..\shared\zetaglest.ico"
 InstallDir "$PROGRAMFILES\${APNAME}"
 ShowInstDetails show
 ;BGGradient 0xDF9437 0xffffff
@@ -26,12 +26,12 @@ ShowInstDetails show
 RequestExecutionLevel none
 
 PageEx license
-       LicenseText "MegaGlest Game License"
+       LicenseText "ZetaGlest Game License"
        LicenseData "..\..\..\docs\gnu_gpl_3.0.txt"
 PageExEnd
 
 PageEx license
-       LicenseText "MegaGlest Data License"
+       LicenseText "ZetaGlest Data License"
        LicenseData "..\..\..\data\glest_game\docs\cc-by-sa-3.0-unported.txt"
 PageExEnd
 
@@ -240,7 +240,7 @@ Section "${APNAME} (required)"
 
   File "..\7z.exe"
   File "..\7z.dll"
-  File "..\..\shared\megaglest.ico"
+  File "..\..\shared\zetaglest.ico"
   File "..\glest.ini"
   File "..\..\shared\glestkeys.ini"
   File "..\..\shared\servers.ini"
@@ -355,7 +355,7 @@ Section "Uninstall"
   Delete "$INSTDIR\megaglest_editorx64.exe"
   Delete "$INSTDIR\megaglest_g3dviewerx64.exe"
 
-  Delete "$INSTDIR\megaglest.ico"
+  Delete "$INSTDIR\zetaglest.ico"
   Delete "$INSTDIR\glest.ini"
   Delete "$INSTDIR\glestkeys.ini"
   Delete "$INSTDIR\servers.ini"
