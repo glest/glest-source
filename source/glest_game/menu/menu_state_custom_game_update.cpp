@@ -595,8 +595,6 @@ namespace Glest
             && chrono.getMillis () > 0)
           chrono.start ();
 
-//ServerInterface* serverInterface= NetworkManager::getInstance().getServerInterface();
-
         if (checkBoxScenario.getValue () == false)
         {
           // When scenario is checked the value for mapInfo.players is reset to
@@ -617,8 +615,12 @@ namespace Glest
               }
               else
               {
-                listBoxControls[i].setSelectedItemIndex (ctNetwork);
-                listBoxControls[i].setEditable (false);
+                if (listBoxControls[i].getSelectedItemIndex () != ctHuman)
+                {
+                  listBoxControls[i].setSelectedItemIndex (ctNetwork);
+                }
+                listBoxControls[i].setEditable (i == GameConstants::maxPlayers - 1);
+                listBoxControls[i].setEnabled (i == GameConstants::maxPlayers - 1);
                 listBoxFactions[i].setSelectedItem (GameConstants::OBSERVER_SLOTNAME);
                 listBoxFactions[i].setEditable (false);
                 listBoxTeams[i].setSelectedItem (intToStr (GameConstants::maxPlayers +
@@ -645,8 +647,8 @@ namespace Glest
                 listBoxFactions[i].setEditable (true);
                 listBoxTeams[i].setEditable (true);
 
-                if (listBoxFactions[i].getSelectedItem () ==
-                  formatString (GameConstants::OBSERVER_SLOTNAME))
+                if (listBoxControls[i].getSelectedItemIndex () == ctNetwork &&
+                    listBoxFactions[i].getSelectedItem () == formatString (GameConstants::OBSERVER_SLOTNAME))
                 {
                   listBoxFactions[i].setSelectedItemIndex (0);
                 }
@@ -655,16 +657,12 @@ namespace Glest
               {
                 listBoxControls[i].setEditable (false);
                 listBoxControls[i].setEnabled (false);
-
-//printf("In [%s::%s] Line: %d i = %d mapInfo.players = %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,i,mapInfo.players);
               }
             }
             else
             {
               listBoxControls[i].setEditable (false);
               listBoxControls[i].setEnabled (false);
-
-//printf("In [%s::%s] Line: %d i = %d mapInfo.players = %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,i,mapInfo.players);
             }
           }
         }
