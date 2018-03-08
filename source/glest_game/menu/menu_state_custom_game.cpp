@@ -2342,14 +2342,6 @@ namespace Glest
                   }
                 }
               }
-              else if (labelPlayers[i].mouseClick (x, y))
-              {
-                listBoxControls[i].setEditable (true);
-                listBoxControls[i].setEnabled (true);
-                listBoxControls[i].setSelectedItemIndex (ctHuman);
-                //updateNetworkSlots ();
-
-              }
               else if (buttonBlockPlayers[i].mouseClick (x, y))
               {
                 soundRenderer.playFx (coreData.getClickSoundB ());

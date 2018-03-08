@@ -615,8 +615,12 @@ namespace Glest
               }
               else
               {
-                listBoxControls[i].setSelectedItemIndex (ctNetwork);
-                listBoxControls[i].setEditable (false);
+                if (listBoxControls[i].getSelectedItemIndex () != ctHuman)
+                {
+                  listBoxControls[i].setSelectedItemIndex (ctNetwork);
+                }
+                listBoxControls[i].setEditable (i == GameConstants::maxPlayers - 1);
+                listBoxControls[i].setEnabled (i == GameConstants::maxPlayers - 1);
                 listBoxFactions[i].setSelectedItem (GameConstants::OBSERVER_SLOTNAME);
                 listBoxFactions[i].setEditable (false);
                 listBoxTeams[i].setSelectedItem (intToStr (GameConstants::maxPlayers +
