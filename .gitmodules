@@ -1,0 +1,3 @@
+[submodule "mk/windows64"]
+	path = mk/windows64
+	url = https://github.com/ZetaGlest/windows64.git
