@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="ftgl">
+</Property><Property Name="Solution File" Value="C:\Code\megaglest\trunk\source\win32_deps\ftgl-2.1.3-rc5\msvc\vc8\ftgl.sln">
+</Property><Property Name="Date" Value="June 6, 2011">
+</Property><Property Name="Time" Value="15:51 PM">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="ftgl.sln" Description="File successfully backed up as C:\Code\megaglest\trunk\source\win32_deps\ftgl-2.1.3-rc5\msvc\vc8\ftgl.sln.old">
+</Event><Event ErrorLevel="0" Project="ftgl_dll" Source="ftgl_dll.vcproj" Description="Web deployment to the local IIS server is no longer supported. The Web Deployment build tool has been removed from your project settings.">
+</Event><Event ErrorLevel="1" Project="ftgl_dll" Source="ftgl_dll.vcproj" Description="This application has been updated to include settings related to the User Account Control (UAC) feature of Windows Vista. By default, when run on Windows Vista with UAC enabled, this application is marked to run with the same privileges as the process that launched it. This marking also disables the application from running with virtualization. You can change UAC related settings from the Property Pages of the project.">
+</Event><Event ErrorLevel="0" Project="ftgl_dll" Source="ftgl_dll.vcproj" Description="Project file successfully backed up as 'C:\Code\megaglest\trunk\source\win32_deps\ftgl-2.1.3-rc5\msvc\vc8\ftgl_dll.vcproj.8.00.old'.">
+</Event><Event ErrorLevel="0" Project="ftgl_dll" Source="ftgl_dll.vcproj" Description="Project upgraded successfully.">
+</Event><Event ErrorLevel="3" Project="ftgl_dll" Source="ftgl_dll.vcproj" Description="Converted">
+</Event><Event ErrorLevel="1" Project="ftgl_static" Source="ftgl_static.vcproj" Description="This application has been updated to include settings related to the User Account Control (UAC) feature of Windows Vista. By default, when run on Windows Vista with UAC enabled, this application is marked to run with the same privileges as the process that launched it. This marking also disables the application from running with virtualization. You can change UAC related settings from the Property Pages of the project.">
+</Event><Event ErrorLevel="0" Project="ftgl_static" Source="ftgl_static.vcproj" Description="Project file successfully backed up as 'C:\Code\megaglest\trunk\source\win32_deps\ftgl-2.1.3-rc5\msvc\vc8\ftgl_static.vcproj.8.00.old'.">
+</Event><Event ErrorLevel="0" Project="ftgl_static" Source="ftgl_static.vcproj" Description="Project upgraded successfully.">
+</Event><Event ErrorLevel="3" Project="ftgl_static" Source="ftgl_static.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="ftgl.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="ftgl.sln" Description="Converted">
+</Event></UpgradeLog>
