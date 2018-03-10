@@ -64,6 +64,8 @@ libwxgtk3.0-dev libxml2-dev
 
 ### Windows
 
+<!--
+
 #### Temporary build instructions for Windows (subject to change):
 
 1. Make sure Visual Studio 2015 is installed.
@@ -118,12 +120,14 @@ of its contents (the folders are: data, docs, maps...etc, and the files
 are MODS.md, README.md...etc) into the working ZetaGlest folder, right
 beside the executable.
 
-12. Run zetaglest.exe and enjoy!
+12. Run zetaglest.exe and enjoy! -->
 
 We are in the process of improving and updating the Windows build
 process. Please subscribe to the ticket below for updates:
 
 [Current Status](https://github.com/ZetaGlest/zetaglest-source/issues/37)
+
+We expect to have the Windows build process completed by Tuesday March 13, 2018
 
 ### *BSD
 
