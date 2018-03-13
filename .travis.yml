@@ -41,11 +41,11 @@ matrix:
       env: Tr_Compiler_Version="default"
       dist: trusty # broken compiler on 12.04
     - os: osx
-      #osx_image: xcode6.4 # seems broken and has lower priority in queue than default one
-      env: Tr_Xcode_Version="default"
-      #env: Tr_Xcode_Version="6.4"
-      # https://docs.travis-ci.com/user/osx-ci-environment/#OS-X-Version
-      # https://github.com/Homebrew/brew/blob/master/docs/Installation.md#requirements
+      osx_image: xcode9.2
+      env: Tr_Xcode_Version="9.2"
+    - os: osx
+      osx_image: xcode9.3beta
+      env: Tr_Xcode_Version="9.3beta"
   fast_finish: true
   allow_failures:
     - os: osx
