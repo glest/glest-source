@@ -46,11 +46,6 @@ matrix:
     - os: osx
       osx_image: xcode9.3beta
       env: Tr_Xcode_Version="9.3beta"
-  fast_finish: true
-  allow_failures:
-    - os: osx
-    # it's not really acceptable to wait 40 minutes or sometimes up to even 3 hours
-    # for the result just because the queue for mac is always so long
 
 git:
   submodules: false
@@ -89,5 +84,7 @@ notifications:
     skip_join: true
     use_notice: true
     on_success: change
+    on_error: always
+    on_failure: change
     template:
       - "[%{repository_name}#%{branch}@%{commit}] %{author}: %{message} %{build_url}"
