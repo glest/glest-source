@@ -89,6 +89,8 @@ $RECYCLE.BIN/
 *.exe
 *.msi
 *.pdb
+/mk/windows/dependencies/openssl
+/mk/windows/dependencies/src
 #
 /mk/linux/zetaglest
 /mk/linux/zetaglest_editor
