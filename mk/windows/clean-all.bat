@@ -5,29 +5,39 @@ SET /P AREYOUSURE=Are you sure you want to do this? (y/[n])
 IF /I "%AREYOUSURE%" NEQ "y" GOTO END
 IF /I "%AREYOUSURE%" NEQ "Y" GOTO END
 
-cd .\dependencies\src
-CALL :DELETE
-cd ..\..\
+IF EXIST .\dependencies\src (
+	cd .\dependencies\src
+	CALL :DELETE
+	cd ..\..\
+)
 
-cd .\vs2015-32
-CALL :DELETE
-del /S *.obj
-cd ..\
+IF EXIST .\vs2015-32 (
+	cd .\vs2015-32
+	CALL :DELETE
+	del /S *.obj
+	cd ..\
+)
 
-cd .\vs2015-64
-CALL :DELETE
-del /S *.obj
-cd ..\
+IF EXIST .\vs2015-64 (
+	cd .\vs2015-64
+	CALL :DELETE
+	del /S *.obj
+	cd ..\
+)
 
-cd .\vs2017-32
-CALL :DELETE
-del /S *.obj
-cd ..\
+IF EXIST .\vs2017-32 (
+	cd .\vs2017-32
+	CALL :DELETE
+	del /S *.obj
+	cd ..\
+)
 
-cd .\vs2017-64
-CALL :DELETE
-del /S *.obj
-cd ..\
+IF EXIST .\vs2017-64 (
+	cd .\vs2017-64
+	CALL :DELETE
+	del /S *.obj
+	cd ..\
+)
 
 GOTO END
 
