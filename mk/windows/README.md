@@ -9,4 +9,4 @@ To build ZetaGlest for the first time:
 4. Run `build-zg.bat` in `/mk/windows`.
 5. The built binaries will be found in the corresponding Visual Studio version and platform selected in `/mk/windows`.
 
-Note: Before pushing changes to this folder or ZetaGlest in general, make sure that you run `delete-all-deps.bat` and `clean-all.bat` before you do so.
+Note: Before pushing changes to this folder or ZetaGlest in general, make sure that you run `clean-zg.bat` before you do so.
