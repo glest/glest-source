@@ -1,0 +1,766 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{6B0C65F1-D031-46AF-AC0D-7C38892D2952}</ProjectGuid>
+    <RootNamespace>glest_game</RootNamespace>
+    <ProjectName>glest_game</ProjectName>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\$(TargetName)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\$(TargetName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|Win32'">$(SolutionDir)\$(TargetName)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|Win32'">$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|x64'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">zetaglest</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|Win32'">zetaglest</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">zetaglest</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">zetaglest</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">zetaglest</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">zetaglest</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|x64'">zetaglest</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|Win32'">zetaglest</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IntDir>$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\$(TargetName)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IntDir>$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\$(TargetName)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IntDir>$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\$(TargetName)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IntDir>$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\$(TargetName)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|x64'">
+    <IntDir>$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\$(TargetName)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|Win32'">
+    <IntDir>$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\$(TargetName)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>../../../source/shared_lib/include/graphics;../../../source/shared_lib/include/graphics/gl;../../../source/shared_lib/include/platform;../../../source/shared_lib/include/platform/win32;../../../source/shared_lib/include/sound;../../../source/shared_lib/include/util;../../../source/shared_lib/include/lua;../../../source/shared_lib/include/xml;../../../source/shared_lib/include/xml/rapidxml;../../../source/glest_game/ai;../../../source/glest_game/facilities;../../../source/glest_game/game;../../../source/glest_game/global;../../../source/glest_game/graphics;../../../source/glest_game/gui;../../../source/glest_game/main;../../../source/glest_game/menu;../../../source/glest_game/network;../../../source/glest_game/sound;../../../source/glest_game/steam;../../../source/glest_game/steamshim;../../../source/glest_game/type_instances;../../../source/glest_game/types;../../../source/glest_game/world;../dependencies/src/xerces/src;../dependencies/src/sdl2/include;../../../source/shared_lib/include/platform/sdl;../../../source/shared_lib/include/sound/openal;../dependencies/src/openal/include;../../../source/shared_lib/include/platform/posix;../../../source/shared_lib/include/streflop;../../../source/shared_lib/include/platform/common;../dependencies/src/curl/include;../../../source/shared_lib/include/map;../dependencies/src/irc/include;../dependencies/src/glew/include;../../../source/shared_lib/include/compression;../dependencies/src/breakpad/src;..\dependencies\src\lua\src;..\dependencies\src\lua;..\dependencies\src\breakpad\src\client\windows</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>AL_LIBTYPE_STATIC;WIN32;_DEBUG;_LIB;_WINDOWS;XML_LIBRARY;USE_PCH=1;_CRT_SECURE_NO_WARNINGS;USE_STREFLOP;STREFLOP_SSE;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;XERCES_STATIC_LIBRARY;GLEW_STATIC;USE_FREETYPEGL_XXX;STATICLIB;USE_FTGL;FTGL_LIBRARY_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <SmallerTypeCheck>true</SmallerTypeCheck>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>
+      </PrecompiledHeaderOutputFile>
+      <ProgramDataBaseFileName>$(IntDir)$(ProjectName).pdb</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level2</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4018;4244;4250;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;jpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LinkTimeCodeGeneration>
+      </LinkTimeCodeGeneration>
+      <TargetMachine>MachineX86</TargetMachine>
+      <OutputFile>$(OutDir)\zetaglest.exe</OutputFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapExports>true</MapExports>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>false</DataExecutionPrevention>
+      <ProgramDatabaseFile>$(OutDir)\zetaglest.pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>../../../source/shared_lib/include/graphics;../../../source/shared_lib/include/graphics/gl;../../../source/shared_lib/include/platform;../../../source/shared_lib/include/platform/win32;../../../source/shared_lib/include/sound;../../../source/shared_lib/include/util;../../../source/shared_lib/include/lua;../../../source/shared_lib/include/xml;../../../source/shared_lib/include/xml/rapidxml;../../../source/glest_game/ai;../../../source/glest_game/facilities;../../../source/glest_game/game;../../../source/glest_game/global;../../../source/glest_game/graphics;../../../source/glest_game/gui;../../../source/glest_game/main;../../../source/glest_game/menu;../../../source/glest_game/network;../../../source/glest_game/sound;../../../source/glest_game/steam;../../../source/glest_game/steamshim;../../../source/glest_game/type_instances;../../../source/glest_game/types;../../../source/glest_game/world;../dependencies/src/xerces/src;../dependencies/src/sdl2/include;../../../source/shared_lib/include/platform/sdl;../../../source/shared_lib/include/sound/openal;../dependencies/src/openal/include;../../../source/shared_lib/include/platform/posix;../../../source/shared_lib/include/streflop;../../../source/shared_lib/include/platform/common;../dependencies/src/curl/include;../../../source/shared_lib/include/map;../dependencies/src/irc/include;../dependencies/src/glew/include;../../../source/shared_lib/include/compression;../dependencies/src/breakpad/src;..\dependencies\src\lua\src;..\dependencies\src\lua;..\dependencies\src\breakpad\src\client\windows</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>AL_LIBTYPE_STATIC;WIN32;_DEBUG;_LIB;_WINDOWS;XML_LIBRARY;USE_PCH=1;_CRT_SECURE_NO_WARNINGS;USE_STREFLOP;STREFLOP_SSE;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;XERCES_STATIC_LIBRARY;GLEW_STATIC;USE_FREETYPEGL_XXX;STATICLIB;USE_FTGL;FTGL_LIBRARY_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>
+      </PrecompiledHeaderOutputFile>
+      <ProgramDataBaseFileName>$(IntDir)$(ProjectName).pdb</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level2</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4018;4244;4250;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;jpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LinkTimeCodeGeneration>
+      </LinkTimeCodeGeneration>
+      <OutputFile>$(OutDir)\zetaglest.exe</OutputFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapExports>true</MapExports>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>false</DataExecutionPrevention>
+      <ProgramDatabaseFile>$(OutDir)\zetaglest.pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>../../../source/shared_lib/include/graphics;../../../source/shared_lib/include/graphics/gl;../../../source/shared_lib/include/platform;../../../source/shared_lib/include/platform/win32;../../../source/shared_lib/include/sound;../../../source/shared_lib/include/util;../../../source/shared_lib/include/lua;../../../source/shared_lib/include/xml;../../../source/shared_lib/include/xml/rapidxml;../../../source/glest_game/ai;../../../source/glest_game/facilities;../../../source/glest_game/game;../../../source/glest_game/global;../../../source/glest_game/graphics;../../../source/glest_game/gui;../../../source/glest_game/main;../../../source/glest_game/menu;../../../source/glest_game/network;../../../source/glest_game/sound;../../../source/glest_game/steam;../../../source/glest_game/steamshim;../../../source/glest_game/type_instances;../../../source/glest_game/types;../../../source/glest_game/world;../dependencies/src/xerces/src;../dependencies/src/sdl2/include;../../../source/shared_lib/include/platform/sdl;../../../source/shared_lib/include/sound/openal;../dependencies/src/openal/include;../../../source/shared_lib/include/platform/posix;../../../source/shared_lib/include/streflop;../../../source/shared_lib/include/platform/common;../dependencies/src/curl/include;../../../source/shared_lib/include/map;../dependencies/src/irc/include;../dependencies/src/glew/include;../../../source/shared_lib/include/compression;../dependencies/src/breakpad/src;..\dependencies\src\lua\src;..\dependencies\src\lua;..\dependencies\src\breakpad\src\client\windows</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>AL_LIBTYPE_STATIC;WIN32;_DEBUG;_LIB;_WINDOWS;XML_LIBRARY;USE_PCH=1;_CRT_SECURE_NO_WARNINGS;USE_STREFLOP;STREFLOP_SSE;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;XERCES_STATIC_LIBRARY;GLEW_STATIC;USE_FREETYPEGL_XXX;STATICLIB;USE_FTGL;FTGL_LIBRARY_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>
+      </PrecompiledHeaderOutputFile>
+      <ProgramDataBaseFileName>$(IntDir)$(ProjectName).pdb</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level2</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4018;4244;4250;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;jpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LinkTimeCodeGeneration>
+      </LinkTimeCodeGeneration>
+      <OutputFile>$(OutDir)\zetaglest.exe</OutputFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapExports>true</MapExports>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>false</DataExecutionPrevention>
+      <ProgramDatabaseFile>$(OutDir)\zetaglest.pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/arch:SSE2 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>false</OmitFramePointers>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>../../../source/shared_lib/include/graphics;../../../source/shared_lib/include/graphics/gl;../../../source/shared_lib/include/platform;../../../source/shared_lib/include/platform/win32;../../../source/shared_lib/include/sound;../../../source/shared_lib/include/util;../../../source/shared_lib/include/lua;../../../source/shared_lib/include/xml;../../../source/shared_lib/include/xml/rapidxml;../../../source/glest_game/ai;../../../source/glest_game/facilities;../../../source/glest_game/game;../../../source/glest_game/global;../../../source/glest_game/graphics;../../../source/glest_game/gui;../../../source/glest_game/main;../../../source/glest_game/menu;../../../source/glest_game/network;../../../source/glest_game/sound;../../../source/glest_game/steam;../../../source/glest_game/steamshim;../../../source/glest_game/type_instances;../../../source/glest_game/types;../../../source/glest_game/world;../dependencies/src/xerces/src;../dependencies/src/sdl2/include;../../../source/shared_lib/include/platform/sdl;../../../source/shared_lib/include/sound/openal;../dependencies/src/openal/include;../../../source/shared_lib/include/platform/posix;../../../source/shared_lib/include/streflop;../../../source/shared_lib/include/platform/common;../dependencies/src/curl/include;../../../source/shared_lib/include/map;../dependencies/src/irc/include;../dependencies/src/glew/include;../../../source/shared_lib/include/compression;../dependencies/src/breakpad/src;..\dependencies\src\lua\src;..\dependencies\src\lua;..\dependencies\src\breakpad\src\client\windows</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>AL_LIBTYPE_STATIC;WIN32;NDEBUG;_LIB;_WINDOWS;XML_LIBRARY;USE_PCH=1;_CRT_SECURE_NO_WARNINGS;USE_STREFLOP;STREFLOP_SSE;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;XERCES_STATIC_LIBRARY;GLEW_STATIC;USE_FREETYPEGL_XXX;STATICLIB;USE_FTGL;FTGL_LIBRARY_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4018;4244;4250;4503;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;jpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>
+      </OptimizeReferences>
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>
+      </LinkTimeCodeGeneration>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapExports>true</MapExports>
+      <ShowProgress>
+      </ShowProgress>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <Profile>true</Profile>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/arch:SSE2 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>false</OmitFramePointers>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>../../../source/shared_lib/include/graphics;../../../source/shared_lib/include/graphics/gl;../../../source/shared_lib/include/platform;../../../source/shared_lib/include/platform/win32;../../../source/shared_lib/include/sound;../../../source/shared_lib/include/util;../../../source/shared_lib/include/lua;../../../source/shared_lib/include/xml;../../../source/shared_lib/include/xml/rapidxml;../../../source/glest_game/ai;../../../source/glest_game/facilities;../../../source/glest_game/game;../../../source/glest_game/global;../../../source/glest_game/graphics;../../../source/glest_game/gui;../../../source/glest_game/main;../../../source/glest_game/menu;../../../source/glest_game/network;../../../source/glest_game/sound;../../../source/glest_game/steam;../../../source/glest_game/steamshim;../../../source/glest_game/type_instances;../../../source/glest_game/types;../../../source/glest_game/world;../dependencies/src/xerces/src;../dependencies/src/sdl2/include;../../../source/shared_lib/include/platform/sdl;../../../source/shared_lib/include/sound/openal;../dependencies/src/openal/include;../../../source/shared_lib/include/platform/posix;../../../source/shared_lib/include/streflop;../../../source/shared_lib/include/platform/common;../dependencies/src/curl/include;../../../source/shared_lib/include/map;../dependencies/src/irc/include;../dependencies/src/glew/include;../../../source/shared_lib/include/compression;../dependencies/src/breakpad/src;..\dependencies\src\lua\src;..\dependencies\src\lua;..\dependencies\src\breakpad\src\client\windows</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>AL_LIBTYPE_STATIC;WIN32;NDEBUG;_LIB;_WINDOWS;XML_LIBRARY;USE_PCH=1;_CRT_SECURE_NO_WARNINGS;USE_STREFLOP;STREFLOP_SSE;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;XERCES_STATIC_LIBRARY;GLEW_STATIC;USE_FREETYPEGL_XXX;STATICLIB;USE_FTGL;FTGL_LIBRARY_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4018;4244;4250;4503;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;jpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libglest$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>libcmtd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>
+      </OptimizeReferences>
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>
+      </LinkTimeCodeGeneration>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapExports>true</MapExports>
+      <ShowProgress>
+      </ShowProgress>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Full</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>false</OmitFramePointers>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>../../../source/shared_lib/include/graphics;../../../source/shared_lib/include/graphics/gl;../../../source/shared_lib/include/platform;../../../source/shared_lib/include/platform/win32;../../../source/shared_lib/include/sound;../../../source/shared_lib/include/util;../../../source/shared_lib/include/lua;../../../source/shared_lib/include/xml;../../../source/shared_lib/include/xml/rapidxml;../../../source/glest_game/ai;../../../source/glest_game/facilities;../../../source/glest_game/game;../../../source/glest_game/global;../../../source/glest_game/graphics;../../../source/glest_game/gui;../../../source/glest_game/main;../../../source/glest_game/menu;../../../source/glest_game/network;../../../source/glest_game/sound;../../../source/glest_game/steam;../../../source/glest_game/steamshim;../../../source/glest_game/type_instances;../../../source/glest_game/types;../../../source/glest_game/world;../dependencies/src/xerces/src;../dependencies/src/sdl2/include;../../../source/shared_lib/include/platform/sdl;../../../source/shared_lib/include/sound/openal;../dependencies/src/openal/include;../../../source/shared_lib/include/platform/posix;../../../source/shared_lib/include/streflop;../../../source/shared_lib/include/platform/common;../dependencies/src/curl/include;../../../source/shared_lib/include/map;../dependencies/src/irc/include;../dependencies/src/glew/include;../../../source/shared_lib/include/compression;../dependencies/src/breakpad/src;..\dependencies\src\lua\src;..\dependencies\src\lua;..\dependencies\src\breakpad\src\client\windows</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>NDEBUG;USE_STREFLOP;WIN32;AL_LIBTYPE_STATIC;_LIB;_WINDOWS;XML_LIBRARY;USE_PCH=1;_CRT_SECURE_NO_WARNINGS;STREFLOP_SSE;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;XERCES_STATIC_LIBRARY;GLEW_STATIC;USE_FREETYPEGL_XXX;STATICLIB;USE_FTGL;FTGL_LIBRARY_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <EnableEnhancedInstructionSet>
+      </EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4996;4018;4244;4250;4503;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;turbojpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\dependencies\src\glew\vs2017\Release;..\dependencies\src\ogg\win32\VS2017\x64\Release;..\dependencies\src\vorbis\win32\VS2017\x64\Release;..\dependencies\src\lua\vs2017\Release;..\dependencies\src\xerces\vs2017\Release;..\dependencies\src\png\projects\vstudio2017\x64\Release Library;..\dependencies\src\zlib\vs2017\Release;..\dependencies\src\sdl2\vs2017\Release;..\dependencies\src\openal\vs2017\Release;..\dependencies\src\curl\vs2017\Release;..\dependencies\src\irc\vs2017\lib;..\dependencies\src\freetype\builds\windows\vs2017\x64\Release Static;..\dependencies\src\ftgl\msvc\vs2017\Release;..\dependencies\src\jpeg\vs2017\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>
+      </OptimizeReferences>
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapExports>true</MapExports>
+      <ShowProgress>
+      </ShowProgress>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <Profile>true</Profile>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Full</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>false</OmitFramePointers>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>../../../source/shared_lib/include/graphics;../../../source/shared_lib/include/graphics/gl;../../../source/shared_lib/include/platform;../../../source/shared_lib/include/platform/win32;../../../source/shared_lib/include/sound;../../../source/shared_lib/include/util;../../../source/shared_lib/include/lua;../../../source/shared_lib/include/xml;../../../source/shared_lib/include/xml/rapidxml;../../../source/glest_game/ai;../../../source/glest_game/facilities;../../../source/glest_game/game;../../../source/glest_game/global;../../../source/glest_game/graphics;../../../source/glest_game/gui;../../../source/glest_game/main;../../../source/glest_game/menu;../../../source/glest_game/network;../../../source/glest_game/sound;../../../source/glest_game/steam;../../../source/glest_game/steamshim;../../../source/glest_game/type_instances;../../../source/glest_game/types;../../../source/glest_game/world;../dependencies/src/xerces/src;../dependencies/src/sdl2/include;../../../source/shared_lib/include/platform/sdl;../../../source/shared_lib/include/sound/openal;../dependencies/src/openal/include;../../../source/shared_lib/include/platform/posix;../../../source/shared_lib/include/streflop;../../../source/shared_lib/include/platform/common;../dependencies/src/curl/include;../../../source/shared_lib/include/map;../dependencies/src/irc/include;../dependencies/src/glew/include;../../../source/shared_lib/include/compression;..\dependencies\src\lua\src;..\dependencies\src\lua</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>NDEBUG;USE_STREFLOP;WIN32;AL_LIBTYPE_STATIC;_LIB;_WINDOWS;XML_LIBRARY;USE_PCH=1;_CRT_SECURE_NO_WARNINGS;STREFLOP_SSE;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;XERCES_STATIC_LIBRARY;GLEW_STATIC;USE_FREETYPEGL_XXX;STATICLIB;USE_FTGL;FTGL_LIBRARY_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <EnableEnhancedInstructionSet>
+      </EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4996;4018;4244;4250;4503;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;turbojpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\dependencies\src\glew\vs2017-32\Release;..\dependencies\src\ogg\win32\VS2017-32\Win32\Release;..\dependencies\src\vorbis\win32\VS2017-32\Win32\Release;..\dependencies\src\lua\vs2017-32\Release;..\dependencies\src\xerces\vs2017-32\Release;..\dependencies\src\png\projects\vs2017-32\Release;..\dependencies\src\zlib\vs2017-32\Release;..\dependencies\src\sdl2\vs2017-32\Release;..\dependencies\src\openal\vs2017-32\Release;..\dependencies\src\curl\vs2017-32\Release;..\dependencies\src\irc\vs2017-32\Release;..\dependencies\src\freetype\builds\windows\vs2017-32\Win32\Release;..\dependencies\src\ftgl\msvc\vs2017-32\Release;..\dependencies\src\jpeg\vs2017-32\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>
+      </OptimizeReferences>
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapExports>true</MapExports>
+      <ShowProgress>
+      </ShowProgress>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <Profile>true</Profile>
+      <AdditionalOptions>/ignore:4099 /FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <OmitFramePointers>false</OmitFramePointers>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>../../../source/shared_lib/include/graphics;../../../source/shared_lib/include/graphics/gl;../../../source/shared_lib/include/platform;../../../source/shared_lib/include/platform/win32;../../../source/shared_lib/include/sound;../../../source/shared_lib/include/util;../../../source/shared_lib/include/lua;../../../source/shared_lib/include/xml;../../../source/shared_lib/include/xml/rapidxml;../../../source/glest_game/ai;../../../source/glest_game/facilities;../../../source/glest_game/game;../../../source/glest_game/global;../../../source/glest_game/graphics;../../../source/glest_game/gui;../../../source/glest_game/main;../../../source/glest_game/menu;../../../source/glest_game/network;../../../source/glest_game/sound;../../../source/glest_game/steam;../../../source/glest_game/steamshim;../../../source/glest_game/type_instances;../../../source/glest_game/types;../../../source/glest_game/world;../dependencies/src/xerces/src;../dependencies/src/sdl2/include;../../../source/shared_lib/include/platform/sdl;../../../source/shared_lib/include/sound/openal;../dependencies/src/openal/include;../../../source/shared_lib/include/platform/posix;../../../source/shared_lib/include/streflop;../../../source/shared_lib/include/platform/common;../dependencies/src/curl/include;../../../source/shared_lib/include/map;../dependencies/src/irc/include;../dependencies/src/glew/include;../../../source/shared_lib/include/compression;../dependencies/src/breakpad/src;..\dependencies\src\lua\src;..\dependencies\src\lua;..\dependencies\src\breakpad\src\client\windows</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>AL_LIBTYPE_STATIC;WIN32;_LIB;_WINDOWS;XML_LIBRARY;USE_PCH=1;_CRT_SECURE_NO_WARNINGS;USE_STREFLOP;STREFLOP_SSE;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;XERCES_STATIC_LIBRARY;GLEW_STATIC;USE_FREETYPEGL_XXX;STATICLIB;USE_FTGL;FTGL_LIBRARY_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <EnableEnhancedInstructionSet>
+      </EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4996;4018;4244;4250;4503;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;jpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\dependencies\src\glew\Release;..\dependencies\src\ogg\win32\VS2015\x64\Release;..\dependencies\src\vorbis\win32\VS2015\x64\Release;..\dependencies\src\lua\Release;..\dependencies\src\xerces\src\Release;..\dependencies\src\png\projects\vstudio2015\x64\Release Library;..\dependencies\src\zlib\Release;..\dependencies\src\sdl2\build\Release;..\dependencies\src\openal\Release;..\dependencies\src\curl\lib\Release;..\dependencies\src\irc\build\lib;..\dependencies\src\freetype\lib\x64\Release Static;..\dependencies\src\ftgl\msvc\Build;..\dependencies\src\ssl\msvc\Release\libeay32;..\dependencies\src\irc\lib;..\dependencies\src\jpeg\release;..\dependencies\src\ssl\msvc\Release\ssleay32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>
+      </OptimizeReferences>
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapExports>true</MapExports>
+      <ShowProgress>
+      </ShowProgress>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <Profile>true</Profile>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <OmitFramePointers>false</OmitFramePointers>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>../../../source/shared_lib/include/graphics;../../../source/shared_lib/include/graphics/gl;../../../source/shared_lib/include/platform;../../../source/shared_lib/include/platform/win32;../../../source/shared_lib/include/sound;../../../source/shared_lib/include/util;../../../source/shared_lib/include/lua;../../../source/shared_lib/include/xml;../../../source/shared_lib/include/xml/rapidxml;../../../source/glest_game/ai;../../../source/glest_game/facilities;../../../source/glest_game/game;../../../source/glest_game/global;../../../source/glest_game/graphics;../../../source/glest_game/gui;../../../source/glest_game/main;../../../source/glest_game/menu;../../../source/glest_game/network;../../../source/glest_game/sound;../../../source/glest_game/steam;../../../source/glest_game/steamshim;../../../source/glest_game/type_instances;../../../source/glest_game/types;../../../source/glest_game/world;../dependencies/src/xerces/src;../dependencies/src/sdl2/include;../../../source/shared_lib/include/platform/sdl;../../../source/shared_lib/include/sound/openal;../dependencies/src/openal/include;../../../source/shared_lib/include/platform/posix;../../../source/shared_lib/include/streflop;../../../source/shared_lib/include/platform/common;../dependencies/src/curl/include;../../../source/shared_lib/include/map;../dependencies/src/irc/include;../dependencies/src/glew/include;../../../source/shared_lib/include/compression;../dependencies/src/breakpad/src;..\dependencies\src\lua\src;..\dependencies\src\lua;..\dependencies\src\breakpad\src\client\windows</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>AL_LIBTYPE_STATIC;WIN32;_LIB;_WINDOWS;XML_LIBRARY;USE_PCH=1;_CRT_SECURE_NO_WARNINGS;USE_STREFLOP;STREFLOP_SSE;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;XERCES_STATIC_LIBRARY;GLEW_STATIC;USE_FREETYPEGL_XXX;STATICLIB;USE_FTGL;FTGL_LIBRARY_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <EnableEnhancedInstructionSet>
+      </EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4996;4018;4244;4250;4503;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;jpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\dependencies\src\glew\Release;..\dependencies\src\ogg\win32\VS2015\x64\Release;..\dependencies\src\vorbis\win32\VS2015\x64\Release;..\dependencies\src\lua\Release;..\dependencies\src\xerces\src\Release;..\dependencies\src\png\projects\vstudio2015\x64\Release Library;..\dependencies\src\zlib\Release;..\dependencies\src\sdl2\build\Release;..\dependencies\src\openal\Release;..\dependencies\src\curl\lib\Release;..\dependencies\src\irc\build\lib;..\dependencies\src\freetype\lib\x64\Release Static;..\dependencies\src\ftgl\msvc\Build;..\dependencies\src\ssl\msvc\Release\libeay32;..\dependencies\src\irc\lib;..\dependencies\src\jpeg\release;..\dependencies\src\ssl\msvc\Release\ssleay32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>
+      </OptimizeReferences>
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapExports>true</MapExports>
+      <ShowProgress>
+      </ShowProgress>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <Profile>true</Profile>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|x64'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>false</OmitFramePointers>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>../../../source/shared_lib/include/graphics;../../../source/shared_lib/include/graphics/gl;../../../source/shared_lib/include/platform;../../../source/shared_lib/include/platform/win32;../../../source/shared_lib/include/sound;../../../source/shared_lib/include/util;../../../source/shared_lib/include/lua;../../../source/shared_lib/include/xml;../../../source/shared_lib/include/xml/rapidxml;../../../source/glest_game/ai;../../../source/glest_game/facilities;../../../source/glest_game/game;../../../source/glest_game/global;../../../source/glest_game/graphics;../../../source/glest_game/gui;../../../source/glest_game/main;../../../source/glest_game/menu;../../../source/glest_game/network;../../../source/glest_game/sound;../../../source/glest_game/steam;../../../source/glest_game/steamshim;../../../source/glest_game/type_instances;../../../source/glest_game/types;../../../source/glest_game/world;../dependencies/src/xerces/src;../dependencies/src/sdl2/include;../../../source/shared_lib/include/platform/sdl;../../../source/shared_lib/include/sound/openal;../dependencies/src/openal/include;../../../source/shared_lib/include/platform/posix;../../../source/shared_lib/include/streflop;../../../source/shared_lib/include/platform/common;../dependencies/src/curl/include;../../../source/shared_lib/include/map;../dependencies/src/irc/include;../dependencies/src/glew/include;../../../source/shared_lib/include/compression;../dependencies/src/breakpad/src;..\dependencies\src\lua\src;..\dependencies\src\lua;..\dependencies\src\breakpad\src\client\windows</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>AL_LIBTYPE_STATIC;WIN32;NDEBUG;_LIB;_WINDOWS;XML_LIBRARY;USE_PCH=1;_CRT_SECURE_NO_WARNINGS;USE_STREFLOP;STREFLOP_SSE;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;XERCES_STATIC_LIBRARY;GLEW_STATIC;USE_FREETYPEGL_XXX;STATICLIB;USE_FTGL;FTGL_LIBRARY_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <EnableEnhancedInstructionSet>
+      </EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4996;4018;4244;4250;4503;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;jpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libglest$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>
+      </OptimizeReferences>
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>
+      </LinkTimeCodeGeneration>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapExports>true</MapExports>
+      <ShowProgress>
+      </ShowProgress>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|Win32'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>false</OmitFramePointers>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>../../../source/shared_lib/include/graphics;../../../source/shared_lib/include/graphics/gl;../../../source/shared_lib/include/platform;../../../source/shared_lib/include/platform/win32;../../../source/shared_lib/include/sound;../../../source/shared_lib/include/util;../../../source/shared_lib/include/lua;../../../source/shared_lib/include/xml;../../../source/shared_lib/include/xml/rapidxml;../../../source/glest_game/ai;../../../source/glest_game/facilities;../../../source/glest_game/game;../../../source/glest_game/global;../../../source/glest_game/graphics;../../../source/glest_game/gui;../../../source/glest_game/main;../../../source/glest_game/menu;../../../source/glest_game/network;../../../source/glest_game/sound;../../../source/glest_game/steam;../../../source/glest_game/steamshim;../../../source/glest_game/type_instances;../../../source/glest_game/types;../../../source/glest_game/world;../dependencies/src/xerces/src;../dependencies/src/sdl2/include;../../../source/shared_lib/include/platform/sdl;../../../source/shared_lib/include/sound/openal;../dependencies/src/openal/include;../../../source/shared_lib/include/platform/posix;../../../source/shared_lib/include/streflop;../../../source/shared_lib/include/platform/common;../dependencies/src/curl/include;../../../source/shared_lib/include/map;../dependencies/src/irc/include;../dependencies/src/glew/include;../../../source/shared_lib/include/compression;../dependencies/src/breakpad/src;..\dependencies\src\lua\src;..\dependencies\src\lua;..\dependencies\src\breakpad\src\client\windows</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <PreprocessorDefinitions>AL_LIBTYPE_STATIC;WIN32;NDEBUG;_LIB;_WINDOWS;XML_LIBRARY;USE_PCH=1;_CRT_SECURE_NO_WARNINGS;USE_STREFLOP;STREFLOP_SSE;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;XERCES_STATIC_LIBRARY;GLEW_STATIC;USE_FREETYPEGL_XXX;STATICLIB;USE_FTGL;FTGL_LIBRARY_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <EnableEnhancedInstructionSet>
+      </EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4996;4018;4244;4250;4503;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;jpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libglest$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>
+      </OptimizeReferences>
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>
+      </LinkTimeCodeGeneration>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapExports>true</MapExports>
+      <ShowProgress>
+      </ShowProgress>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\source\glest_game\facilities\*.cpp" />
+    <ClCompile Include="..\..\..\source\glest_game\ai\*.cpp" />
+    <ClCompile Include="..\..\..\source\glest_game\game\*.cpp" />
+    <ClCompile Include="..\..\..\source\glest_game\global\*.cpp" />
+    <ClCompile Include="..\..\..\source\glest_game\graphics\*.cpp" />
+    <ClCompile Include="..\..\..\source\glest_game\gui\*.cpp" />
+    <ClCompile Include="..\..\..\source\glest_game\main\*.cpp" />
+    <ClCompile Include="..\..\..\source\glest_game\menu\*.cpp" />
+    <ClCompile Include="..\..\..\source\glest_game\network\*.cpp" />
+    <ClCompile Include="..\..\..\source\glest_game\sound\*.cpp" />
+    <ClCompile Include="..\..\..\source\glest_game\steam\*.cpp" />
+    <ClCompile Include="..\..\..\source\glest_game\steamshim\*.c" />
+    <ClCompile Include="..\..\..\source\glest_game\types\*.cpp" />
+    <ClCompile Include="..\..\..\source\glest_game\type_instances\*.cpp" />
+    <ClCompile Include="..\..\..\source\glest_game\world\*.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\source\glest_game\facilities\*.h" />
+    <ClInclude Include="..\..\..\source\glest_game\ai\*.h" />
+    <ClInclude Include="..\..\..\source\glest_game\game\*.h" />
+    <ClInclude Include="..\..\..\source\glest_game\global\*.h" />
+    <ClInclude Include="..\..\..\source\glest_game\graphics\*.h" />
+    <ClInclude Include="..\..\..\source\glest_game\gui\*.h" />
+    <ClInclude Include="..\..\..\source\glest_game\main\*.h" />
+    <ClInclude Include="..\..\..\source\glest_game\menu\*.h" />
+    <ClInclude Include="..\..\..\source\glest_game\network\*.h" />
+    <ClInclude Include="..\..\..\source\glest_game\sound\*.h" />
+    <ClInclude Include="..\..\..\source\glest_game\steam\*.h" />
+    <ClInclude Include="..\..\..\source\glest_game\steamshim\*.h" />
+    <ClInclude Include="..\..\..\source\glest_game\types\*.h" />
+    <ClInclude Include="..\..\..\source\glest_game\type_instances\*.h" />
+    <ClInclude Include="..\..\..\source\glest_game\world\*.h" />
+    <ClInclude Include="..\..\..\source\shared_lib\include\util\*.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\glest.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="libglest.vcxproj">
+      <Project>{8daa0c24-95cd-4f66-b4c5-19abdd771746}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
