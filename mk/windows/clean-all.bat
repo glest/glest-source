@@ -39,6 +39,10 @@ IF EXIST .\vs2017-64 (
 	cd ..\
 )
 
+ROBOCOPY . . /S /MOVE
+ROBOCOPY . . /S /MOVE
+ROBOCOPY . . /S /MOVE
+
 GOTO END
 
 :DELETE
