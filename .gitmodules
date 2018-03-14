@@ -1,6 +1,0 @@
-[submodule "mk/windows64"]
-	path = mk/windows64
-	url = https://github.com/ZetaGlest/windows64.git
-[submodule "mk/windows32"]
-	path = mk/windows32
-	url = https://github.com/ZetaGlest/windows32.git
