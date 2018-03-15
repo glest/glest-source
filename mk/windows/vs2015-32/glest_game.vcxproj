@@ -464,10 +464,10 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
-      <Optimization>Full</Optimization>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <OmitFramePointers>false</OmitFramePointers>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalIncludeDirectories>../../../source/shared_lib/include/graphics;../../../source/shared_lib/include/graphics/gl;../../../source/shared_lib/include/platform;../../../source/shared_lib/include/platform/win32;../../../source/shared_lib/include/sound;../../../source/shared_lib/include/util;../../../source/shared_lib/include/lua;../../../source/shared_lib/include/xml;../../../source/shared_lib/include/xml/rapidxml;../../../source/glest_game/ai;../../../source/glest_game/facilities;../../../source/glest_game/game;../../../source/glest_game/global;../../../source/glest_game/graphics;../../../source/glest_game/gui;../../../source/glest_game/main;../../../source/glest_game/menu;../../../source/glest_game/network;../../../source/glest_game/sound;../../../source/glest_game/steam;../../../source/glest_game/steamshim;../../../source/glest_game/type_instances;../../../source/glest_game/types;../../../source/glest_game/world;../dependencies/src/xerces/src;../dependencies/src/sdl2/include;../../../source/shared_lib/include/platform/sdl;../../../source/shared_lib/include/sound/openal;../dependencies/src/openal/include;../../../source/shared_lib/include/platform/posix;../../../source/shared_lib/include/streflop;../../../source/shared_lib/include/platform/common;../dependencies/src/curl/include;../../../source/shared_lib/include/map;../dependencies/src/irc/include;../dependencies/src/glew/include;../../../source/shared_lib/include/compression;..\dependencies\src\lua\src;..\dependencies\src\lua;..\dependencies\</AdditionalIncludeDirectories>
@@ -486,7 +486,7 @@
       <DisableSpecificWarnings>4996;4018;4244;4250;4503;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;turbojpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -756,21 +756,21 @@
     <ResourceCompile Include="..\glest.rc" />
   </ItemGroup>
   <ItemGroup>
-	<Content Include="..\glest.ini">
-		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</Content>
-	<Content Include="..\7z.exe">
-		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</Content>
-	<Content Include="..\7z.dll">
-		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</Content>
-	<Content Include="..\..\shared\glestkeys.ini">
-		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</Content>
-	<Content Include="..\..\shared\servers.ini">
-		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</Content>
+    <Content Include="..\glest.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\7z.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\7z.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\shared\glestkeys.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\shared\servers.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="libglest.vcxproj">
