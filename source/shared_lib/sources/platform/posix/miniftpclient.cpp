@@ -310,7 +310,7 @@ pair<FTP_Client_ResultType,string> FTPClientThread::getMapFromServer(pair<string
     CURL *curl = SystemFlags::initHTTP();
     if(curl) {
         ftpfile.stream = NULL;
-
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
         char szBuf[8096]="";
         if(mapFileName.second != "") {
         	snprintf(szBuf,8096,"%s",mapFileName.second.c_str());
@@ -967,7 +967,7 @@ pair<FTP_Client_ResultType,string>  FTPClientThread::getFileFromServer(FTP_Clien
     CURL *curl = SystemFlags::initHTTP();
     if(curl) {
         ftpfile.stream = NULL;
-
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
         char szBuf[8096]="";
         if(fileNameTitle.second != "") {
         	snprintf(szBuf,8096,"%s",fileNameTitle.second.c_str());

@@ -119,7 +119,7 @@ std::string SystemFlags::getHTTP(std::string URL,CURL *handle,int timeOut,CURLco
 	}
 
 	if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-
+	curl_easy_setopt(handle, CURLOPT_SSL_VERIFYPEER, 0);
 	curl_easy_setopt(handle, CURLOPT_URL, URL.c_str());
 
 	/* send all data to this function  */
@@ -203,6 +203,7 @@ CURL *SystemFlags::initHTTP() {
 	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d] handle = %p\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,handle);
 	curl_easy_setopt(handle, CURLOPT_NOSIGNAL, 1);
 	curl_easy_setopt(handle, CURLOPT_FOLLOWLOCATION, 1);
+	curl_easy_setopt(handle, CURLOPT_SSL_VERIFYPEER, 0);
 	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line %d] handle = %p\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,handle);
 	return handle;
 }
