@@ -89,8 +89,10 @@ $RECYCLE.BIN/
 *.exe
 *.msi
 *.pdb
+unsuccessfulbuild
 /mk/windows/dependencies/openssl
 /mk/windows/dependencies/src
+/data
 #
 /mk/linux/zetaglest
 /mk/linux/zetaglest_editor

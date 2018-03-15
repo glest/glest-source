@@ -9,8 +9,6 @@ To build ZetaGlest for the first time:
 4. Run `build-zg.bat` in `/mk/windows`.
 5. The built binaries will be found in the corresponding Visual Studio version and platform selected in `/mk/windows`.
 
-To be able to run `zetaglest.exe`, make sure that in the same folder as the executable there are the contents of the [zetaglest-data repository](https://github.com/ZetaGlest/zetaglest-data).
-
 Configuration in Visual Studio must be left as "Release", otherwise it won't compile, but one can still use debugging options by making the following changes in the project properties:
 
 Debug:

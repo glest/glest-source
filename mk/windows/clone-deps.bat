@@ -1,6 +1,6 @@
 @echo off
 setlocal
-echo This will re-clone all dependencies from the corresponding GitHub repositories.
+echo This will clone all dependencies from the corresponding GitHub repositories.
 SET /P AREYOUSURE=Are you sure you want to do this? (y/[n]) 
 IF /I "%AREYOUSURE%" NEQ "y" GOTO END
 IF /I "%AREYOUSURE%" NEQ "Y" GOTO END
@@ -41,6 +41,8 @@ Echo.
 git clone https://github.com/ZetaGlest/xerces-c.git dependencies/src/xerces
 Echo.
 git clone https://github.com/ZetaGlest/zlib.git dependencies/src/zlib
+Echo.
+git clone https://github.com/ZetaGlest/zetaglest-data.git ..\..\data
 Echo.
 
 :END

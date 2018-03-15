@@ -260,5 +260,10 @@
       <Project>{8daa0c24-95cd-4f66-b4c5-19abdd771746}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+	<Content Include="..\glest.ini">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

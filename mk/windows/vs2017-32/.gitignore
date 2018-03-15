@@ -16,3 +16,5 @@
 *.exp
 *.ipch
 *.pch
+*.ini
+*.obj
