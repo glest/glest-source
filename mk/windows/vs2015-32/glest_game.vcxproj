@@ -464,7 +464,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
-      <Optimization>Disabled</Optimization>
+      <Optimization>Full</Optimization>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
@@ -486,7 +486,7 @@
       <DisableSpecificWarnings>4996;4018;4244;4250;4503;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;turbojpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>

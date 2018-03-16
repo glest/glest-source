@@ -15,18 +15,14 @@ Configuration in Visual Studio must be left as "Release", otherwise it won't com
 
 Debug:
 
-	Optimization=Disabled
 	Inline Function Expansion: Disabled
 	Enable Intrinsic Functions: No
 	Favor Size Or Speed: Neither
 	Preprocessor: DEBUG instead of NDEBUG
-	Code Generation->Basic Runtime Checks: Both
 	
 Release:
 
-	Optimization=Full
 	Inline Function Expansion: Any Suitable
 	Enable Intrinsic Functions: Yes
 	Favor Size Or Speed: Favor fast code
 	Preprocessor: NDEBUG instead of DEBUG
-	Code Generation->Basic Runtime Checks: Default
