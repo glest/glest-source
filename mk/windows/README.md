@@ -4,7 +4,7 @@ ZetaGlest build system for Windows
 To build ZetaGlest for the first time:
 
 1. Download Git for Windows (or make sure it is installed)
-2. Go to the target directory and clone this repository by running the following command in the command prompt: `git clone https://github.com/ZetaGlest/zetaglest-source.git`
+2. Go to the target directory and clone this repository by running the following command in the command prompt: `git clone https://github.com/ZetaGlest/zetaglest-source.git` (or if you have your own fork, replace the first "ZetaGlest" in the URL with your GitHub username.
 3. After cloning, run `setup.bat` in `/mk/windows`.
 4. The built binaries will be found in the corresponding Visual Studio version and platform selected in `/mk/windows`.
 5. Run and enjoy! :)
