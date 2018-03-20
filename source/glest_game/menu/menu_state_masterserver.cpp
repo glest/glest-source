@@ -1278,7 +1278,13 @@ namespace Glest
             button->setFont (CoreData::getInstance ().getDisplayFontSmall ());
             button->setFont3D (CoreData::getInstance ().
                                getDisplayFontSmall3D ());
-            button->setText (nickList[i]);
+            
+            if (strncmp (&nickList[i][0], "ZG_", 3) == 0) {
+                button->setText (nickList[i].substr(3,nickList[i].length()-7));
+            } else {
+                button->setText (nickList[i]);
+            }
+            
             if (strncmp (&nickList[i][0], "ZG_", 3) != 0
                 || &nickList[i][0] == currentIrcNick)
             {
