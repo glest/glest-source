@@ -309,7 +309,7 @@ namespace Glest
       Chrono seed (true);
         srand ((unsigned int) seed.getCurTicks ());
 
-      int randomNickId = rand () % 999;
+      int randomNickId = (rand () % 899) + 100;
       string netPlayerName =
         Config::getInstance ().getString ("NetPlayerName",
                                           Socket::getHostName ().c_str ());
