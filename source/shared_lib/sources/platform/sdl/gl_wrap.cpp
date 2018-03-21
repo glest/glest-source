@@ -118,7 +118,7 @@ void PlatformContextGl::init(int colorBits, int depthBits, int stencilBits,
 
 		int windowX = SDL_WINDOWPOS_UNDEFINED;
 		int windowY = SDL_WINDOWPOS_UNDEFINED;
-		string windowTitleText = "MG";
+		string windowTitleText = "ZetaGlest";
 		int windowDisplayID = -1;
 
 		if(window != NULL) {

@@ -583,7 +583,7 @@ void IRCThread::signalQuit() {
 
         MutexSafeWrapper safeMutex1(&mutexIRCSession,string(__FILE__) + "_" + intToStr(__LINE__));
         if(ircSession != NULL) {
-        	irc_cmd_quit(ircSession, "MG Bot is closing!");
+        	irc_cmd_quit(ircSession, "ZG Bot is closing!");
         }
         safeMutex1.ReleaseLock();
 		hasJoinedChannel = false;
