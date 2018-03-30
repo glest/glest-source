@@ -1553,7 +1553,7 @@ bool Map::isNextTo(const Vec2i &pos, const Unit *unit) const {
     return false;
 }
 
-//return if unit is next to pos
+// Check if a unit is next to another particular unit.
 bool Map::isNextTo(const Unit *unit1, const Unit *unit2) const {
 	Vec2i pos = unit1->getPosNotThreadSafe();
 	const UnitType *ut = unit1->getType();
@@ -1561,10 +1561,11 @@ bool Map::isNextTo(const Unit *unit1, const Unit *unit2) const {
 		for (int x=-1; x < ut->getSize()+1; ++x) {
 			Vec2i cellPos = pos + Vec2i(x, y);
 			if(isInside(cellPos) && isInsideSurface(toSurfCoords(cellPos))) {
-				if(getCell(cellPos)->getUnit(fLand) == unit2) {
+			// Check if unit 2 is at that position, on land or air.
+				if(getCell(cellPos)->getUnit(fLand) == unit2 || getCell(cellPos)->getUnit(fAir) == unit2) {
 					return true;
 				}
-				else if(getCell(cellPos)->getUnitWithEmptyCellMap(fLand) == unit2) {
+				else if(getCell(cellPos)->getUnitWithEmptyCellMap(fLand) == unit2 || getCell(cellPos)->getUnitWithEmptyCellMap(fAir) == unit2) {
 					return true;
 				}
 			}
