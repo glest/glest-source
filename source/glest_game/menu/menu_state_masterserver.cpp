@@ -997,11 +997,11 @@ namespace Glest
               if (!chatManager.getEditEnabled ())
               {
                 chatManager.switchOnEdit ();
-                chatManager.addText (userButtons[i]->getText () + " ");
+                chatManager.addText (nickList[i] + " ");
               }
               else
               {
-                chatManager.addText (userButtons[i]->getText ());
+                chatManager.addText (nickList[i]);
               }
               break;
             }
@@ -1240,7 +1240,7 @@ namespace Glest
                                         intToStr (__LINE__));
       if (ircClient != NULL)
       {
-        std::vector < string > nickList = ircClient->getNickList ();
+        nickList = ircClient->getNickList ();
 
         if (currentIrcNick != ircClient->getNick ())
         {
@@ -1278,13 +1278,13 @@ namespace Glest
             button->setFont (CoreData::getInstance ().getDisplayFontSmall ());
             button->setFont3D (CoreData::getInstance ().
                                getDisplayFontSmall3D ());
-            
+
             if (strncmp (&nickList[i][0], "ZG_", 3) == 0) {
                 button->setText (nickList[i].substr(3,nickList[i].length()-7));
             } else {
                 button->setText (nickList[i]);
             }
-            
+
             if (strncmp (&nickList[i][0], "ZG_", 3) != 0
                 || &nickList[i][0] == currentIrcNick)
             {
@@ -1296,6 +1296,7 @@ namespace Glest
             }
 
             userButtons.push_back (button);
+
           }
           userScrollBar.setElementCount ((int) userButtons.size ());
           oldNickList = nickList;

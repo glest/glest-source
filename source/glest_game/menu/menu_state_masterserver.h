@@ -170,6 +170,8 @@ namespace Glest
                                       const char **params,
                                       unsigned int count);
 
+      std::vector < string > nickList;
+
     };
 
 
