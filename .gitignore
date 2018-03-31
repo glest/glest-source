@@ -30,6 +30,7 @@ $RECYCLE.BIN/
 # Visual studio
 *.suo
 *.ncb
+*.user
 
 ## Temp files
 *.tmp
