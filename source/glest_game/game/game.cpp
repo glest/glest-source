@@ -7056,6 +7056,7 @@ namespace Glest
                  setMarkerKeyAllowsModifier) == true)
           {
             setMarker = true;
+			printf("%d\n", key.keysym.scancode);
           }
           //else if(key == configKeys.getCharKey("TogglePhotoMode")) {
           else
@@ -7479,7 +7480,11 @@ namespace Glest
             showFullConsole = false;
           }
           else if (isKeyPressed (configKeys.getSDLKey ("SetMarker"), key) ==
-                   true)
+                   true
+#ifdef WIN32
+			  || key.keysym.scancode == 5
+#endif
+			  )
           {
             setMarker = false;
           }
@@ -7538,7 +7543,7 @@ namespace Glest
             gameCamera.setMoveX (0);
             camRightButtonDown = false;
             calcCameraMoveX ();
-          }
+		  }
         }
       }
       catch (const exception & ex)
