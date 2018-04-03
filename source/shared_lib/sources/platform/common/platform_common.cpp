@@ -756,9 +756,9 @@ pair<bool,time_t> hasCachedFileCRCValue(string crcCacheFile, uint32 &value) {
 			char gitVer[500]="";
 			char actualFilePath[8096]="";
 			int readbytes = fscanf(fp,"%20ld,%20u,%20ld\n%499s\n%499s\n%8095s",
-					&refreshDate,
+					(long *)&refreshDate,
 					&crcValue,
-					&lastUpdateDate,
+					(long *)&lastUpdateDate,
 					&gameVer[0],
 					&gitVer[0],
 					&actualFilePath[0]);
@@ -871,9 +871,9 @@ void writeCachedFileCRCValue(string crcCacheFile, uint32 &crcValue, string actua
 		string writeActualFileName = Shared::PlatformByteOrder::toCommonEndian(actualFileName);
 
 		fprintf(fp,"%20ld,%20u,%20ld",
-				Shared::PlatformByteOrder::toCommonEndian(refreshDate),
+				(long)Shared::PlatformByteOrder::toCommonEndian(refreshDate),
 				Shared::PlatformByteOrder::toCommonEndian(crcValue),
-				Shared::PlatformByteOrder::toCommonEndian(now));
+				(long)Shared::PlatformByteOrder::toCommonEndian(now));
 
 		fprintf(fp,"\n%s\n%s\n%s",
 				writeGameVer.c_str(),
