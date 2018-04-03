@@ -285,7 +285,7 @@ namespace Glest
 	 * @param upgradename Unique identifier for the upgrade.
 	 */
 
-      virtual void load (const XmlNode * upgradeNode, string upgradename);
+      void load (const XmlNode * upgradeNode, string upgradename);
 
         /**
 	 * Creates a string representation of the upgrade. All stat boosts are detailed on their own line
