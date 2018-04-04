@@ -93,7 +93,7 @@ public:
 	static bool saveAllCustomProperties(std::string containerName);
 	virtual bool saveCustomProperties(std::string containerName);
 
-	virtual void init(int x, int y, int w, int h);
+	void init(int x, int y, int w, int h);
 
 	string getContainerName() const { return containerName; }
 	string getInstanceName() const { return instanceName; }
@@ -128,7 +128,7 @@ public:
 	static void reloadFontsForRegisterGraphicComponents(std::string containerName);
 
     virtual bool mouseMove(int x, int y);
-    virtual bool mouseClick(int x, int y);
+    bool mouseClick(int x, int y);
 
 	static void update();
 	static void resetFade();
