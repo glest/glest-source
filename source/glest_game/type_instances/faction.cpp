@@ -450,7 +450,10 @@ namespace Glest
             //bool sortedUnitsAllowed = config.getBool("AllowGroupedUnitCommands","true");
             //bool sortedUnitsAllowed = false;
             //if(sortedUnitsAllowed == true) {
-            this->faction->sortUnitsByCommandGroups ();
+
+            /// TODO: Why does this cause and OOS?
+            //this->faction->sortUnitsByCommandGroups ();
+
             //}
 
             codeLocation = "8";
