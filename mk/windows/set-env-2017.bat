@@ -5,7 +5,6 @@ SET PLATFORM=x64
 SET TOOLSET=v141
 
 ECHO Setting up Visual Studio 2017 environment vars...
-SET Platform=
 if "%DevEnvDir%." == "." goto SETVCVARS
 GOTO GITSECTION
 

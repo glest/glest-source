@@ -5,7 +5,6 @@ SET PLATFORM=x64
 SET TOOLSET=v140
 
 ECHO Setting up Visual Studio 2015 environment vars...
-SET Platform=
 if "%DevEnvDir%." == "." goto SETVCVARS
 GOTO GITSECTION
 
