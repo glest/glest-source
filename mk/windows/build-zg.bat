@@ -5,6 +5,7 @@ SET /P PLATFORM_SELECT=Compile ZetaGlest for 64-bit Windows ('n' for 32-bit)? ([
 IF /I "%PLATFORM_SELECT%"=="y" GOTO SIXTYFOUR
 IF /I "%PLATFORM_SELECT%"=="Y" GOTO SIXTYFOUR
 IF /I "%PLATFORM_SELECT%"=="" GOTO SIXTYFOUR
+GOTO THIRTYTWO
 
 :THIRTYTWO
 SET VCVARS_PLATFORM=amd64_x86
@@ -44,14 +45,23 @@ IF /I "%QUERY%" NEQ "1" (
 	)
 )
 
-GOTO START
+GOTO CHECKDEPS
 
 :SETENV
 SET TEMPLOL=%~1
 call .\set-env-%TEMPLOL:~0,4%.bat
-GOTO START
+GOTO CHECKDEPS
 
-:START
+:CHECKDEPS
+if "%~2"=="deps" GOTO COMPILEDEPS
+if "%~2"=="nodeps" GOTO COMPILEZG
+Echo.
+SET /P BUILD_DEPS=Compile dependencies as well? If first time, choose 'y' ([y]/n): 
+IF /I "%BUILD_DEPS%"=="n" GOTO COMPILEZG
+IF /I "%BUILD_DEPS%"=="N" GOTO COMPILEZG
+GOTO COMPILEDEPS
+
+:COMPILEDEPS
 ECHO --------------------------------
 Echo Compiling dependencies (this will take a long time)...
 
@@ -144,6 +154,9 @@ cd ..\..\..
 
 cd ..\..
 
+GOTO COMPILEZG
+
+:COMPILEZG
 ECHO --------------------------------
 Echo Building ZetaGlest...
 cd .\%FOLDER_NAME%\

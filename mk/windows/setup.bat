@@ -1,3 +1,3 @@
 @echo off
-.\clone-deps.bat
-.\build-zg.bat
+call .\clone-deps.bat
+call .\build-zg.bat
