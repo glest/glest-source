@@ -567,7 +567,7 @@ namespace Glest
       controlItems.push_back (lang.getString ("CpuEasy"));
       controlItems.push_back (lang.getString ("Cpu"));
       controlItems.push_back (lang.getString ("CpuUltra"));
-      controlItems.push_back (lang.getString ("CpuMega"));
+      controlItems.push_back (lang.getString ("CpuZeta"));
       controlItems.push_back (lang.getString ("Network"));
       controlItems.push_back (lang.getString ("NetworkUnassigned"));
       controlItems.push_back (lang.getString ("Human"));
@@ -578,7 +578,7 @@ namespace Glest
         controlItems.push_back (lang.getString ("NetworkCpuEasy"));
         controlItems.push_back (lang.getString ("NetworkCpu"));
         controlItems.push_back (lang.getString ("NetworkCpuUltra"));
-        controlItems.push_back (lang.getString ("NetworkCpuMega"));
+        controlItems.push_back (lang.getString ("NetworkCpuZeta"));
       }
 
       for (int i = 1; i <= GameConstants::maxPlayers; ++i)
@@ -1026,7 +1026,7 @@ namespace Glest
       controlItems.push_back (lang.getString ("CpuEasy"));
       controlItems.push_back (lang.getString ("Cpu"));
       controlItems.push_back (lang.getString ("CpuUltra"));
-      controlItems.push_back (lang.getString ("CpuMega"));
+      controlItems.push_back (lang.getString ("CpuZeta"));
       controlItems.push_back (lang.getString ("Network"));
       controlItems.push_back (lang.getString ("NetworkUnassigned"));
       controlItems.push_back (lang.getString ("Human"));
@@ -1036,7 +1036,7 @@ namespace Glest
         controlItems.push_back (lang.getString ("NetworkCpuEasy"));
         controlItems.push_back (lang.getString ("NetworkCpu"));
         controlItems.push_back (lang.getString ("NetworkCpuUltra"));
-        controlItems.push_back (lang.getString ("NetworkCpuMega"));
+        controlItems.push_back (lang.getString ("NetworkCpuZeta"));
       }
 
       for (int i = 0; i < GameConstants::maxPlayers; ++i)
@@ -2693,7 +2693,7 @@ namespace Glest
                                                     ultraMultiplier, 1));
         listBoxRMultiplier[index].setEnabled (true);
       }
-      else if (ct == ctCpuMega || ct == ctNetworkCpuMega)
+      else if (ct == ctCpuZeta || ct == ctNetworkCpuZeta)
       {
         listBoxRMultiplier[index].setSelectedItem (floatToStr
                                                    (GameConstants::
@@ -2979,7 +2979,7 @@ namespace Glest
                       || listBoxControls[i].getSelectedItemIndex () ==
                       ctCpuUltra
                       || listBoxControls[i].getSelectedItemIndex () ==
-                      ctCpuMega))
+                      ctCpuZeta))
               {
                 if (SystemFlags::VERBOSE_MODE_ENABLED)
                   printf ("In [%s::%s Line %d]\n",

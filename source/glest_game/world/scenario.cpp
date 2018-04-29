@@ -343,7 +343,7 @@ Please contact the ZetaGlest team for more info.";
             if (factionControl == ctCpuUltra) {
               scenarioInfo->resourceMultipliers[i] =
                   GameConstants::ultraMultiplier;
-            } else if (factionControl == ctCpuMega) {
+            } else if (factionControl == ctCpuZeta) {
               scenarioInfo->resourceMultipliers[i] =
                   GameConstants::megaMultiplier;
             }
@@ -548,8 +548,8 @@ Please contact the ZetaGlest team for more info.";
         return ctCpu;
       } else if (str == "cpu-ultra") {
         return ctCpuUltra;
-      } else if (str == "cpu-mega") {
-        return ctCpuMega;
+      } else if (str == "cpu-mega" || str == "cpu-zeta") {
+        return ctCpuZeta;
       } else if (str == "human") {
         return ctHuman;
       } else if (str == "network") {
@@ -558,7 +558,7 @@ Please contact the ZetaGlest team for more info.";
 
       char szBuf[8096] = "";
       snprintf(szBuf, 8096,
-               "Invalid controller value specified in scenario: [%s] must be one of the following: closed, cpu-easy, cpu, cpu-ultra, cpu-mega, human",
+               "Invalid controller value specified in scenario: [%s] must be one of the following: closed, cpu-easy, cpu, cpu-ultra, cpu-zeta, human",
                str.c_str());
       throw std::runtime_error(szBuf);
     }
@@ -577,8 +577,8 @@ Please contact the ZetaGlest team for more info.";
       case ctCpuUltra:
         controlString = lang.getString("CpuUltra");
         break;
-      case ctCpuMega:
-        controlString = lang.getString("CpuMega");
+      case ctCpuZeta:
+        controlString = lang.getString("CpuZeta");
         break;
       case ctNetwork:
         controlString = lang.getString("Network");
@@ -596,8 +596,8 @@ Please contact the ZetaGlest team for more info.";
       case ctNetworkCpuUltra:
         controlString = lang.getString("NetworkCpuUltra");
         break;
-      case ctNetworkCpuMega:
-        controlString = lang.getString("NetworkCpuMega");
+      case ctNetworkCpuZeta:
+        controlString = lang.getString("NetworkCpuZeta");
         break;
 
       default:

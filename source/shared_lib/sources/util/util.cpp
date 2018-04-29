@@ -134,7 +134,7 @@ std::string SystemFlags::getHTTP(std::string URL,CURL *handle,int timeOut,CURLco
 
 	/* some servers don't like requests that are made without a user-agent
 	   field, so we provide one */
-	curl_easy_setopt(handle, CURLOPT_USERAGENT, "megaglest-agent/1.0");
+	curl_easy_setopt(handle, CURLOPT_USERAGENT, "zetaglest-agent/1.0");
 
 	/* follow HTTP redirects (status 3xx), 20 at most */
 	curl_easy_setopt(handle, CURLOPT_FOLLOWLOCATION, 1);
@@ -569,7 +569,7 @@ void SystemFlags::logDebugEntry(DebugType type, string debugEntry, time_t debugT
             if(currentDebugLog.fileStream->is_open() == true) {
 				MutexSafeWrapper safeMutex(currentDebugLog.mutex,string(extractFileFromDirectoryPath(__FILE__).c_str()) + "_" + intToStr(__LINE__));
 
-				(*currentDebugLog.fileStream) << "Starting Mega-Glest logging for type: " << type << "\n";
+				(*currentDebugLog.fileStream) << "Starting ZetaGlest logging for type: " << type << "\n";
 				(*currentDebugLog.fileStream).flush();
 
 				safeMutex.ReleaseLock();

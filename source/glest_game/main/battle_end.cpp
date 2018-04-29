@@ -767,8 +767,8 @@ namespace Glest
             case ctCpuUltra:
               controlString = lang.getString ("CpuUltra");
               break;
-            case ctCpuMega:
-              controlString = lang.getString ("CpuMega");
+            case ctCpuZeta:
+              controlString = lang.getString ("CpuZeta");
               break;
             case ctNetwork:
               controlString = lang.getString ("Network");
@@ -786,8 +786,8 @@ namespace Glest
             case ctNetworkCpuUltra:
               controlString = lang.getString ("NetworkCpuUltra");
               break;
-            case ctNetworkCpuMega:
-              controlString = lang.getString ("NetworkCpuMega");
+            case ctNetworkCpuZeta:
+              controlString = lang.getString ("NetworkCpuZeta");
               break;
 
             default:

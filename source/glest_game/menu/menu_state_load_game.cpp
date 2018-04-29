@@ -422,9 +422,9 @@ namespace Glest
 
                   const XmlNode *rootNode = xmlTree.getRootNode ();
                   if (rootNode != NULL
-                      && rootNode->hasChild ("megaglest-saved-game") == true)
+                      && rootNode->hasChild ("zetaglest-saved-game") == true)
                   {
-                    rootNode = rootNode->getChild ("megaglest-saved-game");
+                    rootNode = rootNode->getChild ("zetaglest-saved-game");
                   }
 
                   if (rootNode == NULL)

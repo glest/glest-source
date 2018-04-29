@@ -577,8 +577,8 @@ namespace
       // The following rules are specific creation rules for different AI.
       else
         {
-          if (ai->getAiInterface ()->getControlType () == ctCpuMega ||
-              ai->getAiInterface ()->getControlType () == ctNetworkCpuMega)
+          if (ai->getAiInterface ()->getControlType () == ctCpuZeta ||
+              ai->getAiInterface ()->getControlType () == ctNetworkCpuZeta)
             {
               if (ai->outputAIBehaviourToConsole ())
                 printf
@@ -2007,9 +2007,9 @@ namespace
                   producers = idle_producers;
                 }
 
-              if (aiInterface->getControlType () == ctCpuMega ||
-                  aiInterface->getControlType () == ctNetworkCpuMega)
-                {               // mega cpu trys to balance the commands to the producers
+              if (aiInterface->getControlType () == ctCpuZeta ||
+                  aiInterface->getControlType () == ctNetworkCpuZeta)
+                {               // zeta cpu trys to balance the commands to the producers
                   int
                     randomstart =
                     ai->getRandom ()->randRange (0,
@@ -2299,7 +2299,7 @@ namespace
 
                                   if (ai->outputAIBehaviourToConsole ())
                                     printf
-                                      ("mega #1 produceSpecific giveCommand to unit [%s] commandType [%s]\n",
+                                      ("zeta #1 produceSpecific giveCommand to unit [%s] commandType [%s]\n",
                                        aiInterface->getMyUnit (bestIndex)->
                                        getType ()->getName ().c_str (),
                                        ut->getCommandType (commandIndex)->
@@ -2310,7 +2310,7 @@ namespace
                                       char
                                         szBuf[8096] = "";
                                       snprintf (szBuf, 8096,
-                                                "mega #1 produceSpecific giveCommand to unit [%s] commandType [%s]",
+                                                "zeta #1 produceSpecific giveCommand to unit [%s] commandType [%s]",
                                                 aiInterface->
                                                 getMyUnit (bestIndex)->
                                                 getType ()->getName ().
@@ -2375,7 +2375,7 @@ namespace
 
                               if (ai->outputAIBehaviourToConsole ())
                                 printf
-                                  ("mega #2 produceSpecific giveCommand to unit [%s] commandType [%s]\n",
+                                  ("zeta #2 produceSpecific giveCommand to unit [%s] commandType [%s]\n",
                                    aiInterface->getMyUnit (bestIndex)->
                                    getType ()->getName ().c_str (),
                                    (defCt !=
@@ -2386,7 +2386,7 @@ namespace
                                   char
                                     szBuf[8096] = "";
                                   snprintf (szBuf, 8096,
-                                            "mega #2 produceSpecific giveCommand to unit [%s] commandType [%s]",
+                                            "zeta #2 produceSpecific giveCommand to unit [%s] commandType [%s]",
                                             aiInterface->
                                             getMyUnit (bestIndex)->
                                             getType ()->getName ().c_str (),
@@ -2448,7 +2448,7 @@ namespace
 
                               if (ai->outputAIBehaviourToConsole ())
                                 printf
-                                  ("mega #3 produceSpecific giveCommand to unit [%s] commandType [%s]\n",
+                                  ("zeta #3 produceSpecific giveCommand to unit [%s] commandType [%s]\n",
                                    aiInterface->getMyUnit (bestIndex)->
                                    getType ()->getName ().c_str (),
                                    (defCt !=
@@ -2459,7 +2459,7 @@ namespace
                                   char
                                     szBuf[8096] = "";
                                   snprintf (szBuf, 8096,
-                                            "mega #3 produceSpecific giveCommand to unit [%s] commandType [%s]",
+                                            "zeta #3 produceSpecific giveCommand to unit [%s] commandType [%s]",
                                             aiInterface->
                                             getMyUnit (bestIndex)->
                                             getType ()->getName ().c_str (),
@@ -2512,7 +2512,7 @@ namespace
                             }
                           if (ai->outputAIBehaviourToConsole ())
                             printf
-                              ("mega #4 produceSpecific giveCommand to unit [%s] commandType [%s]\n",
+                              ("zeta #4 produceSpecific giveCommand to unit [%s] commandType [%s]\n",
                                aiInterface->getMyUnit (bestIndex)->
                                getType ()->getName ().c_str (),
                                (defCt !=
@@ -2522,7 +2522,7 @@ namespace
                               char
                                 szBuf[8096] = "";
                               snprintf (szBuf, 8096,
-                                        "mega #4 produceSpecific giveCommand to unit [%s] commandType [%s]",
+                                        "zeta #4 produceSpecific giveCommand to unit [%s] commandType [%s]",
                                         aiInterface->getMyUnit (bestIndex)->
                                         getType ()->getName ().c_str (),
                                         (defCt !=

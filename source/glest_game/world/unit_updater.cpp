@@ -3001,7 +3001,7 @@ bool UnitUpdater::unitOnRange(Unit *unit, int range, Unit **rangedPtr,
 	Unit* attackingEnemySeen= NULL;
 	ControlType controlType= unit->getFaction()->getControlType();
 	bool isUltra= controlType == ctCpuUltra || controlType == ctNetworkCpuUltra;
-	bool isMega= controlType == ctCpuMega || controlType == ctNetworkCpuMega;
+	bool isZeta = controlType == ctCpuZeta || controlType == ctNetworkCpuZeta;
 
 
 	string randomInfoData = "enemies.size() = " + intToStr(enemies.size());
@@ -3037,7 +3037,7 @@ bool UnitUpdater::unitOnRange(Unit *unit, int range, Unit **rangedPtr,
 					result		= true;
     			}
 
-    			if(isUltra || isMega) {
+    			if(isUltra || isZeta) {
 
         			if(distToStandingUnit < 0 || currentDist< distToStandingUnit) {
         			    if(enemies[i]->getCurrSkill()!=NULL && enemies[i]->getCurrSkill()->getClass()==scAttack) {
@@ -3050,7 +3050,7 @@ bool UnitUpdater::unitOnRange(Unit *unit, int range, Unit **rangedPtr,
     	}
     }
 
-    if(evalMode == false && (isUltra || isMega)) {
+    if(evalMode == false && (isUltra || isZeta)) {
 
     	unit->getRandom()->addLastCaller(randomInfoData);
 

@@ -1236,7 +1236,7 @@ namespace
         Config & config = Config::getInstance ();
         Metrics::reload (config.getInt ("ScreenWidth"),
                          config.getInt ("ScreenHeight"));
-//window->setText(config.getString("WindowTitle","MegaGlest"));
+//window->setText(config.getString("WindowTitle","ZetaGlest"));
 //this->mainMenu->init();
       }
 

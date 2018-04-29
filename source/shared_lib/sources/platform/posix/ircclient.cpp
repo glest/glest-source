@@ -1046,7 +1046,7 @@ void IRCThread::connectToHost() {
 	if(connectRequired == false) {
 #if !defined(DISABLE_IRCCLIENT)
 		MutexSafeWrapper safeMutex1(&mutexIRCSession,string(__FILE__) + "_" + intToStr(__LINE__));
-        if(irc_connect(ircSession, argv[0].c_str(), IRC_SERVER_PORT, 0, this->nick.c_str(), this->username.c_str(), "megaglest")) {
+        if(irc_connect(ircSession, argv[0].c_str(), IRC_SERVER_PORT, 0, this->nick.c_str(), this->username.c_str(), "zetaglest")) {
         	safeMutex1.ReleaseLock();
 
             if(SystemFlags::VERBOSE_MODE_ENABLED || IRCThread::debugEnabled) printf ("===> IRC Could not connect: %s\n", irc_strerror (irc_errno(ircSession)));

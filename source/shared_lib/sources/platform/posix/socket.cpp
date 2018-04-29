@@ -2853,12 +2853,12 @@ bool UPNP_Tools::upnp_add_redirect(int ports[2],bool mutexLock) {
 		//int r                   = 0;
 #ifndef MINIUPNPC_VERSION_PRE1_5
 	#ifndef MINIUPNPC_VERSION_PRE1_6
-		int r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype,ext_port_str, int_port_str, lanaddr, "MegaGlest - www.megaglest.org", "TCP", 0, NULL);
+		int r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype,ext_port_str, int_port_str, lanaddr, "ZetaGlest - zetaglest.github.io", "TCP", 0, NULL);
 	#else
-		int r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype,ext_port_str, int_port_str, lanaddr, "MegaGlest - www.megaglest.org", "TCP", 0);
+		int r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype,ext_port_str, int_port_str, lanaddr, "ZetaGlest - zetaglest.github.io", "TCP", 0);
 	#endif
 #else
-		int r = UPNP_AddPortMapping(urls.controlURL, data.servicetype,ext_port_str, int_port_str, lanaddr, "MegaGlest - www.megaglest.org", "TCP", 0);
+		int r = UPNP_AddPortMapping(urls.controlURL, data.servicetype,ext_port_str, int_port_str, lanaddr, "ZetaGlest - zetaglest.github.io", "TCP", 0);
 #endif
 		if (r != UPNPCOMMAND_SUCCESS) {
 			if(SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork,"In [%s::%s Line: %d] AddPortMapping(%s, %s, %s) failed\n",__FILE__,__FUNCTION__,__LINE__,ext_port_str, int_port_str, lanaddr);

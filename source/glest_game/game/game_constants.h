@@ -159,7 +159,7 @@ namespace
       ctCpuEasy,
       ctCpu,
       ctCpuUltra,
-      ctCpuMega,
+      ctCpuZeta,
       ctNetwork,
       ctNetworkUnassigned,
       ctHuman,
@@ -167,7 +167,7 @@ namespace
       ctNetworkCpuEasy,
       ctNetworkCpu,
       ctNetworkCpuUltra,
-      ctNetworkCpuMega
+      ctNetworkCpuZeta
     };
 
     enum NetworkRole

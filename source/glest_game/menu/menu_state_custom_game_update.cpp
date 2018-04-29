@@ -1060,7 +1060,7 @@ namespace Glest
                     || listBoxControls[i].getSelectedItemIndex () ==
                     ctCpuUltra
                     || listBoxControls[i].getSelectedItemIndex () ==
-                    ctCpuMega)
+                    ctCpuZeta)
                 {
                   setSlotHuman (i);
 
@@ -1268,7 +1268,7 @@ namespace Glest
         listBoxRMultiplier[index].setEnabled (checkBoxScenario.getValue () ==
                                               false);
       }
-      else if (ct == ctCpuMega || ct == ctNetworkCpuMega)
+      else if (ct == ctCpuZeta || ct == ctNetworkCpuZeta)
       {
         listBoxRMultiplier[index].setSelectedItem (floatToStr
                                                    (GameConstants::

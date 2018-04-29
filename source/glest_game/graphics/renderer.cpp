@@ -8035,7 +8035,7 @@ void Renderer::checkGlCaps() {
 
 		message += "Your system supports OpenGL version [";
  		message += getGlVersion() + string("]\n");
- 		message += "MegaGlest needs a version that supports\n";
+ 		message += "ZetaGlest needs a version that supports\n";
  		message += "glActiveTexture (OpenGL 1.3) or the ARB_multitexture extension.";
 
  		throw megaglest_runtime_error(message.c_str(),true);
@@ -8047,7 +8047,7 @@ void Renderer::checkGlCaps() {
 
 		message += "Your system supports OpenGL version [";
  		message += getGlVersion() + string("]\n");
- 		message += "MegaGlest needs at least version 2.1 to work\n";
+ 		message += "ZetaGlest needs at least version 2.1 to work\n";
  		message += "You may solve this problem by installing your latest video card drivers";
 
  		throw megaglest_runtime_error(message.c_str(),true);
@@ -8056,7 +8056,7 @@ void Renderer::checkGlCaps() {
 	//opengl 1.4 or extension
 	//if(!isGlVersionSupported(1, 4, 0)){
 	if(glewIsSupported("GL_VERSION_1_4") == false) {
-		checkExtension("GL_ARB_texture_env_crossbar", "MegaGlest");
+		checkExtension("GL_ARB_texture_env_crossbar", "ZetaGlest");
 	}
 }
 

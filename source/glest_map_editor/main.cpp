@@ -799,7 +799,7 @@ void MainWindow::onMenuFileSaveAs(wxCommandEvent &event) {
 		fd.SetDirectory(ToUnicode(defaultPath));
 	}
 
-	fd.SetWildcard(wxT("MegaGlest Map (*.mgm)|*.mgm|Glest Map (*.gbm)|*.gbm"));
+	fd.SetWildcard(wxT("ZetaGlest Map (*.mgm)|*.mgm|Glest Map (*.gbm)|*.gbm"));
 	if (fd.ShowModal() == wxID_OK) {
 #ifdef WIN32
 		const wxWX2MBbuf tmp_buf = wxConvCurrent->cWX2MB(wxFNCONV(fd.GetPath()));
@@ -1198,7 +1198,7 @@ void MainWindow::onMenuHideWater(wxCommandEvent &event) {
 void MainWindow::onMenuViewAbout(wxCommandEvent &event) {
 	MsgDialog(
 		this,
-		wxT("\n    Glest Map Editor\n    Copyright 2004-2010 The Glest Team\n    Copyright 2010-2018 The MegaGlest Team    \n"),
+		wxT("\n    ZetaGlest Map Editor\n    Copyright 2004-2010 The Glest Team\n    Copyright 2010-2018 The MegaGlest Team    \n"),
 		wxT("About")).ShowModal();
 }
 
@@ -1657,7 +1657,7 @@ bool App::OnInit() {
 		if(argv[1][0]=='-') {   // any flag gives help and exits program.
 			std::cout << std::endl << "ZetaGlest map editor " << mapeditorVersionString << " [Using " << (const char *)wxConvCurrent->cWX2MB(wxVERSION_STRING) << "]" << std::endl << std::endl;
 			//std::cout << "\nglest_map_editor [MGM FILE]" << std::endl << std::endl;
-			std::cout << "Creates or edits megaglest/glest maps. [.mgm/.gbm]" << std::endl << std::endl;
+			std::cout << "Creates or edits zetaglest/glest maps. [.mgm/.gbm]" << std::endl << std::endl;
 			std::cout << "Draw with left mouse button."  << std::endl;
 			std::cout << "Move map with right mouse button."  << std::endl;
 			std::cout << "Zoom with middle mouse button or mousewheel."  << std::endl;

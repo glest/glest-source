@@ -986,7 +986,7 @@ namespace Glest
             {
               char szMsg[8096] = "";
               snprintf (szMsg, 8096,
-                        "A new update was detected: %s\nUpdate Date: %s\nPlease visit megaglest.org for details!",
+                        "A new update was detected: %s\nUpdate Date: %s\nPlease visit zetaglest.github.io for details!",
                         props.getString ("LatestGameVersion", "?").c_str (),
                         props.getString ("LatestGameVersionReleaseDate",
                                          "?").c_str ());
