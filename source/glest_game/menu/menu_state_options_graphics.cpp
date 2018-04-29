@@ -640,7 +640,7 @@ namespace
                                config.getFloat ("GammaValue", "0.0"));
       Metrics::reload (this->program->getWindow ()->getScreenWidth (),
                        this->program->getWindow ()->getScreenHeight ());
-      window->setText (config.getString ("WindowTitle", "MegaGlest"));
+      window->setText (config.getString ("WindowTitle", "ZetaGlest"));
 
       this->mainMenu->init ();
     }

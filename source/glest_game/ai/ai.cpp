@@ -380,14 +380,14 @@ namespace
           //printf("Discovered overriden static value for AI, minMinWarriorsExpandCpuEasy = %d\n",minMinWarriorsExpandCpuEasy);
         }
       if (faction->
-          getAIBehaviorStaticOverideValue (aibsvcMinMinWarriorsExpandCpuMega)
+          getAIBehaviorStaticOverideValue (aibsvcMinMinWarriorsExpandCpuZeta)
           != INT_MAX)
         {
-          minMinWarriorsExpandCpuMega =
+          minMinWarriorsExpandCpuZeta =
             faction->
             getAIBehaviorStaticOverideValue
-            (aibsvcMinMinWarriorsExpandCpuMega);
-          //printf("Discovered overriden static value for AI, minMinWarriorsExpandCpuMega = %d\n",minMinWarriorsExpandCpuMega);
+            (aibsvcMinMinWarriorsExpandCpuZeta);
+          //printf("Discovered overriden static value for AI, minMinWarriorsExpandCpuZeta = %d\n",minMinWarriorsExpandCpuZeta);
         }
       if (faction->
           getAIBehaviorStaticOverideValue (aibsvcMinMinWarriorsExpandCpuUltra)
@@ -1244,9 +1244,9 @@ namespace
                                ctNetworkCpuUltra)
         && random.randRange (0, 2) == 1;
       bool
-        megaResourceAttack = (aiInterface->getControlType () == ctCpuMega
+        megaResourceAttack = (aiInterface->getControlType () == ctCpuZeta
                               || aiInterface->getControlType () ==
-                              ctNetworkCpuMega)
+                              ctNetworkCpuZeta)
         && random.randRange (0, 1) == 1;
 
       if (megaResourceAttack || ultraResourceAttack)
@@ -1384,8 +1384,8 @@ namespace
           const AttackCommandType *
             act = unit->getType ()->getFirstAttackCommand (field);
 
-          if (aiInterface->getControlType () == ctCpuMega ||
-              aiInterface->getControlType () == ctNetworkCpuMega)
+          if (aiInterface->getControlType () == ctCpuZeta ||
+              aiInterface->getControlType () == ctNetworkCpuZeta)
             {
               if (producerWarriorCount > maxProducerWarriors)
                 {
@@ -1430,9 +1430,9 @@ namespace
           if (alreadyAttacking == false
               && unit->getType ()->hasSkillClass (scAttack)
               && (aiInterface->getControlType () == ctCpuUltra
-                  || aiInterface->getControlType () == ctCpuMega
+                  || aiInterface->getControlType () == ctCpuZeta
                   || aiInterface->getControlType () == ctNetworkCpuUltra
-                  || aiInterface->getControlType () == ctNetworkCpuMega))
+                  || aiInterface->getControlType () == ctNetworkCpuZeta))
             {
               //printf("~~~~~~~~ Unit [%s - %d] checking if unit is being attacked\n",unit->getFullName().c_str(),unit->getId());
 
@@ -1539,9 +1539,9 @@ namespace
                     }
                 }
 
-              // Mega CPU does not send ( far away ) units which are currently producing something
-              if (aiInterface->getControlType () == ctCpuMega
-                  || aiInterface->getControlType () == ctNetworkCpuMega)
+              // Zeta CPU does not send ( far away ) units which are currently producing something
+              if (aiInterface->getControlType () == ctCpuZeta
+                  || aiInterface->getControlType () == ctNetworkCpuZeta)
                 {
                   if (!isWarrior)
                     {
@@ -1570,10 +1570,10 @@ namespace
         {
           minWarriors += minMinWarriorsExpandCpuEasy;
         }
-      else if (aiInterface->getControlType () == ctCpuMega ||
-               aiInterface->getControlType () == ctNetworkCpuMega)
+      else if (aiInterface->getControlType () == ctCpuZeta ||
+               aiInterface->getControlType () == ctNetworkCpuZeta)
         {
-          minWarriors += minMinWarriorsExpandCpuMega;
+          minWarriors += minMinWarriorsExpandCpuZeta;
           if (minWarriors > maxMinWarriors - 1 || randomMinWarriorsReached)
             {
               randomMinWarriorsReached = true;
@@ -2035,9 +2035,9 @@ namespace
       aiNode->addAttribute ("minMinWarriorsExpandCpuEasy",
                             intToStr (minMinWarriorsExpandCpuEasy),
                             mapTagReplacements);
-//      int minMinWarriorsExpandCpuMega;
-      aiNode->addAttribute ("minMinWarriorsExpandCpuMega",
-                            intToStr (minMinWarriorsExpandCpuMega),
+//      int minMinWarriorsExpandCpuZeta;
+      aiNode->addAttribute ("minMinWarriorsExpandCpuZeta",
+                            intToStr (minMinWarriorsExpandCpuZeta),
                             mapTagReplacements);
 //      int minMinWarriorsExpandCpuUltra;
       aiNode->addAttribute ("minMinWarriorsExpandCpuUltra",
@@ -2138,9 +2138,9 @@ namespace
       //      int minMinWarriorsExpandCpuEasy;
       minMinWarriorsExpandCpuEasy =
         aiNode->getAttribute ("minMinWarriorsExpandCpuEasy")->getIntValue ();
-      //      int minMinWarriorsExpandCpuMega;
-      minMinWarriorsExpandCpuMega =
-        aiNode->getAttribute ("minMinWarriorsExpandCpuMega")->getIntValue ();
+      //      int minMinWarriorsExpandCpZeta;
+      minMinWarriorsExpandCpuZeta =
+        aiNode->getAttribute ("minMinWarriorsExpandCpuZeta")->getIntValue ();
       //      int minMinWarriorsExpandCpuUltra;
       minMinWarriorsExpandCpuUltra =
         aiNode->getAttribute ("minMinWarriorsExpandCpuUltra")->getIntValue ();

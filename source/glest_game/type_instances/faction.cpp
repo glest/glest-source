@@ -919,7 +919,7 @@ namespace Glest
     {
       bool result = true;
       if (control == ctCpuEasy || control == ctCpu ||
-          control == ctCpuUltra || control == ctCpuMega)
+          control == ctCpuUltra || control == ctCpuZeta)
       {
         //printf("AI player for faction index: %d (%s) current pathfinding: %d\n",index,factionType->getName().c_str(),getUnitPathfindingListCount());
 
@@ -1182,7 +1182,7 @@ namespace Glest
       if (enableServerControlledAI == false || isNetworkGame == false)
       {
         result = (control == ctCpuEasy || control == ctCpu
-                  || control == ctCpuUltra || control == ctCpuMega);
+                  || control == ctCpuUltra || control == ctCpuZeta);
       }
       else
       {
@@ -1191,13 +1191,13 @@ namespace Glest
           if (role == nrServer)
           {
             result = (control == ctCpuEasy || control == ctCpu
-                      || control == ctCpuUltra || control == ctCpuMega);
+                      || control == ctCpuUltra || control == ctCpuZeta);
           }
           else
           {
             result = (control == ctNetworkCpuEasy || control == ctNetworkCpu
                       || control == ctNetworkCpuUltra
-                      || control == ctNetworkCpuMega);
+                      || control == ctNetworkCpuZeta);
           }
         }
       }
@@ -1208,9 +1208,9 @@ namespace Glest
     bool Faction::getCpuControl () const
     {
       return control == ctCpuEasy || control == ctCpu || control == ctCpuUltra
-        || control == ctCpuMega || control == ctNetworkCpuEasy
+        || control == ctCpuZeta || control == ctNetworkCpuEasy
         || control == ctNetworkCpu || control == ctNetworkCpuUltra
-        || control == ctNetworkCpuMega;
+        || control == ctNetworkCpuZeta;
     }
 
 // ==================== upgrade manager ====================

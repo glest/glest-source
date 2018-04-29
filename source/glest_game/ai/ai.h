@@ -239,7 +239,7 @@ namespace
       int
         minMinWarriorsExpandCpuEasy;
       int
-        minMinWarriorsExpandCpuMega;
+        minMinWarriorsExpandCpuZeta;
       int
         minMinWarriorsExpandCpuUltra;
       int
@@ -312,7 +312,7 @@ namespace
         maxBuildRadius = 40;
         minMinWarriors = 7;
         minMinWarriorsExpandCpuEasy = 1;
-        minMinWarriorsExpandCpuMega = 3;
+        minMinWarriorsExpandCpuZeta = 3;
         minMinWarriorsExpandCpuUltra = 3;
         minMinWarriorsExpandCpuNormal = 3;
         maxMinWarriors = 20;

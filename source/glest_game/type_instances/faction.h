@@ -373,9 +373,9 @@ namespace Glest
       {
         return control == ctCpuUltra;
       }
-      inline bool getCpuMegaControl () const
+      inline bool getCpuZetaControl () const
       {
-        return control == ctCpuMega;
+        return control == ctCpuZeta;
       }
       inline ControlType getControlType () const
       {

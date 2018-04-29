@@ -50,7 +50,7 @@ namespace Glest
       aibsvcMaxBuildRadius,
       aibsvcMinMinWarriors,
       aibsvcMinMinWarriorsExpandCpuEasy,
-      aibsvcMinMinWarriorsExpandCpuMega,
+      aibsvcMinMinWarriorsExpandCpuZeta,
       aibsvcMinMinWarriorsExpandCpuUltra,
       aibsvcMinMinWarriorsExpandCpuNormal,
       aibsvcMaxMinWarriors,
@@ -68,8 +68,10 @@ namespace Glest
       enumMap["MinMinWarriors"] = aibsvcMinMinWarriors;
       enumMap["MinMinWarriorsExpandCpuEasy"] =
         aibsvcMinMinWarriorsExpandCpuEasy;
-      enumMap["MinMinWarriorsExpandCpuMega"] =
-        aibsvcMinMinWarriorsExpandCpuMega;
+	  enumMap["MinMinWarriorsExpandCpuMega"] =
+		  aibsvcMinMinWarriorsExpandCpuZeta;
+      enumMap["MinMinWarriorsExpandCpuZeta"] =
+        aibsvcMinMinWarriorsExpandCpuZeta;
       enumMap["MinMinWarriorsExpandCpuUltra"] =
         aibsvcMinMinWarriorsExpandCpuUltra;
       enumMap["MinMinWarriorsExpandCpuNormal"] =

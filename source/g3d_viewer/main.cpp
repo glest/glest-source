@@ -470,7 +470,7 @@ MainWindow::MainWindow(	std::pair<string,vector<string> > unitToLoad,
 	//@="blergcorp.blergapp.v1"
 
 	//Open the registry key.
-	wstring subKey = L"Software\\Classes\\megaglest.g3d\\shell\\open\\command";
+	wstring subKey = L"Software\\Classes\\zetaglest.g3d\\shell\\open\\command";
 	HKEY keyHandle;
 	DWORD dwDisposition;
 	RegCreateKeyEx(HKEY_CURRENT_USER,subKey.c_str(),0, NULL, 0, KEY_ALL_ACCESS, NULL, &keyHandle, &dwDisposition);
@@ -485,7 +485,7 @@ MainWindow::MainWindow(	std::pair<string,vector<string> > unitToLoad,
 	subKey = L"Software\\Classes\\.g3d";
 	RegCreateKeyEx(HKEY_CURRENT_USER,subKey.c_str(),0, NULL, 0, KEY_ALL_ACCESS, NULL, &keyHandle, &dwDisposition);
 	//Set the value.
-	launchApp = L"megaglest.g3d";
+	launchApp = L"zetaglest.g3d";
 	len = (launchApp.size() + 1) * sizeof(wchar_t);
 	RegSetValueEx(keyHandle, NULL, 0, REG_SZ, (PBYTE)launchApp.c_str(), len);
 	RegCloseKey(keyHandle);
@@ -910,10 +910,10 @@ void MainWindow::onMenuFileLoadParticleXML(wxCommandEvent &event){
 		fileDialog->SetWildcard(wxT("XML files (*.xml)|*.xml"));
 
 		if(isControlKeyPressed == true) {
-			fileDialog->SetMessage(wxT("Adding Mega-Glest particle to current view."));
+			fileDialog->SetMessage(wxT("Adding ZetaGlest particle to current view."));
 		}
 		else {
-			fileDialog->SetMessage(wxT("Selecting Mega-Glest particle for current view."));
+			fileDialog->SetMessage(wxT("Selecting ZetaGlest particle for current view."));
 		}
 
 		if(fileDialog->ShowModal()==wxID_OK){
@@ -944,10 +944,10 @@ void MainWindow::onMenuFileLoadProjectileParticleXML(wxCommandEvent &event){
 		fileDialog->SetWildcard(wxT("XML files (*.xml)|*.xml"));
 
 		if(isControlKeyPressed == true) {
-			fileDialog->SetMessage(wxT("Adding Mega-Glest projectile particle to current view."));
+			fileDialog->SetMessage(wxT("Adding ZetaGlest projectile particle to current view."));
 		}
 		else {
-			fileDialog->SetMessage(wxT("Selecting Mega-Glest projectile particle for current view."));
+			fileDialog->SetMessage(wxT("Selecting ZetaGlest projectile particle for current view."));
 		}
 
 		if(fileDialog->ShowModal()==wxID_OK){
@@ -978,10 +978,10 @@ void MainWindow::onMenuFileLoadSplashParticleXML(wxCommandEvent &event){
 		fileDialog->SetWildcard(wxT("XML files (*.xml)|*.xml"));
 
 		if(isControlKeyPressed == true) {
-			fileDialog->SetMessage(wxT("Adding Mega-Glest splash particle to current view."));
+			fileDialog->SetMessage(wxT("Adding ZetaGlest splash particle to current view."));
 		}
 		else {
-			fileDialog->SetMessage(wxT("Selecting Mega-Glest splash particle for current view."));
+			fileDialog->SetMessage(wxT("Selecting ZetaGlest splash particle for current view."));
 		}
 
 		if(fileDialog->ShowModal()==wxID_OK){
@@ -1291,7 +1291,7 @@ void MainWindow::loadUnit(string path, string skillName) {
 	}
 	catch(std::runtime_error &e) {
 		std::cout << e.what() << std::endl;
-		wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a Mega-Glest particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
+		wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a ZetaGlest particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
 	}
 }
 
@@ -1549,7 +1549,7 @@ void MainWindow::loadProjectileParticle(string path) {
 	}
 	catch(std::runtime_error &e) {
 		std::cout << e.what() << std::endl;
-		wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a Mega-Glest projectile particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
+		wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a ZetaGlest projectile particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
 	}
 	if(timer) timer->Start(100);
 	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] after load [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,path.c_str());
@@ -1656,7 +1656,7 @@ void MainWindow::loadSplashParticle(string path) {  // uses ParticleSystemTypeSp
 	}
 	catch(std::runtime_error &e) {
 		std::cout << e.what() << std::endl;
-		wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a Mega-Glest projectile particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
+		wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a ZetaGlest projectile particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
 	}
 	if(timer) timer->Start(100);
 	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] after load [%s] particleSplashPathList.size() = " MG_SIZE_T_SPECIFIER "\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,path.c_str(),this->particleSplashPathList.size());

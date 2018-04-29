@@ -68,7 +68,7 @@ namespace Glest
 
     bool Program::wantShutdownApplicationAfterGame = false;
     const char *
-      ProgramState::MAIN_PROGRAM_RENDER_KEY = "MEGAGLEST.RENDER";
+      ProgramState::MAIN_PROGRAM_RENDER_KEY = "ZETAGLEST.RENDER";
 
 // =====================================================
 //      class Program::CrashProgramState
@@ -185,7 +185,7 @@ namespace Glest
       }
       else
       {
-        msgBox.setText ("Mega-Glest has crashed.");
+        msgBox.setText ("ZetaGlest has crashed.");
       }
 
       mouse2dAnim = mouseY = mouseX = 0;
@@ -1357,7 +1357,7 @@ namespace Glest
                                   __LINE__);
 
 //window
-//window->setText("MegaGlest");
+//window->setText("ZetaGlest");
       window->setStyle (config.getBool ("Windowed") ? wsWindowedFixed :
                         wsFullscreen);
       window->setPos (0, 0);
@@ -1678,7 +1678,7 @@ namespace Glest
 //                                     config.getBool("HardwareAcceleration","false"),
 //                                     config.getBool("FullScreenAntiAliasing","false"),
 //                                     config.getFloat("GammaValue","0.0"));
-//              window->setText(config.getString("WindowTitle","MegaGlest"));
+//              window->setText(config.getString("WindowTitle","ZetaGlest"));
 //              initResolution();
 //      }
 //}

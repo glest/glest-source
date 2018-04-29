@@ -1381,7 +1381,7 @@ namespace Glest
           {
             string announcementURL =
               Config::getInstance ().getString ("AnnouncementURL",
-                                                "http://master.megaglest.org/files/announcement.txt");
+                                                "http://zetaglest.dreamhosters.com/files/announcement.txt");
             if (announcementURL != "")
             {
 
@@ -1430,7 +1430,7 @@ namespace Glest
               addLine ("---------------------------------------------");
             string versionURL =
               Config::getInstance ().getString ("VersionURL",
-                                                "http://master.megaglest.org/files/versions/")
+                                                "http://zetaglest.dreamhosters.com/files/versions/")
               + glestVersionString + ".txt";
             //printf("\nversionURL=%s\n",versionURL.c_str());
             if (versionURL != "")

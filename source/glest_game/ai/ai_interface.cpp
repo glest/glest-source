@@ -372,7 +372,7 @@ namespace
                                        "]");
             }
           fprintf (fp,
-                   "MegaGlest AI log file for Tech [%s] Faction [%s] #%d\n\n",
+                   "ZetaGlest AI log file for Tech [%s] Faction [%s] #%d\n\n",
                    this->gameSettings->getTech ().c_str (),
                    this->world->getFaction (this->factionIndex)->getType ()->
                    getName ().c_str (), this->factionIndex);

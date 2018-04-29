@@ -4849,7 +4849,7 @@ namespace Glest
                faction->getControlType () == ctNetworkCpuEasy ||
                faction->getControlType () == ctNetworkCpu ||
                faction->getControlType () == ctNetworkCpuUltra ||
-               faction->getControlType () == ctNetworkCpuMega))
+               faction->getControlType () == ctNetworkCpuZeta))
           {
 
             if (aiInterfaces[i] == NULL &&
@@ -8527,8 +8527,8 @@ namespace Glest
         case ctCpuUltra:
           factionInfo += " CPU Ultra" + multiplier;
           break;
-        case ctCpuMega:
-          factionInfo += " CPU Mega" + multiplier;
+        case ctCpuZeta:
+          factionInfo += " CPU Zeta" + multiplier;
           break;
         }
 
@@ -9918,7 +9918,7 @@ namespace Glest
         std::map < string, string > mapTagReplacements;
         XmlTree xmlTreeSaveGame (XML_RAPIDXML_ENGINE);
 
-        xmlTreeSaveGame.init ("megaglest-saved-game");
+        xmlTreeSaveGame.init ("zetaglest-saved-game");
         XmlNode *rootNodeReplay = xmlTreeSaveGame.getRootNode ();
 
         //std::map<string,string> mapTagReplacements;
@@ -9956,7 +9956,7 @@ namespace Glest
       }
 
       XmlTree xmlTree;
-      xmlTree.init ("megaglest-saved-game");
+      xmlTree.init ("zetaglest-saved-game");
       XmlNode *rootNode = xmlTree.getRootNode ();
 
       std::map < string, string > mapTagReplacements;
@@ -10201,12 +10201,12 @@ namespace Glest
 
         const XmlNode *rootNode = xmlTreeReplay.getRootNode ();
 
-        if (rootNode->hasChild ("megaglest-saved-game") == true)
+        if (rootNode->hasChild ("zetaglest-saved-game") == true)
         {
-          rootNode = rootNode->getChild ("megaglest-saved-game");
+          rootNode = rootNode->getChild ("zetaglest-saved-game");
         }
 
-        //const XmlNode *versionNode= rootNode->getChild("megaglest-saved-game");
+        //const XmlNode *versionNode= rootNode->getChild("zetaglest-saved-game");
         const XmlNode *versionNode = rootNode;
 
         Lang & lang = Lang::getInstance ();
@@ -10292,12 +10292,12 @@ namespace Glest
         printf ("After load of XML\n");
 
       const XmlNode *rootNode = xmlTree.getRootNode ();
-      if (rootNode->hasChild ("megaglest-saved-game") == true)
+      if (rootNode->hasChild ("zetaglest-saved-game") == true)
       {
-        rootNode = rootNode->getChild ("megaglest-saved-game");
+        rootNode = rootNode->getChild ("zetaglest-saved-game");
       }
 
-      //const XmlNode *versionNode= rootNode->getChild("megaglest-saved-game");
+      //const XmlNode *versionNode= rootNode->getChild("zetaglest-saved-game");
       const XmlNode *versionNode = rootNode;
 
       Lang & lang = Lang::getInstance ();
