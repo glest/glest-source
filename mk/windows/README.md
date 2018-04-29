@@ -1,7 +1,7 @@
 # Windows
 ZetaGlest build system for Windows
 
-To build ZetaGlest for the first time:
+**To build ZetaGlest for the first time:**
 
 1. Download Git for Windows (or make sure it is installed), and make sure that `git` is in the `PATH` environment variable.
    To check, open `cmd` and write `git`. If you get a `not recognized` error, then continue with step 1, otherwise skip to step 2. Usually `git.exe` is located in `C:\Program Files\Git\bin` after installation. To add it to `PATH`, right-click on `This PC` -> `Properties` -> `Advanced system settings` -> `Advanced` tab -> `Environment Variables`, and under `System variables` double-click on `PATH`, and add the path to `git` as a listing and click `OK`.
@@ -11,6 +11,20 @@ To build ZetaGlest for the first time:
 4. Run `setup.bat` in `/mk/windows`.
 5. The built binaries will be found in the corresponding Visual Studio version and platform selected in `/mk/windows`.
 6. Run and enjoy! :)
+
+**Project overview:**
+
+- `glest_game` is the executable game binary
+
+- `libglest` is a shared static library for ZetaGlest's components
+
+- `g3d_viewer` is a `.g3d` model viewer
+
+- `map_editor` is a ZetaGlest map editor and viewer. ZetaGlest maps are stored in the `.gbm` and the `.mgm` formats.
+
+- `libstreflop` is a cross-platform float processing library to ensure rounding is the same across machines
+
+- `g2xml` converts `.g3d` ZetaGlest 3D models into a readable XML formatted layout
 
 *Side-note for developers who want to debug:*
 
