@@ -45,7 +45,6 @@ game; binary package downloads for various operating systems are
 available on their web site.
 
 See [Build instructions](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
-(not yet complete)
 
 ### Try the game without contributing
 

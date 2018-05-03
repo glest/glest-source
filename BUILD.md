@@ -41,6 +41,8 @@ after you clone the source repository, you may use
 
 which will run your package manager and attempt to install the needed packages.
 
+On Windows simply run `setup.bat` in `\mk\windows`.
+
 (These may vary based on your operating system or Linux distribution;
 we will attempt to document dependencies in more detail)
 
