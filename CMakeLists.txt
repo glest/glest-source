@@ -7,12 +7,6 @@ PROJECT( MegaGlest )
 # *NOTE: For now we assume some variation of GCC Compiler (or MingW for Windows binaries)
 # VC++ users should not use CMake yet but rather the build-mg.bat file in mk/windows
 #
-SET(DCMAKE_INSTALL_PREFIX "")
-
-# Use this snippet *after* PROJECT(xxx):
-IF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  SET(CMAKE_INSTALL_PREFIX "" CACHE PATH "Default location" FORCE)
-ENDIF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
 # build type
 IF(NOT CMAKE_BUILD_TYPE)
