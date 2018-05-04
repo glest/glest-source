@@ -316,7 +316,7 @@ namespace
         minMinWarriorsExpandCpuUltra = 3;
         minMinWarriorsExpandCpuNormal = 3;
         maxMinWarriors = 20;
-        maxExpansions = 20;
+        maxExpansions = 5;
         villageRadius = 15;
         scoutResourceRange = 20;
         minWorkerAttackersHarvesting = 3;
