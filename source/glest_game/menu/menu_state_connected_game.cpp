@@ -4545,11 +4545,11 @@ namespace Glest
             }
             if (displayedGamesettings.getFactionControl (i) == ctNetwork &&
                 displayedGamesettings.getNetworkPlayerNameByPlayerIndex (i) !=
-                GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME
-                && displayedGamesettings.getNetworkPlayerNameByPlayerIndex (i)
-                != GameConstants::NETWORK_SLOT_CLOSED_SLOTNAME)
+                GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME &&
+                displayedGamesettings.getNetworkPlayerNameByPlayerIndex (i) !=
+                GameConstants::NETWORK_SLOT_CLOSED_SLOTNAME)
             {
-              listBoxControls[i].setEditable (false);
+              // listBoxControls[i].setEditable (false);
               if (clientInterface->getPlayerIndex () != (int) i)
               {
                 hasOtherPlayer = true;
