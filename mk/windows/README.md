@@ -1,5 +1,4 @@
-# Windows
-ZetaGlest build system for Windows
+# Build ZetaGlest for Windows
 
 **To build ZetaGlest for the first time:**
 
