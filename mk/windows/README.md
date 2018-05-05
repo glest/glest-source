@@ -35,18 +35,19 @@ To be able to run ZetaGlest from within Visual Studio using the debugger, you ne
    Do this also for `g3d_viewer` and `map_editor`.
 
 Configuration in Visual Studio **must be left as `Release`**, and it must match the project architecture as otherwise it won't compile. The settings involved are the following:
+
 ![VS Image](https://i.imgur.com/UFURP4x.png)
 
-Although the configuration *must be set as `Release`*, one can still use debugging options by making the following changes in the project properties:
+Although the configuration *must be set as `Release`*, one can still use debugging options by making the following changes in the project properties.
 
-Manually emulate `Debug`:
+To manually emulate `Debug`:
 
 	Inline Function Expansion: Disabled
 	Enable Intrinsic Functions: No
 	Favor Size Or Speed: Neither
 	Preprocessor: DEBUG instead of NDEBUG
 	
-Manually Emulate `Release`:
+To manually emulate `Release`:
 
 	Inline Function Expansion: Any Suitable
 	Enable Intrinsic Functions: Yes
