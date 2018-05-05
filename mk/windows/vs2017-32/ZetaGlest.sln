@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libglest", "libglest.vcxproj", "{8DAA0C24-95CD-4F66-B4C5-19ABDD771746}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glest_game", "glest_game.vcxproj", "{6B0C65F1-D031-46AF-AC0D-7C38892D2952}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zetaglest", "zetaglest.vcxproj", "{6B0C65F1-D031-46AF-AC0D-7C38892D2952}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libstreflop", "libstreflop.vcxproj", "{CDF4DDB9-945E-4D0D-9F0E-2BBEB5D22141}"
 EndProject
