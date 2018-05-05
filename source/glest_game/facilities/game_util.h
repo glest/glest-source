@@ -37,35 +37,36 @@ using std::string;
 using Shared::Util::sharedLibVersionString;
 
 namespace Glest {
-  namespace Game {
+	namespace Game {
 
-    extern const char *mailString;
-    extern const string glestVersionString;
-    extern const string lastCompatibleSaveGameVersionString;
-    extern const string networkVersionString;
+		extern const char *mailString;
+		extern const string glestVersionString;
+		extern const string lastCompatibleSaveGameVersionString;
+		extern const string networkVersionString;
 
-    void initSpecialStrings();
-    string getCrashDumpFileName();
-    string getPlatformTypeNameString();
-    string getPlatformArchTypeNameString();
-    string getPlatformNameString();
-    string getCompilerNameString();
-    string getNetworkVersionString();
-    string getNetworkVersionGITString();
-    string getNetworkPlatformFreeVersionString();
-    string getAboutString1(int i);
-    string getAboutString2(int i);
-    string getTeammateName(int i);
-    string getTeammateRole(int i);
-    string getCompileDateTime();
+		void initSpecialStrings();
+		string getCrashDumpFileName();
+		string getPlatformTypeNameString();
+		string getPlatformArchTypeNameString();
+		string getPlatformNameString();
+		string getCompilerNameString();
+		string getNetworkVersionString();
+		string getNetworkVersionGITString();
+		string getNetworkPlatformFreeVersionString();
+		string getAboutString1(int i);
+		string getAboutString2(int i);
+		string getTeammateName(int i);
+		string getTeammateRole(int i);
+		string getCompileDateTime();
 
-    string formatString(string str);
+		string formatString(string str);
 
-    string getGameReadWritePath(const string & lookupKey = "");
-    string getGameCustomCoreDataPath(string originalBasePath,
-                                     string uniqueFilePath);
+		string getGameReadWritePath(const string & lookupKey = "");
+		string getGameCustomCoreDataPath(string originalBasePath,
+			string uniqueFilePath);
 
-    bool upgradeFilesInTemp();
+		bool upgradeFilesInTemp();
 
-}}                              //end namespace
+	}
+}                              //end namespace
 #endif

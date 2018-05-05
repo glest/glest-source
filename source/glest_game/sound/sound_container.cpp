@@ -16,30 +16,32 @@
 
 using namespace Shared::Util;
 
-namespace Glest{ namespace Game{
+namespace Glest {
+	namespace Game {
 
-// =====================================================
-// 	class SoundContainer
-// =====================================================
+		// =====================================================
+		// 	class SoundContainer
+		// =====================================================
 
-SoundContainer::SoundContainer(){
-	lastSound= -1;
-}
-
-StaticSound *SoundContainer::getRandSound() const{
-	switch(sounds.size()){
-	case 0:
-		return NULL;
-	case 1:
-		return sounds[0];
-	default:
-		int soundIndex= random.randRange(0, (int)sounds.size()-1);
-		if(soundIndex==lastSound){
-			soundIndex= (lastSound+1) % sounds.size();
+		SoundContainer::SoundContainer() {
+			lastSound = -1;
 		}
-		lastSound= soundIndex;
-		return sounds[soundIndex];
-	}
-}
 
-}}//end namespace
+		StaticSound *SoundContainer::getRandSound() const {
+			switch (sounds.size()) {
+				case 0:
+					return NULL;
+				case 1:
+					return sounds[0];
+				default:
+					int soundIndex = random.randRange(0, (int) sounds.size() - 1);
+					if (soundIndex == lastSound) {
+						soundIndex = (lastSound + 1) % sounds.size();
+					}
+					lastSound = soundIndex;
+					return sounds[soundIndex];
+			}
+		}
+
+	}
+}//end namespace

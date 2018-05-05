@@ -16,54 +16,52 @@
 #   include "leak_dumper.h"
 
 using namespace
-  Shared::Graphics::Gl;
+Shared::Graphics::Gl;
 
 namespace
-  Glest
-{
-  namespace
-    Game
-  {
+	Glest {
+	namespace
+		Game {
 
-// ===============================
-//      class MenuStateGraphicInfo  
-// ===============================
+		// ===============================
+		//      class MenuStateGraphicInfo  
+		// ===============================
 
-    class
-      MenuStateGraphicInfo:
-      public
-      MenuState
-    {
-    private:
-      GraphicButton
-        buttonReturn;
-      GraphicLabel
-        labelInfo;
-      GraphicLabel
-        labelMoreInfo;
+		class
+			MenuStateGraphicInfo :
+			public
+			MenuState {
+		private:
+			GraphicButton
+				buttonReturn;
+			GraphicLabel
+				labelInfo;
+			GraphicLabel
+				labelMoreInfo;
 
-      GraphicLabel
-        labelInternalInfo;
+			GraphicLabel
+				labelInternalInfo;
 
-      //string glInfo;
-      //string glMoreInfo;
+			//string glInfo;
+			//string glMoreInfo;
 
-    public:
-      MenuStateGraphicInfo (Program * program, MainMenu * mainMenu);
+		public:
+			MenuStateGraphicInfo(Program * program, MainMenu * mainMenu);
 
-      void
-      mouseClick (int x, int y, MouseButton mouseButton);
-      void
-      mouseMove (int x, int y, const MouseState * mouseState);
-      void
-      render ();
-      virtual void
-      keyDown (SDL_KeyboardEvent key);
+			void
+				mouseClick(int x, int y, MouseButton mouseButton);
+			void
+				mouseMove(int x, int y, const MouseState * mouseState);
+			void
+				render();
+			virtual void
+				keyDown(SDL_KeyboardEvent key);
 
-      virtual void
-      reloadUI ();
-    };
+			virtual void
+				reloadUI();
+		};
 
-}}                              //end namespace
+	}
+}                              //end namespace
 
 #endif

@@ -18,34 +18,36 @@
 
 using namespace std;
 
-namespace Shared { namespace Graphics {
+namespace Shared {
+	namespace Graphics {
 
-// =====================================================
-//	class FontManager
-//
-///	Creates, Intializes, Finalizes, and Deletes fonts
-// =====================================================
+		// =====================================================
+		//	class FontManager
+		//
+		///	Creates, Intializes, Finalizes, and Deletes fonts
+		// =====================================================
 
-class FontManager {
-protected:
-	typedef vector<Font*> FontContainer;
+		class FontManager {
+		protected:
+			typedef vector<Font*> FontContainer;
 
-protected:
-	FontContainer fonts;
+		protected:
+			FontContainer fonts;
 
-public:
-	FontManager();
-	virtual ~FontManager();
+		public:
+			FontManager();
+			virtual ~FontManager();
 
-	Font2D *newFont2D();
-	Font3D *newFont3D();
+			Font2D *newFont2D();
+			Font3D *newFont3D();
 
-	void endFont(Font *font,bool mustExistInList=false);
+			void endFont(Font *font, bool mustExistInList = false);
 
-	void init();
-	void end();
-};
+			void init();
+			void end();
+		};
 
-}}//end namespace
+	}
+}//end namespace
 
 #endif

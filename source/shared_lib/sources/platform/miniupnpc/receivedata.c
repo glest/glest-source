@@ -37,57 +37,56 @@
 
 int
 receivedata(int socket,
-            char * data, int length,
-            int timeout, unsigned int * scope_id)
-{
+	char * data, int length,
+	int timeout, unsigned int * scope_id) {
 #if MINIUPNPC_GET_SRC_ADDR
 	struct sockaddr_storage src_addr;
 	socklen_t src_addr_len = sizeof(src_addr);
 #endif	/* MINIUPNPC_GET_SRC_ADDR */
-    int n;
+	int n;
 #if !defined(_WIN32) && !defined(__amigaos__) && !defined(__amigaos4__)
 	/* using poll */
-    struct pollfd fds[1]; /* for the poll */
+	struct pollfd fds[1]; /* for the poll */
 #ifdef MINIUPNPC_IGNORE_EINTR
-    do {
+	do {
 #endif	/* MINIUPNPC_IGNORE_EINTR */
-        fds[0].fd = socket;
-        fds[0].events = POLLIN;
-        n = poll(fds, 1, timeout);
+		fds[0].fd = socket;
+		fds[0].events = POLLIN;
+		n = poll(fds, 1, timeout);
 #ifdef MINIUPNPC_IGNORE_EINTR
-    } while(n < 0 && errno == EINTR);
+	} while (n < 0 && errno == EINTR);
 #endif	/* MINIUPNPC_IGNORE_EINTR */
-    if(n < 0) {
-        PRINT_SOCKET_ERROR("poll");
-        return -1;
-    } else if(n == 0) {
+	if (n < 0) {
+		PRINT_SOCKET_ERROR("poll");
+		return -1;
+	} else if (n == 0) {
 		/* timeout */
-        return 0;
-    }
+		return 0;
+	}
 #else	/* !defined(_WIN32) && !defined(__amigaos__) && !defined(__amigaos4__) */
 	/* using select under _WIN32 and amigaos */
-    fd_set socketSet;
-    TIMEVAL timeval;
-    FD_ZERO(&socketSet);
-    FD_SET(socket, &socketSet);
-    timeval.tv_sec = timeout / 1000;
-    timeval.tv_usec = (timeout % 1000) * 1000;
-    n = select(FD_SETSIZE, &socketSet, NULL, NULL, &timeval);
-    if(n < 0) {
-        PRINT_SOCKET_ERROR("select");
-        return -1;
-    } else if(n == 0) {
-        return 0;
-    }
+	fd_set socketSet;
+	TIMEVAL timeval;
+	FD_ZERO(&socketSet);
+	FD_SET(socket, &socketSet);
+	timeval.tv_sec = timeout / 1000;
+	timeval.tv_usec = (timeout % 1000) * 1000;
+	n = select(FD_SETSIZE, &socketSet, NULL, NULL, &timeval);
+	if (n < 0) {
+		PRINT_SOCKET_ERROR("select");
+		return -1;
+	} else if (n == 0) {
+		return 0;
+	}
 #endif	/* !defined(_WIN32) && !defined(__amigaos__) && !defined(__amigaos4__) */
 #if MINIUPNPC_GET_SRC_ADDR
 	memset(&src_addr, 0, sizeof(src_addr));
 	n = recvfrom(socket, data, length, 0,
-	             (struct sockaddr *)&src_addr, &src_addr_len);
+		(struct sockaddr *)&src_addr, &src_addr_len);
 #else	/* MINIUPNPC_GET_SRC_ADDR */
 	n = recv(socket, data, length, 0);
 #endif	/* MINIUPNPC_GET_SRC_ADDR */
-	if(n<0) {
+	if (n < 0) {
 		PRINT_SOCKET_ERROR("recv");
 	}
 #if MINIUPNPC_GET_SRC_ADDR
@@ -96,7 +95,7 @@ receivedata(int socket,
 #ifdef DEBUG
 		printf("scope_id=%u\n", src_addr6->sin6_scope_id);
 #endif	/* DEBUG */
-		if(scope_id)
+		if (scope_id)
 			*scope_id = src_addr6->sin6_scope_id;
 	}
 #endif	/* MINIUPNPC_GET_SRC_ADDR */

@@ -15,21 +15,25 @@
 #include "graphics_interface.h"
 #include "leak_dumper.h"
 
-namespace Shared { namespace Graphics {
+namespace Shared {
+	namespace Graphics {
 
-// ===============================================
-//	class BaseRenderer
-// ===============================================
+		// ===============================================
+		//	class BaseRenderer
+		// ===============================================
 
-class BaseRenderer : public RendererMapInterface {
-public:
-	BaseRenderer() { }
-	virtual ~BaseRenderer() { }
+		class BaseRenderer : public RendererMapInterface {
+		public:
+			BaseRenderer() {
+			}
+			virtual ~BaseRenderer() {
+			}
 
-	virtual void initMapSurface(int clientW, int clientH);
-	virtual void renderMap(MapPreview *map, int x, int y, int clientW, int clientH, int cellSize, bool grid=false, bool heightMap=false, bool hideWater=false);
-};
+			virtual void initMapSurface(int clientW, int clientH);
+			virtual void renderMap(MapPreview *map, int x, int y, int clientW, int clientH, int cellSize, bool grid = false, bool heightMap = false, bool hideWater = false);
+		};
 
-}} // end namespace
+	}
+} // end namespace
 
 #endif

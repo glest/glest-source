@@ -32,11 +32,11 @@
 #include "ftpConfig.h"
 #include "ftp.h"
 
-/**
- *  @brief array that holds the data of all ftp sessions
- *
- *  The index represents the session ID.
- */
+ /**
+  *  @brief array that holds the data of all ftp sessions
+  *
+  *  The index represents the session ID.
+  */
 LOCAL ftpSession_S  sessions[MAX_CONNECTIONS];
 
 /**
@@ -62,32 +62,29 @@ LOCAL char pathScratchBuf[MAX_PATH_LEN];
  *
  *  @return session id or -1 if session limit is reached
  */
-int ftpOpenSession(socket_t ctrlSocket, ip_t remoteIp, port_t remotePort)
-{
+int ftpOpenSession(socket_t ctrlSocket, ip_t remoteIp, port_t remotePort) {
 	int n;
-	for(n = 0; n < MAX_CONNECTIONS; n++)
-	{
-		if(!sessions[n].open)
-		{
-			sessions[n].open               = TRUE;
-			sessions[n].authenticated      = FALSE;
-			sessions[n].userId             = 0;
-			sessions[n].workingDir[0]      = '\0';
-			sessions[n].remoteIp           = remoteIp;
-			sessions[n].remotePort         = remotePort;
-			sessions[n].remoteDataPort     = 0;
-			sessions[n].passive            = FALSE;
-			sessions[n].binary             = TRUE;
-			sessions[n].timeLastCmd        = ftpGetUnixTime();
-			sessions[n].ctrlSocket         = ctrlSocket;
-			sessions[n].passiveDataSocket  = -1;
-			sessions[n].rxBufWriteIdx      = 0;
-			sessions[n].activeTrans.op       = OP_NOP;
+	for (n = 0; n < MAX_CONNECTIONS; n++) {
+		if (!sessions[n].open) {
+			sessions[n].open = TRUE;
+			sessions[n].authenticated = FALSE;
+			sessions[n].userId = 0;
+			sessions[n].workingDir[0] = '\0';
+			sessions[n].remoteIp = remoteIp;
+			sessions[n].remotePort = remotePort;
+			sessions[n].remoteDataPort = 0;
+			sessions[n].passive = FALSE;
+			sessions[n].binary = TRUE;
+			sessions[n].timeLastCmd = ftpGetUnixTime();
+			sessions[n].ctrlSocket = ctrlSocket;
+			sessions[n].passiveDataSocket = -1;
+			sessions[n].rxBufWriteIdx = 0;
+			sessions[n].activeTrans.op = OP_NOP;
 			sessions[n].activeTrans.fsHandle = NULL;
 			sessions[n].activeTrans.dataSocket = -1;
 			sessions[n].activeTrans.fileSize = 0;
 
-			if(VERBOSE_MODE_ENABLED) printf("ftpOpenSession started for ctrlSocket: %d\n",ctrlSocket);
+			if (VERBOSE_MODE_ENABLED) printf("ftpOpenSession started for ctrlSocket: %d\n", ctrlSocket);
 
 			return n;
 		}
@@ -102,8 +99,7 @@ int ftpOpenSession(socket_t ctrlSocket, ip_t remoteIp, port_t remotePort)
  *
  *  @return 0
  */
-int ftpAuthSession(int id)
-{
+int ftpAuthSession(int id) {
 	sessions[id].authenticated = TRUE;
 	strcpy(sessions[id].workingDir, "/");
 
@@ -119,41 +115,39 @@ int ftpAuthSession(int id)
  *
  *  @return 0
  */
-int ftpCloseSession(int id)
-{
-	if(VERBOSE_MODE_ENABLED) printf("In ftpCloseSession sessionId = %d, remote IP = %u, port = %d, ctrlSocket = %d\n",
-           id, sessions[id].remoteIp, sessions[id].remoteFTPServerPassivePort,sessions[id].ctrlSocket);
+int ftpCloseSession(int id) {
+	if (VERBOSE_MODE_ENABLED) printf("In ftpCloseSession sessionId = %d, remote IP = %u, port = %d, ctrlSocket = %d\n",
+		id, sessions[id].remoteIp, sessions[id].remoteFTPServerPassivePort, sessions[id].ctrlSocket);
 
-    if(ftpFindExternalFTPServerIp != NULL && ftpFindExternalFTPServerIp(sessions[id].remoteIp) != 0)
-    {
-        //if(ftpRemoveUPNPPortForward)
-        //{
-    		//if(VERBOSE_MODE_ENABLED) printf("In ftpCmdPasv sessionId = %d, removing UPNP port forward [%d]\n", id,sessions[id].remoteFTPServerPassivePort);
+	if (ftpFindExternalFTPServerIp != NULL && ftpFindExternalFTPServerIp(sessions[id].remoteIp) != 0) {
+		//if(ftpRemoveUPNPPortForward)
+		//{
+			//if(VERBOSE_MODE_ENABLED) printf("In ftpCmdPasv sessionId = %d, removing UPNP port forward [%d]\n", id,sessions[id].remoteFTPServerPassivePort);
 
-            //ftpRemoveUPNPPortForward(sessions[id].remoteFTPServerPassivePort, sessions[id].remoteFTPServerPassivePort);
-            sessions[id].remoteFTPServerPassivePort = 0;
-        //}
-    }
-    //if(sessions[id].open) {
-	if(VERBOSE_MODE_ENABLED) printf("In ftpCloseSession about to Close socket = %d, dataSocket = %d, activeDataSocket = %d, for sessionId = %d\n",sessions[id].ctrlSocket,sessions[id].passiveDataSocket,sessions[id].activeTrans.dataSocket,id);
+			//ftpRemoveUPNPPortForward(sessions[id].remoteFTPServerPassivePort, sessions[id].remoteFTPServerPassivePort);
+		sessions[id].remoteFTPServerPassivePort = 0;
+		//}
+	}
+	//if(sessions[id].open) {
+	if (VERBOSE_MODE_ENABLED) printf("In ftpCloseSession about to Close socket = %d, dataSocket = %d, activeDataSocket = %d, for sessionId = %d\n", sessions[id].ctrlSocket, sessions[id].passiveDataSocket, sessions[id].activeTrans.dataSocket, id);
 
 	ftpUntrackSocket(sessions[id].ctrlSocket);
 	ftpCloseSocket(&sessions[id].ctrlSocket);
 	ftpCloseTransmission(id);
 	ftpUntrackSocket(sessions[id].passiveDataSocket);
 	ftpCloseSocket(&sessions[id].passiveDataSocket);
-    //}
-    sessions[id].remoteIp 			= 0;
-    sessions[id].ctrlSocket 		= 0;
-    sessions[id].passiveDataSocket  = 0;
-    sessions[id].passiveIp			= 0;
-    sessions[id].passivePort		= 0;
-    sessions[id].activeTrans.dataSocket = 0;
-    sessions[id].activeTrans.op 		= OP_NOP;
-    sessions[id].activeTrans.fileSize 	= 0;
-	sessions[id].open 					= FALSE;
+	//}
+	sessions[id].remoteIp = 0;
+	sessions[id].ctrlSocket = 0;
+	sessions[id].passiveDataSocket = 0;
+	sessions[id].passiveIp = 0;
+	sessions[id].passivePort = 0;
+	sessions[id].activeTrans.dataSocket = 0;
+	sessions[id].activeTrans.op = OP_NOP;
+	sessions[id].activeTrans.fileSize = 0;
+	sessions[id].open = FALSE;
 
-if(VERBOSE_MODE_ENABLED) printf("Session %d closed\n", id);
+	if (VERBOSE_MODE_ENABLED) printf("Session %d closed\n", id);
 
 	return 0;
 }
@@ -165,8 +159,7 @@ if(VERBOSE_MODE_ENABLED) printf("Session %d closed\n", id);
  *
  *  @return pointer to session data
  */
-ftpSession_S* ftpGetSession(int id)
-{
+ftpSession_S* ftpGetSession(int id) {
 	return &sessions[id];
 }
 
@@ -180,58 +173,49 @@ ftpSession_S* ftpGetSession(int id)
  *
  *  @return 0
  */
-LOCAL int normalizePath(char* path)
-{
-    char *in;
-    char *r = path;
+LOCAL int normalizePath(char* path) {
+	char *in;
+	char *r = path;
 
-    in = path;
+	in = path;
 
-    while((in = strchr(in, '/')))
-    {
-        if(!strncmp(in, "/./", 3))
-        {
-            ftpStrcpy(in, &in[2]);
-            continue;
-        }
-        if(!strcmp(in, "/."))
-        {
-            in[1] = '\0';
-            continue;
-        }
-        if(!strncmp(in, "/../", 4))
-        {
-            *in = '\0';
-            r = strrchr(path, '/');
-            if(r == NULL)
-                r = path;
-            ftpStrcpy(r, &in[3]);
-            in = r;
-            continue;
-        }
-        if(!strcmp(in, "/.."))
-        {
-            *in = '\0';
-            r = strrchr(path, '/');
-            if(r)
-            {
-                if(r == path)
-                    r[1] = '\0';
-                else
-                    *r = '\0';
-            }
-            else
-            {
-                in[0] = '/';
-                in[1] = '\0';
-            }
+	while ((in = strchr(in, '/'))) {
+		if (!strncmp(in, "/./", 3)) {
+			ftpStrcpy(in, &in[2]);
+			continue;
+		}
+		if (!strcmp(in, "/.")) {
+			in[1] = '\0';
+			continue;
+		}
+		if (!strncmp(in, "/../", 4)) {
+			*in = '\0';
+			r = strrchr(path, '/');
+			if (r == NULL)
+				r = path;
+			ftpStrcpy(r, &in[3]);
+			in = r;
+			continue;
+		}
+		if (!strcmp(in, "/..")) {
+			*in = '\0';
+			r = strrchr(path, '/');
+			if (r) {
+				if (r == path)
+					r[1] = '\0';
+				else
+					*r = '\0';
+			} else {
+				in[0] = '/';
+				in[1] = '\0';
+			}
 
-            continue;
-        }
-        in++;
-    }
+			continue;
+		}
+		in++;
+	}
 
-    return 0;
+	return 0;
 }
 
 
@@ -251,41 +235,38 @@ LOCAL int normalizePath(char* path)
  *
  *  @return translated absolute server path
  */
-const char* ftpGetRealPath(int id, const char* path, int normalize)
-{
-	char ftpRoot[2048]="";
+const char* ftpGetRealPath(int id, const char* path, int normalize) {
+	char ftpRoot[2048] = "";
 	int ftpRootLen;
 	int len;
 
 	const char *ftp_rootget = ftpGetRoot(sessions[id].userId, &len);
-	snprintf(ftpRoot,2047,"%s",ftp_rootget);
-	ftpRootLen = (int)strlen(ftpRoot);
-	if(ftpRootLen > 0 && ftpRoot[ftpRootLen-1] != '/') {
-		strcat(ftpRoot,"/");
+	snprintf(ftpRoot, 2047, "%s", ftp_rootget);
+	ftpRootLen = (int) strlen(ftpRoot);
+	if (ftpRootLen > 0 && ftpRoot[ftpRootLen - 1] != '/') {
+		strcat(ftpRoot, "/");
 	}
 
-	if(VERBOSE_MODE_ENABLED) printf("#1 ftpGetRealPath id = %d path [%s] ftpRoot [%s] sessions[id].workingDir [%s] normalize = %d\n", id, path, ftpRoot, sessions[id].workingDir,normalize);
+	if (VERBOSE_MODE_ENABLED) printf("#1 ftpGetRealPath id = %d path [%s] ftpRoot [%s] sessions[id].workingDir [%s] normalize = %d\n", id, path, ftpRoot, sessions[id].workingDir, normalize);
 
-    pathScratchBuf[0]='\0';
-	if(path[0] == '/' || strcmp(path,sessions[id].workingDir) == 0)				// absolute path?
+	pathScratchBuf[0] = '\0';
+	if (path[0] == '/' || strcmp(path, sessions[id].workingDir) == 0)				// absolute path?
 	{
-	    ftpMergePaths(pathScratchBuf, ftpRoot, path, NULL);
-	}
-	else
-	{
+		ftpMergePaths(pathScratchBuf, ftpRoot, path, NULL);
+	} else {
 		ftpMergePaths(pathScratchBuf, ftpRoot, sessions[id].workingDir, "/", path, NULL);
 		//ftpMergePaths(pathScratchBuf, ftpRoot, path, NULL);
 	}
 
-if(VERBOSE_MODE_ENABLED) printf("#2 ftpGetRealPath path [%s] ftpRoot [%s] pathScratchBuf [%s]\n", path, ftpRoot, pathScratchBuf);
+	if (VERBOSE_MODE_ENABLED) printf("#2 ftpGetRealPath path [%s] ftpRoot [%s] pathScratchBuf [%s]\n", path, ftpRoot, pathScratchBuf);
 
 	ftpRemoveDoubleSlash(pathScratchBuf);
-	if(normalize) {
+	if (normalize) {
 		normalizePath(pathScratchBuf);
 	}
 	ftpRemoveTrailingSlash(pathScratchBuf);
 
-if(VERBOSE_MODE_ENABLED) printf("#2 ftpGetRealPath path [%s] ftpRoot [%s] pathScratchBuf [%s]\n", path, ftpRoot, pathScratchBuf);
+	if (VERBOSE_MODE_ENABLED) printf("#2 ftpGetRealPath path [%s] ftpRoot [%s] pathScratchBuf [%s]\n", path, ftpRoot, pathScratchBuf);
 
 	return pathScratchBuf;
 }
@@ -298,27 +279,26 @@ if(VERBOSE_MODE_ENABLED) printf("#2 ftpGetRealPath path [%s] ftpRoot [%s] pathSc
  *
  *  @return 0 on success; -2 if the directory doesn't exist
  */
-int ftpChangeDir(int id, const char* path)
-{
+int ftpChangeDir(int id, const char* path) {
 	ftpPathInfo_S fileInfo;
 	const char* realPath = ftpGetRealPath(id, path, TRUE);
 	int len;
 
 
 	ftpGetRoot(sessions[id].userId, &len);							// determine len of root-path
-	if(len == 1)													// if len == 1 root-path == '/'
+	if (len == 1)													// if len == 1 root-path == '/'
 		len = 0;
 
-if(VERBOSE_MODE_ENABLED) printf("ftpChangeDir path [%s] realPath [%s] sessions[id].workingDir [%s]\n", path, realPath, sessions[id].workingDir);
+	if (VERBOSE_MODE_ENABLED) printf("ftpChangeDir path [%s] realPath [%s] sessions[id].workingDir [%s]\n", path, realPath, sessions[id].workingDir);
 
-	if(ftpStat(realPath, &fileInfo) || (fileInfo.type != TYPE_DIR)) // directory accessible?
+	if (ftpStat(realPath, &fileInfo) || (fileInfo.type != TYPE_DIR)) // directory accessible?
 		return -2;
 
-	strncpy(sessions[id].workingDir, &realPath[len], MAX_PATH_LEN-1); // apply path
-	if(sessions[id].workingDir[0] == '\0')
+	strncpy(sessions[id].workingDir, &realPath[len], MAX_PATH_LEN - 1); // apply path
+	if (sessions[id].workingDir[0] == '\0')
 		strcpy(sessions[id].workingDir, "/");
 
-if(VERBOSE_MODE_ENABLED) printf("ftpChangeDir path [%s] realPath [%s] NEW sessions[id].workingDir [%s]\n", path, realPath, sessions[id].workingDir);
+	if (VERBOSE_MODE_ENABLED) printf("ftpChangeDir path [%s] realPath [%s] NEW sessions[id].workingDir [%s]\n", path, realPath, sessions[id].workingDir);
 
 	return 0;
 }
@@ -326,37 +306,31 @@ if(VERBOSE_MODE_ENABLED) printf("ftpChangeDir path [%s] realPath [%s] NEW sessio
 /**
  *  Open an ftp transmission
  */
-void ftpOpenTransmission(int id, operation_E op, void* fsHandle, socket_t dataSocket, uint32_t fileSize)
-{
+void ftpOpenTransmission(int id, operation_E op, void* fsHandle, socket_t dataSocket, uint32_t fileSize) {
 	actTransCnt++;
-	sessions[id].activeTrans.op         = op;
-	sessions[id].activeTrans.fsHandle   = fsHandle;
+	sessions[id].activeTrans.op = op;
+	sessions[id].activeTrans.fsHandle = fsHandle;
 	sessions[id].activeTrans.dataSocket = dataSocket;
-	sessions[id].activeTrans.fileSize   = fileSize;
+	sessions[id].activeTrans.fileSize = fileSize;
 }
 
 /**
  *  Close an ftp transmission
  */
-void ftpCloseTransmission(int id)
-{
-	if(VERBOSE_MODE_ENABLED) printf("In ftpCloseTransmission about to Close socket = %d, for sessionId = %d, fsHandle [%p] op = %d\n",
-			sessions[id].activeTrans.dataSocket, id,sessions[id].activeTrans.fsHandle,sessions[id].activeTrans.op);
+void ftpCloseTransmission(int id) {
+	if (VERBOSE_MODE_ENABLED) printf("In ftpCloseTransmission about to Close socket = %d, for sessionId = %d, fsHandle [%p] op = %d\n",
+		sessions[id].activeTrans.dataSocket, id, sessions[id].activeTrans.fsHandle, sessions[id].activeTrans.op);
 
-	if(sessions[id].activeTrans.dataSocket > 0)
-	{
+	if (sessions[id].activeTrans.dataSocket > 0) {
 		ftpUntrackSocket(sessions[id].activeTrans.dataSocket);
 		ftpCloseSocket(&sessions[id].activeTrans.dataSocket);
 	}
 
-	if(sessions[id].activeTrans.op != OP_NOP)						// is thera an active transmission?
+	if (sessions[id].activeTrans.op != OP_NOP)						// is thera an active transmission?
 	{
-		if(sessions[id].activeTrans.op == OP_LIST)
-		{
+		if (sessions[id].activeTrans.op == OP_LIST) {
 			ftpCloseDir(sessions[id].activeTrans.fsHandle);
-		}
-		else
-		{
+		} else {
 			ftpCloseFile(sessions[id].activeTrans.fsHandle);
 		}
 		sessions[id].activeTrans.fsHandle = NULL;
@@ -369,7 +343,6 @@ void ftpCloseTransmission(int id)
 /**
  *  Get the active transaction count
  */
-int ftpGetActiveTransCnt(void)
-{
+int ftpGetActiveTransCnt(void) {
 	return actTransCnt;
 }

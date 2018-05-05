@@ -19,52 +19,62 @@
 
 using namespace std;
 
-namespace Shared { namespace Graphics { namespace Gl {
+namespace Shared {
+	namespace Graphics {
+		namespace Gl {
 
-// =====================================================
-//	class FontGl
-// =====================================================
+			// =====================================================
+			//	class FontGl
+			// =====================================================
 
-class FontGl {
-protected:
+			class FontGl {
+			protected:
 
-	GLuint handle;
-	static string default_fonttype;
+				GLuint handle;
+				static string default_fonttype;
 
-public:
+			public:
 
-	GLuint getHandle() const						{return handle;}
+				GLuint getHandle() const {
+					return handle;
+				}
 
-	static string getDefault_fontType() 			{return default_fonttype;}
-	static void setDefault_fontType(string value) 	{default_fonttype = value;}
-};
+				static string getDefault_fontType() {
+					return default_fonttype;
+				}
+				static void setDefault_fontType(string value) {
+					default_fonttype = value;
+				}
+			};
 
-// =====================================================
-//	class Font2DGl
-//
-///	OpenGL bitmap font
-// =====================================================
+			// =====================================================
+			//	class Font2DGl
+			//
+			///	OpenGL bitmap font
+			// =====================================================
 
-class Font2DGl: public Font2D, public FontGl {
-public:
+			class Font2DGl : public Font2D, public FontGl {
+			public:
 
-	virtual void init();
-	virtual void end();
-};
+				virtual void init();
+				virtual void end();
+			};
 
-// =====================================================
-//	class Font3DGl
-//
-///	OpenGL outline font
-// =====================================================
+			// =====================================================
+			//	class Font3DGl
+			//
+			///	OpenGL outline font
+			// =====================================================
 
-class Font3DGl: public Font3D, public FontGl {
-public:
+			class Font3DGl : public Font3D, public FontGl {
+			public:
 
-	virtual void init();
-	virtual void end();
-};
+				virtual void init();
+				virtual void end();
+			};
 
-}}}//end namespace
+		}
+	}
+}//end namespace
 
 #endif

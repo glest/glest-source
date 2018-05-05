@@ -15,74 +15,78 @@
 #include "gl_wrap.h"
 #include "leak_dumper.h"
 
-namespace Shared { namespace Graphics { namespace Gl {
+namespace Shared {
+	namespace Graphics {
+		namespace Gl {
 
-using namespace Platform;
+			using namespace Platform;
 
-// =====================================================
-//	class Font2DGl
-// =====================================================
+			// =====================================================
+			//	class Font2DGl
+			// =====================================================
 
-string FontGl::default_fonttype = "fixed";
+			string FontGl::default_fonttype = "fixed";
 
-void Font2DGl::init() {
-	//printf("In [%s::%s] Line: %d inited = %d\n",__FILE__,__FUNCTION__,__LINE__,inited);
-	if(inited == false) {
-		//printf("In [%s::%s] Line: %d inited = %d Font::forceLegacyFonts = %d\n",__FILE__,__FUNCTION__,__LINE__,inited,Font::forceLegacyFonts);
-		if(getTextHandler() == NULL || Font::forceLegacyFonts == true) {
-			assertGl();
-			handle= glGenLists(charCount);
-			assertGl();
+			void Font2DGl::init() {
+				//printf("In [%s::%s] Line: %d inited = %d\n",__FILE__,__FUNCTION__,__LINE__,inited);
+				if (inited == false) {
+					//printf("In [%s::%s] Line: %d inited = %d Font::forceLegacyFonts = %d\n",__FILE__,__FUNCTION__,__LINE__,inited,Font::forceLegacyFonts);
+					if (getTextHandler() == NULL || Font::forceLegacyFonts == true) {
+						assertGl();
+						handle = glGenLists(charCount);
+						assertGl();
 
-			//printf("In [%s::%s] Line: %d\n",__FILE__,__FUNCTION__,__LINE__);
-			createGlFontBitmaps((Shared::Platform::uint32&)handle, type, size, width, charCount, metrics);
-			assertGl();
+						//printf("In [%s::%s] Line: %d\n",__FILE__,__FUNCTION__,__LINE__);
+						createGlFontBitmaps((Shared::Platform::uint32&)handle, type, size, width, charCount, metrics);
+						assertGl();
+					}
+					inited = true;
+				}
+			}
+
+			void Font2DGl::end() {
+				if (inited) {
+					if (getTextHandler() == NULL || Font::forceLegacyFonts == true) {
+						assertGl();
+						//assert(glIsList(handle));
+						glDeleteLists(handle, 1);
+						assertGl();
+					}
+					inited = false;
+				}
+			}
+
+			// =====================================================
+			//	class Font3DGl
+			// =====================================================
+
+			void Font3DGl::init() {
+				//printf("In [%s::%s] Line: %d\n",__FILE__,__FUNCTION__,__LINE__);
+				if (inited == false) {
+					if (getTextHandler() == NULL || Font::forceLegacyFonts == true) {
+						assertGl();
+						handle = glGenLists(charCount);
+						createGlFontOutlines((Shared::Platform::uint32&)handle, type, width, depth, charCount, metrics);
+						assertGl();
+					}
+					inited = true;
+				}
+			}
+
+			void Font3DGl::end() {
+				if (inited) {
+					if (getTextHandler() == NULL || Font::forceLegacyFonts == true) {
+						assertGl();
+						assert(glIsList(handle));
+						glDeleteLists(handle, 1);
+						assertGl();
+					}
+				}
+			}
+
 		}
-		inited= true;
 	}
-}
-
-void Font2DGl::end() {
-	if(inited) {
-		if(getTextHandler() == NULL || Font::forceLegacyFonts == true) {
-			assertGl();
-			//assert(glIsList(handle));
-			glDeleteLists(handle, 1);
-			assertGl();
-		}
-		inited = false;
-	}
-}
-
-// =====================================================
-//	class Font3DGl
-// =====================================================
-
-void Font3DGl::init() {
-	//printf("In [%s::%s] Line: %d\n",__FILE__,__FUNCTION__,__LINE__);
-	if(inited == false) {
-		if(getTextHandler() == NULL || Font::forceLegacyFonts == true) {
-			assertGl();
-			handle= glGenLists(charCount);
-			createGlFontOutlines((Shared::Platform::uint32&)handle, type, width, depth, charCount, metrics);
-			assertGl();
-		}
-		inited= true;
-	}
-}
-
-void Font3DGl::end() {
-	if(inited) {
-		if(getTextHandler() == NULL || Font::forceLegacyFonts == true) {
-			assertGl();
-			assert(glIsList(handle));
-			glDeleteLists(handle, 1);
-			assertGl();
-		}
-	}
-}
-
-}}}//end namespace
+}//end namespace
 
 //namespace Shared { namespace Graphics {
 //

@@ -18,29 +18,31 @@
 
 using namespace std;
 
-namespace Shared{ namespace Graphics{
+namespace Shared {
+	namespace Graphics {
 
-// =====================================================
-//	class ShaderSource
-// =====================================================
+		// =====================================================
+		//	class ShaderSource
+		// =====================================================
 
-void ShaderSource::load(const string &path){
-	pathInfo+= path + " ";
+		void ShaderSource::load(const string &path) {
+			pathInfo += path + " ";
 
-	//open file
-	ifstream ifs(path.c_str());
-	if(ifs.fail()){
-		throw megaglest_runtime_error("Can't open shader file: " + path);
-	}
+			//open file
+			ifstream ifs(path.c_str());
+			if (ifs.fail()) {
+				throw megaglest_runtime_error("Can't open shader file: " + path);
+			}
 
-	//read source
-	while(true){
-		fstream::int_type c= ifs.get();
-		if(ifs.eof() || ifs.fail() || ifs.bad()){
-			break;
+			//read source
+			while (true) {
+				fstream::int_type c = ifs.get();
+				if (ifs.eof() || ifs.fail() || ifs.bad()) {
+					break;
+				}
+				code += c;
+			}
 		}
-		code+= c;
-	}
-}
 
-}}//end namespace
+	}
+}//end namespace

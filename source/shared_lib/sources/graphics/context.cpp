@@ -13,19 +13,21 @@
 
 #include "leak_dumper.h"
 
-namespace Shared{ namespace Graphics{
+namespace Shared {
+	namespace Graphics {
 
-// =====================================================
-//	class Context
-// =====================================================
+		// =====================================================
+		//	class Context
+		// =====================================================
 
-Context::Context() {
-	colorBits= 32;
-	depthBits= 24;
-	stencilBits= 0;
-	hardware_acceleration=0;
-	fullscreen_anti_aliasing=0;
-	gammaValue=0;
-}
+		Context::Context() {
+			colorBits = 32;
+			depthBits = 24;
+			stencilBits = 0;
+			hardware_acceleration = 0;
+			fullscreen_anti_aliasing = 0;
+			gammaValue = 0;
+		}
 
-}}//end namespace
+	}
+}//end namespace

@@ -20,147 +20,152 @@
 using namespace Shared::Platform;
 using namespace std;
 
-namespace Shared { namespace PlatformCommon {
+namespace Shared {
+	namespace PlatformCommon {
 
-// =====================================================
-//	class BaseThread
-// =====================================================
+		// =====================================================
+		//	class BaseThread
+		// =====================================================
 
-class BaseThread : public Thread
-{
-protected:
-	Mutex *mutexRunning;
-	Mutex *mutexQuit;
-	Mutex *mutexBeginExecution;
-	Mutex *mutexDeleteSelfOnExecutionDone;
+		class BaseThread : public Thread {
+		protected:
+			Mutex *mutexRunning;
+			Mutex *mutexQuit;
+			Mutex *mutexBeginExecution;
+			Mutex *mutexDeleteSelfOnExecutionDone;
 
-    Mutex *mutexThreadObjectAccessor;
+			Mutex *mutexThreadObjectAccessor;
 
-    bool threadOwnerValid;
-    Mutex *mutexThreadOwnerValid;
+			bool threadOwnerValid;
+			Mutex *mutexThreadOwnerValid;
 
-	Mutex *mutexExecutingTask;
-	bool executingTask;
+			Mutex *mutexExecutingTask;
+			bool executingTask;
 
-	void *ptr;
-	static Mutex mutexMasterThreadList;
-	static std::map<void *,int> masterThreadList;
+			void *ptr;
+			static Mutex mutexMasterThreadList;
+			static std::map<void *, int> masterThreadList;
 
-	bool quit;
-	bool running;
-	string uniqueID;
-	bool hasBeginExecution;
-	bool deleteSelfOnExecutionDone;
+			bool quit;
+			bool running;
+			string uniqueID;
+			bool hasBeginExecution;
+			bool deleteSelfOnExecutionDone;
 
-	Mutex *mutexStarted;
-	bool started;
+			Mutex *mutexStarted;
+			bool started;
 
-	virtual void setQuitStatus(bool value);
-	void deleteSelfIfRequired();
+			virtual void setQuitStatus(bool value);
+			void deleteSelfIfRequired();
 
-	void *genericData;
-
-
-public:
-	BaseThread();
-	virtual ~BaseThread();
-	virtual void execute()=0;
-
-	virtual void signalQuit();
-	virtual bool getQuitStatus();
-	virtual bool getRunningStatus();
-
-	virtual bool getStarted();
-	virtual void setStarted(bool value);
-
-	virtual bool getHasBeginExecution();
-	virtual void setHasBeginExecution(bool value);
-
-    static bool shutdownAndWait(BaseThread *ppThread);
-    virtual bool shutdownAndWait();
-    virtual bool canShutdown(bool deleteSelfIfShutdownDelayed=false);
-
-    virtual bool getDeleteSelfOnExecutionDone();
-	virtual void setDeleteSelfOnExecutionDone(bool value);
-
-    void setUniqueID(string value) { uniqueID = value; }
-    string getUniqueID() { return uniqueID; }
-
-    virtual void setRunningStatus(bool value);
-
-    void setExecutingTask(bool value);
-    bool getExecutingTask();
+			void *genericData;
 
 
-    void setThreadOwnerValid(bool value);
-    bool getThreadOwnerValid();
-    Mutex * getMutexThreadOwnerValid();
+		public:
+			BaseThread();
+			virtual ~BaseThread();
+			virtual void execute() = 0;
 
-    Mutex * getMutexThreadObjectAccessor();
+			virtual void signalQuit();
+			virtual bool getQuitStatus();
+			virtual bool getRunningStatus();
 
-	template <typename T>
-	T * getGenericData() { 
-		return genericData; 
+			virtual bool getStarted();
+			virtual void setStarted(bool value);
+
+			virtual bool getHasBeginExecution();
+			virtual void setHasBeginExecution(bool value);
+
+			static bool shutdownAndWait(BaseThread *ppThread);
+			virtual bool shutdownAndWait();
+			virtual bool canShutdown(bool deleteSelfIfShutdownDelayed = false);
+
+			virtual bool getDeleteSelfOnExecutionDone();
+			virtual void setDeleteSelfOnExecutionDone(bool value);
+
+			void setUniqueID(string value) {
+				uniqueID = value;
+			}
+			string getUniqueID() {
+				return uniqueID;
+			}
+
+			virtual void setRunningStatus(bool value);
+
+			void setExecutingTask(bool value);
+			bool getExecutingTask();
+
+
+			void setThreadOwnerValid(bool value);
+			bool getThreadOwnerValid();
+			Mutex * getMutexThreadOwnerValid();
+
+			Mutex * getMutexThreadObjectAccessor();
+
+			template <typename T>
+			T * getGenericData() {
+				return genericData;
+			}
+			template <typename T>
+			void setGenericData(T *value) {
+				genericData = value;
+			}
+
+			static bool isThreadDeleted(void *ptr);
+		};
+
+		class RunningStatusSafeWrapper {
+		protected:
+			BaseThread *thread;
+		public:
+
+			RunningStatusSafeWrapper(BaseThread *thread) {
+				this->thread = thread;
+				Enable();
+			}
+			~RunningStatusSafeWrapper() {
+				Disable();
+			}
+
+			void Enable() {
+				if (this->thread != NULL) {
+					this->thread->setRunningStatus(true);
+				}
+			}
+			void Disable() {
+				if (this->thread != NULL) {
+					this->thread->setRunningStatus(false);
+				}
+			}
+		};
+
+		class ExecutingTaskSafeWrapper {
+		protected:
+			BaseThread *thread;
+		public:
+
+			ExecutingTaskSafeWrapper(BaseThread *thread) {
+				this->thread = thread;
+				Enable();
+			}
+			~ExecutingTaskSafeWrapper() {
+				Disable();
+			}
+
+			void Enable() {
+				if (this->thread != NULL) {
+					this->thread->setExecutingTask(true);
+				}
+			}
+			void Disable() {
+				if (this->thread != NULL) {
+					this->thread->setExecutingTask(false);
+				}
+			}
+		};
+
+
 	}
-	template <typename T>
-	void setGenericData(T *value) { 
-		genericData = value; 
-	}
-
-    static bool isThreadDeleted(void *ptr);
-};
-
-class RunningStatusSafeWrapper {
-protected:
-	BaseThread *thread;
-public:
-
-	RunningStatusSafeWrapper(BaseThread *thread) {
-		this->thread = thread;
-		Enable();
-	}
-	~RunningStatusSafeWrapper() {
-		Disable();
-	}
-
-	void Enable() {
-		if(this->thread != NULL) {
-			this->thread->setRunningStatus(true);
-		}
-	}
-	void Disable() {
-		if(this->thread != NULL) {
-		    this->thread->setRunningStatus(false);
-		}
-	}
-};
-
-class ExecutingTaskSafeWrapper {
-protected:
-	BaseThread *thread;
-public:
-
-	ExecutingTaskSafeWrapper(BaseThread *thread) {
-		this->thread = thread;
-		Enable();
-	}
-	~ExecutingTaskSafeWrapper() {
-		Disable();
-	}
-
-	void Enable() {
-		if(this->thread != NULL) {
-			this->thread->setExecutingTask(true);
-		}
-	}
-	void Disable() {
-		if(this->thread != NULL) {
-		    this->thread->setExecutingTask(false);
-		}
-	}
-};
-
-
-}}//end namespace
+}//end namespace
 
 #endif

@@ -14,10 +14,10 @@
 extern "C" {
 #endif
 
-/* strupnperror()
- * Return a string description of the UPnP error code
- * or NULL for undefinded errors */
-MINIUPNP_LIBSPEC const char * strupnperror(int err);
+	/* strupnperror()
+	 * Return a string description of the UPnP error code
+	 * or NULL for undefinded errors */
+	MINIUPNP_LIBSPEC const char * strupnperror(int err);
 
 #ifdef __cplusplus
 }

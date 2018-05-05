@@ -13,8 +13,8 @@
 #define _GLEST_GAME_WATER_EFFECTS_H_
 
 #ifdef WIN32
-    #include <winsock2.h>
-    #include <winsock.h>
+#include <winsock2.h>
+#include <winsock.h>
 #endif
 
 #include <vector>
@@ -25,58 +25,74 @@ using std::vector;
 
 using Shared::Graphics::Vec2f;
 
-namespace Glest{ namespace Game{
+namespace Glest {
+	namespace Game {
 
-class Map;
+		class Map;
 
-// =====================================================
-//	class WaterSplash
-// =====================================================
+		// =====================================================
+		//	class WaterSplash
+		// =====================================================
 
-class WaterSplash{
-private:
-	Vec2f pos;
-	int size;
-	float anim;
-	bool enabled;
+		class WaterSplash {
+		private:
+			Vec2f pos;
+			int size;
+			float anim;
+			bool enabled;
 
-public:
-	WaterSplash(const Vec2f &pos, int size);
+		public:
+			WaterSplash(const Vec2f &pos, int size);
 
-	void update(float amount);
+			void update(float amount);
 
-	const Vec2f &getPos() const	{return pos;}
-	const int &getSize() const	{return size;}
-	float getAnim() const		{return anim;}
-	bool getEnabled() const		{return enabled;}
-};
+			const Vec2f &getPos() const {
+				return pos;
+			}
+			const int &getSize() const {
+				return size;
+			}
+			float getAnim() const {
+				return anim;
+			}
+			bool getEnabled() const {
+				return enabled;
+			}
+		};
 
-// ===============================
-// 	class WaterEffects  
-//
-/// List of water splashes
-// ===============================
+		// ===============================
+		// 	class WaterEffects  
+		//
+		/// List of water splashes
+		// ===============================
 
-class WaterEffects{
-public:
-	typedef vector<WaterSplash> WaterSplashes;
+		class WaterEffects {
+		public:
+			typedef vector<WaterSplash> WaterSplashes;
 
-private:
-	WaterSplashes waterSplashes;
-	float anim;
-		
-public:
-	WaterEffects();
+		private:
+			WaterSplashes waterSplashes;
+			float anim;
 
-	void update(float speed);
+		public:
+			WaterEffects();
 
-	float getAmin() const	{return anim;}
+			void update(float speed);
 
-	void addWaterSplash(const Vec2f &pos, int size);
-	int getWaterSplashCount() const					{return (int)waterSplashes.size();}
-	const WaterSplash *getWaterSplash(int i) const	{return &waterSplashes[i];}
-};
+			float getAmin() const {
+				return anim;
+			}
 
-}}//end namespace
+			void addWaterSplash(const Vec2f &pos, int size);
+			int getWaterSplashCount() const {
+				return (int) waterSplashes.size();
+			}
+			const WaterSplash *getWaterSplash(int i) const {
+				return &waterSplashes[i];
+			}
+		};
+
+	}
+}//end namespace
 
 #endif

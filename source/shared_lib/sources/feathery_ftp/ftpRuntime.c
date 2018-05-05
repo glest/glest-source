@@ -31,32 +31,30 @@
 #include "ftpMessages.h"
 
 
-/**
- * @brief server-sockets that listens for incoming connections
- */
+ /**
+  * @brief server-sockets that listens for incoming connections
+  */
 LOCAL socket_t server;
 LOCAL int serverListenPort;
 LOCAL int serverPassiveListenPort;
 //LOCAL socket_t serverPassivePort;
 
 void ftpInit(ftpFindExternalFTPServerIpType  cb1, ftpAddUPNPPortForwardType cb2,
-		     ftpRemoveUPNPPortForwardType    cb3, ftpIsValidClientType cb4,
-		     ftpIsClientAllowedToGetFileType cb5) {
-	ftpFindExternalFTPServerIp	= cb1;
-	ftpAddUPNPPortForward		= cb2;
-	ftpRemoveUPNPPortForward	= cb3;
-	ftpIsValidClient            = cb4;
-	ftpIsClientAllowedToGetFile	= cb5;
+	ftpRemoveUPNPPortForwardType    cb3, ftpIsValidClientType cb4,
+	ftpIsClientAllowedToGetFileType cb5) {
+	ftpFindExternalFTPServerIp = cb1;
+	ftpAddUPNPPortForward = cb2;
+	ftpRemoveUPNPPortForward = cb3;
+	ftpIsValidClient = cb4;
+	ftpIsClientAllowedToGetFile = cb5;
 }
 
-int ftpGetListenPort()
-{
-    return serverListenPort;
+int ftpGetListenPort() {
+	return serverListenPort;
 }
 
-int ftpGetPassivePort()
-{
-    return serverPassiveListenPort;
+int ftpGetPassivePort() {
+	return serverPassiveListenPort;
 }
 
 //socket_t ftpGetServerPassivePortListenSocket()
@@ -71,29 +69,27 @@ int ftpGetPassivePort()
  *  @return -  0: server started successfully
  *          - -1: could not create server socket
  */
-int ftpStart(int portNumber)
-{
-    serverListenPort        = portNumber;
-    serverPassiveListenPort = portNumber + 1;
-	server                  = -1;														// set server socket to invalid value
+int ftpStart(int portNumber) {
+	serverListenPort = portNumber;
+	serverPassiveListenPort = portNumber + 1;
+	server = -1;														// set server socket to invalid value
 	//serverPassivePort   = -1;
 
-if(VERBOSE_MODE_ENABLED) printf("Feathery FTP-Server\n");
+	if (VERBOSE_MODE_ENABLED) printf("Feathery FTP-Server\n");
 
 	ftpArchInit();
 
-if(VERBOSE_MODE_ENABLED) printf("Creating server socket");
+	if (VERBOSE_MODE_ENABLED) printf("Creating server socket");
 
 	server = ftpCreateServerSocket(serverListenPort);									// create main listener socket
-	if(server < 0)
-	{
-if(VERBOSE_MODE_ENABLED) printf("\t\terror\n");
+	if (server < 0) {
+		if (VERBOSE_MODE_ENABLED) printf("\t\terror\n");
 
 		return -1;
 	}
 
-if(VERBOSE_MODE_ENABLED) printf("\t\tok\n");
-if(VERBOSE_MODE_ENABLED) printf("Server successfully started\n");
+	if (VERBOSE_MODE_ENABLED) printf("\t\tok\n");
+	if (VERBOSE_MODE_ENABLED) printf("Server successfully started\n");
 
 	ftpTrackSocket(server);												// add socket to "watchlist"
 
@@ -126,8 +122,7 @@ if(VERBOSE_MODE_ENABLED) printf("Server passive port successfully started\n");
  *
  *  @return 0 noting to do; else server has received some data
  */
-int ftpState(void)
-{
+int ftpState(void) {
 	return 0;
 }
 
@@ -139,46 +134,41 @@ int ftpState(void)
  *  all received control-strings are dispatched to the command-module.
  *  Note, the function blocks if there is nothing to do.
  */
-int ftpExecute(void)
-{
-    int processedWork=0;
-	int n=0;
-	int socksRdy=0;
-	ftpSession_S *pSession=NULL;
-	int sessionId=0;
+int ftpExecute(void) {
+	int processedWork = 0;
+	int n = 0;
+	int socksRdy = 0;
+	ftpSession_S *pSession = NULL;
+	int sessionId = 0;
 	//int activeJobs=0;
 	int len;
 	int bufLen;
 
 	int activeJobs = ftpGetActiveTransCnt();								// are there any active transmitions?
 	//for(n = 0; (activeJobs > 0) && (n < MAX_CONNECTIONS); n++)
-	for(n = 0; n < MAX_CONNECTIONS; n++)
-	{
+	for (n = 0; n < MAX_CONNECTIONS; n++) {
 		pSession = ftpGetSession(n);
-		if(pSession->activeTrans.op)									// has this session an active transmition?
+		if (pSession->activeTrans.op)									// has this session an active transmition?
 		{
-		    processedWork = 1;
+			processedWork = 1;
 			ftpExecTransmission(n);										// do the job
 			activeJobs--;
 		}
 	}
 
-	if(ftpGetActiveTransCnt())											// don't block if there's still something to do
+	if (ftpGetActiveTransCnt())											// don't block if there's still something to do
 	{
 		socksRdy = ftpSelect(TRUE);
-	}
-	else
-	{
+	} else {
 		//if(VERBOSE_MODE_ENABLED) printf("ftpExecute calling blocking select\n");
 		socksRdy = ftpSelect(FALSE);
 	}
 
-	if(socksRdy > 0)
-	{
-		if(VERBOSE_MODE_ENABLED) printf("ftpExecute socksRdy = %d\n",socksRdy);
+	if (socksRdy > 0) {
+		if (VERBOSE_MODE_ENABLED) printf("ftpExecute socksRdy = %d\n", socksRdy);
 
-	    processedWork = 1;
-		if(ftpTestSocket(server))										// server listner-socket signaled?
+		processedWork = 1;
+		if (ftpTestSocket(server))										// server listner-socket signaled?
 		{
 			socket_t clientSocket;
 			ip_t remoteIP;
@@ -186,19 +176,15 @@ int ftpExecute(void)
 
 			socksRdy--;
 			clientSocket = ftpAcceptServerConnection(server, &remoteIP, &remotePort);
-			if(clientSocket >= 0)
-			{
-				if(VERBOSE_MODE_ENABLED) printf("ftpExecute ftpAcceptServerConnection = %d\n",clientSocket);
+			if (clientSocket >= 0) {
+				if (VERBOSE_MODE_ENABLED) printf("ftpExecute ftpAcceptServerConnection = %d\n", clientSocket);
 
 				sessionId = ftpOpenSession(clientSocket, remoteIP, remotePort);
-				if(sessionId >= 0)
-				{
+				if (sessionId >= 0) {
 					ftpTrackSocket(clientSocket);
 					ftpSendMsg(MSG_NORMAL, sessionId, 220, ftpMsg037);
-				}
-				else
-				{
-					if(VERBOSE_MODE_ENABLED) printf("ERROR: Connection refused; Session limit reached, about to close socket = %d\n",clientSocket);
+				} else {
+					if (VERBOSE_MODE_ENABLED) printf("ERROR: Connection refused; Session limit reached, about to close socket = %d\n", clientSocket);
 
 					ftpUntrackSocket(clientSocket);
 					ftpCloseSocket(&clientSocket);
@@ -207,45 +193,39 @@ int ftpExecute(void)
 		}
 
 		//socksRdy = ftpSelect(TRUE);
-		for(n = 0; (socksRdy > 0) && (n < MAX_CONNECTIONS); n++)
-		{
+		for (n = 0; (socksRdy > 0) && (n < MAX_CONNECTIONS); n++) {
 			pSession = ftpGetSession(n);
-	        if(pSession->open)
-	        {
-	            socket_t ctrlSocket = pSession->ctrlSocket;
+			if (pSession->open) {
+				socket_t ctrlSocket = pSession->ctrlSocket;
 
-				if(ftpTestSocket(ctrlSocket))
-				{
-					if(VERBOSE_MODE_ENABLED) printf("ftpExecute signaled socket = %d, session = %d\n",ctrlSocket,n);
+				if (ftpTestSocket(ctrlSocket)) {
+					if (VERBOSE_MODE_ENABLED) printf("ftpExecute signaled socket = %d, session = %d\n", ctrlSocket, n);
 					socksRdy--;
 					bufLen = (LEN_RXBUF - pSession->rxBufWriteIdx);
 					len = ftpReceive(ctrlSocket,
-									 &pSession->rxBuf[pSession->rxBufWriteIdx],
-									 bufLen);
-					if(len <= 0)											// has client shutdown the connection?
+						&pSession->rxBuf[pSession->rxBufWriteIdx],
+						bufLen);
+					if (len <= 0)											// has client shutdown the connection?
 					{
 						int errorNumber = getLastSocketError();
 						const char *errText = getLastSocketErrorText(&errorNumber);
-						if(VERBOSE_MODE_ENABLED) printf("In ftpExecute ERROR ON RECEIVE session = %d for socket = %d, data len = %d index = %d, len = %d, error = %d [%s]\n",n,ctrlSocket,bufLen,pSession->rxBufWriteIdx,len,errorNumber,errText);
+						if (VERBOSE_MODE_ENABLED) printf("In ftpExecute ERROR ON RECEIVE session = %d for socket = %d, data len = %d index = %d, len = %d, error = %d [%s]\n", n, ctrlSocket, bufLen, pSession->rxBufWriteIdx, len, errorNumber, errText);
 
 						ftpUntrackSocket(ctrlSocket);
 						ftpCloseSession(n);
-					}
-					else
-					{
+					} else {
 						pSession->rxBufWriteIdx += len;
 						ftpParseCmd(n);
 					}
 				}
 				/// @bug Session-Timeout-Management doesn't work
-	        	if((ftpGetUnixTime() - pSession->timeLastCmd) > SESSION_TIMEOUT)
-	        	{
-	        		if(VERBOSE_MODE_ENABLED) printf("\nIn ftpExecute ERROR: SESSION TIMED OUT for socket = %d\n",ctrlSocket);
+				if ((ftpGetUnixTime() - pSession->timeLastCmd) > SESSION_TIMEOUT) {
+					if (VERBOSE_MODE_ENABLED) printf("\nIn ftpExecute ERROR: SESSION TIMED OUT for socket = %d\n", ctrlSocket);
 
-	        		ftpSendMsg(MSG_NORMAL, n, 421, ftpMsg036);
+					ftpSendMsg(MSG_NORMAL, n, 421, ftpMsg036);
 					ftpUntrackSocket(ctrlSocket);
 					ftpCloseSession(n);
-	        	}
+				}
 			}
 		}
 	}
@@ -261,27 +241,24 @@ int ftpExecute(void)
 
  *  @return 0
  */
-int ftpShutdown(void)
-{
+int ftpShutdown(void) {
 	int n;
-	if(VERBOSE_MODE_ENABLED) printf("About to Shutdown Feathery FTP-Server server [%d]\n",server);
-	
+	if (VERBOSE_MODE_ENABLED) printf("About to Shutdown Feathery FTP-Server server [%d]\n", server);
+
 	ftpUntrackSocket(server);
 	ftpCloseSocket(&server);
 	//ftpCloseSocket(serverPassivePort);
 
-	if(VERBOSE_MODE_ENABLED) printf("About to Shutdown clients\n");
+	if (VERBOSE_MODE_ENABLED) printf("About to Shutdown clients\n");
 
-	for(n = 0; n < MAX_CONNECTIONS; n++)
-	{
-		if(ftpGetSession(n)->open)
-		{
+	for (n = 0; n < MAX_CONNECTIONS; n++) {
+		if (ftpGetSession(n)->open) {
 			ftpUntrackSocket(ftpGetSession(n)->ctrlSocket);
 		}
 		ftpCloseSession(n);
 	}
 
-	if(VERBOSE_MODE_ENABLED) printf("About to Shutdown stack\n");
+	if (VERBOSE_MODE_ENABLED) printf("About to Shutdown stack\n");
 	ftpArchCleanup();
 
 	return 0;

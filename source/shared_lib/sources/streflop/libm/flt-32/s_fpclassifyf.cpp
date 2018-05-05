@@ -25,22 +25,21 @@
 
 
 namespace streflop_libm {
-int
-__fpclassifyf (Simple x)
-{
-  u_int32_t wx;
-  int retval = FP_NORMAL;
+	int
+		__fpclassifyf(Simple x) {
+		u_int32_t wx;
+		int retval = FP_NORMAL;
 
-  GET_FLOAT_WORD (wx, x);
-  wx &= 0x7fffffff;
-  if (wx == 0)
-    retval = FP_ZERO;
-  else if (wx < 0x800000)
-    retval = FP_SUBNORMAL;
-  else if (wx >= 0x7f800000)
-    retval = wx > 0x7f800000 ? FP_NAN : FP_INFINITE;
+		GET_FLOAT_WORD(wx, x);
+		wx &= 0x7fffffff;
+		if (wx == 0)
+			retval = FP_ZERO;
+		else if (wx < 0x800000)
+			retval = FP_SUBNORMAL;
+		else if (wx >= 0x7f800000)
+			retval = wx > 0x7f800000 ? FP_NAN : FP_INFINITE;
 
-  return retval;
-}
-libm_hidden_def (__fpclassifyf)
+		return retval;
+	}
+	libm_hidden_def(__fpclassifyf)
 }

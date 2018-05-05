@@ -9,8 +9,8 @@
 #ifndef IGD_DESC_PARSE_H_INCLUDED
 #define IGD_DESC_PARSE_H_INCLUDED
 
-/* Structure to store the result of the parsing of UPnP
- * descriptions of Internet Gateway Devices */
+ /* Structure to store the result of the parsing of UPnP
+  * descriptions of Internet Gateway Devices */
 #define MINIUPNPC_URL_MAXSIZE (128)
 struct IGDdatas_service {
 	char controlurl[MINIUPNPC_URL_MAXSIZE];

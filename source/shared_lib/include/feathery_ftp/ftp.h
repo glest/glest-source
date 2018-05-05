@@ -26,12 +26,11 @@
 #define FTP_H_
 
 
-/**
- * @brief specifies the type of operation that is in progress
- */
-typedef enum
-{
-	OP_NOP  = 0,						///< no operation
+ /**
+  * @brief specifies the type of operation that is in progress
+  */
+typedef enum {
+	OP_NOP = 0,						///< no operation
 	OP_RETR = 1, 						///< RETR command
 	OP_STOR = 2, 						///< STOR command
 	OP_LIST = 3							///< LIST command
@@ -41,8 +40,7 @@ typedef enum
  * @brief  infos about a file/directory transmittion
  * @see ftpExecTransmission
  */
-typedef struct
-{
+typedef struct {
 	operation_E op;						///< active transmission
 	void* 		fsHandle; 				///< file or directory handle of current transmission
 	socket_t 	dataSocket; 			///< data socket of current transmission
@@ -53,8 +51,7 @@ typedef struct
 /**
  * @brief  Data of a ftp session
  */
-typedef struct
-{
+typedef struct {
 	int      open;						///< TRUE, if the session is open
 	int      authenticated;				///< TRUE, if user is authenticated via USER and PASS commands
 	int	     userId;					///< id of the dedicated user account, is 0 until execution of USER command
@@ -79,18 +76,16 @@ typedef struct
 /**
  * @brief format in which a message is to be displayed
  */
-typedef enum
-{
-	MSG_NORMAL    = 0,					///< normal message, no translation
-	MSG_QUOTE     = 1, 					///< message will be displayed between doublequotes
+typedef enum {
+	MSG_NORMAL = 0,					///< normal message, no translation
+	MSG_QUOTE = 1, 					///< message will be displayed between doublequotes
 	MSG_MULTILINE = 2					///< message contains multiple lines
 }msgmode_E;
 
 /**
  * @brief time-structure
  */
-typedef struct
-{
+typedef struct {
 	uint16_t year;						///< year 0000-9999
 	uint8_t  month;						///< month 1 - 12
 	uint8_t  day;						///< day 1 - 31
@@ -103,10 +98,9 @@ typedef struct
 /**
  * @brief type of a file
  */
-typedef enum
-{
+typedef enum {
 	TYPE_FILE = 1, 						///< regular file
-	TYPE_DIR  = 2, 						///< directory
+	TYPE_DIR = 2, 						///< directory
 	TYPE_LINK = 4						///< hard link
 
 }ftpFileType_E;
@@ -114,8 +108,7 @@ typedef enum
 /**
  * @brief infos about a file or directory similar to stat
  */
-typedef struct
-{
+typedef struct {
 	ftpFileType_E 	type;				///< filetype
 	uint16_t 		mode;				///< access rights (currently unused)
 	ftpTime_S 		cTime;				///< creation time (currently unused)
@@ -171,7 +164,7 @@ extern int ftpStat(const char* path, ftpPathInfo_S *info);
 #	define ftpRemoveFile remove
 #else
 extern void* ftpOpenFile(const char *filename, const char *mode);
-extern int ftpCloseFile(void *stream );
+extern int ftpCloseFile(void *stream);
 extern int ftpReadFile(void *buffer, size_t size, size_t count, void *stream);
 extern int ftpWriteFile(const void *buffer, size_t size, size_t count, void *stream);
 extern int ftpRemoveFile(const char* path);

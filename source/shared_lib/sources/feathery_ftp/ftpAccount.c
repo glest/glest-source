@@ -30,14 +30,13 @@
 #include "ftp.h"
 
 
-/**
- * @brief  User account data
- */
-typedef struct
-{
-	char name[MAXLEN_USERNAME+1];		///< user name
-	char passw[MAXLEN_PASSWORD+1];	///< password of the account
-	char ftpRoot[MAX_PATH_LEN+1];		///< root path of the user account on the server
+ /**
+  * @brief  User account data
+  */
+typedef struct {
+	char name[MAXLEN_USERNAME + 1];		///< user name
+	char passw[MAXLEN_PASSWORD + 1];	///< password of the account
+	char ftpRoot[MAX_PATH_LEN + 1];		///< root path of the user account on the server
 	int  ftpRootLen;				///< length of ftpRoot
 	int  accRights;					///< access rights of a account
 
@@ -49,13 +48,11 @@ typedef struct
 LOCAL ftpUserAccount_S ftpUsers[MAX_USERS];
 
 
-int ftpDeleteAccount(const char* name)
-{
+int ftpDeleteAccount(const char* name) {
 	int n;
 
 	n = ftpFindAccount(name);				// check if account already exists
-	if(n > 0)
-	{
+	if (n > 0) {
 		ftpUsers[n - 1].name[0] = '\0';		// delete account
 		return 0;
 	}
@@ -82,24 +79,20 @@ int ftpDeleteAccount(const char* name)
  *
  *  @return 0 on success; -1 if MAX_USERS is reached
  */
-int ftpCreateAccount(const char* name, const char* passw, const char* root, int acc)
-{
+int ftpCreateAccount(const char* name, const char* passw, const char* root, int acc) {
 	int n;
 
 	n = ftpFindAccount(name);				// check if account already exists
-	if(n > 0)
-	{
+	if (n > 0) {
 		ftpUsers[n - 1].name[0] = '\0';		// delete account
 	}
 
-	for(n = 0; n < MAX_USERS; n++)
-	{
-		if(ftpUsers[n].name[0] == '\0')
-		{
+	for (n = 0; n < MAX_USERS; n++) {
+		if (ftpUsers[n].name[0] == '\0') {
 			strncpy(ftpUsers[n].name, name, MAXLEN_USERNAME);
 			strncpy(ftpUsers[n].passw, passw, MAXLEN_PASSWORD);
 			strncpy(ftpUsers[n].ftpRoot, root, MAX_PATH_LEN);
-			ftpUsers[n].ftpRootLen = (int)strlen(root);
+			ftpUsers[n].ftpRootLen = (int) strlen(root);
 			ftpUsers[n].accRights = acc;
 			return 0;
 		}
@@ -117,12 +110,11 @@ int ftpCreateAccount(const char* name, const char* passw, const char* root, int 
  *
  *  @return 0 if user is not found; 1 to MAX_USERS+1 if user is found
  */
-int ftpFindAccount(const char* name)
-{
-	if(name[0] != '\0') {
+int ftpFindAccount(const char* name) {
+	if (name[0] != '\0') {
 		int n;
-		for(n = 0; n < MAX_USERS; n++) {
-			if(!strncmp(ftpUsers[n].name, name, MAXLEN_USERNAME)) {
+		for (n = 0; n < MAX_USERS; n++) {
+			if (!strncmp(ftpUsers[n].name, name, MAXLEN_USERNAME)) {
 				return n + 1;
 			}
 		}
@@ -130,12 +122,10 @@ int ftpFindAccount(const char* name)
 	return 0;
 }
 
-const char * ftpFindAccountById(int userid)
-{
-	if(userid == 0) {
+const char * ftpFindAccountById(int userid) {
+	if (userid == 0) {
 		return 0;
-	}
-	else if(ftpUsers[userid - 1].name[0] == '\0') {
+	} else if (ftpUsers[userid - 1].name[0] == '\0') {
 		return 0;
 	}
 
@@ -154,15 +144,12 @@ const char * ftpFindAccountById(int userid)
  *          - -1: invalid user account id
  *          - else: incorrect password
  */
-int ftpCheckPassword(int userId, const char* passw)
-{
-	if(userId == 0) {
+int ftpCheckPassword(int userId, const char* passw) {
+	if (userId == 0) {
 		return -1;
-	}
-	else if(ftpUsers[userId - 1].passw[0] == '\0') {
+	} else if (ftpUsers[userId - 1].passw[0] == '\0') {
 		return 0;
-	}
-	else {
+	} else {
 		return strncmp(ftpUsers[userId - 1].passw, passw, MAXLEN_PASSWORD);
 	}
 }
@@ -178,12 +165,11 @@ int ftpCheckPassword(int userId, const char* passw)
  *  @return -  0: the needed access rights are fulfilled
  *          - -1: invalid user account id
  */
-int ftpCheckAccRights(int userId, int accRights)
-{
-	if(!userId)
+int ftpCheckAccRights(int userId, int accRights) {
+	if (!userId)
 		return -1;
 
-	if((ftpUsers[userId - 1].accRights & accRights) == accRights)
+	if ((ftpUsers[userId - 1].accRights & accRights) == accRights)
 		return 0;
 
 	return -1;
@@ -197,11 +183,10 @@ int ftpCheckAccRights(int userId, int accRights)
  *
  *  @return  root directory name or NULL if the user account id is invalid
  */
-const char* ftpGetRoot(int userId, int* len)
-{
-	if(!userId)
+const char* ftpGetRoot(int userId, int* len) {
+	if (!userId)
 		return NULL;
-	if(len)
+	if (len)
 		*len = ftpUsers[userId - 1].ftpRootLen;
 
 	return ftpUsers[userId - 1].ftpRoot;

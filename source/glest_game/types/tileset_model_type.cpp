@@ -12,42 +12,37 @@
 #include "tileset_model_type.h"
 #include "leak_dumper.h"
 
-namespace Glest
-{
-  namespace Game
-  {
+namespace Glest {
+	namespace Game {
 
-// =====================================================
-//      class TilesetModelType
-// =====================================================
+		// =====================================================
+		//      class TilesetModelType
+		// =====================================================
 
-    TilesetModelType::TilesetModelType ()
-    {
-      model = NULL;
-      height = 0;
-      rotationAllowed = false;
-      smoothTwoFrameAnim = false;
-      randomPositionEnabled = false;
+		TilesetModelType::TilesetModelType() {
+			model = NULL;
+			height = 0;
+			rotationAllowed = false;
+			smoothTwoFrameAnim = false;
+			randomPositionEnabled = false;
 
-      animSpeed = 0;
-    }
+			animSpeed = 0;
+		}
 
-    TilesetModelType::~TilesetModelType ()
-    {
-      while (!(particleTypes.empty ()))
-      {
-        delete particleTypes.back ();
-          particleTypes.pop_back ();
-      }
-      //Logger::getInstance().add("ObjectType", true);
-    }
+		TilesetModelType::~TilesetModelType() {
+			while (!(particleTypes.empty())) {
+				delete particleTypes.back();
+				particleTypes.pop_back();
+			}
+			//Logger::getInstance().add("ObjectType", true);
+		}
 
 
-    void TilesetModelType::addParticleSystem (ObjectParticleSystemType *
-                                              particleSystem)
-    {
-      particleTypes.push_back (particleSystem);
-    }
+		void TilesetModelType::addParticleSystem(ObjectParticleSystemType *
+			particleSystem) {
+			particleTypes.push_back(particleSystem);
+		}
 
 
-}}                              //end namespace
+	}
+}                              //end namespace

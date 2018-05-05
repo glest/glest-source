@@ -29,367 +29,420 @@ using Shared::Platform::uint32;
 using Shared::Platform::float32;
 using Shared::Util::Checksum;
 
-namespace Shared{ namespace Graphics{
+namespace Shared {
+	namespace Graphics {
 
-/**
- * @brief Next power of 2
- * @param x The number to be rounded
- * @return the rounded number
- *
- * Rounds an unsigned integer up to the
- * next power of 2; i.e. 2, 4, 8, 16, etc.
- */
-static inline unsigned int next_power_of_2(unsigned int x)
-{
-	x--;
-	x |= (x >> 1);
-	x |= (x >> 2);
-	x |= (x >> 4);
-	x |= (x >> 8);
-	x |= (x >> 16);
-	return ++x;
-}
+		/**
+		 * @brief Next power of 2
+		 * @param x The number to be rounded
+		 * @return the rounded number
+		 *
+		 * Rounds an unsigned integer up to the
+		 * next power of 2; i.e. 2, 4, 8, 16, etc.
+		 */
+		static inline unsigned int next_power_of_2(unsigned int x) {
+			x--;
+			x |= (x >> 1);
+			x |= (x >> 2);
+			x |= (x >> 4);
+			x |= (x >> 8);
+			x |= (x >> 16);
+			return ++x;
+		}
 
-/**
- * @brief Count bits set
- * @param w Number in which to count bits
- * @return The number of bits set
- *
- * Counts the number of bits in an unsigned int
- * that are set to 1.  So, for example, in the
- * number 5, hich is 101 in binary, there are
- * two bits set to 1.
- */
-static inline unsigned int count_bits_set(unsigned int w)
-{
-	/*
-	 * This is faster, and runs in parallel
-	 */
-	const int S[] = {1, 2, 4, 8, 16};
-	const int B[] = {0x55555555, 0x33333333, 0x0F0F0F0F, 0x00FF00FF, 0x0000FFFF};
-	int c = w;
-	c = ((c >> S[0]) & B[0]) + (c & B[0]);
-	c = ((c >> S[1]) & B[1]) + (c & B[1]);
-	c = ((c >> S[2]) & B[2]) + (c & B[2]);
-	c = ((c >> S[3]) & B[3]) + (c & B[3]);
-	c = ((c >> S[4]) & B[4]) + (c & B[4]);
-	return c;
-}
+		/**
+		 * @brief Count bits set
+		 * @param w Number in which to count bits
+		 * @return The number of bits set
+		 *
+		 * Counts the number of bits in an unsigned int
+		 * that are set to 1.  So, for example, in the
+		 * number 5, hich is 101 in binary, there are
+		 * two bits set to 1.
+		 */
+		static inline unsigned int count_bits_set(unsigned int w) {
+			/*
+			 * This is faster, and runs in parallel
+			 */
+			const int S[] = { 1, 2, 4, 8, 16 };
+			const int B[] = { 0x55555555, 0x33333333, 0x0F0F0F0F, 0x00FF00FF, 0x0000FFFF };
+			int c = w;
+			c = ((c >> S[0]) & B[0]) + (c & B[0]);
+			c = ((c >> S[1]) & B[1]) + (c & B[1]);
+			c = ((c >> S[2]) & B[2]) + (c & B[2]);
+			c = ((c >> S[3]) & B[3]) + (c & B[3]);
+			c = ((c >> S[4]) & B[4]) + (c & B[4]);
+			return c;
+		}
 
-// =====================================================
-//	class PixmapIo
-// =====================================================
+		// =====================================================
+		//	class PixmapIo
+		// =====================================================
 
-class PixmapIo {
-protected:
-	int w;
-	int h;
-	int components;
+		class PixmapIo {
+		protected:
+			int w;
+			int h;
+			int components;
 
-public:
-	virtual ~PixmapIo(){}
+		public:
+			virtual ~PixmapIo() {
+			}
 
-	int getW() const			{return w;}
-	int getH() const			{return h;}
-	int getComponents() const	{return components;}
+			int getW() const {
+				return w;
+			}
+			int getH() const {
+				return h;
+			}
+			int getComponents() const {
+				return components;
+			}
 
-	virtual void openRead(const string &path)= 0;
-	virtual void read(uint8 *pixels)= 0;
-	virtual void read(uint8 *pixels, int components)= 0;
+			virtual void openRead(const string &path) = 0;
+			virtual void read(uint8 *pixels) = 0;
+			virtual void read(uint8 *pixels, int components) = 0;
 
-	virtual void openWrite(const string &path, int w, int h, int components)= 0;
-	virtual void write(uint8 *pixels)= 0;
-};
+			virtual void openWrite(const string &path, int w, int h, int components) = 0;
+			virtual void write(uint8 *pixels) = 0;
+		};
 
-// =====================================================
-//	class PixmapIoTga
-// =====================================================
+		// =====================================================
+		//	class PixmapIoTga
+		// =====================================================
 
-class PixmapIoTga: public PixmapIo {
-private:
-	FILE *file;
+		class PixmapIoTga : public PixmapIo {
+		private:
+			FILE *file;
 
-public:
-	PixmapIoTga();
-	virtual ~PixmapIoTga();
+		public:
+			PixmapIoTga();
+			virtual ~PixmapIoTga();
 
-	virtual void openRead(const string &path);
-	virtual void read(uint8 *pixels);
-	virtual void read(uint8 *pixels, int components);
+			virtual void openRead(const string &path);
+			virtual void read(uint8 *pixels);
+			virtual void read(uint8 *pixels, int components);
 
-	virtual void openWrite(const string &path, int w, int h, int components);
-	virtual void write(uint8 *pixels);
-};
+			virtual void openWrite(const string &path, int w, int h, int components);
+			virtual void write(uint8 *pixels);
+		};
 
-// =====================================================
-//	class PixmapIoBmp
-// =====================================================
+		// =====================================================
+		//	class PixmapIoBmp
+		// =====================================================
 
-class PixmapIoBmp: public PixmapIo {
-private:
-	FILE *file;
+		class PixmapIoBmp : public PixmapIo {
+		private:
+			FILE *file;
 
-public:
-	PixmapIoBmp();
-	virtual ~PixmapIoBmp();
-	
-	virtual void openRead(const string &path);
-	virtual void read(uint8 *pixels);
-	virtual void read(uint8 *pixels, int components);
+		public:
+			PixmapIoBmp();
+			virtual ~PixmapIoBmp();
 
-	virtual void openWrite(const string &path, int w, int h, int components);
-	virtual void write(uint8 *pixels);
-};
+			virtual void openRead(const string &path);
+			virtual void read(uint8 *pixels);
+			virtual void read(uint8 *pixels, int components);
 
-// =====================================================
-//	class PixmapIoBmp
-// =====================================================
+			virtual void openWrite(const string &path, int w, int h, int components);
+			virtual void write(uint8 *pixels);
+		};
 
-class PixmapIoPng: public PixmapIo {
-private:
-	FILE *file;
-	string path;
+		// =====================================================
+		//	class PixmapIoBmp
+		// =====================================================
 
-public:
-	PixmapIoPng();
-	virtual ~PixmapIoPng();
+		class PixmapIoPng : public PixmapIo {
+		private:
+			FILE *file;
+			string path;
 
-	virtual void openRead(const string &path);
-	virtual void read(uint8 *pixels);
-	virtual void read(uint8 *pixels, int components);
+		public:
+			PixmapIoPng();
+			virtual ~PixmapIoPng();
 
-	virtual void openWrite(const string &path, int w, int h, int components);
-	virtual void write(uint8 *pixels);
-};
+			virtual void openRead(const string &path);
+			virtual void read(uint8 *pixels);
+			virtual void read(uint8 *pixels, int components);
 
-class PixmapIoJpg: public PixmapIo {
-private:
-	FILE *file;
-	string path;
+			virtual void openWrite(const string &path, int w, int h, int components);
+			virtual void write(uint8 *pixels);
+		};
 
-public:
-	PixmapIoJpg();
-	virtual ~PixmapIoJpg();
+		class PixmapIoJpg : public PixmapIo {
+		private:
+			FILE *file;
+			string path;
 
-	virtual void openRead(const string &path);
-	virtual void read(uint8 *pixels);
-	virtual void read(uint8 *pixels, int components);
+		public:
+			PixmapIoJpg();
+			virtual ~PixmapIoJpg();
 
-	virtual void openWrite(const string &path, int w, int h, int components);
-	virtual void write(uint8 *pixels);
-};
+			virtual void openRead(const string &path);
+			virtual void read(uint8 *pixels);
+			virtual void read(uint8 *pixels, int components);
 
-// =====================================================
-//	class Pixmap1D
-// =====================================================
+			virtual void openWrite(const string &path, int w, int h, int components);
+			virtual void write(uint8 *pixels);
+		};
 
-class Pixmap1D {
-protected:
-	int w;
-	int components;
-	uint8 *pixels;
-	string path;
-	Checksum crc;
+		// =====================================================
+		//	class Pixmap1D
+		// =====================================================
 
-public:
-	//constructor & destructor
-	Pixmap1D();
-	Pixmap1D(int components);
-	Pixmap1D(int w, int components);
-	void init(int components);
-	void init(int w, int components);
-	~Pixmap1D();
-	
-	//load & save
-	void load(const string &path);
-	void loadTga(const string &path);
-	void loadBmp(const string &path);
+		class Pixmap1D {
+		protected:
+			int w;
+			int components;
+			uint8 *pixels;
+			string path;
+			Checksum crc;
 
-	//get 
-	int getW() const			{return w;}
-	int getComponents() const	{return components;}
-	uint8 *getPixels() const	{return pixels;}
-	void deletePixels();
-	string getPath() const		{ return path;}
-	std::size_t getPixelByteCount() const;
+		public:
+			//constructor & destructor
+			Pixmap1D();
+			Pixmap1D(int components);
+			Pixmap1D(int w, int components);
+			void init(int components);
+			void init(int w, int components);
+			~Pixmap1D();
 
-	Checksum * getCRC() { return &crc; }
-};
+			//load & save
+			void load(const string &path);
+			void loadTga(const string &path);
+			void loadBmp(const string &path);
 
-// =====================================================
-//	class Pixmap2D
-// =====================================================
+			//get 
+			int getW() const {
+				return w;
+			}
+			int getComponents() const {
+				return components;
+			}
+			uint8 *getPixels() const {
+				return pixels;
+			}
+			void deletePixels();
+			string getPath() const {
+				return path;
+			}
+			std::size_t getPixelByteCount() const;
 
-class Pixmap2D {
-protected:
-	int h;
-	int w;
-	int components;
-	uint8 *pixels;
-	string path;
-	Checksum crc;
+			Checksum * getCRC() {
+				return &crc;
+			}
+		};
 
-public:
-	//constructor & destructor
-	Pixmap2D();
-	Pixmap2D(int components);
-	Pixmap2D(int w, int h, int components);
-	void init(int components);
-	void init(int w, int h, int components);
-	~Pixmap2D();
-	
-	void Scale(int format, int newW, int newH);
+		// =====================================================
+		//	class Pixmap2D
+		// =====================================================
 
-	//load & save
-	static Pixmap2D* loadPath(const string& path);
-	void load(const string &path);
-	/*void loadTga(const string &path);
-	void loadBmp(const string &path);*/
-	void save(const string &path);
-	void saveBmp(const string &path);
-	void saveTga(const string &path);
-	void savePng(const string &path);
-	void saveJpg(const string &path);
+		class Pixmap2D {
+		protected:
+			int h;
+			int w;
+			int components;
+			uint8 *pixels;
+			string path;
+			Checksum crc;
 
-	//get 
-	int getW() const			{return w;}
-	int getH() const			{return h;}
-	int getComponents() const	{return components;}
-	uint8 *getPixels() const	{return pixels;}
-	void deletePixels();
-		
-	//get data
-	void getPixel(int x, int y, uint8 *value) const;
-	void getPixel(int x, int y, float32 *value) const;
-	void getComponent(int x, int y, int component, uint8 &value) const;
-	void getComponent(int x, int y, int component, float32 &value) const;
+		public:
+			//constructor & destructor
+			Pixmap2D();
+			Pixmap2D(int components);
+			Pixmap2D(int w, int h, int components);
+			void init(int components);
+			void init(int w, int h, int components);
+			~Pixmap2D();
 
-	//vector get
-	Vec4f getPixel4f(int x, int y) const;
-	Vec3f getPixel3f(int x, int y) const;
-	float getPixelf(int x, int y) const;
-	float getComponentf(int x, int y, int component) const;
+			void Scale(int format, int newW, int newH);
 
-	//set data
-	void setPixel(int x, int y, const uint8 *value, int arraySize);
-	void setPixel(int x, int y, const float32 *value, int arraySize);
-	void setComponent(int x, int y, int component, uint8 value);
-	void setComponent(int x, int y, int component, float32 value);
+			//load & save
+			static Pixmap2D* loadPath(const string& path);
+			void load(const string &path);
+			/*void loadTga(const string &path);
+			void loadBmp(const string &path);*/
+			void save(const string &path);
+			void saveBmp(const string &path);
+			void saveTga(const string &path);
+			void savePng(const string &path);
+			void saveJpg(const string &path);
 
-	//vector set
-	void setPixel(int x, int y, const Vec3f &p);
-	void setPixel(int x, int y, const Vec4f &p);
-	void setPixel(int x, int y, float p);
-	
-	//mass set
-	void setPixels(const uint8 *value, int arraySize);
-	void setPixels(const float32 *value, int arraySize);
-	void setComponents(int component, uint8 value);
-	void setComponents(int component, float32 value);
+			//get 
+			int getW() const {
+				return w;
+			}
+			int getH() const {
+				return h;
+			}
+			int getComponents() const {
+				return components;
+			}
+			uint8 *getPixels() const {
+				return pixels;
+			}
+			void deletePixels();
 
-	//operations
-	void splat(const Pixmap2D *leftUp, const Pixmap2D *rightUp, const Pixmap2D *leftDown, const Pixmap2D *rightDown); 
-	void lerp(float t, const Pixmap2D *pixmap1, const Pixmap2D *pixmap2);
-	void copy(const Pixmap2D *sourcePixmap);
-	void subCopy(int x, int y, const Pixmap2D *sourcePixmap);
-	void copyImagePart(int x, int y, const Pixmap2D *sourcePixmap);
-	string getPath() const		{ return path;}
-	std::size_t getPixelByteCount() const;
+			//get data
+			void getPixel(int x, int y, uint8 *value) const;
+			void getPixel(int x, int y, float32 *value) const;
+			void getComponent(int x, int y, int component, uint8 &value) const;
+			void getComponent(int x, int y, int component, float32 &value) const;
 
-	Checksum * getCRC() { return &crc; }
+			//vector get
+			Vec4f getPixel4f(int x, int y) const;
+			Vec3f getPixel3f(int x, int y) const;
+			float getPixelf(int x, int y) const;
+			float getComponentf(int x, int y, int component) const;
 
-private:
-	bool doDimensionsAgree(const Pixmap2D *pixmap);
-};
+			//set data
+			void setPixel(int x, int y, const uint8 *value, int arraySize);
+			void setPixel(int x, int y, const float32 *value, int arraySize);
+			void setComponent(int x, int y, int component, uint8 value);
+			void setComponent(int x, int y, int component, float32 value);
 
-// =====================================================
-//	class Pixmap3D
-// =====================================================
+			//vector set
+			void setPixel(int x, int y, const Vec3f &p);
+			void setPixel(int x, int y, const Vec4f &p);
+			void setPixel(int x, int y, float p);
 
-class Pixmap3D {
-protected:
-	int h;
-	int w;
-	int d;
-	int components;
-	int slice;
-	uint8 *pixels;
-	string path;
-	Checksum crc;
+			//mass set
+			void setPixels(const uint8 *value, int arraySize);
+			void setPixels(const float32 *value, int arraySize);
+			void setComponents(int component, uint8 value);
+			void setComponents(int component, float32 value);
 
-public:
-	//constructor & destructor
-	Pixmap3D();
-	Pixmap3D(int w, int h, int d, int components);
-	Pixmap3D(int d, int components);
-	void init(int w, int h, int d, int components);
-	void init(int d, int components);
-	void init(int components);
-	~Pixmap3D();
-	
-	//load & save
-	void loadSlice(const string &path, int slice);
-	void loadSliceBmp(const string &path, int slice);
-	void loadSliceTga(const string &path, int slice);
-	void loadSlicePng(const string &path, int slice);
-	
-	//get
-	int getSlice() const { return slice; }
-	int getW() const			{return w;}
-	int getH() const			{return h;}
-	int getD() const			{return d;}
-	int getComponents() const	{return components;}
-	uint8 *getPixels() const	{return pixels;}
-	void deletePixels();
-	string getPath() const		{ return path;}
-	std::size_t getPixelByteCount() const;
+			//operations
+			void splat(const Pixmap2D *leftUp, const Pixmap2D *rightUp, const Pixmap2D *leftDown, const Pixmap2D *rightDown);
+			void lerp(float t, const Pixmap2D *pixmap1, const Pixmap2D *pixmap2);
+			void copy(const Pixmap2D *sourcePixmap);
+			void subCopy(int x, int y, const Pixmap2D *sourcePixmap);
+			void copyImagePart(int x, int y, const Pixmap2D *sourcePixmap);
+			string getPath() const {
+				return path;
+			}
+			std::size_t getPixelByteCount() const;
 
-	Checksum * getCRC() { return &crc; }
-};
+			Checksum * getCRC() {
+				return &crc;
+			}
 
-// =====================================================
-//	class PixmapCube
-// =====================================================
+		private:
+			bool doDimensionsAgree(const Pixmap2D *pixmap);
+		};
 
-class PixmapCube {
-public:
-	enum Face{
-		fPositiveX,
-		fNegativeX,
-		fPositiveY,
-		fNegativeY,
-		fPositiveZ,
-		fNegativeZ
-	};
+		// =====================================================
+		//	class Pixmap3D
+		// =====================================================
 
-protected:
-	Pixmap2D faces[6];
-	string path[6];
-	Checksum crc;
+		class Pixmap3D {
+		protected:
+			int h;
+			int w;
+			int d;
+			int components;
+			int slice;
+			uint8 *pixels;
+			string path;
+			Checksum crc;
 
-public:
-	PixmapCube();
-	~PixmapCube();
+		public:
+			//constructor & destructor
+			Pixmap3D();
+			Pixmap3D(int w, int h, int d, int components);
+			Pixmap3D(int d, int components);
+			void init(int w, int h, int d, int components);
+			void init(int d, int components);
+			void init(int components);
+			~Pixmap3D();
 
-	//init
-	void init(int w, int h, int components);
-	void init(int components);
+			//load & save
+			void loadSlice(const string &path, int slice);
+			void loadSliceBmp(const string &path, int slice);
+			void loadSliceTga(const string &path, int slice);
+			void loadSlicePng(const string &path, int slice);
 
-	//load & save
-	void loadFace(const string &path, int face);
-	/*void loadFaceBmp(const string &path, int face);
-	void loadFaceTga(const string &path, int face);*/
-	
-	//get 
-	Pixmap2D *getFace(int face)				{return &faces[face];}
-	const Pixmap2D *getFace(int face) const	{return &faces[face];}
-	void deletePixels();
-	string getPath(int face) const		{ return path[face];}
-	std::size_t getPixelByteCount() const;
+			//get
+			int getSlice() const {
+				return slice;
+			}
+			int getW() const {
+				return w;
+			}
+			int getH() const {
+				return h;
+			}
+			int getD() const {
+				return d;
+			}
+			int getComponents() const {
+				return components;
+			}
+			uint8 *getPixels() const {
+				return pixels;
+			}
+			void deletePixels();
+			string getPath() const {
+				return path;
+			}
+			std::size_t getPixelByteCount() const;
 
-	Checksum * getCRC() { return &crc; }
-};
+			Checksum * getCRC() {
+				return &crc;
+			}
+		};
 
-}}//end namespace
+		// =====================================================
+		//	class PixmapCube
+		// =====================================================
+
+		class PixmapCube {
+		public:
+			enum Face {
+				fPositiveX,
+				fNegativeX,
+				fPositiveY,
+				fNegativeY,
+				fPositiveZ,
+				fNegativeZ
+			};
+
+		protected:
+			Pixmap2D faces[6];
+			string path[6];
+			Checksum crc;
+
+		public:
+			PixmapCube();
+			~PixmapCube();
+
+			//init
+			void init(int w, int h, int components);
+			void init(int components);
+
+			//load & save
+			void loadFace(const string &path, int face);
+			/*void loadFaceBmp(const string &path, int face);
+			void loadFaceTga(const string &path, int face);*/
+
+			//get 
+			Pixmap2D *getFace(int face) {
+				return &faces[face];
+			}
+			const Pixmap2D *getFace(int face) const {
+				return &faces[face];
+			}
+			void deletePixels();
+			string getPath(int face) const {
+				return path[face];
+			}
+			std::size_t getPixelByteCount() const;
+
+			Checksum * getCRC() {
+				return &crc;
+			}
+		};
+
+	}
+}//end namespace
 
 #endif

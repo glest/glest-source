@@ -26,76 +26,90 @@ using std::string;
 
 using Shared::PlatformCommon::Chrono;
 
-namespace Shared{ namespace Util{
+namespace Shared {
+	namespace Util {
 
 #ifdef SL_PROFILE
 
-// =====================================================
-//	class Section
-// =====================================================
+		// =====================================================
+		//	class Section
+		// =====================================================
 
-class Section{
-public:
-	typedef list<Section*> SectionContainer;
-private:
-	string name;
-	Chrono chrono;
-	int64 milisElapsed;
-	Section *parent;
-	SectionContainer children;
+		class Section {
+		public:
+			typedef list<Section*> SectionContainer;
+		private:
+			string name;
+			Chrono chrono;
+			int64 milisElapsed;
+			Section *parent;
+			SectionContainer children;
 
-public:
-	Section(const string &name);
+		public:
+			Section(const string &name);
 
-	Section *getParent()				{return parent;}
-	const string &getName() const		{return name;}
+			Section *getParent() {
+				return parent;
+			}
+			const string &getName() const {
+				return name;
+			}
 
-	void setParent(Section *parent)	{this->parent= parent;}
+			void setParent(Section *parent) {
+				this->parent = parent;
+			}
 
-	void start()	{chrono.start();}
-	void stop()		{milisElapsed+=chrono.getMillis();}
+			void start() {
+				chrono.start();
+			}
+			void stop() {
+				milisElapsed += chrono.getMillis();
+			}
 
-	void addChild(Section *child)	{children.push_back(child);}
-	Section *getChild(const string &name);
+			void addChild(Section *child) {
+				children.push_back(child);
+			}
+			Section *getChild(const string &name);
 
-	void print(FILE *outSream, int tabLevel=0);
-};
+			void print(FILE *outSream, int tabLevel = 0);
+		};
 
-// =====================================================
-//	class Profiler
-// =====================================================
+		// =====================================================
+		//	class Profiler
+		// =====================================================
 
-class Profiler{
-private:
-	Section *rootSection;
-	Section *currSection;
-private:
-	Profiler();
-public:
-	~Profiler();
-	static Profiler &getInstance();
-	void sectionBegin(const string &name);
-	void sectionEnd(const string &name);
-};
+		class Profiler {
+		private:
+			Section * rootSection;
+			Section *currSection;
+		private:
+			Profiler();
+		public:
+			~Profiler();
+			static Profiler &getInstance();
+			void sectionBegin(const string &name);
+			void sectionEnd(const string &name);
+		};
 
 #endif //SL_PROFILE
 
-// =====================================================
-//	class funtions
-// =====================================================
+		// =====================================================
+		//	class funtions
+		// =====================================================
 
-inline void profileBegin(const string &sectionName){
+		inline void profileBegin(const string &sectionName) {
 #ifdef SL_PROFILE
-	Profiler::getInstance().sectionBegin(sectionName);
+			Profiler::getInstance().sectionBegin(sectionName);
 #endif
-}
+		}
 
-inline void profileEnd(const string &sectionName){
+		inline void profileEnd(const string &sectionName) {
 #ifdef SL_PROFILE
-	Profiler::getInstance().sectionEnd(sectionName);
+			Profiler::getInstance().sectionEnd(sectionName);
 #endif
-}
+		}
 
-}}//end namespace
+	}
+}//end namespace
 
 #endif 

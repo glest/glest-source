@@ -17,71 +17,79 @@
 #include "texture.h"
 #include "leak_dumper.h"
 
-namespace Shared{ namespace Graphics{
+namespace Shared {
+	namespace Graphics {
 
-// =====================================================
-//	class ShaderProgram
-// =====================================================
+		// =====================================================
+		//	class ShaderProgram
+		// =====================================================
 
-class VertexShader;
-class FragmentShader;
+		class VertexShader;
+		class FragmentShader;
 
-class ShaderProgram{
-public:
-	virtual ~ShaderProgram(){}
-	virtual void init()= 0;
-	virtual void end()= 0;
+		class ShaderProgram {
+		public:
+			virtual ~ShaderProgram() {
+			}
+			virtual void init() = 0;
+			virtual void end() = 0;
 
-	virtual void attach(VertexShader *vs, FragmentShader *fs)= 0;
-	virtual bool link(string &messages)= 0;
-	virtual void activate()= 0;
-	virtual void deactivate()= 0;
+			virtual void attach(VertexShader *vs, FragmentShader *fs) = 0;
+			virtual bool link(string &messages) = 0;
+			virtual void activate() = 0;
+			virtual void deactivate() = 0;
 
-	virtual void setUniform(const string &name, int value)= 0;
-	virtual void setUniform(const string &name, float value)= 0;
-	virtual void setUniform(const string &name, const Vec2f &value)= 0;
-	virtual void setUniform(const string &name, const Vec3f &value)= 0;
-	virtual void setUniform(const string &name, const Vec4f &value)= 0;
-	virtual void setUniform(const string &name, const Matrix3f &value)= 0;
-	virtual void setUniform(const string &name, const Matrix4f &value)= 0;
-};
+			virtual void setUniform(const string &name, int value) = 0;
+			virtual void setUniform(const string &name, float value) = 0;
+			virtual void setUniform(const string &name, const Vec2f &value) = 0;
+			virtual void setUniform(const string &name, const Vec3f &value) = 0;
+			virtual void setUniform(const string &name, const Vec4f &value) = 0;
+			virtual void setUniform(const string &name, const Matrix3f &value) = 0;
+			virtual void setUniform(const string &name, const Matrix4f &value) = 0;
+		};
 
-// =====================================================
-//	class Shader
-// =====================================================
+		// =====================================================
+		//	class Shader
+		// =====================================================
 
-class Shader{
-public:
-	virtual ~Shader(){}
-	virtual void init()= 0;
-	virtual void end()= 0;
+		class Shader {
+		public:
+			virtual ~Shader() {
+			}
+			virtual void init() = 0;
+			virtual void end() = 0;
 
-	virtual void load(const string &path)= 0;
-	virtual bool compile(string &messages)= 0;
-};
+			virtual void load(const string &path) = 0;
+			virtual bool compile(string &messages) = 0;
+		};
 
-class VertexShader: virtual public Shader{
-};
+		class VertexShader : virtual public Shader {
+		};
 
-class FragmentShader: virtual public Shader{
-};
+		class FragmentShader : virtual public Shader {
+		};
 
-// =====================================================
-//	class ShaderSource
-// =====================================================
+		// =====================================================
+		//	class ShaderSource
+		// =====================================================
 
-class ShaderSource{
-private:
-	string pathInfo;
-	string code;
+		class ShaderSource {
+		private:
+			string pathInfo;
+			string code;
 
-public:
-	const string &getPathInfo() const	{return pathInfo;}
-	const string &getCode() const		{return code;}
+		public:
+			const string &getPathInfo() const {
+				return pathInfo;
+			}
+			const string &getCode() const {
+				return code;
+			}
 
-	void load(const string &path);
-};
+			void load(const string &path);
+		};
 
-}}//end namespace
+	}
+}//end namespace
 
 #endif

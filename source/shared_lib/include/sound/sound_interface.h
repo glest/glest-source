@@ -15,31 +15,33 @@
 #include "sound_factory.h"
 #include "leak_dumper.h"
 
-namespace Shared{ namespace Sound{
+namespace Shared {
+	namespace Sound {
 
-// =====================================================
-//	class SoundInterface
-// =====================================================
+		// =====================================================
+		//	class SoundInterface
+		// =====================================================
 
-class SoundInterface{
-private:
-	SoundFactory *soundFactory;
+		class SoundInterface {
+		private:
+			SoundFactory *soundFactory;
 
-private:
-	SoundInterface() {
-		soundFactory = 0;
+		private:
+			SoundInterface() {
+				soundFactory = 0;
+			}
+			SoundInterface(SoundInterface &);
+			void operator=(SoundInterface &);
+
+		public:
+			static SoundInterface &getInstance();
+
+			void setFactory(SoundFactory *soundFactory);
+
+			SoundPlayer *newSoundPlayer();
+		};
+
 	}
-	SoundInterface(SoundInterface &);
-	void operator=(SoundInterface &);
-
-public:
-	static SoundInterface &getInstance();
-
-	void setFactory(SoundFactory *soundFactory);
-
-	SoundPlayer *newSoundPlayer();
-};
-
-}}//end namespace
+}//end namespace
 
 #endif

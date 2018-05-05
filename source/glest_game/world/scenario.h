@@ -44,149 +44,150 @@ using Shared::Xml::XmlNode;
 using namespace Shared::Util;
 
 namespace Glest {
-  namespace Game {
+	namespace Game {
 
-    enum Difficulty {
-      dVeryEasy,
-      dEasy,
-      dMedium,
-      dHard,
-      dVeryHard,
-      dInsane
-    };
+		enum Difficulty {
+			dVeryEasy,
+			dEasy,
+			dMedium,
+			dHard,
+			dVeryHard,
+			dInsane
+		};
 
-    class ScenarioInfo {
+		class ScenarioInfo {
 
-    public:
-      ScenarioInfo() {
-        difficulty = 0;
-        for (unsigned int i = 0;
-             i < (unsigned int) GameConstants::maxPlayers; ++i) {
-          factionControls[i] = ctClosed;
-          teams[i] = 0;
-          factionTypeNames[i] = "";
-          resourceMultipliers[i] = 0;
-        } mapName = "";
-        tilesetName = "";
-        techTreeName = "";
+		public:
+			ScenarioInfo() {
+				difficulty = 0;
+				for (unsigned int i = 0;
+					i < (unsigned int) GameConstants::maxPlayers; ++i) {
+					factionControls[i] = ctClosed;
+					teams[i] = 0;
+					factionTypeNames[i] = "";
+					resourceMultipliers[i] = 0;
+				} mapName = "";
+				tilesetName = "";
+				techTreeName = "";
 
-        defaultUnits = false;
-        defaultResources = false;
-        defaultVictoryConditions = false;
+				defaultUnits = false;
+				defaultResources = false;
+				defaultVictoryConditions = false;
 
-        desc = "";
+				desc = "";
 
-        fogOfWar = false;
-        fogOfWar_exploredFlag = false;
+				fogOfWar = false;
+				fogOfWar_exploredFlag = false;
 
-        allowTeamUnitSharing = false;
-        allowTeamResourceSharing = false;
+				allowTeamUnitSharing = false;
+				allowTeamResourceSharing = false;
 
-        file = "";
-        name = "";
-        namei18n = "";
-      } int difficulty;
-      ControlType factionControls[GameConstants::maxPlayers];
-      int teams[GameConstants::maxPlayers];
-      string factionTypeNames[GameConstants::maxPlayers];
-      float resourceMultipliers[GameConstants::maxPlayers];
+				file = "";
+				name = "";
+				namei18n = "";
+			} int difficulty;
+			ControlType factionControls[GameConstants::maxPlayers];
+			int teams[GameConstants::maxPlayers];
+			string factionTypeNames[GameConstants::maxPlayers];
+			float resourceMultipliers[GameConstants::maxPlayers];
 
-      string mapName;
-      string tilesetName;
-      string techTreeName;
+			string mapName;
+			string tilesetName;
+			string techTreeName;
 
-      bool defaultUnits;
-      bool defaultResources;
-      bool defaultVictoryConditions;
+			bool defaultUnits;
+			bool defaultResources;
+			bool defaultVictoryConditions;
 
-      string desc;
+			string desc;
 
-      bool fogOfWar;
-      bool fogOfWar_exploredFlag;
+			bool fogOfWar;
+			bool fogOfWar_exploredFlag;
 
-      bool allowTeamUnitSharing;
-      bool allowTeamResourceSharing;
+			bool allowTeamUnitSharing;
+			bool allowTeamResourceSharing;
 
-      string file;
-      string name;
-      string namei18n;
-    };
+			string file;
+			string name;
+			string namei18n;
+		};
 
-// =====================================================
-//      class Script
-// =====================================================
+		// =====================================================
+		//      class Script
+		// =====================================================
 
-    class Script {
-    private:
-      string name;
-      string code;
+		class Script {
+		private:
+			string name;
+			string code;
 
-    public:
-      Script(const string & name, const string & code) {
-        this->name = name;
-        this->code = code;
-      } const string & getName() const {
-        return name;
-      }
-      const string & getCode() const {
-        return code;
-      }
-    };
+		public:
+			Script(const string & name, const string & code) {
+				this->name = name;
+				this->code = code;
+			} const string & getName() const {
+				return name;
+			}
+			const string & getCode() const {
+				return code;
+			}
+		};
 
-// =====================================================
-//      class Scenario
-// =====================================================
+		// =====================================================
+		//      class Scenario
+		// =====================================================
 
-    class Scenario {
-    private:
-      typedef pair < string, string > NameScriptPair;
-      typedef vector < Script > Scripts;
+		class Scenario {
+		private:
+			typedef pair < string, string > NameScriptPair;
+			typedef vector < Script > Scripts;
 
-      ScenarioInfo info;
-      Scripts scripts;
-      Checksum checksumValue;
+			ScenarioInfo info;
+			Scripts scripts;
+			Checksum checksumValue;
 
-    public:
-      ~Scenario();
-      Checksum load(const string & path);
-      Checksum *getChecksumValue() {
-        return &checksumValue;
-      }
-      int getScriptCount() const {
-        return (int) scripts.size();
-      } const Script *getScript(int i) const {
-        return &scripts[i];
-      }
-      ScenarioInfo getInfo() const {
-        return info;
-      }
-      static bool isGameTutorial(string path);
-      static string getScenarioPath(const vector < string > dir,
-                                    const string & scenarioName,
-                                    bool getMatchingRootScenarioPathOnly =
-                                    false);
-      static string getScenarioPath(const string & dir,
-                                    const string & scenarioName);
-      static int getScenarioPathIndex(const vector < string > dirList,
-                                      const string & scenarioName);
-      static string getScenarioDir(const vector < string > dir,
-                                   const string & scenarioName);
+		public:
+			~Scenario();
+			Checksum load(const string & path);
+			Checksum *getChecksumValue() {
+				return &checksumValue;
+			}
+			int getScriptCount() const {
+				return (int) scripts.size();
+			} const Script *getScript(int i) const {
+				return &scripts[i];
+			}
+			ScenarioInfo getInfo() const {
+				return info;
+			}
+			static bool isGameTutorial(string path);
+			static string getScenarioPath(const vector < string > dir,
+				const string & scenarioName,
+				bool getMatchingRootScenarioPathOnly =
+				false);
+			static string getScenarioPath(const string & dir,
+				const string & scenarioName);
+			static int getScenarioPathIndex(const vector < string > dirList,
+				const string & scenarioName);
+			static string getScenarioDir(const vector < string > dir,
+				const string & scenarioName);
 
-      static bool loadScenarioInfo(string file,
-                                   ScenarioInfo * scenarioInfo,
-                                   bool isTutorial);
-      static ControlType strToControllerType(const string & str);
-      static string controllerTypeToStr(const ControlType & ct);
+			static bool loadScenarioInfo(string file,
+				ScenarioInfo * scenarioInfo,
+				bool isTutorial);
+			static ControlType strToControllerType(const string & str);
+			static string controllerTypeToStr(const ControlType & ct);
 
-      static void loadGameSettings(const vector < string > &dirList,
-                                   const ScenarioInfo * scenarioInfo,
-                                   GameSettings * gameSettings,
-                                   string scenarioDescription);
+			static void loadGameSettings(const vector < string > &dirList,
+				const ScenarioInfo * scenarioInfo,
+				GameSettings * gameSettings,
+				string scenarioDescription);
 
-    private:
-      string getFunctionName(const XmlNode * scriptNode);
-    };
+		private:
+			string getFunctionName(const XmlNode * scriptNode);
+		};
 
-}}                              //end namespace
+	}
+}                              //end namespace
 
 #endif

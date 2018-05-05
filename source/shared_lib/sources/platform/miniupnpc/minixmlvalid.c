@@ -11,9 +11,11 @@
 #include <string.h>
 #include "minixml.h"
 
-/* xml event structure */
+ /* xml event structure */
 struct event {
-	enum { ELTSTART, ELTEND, ATT, CHARDATA } type;
+	enum {
+		ELTSTART, ELTEND, ATT, CHARDATA
+	} type;
 	const char * data;
 	int len;
 };
@@ -25,26 +27,22 @@ struct eventlist {
 
 /* compare 2 xml event lists
  * return 0 if the two lists are equals */
-int evtlistcmp(struct eventlist * a, struct eventlist * b)
-{
+int evtlistcmp(struct eventlist * a, struct eventlist * b) {
 	int i;
-	struct event * ae, * be;
-	if(a->n != b->n)
-	{
+	struct event * ae, *be;
+	if (a->n != b->n) {
 		printf("event number not matching : %d != %d\n", a->n, b->n);
 		/*return 1;*/
 	}
-	for(i=0; i<a->n; i++)
-	{
+	for (i = 0; i < a->n; i++) {
 		ae = a->events + i;
 		be = b->events + i;
-		if(  (ae->type != be->type)
-		   ||(ae->len != be->len)
-		   ||memcmp(ae->data, be->data, ae->len))
-		{
+		if ((ae->type != be->type)
+			|| (ae->len != be->len)
+			|| memcmp(ae->data, be->data, ae->len)) {
 			printf("Found a difference : %d '%.*s' != %d '%.*s'\n",
-			       ae->type, ae->len, ae->data,
-			       be->type, be->len, be->data);
+				ae->type, ae->len, ae->data,
+				be->type, be->len, be->data);
 			return 1;
 		}
 	}
@@ -84,8 +82,7 @@ static const struct event evtref[] =
 	{ELTEND, "xmlroot", 7}
 };
 
-void startelt(void * data, const char * p, int l)
-{
+void startelt(void * data, const char * p, int l) {
 	struct eventlist * evtlist = data;
 	struct event * evt;
 	evt = evtlist->events + evtlist->n;
@@ -96,8 +93,7 @@ void startelt(void * data, const char * p, int l)
 	evtlist->n++;
 }
 
-void endelt(void * data, const char * p, int l)
-{
+void endelt(void * data, const char * p, int l) {
 	struct eventlist * evtlist = data;
 	struct event * evt;
 	evt = evtlist->events + evtlist->n;
@@ -108,8 +104,7 @@ void endelt(void * data, const char * p, int l)
 	evtlist->n++;
 }
 
-void chardata(void * data, const char * p, int l)
-{
+void chardata(void * data, const char * p, int l) {
 	struct eventlist * evtlist = data;
 	struct event * evt;
 	evt = evtlist->events + evtlist->n;
@@ -120,16 +115,14 @@ void chardata(void * data, const char * p, int l)
 	evtlist->n++;
 }
 
-int testxmlparser(const char * xml, int size)
-{
+int testxmlparser(const char * xml, int size) {
 	int r;
 	struct eventlist evtlist;
 	struct eventlist evtlistref;
 	struct xmlparser parser;
 	evtlist.n = 0;
-	evtlist.events = malloc(sizeof(struct event)*100);
-	if(evtlist.events == NULL)
-	{
+	evtlist.events = malloc(sizeof(struct event) * 100);
+	if (evtlist.events == NULL) {
 		fprintf(stderr, "Memory allocation error.\n");
 		return -1;
 	}
@@ -143,20 +136,19 @@ int testxmlparser(const char * xml, int size)
 	parsexml(&parser);
 	printf("%d events\n", evtlist.n);
 	/* compare */
-	evtlistref.n = sizeof(evtref)/sizeof(struct event);
+	evtlistref.n = sizeof(evtref) / sizeof(struct event);
 	evtlistref.events = (struct event *)evtref;
 	r = evtlistcmp(&evtlistref, &evtlist);
 	free(evtlist.events);
 	return r;
 }
 
-int main(int argc, char * * argv)
-{
+int main(int argc, char * * argv) {
 	int r;
-	(void)argc; (void)argv;
+	(void) argc; (void) argv;
 
-	r = testxmlparser(xmldata, sizeof(xmldata)-1);
-	if(r)
+	r = testxmlparser(xmldata, sizeof(xmldata) - 1);
+	if (r)
 		printf("minixml validation test failed\n");
 	return r;
 }

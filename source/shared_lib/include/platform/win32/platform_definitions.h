@@ -14,10 +14,12 @@
 
 #include "leak_dumper.h"
 
-namespace Shared{ namespace Platform{
+namespace Shared {
+	namespace Platform {
 
 
 
-}}//end namespace
+	}
+}//end namespace
 
 #endif

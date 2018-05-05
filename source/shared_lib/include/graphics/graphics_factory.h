@@ -20,75 +20,118 @@ using std::string;
 
 #include "leak_dumper.h"
 
-namespace Shared{ namespace Graphics{
+namespace Shared {
+	namespace Graphics {
 
-class Context;
+		class Context;
 
-class TextureManager;
-class Texture1D;
-class Texture2D;
-class Texture3D;
-class TextureCube;
-	
-class ModelManager;
-class ModelRenderer;
-class Model;
+		class TextureManager;
+		class Texture1D;
+		class Texture2D;
+		class Texture3D;
+		class TextureCube;
 
-class FontManager;
-class TextRenderer2D;
-class TextRenderer3D;
-class Font2D;
-class Font3D;
+		class ModelManager;
+		class ModelRenderer;
+		class Model;
 
-class ParticleManager;
-class ParticleRenderer;
-	
-class ShaderManager;
-class ShaderProgram;
-class VertexShader;
-class FragmentShader;
+		class FontManager;
+		class TextRenderer2D;
+		class TextRenderer3D;
+		class Font2D;
+		class Font3D;
 
-// =====================================================
-//	class GraphicsFactory
-// =====================================================
+		class ParticleManager;
+		class ParticleRenderer;
 
-class GraphicsFactory{
-public:
-	virtual ~GraphicsFactory(){}
+		class ShaderManager;
+		class ShaderProgram;
+		class VertexShader;
+		class FragmentShader;
 
-	//context
-	virtual Context *newContext()					{return NULL;}
+		// =====================================================
+		//	class GraphicsFactory
+		// =====================================================
 
-	//textures
-	virtual TextureManager *newTextureManager()		{return NULL;}
-	virtual Texture1D *newTexture1D()				{return NULL;}
-	virtual Texture2D *newTexture2D()				{return NULL;}
-	virtual Texture3D *newTexture3D()				{return NULL;}
-	virtual TextureCube *newTextureCube()			{return NULL;}
-	
-	//models
-	virtual ModelManager *newModelManager()			{return NULL;}
-	virtual ModelRenderer *newModelRenderer()		{return NULL;}
-	virtual Model *newModel(const string &path,TextureManager* textureManager,bool deletePixMapAfterLoad,std::map<string,std::vector<std::pair<string, string> > > *loadedFileList, string *sourceLoader)						{return NULL;}
+		class GraphicsFactory {
+		public:
+			virtual ~GraphicsFactory() {
+			}
 
-	//text
-	virtual FontManager *newFontManager()			{return NULL;}
-	virtual TextRenderer2D *newTextRenderer2D()		{return NULL;}
-	virtual TextRenderer3D *newTextRenderer3D()		{return NULL;}
-	virtual Font2D *newFont2D()						{return NULL;}
-	virtual Font3D *newFont3D()						{return NULL;}
+			//context
+			virtual Context *newContext() {
+				return NULL;
+			}
 
-	//particles
-	virtual ParticleManager *newParticleManager()	{return NULL;}
-	virtual ParticleRenderer *newParticleRenderer()	{return NULL;}
-	
-	//shaders
-	virtual ShaderManager *newShaderManager()		{return NULL;}
-	virtual ShaderProgram *newShaderProgram()		{return NULL;}
-	virtual VertexShader *newVertexShader()			{return NULL;}
-	virtual FragmentShader *newFragmentShader()		{return NULL;}
-};
+			//textures
+			virtual TextureManager *newTextureManager() {
+				return NULL;
+			}
+			virtual Texture1D *newTexture1D() {
+				return NULL;
+			}
+			virtual Texture2D *newTexture2D() {
+				return NULL;
+			}
+			virtual Texture3D *newTexture3D() {
+				return NULL;
+			}
+			virtual TextureCube *newTextureCube() {
+				return NULL;
+			}
 
-}}//end namespace
+			//models
+			virtual ModelManager *newModelManager() {
+				return NULL;
+			}
+			virtual ModelRenderer *newModelRenderer() {
+				return NULL;
+			}
+			virtual Model *newModel(const string &path, TextureManager* textureManager, bool deletePixMapAfterLoad, std::map<string, std::vector<std::pair<string, string> > > *loadedFileList, string *sourceLoader) {
+				return NULL;
+			}
+
+			//text
+			virtual FontManager *newFontManager() {
+				return NULL;
+			}
+			virtual TextRenderer2D *newTextRenderer2D() {
+				return NULL;
+			}
+			virtual TextRenderer3D *newTextRenderer3D() {
+				return NULL;
+			}
+			virtual Font2D *newFont2D() {
+				return NULL;
+			}
+			virtual Font3D *newFont3D() {
+				return NULL;
+			}
+
+			//particles
+			virtual ParticleManager *newParticleManager() {
+				return NULL;
+			}
+			virtual ParticleRenderer *newParticleRenderer() {
+				return NULL;
+			}
+
+			//shaders
+			virtual ShaderManager *newShaderManager() {
+				return NULL;
+			}
+			virtual ShaderProgram *newShaderProgram() {
+				return NULL;
+			}
+			virtual VertexShader *newVertexShader() {
+				return NULL;
+			}
+			virtual FragmentShader *newFragmentShader() {
+				return NULL;
+			}
+		};
+
+	}
+}//end namespace
 
 #endif

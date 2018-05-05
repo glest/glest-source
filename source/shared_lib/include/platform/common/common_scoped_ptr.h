@@ -25,7 +25,7 @@
 #if defined(WIN32)
 #define auto_ptr unique_ptr
 #else
-	#define auto_ptr std::unique_ptr
+#define auto_ptr std::unique_ptr
 #endif
 
 #endif

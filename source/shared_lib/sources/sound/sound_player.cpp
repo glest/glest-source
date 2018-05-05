@@ -13,16 +13,18 @@
 
 #include "leak_dumper.h"
 
-namespace Shared{ namespace Sound{
+namespace Shared {
+	namespace Sound {
 
-// =====================================================
-//	class SoundPlayerParams
-// =====================================================
+		// =====================================================
+		//	class SoundPlayerParams
+		// =====================================================
 
-SoundPlayerParams::SoundPlayerParams(){
-	staticBufferCount= 8;
-	strBufferCount= 4;
-	strBufferSize= 44050*2*2*2;	//2 second buffer
-}
+		SoundPlayerParams::SoundPlayerParams() {
+			staticBufferCount = 8;
+			strBufferCount = 4;
+			strBufferSize = 44050 * 2 * 2 * 2;	//2 second buffer
+		}
 
-}}//end namespace
+	}
+}//end namespace

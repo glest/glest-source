@@ -13,8 +13,8 @@
 #define _GLEST_GAME_SOUNDCONTAINER_H_
 
 #ifdef WIN32
-    #include <winsock2.h>
-    #include <winsock.h>
+#include <winsock2.h>
+#include <winsock.h>
 #endif
 
 #include <vector>
@@ -26,35 +26,47 @@ using std::vector;
 using Shared::Util::RandomGen;
 using Shared::Sound::StaticSound;
 
-namespace Glest{ namespace Game{
+namespace Glest {
+	namespace Game {
 
-// =====================================================
-// 	class SoundContainer
-//
-/// Holds a list of sounds that are usually played at random
-// =====================================================
+		// =====================================================
+		// 	class SoundContainer
+		//
+		/// Holds a list of sounds that are usually played at random
+		// =====================================================
 
-class SoundContainer{
-public:
-	typedef vector<StaticSound*> Sounds;
+		class SoundContainer {
+		public:
+			typedef vector<StaticSound*> Sounds;
 
-private:
-	Sounds sounds;
-	mutable RandomGen random;
-	mutable int lastSound;
+		private:
+			Sounds sounds;
+			mutable RandomGen random;
+			mutable int lastSound;
 
-public:
-	SoundContainer();
+		public:
+			SoundContainer();
 
-	void resize(int size)			{sounds.resize(size);}
-	StaticSound *&operator[](int i)	{return sounds[i];}
+			void resize(int size) {
+				sounds.resize(size);
+			}
+			StaticSound *&operator[](int i) {
+				return sounds[i];
+			}
 
-	const Sounds &getSounds() const	{return sounds;}
-	void clearSounds() {sounds.clear();}
-	Sounds *getSoundsPtr() {return &sounds;}
-	StaticSound *getRandSound() const;
-};
+			const Sounds &getSounds() const {
+				return sounds;
+			}
+			void clearSounds() {
+				sounds.clear();
+			}
+			Sounds *getSoundsPtr() {
+				return &sounds;
+			}
+			StaticSound *getRandSound() const;
+		};
 
-}}//end namespace
+	}
+}//end namespace
 
 #endif

@@ -36,1196 +36,1400 @@ using Shared::Platform::int8;
 using Shared::Platform::uint8;
 using Shared::Platform::int16;
 
-namespace Glest{ namespace Game{
+namespace Glest {
+	namespace Game {
 
-class GameSettings;
+		class GameSettings;
 
-enum NetworkMessageType {
-	nmtInvalid,
-	nmtIntro,
-	nmtPing,
-	nmtReady,
-	nmtLaunch,
-	nmtCommandList,
-	nmtText,
-	nmtQuit,
-	nmtSynchNetworkGameData,
-	nmtSynchNetworkGameDataStatus,
-	nmtSynchNetworkGameDataFileCRCCheck,
-	nmtSynchNetworkGameDataFileGet,
-	nmtBroadCastSetup,
-	nmtSwitchSetupRequest,
-	nmtPlayerIndexMessage,
-	nmtLoadingStatusMessage,
-	nmtMarkCell,
-	nmtUnMarkCell,
-	nmtHighlightCell,
-//	nmtCompressedPacket,
+		enum NetworkMessageType {
+			nmtInvalid,
+			nmtIntro,
+			nmtPing,
+			nmtReady,
+			nmtLaunch,
+			nmtCommandList,
+			nmtText,
+			nmtQuit,
+			nmtSynchNetworkGameData,
+			nmtSynchNetworkGameDataStatus,
+			nmtSynchNetworkGameDataFileCRCCheck,
+			nmtSynchNetworkGameDataFileGet,
+			nmtBroadCastSetup,
+			nmtSwitchSetupRequest,
+			nmtPlayerIndexMessage,
+			nmtLoadingStatusMessage,
+			nmtMarkCell,
+			nmtUnMarkCell,
+			nmtHighlightCell,
+			//	nmtCompressedPacket,
 
-	nmtCount
-};
+			nmtCount
+		};
 
-enum NetworkGameStateType {
-	nmgstInvalid,
-	nmgstOk,
-	nmgstNoSlots,
+		enum NetworkGameStateType {
+			nmgstInvalid,
+			nmgstOk,
+			nmgstNoSlots,
 
-	nmgstCount
-};
+			nmgstCount
+		};
 
-static const int maxLanguageStringSize= 60;
-static const int maxNetworkMessageSize= 20000;
+		static const int maxLanguageStringSize = 60;
+		static const int maxNetworkMessageSize = 20000;
 
-// =====================================================
-//	class NetworkMessage
-// =====================================================
+		// =====================================================
+		//	class NetworkMessage
+		// =====================================================
 
-enum NetworkMessageStatisticType {
-	netmsgstPacketsPerMillisecondSend,
-	netmsgstPacketsPerMillisecondSend_current_count,
-	netmsgstPacketsPerMillisecondSend_last,
+		enum NetworkMessageStatisticType {
+			netmsgstPacketsPerMillisecondSend,
+			netmsgstPacketsPerMillisecondSend_current_count,
+			netmsgstPacketsPerMillisecondSend_last,
 
-	netmsgstPacketsPerSecondSend,
-	netmsgstPacketsPerSecondSend_current_count,
-	netmsgstPacketsPerSecondSend_last,
+			netmsgstPacketsPerSecondSend,
+			netmsgstPacketsPerSecondSend_current_count,
+			netmsgstPacketsPerSecondSend_last,
 
-	netmsgstAverageSendSize,
+			netmsgstAverageSendSize,
 
-	// ---------------------------------------------
-	netmsgstPacketsPerMillisecondRecv,
-	netmsgstPacketsPerMillisecondRecv_current_count,
-	netmsgstPacketsPerMillisecondRecv_last,
+			// ---------------------------------------------
+			netmsgstPacketsPerMillisecondRecv,
+			netmsgstPacketsPerMillisecondRecv_current_count,
+			netmsgstPacketsPerMillisecondRecv_last,
 
-	netmsgstPacketsPerSecondRecv,
-	netmsgstPacketsPerSecondRecv_current_count,
-	netmsgstPacketsPerSecondRecv_last,
+			netmsgstPacketsPerSecondRecv,
+			netmsgstPacketsPerSecondRecv_current_count,
+			netmsgstPacketsPerSecondRecv_last,
 
-	netmsgstAverageRecvSize,
+			netmsgstAverageRecvSize,
 
-	netmsgstLastEvent
+			netmsgstLastEvent
 
-};
+		};
 
-class NetworkMessage {
-private:
+		class NetworkMessage {
+		private:
 
-	static auto_ptr<Mutex> mutexMessageStats;
-	static Chrono statsTimer;
-	static Chrono lastSend;
-	static Chrono lastRecv;
-	static std::map<NetworkMessageStatisticType,int64> mapMessageStats;
+			static auto_ptr<Mutex> mutexMessageStats;
+			static Chrono statsTimer;
+			static Chrono lastSend;
+			static Chrono lastRecv;
+			static std::map<NetworkMessageStatisticType, int64> mapMessageStats;
 
-public:
-	static void resetNetworkPacketStats();
-	static string getNetworkPacketStats();
+		public:
+			static void resetNetworkPacketStats();
+			static string getNetworkPacketStats();
 
-	static bool useOldProtocol;
-	virtual ~NetworkMessage(){}
-	virtual bool receive(Socket* socket)= 0;
-	virtual bool receive(Socket* socket, NetworkMessageType type) { return receive(socket); };
+			static bool useOldProtocol;
+			virtual ~NetworkMessage() {
+			}
+			virtual bool receive(Socket* socket) = 0;
+			virtual bool receive(Socket* socket, NetworkMessageType type) {
+				return receive(socket);
+			};
 
-	virtual void send(Socket* socket) = 0;
-	virtual size_t getDataSize() const = 0;
-	virtual unsigned char * getData() { return NULL; }
+			virtual void send(Socket* socket) = 0;
+			virtual size_t getDataSize() const = 0;
+			virtual unsigned char * getData() {
+				return NULL;
+			}
 
-	virtual NetworkMessageType getNetworkMessageType() const = 0;
+			virtual NetworkMessageType getNetworkMessageType() const = 0;
 
-	void dump_packet(string label, const void* data, int dataSize, bool isSend);
+			void dump_packet(string label, const void* data, int dataSize, bool isSend);
 
-protected:
-	//bool peek(Socket* socket, void* data, int dataSize);
-	bool receive(Socket* socket, void* data, int dataSize,bool tryReceiveUntilDataSizeMet);
-	void send(Socket* socket, const void* data, int dataSize);
-	void send(Socket* socket, const void* data, int dataSize, int8 messageType);
-	void send(Socket* socket, const void* data, int dataSize, int8 messageType, uint32 compressedLength);
+		protected:
+			//bool peek(Socket* socket, void* data, int dataSize);
+			bool receive(Socket* socket, void* data, int dataSize, bool tryReceiveUntilDataSizeMet);
+			void send(Socket* socket, const void* data, int dataSize);
+			void send(Socket* socket, const void* data, int dataSize, int8 messageType);
+			void send(Socket* socket, const void* data, int dataSize, int8 messageType, uint32 compressedLength);
 
-	virtual const char * getPackedMessageFormat() const = 0;
-	virtual unsigned int getPackedSize() = 0;
-	virtual void unpackMessage(unsigned char *buf) = 0;
-	virtual unsigned char * packMessage() = 0;
-};
+			virtual const char * getPackedMessageFormat() const = 0;
+			virtual unsigned int getPackedSize() = 0;
+			virtual void unpackMessage(unsigned char *buf) = 0;
+			virtual unsigned char * packMessage() = 0;
+		};
 
-// =====================================================
-//	class NetworkMessageIntro
-//
-//	Message sent from the server to the client
-//	when the client connects and vice versa
-// =====================================================
-
-#pragma pack(push, 1)
-class NetworkMessageIntro: public NetworkMessage{
-private:
-	static const int maxVersionStringSize= 128;
-	static const int maxNameSize= 32;
-	static const int maxSmallStringSize= 60;
-
-private:
-	int8 messageType;
-	struct Data {
-		int32 sessionId;
-		NetworkString<maxVersionStringSize> versionString;
-		NetworkString<maxNameSize> name;
-		int16 playerIndex;
-		int8 gameState;
-		uint32 externalIp;
-		uint32 ftpPort;
-		NetworkString<maxLanguageStringSize> language;
-		int8 gameInProgress;
-		NetworkString<maxSmallStringSize> playerUUID;
-		NetworkString<maxSmallStringSize> platform;
-	};
-
-	void toEndian();
-	void fromEndian();
-
-private:
-	Data data;
-
-protected:
-
-public:
-	NetworkMessageIntro();
-	NetworkMessageIntro(int32 sessionId, const string &versionString,
-			const string &name, int playerIndex, NetworkGameStateType gameState,
-			uint32 externalIp, uint32 ftpPort, const string &playerLanguage,
-			int gameInProgress, const string &playerUUID, const string &platform);
-
-
-	virtual const char * getPackedMessageFormat() const;
-	virtual unsigned int getPackedSize();
-	virtual void unpackMessage(unsigned char *buf);
-	virtual unsigned char * packMessage();
-
-	virtual size_t getDataSize() const { return sizeof(Data); }
-
-	virtual NetworkMessageType getNetworkMessageType() const {
-		return nmtIntro;
-	}
-
-	int32 getSessionId() const 					{ return data.sessionId;}
-	string getVersionString() const				{ return data.versionString.getString(); }
-	string getName() const						{ return data.name.getString(); }
-	int getPlayerIndex() const					{ return data.playerIndex; }
-	NetworkGameStateType getGameState() const 	{ return static_cast<NetworkGameStateType>(data.gameState); }
-	uint32 getExternalIp() const                { return data.externalIp;}
-	uint32 getFtpPort() const					{ return data.ftpPort; }
-	string getPlayerLanguage() const			{ return data.language.getString(); }
-	uint8 getGameInProgress() const				{ return data.gameInProgress; }
-
-	string getPlayerUUID() const				{ return data.playerUUID.getString();}
-	string getPlayerPlatform() const			{ return data.platform.getString();}
-
-	virtual bool receive(Socket* socket);
-	virtual void send(Socket* socket);
-
-	string toString() const;
-};
-#pragma pack(pop)
-
-// =====================================================
-//	class NetworkMessagePing
-//
-//	Message sent at any time
-// =====================================================
+		// =====================================================
+		//	class NetworkMessageIntro
+		//
+		//	Message sent from the server to the client
+		//	when the client connects and vice versa
+		// =====================================================
 
 #pragma pack(push, 1)
-class NetworkMessagePing: public NetworkMessage{
-private:
-	int8 messageType;
-	struct Data{
-		int32 pingFrequency;
-		int64 pingTime;
-	};
-	void toEndian();
-	void fromEndian();
+		class NetworkMessageIntro : public NetworkMessage {
+		private:
+			static const int maxVersionStringSize = 128;
+			static const int maxNameSize = 32;
+			static const int maxSmallStringSize = 60;
 
-private:
-	Data data;
-	int64 pingReceivedLocalTime;
+		private:
+			int8 messageType;
+			struct Data {
+				int32 sessionId;
+				NetworkString<maxVersionStringSize> versionString;
+				NetworkString<maxNameSize> name;
+				int16 playerIndex;
+				int8 gameState;
+				uint32 externalIp;
+				uint32 ftpPort;
+				NetworkString<maxLanguageStringSize> language;
+				int8 gameInProgress;
+				NetworkString<maxSmallStringSize> playerUUID;
+				NetworkString<maxSmallStringSize> platform;
+			};
 
-protected:
-	virtual const char * getPackedMessageFormat() const;
-	virtual unsigned int getPackedSize();
-	virtual void unpackMessage(unsigned char *buf);
-	virtual unsigned char * packMessage();
+			void toEndian();
+			void fromEndian();
 
-public:
-	NetworkMessagePing();
-	NetworkMessagePing(int32 pingFrequency, int64 pingTime);
+		private:
+			Data data;
 
-	virtual size_t getDataSize() const { return sizeof(Data); }
+		protected:
 
-	virtual NetworkMessageType getNetworkMessageType() const {
-		return nmtPing;
-	}
+		public:
+			NetworkMessageIntro();
+			NetworkMessageIntro(int32 sessionId, const string &versionString,
+				const string &name, int playerIndex, NetworkGameStateType gameState,
+				uint32 externalIp, uint32 ftpPort, const string &playerLanguage,
+				int gameInProgress, const string &playerUUID, const string &platform);
 
-	int32 getPingFrequency() const	{return data.pingFrequency;}
-	int64 getPingTime() const	{return data.pingTime;}
-	int64 getPingReceivedLocalTime() const { return pingReceivedLocalTime; }
-	void setPingReceivedLocalTime(int64 pingTime)  { pingReceivedLocalTime = pingTime; }
 
-	virtual bool receive(Socket* socket);
-	virtual void send(Socket* socket);
-};
+			virtual const char * getPackedMessageFormat() const;
+			virtual unsigned int getPackedSize();
+			virtual void unpackMessage(unsigned char *buf);
+			virtual unsigned char * packMessage();
+
+			virtual size_t getDataSize() const {
+				return sizeof(Data);
+			}
+
+			virtual NetworkMessageType getNetworkMessageType() const {
+				return nmtIntro;
+			}
+
+			int32 getSessionId() const {
+				return data.sessionId;
+			}
+			string getVersionString() const {
+				return data.versionString.getString();
+			}
+			string getName() const {
+				return data.name.getString();
+			}
+			int getPlayerIndex() const {
+				return data.playerIndex;
+			}
+			NetworkGameStateType getGameState() const {
+				return static_cast<NetworkGameStateType>(data.gameState);
+			}
+			uint32 getExternalIp() const {
+				return data.externalIp;
+			}
+			uint32 getFtpPort() const {
+				return data.ftpPort;
+			}
+			string getPlayerLanguage() const {
+				return data.language.getString();
+			}
+			uint8 getGameInProgress() const {
+				return data.gameInProgress;
+			}
+
+			string getPlayerUUID() const {
+				return data.playerUUID.getString();
+			}
+			string getPlayerPlatform() const {
+				return data.platform.getString();
+			}
+
+			virtual bool receive(Socket* socket);
+			virtual void send(Socket* socket);
+
+			string toString() const;
+		};
 #pragma pack(pop)
 
-// =====================================================
-//	class NetworkMessageReady
-//
-//	Message sent at the beginning of the game
-// =====================================================
+		// =====================================================
+		//	class NetworkMessagePing
+		//
+		//	Message sent at any time
+		// =====================================================
 
 #pragma pack(push, 1)
-class NetworkMessageReady: public NetworkMessage{
-private:
-	int8 messageType;
-	struct Data{
-		uint32 checksum;
-	};
-	void toEndian();
-	void fromEndian();
+		class NetworkMessagePing : public NetworkMessage {
+		private:
+			int8 messageType;
+			struct Data {
+				int32 pingFrequency;
+				int64 pingTime;
+			};
+			void toEndian();
+			void fromEndian();
 
-private:
-	Data data;
+		private:
+			Data data;
+			int64 pingReceivedLocalTime;
 
-protected:
-	virtual const char * getPackedMessageFormat() const;
-	virtual unsigned int getPackedSize();
-	virtual void unpackMessage(unsigned char *buf);
-	virtual unsigned char * packMessage();
+		protected:
+			virtual const char * getPackedMessageFormat() const;
+			virtual unsigned int getPackedSize();
+			virtual void unpackMessage(unsigned char *buf);
+			virtual unsigned char * packMessage();
 
-public:
-	NetworkMessageReady();
-	explicit NetworkMessageReady(uint32 checksum);
+		public:
+			NetworkMessagePing();
+			NetworkMessagePing(int32 pingFrequency, int64 pingTime);
 
-	virtual size_t getDataSize() const { return sizeof(Data); }
+			virtual size_t getDataSize() const {
+				return sizeof(Data);
+			}
 
-	virtual NetworkMessageType getNetworkMessageType() const {
-		return nmtReady;
-	}
+			virtual NetworkMessageType getNetworkMessageType() const {
+				return nmtPing;
+			}
 
-	uint32 getChecksum() const	{return data.checksum;}
+			int32 getPingFrequency() const {
+				return data.pingFrequency;
+			}
+			int64 getPingTime() const {
+				return data.pingTime;
+			}
+			int64 getPingReceivedLocalTime() const {
+				return pingReceivedLocalTime;
+			}
+			void setPingReceivedLocalTime(int64 pingTime) {
+				pingReceivedLocalTime = pingTime;
+			}
 
-	virtual bool receive(Socket* socket);
-	virtual void send(Socket* socket);
-};
+			virtual bool receive(Socket* socket);
+			virtual void send(Socket* socket);
+		};
 #pragma pack(pop)
 
-// =====================================================
-//	class NetworkMessageLaunch
-//
-//	Message sent from the server to the client
-//	to launch the game
-// =====================================================
+		// =====================================================
+		//	class NetworkMessageReady
+		//
+		//	Message sent at the beginning of the game
+		// =====================================================
 
 #pragma pack(push, 1)
-class NetworkMessageLaunch: public NetworkMessage {
-private:
-	static const int maxStringSize= 256;
-	static const int maxSmallStringSize= 60;
-	static const int maxFactionCRCCount= 20;
+		class NetworkMessageReady : public NetworkMessage {
+		private:
+			int8 messageType;
+			struct Data {
+				uint32 checksum;
+			};
+			void toEndian();
+			void fromEndian();
 
-private:
+		private:
+			Data data;
 
-	int8 messageType;
-	uint32 compressedLength;
-	struct Data {
-		NetworkString<maxStringSize> description;
-		NetworkString<maxSmallStringSize> map;
-		NetworkString<maxSmallStringSize> tileset;
-		NetworkString<maxSmallStringSize> tech;
-		NetworkString<maxSmallStringSize> factionTypeNames[GameConstants::maxPlayers]; //faction names
-		NetworkString<maxSmallStringSize> networkPlayerNames[GameConstants::maxPlayers]; //networkPlayerNames
-		NetworkString<maxSmallStringSize> networkPlayerPlatform[GameConstants::maxPlayers];
-		int32 networkPlayerStatuses[GameConstants::maxPlayers]; //networkPlayerStatuses
-		NetworkString<maxSmallStringSize> networkPlayerLanguages[GameConstants::maxPlayers];
+		protected:
+			virtual const char * getPackedMessageFormat() const;
+			virtual unsigned int getPackedSize();
+			virtual void unpackMessage(unsigned char *buf);
+			virtual unsigned char * packMessage();
 
-		uint32 mapCRC;
-		int8 mapFilter;
-		uint32 tilesetCRC;
-		uint32 techCRC;
-		NetworkString<maxSmallStringSize> factionNameList[maxFactionCRCCount];
-		uint32 factionCRCList[maxFactionCRCCount];
+		public:
+			NetworkMessageReady();
+			explicit NetworkMessageReady(uint32 checksum);
 
-		int8 factionControls[GameConstants::maxPlayers];
-		int8 resourceMultiplierIndex[GameConstants::maxPlayers];
+			virtual size_t getDataSize() const {
+				return sizeof(Data);
+			}
 
-		int8 thisFactionIndex;
-		int8 factionCount;
-		int8 teams[GameConstants::maxPlayers];
-		int8 startLocationIndex[GameConstants::maxPlayers];
+			virtual NetworkMessageType getNetworkMessageType() const {
+				return nmtReady;
+			}
 
-		int8 defaultResources;
-        int8 defaultUnits;
-        int8 defaultVictoryConditions;
-		int8 fogOfWar;
-		int8 allowObservers;
-		int8 enableObserverModeAtEndGame;
-		int8 enableServerControlledAI;
-		uint8 networkFramePeriod; // allowed values 0 - 255
-		int8 networkPauseGameForLaggedClients;
-		int8 pathFinderType;
-		uint32 flagTypes1;
+			uint32 getChecksum() const {
+				return data.checksum;
+			}
 
-		int8 aiAcceptSwitchTeamPercentChance;
-		int8 cpuReplacementMultiplier;
-		int32 masterserver_admin;
-		int32 masterserver_admin_factionIndex;
-
-		NetworkString<maxStringSize> scenario;
-
-		NetworkString<maxSmallStringSize> networkPlayerUUID[GameConstants::maxPlayers];
-
-		int8 networkAllowNativeLanguageTechtree;
-		NetworkString<maxSmallStringSize> gameUUID;
-	};
-	void toEndian();
-	void fromEndian();
-	std::pair<unsigned char *,unsigned long> getCompressedMessage();
-private:
-	Data data;
-
-protected:
-	virtual const char * getPackedMessageFormat() const;
-	virtual unsigned int getPackedSize();
-	virtual void unpackMessage(unsigned char *buf);
-	virtual unsigned char * packMessage();
-
-public:
-	NetworkMessageLaunch();
-	NetworkMessageLaunch(const GameSettings *gameSettings,int8 messageType);
-
-	virtual size_t getDataSize() const { return sizeof(Data); }
-	virtual unsigned char * getData();
-
-	virtual NetworkMessageType getNetworkMessageType() const {
-		return nmtLaunch;
-	}
-
-	void buildGameSettings(GameSettings *gameSettings) const;
-	int getMessageType() const { return messageType; }
-
-	int getMapCRC() const { return data.mapCRC; }
-	int getTilesetCRC() const { return data.tilesetCRC; }
-	int getTechCRC() const { return data.techCRC; }
-	vector<pair<string,uint32> > getFactionCRCList() const;
-
-	virtual bool receive(Socket* socket);
-	virtual bool receive(Socket* socket, NetworkMessageType type);
-
-	virtual void send(Socket* socket);
-};
+			virtual bool receive(Socket* socket);
+			virtual void send(Socket* socket);
+		};
 #pragma pack(pop)
 
-// =====================================================
-//	class CommandList
-//
-//	Message to order a commands to several units
-// =====================================================
+		// =====================================================
+		//	class NetworkMessageLaunch
+		//
+		//	Message sent from the server to the client
+		//	to launch the game
+		// =====================================================
 
 #pragma pack(push, 1)
-class NetworkMessageCommandList: public NetworkMessage {
+		class NetworkMessageLaunch : public NetworkMessage {
+		private:
+			static const int maxStringSize = 256;
+			static const int maxSmallStringSize = 60;
+			static const int maxFactionCRCCount = 20;
 
-private:
+		private:
 
-	struct DataHeader {
+			int8 messageType;
+			uint32 compressedLength;
+			struct Data {
+				NetworkString<maxStringSize> description;
+				NetworkString<maxSmallStringSize> map;
+				NetworkString<maxSmallStringSize> tileset;
+				NetworkString<maxSmallStringSize> tech;
+				NetworkString<maxSmallStringSize> factionTypeNames[GameConstants::maxPlayers]; //faction names
+				NetworkString<maxSmallStringSize> networkPlayerNames[GameConstants::maxPlayers]; //networkPlayerNames
+				NetworkString<maxSmallStringSize> networkPlayerPlatform[GameConstants::maxPlayers];
+				int32 networkPlayerStatuses[GameConstants::maxPlayers]; //networkPlayerStatuses
+				NetworkString<maxSmallStringSize> networkPlayerLanguages[GameConstants::maxPlayers];
 
-		uint16 commandCount;
-		int32 frameCount;
-		uint32 networkPlayerFactionCRC[GameConstants::maxPlayers];
-	};
+				uint32 mapCRC;
+				int8 mapFilter;
+				uint32 tilesetCRC;
+				uint32 techCRC;
+				NetworkString<maxSmallStringSize> factionNameList[maxFactionCRCCount];
+				uint32 factionCRCList[maxFactionCRCCount];
 
-	static const int32 commandListHeaderSize = sizeof(DataHeader);
+				int8 factionControls[GameConstants::maxPlayers];
+				int8 resourceMultiplierIndex[GameConstants::maxPlayers];
 
-	struct Data {
-		int8 messageType;
-		DataHeader header;
-		std::vector<NetworkCommand> commands;
-	};
-	void init(Data &data_ref) {
-		data_ref.messageType = 0;
-		data_ref.header.commandCount = 0;
-		data_ref.header.frameCount = 0;
-		for(int index = 0; index < GameConstants::maxPlayers; ++index) {
-			data_ref.header.networkPlayerFactionCRC[index] = 0;
-		}
-	}
-	void toEndianHeader();
-	void fromEndianHeader();
-	void toEndianDetail(uint16 totalCommand);
-	void fromEndianDetail();
+				int8 thisFactionIndex;
+				int8 factionCount;
+				int8 teams[GameConstants::maxPlayers];
+				int8 startLocationIndex[GameConstants::maxPlayers];
 
-private:
-	Data data;
+				int8 defaultResources;
+				int8 defaultUnits;
+				int8 defaultVictoryConditions;
+				int8 fogOfWar;
+				int8 allowObservers;
+				int8 enableObserverModeAtEndGame;
+				int8 enableServerControlledAI;
+				uint8 networkFramePeriod; // allowed values 0 - 255
+				int8 networkPauseGameForLaggedClients;
+				int8 pathFinderType;
+				uint32 flagTypes1;
 
-protected:
-	virtual const char * getPackedMessageFormat() const { return NULL; }
-	virtual unsigned int getPackedSize() { return 0; }
-	virtual void unpackMessage(unsigned char *buf) { };
-	virtual unsigned char * packMessage() { return NULL; }
+				int8 aiAcceptSwitchTeamPercentChance;
+				int8 cpuReplacementMultiplier;
+				int32 masterserver_admin;
+				int32 masterserver_admin_factionIndex;
 
-	const char * getPackedMessageFormatHeader() const;
-	unsigned int getPackedSizeHeader();
-	void unpackMessageHeader(unsigned char *buf);
-	unsigned char * packMessageHeader();
+				NetworkString<maxStringSize> scenario;
 
-	const char * getPackedMessageFormatDetail() const;
-	unsigned int getPackedSizeDetail(int count);
-	void unpackMessageDetail(unsigned char *buf,int count);
-	unsigned char * packMessageDetail(uint16 totalCommand);
+				NetworkString<maxSmallStringSize> networkPlayerUUID[GameConstants::maxPlayers];
 
-public:
-	explicit NetworkMessageCommandList(int32 frameCount= -1);
+				int8 networkAllowNativeLanguageTechtree;
+				NetworkString<maxSmallStringSize> gameUUID;
+			};
+			void toEndian();
+			void fromEndian();
+			std::pair<unsigned char *, unsigned long> getCompressedMessage();
+		private:
+			Data data;
 
-	virtual size_t getDataSize() const { return sizeof(Data); }
-	virtual unsigned char * getData();
+		protected:
+			virtual const char * getPackedMessageFormat() const;
+			virtual unsigned int getPackedSize();
+			virtual void unpackMessage(unsigned char *buf);
+			virtual unsigned char * packMessage();
 
-	virtual NetworkMessageType getNetworkMessageType() const {
-		return nmtCommandList;
-	}
+		public:
+			NetworkMessageLaunch();
+			NetworkMessageLaunch(const GameSettings *gameSettings, int8 messageType);
 
-	bool addCommand(const NetworkCommand* networkCommand);
+			virtual size_t getDataSize() const {
+				return sizeof(Data);
+			}
+			virtual unsigned char * getData();
 
-	void clear()										{data.header.commandCount= 0;}
-	int getCommandCount() const							{return data.header.commandCount;}
-	int getFrameCount() const							{return data.header.frameCount;}
-	uint32 getNetworkPlayerFactionCRC(int index) const  {return data.header.networkPlayerFactionCRC[index];}
-	void setNetworkPlayerFactionCRC(int index, uint32 crc) { data.header.networkPlayerFactionCRC[index]=crc;}
+			virtual NetworkMessageType getNetworkMessageType() const {
+				return nmtLaunch;
+			}
 
-	const NetworkCommand* getCommand(int i) const	{return &data.commands[i];}
+			void buildGameSettings(GameSettings *gameSettings) const;
+			int getMessageType() const {
+				return messageType;
+			}
 
-	virtual bool receive(Socket* socket);
-	virtual void send(Socket* socket);
-};
+			int getMapCRC() const {
+				return data.mapCRC;
+			}
+			int getTilesetCRC() const {
+				return data.tilesetCRC;
+			}
+			int getTechCRC() const {
+				return data.techCRC;
+			}
+			vector<pair<string, uint32> > getFactionCRCList() const;
+
+			virtual bool receive(Socket* socket);
+			virtual bool receive(Socket* socket, NetworkMessageType type);
+
+			virtual void send(Socket* socket);
+		};
 #pragma pack(pop)
 
-// =====================================================
-//	class NetworkMessageText
-//
-//	Chat text message
-// =====================================================
+		// =====================================================
+		//	class CommandList
+		//
+		//	Message to order a commands to several units
+		// =====================================================
 
 #pragma pack(push, 1)
-class NetworkMessageText: public NetworkMessage {
-private:
-	static const int maxTextStringSize= 500;
+		class NetworkMessageCommandList : public NetworkMessage {
 
-private:
-	int8 messageType;
-	struct Data{
+		private:
 
-		NetworkString<maxTextStringSize> text;
-		int8 teamIndex;
-		int8 playerIndex;
-		NetworkString<maxLanguageStringSize> targetLanguage;
-	};
-	void toEndian();
-	void fromEndian();
+			struct DataHeader {
 
-private:
-	Data data;
+				uint16 commandCount;
+				int32 frameCount;
+				uint32 networkPlayerFactionCRC[GameConstants::maxPlayers];
+			};
 
-protected:
-	virtual const char * getPackedMessageFormat() const;
-	virtual unsigned int getPackedSize();
-	virtual void unpackMessage(unsigned char *buf);
-	virtual unsigned char * packMessage();
+			static const int32 commandListHeaderSize = sizeof(DataHeader);
 
-public:
-	NetworkMessageText();
-	NetworkMessageText(const string &text, int teamIndex, int playerIndex,
-			const string targetLanguage);
+			struct Data {
+				int8 messageType;
+				DataHeader header;
+				std::vector<NetworkCommand> commands;
+			};
+			void init(Data &data_ref) {
+				data_ref.messageType = 0;
+				data_ref.header.commandCount = 0;
+				data_ref.header.frameCount = 0;
+				for (int index = 0; index < GameConstants::maxPlayers; ++index) {
+					data_ref.header.networkPlayerFactionCRC[index] = 0;
+				}
+			}
+			void toEndianHeader();
+			void fromEndianHeader();
+			void toEndianDetail(uint16 totalCommand);
+			void fromEndianDetail();
 
-	virtual size_t getDataSize() const { return sizeof(Data); }
+		private:
+			Data data;
 
-	virtual NetworkMessageType getNetworkMessageType() const {
-		return nmtText;
-	}
+		protected:
+			virtual const char * getPackedMessageFormat() const {
+				return NULL;
+			}
+			virtual unsigned int getPackedSize() {
+				return 0;
+			}
+			virtual void unpackMessage(unsigned char *buf) {
+			};
+			virtual unsigned char * packMessage() {
+				return NULL;
+			}
 
-	string getText() const		{return data.text.getString();}
-	int getTeamIndex() const	{return data.teamIndex;}
-	int getPlayerIndex() const  {return data.playerIndex;}
-	string getTargetLanguage() const  {return data.targetLanguage.getString();}
+			const char * getPackedMessageFormatHeader() const;
+			unsigned int getPackedSizeHeader();
+			void unpackMessageHeader(unsigned char *buf);
+			unsigned char * packMessageHeader();
 
-	virtual bool receive(Socket* socket);
-	virtual void send(Socket* socket);
-	NetworkMessageText * getCopy() const;
-};
+			const char * getPackedMessageFormatDetail() const;
+			unsigned int getPackedSizeDetail(int count);
+			void unpackMessageDetail(unsigned char *buf, int count);
+			unsigned char * packMessageDetail(uint16 totalCommand);
+
+		public:
+			explicit NetworkMessageCommandList(int32 frameCount = -1);
+
+			virtual size_t getDataSize() const {
+				return sizeof(Data);
+			}
+			virtual unsigned char * getData();
+
+			virtual NetworkMessageType getNetworkMessageType() const {
+				return nmtCommandList;
+			}
+
+			bool addCommand(const NetworkCommand* networkCommand);
+
+			void clear() {
+				data.header.commandCount = 0;
+			}
+			int getCommandCount() const {
+				return data.header.commandCount;
+			}
+			int getFrameCount() const {
+				return data.header.frameCount;
+			}
+			uint32 getNetworkPlayerFactionCRC(int index) const {
+				return data.header.networkPlayerFactionCRC[index];
+			}
+			void setNetworkPlayerFactionCRC(int index, uint32 crc) {
+				data.header.networkPlayerFactionCRC[index] = crc;
+			}
+
+			const NetworkCommand* getCommand(int i) const {
+				return &data.commands[i];
+			}
+
+			virtual bool receive(Socket* socket);
+			virtual void send(Socket* socket);
+		};
 #pragma pack(pop)
 
-// =====================================================
-//	class NetworkMessageQuit
-//
-//	Message sent at the beginning of the game
-// =====================================================
+		// =====================================================
+		//	class NetworkMessageText
+		//
+		//	Chat text message
+		// =====================================================
 
 #pragma pack(push, 1)
-class NetworkMessageQuit: public NetworkMessage{
-private:
+		class NetworkMessageText : public NetworkMessage {
+		private:
+			static const int maxTextStringSize = 500;
 
-	int8 messageType;
-	//struct Data{
-	//	int8 messageType;
-	//};
-	void toEndian();
-	void fromEndian();
+		private:
+			int8 messageType;
+			struct Data {
 
-private:
-	//Data data;
+				NetworkString<maxTextStringSize> text;
+				int8 teamIndex;
+				int8 playerIndex;
+				NetworkString<maxLanguageStringSize> targetLanguage;
+			};
+			void toEndian();
+			void fromEndian();
 
-protected:
-	virtual const char * getPackedMessageFormat() const;
-	virtual unsigned int getPackedSize();
-	virtual void unpackMessage(unsigned char *buf);
-	virtual unsigned char * packMessage();
+		private:
+			Data data;
 
-public:
-	NetworkMessageQuit();
+		protected:
+			virtual const char * getPackedMessageFormat() const;
+			virtual unsigned int getPackedSize();
+			virtual void unpackMessage(unsigned char *buf);
+			virtual unsigned char * packMessage();
 
-	//virtual size_t getDataSize() const { return sizeof(Data); }
-	virtual size_t getDataSize() const { return 0; }
+		public:
+			NetworkMessageText();
+			NetworkMessageText(const string &text, int teamIndex, int playerIndex,
+				const string targetLanguage);
 
-	virtual NetworkMessageType getNetworkMessageType() const {
-		return nmtQuit;
-	}
+			virtual size_t getDataSize() const {
+				return sizeof(Data);
+			}
 
-	virtual bool receive(Socket* socket);
-	virtual void send(Socket* socket);
-};
+			virtual NetworkMessageType getNetworkMessageType() const {
+				return nmtText;
+			}
+
+			string getText() const {
+				return data.text.getString();
+			}
+			int getTeamIndex() const {
+				return data.teamIndex;
+			}
+			int getPlayerIndex() const {
+				return data.playerIndex;
+			}
+			string getTargetLanguage() const {
+				return data.targetLanguage.getString();
+			}
+
+			virtual bool receive(Socket* socket);
+			virtual void send(Socket* socket);
+			NetworkMessageText * getCopy() const;
+		};
 #pragma pack(pop)
 
-// =====================================================
-//	class NetworkMessageSynchNetworkGameData
-//
-//	Message sent at the beginning of a network game
-// =====================================================
+		// =====================================================
+		//	class NetworkMessageQuit
+		//
+		//	Message sent at the beginning of the game
+		// =====================================================
 
 #pragma pack(push, 1)
-class NetworkMessageSynchNetworkGameData: public NetworkMessage{
+		class NetworkMessageQuit : public NetworkMessage {
+		private:
 
-private:
+			int8 messageType;
+			//struct Data{
+			//	int8 messageType;
+			//};
+			void toEndian();
+			void fromEndian();
 
-static const int maxStringSize= 255;
-static const int maxFileCRCCount= 1500;
-static const int maxFileCRCPacketCount= 25;
+		private:
+			//Data data;
 
-private:
+		protected:
+			virtual const char * getPackedMessageFormat() const;
+			virtual unsigned int getPackedSize();
+			virtual void unpackMessage(unsigned char *buf);
+			virtual unsigned char * packMessage();
 
-	struct DataHeader {
-		NetworkString<maxStringSize> map;
-		NetworkString<maxStringSize> tileset;
-		NetworkString<maxStringSize> tech;
+		public:
+			NetworkMessageQuit();
 
-		uint32 mapCRC;
-		uint32 tilesetCRC;
-		uint32 techCRC;
+			//virtual size_t getDataSize() const { return sizeof(Data); }
+			virtual size_t getDataSize() const {
+				return 0;
+			}
 
-		uint32 techCRCFileCount;
-	};
+			virtual NetworkMessageType getNetworkMessageType() const {
+				return nmtQuit;
+			}
 
-	static const int32 HeaderSize = sizeof(DataHeader);
-
-	struct DataDetail {
-		NetworkString<maxStringSize> techCRCFileList[maxFileCRCCount];
-		uint32 techCRCFileCRCList[maxFileCRCCount];
-	};
-
-	static const int32 DetailSize1 = sizeof(NetworkString<maxStringSize>);
-	static const int32 DetailSize2 = sizeof(uint32);
-
-	struct Data {
-		int8 messageType;
-		DataHeader header;
-		DataDetail detail;
-	};
-	void toEndianHeader();
-	void fromEndianHeader();
-	void toEndianDetail(uint32 totalFileCount);
-	void fromEndianDetail();
-
-private:
-	Data data;
-
-protected:
-	virtual const char * getPackedMessageFormat() const { return NULL; }
-	virtual unsigned int getPackedSize() { return 0; }
-	virtual void unpackMessage(unsigned char *buf) { };
-	virtual unsigned char * packMessage() { return NULL; }
-
-	const char * getPackedMessageFormatHeader() const;
-	unsigned int getPackedSizeHeader();
-	void unpackMessageHeader(unsigned char *buf);
-	unsigned char * packMessageHeader();
-
-	unsigned int getPackedSizeDetail();
-	void unpackMessageDetail(unsigned char *buf);
-	unsigned char * packMessageDetail();
-
-public:
-    NetworkMessageSynchNetworkGameData() {};
-    explicit NetworkMessageSynchNetworkGameData(const GameSettings *gameSettings);
-
-	virtual size_t getDataSize() const { return sizeof(Data); }
-
-	virtual NetworkMessageType getNetworkMessageType() const {
-		return nmtSynchNetworkGameData;
-	}
-
-	virtual bool receive(Socket* socket);
-	virtual void send(Socket* socket);
-
-	string getMap() const		{return data.header.map.getString();}
-	string getTileset() const   {return data.header.tileset.getString();}
-	string getTech() const		{return data.header.tech.getString();}
-
-	uint32 getMapCRC() const		{return data.header.mapCRC;}
-	uint32 getTilesetCRC() const	{return data.header.tilesetCRC;}
-	uint32 getTechCRC() const	{return data.header.techCRC;}
-
-	uint32 getTechCRCFileCount() const {return data.header.techCRCFileCount;}
-	const NetworkString<maxStringSize> * getTechCRCFileList() const {return &data.detail.techCRCFileList[0];}
-	const uint32 * getTechCRCFileCRCList() const {return data.detail.techCRCFileCRCList;}
-
-	string getTechCRCFileMismatchReport(vector<std::pair<string,uint32> > &vctFileList);
-};
+			virtual bool receive(Socket* socket);
+			virtual void send(Socket* socket);
+		};
 #pragma pack(pop)
 
-// =====================================================
-//	class NetworkMessageSynchNetworkGameDataStatus
-//
-//	Message sent at the beggining of a network game
-// =====================================================
+		// =====================================================
+		//	class NetworkMessageSynchNetworkGameData
+		//
+		//	Message sent at the beginning of a network game
+		// =====================================================
 
 #pragma pack(push, 1)
-class NetworkMessageSynchNetworkGameDataStatus: public NetworkMessage{
+		class NetworkMessageSynchNetworkGameData : public NetworkMessage {
 
-private:
+		private:
 
-static const int maxStringSize= 255;
-static const int maxFileCRCCount= 1500;
-static const uint32 maxFileCRCPacketCount= 25;
+			static const int maxStringSize = 255;
+			static const int maxFileCRCCount = 1500;
+			static const int maxFileCRCPacketCount = 25;
 
-private:
+		private:
 
-	struct DataHeader {
-		uint32 mapCRC;
-		uint32 tilesetCRC;
-		uint32 techCRC;
+			struct DataHeader {
+				NetworkString<maxStringSize> map;
+				NetworkString<maxStringSize> tileset;
+				NetworkString<maxStringSize> tech;
 
-		uint32 techCRCFileCount;
-	};
-	static const int32 HeaderSize = sizeof(DataHeader);
+				uint32 mapCRC;
+				uint32 tilesetCRC;
+				uint32 techCRC;
 
-	struct DataDetail {
-		NetworkString<maxStringSize> techCRCFileList[maxFileCRCCount];
-		uint32 techCRCFileCRCList[maxFileCRCCount];
-	};
+				uint32 techCRCFileCount;
+			};
 
-	static const int32 DetailSize1 = sizeof(NetworkString<maxStringSize>);
-	static const int32 DetailSize2 = sizeof(uint32);
+			static const int32 HeaderSize = sizeof(DataHeader);
 
-	struct Data {
-		int8 messageType;
-		DataHeader header;
-		DataDetail detail;
-	};
-	void toEndianHeader();
-	void fromEndianHeader();
-	void toEndianDetail(uint32 totalFileCount);
-	void fromEndianDetail();
+			struct DataDetail {
+				NetworkString<maxStringSize> techCRCFileList[maxFileCRCCount];
+				uint32 techCRCFileCRCList[maxFileCRCCount];
+			};
 
-private:
-	Data data;
+			static const int32 DetailSize1 = sizeof(NetworkString<maxStringSize>);
+			static const int32 DetailSize2 = sizeof(uint32);
 
-protected:
-	virtual const char * getPackedMessageFormat() const { return NULL; }
-	virtual unsigned int getPackedSize() { return 0; }
-	virtual void unpackMessage(unsigned char *buf) { };
-	virtual unsigned char * packMessage() { return NULL; }
+			struct Data {
+				int8 messageType;
+				DataHeader header;
+				DataDetail detail;
+			};
+			void toEndianHeader();
+			void fromEndianHeader();
+			void toEndianDetail(uint32 totalFileCount);
+			void fromEndianDetail();
 
-public:
-    NetworkMessageSynchNetworkGameDataStatus() {};
-	NetworkMessageSynchNetworkGameDataStatus(uint32 mapCRC, uint32 tilesetCRC, uint32 techCRC, vector<std::pair<string,uint32> > &vctFileList);
+		private:
+			Data data;
 
-	virtual size_t getDataSize() const { return sizeof(Data); }
+		protected:
+			virtual const char * getPackedMessageFormat() const {
+				return NULL;
+			}
+			virtual unsigned int getPackedSize() {
+				return 0;
+			}
+			virtual void unpackMessage(unsigned char *buf) {
+			};
+			virtual unsigned char * packMessage() {
+				return NULL;
+			}
 
-	virtual NetworkMessageType getNetworkMessageType() const {
-		return nmtSynchNetworkGameDataStatus;
-	}
+			const char * getPackedMessageFormatHeader() const;
+			unsigned int getPackedSizeHeader();
+			void unpackMessageHeader(unsigned char *buf);
+			unsigned char * packMessageHeader();
 
-	virtual bool receive(Socket* socket);
-	virtual void send(Socket* socket);
+			unsigned int getPackedSizeDetail();
+			void unpackMessageDetail(unsigned char *buf);
+			unsigned char * packMessageDetail();
 
-	uint32 getMapCRC() const		{return data.header.mapCRC;}
-	uint32 getTilesetCRC() const	{return data.header.tilesetCRC;}
-	uint32 getTechCRC() const	{return data.header.techCRC;}
+		public:
+			NetworkMessageSynchNetworkGameData() {
+			};
+			explicit NetworkMessageSynchNetworkGameData(const GameSettings *gameSettings);
 
-	uint32 getTechCRCFileCount() const {return data.header.techCRCFileCount;}
-	const NetworkString<maxStringSize> * getTechCRCFileList() const {return &data.detail.techCRCFileList[0];}
-	const uint32 * getTechCRCFileCRCList() const {return data.detail.techCRCFileCRCList;}
+			virtual size_t getDataSize() const {
+				return sizeof(Data);
+			}
 
-	string getTechCRCFileMismatchReport(string techtree, vector<std::pair<string,uint32> > &vctFileList);
+			virtual NetworkMessageType getNetworkMessageType() const {
+				return nmtSynchNetworkGameData;
+			}
 
-};
+			virtual bool receive(Socket* socket);
+			virtual void send(Socket* socket);
+
+			string getMap() const {
+				return data.header.map.getString();
+			}
+			string getTileset() const {
+				return data.header.tileset.getString();
+			}
+			string getTech() const {
+				return data.header.tech.getString();
+			}
+
+			uint32 getMapCRC() const {
+				return data.header.mapCRC;
+			}
+			uint32 getTilesetCRC() const {
+				return data.header.tilesetCRC;
+			}
+			uint32 getTechCRC() const {
+				return data.header.techCRC;
+			}
+
+			uint32 getTechCRCFileCount() const {
+				return data.header.techCRCFileCount;
+			}
+			const NetworkString<maxStringSize> * getTechCRCFileList() const {
+				return &data.detail.techCRCFileList[0];
+			}
+			const uint32 * getTechCRCFileCRCList() const {
+				return data.detail.techCRCFileCRCList;
+			}
+
+			string getTechCRCFileMismatchReport(vector<std::pair<string, uint32> > &vctFileList);
+		};
 #pragma pack(pop)
 
-// =====================================================
-//	class NetworkMessageSynchNetworkGameDataFileCRCCheck
-//
-//	Message sent at the beginning of a network game
-// =====================================================
+		// =====================================================
+		//	class NetworkMessageSynchNetworkGameDataStatus
+		//
+		//	Message sent at the beggining of a network game
+		// =====================================================
 
 #pragma pack(push, 1)
-class NetworkMessageSynchNetworkGameDataFileCRCCheck: public NetworkMessage{
+		class NetworkMessageSynchNetworkGameDataStatus : public NetworkMessage {
 
-private:
+		private:
 
-static const int maxStringSize= 256;
+			static const int maxStringSize = 255;
+			static const int maxFileCRCCount = 1500;
+			static const uint32 maxFileCRCPacketCount = 25;
 
-private:
-	int8 messageType;
-	struct Data{
+		private:
 
+			struct DataHeader {
+				uint32 mapCRC;
+				uint32 tilesetCRC;
+				uint32 techCRC;
 
-		uint32 totalFileCount;
-		uint32 fileIndex;
-		uint32 fileCRC;
-		NetworkString<maxStringSize> fileName;
-	};
-	void toEndian();
-	void fromEndian();
+				uint32 techCRCFileCount;
+			};
+			static const int32 HeaderSize = sizeof(DataHeader);
 
-private:
-	Data data;
+			struct DataDetail {
+				NetworkString<maxStringSize> techCRCFileList[maxFileCRCCount];
+				uint32 techCRCFileCRCList[maxFileCRCCount];
+			};
 
-protected:
-	virtual const char * getPackedMessageFormat() const;
-	virtual unsigned int getPackedSize();
-	virtual void unpackMessage(unsigned char *buf);
-	virtual unsigned char * packMessage();
+			static const int32 DetailSize1 = sizeof(NetworkString<maxStringSize>);
+			static const int32 DetailSize2 = sizeof(uint32);
 
-public:
-    NetworkMessageSynchNetworkGameDataFileCRCCheck();
-	NetworkMessageSynchNetworkGameDataFileCRCCheck(uint32 totalFileCount, uint32 fileIndex, uint32 fileCRC, const string fileName);
+			struct Data {
+				int8 messageType;
+				DataHeader header;
+				DataDetail detail;
+			};
+			void toEndianHeader();
+			void fromEndianHeader();
+			void toEndianDetail(uint32 totalFileCount);
+			void fromEndianDetail();
 
-	virtual size_t getDataSize() const { return sizeof(Data); }
+		private:
+			Data data;
 
-	virtual NetworkMessageType getNetworkMessageType() const {
-		return nmtSynchNetworkGameDataFileCRCCheck;
-	}
+		protected:
+			virtual const char * getPackedMessageFormat() const {
+				return NULL;
+			}
+			virtual unsigned int getPackedSize() {
+				return 0;
+			}
+			virtual void unpackMessage(unsigned char *buf) {
+			};
+			virtual unsigned char * packMessage() {
+				return NULL;
+			}
 
-	virtual bool receive(Socket* socket);
-	virtual void send(Socket* socket);
+		public:
+			NetworkMessageSynchNetworkGameDataStatus() {
+			};
+			NetworkMessageSynchNetworkGameDataStatus(uint32 mapCRC, uint32 tilesetCRC, uint32 techCRC, vector<std::pair<string, uint32> > &vctFileList);
 
-	uint32 getTotalFileCount() const	{return data.totalFileCount;}
-	uint32 getFileIndex() const	    {return data.fileIndex;}
-	uint32 getFileCRC() const	    {return data.fileCRC;}
-	string getFileName() const		{return data.fileName.getString();}
-};
+			virtual size_t getDataSize() const {
+				return sizeof(Data);
+			}
+
+			virtual NetworkMessageType getNetworkMessageType() const {
+				return nmtSynchNetworkGameDataStatus;
+			}
+
+			virtual bool receive(Socket* socket);
+			virtual void send(Socket* socket);
+
+			uint32 getMapCRC() const {
+				return data.header.mapCRC;
+			}
+			uint32 getTilesetCRC() const {
+				return data.header.tilesetCRC;
+			}
+			uint32 getTechCRC() const {
+				return data.header.techCRC;
+			}
+
+			uint32 getTechCRCFileCount() const {
+				return data.header.techCRCFileCount;
+			}
+			const NetworkString<maxStringSize> * getTechCRCFileList() const {
+				return &data.detail.techCRCFileList[0];
+			}
+			const uint32 * getTechCRCFileCRCList() const {
+				return data.detail.techCRCFileCRCList;
+			}
+
+			string getTechCRCFileMismatchReport(string techtree, vector<std::pair<string, uint32> > &vctFileList);
+
+		};
 #pragma pack(pop)
 
-// =====================================================
-//	class NetworkMessageSynchNetworkGameDataFileGet
-//
-//	Message sent at the beginning of a network game
-// =====================================================
+		// =====================================================
+		//	class NetworkMessageSynchNetworkGameDataFileCRCCheck
+		//
+		//	Message sent at the beginning of a network game
+		// =====================================================
 
 #pragma pack(push, 1)
-class NetworkMessageSynchNetworkGameDataFileGet: public NetworkMessage{
+		class NetworkMessageSynchNetworkGameDataFileCRCCheck : public NetworkMessage {
 
-private:
+		private:
 
-static const int maxStringSize= 256;
+			static const int maxStringSize = 256;
 
-private:
+		private:
+			int8 messageType;
+			struct Data {
 
-	int8 messageType;
-	struct Data{
 
-		NetworkString<maxStringSize> fileName;
-	};
-	void toEndian();
-	void fromEndian();
+				uint32 totalFileCount;
+				uint32 fileIndex;
+				uint32 fileCRC;
+				NetworkString<maxStringSize> fileName;
+			};
+			void toEndian();
+			void fromEndian();
 
-private:
-	Data data;
+		private:
+			Data data;
 
-protected:
-	virtual const char * getPackedMessageFormat() const;
-	virtual unsigned int getPackedSize();
-	virtual void unpackMessage(unsigned char *buf);
-	virtual unsigned char * packMessage();
+		protected:
+			virtual const char * getPackedMessageFormat() const;
+			virtual unsigned int getPackedSize();
+			virtual void unpackMessage(unsigned char *buf);
+			virtual unsigned char * packMessage();
 
-public:
-    NetworkMessageSynchNetworkGameDataFileGet();
-    explicit NetworkMessageSynchNetworkGameDataFileGet(const string fileName);
+		public:
+			NetworkMessageSynchNetworkGameDataFileCRCCheck();
+			NetworkMessageSynchNetworkGameDataFileCRCCheck(uint32 totalFileCount, uint32 fileIndex, uint32 fileCRC, const string fileName);
 
-	virtual size_t getDataSize() const { return sizeof(Data); }
+			virtual size_t getDataSize() const {
+				return sizeof(Data);
+			}
 
-	virtual NetworkMessageType getNetworkMessageType() const {
-		return nmtSynchNetworkGameDataFileGet;
-	}
+			virtual NetworkMessageType getNetworkMessageType() const {
+				return nmtSynchNetworkGameDataFileCRCCheck;
+			}
 
-	virtual bool receive(Socket* socket);
-	virtual void send(Socket* socket);
+			virtual bool receive(Socket* socket);
+			virtual void send(Socket* socket);
 
-	string getFileName() const		{return data.fileName.getString();}
-};
+			uint32 getTotalFileCount() const {
+				return data.totalFileCount;
+			}
+			uint32 getFileIndex() const {
+				return data.fileIndex;
+			}
+			uint32 getFileCRC() const {
+				return data.fileCRC;
+			}
+			string getFileName() const {
+				return data.fileName.getString();
+			}
+		};
 #pragma pack(pop)
 
-// =====================================================
-//	class SwitchSetupRequest
-//
-//	Message sent from the client to the server
-//	to switch its settings
-// =====================================================
-
-// Each bit represents which item in the packet has a changed value
-enum SwitchSetupRequestFlagType {
-	ssrft_None					= 0x00,
-	ssrft_SelectedFactionName	= 0x01,
-	ssrft_CurrentFactionIndex	= 0x02,
-	ssrft_ToFactionIndex		= 0x04,
-	ssrft_ToTeam				= 0x08,
-	ssrft_NetworkPlayerName		= 0x10,
-	ssrft_PlayerStatus			= 0x20
-};
+		// =====================================================
+		//	class NetworkMessageSynchNetworkGameDataFileGet
+		//
+		//	Message sent at the beginning of a network game
+		// =====================================================
 
 #pragma pack(push, 1)
-class SwitchSetupRequest: public NetworkMessage{
-private:
-	static const int maxStringSize= 256;
-	static const int maxPlayernameStringSize= 80;
+		class NetworkMessageSynchNetworkGameDataFileGet : public NetworkMessage {
 
-private:
+		private:
 
-	int8 messageType;
-	struct Data {
+			static const int maxStringSize = 256;
 
-		NetworkString<maxStringSize> selectedFactionName; //wanted faction name
-		int8 currentSlotIndex;
-		int8 toSlotIndex;
-		int8 toTeam;
-		NetworkString<maxPlayernameStringSize> networkPlayerName;
-		int8 networkPlayerStatus;
-		int8 switchFlags;
-		NetworkString<maxLanguageStringSize> language;
-	};
-	void toEndian();
-	void fromEndian();
+		private:
 
-private:
-	Data data;
+			int8 messageType;
+			struct Data {
 
-public:
-	virtual const char * getPackedMessageFormat() const;
-	virtual unsigned int getPackedSize();
-	virtual void unpackMessage(unsigned char *buf);
-	virtual unsigned char * packMessage();
+				NetworkString<maxStringSize> fileName;
+			};
+			void toEndian();
+			void fromEndian();
 
-public:
-	SwitchSetupRequest();
-	SwitchSetupRequest( string selectedFactionName, int8 currentFactionIndex,
-						int8 toFactionIndex,int8 toTeam,string networkPlayerName,
-						int8 networkPlayerStatus, int8 flags,
-						string language);
+		private:
+			Data data;
 
-	virtual size_t getDataSize() const { return sizeof(Data); }
+		protected:
+			virtual const char * getPackedMessageFormat() const;
+			virtual unsigned int getPackedSize();
+			virtual void unpackMessage(unsigned char *buf);
+			virtual unsigned char * packMessage();
 
-	virtual NetworkMessageType getNetworkMessageType() const {
-		return nmtSwitchSetupRequest;
-	}
+		public:
+			NetworkMessageSynchNetworkGameDataFileGet();
+			explicit NetworkMessageSynchNetworkGameDataFileGet(const string fileName);
 
-	string getSelectedFactionName() const	{return data.selectedFactionName.getString();}
-	int getCurrentSlotIndex() const		{return data.currentSlotIndex;}
-	int getToSlotIndex() const			{return data.toSlotIndex;}
-	int getToTeam() const					{return data.toTeam;}
-	string getNetworkPlayerName() const		{return data.networkPlayerName.getString(); }
-	int getSwitchFlags() const				{return data.switchFlags;}
-	void addSwitchFlag(SwitchSetupRequestFlagType flag) { data.switchFlags |= flag;}
-	void clearSwitchFlag(SwitchSetupRequestFlagType flag) { data.switchFlags &= ~flag;}
+			virtual size_t getDataSize() const {
+				return sizeof(Data);
+			}
 
-	int getNetworkPlayerStatus() const		{ return data.networkPlayerStatus; }
-	string getNetworkPlayerLanguage() const	{ return data.language.getString(); }
+			virtual NetworkMessageType getNetworkMessageType() const {
+				return nmtSynchNetworkGameDataFileGet;
+			}
 
-	virtual bool receive(Socket* socket);
-	virtual void send(Socket* socket);
-};
+			virtual bool receive(Socket* socket);
+			virtual void send(Socket* socket);
+
+			string getFileName() const {
+				return data.fileName.getString();
+			}
+		};
 #pragma pack(pop)
 
-// =====================================================
-//	class PlayerIndexMessage
-//
-//	Message sent from the server to the clients
-//	to tell them about a slot change ( caused by another client )
-// =====================================================
+		// =====================================================
+		//	class SwitchSetupRequest
+		//
+		//	Message sent from the client to the server
+		//	to switch its settings
+		// =====================================================
+
+		// Each bit represents which item in the packet has a changed value
+		enum SwitchSetupRequestFlagType {
+			ssrft_None = 0x00,
+			ssrft_SelectedFactionName = 0x01,
+			ssrft_CurrentFactionIndex = 0x02,
+			ssrft_ToFactionIndex = 0x04,
+			ssrft_ToTeam = 0x08,
+			ssrft_NetworkPlayerName = 0x10,
+			ssrft_PlayerStatus = 0x20
+		};
 
 #pragma pack(push, 1)
-class PlayerIndexMessage: public NetworkMessage{
+		class SwitchSetupRequest : public NetworkMessage {
+		private:
+			static const int maxStringSize = 256;
+			static const int maxPlayernameStringSize = 80;
 
-private:
+		private:
 
-	int8 messageType;
-	struct Data {
+			int8 messageType;
+			struct Data {
 
-		int16 playerIndex;
-	};
-	void toEndian();
-	void fromEndian();
+				NetworkString<maxStringSize> selectedFactionName; //wanted faction name
+				int8 currentSlotIndex;
+				int8 toSlotIndex;
+				int8 toTeam;
+				NetworkString<maxPlayernameStringSize> networkPlayerName;
+				int8 networkPlayerStatus;
+				int8 switchFlags;
+				NetworkString<maxLanguageStringSize> language;
+			};
+			void toEndian();
+			void fromEndian();
 
-private:
-	Data data;
+		private:
+			Data data;
 
-protected:
-	virtual const char * getPackedMessageFormat() const;
-	virtual unsigned int getPackedSize();
-	virtual void unpackMessage(unsigned char *buf);
-	virtual unsigned char * packMessage();
+		public:
+			virtual const char * getPackedMessageFormat() const;
+			virtual unsigned int getPackedSize();
+			virtual void unpackMessage(unsigned char *buf);
+			virtual unsigned char * packMessage();
 
-public:
-	explicit PlayerIndexMessage( int16 playerIndex);
+		public:
+			SwitchSetupRequest();
+			SwitchSetupRequest(string selectedFactionName, int8 currentFactionIndex,
+				int8 toFactionIndex, int8 toTeam, string networkPlayerName,
+				int8 networkPlayerStatus, int8 flags,
+				string language);
 
-	virtual size_t getDataSize() const { return sizeof(Data); }
+			virtual size_t getDataSize() const {
+				return sizeof(Data);
+			}
 
-	virtual NetworkMessageType getNetworkMessageType() const {
-		return nmtPlayerIndexMessage;
-	}
+			virtual NetworkMessageType getNetworkMessageType() const {
+				return nmtSwitchSetupRequest;
+			}
 
-	int16 getPlayerIndex() const	{return data.playerIndex;}
+			string getSelectedFactionName() const {
+				return data.selectedFactionName.getString();
+			}
+			int getCurrentSlotIndex() const {
+				return data.currentSlotIndex;
+			}
+			int getToSlotIndex() const {
+				return data.toSlotIndex;
+			}
+			int getToTeam() const {
+				return data.toTeam;
+			}
+			string getNetworkPlayerName() const {
+				return data.networkPlayerName.getString();
+			}
+			int getSwitchFlags() const {
+				return data.switchFlags;
+			}
+			void addSwitchFlag(SwitchSetupRequestFlagType flag) {
+				data.switchFlags |= flag;
+			}
+			void clearSwitchFlag(SwitchSetupRequestFlagType flag) {
+				data.switchFlags &= ~flag;
+			}
 
-	virtual bool receive(Socket* socket);
-	virtual void send(Socket* socket);
-};
+			int getNetworkPlayerStatus() const {
+				return data.networkPlayerStatus;
+			}
+			string getNetworkPlayerLanguage() const {
+				return data.language.getString();
+			}
+
+			virtual bool receive(Socket* socket);
+			virtual void send(Socket* socket);
+		};
 #pragma pack(pop)
 
-// =====================================================
-//	class NetworkMessageLoadingStatus
-//
-//	Message sent during game loading
-// =====================================================
-
-enum NetworkMessageLoadingStatusType {
-	nmls_NONE = 0x00,
-
-	nmls_PLAYER1_CONNECTED = 0x01,
-	nmls_PLAYER2_CONNECTED = 0x02,
-	nmls_PLAYER3_CONNECTED = 0x04,
-	nmls_PLAYER4_CONNECTED = 0x08,
-	nmls_PLAYER5_CONNECTED = 0x10,
-	nmls_PLAYER6_CONNECTED = 0x20,
-	nmls_PLAYER7_CONNECTED = 0x40,
-	nmls_PLAYER8_CONNECTED = 0x80,
-	nmls_PLAYER9_CONNECTED = 0x160,
-	nmls_PLAYER10_CONNECTED = 0x320,
-
-	nmls_PLAYER1_READY = 0x100,
-	nmls_PLAYER2_READY = 0x200,
-	nmls_PLAYER3_READY = 0x400,
-	nmls_PLAYER4_READY = 0x1000,
-	nmls_PLAYER5_READY = 0x2000,
-	nmls_PLAYER6_READY = 0x4000,
-	nmls_PLAYER7_READY = 0x8000,
-	nmls_PLAYER8_READY = 0x10000,
-	nmls_PLAYER9_READY = 0x12000,
-	nmls_PLAYER10_READY = 0x14000
-};
+		// =====================================================
+		//	class PlayerIndexMessage
+		//
+		//	Message sent from the server to the clients
+		//	to tell them about a slot change ( caused by another client )
+		// =====================================================
 
 #pragma pack(push, 1)
-class NetworkMessageLoadingStatus : public NetworkMessage {
-private:
+		class PlayerIndexMessage : public NetworkMessage {
 
-	int8 messageType;
-	struct Data {
+		private:
 
-		uint32 status;
-	};
-	void toEndian();
-	void fromEndian();
+			int8 messageType;
+			struct Data {
 
-private:
-	Data data;
+				int16 playerIndex;
+			};
+			void toEndian();
+			void fromEndian();
 
-protected:
-	virtual const char * getPackedMessageFormat() const;
-	virtual unsigned int getPackedSize();
-	virtual void unpackMessage(unsigned char *buf);
-	virtual unsigned char * packMessage();
+		private:
+			Data data;
 
-public:
-	NetworkMessageLoadingStatus();
-	explicit NetworkMessageLoadingStatus(uint32 status);
+		protected:
+			virtual const char * getPackedMessageFormat() const;
+			virtual unsigned int getPackedSize();
+			virtual void unpackMessage(unsigned char *buf);
+			virtual unsigned char * packMessage();
 
-	virtual size_t getDataSize() const { return sizeof(Data); }
+		public:
+			explicit PlayerIndexMessage(int16 playerIndex);
 
-	virtual NetworkMessageType getNetworkMessageType() const {
-		return nmtLoadingStatusMessage;
-	}
+			virtual size_t getDataSize() const {
+				return sizeof(Data);
+			}
 
-	uint32 getStatus() const	{return data.status;}
+			virtual NetworkMessageType getNetworkMessageType() const {
+				return nmtPlayerIndexMessage;
+			}
 
-	virtual bool receive(Socket* socket);
-	virtual void send(Socket* socket);
-};
+			int16 getPlayerIndex() const {
+				return data.playerIndex;
+			}
+
+			virtual bool receive(Socket* socket);
+			virtual void send(Socket* socket);
+		};
 #pragma pack(pop)
 
+		// =====================================================
+		//	class NetworkMessageLoadingStatus
+		//
+		//	Message sent during game loading
+		// =====================================================
 
-// =====================================================
-//	class NetworkMessageMarkCell
-//
-//	Mark a Cell message nmtMarkCell
-// =====================================================
+		enum NetworkMessageLoadingStatusType {
+			nmls_NONE = 0x00,
+
+			nmls_PLAYER1_CONNECTED = 0x01,
+			nmls_PLAYER2_CONNECTED = 0x02,
+			nmls_PLAYER3_CONNECTED = 0x04,
+			nmls_PLAYER4_CONNECTED = 0x08,
+			nmls_PLAYER5_CONNECTED = 0x10,
+			nmls_PLAYER6_CONNECTED = 0x20,
+			nmls_PLAYER7_CONNECTED = 0x40,
+			nmls_PLAYER8_CONNECTED = 0x80,
+			nmls_PLAYER9_CONNECTED = 0x160,
+			nmls_PLAYER10_CONNECTED = 0x320,
+
+			nmls_PLAYER1_READY = 0x100,
+			nmls_PLAYER2_READY = 0x200,
+			nmls_PLAYER3_READY = 0x400,
+			nmls_PLAYER4_READY = 0x1000,
+			nmls_PLAYER5_READY = 0x2000,
+			nmls_PLAYER6_READY = 0x4000,
+			nmls_PLAYER7_READY = 0x8000,
+			nmls_PLAYER8_READY = 0x10000,
+			nmls_PLAYER9_READY = 0x12000,
+			nmls_PLAYER10_READY = 0x14000
+		};
 
 #pragma pack(push, 1)
-class NetworkMessageMarkCell: public NetworkMessage {
-private:
-	static const int maxTextStringSize= 500;
+		class NetworkMessageLoadingStatus : public NetworkMessage {
+		private:
 
-private:
+			int8 messageType;
+			struct Data {
 
-	int8 messageType;
-	struct Data{
+				uint32 status;
+			};
+			void toEndian();
+			void fromEndian();
 
+		private:
+			Data data;
 
-		int16 targetX;
-		int16 targetY;
-		int8 factionIndex;
-		int8 playerIndex;
-		NetworkString<maxTextStringSize> text;
-	};
-	void toEndian();
-	void fromEndian();
+		protected:
+			virtual const char * getPackedMessageFormat() const;
+			virtual unsigned int getPackedSize();
+			virtual void unpackMessage(unsigned char *buf);
+			virtual unsigned char * packMessage();
 
-private:
-	Data data;
+		public:
+			NetworkMessageLoadingStatus();
+			explicit NetworkMessageLoadingStatus(uint32 status);
 
-protected:
-	virtual const char * getPackedMessageFormat() const;
-	virtual unsigned int getPackedSize();
-	virtual void unpackMessage(unsigned char *buf);
-	virtual unsigned char * packMessage();
+			virtual size_t getDataSize() const {
+				return sizeof(Data);
+			}
 
-public:
-	NetworkMessageMarkCell();
-	NetworkMessageMarkCell(Vec2i target, int factionIndex, const string &text, int playerIndex);
+			virtual NetworkMessageType getNetworkMessageType() const {
+				return nmtLoadingStatusMessage;
+			}
 
-	virtual size_t getDataSize() const { return sizeof(Data); }
+			uint32 getStatus() const {
+				return data.status;
+			}
 
-	virtual NetworkMessageType getNetworkMessageType() const {
-		return nmtMarkCell;
-	}
-
-	string getText() const			{ return data.text.getString(); }
-	Vec2i getTarget() const		{ return Vec2i(data.targetX,data.targetY); }
-	int getFactionIndex() const  { return data.factionIndex; }
-	int getPlayerIndex() const { return data.playerIndex; }
-
-	virtual bool receive(Socket* socket);
-	virtual void send(Socket* socket);
-	NetworkMessageMarkCell * getCopy() const;
-};
+			virtual bool receive(Socket* socket);
+			virtual void send(Socket* socket);
+		};
 #pragma pack(pop)
 
-// =====================================================
-//	class NetworkUnMessageMarkCell
-//
-//	Mark a Cell message nmtUnMarkCell
-// =====================================================
+
+		// =====================================================
+		//	class NetworkMessageMarkCell
+		//
+		//	Mark a Cell message nmtMarkCell
+		// =====================================================
 
 #pragma pack(push, 1)
-class NetworkMessageUnMarkCell: public NetworkMessage {
+		class NetworkMessageMarkCell : public NetworkMessage {
+		private:
+			static const int maxTextStringSize = 500;
 
-private:
+		private:
 
-	int8 messageType;
-	struct Data {
+			int8 messageType;
+			struct Data {
 
 
-		int16 targetX;
-		int16 targetY;
-		int8 factionIndex;
-	};
-	void toEndian();
-	void fromEndian();
+				int16 targetX;
+				int16 targetY;
+				int8 factionIndex;
+				int8 playerIndex;
+				NetworkString<maxTextStringSize> text;
+			};
+			void toEndian();
+			void fromEndian();
 
-private:
-	Data data;
+		private:
+			Data data;
 
-protected:
-	virtual const char * getPackedMessageFormat() const;
-	virtual unsigned int getPackedSize();
-	virtual void unpackMessage(unsigned char *buf);
-	virtual unsigned char * packMessage();
+		protected:
+			virtual const char * getPackedMessageFormat() const;
+			virtual unsigned int getPackedSize();
+			virtual void unpackMessage(unsigned char *buf);
+			virtual unsigned char * packMessage();
 
-public:
-	NetworkMessageUnMarkCell();
-	NetworkMessageUnMarkCell(Vec2i target, int factionIndex);
+		public:
+			NetworkMessageMarkCell();
+			NetworkMessageMarkCell(Vec2i target, int factionIndex, const string &text, int playerIndex);
 
-	virtual size_t getDataSize() const { return sizeof(Data); }
+			virtual size_t getDataSize() const {
+				return sizeof(Data);
+			}
 
-	virtual NetworkMessageType getNetworkMessageType() const {
-		return nmtUnMarkCell;
-	}
+			virtual NetworkMessageType getNetworkMessageType() const {
+				return nmtMarkCell;
+			}
 
-	Vec2i getTarget() const		{ return Vec2i(data.targetX,data.targetY); }
-	int getFactionIndex() const  { return data.factionIndex; }
+			string getText() const {
+				return data.text.getString();
+			}
+			Vec2i getTarget() const {
+				return Vec2i(data.targetX, data.targetY);
+			}
+			int getFactionIndex() const {
+				return data.factionIndex;
+			}
+			int getPlayerIndex() const {
+				return data.playerIndex;
+			}
 
-	virtual bool receive(Socket* socket);
-	virtual void send(Socket* socket);
-	NetworkMessageUnMarkCell * getCopy() const;
-};
+			virtual bool receive(Socket* socket);
+			virtual void send(Socket* socket);
+			NetworkMessageMarkCell * getCopy() const;
+		};
 #pragma pack(pop)
 
-// =====================================================
-//	class NetworkHighlightCellMessage
-//
-//	Highlight a Cell message
-// =====================================================
+		// =====================================================
+		//	class NetworkUnMessageMarkCell
+		//
+		//	Mark a Cell message nmtUnMarkCell
+		// =====================================================
+
+#pragma pack(push, 1)
+		class NetworkMessageUnMarkCell : public NetworkMessage {
+
+		private:
+
+			int8 messageType;
+			struct Data {
+
+
+				int16 targetX;
+				int16 targetY;
+				int8 factionIndex;
+			};
+			void toEndian();
+			void fromEndian();
+
+		private:
+			Data data;
+
+		protected:
+			virtual const char * getPackedMessageFormat() const;
+			virtual unsigned int getPackedSize();
+			virtual void unpackMessage(unsigned char *buf);
+			virtual unsigned char * packMessage();
+
+		public:
+			NetworkMessageUnMarkCell();
+			NetworkMessageUnMarkCell(Vec2i target, int factionIndex);
+
+			virtual size_t getDataSize() const {
+				return sizeof(Data);
+			}
+
+			virtual NetworkMessageType getNetworkMessageType() const {
+				return nmtUnMarkCell;
+			}
+
+			Vec2i getTarget() const {
+				return Vec2i(data.targetX, data.targetY);
+			}
+			int getFactionIndex() const {
+				return data.factionIndex;
+			}
+
+			virtual bool receive(Socket* socket);
+			virtual void send(Socket* socket);
+			NetworkMessageUnMarkCell * getCopy() const;
+		};
+#pragma pack(pop)
+
+		// =====================================================
+		//	class NetworkHighlightCellMessage
+		//
+		//	Highlight a Cell message
+		// =====================================================
 
 
 #pragma pack(push, 1)
-class NetworkMessageHighlightCell: public NetworkMessage {
-private:
-	static const int maxTextStringSize= 500;
+		class NetworkMessageHighlightCell : public NetworkMessage {
+		private:
+			static const int maxTextStringSize = 500;
 
-private:
+		private:
 
-	int8 messageType;
-	struct Data{
+			int8 messageType;
+			struct Data {
 
-		int16 targetX;
-		int16 targetY;
-		int8 factionIndex;
-	};
-	void toEndian();
-	void fromEndian();
+				int16 targetX;
+				int16 targetY;
+				int8 factionIndex;
+			};
+			void toEndian();
+			void fromEndian();
 
-private:
-	Data data;
+		private:
+			Data data;
 
-protected:
-	virtual const char * getPackedMessageFormat() const;
-	virtual unsigned int getPackedSize();
-	virtual void unpackMessage(unsigned char *buf);
-	virtual unsigned char * packMessage();
+		protected:
+			virtual const char * getPackedMessageFormat() const;
+			virtual unsigned int getPackedSize();
+			virtual void unpackMessage(unsigned char *buf);
+			virtual unsigned char * packMessage();
 
-public:
-	NetworkMessageHighlightCell();
-	NetworkMessageHighlightCell(Vec2i target, int factionIndex);
+		public:
+			NetworkMessageHighlightCell();
+			NetworkMessageHighlightCell(Vec2i target, int factionIndex);
 
-	virtual size_t getDataSize() const { return sizeof(Data); }
+			virtual size_t getDataSize() const {
+				return sizeof(Data);
+			}
 
-	virtual NetworkMessageType getNetworkMessageType() const {
-		return nmtHighlightCell;
-	}
+			virtual NetworkMessageType getNetworkMessageType() const {
+				return nmtHighlightCell;
+			}
 
-	Vec2i getTarget() const		{ return Vec2i(data.targetX,data.targetY); }
-	int getFactionIndex() const  { return data.factionIndex; }
+			Vec2i getTarget() const {
+				return Vec2i(data.targetX, data.targetY);
+			}
+			int getFactionIndex() const {
+				return data.factionIndex;
+			}
 
-	virtual bool receive(Socket* socket);
-	virtual void send(Socket* socket);
-};
+			virtual bool receive(Socket* socket);
+			virtual void send(Socket* socket);
+		};
 #pragma pack(pop)
 
-}}//end namespace
+	}
+}//end namespace
 
 #endif

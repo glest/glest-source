@@ -17,29 +17,31 @@
 
 #include "leak_dumper.h"
 
-namespace Shared{ namespace Graphics{
+namespace Shared {
+	namespace Graphics {
 
-// =====================================================
-//	class GraphicsInterface
-// =====================================================
+		// =====================================================
+		//	class GraphicsInterface
+		// =====================================================
 
-GraphicsInterface::GraphicsInterface(){
-	graphicsFactory= NULL;
-	currentContext= NULL;
-}
+		GraphicsInterface::GraphicsInterface() {
+			graphicsFactory = NULL;
+			currentContext = NULL;
+		}
 
-GraphicsInterface &GraphicsInterface::getInstance(){
-	static GraphicsInterface graphicsInterface;
-	return graphicsInterface;
-}
+		GraphicsInterface &GraphicsInterface::getInstance() {
+			static GraphicsInterface graphicsInterface;
+			return graphicsInterface;
+		}
 
-void GraphicsInterface::setFactory(GraphicsFactory *graphicsFactory){
-	this->graphicsFactory= graphicsFactory;
-}
+		void GraphicsInterface::setFactory(GraphicsFactory *graphicsFactory) {
+			this->graphicsFactory = graphicsFactory;
+		}
 
-void GraphicsInterface::setCurrentContext(Context *context){
-	this->currentContext= context;
-	currentContext->makeCurrent();
-}
+		void GraphicsInterface::setCurrentContext(Context *context) {
+			this->currentContext = context;
+			currentContext->makeCurrent();
+		}
 
-}}//end namespace
+	}
+}//end namespace

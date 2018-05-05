@@ -27,24 +27,22 @@
 #include "ftp.h"
 #include "ftpIfc.h"
 
-/**
- *  @brief Removes the trailing slash of a directory path
- *
- *  @param path   directory path
- *
- *  @return len of path
- */
-int ftpRemoveTrailingSlash(char* path)
-{
+ /**
+  *  @brief Removes the trailing slash of a directory path
+  *
+  *  @param path   directory path
+  *
+  *  @return len of path
+  */
+int ftpRemoveTrailingSlash(char* path) {
 	size_t len = strlen(path);
 
-	if(len > 1)
-	{
+	if (len > 1) {
 		len--;
-		if(path[len] == '/')
+		if (path[len] == '/')
 			path[len] = '\0';
 	}
-	return (int)len;
+	return (int) len;
 }
 
 /**
@@ -54,36 +52,33 @@ int ftpRemoveTrailingSlash(char* path)
  *
  *  @param path   directory path
  */
-void ftpRemoveDoubleSlash(char* path)
-{
-    char *p;
+void ftpRemoveDoubleSlash(char* path) {
+	char *p;
 
-    p = path;
+	p = path;
 
-    while(*p != '\0')
-    {
-        if((p[0] == '/') && (p[1] == '/'))
-            ftpStrcpy(p, &p[1]);
-        else
-            p++;
-    }
+	while (*p != '\0') {
+		if ((p[0] == '/') && (p[1] == '/'))
+			ftpStrcpy(p, &p[1]);
+		else
+			p++;
+	}
 }
 
 /**
  *  @brief Merges multiple path strings
  *
- *  The function catenates all passed strings to a new string and assures that  
+ *  The function catenates all passed strings to a new string and assures that
  *  the result does not exceed MAX_PATH_LEN. The last parameter has to be
  *  NULL.
  *  Not all embedded environments support variadic functions, or they are
- *  too expensive. 
+ *  too expensive.
  *
  *  @param dest    user name
  *
  *  @return Pointer to dest
  */
-char* ftpMergePaths(char* dest, ...)
-{
+char* ftpMergePaths(char* dest, ...) {
 	const char* src;
 	char* dst = dest;
 	int len = 0;
@@ -91,10 +86,8 @@ char* ftpMergePaths(char* dest, ...)
 
 	va_start(args, dest);
 
-	while((src = va_arg(args, const char*)))
-	{
-		while((*src != '\0') && (len < MAX_PATH_LEN-1))
-		{
+	while ((src = va_arg(args, const char*))) {
+		while ((*src != '\0') && (len < MAX_PATH_LEN - 1)) {
 			*dst++ = *src++;
 			len++;
 		}
@@ -109,41 +102,40 @@ char* ftpMergePaths(char* dest, ...)
 /**
  *  @brief Determine the unix-time
  *
- *  The function reads the clock from the target-layer and converts it to the   
+ *  The function reads the clock from the target-layer and converts it to the
  *  unix-time. The code is taken from http://de.wikipedia.org/wiki/Unixzeit
  *
- *  @return seconds since 1. Januar 1970 00:00 
+ *  @return seconds since 1. Januar 1970 00:00
  */
-uint32_t ftpGetUnixTime(void)
-{
+uint32_t ftpGetUnixTime(void) {
 	ftpTime_S t;
 	uint32_t unixTime = 0;
 	int j;
 
 	ftpGetLocalTime(&t);
 
-	for(j=1970;j<t.year;j++)              // leap years
+	for (j = 1970; j < t.year; j++)              // leap years
 	{
-		if(j%4==0 && (j%100!=0 || j%400==0))
-			unixTime+=(366*24*60*60);
+		if (j % 4 == 0 && (j % 100 != 0 || j % 400 == 0))
+			unixTime += (366 * 24 * 60 * 60);
 		else
-			unixTime+=(365*24*60*60);
+			unixTime += (365 * 24 * 60 * 60);
 	}
-	for(j=1;j<t.month;j++)                // days per month 31/30/29/28
+	for (j = 1; j < t.month; j++)                // days per month 31/30/29/28
 	{
-		if(j==1 || j==3 || j==5 || j==7 || j==8 || j==10 || j==12)
-			unixTime+=(31*24*60*60);   		// months with 31 days
-		if(j==4 || j==6 || j==9 || j==11)
-			unixTime+=(30*24*60*60);   		// months with 30 days
-		if( (j==2) && (t.year%4==0 && (t.year%100!=0 || t.year%400==0)) )
-			unixTime+=(29*24*60*60);
+		if (j == 1 || j == 3 || j == 5 || j == 7 || j == 8 || j == 10 || j == 12)
+			unixTime += (31 * 24 * 60 * 60);   		// months with 31 days
+		if (j == 4 || j == 6 || j == 9 || j == 11)
+			unixTime += (30 * 24 * 60 * 60);   		// months with 30 days
+		if ((j == 2) && (t.year % 4 == 0 && (t.year % 100 != 0 || t.year % 400 == 0)))
+			unixTime += (29 * 24 * 60 * 60);
 		else
-			unixTime+=(28*24*60*60);
+			unixTime += (28 * 24 * 60 * 60);
 	}
-	unixTime+=((t.day-1)*24*60*60);
-	unixTime+=(t.hour*60*60);
-	unixTime+=t.minute*60;
-	unixTime+=t.second;
+	unixTime += ((t.day - 1) * 24 * 60 * 60);
+	unixTime += (t.hour * 60 * 60);
+	unixTime += t.minute * 60;
+	unixTime += t.second;
 
 	return unixTime;
 }
@@ -155,17 +147,16 @@ uint32_t ftpGetUnixTime(void)
  *  part of dest and src > dest. Because ANSI-C explicitly declares that case
  *  as undefined our strcpy guarantees to copy from lower to higher
  *  addresses.
- *  
+ *
  *  @param dest destination string
  *  @param src Null-terminated source string
  *
- *  @return destination string 
+ *  @return destination string
  */
-char *ftpStrcpy(char *dest, const char *src)
-{
-     char       *d = dest;     
-     const char *s = src;
+char *ftpStrcpy(char *dest, const char *src) {
+	char       *d = dest;
+	const char *s = src;
 
-     while ((*d++ = *s++));
-     return dest;
+	while ((*d++ = *s++));
+	return dest;
 }

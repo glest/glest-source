@@ -19,17 +19,16 @@
 #if 0
 
 #include "ftpIfc.h"
-int main(void)
-{
+int main(void) {
 	ftpCreateAccount("anonymous", "", "./", FTP_ACC_RD | FTP_ACC_LS | FTP_ACC_DIR);
 	ftpCreateAccount("nothing", "", "./", 0);
 	ftpCreateAccount("reader", "", "./", FTP_ACC_RD);
 	ftpCreateAccount("writer", "", "./", FTP_ACC_WR);
 	ftpCreateAccount("lister", "", "./", FTP_ACC_LS);
-    ftpCreateAccount("admin", "xxx", "./", FTP_ACC_RD | FTP_ACC_WR | FTP_ACC_LS | FTP_ACC_DIR);
+	ftpCreateAccount("admin", "xxx", "./", FTP_ACC_RD | FTP_ACC_WR | FTP_ACC_LS | FTP_ACC_DIR);
 
 	ftpStart();
-	while(1)
+	while (1)
 		ftpExecute();
 	ftpShutdown();
 

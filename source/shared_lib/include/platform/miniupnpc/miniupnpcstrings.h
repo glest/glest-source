@@ -8,7 +8,7 @@
 #ifndef __MINIUPNPCSTRINGS_H__
 #define __MINIUPNPCSTRINGS_H__
 
-//#include "lib/framework/wzglobal.h"
+ //#include "lib/framework/wzglobal.h"
 
 #if defined(WIN32)
 #define OS_STRING "Windows"

@@ -16,60 +16,64 @@
 #include "model.h"
 #include "leak_dumper.h"
 
-namespace Shared{ namespace Graphics{
+namespace Shared {
+	namespace Graphics {
 
-enum RenderMode{
-	rmNormal,
-	rmSelection,
+		enum RenderMode {
+			rmNormal,
+			rmSelection,
 
-	renderModeCount
-};
+			renderModeCount
+		};
 
 
-class Texture;
+		class Texture;
 
-// =====================================================
-//	class MeshCallback
-//
-/// This gets called before rendering mesh
-// =====================================================
+		// =====================================================
+		//	class MeshCallback
+		//
+		/// This gets called before rendering mesh
+		// =====================================================
 
-class MeshCallback{
-public:
-	virtual ~MeshCallback(){};
-	virtual void execute(const Mesh *mesh)= 0;
-};
+		class MeshCallback {
+		public:
+			virtual ~MeshCallback() {
+			};
+			virtual void execute(const Mesh *mesh) = 0;
+		};
 
-// =====================================================
-//	class ModelRenderer
-// =====================================================
+		// =====================================================
+		//	class ModelRenderer
+		// =====================================================
 
-class ModelRenderer{
-protected:
-	bool renderNormals;
-	bool renderTextures;
-	bool renderColors;
-	bool colorPickingMode;
-	MeshCallback *meshCallback;
+		class ModelRenderer {
+		protected:
+			bool renderNormals;
+			bool renderTextures;
+			bool renderColors;
+			bool colorPickingMode;
+			MeshCallback *meshCallback;
 
-public:
-	ModelRenderer()	{
-		renderNormals = false;
-		renderTextures = false;
-		renderColors = false;
-		colorPickingMode = false;
+		public:
+			ModelRenderer() {
+				renderNormals = false;
+				renderTextures = false;
+				renderColors = false;
+				colorPickingMode = false;
 
-		meshCallback= NULL;
+				meshCallback = NULL;
+			}
+
+			virtual ~ModelRenderer() {
+			};
+
+			virtual void begin(bool renderNormals, bool renderTextures, bool renderColors, bool colorPickingMode, MeshCallback *meshCallback = NULL) = 0;
+			virtual void end() = 0;
+			virtual void render(Model *model, int renderMode = rmNormal) = 0;
+			virtual void renderNormalsOnly(Model *model) = 0;
+		};
+
 	}
-
-	virtual ~ModelRenderer(){};
-
-	virtual void begin(bool renderNormals, bool renderTextures, bool renderColors, bool colorPickingMode, MeshCallback *meshCallback= NULL)=0;
-	virtual void end()=0;
-	virtual void render(Model *model,int renderMode=rmNormal)=0;
-	virtual void renderNormalsOnly(Model *model)=0;
-};
-
-}}//end namespace
+}//end namespace
 
 #endif

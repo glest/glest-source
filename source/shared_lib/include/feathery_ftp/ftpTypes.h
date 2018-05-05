@@ -25,7 +25,7 @@
 #define FTPTYPES_H_
 
 
-// if the compiler is c99 complient, we don't need to define our own types
+ // if the compiler is c99 complient, we don't need to define our own types
 #if __STDC_VERSION__ == 199901L || (defined(WIN32) && defined(_MSC_VER) && _MSC_VER >= 1600)
 #	include <stdint.h>
 #else
@@ -48,9 +48,9 @@ typedef uint16_t port_t;
  */
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
-/**
- * @brief defines functions/variables local to a module
- */
+ /**
+  * @brief defines functions/variables local to a module
+  */
 #define LOCAL	static
 
 #ifndef FALSE
@@ -69,19 +69,19 @@ typedef uint16_t port_t;
 extern "C" {
 #endif
 
-int VERBOSE_MODE_ENABLED;
+	int VERBOSE_MODE_ENABLED;
 
-typedef ip_t (*ftpFindExternalFTPServerIpType)(ip_t clientIp);
-typedef void (*ftpAddUPNPPortForwardType)(int internalPort, int externalPort);
-typedef void (*ftpRemoveUPNPPortForwardType)(int internalPort, int externalPort);
-typedef int (*ftpIsValidClientType)(ip_t clientIp);
-typedef int (*ftpIsClientAllowedToGetFileType)(ip_t clientIp, const char *username, const char *filename);
+	typedef ip_t(*ftpFindExternalFTPServerIpType)(ip_t clientIp);
+	typedef void(*ftpAddUPNPPortForwardType)(int internalPort, int externalPort);
+	typedef void(*ftpRemoveUPNPPortForwardType)(int internalPort, int externalPort);
+	typedef int(*ftpIsValidClientType)(ip_t clientIp);
+	typedef int(*ftpIsClientAllowedToGetFileType)(ip_t clientIp, const char *username, const char *filename);
 
-ftpFindExternalFTPServerIpType	ftpFindExternalFTPServerIp;
-ftpAddUPNPPortForwardType		ftpAddUPNPPortForward;
-ftpRemoveUPNPPortForwardType	ftpRemoveUPNPPortForward;
-ftpIsValidClientType            ftpIsValidClient;
-ftpIsClientAllowedToGetFileType ftpIsClientAllowedToGetFile;
+	ftpFindExternalFTPServerIpType	ftpFindExternalFTPServerIp;
+	ftpAddUPNPPortForwardType		ftpAddUPNPPortForward;
+	ftpRemoveUPNPPortForwardType	ftpRemoveUPNPPortForward;
+	ftpIsValidClientType            ftpIsValidClient;
+	ftpIsClientAllowedToGetFileType ftpIsClientAllowedToGetFile;
 
 #ifdef	__cplusplus
 }

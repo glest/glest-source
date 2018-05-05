@@ -20,23 +20,25 @@
 #include "pixmap.h"
 #include "leak_dumper.h"
 
-namespace Shared{ namespace Graphics{
+namespace Shared {
+	namespace Graphics {
 
-class PNGReader: FileReader<Pixmap2D> {
-public:
-	PNGReader();
+		class PNGReader : FileReader<Pixmap2D> {
+		public:
+			PNGReader();
 
-	Pixmap2D* read(ifstream& in, const string& path, Pixmap2D* ret) const;
-};
+			Pixmap2D* read(ifstream& in, const string& path, Pixmap2D* ret) const;
+		};
 
-class PNGReader3D: FileReader<Pixmap3D> {
-public:
-	PNGReader3D();
+		class PNGReader3D : FileReader<Pixmap3D> {
+		public:
+			PNGReader3D();
 
-	Pixmap3D* read(ifstream& in, const string& path, Pixmap3D* ret) const;
-};
+			Pixmap3D* read(ifstream& in, const string& path, Pixmap3D* ret) const;
+		};
 
 
-}} //end namespace
+	}
+} //end namespace
 
 #endif
