@@ -477,6 +477,12 @@ namespace Glest {
 			techTree = new TechTree(pathList);
 			techtreeChecksum = techTree->loadTech(techName, factions,
 				checksum, loadedFileList, validationMode);
+			XmlTree xmlTree;
+			string currentPath = techTree->findPath(techName, pathList);
+			endPathWithSlash(currentPath);
+			string path = currentPath + lastDir(currentPath) + ".xml";
+			const XmlNode *techTreeNode = xmlTree.getRootNode();
+			if (scriptManager) scriptManager->init(this, this->getGame()->getGameCameraPtr(), techTreeNode);
 			return techtreeChecksum;
 		}
 

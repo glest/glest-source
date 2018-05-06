@@ -462,6 +462,16 @@ namespace Glest {
 
 				}
 
+				if (factionNode->hasChild("scripts")) {
+					const XmlNode *scriptsNode = factionNode->getChild("scripts");
+
+					for (int i = 0; i < (int) scriptsNode->getChildCount(); ++i) {
+						const XmlNode *scriptNode = scriptsNode->getChild(i);
+
+						scripts.emplace_back(Script(getFunctionName(scriptNode), scriptNode->getText()));
+					}
+				}
+
 				//read ai behavior
 				if (factionNode->hasChild("ai-behavior") == true) {
 					const XmlNode *aiNode = factionNode->getChild("ai-behavior");
@@ -569,6 +579,15 @@ namespace Glest {
 					"In [%s::%s Line: %d]\n",
 					extractFileFromDirectoryPath(__FILE__).
 					c_str(), __FUNCTION__, __LINE__);
+		}
+
+		string FactionType::getFunctionName(const XmlNode * scriptNode) {
+			string name = scriptNode->getName();
+
+			for (int i = 0; i < (int) scriptNode->getAttributeCount(); ++i) {
+				name += "_" + scriptNode->getAttribute(i)->getValue();
+			}
+			return name;
 		}
 
 		int FactionType::

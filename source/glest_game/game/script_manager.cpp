@@ -554,7 +554,16 @@ namespace
 					script->getCode() + "end\n",
 					script->getName());
 			}
-
+			//load code
+			for (int i = 0; i < world->getFactionCount(); ++i) {
+				FactionType const* type = world->getFaction(i)->getType();
+				for (int j = 0; j < type->getScriptCount(); j++) {
+					const Script* script = type->getScript(j);
+					luaScript.loadCode("function " + script->getName() + "()" +
+						script->getCode() + "end\n",
+						script->getName());
+				}
+			}
 
 			//!!!
 	  //      string data_path= getGameReadWritePath(GameConstants::path_data_CacheLookupKey);

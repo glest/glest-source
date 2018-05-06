@@ -24,6 +24,7 @@
 #   include <string>
 #   include "util.h"
 #   include "leak_dumper.h"
+#   include "scenario.h"
 
 using Shared::Sound::StrSound;
 
@@ -103,6 +104,7 @@ namespace Glest {
 			std::vector < const UpgradeType *>vctAIBehaviorUpgrades;
 			std::map < AIBehaviorStaticValueCategory,
 				int >mapAIBehaviorStaticOverrideValues;
+			std::vector<Script> scripts;
 
 			bool isLinked;
 
@@ -133,6 +135,7 @@ namespace Glest {
 			int getAIBehaviorStaticOverideValue(AIBehaviorStaticValueCategory type)
 				const;
 
+			string getFunctionName(const XmlNode * scriptNode);
 			//get
 			bool getIsLinked() const {
 				return isLinked;
@@ -146,6 +149,12 @@ namespace Glest {
 			virtual string getName(bool translatedValue = false) const;
 			const UnitType *getUnitType(int i) const {
 				return &unitTypes[i];
+			}
+			int getScriptCount() const {
+				return (int) scripts.size();
+			}
+			const Script *getScript(int i) const {
+				return &scripts[i];
 			}
 			const UpgradeType *getUpgradeType(int i) const {
 				return &upgradeTypes[i];
