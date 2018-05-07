@@ -191,7 +191,7 @@ if [ "$FORCE_EMBEDDED_LIBS" != "0" ] && [ "$FORCE_EMBEDDED_LIBS" != "" ]; then
 fi
 
 if [ "$COMPILATION_WITHOUT" != "0" ] && [ "$COMPILATION_WITHOUT" != "" ]; then
-	EXTRA_CMAKE_OPTIONS="${EXTRA_CMAKE_OPTIONS} -DBUILD_MEGAGLEST_MAP_EDITOR=OFF -DBUILD_MEGAGLEST_MODEL_VIEWER=OFF"
+	EXTRA_CMAKE_OPTIONS="${EXTRA_CMAKE_OPTIONS} -DBUILD_ZETAGLEST_MAP_EDITOR=OFF -DBUILD_ZETAGLEST_MODEL_VIEWER=OFF"
 fi
 
 if [ "$MAKE_ONLY" -eq "0" ]; then
@@ -200,7 +200,7 @@ if [ "$MAKE_ONLY" -eq "0" ]; then
 		EXTRA_CMAKE_OPTIONS="${EXTRA_CMAKE_OPTIONS} -DCMAKE_INSTALL_PREFIX=''"
 		if [ "$GCC_FORCED" -ne "1" ] || [ "$USE_XCODE" -eq "1" ]; then :
 			#^ Remove this condition when it V will start working on gcc
-			#EXTRA_CMAKE_OPTIONS="${EXTRA_CMAKE_OPTIONS} -DBUILD_MEGAGLEST_TESTS=ON"
+			#EXTRA_CMAKE_OPTIONS="${EXTRA_CMAKE_OPTIONS} -DBUILD_ZETAGLEST_TESTS=ON"
 			#^ Uncomment when it will start working on clang
 		else
 			rm -f ../zetaglest_tests
