@@ -1,6 +1,6 @@
 # glexemel
 
-IF(BUILD_MEGAGLEST_MODEL_IMPORT_EXPORT_TOOLS)
+IF(BUILD_ZETAGLEST_MODEL_IMPORT_EXPORT_TOOLS)
 	MESSAGE(STATUS "Will try to build MegaGlest model import/export tools")
 
         OPTION(WANT_DEV_OUTPATH "use developer friendly output paths" OFF)
