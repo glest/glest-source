@@ -2,6 +2,7 @@
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN 1
 #include <windows.h>
+#include <stdio.h>
 typedef HANDLE PipeType;
 #define NULLPIPE NULL
 typedef unsigned __int8 uint8;

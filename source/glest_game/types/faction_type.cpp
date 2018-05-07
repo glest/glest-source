@@ -468,7 +468,7 @@ namespace Glest {
 					for (int i = 0; i < (int) scriptsNode->getChildCount(); ++i) {
 						const XmlNode *scriptNode = scriptsNode->getChild(i);
 
-						scripts.emplace_back(Script(getFunctionName(scriptNode), scriptNode->getText()));
+						scripts.push_back(Script(getFunctionName(scriptNode), scriptNode->getText()));
 					}
 				}
 

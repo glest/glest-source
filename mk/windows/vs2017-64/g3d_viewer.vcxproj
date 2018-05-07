@@ -239,7 +239,7 @@
     <ClCompile>
       <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>..\dependencies\src\wxwidgets\include;..\..\..\source\shared_lib\include\util;..\..\..\source\shared_lib\include\graphics\gl;..\..\..\source\shared_lib\include\graphics;../dependencies/src/wxwidgets/include;..\..\..\source\shared_lib\include\platform\sdl;../../../source/shared_lib/include/platform/common;..\dependencies\src\sdl2\include;../dependencies/src/curl/include;..\..\..\source\glest_game\graphics;..\..\..\source\shared_lib\include\xml;../dependencies/src/xerces/src;..\..\..\source\glest_game\global;..\..\..\source\glest_game\sound;..\..\..\source\shared_lib\include\sound;..\..\..\source\glest_game\game;../../../source/shared_lib/include/map;../dependencies/src/png;..\..\..\source\glest_game\facilities;../dependencies/src/glew/include;..\..\..\source\shared_lib\include\xml\rapidxml;../../../source/shared_lib/include/platform/win32;..\dependencies\src\wxwidgets\lib\vc_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;WIN32;CURL_STATICLIB;UNICODE;_UNICODE;GLEW_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;WIN32;CURL_STATICLIB;UNICODE;_UNICODE;GLEW_STATIC;ZLIB_WINAPI;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -331,9 +331,9 @@
     <ClCompile Include="..\..\..\source\glest_game\graphics\unit_particle_type.cpp" />
   </ItemGroup>
   <ItemGroup>
-	<Content Include="..\glest.ini">
-		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</Content>
+    <Content Include="..\glest.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="libglest.vcxproj">
