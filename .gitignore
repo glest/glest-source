@@ -93,6 +93,7 @@ $RECYCLE.BIN/
 unsuccessfulbuild
 /mk/windows/dependencies/openssl
 /mk/windows/dependencies/src
+/mk/windows/bin
 /data
 #
 /mk/linux/zetaglest

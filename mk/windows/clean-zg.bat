@@ -33,6 +33,12 @@ IF EXIST .\vs2017-64 (
 	cd ..\
 )
 
+IF EXIST .\bin (
+	cd .\bin
+	CALL :DELETE
+	cd ..\
+)
+
 ROBOCOPY . . /S /MOVE
 ROBOCOPY . . /S /MOVE
 ROBOCOPY . . /S /MOVE

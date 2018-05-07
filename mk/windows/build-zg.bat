@@ -162,5 +162,9 @@ Echo Building ZetaGlest...
 cd .\%FOLDER_NAME%\
 msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET% ZetaGlest.sln
 cd ..\
+ECHO.
+ECHO Copying binaries...
+ECHO.
+call .\group-binaries.bat
 ECHO ... Done.
 pause
