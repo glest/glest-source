@@ -66,10 +66,23 @@ libwxgtk3.0-dev libxml2-dev
 
 Follow the [instructions](https://github.com/ZetaGlest/zetaglest-source/blob/develop/mk/windows/README.md) listed in the `Windows` directory.
 
-### *BSD
+### OpenBSD
 
-(Need editing/updating)
-[Current Status](https://github.com/ZetaGlest/zetaglest-source/issues/56)
+Below is a list of most of dependencies you will need.
+
+cmake libvorbis lua sdl2 openal wxWidgets fribidi ftgl nghttp2 gnutls glew jpeg png
+miniupnpc curl freeealut
+
+A C++11 compiler is mandatory, so base (or package) clang++, or eg++ (from 4.9.3)
+
+You can install the dependencies using `pkg_add`:
+
+`pkg_add curl libvorbis openal sdl2 git miniupnpc cmake wxWidgets
+xerces-c lua icu4c freealut`
+
+#### Optional
+
+`pkg_add g++ (either 4.9.3 or 6.2.0)`
 
 ### Arch Linux
 
@@ -96,8 +109,10 @@ lua51 miniupnpc openal sdl2 wxgtk3 xerces-c cmake ftjam git mesa`
 
     ./build-zg.bat
 
-### BSD
+### OpenBSD
 
-(Need editing/updating)
+`cmake <-DCMAKE_CXX_COMPILER=eg++>`
+
+`make`
 
 ### Other (add sections)
