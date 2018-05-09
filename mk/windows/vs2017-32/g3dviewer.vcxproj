@@ -12,16 +12,16 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FE5C7C7C-F109-44F5-8329-25A4E24F162C}</ProjectGuid>
-    <RootNamespace>g3d_viewer</RootNamespace>
+    <RootNamespace>g3dviewer</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <ProjectName>g3d_viewer</ProjectName>
+    <ProjectName>g3dviewer</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|Win32'" Label="Configuration">
@@ -161,7 +161,7 @@
     <ClCompile>
       <AdditionalOptions>/arch:SSE2 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>..\dependencies\src\wxwidgets\include;..\..\..\source\shared_lib\include\util;..\..\..\source\shared_lib\include\graphics\gl;..\..\..\source\shared_lib\include\graphics;../dependencies/src/wxwidgets/include;..\..\..\source\shared_lib\include\platform\sdl;../../../source/shared_lib/include/platform/common;..\dependencies\src\sdl2\include;../dependencies/src/curl/include;..\..\..\source\glest_game\graphics;..\..\..\source\shared_lib\include\xml;../dependencies/src/xerces/src;..\..\..\source\glest_game\global;..\..\..\source\glest_game\sound;..\..\..\source\shared_lib\include\sound;..\..\..\source\glest_game\game;../../../source/shared_lib/include/map;../dependencies/src/png;..\..\..\source\glest_game\facilities;../dependencies/src/glew/include;..\..\..\source\shared_lib\include\xml\rapidxml;../../../source/shared_lib/include/platform/win32;..\dependencies\src\wxwidgets\lib\vc_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WINDOWS;WIN32;NDEBUG;_CRT_SECURE_NO_WARNINGS;CURL_STATICLIB;UNICODE;_UNICODE;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;NDEBUG;CURL_STATICLIB;UNICODE;_UNICODE;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -184,7 +184,7 @@
     <Link>
       <AdditionalDependencies>wxbase29u.lib;wxbase29u_net.lib;wxbase29u_xml.lib;wxexpat.lib;wxjpeg.lib;wxtiff.lib;wxmsw29u_adv.lib;wxmsw29u_aui.lib;wxmsw29u_core.lib;wxmsw29u_gl.lib;wxmsw29u_html.lib;wxmsw29u_media.lib;wxmsw29u_qa.lib;wxmsw29u_richtext.lib;wxmsw29u_xrc.lib;wxregexu.lib;winmm.lib;rpcrt4.lib;kernel32.lib;user32.lib;gdi32.lib;ole32.lib;oleaut32.lib;comctl32.lib;comdlg32.lib;uuid.lib;advapi32.lib;shell32.lib;Dbghelp.lib;sdl2-static.lib;sdl2main.lib;dxguid.lib;libcurl.lib;ws2_32.lib;xerces-c.lib;libpng.lib;turbojpeg-static.lib;ftgl_static.lib;freetype.lib;glew.lib;zlib.lib;version.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)\$(TargetFileName)</OutputFile>
-      <AdditionalLibraryDirectories>..\dependencies\src\wxwidgets\build\vs2015-32\Release;..\dependencies\src\freetype\builds\windows\vs2015-32\Win32\Release;..\dependencies\src\xerces\vs2015-32\Release;..\dependencies\src\ftgl\msvc\vs2015-32\Release;..\dependencies\src\jpeg\vs2015-32\Release;..\dependencies\src\png\projects\vs2015-32\Release;..\dependencies\src\curl\vs2015-32\Release;..\dependencies\src\sdl2\vs2015-32\Release;..\dependencies\src\glew\vs2015-32\Release;..\dependencies\src\zlib\vs2015-32\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\dependencies\src\wxwidgets\build\vs2017-32\Release;..\dependencies\src\freetype\builds\windows\vs2017-32\Win32\Release;..\dependencies\src\xerces\vs2017-32\Release;..\dependencies\src\ftgl\msvc\vs2017-32\Release;..\dependencies\src\jpeg\vs2017-32\Release;..\dependencies\src\png\projects\vs2017-32\Release;..\dependencies\src\curl\vs2017-32\Release;..\dependencies\src\sdl2\vs2017-32\Release;..\dependencies\src\glew\vs2017-32\Release;..\dependencies\src\zlib\vs2017-32\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>
@@ -256,14 +256,14 @@
     <ClCompile Include="..\..\..\source\glest_game\graphics\unit_particle_type.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="libglest.vcxproj">
-      <Project>{8daa0c24-95cd-4f66-b4c5-19abdd771746}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="..\glest.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="libglest.vcxproj">
+      <Project>{8daa0c24-95cd-4f66-b4c5-19abdd771746}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

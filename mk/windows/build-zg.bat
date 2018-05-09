@@ -169,6 +169,6 @@ call .\group-binaries.bat
 ECHO ... Done.
 ECHO.
 ECHO If build was successful, then output is in bin folder, otherwise scroll up a little to view error messages.
-ECHO Thanks for trying out ZetaGlest!
+ECHO Thanks for trying out ZetaGlest.
 ECHO.
 pause
