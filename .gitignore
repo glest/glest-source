@@ -99,7 +99,7 @@ unsuccessfulbuild
 source/masterserver
 mk/linux/tools-for-standalone-client/installer/mojosetup
 
-# These are generated when 'cmake .' is run from the root directory
+# These are generated when 'cmake . && make' is run from the root directory
 CMakeFiles
 CMakeCache.txt
 Makefile
