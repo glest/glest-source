@@ -103,7 +103,7 @@ namespace
 			virtual int
 				getTestInterval() const {
 				return
-					2000;
+					1000;
 			}
 			virtual string
 				getName() const {
@@ -477,7 +477,7 @@ namespace
 			virtual int
 				getTestInterval() const {
 				return
-					2000;
+					100;
 			}
 			virtual string
 				getName() const {
