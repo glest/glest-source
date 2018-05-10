@@ -11,22 +11,22 @@ OpenBSD build instructions added
 
 ## 2018-05-06
 
-[d1acd87](https://github.com/ZetaGlest/zetaglest-source/commit/d1acd8742395bca8b37656e9e8065022902586fe)Lua
+[[d1acd87](https://github.com/ZetaGlest/zetaglest-source/commit/d1acd8742395bca8b37656e9e8065022902586fe)]Lua
 can now be used in scripts tag in faction tag within XML
 
 ## 2018-03-31
 
-[bugfix:835c6ef](https://github.com/ZetaGlest/zetaglest-source/commit/835c6efd924ed7e62ccd43e064bc6b7f5cdecbfc)Fixed
+[[bugfix:835c6ef](https://github.com/ZetaGlest/zetaglest-source/commit/835c6efd924ed7e62ccd43e064bc6b7f5cdecbfc)]Fixed
 "x" key getting stuck on Windows
 
 ## 2018-03-20
 
-[045b0b8](https://github.com/ZetaGlest/zetaglest-source/commit/045b0b88e051f7163fbef42fa0adc63a326ca186)Removed "MG_" and "xxx" (3 digit extension) on nicknames in lobby player list
+[[045b0b8](https://github.com/ZetaGlest/zetaglest-source/commit/045b0b88e051f7163fbef42fa0adc63a326ca186)]Removed "MG_" and "xxx" (3 digit extension) on nicknames in lobby player list
 
 ## 2018-03-14
 
-[windows](https://github.com/ZetaGlest/zetaglest-source/commits/develop/mk/windows)Windows
-build system, dependencies, and documentation updated
+[Windows](https://github.com/ZetaGlest/zetaglest-source/commits/develop/mk/windows) build
+system, dependencies, and documentation updated
 
 ## 2018-02-22
 
