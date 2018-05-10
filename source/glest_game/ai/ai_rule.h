@@ -477,7 +477,7 @@ namespace
 			virtual int
 				getTestInterval() const {
 				return
-					100;
+					1000;
 			}
 			virtual string
 				getName() const {
