@@ -96,8 +96,15 @@ unsuccessfulbuild
 /mk/windows/bin
 /data
 #
-/mk/linux/zetaglest
-/mk/linux/zetaglest_editor
-/mk/linux/zetaglest_g3dviewer
 source/masterserver
 mk/linux/tools-for-standalone-client/installer/mojosetup
+
+# These are generated when 'cmake .' is run from the root directory
+CMakeFiles
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+CPackConfig.cmake
+CPackSourceConfig.cmake
+/source/shared_lib/liblibmegaglest.a
+/source/shared_lib/sources/streflop/libstreflop.a

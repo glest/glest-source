@@ -1,7 +1,9 @@
-/megaglest
-/megaglest.6
+/zetaglest
+/zetaglest.6
+/zetaglest_editor*
+/zetaglest_g3dviewer*
+/zetaglest_tests
 
-/megaglest_*
 !/*.desktop
 
 core
