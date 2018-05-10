@@ -1,3 +1,7 @@
+The documents in this directory are here for historical purposes and pertain
+to MegaGlest, not ZetaGlest. To view active documentation for ZetaGlest, see
+https://github.com/ZetaGlest/zetaglest-source and https://zetaglest.github.io/docs/
+
 
                                   MEGAGLEST
 
