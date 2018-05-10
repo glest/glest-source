@@ -21,6 +21,16 @@ Open games and [Server list and player stats](https://zetaglest.dreamhosters.com
 
 [Detailed information about units in the game](https://zetaglest.github.io/)
 
+## Stay Informed (Updates)
+
+[ChangeLog.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/ChangeLog.md)<br >
+[![RSS](https://github.com/ZetaGlest/zetaglest-source/tree/develop/rss_23x23.jpeg)](https://github.com/ZetaGlest/zetaglest-source/commits/develop.atom)
+[Recent Commits to zetaglest-source:develop](https://github.com/ZetaGlest/zetaglest-source/commits/develop.atom)<br >
+[![RSS](https://github.com/ZetaGlest/zetaglest-source/tree/develop/rss_23x23.jpeg)](https://github.com/ZetaGlest/zetaglest-data/commits/develop.atom)
+[Recent Commits to zetaglest-data:develop](https://github.com/ZetaGlest/zetaglest-data/commits/develop.atom)<br >
+[![RSS](https://github.com/ZetaGlest/zetaglest-source/tree/develop/rss_23x23.jpeg)](https://github.com/ZetaGlest/zetaglest.github.io/commits/master.atom)
+[Recent Commits to the web site](https://github.com/ZetaGlest/zetaglest.github.io/commits/master.atom)
+
 ## Why this fork? (Project Goals)
 
 ZetaGlest forked from MegaGlest at v3.13.0-dev
