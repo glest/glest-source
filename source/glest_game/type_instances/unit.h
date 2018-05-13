@@ -635,6 +635,9 @@ namespace Glest {
 			inline Field getCurrField() const {
 				return currField;
 			}
+			inline void setCurrField(Field value) {
+				currField = value;
+			}
 			inline int getLoadCount() const {
 				return loadCount;
 			}
@@ -667,6 +670,12 @@ namespace Glest {
 			}
 			inline int getEp() const {
 				return ep;
+			}
+			inline void setHp(int32 value) {
+				hp = value;
+			}
+			inline void setEp(int32 value) {
+				ep = value;
 			}
 			int getProductionPercent() const;
 			float getProgressRatio() const;

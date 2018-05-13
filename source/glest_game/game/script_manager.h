@@ -716,6 +716,8 @@ namespace
 
 			bool
 				selectUnit(int unitId);
+			bool
+				isBuilding(int unitId);
 			void
 				unselectUnit(int unitId);
 			void
@@ -750,6 +752,8 @@ namespace
 				getLastUnitTriggerEventType();
 			int
 				getUnitProperty(int unitId, UnitTriggerEventType type);
+			int
+				setUnitProperty(int unitId, UnitTriggerEventType type, int value);
 			const string
 				getUnitPropertyName(int unitId, UnitTriggerEventType type);
 
@@ -1026,6 +1030,8 @@ namespace
 			static int
 				selectUnit(LuaHandle * luaHandle);
 			static int
+				isBuilding(LuaHandle * luaHandle);
+			static int
 				unselectUnit(LuaHandle * luaHandle);
 			static int
 				addUnitToGroupSelection(LuaHandle * luaHandle);
@@ -1059,6 +1065,8 @@ namespace
 				getLastUnitTriggerEventType(LuaHandle * luaHandle);
 			static int
 				getUnitProperty(LuaHandle * luaHandle);
+			static int
+				setUnitProperty(LuaHandle * luaHandle);
 			static int
 				getUnitPropertyName(LuaHandle * luaHandle);
 

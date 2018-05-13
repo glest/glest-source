@@ -334,7 +334,7 @@ namespace Glest {
 			void unhighlightUnit(int unitId);
 
 			void giveStopCommand(int unitId);
-
+			bool isBuilding(int unitId);
 			bool selectUnit(int unitId);
 			void unselectUnit(int unitId);
 			void addUnitToGroupSelection(int unitId, int groupIndex);

@@ -1498,6 +1498,16 @@ namespace Glest {
 			return result;
 		}
 
+		bool World::isBuilding(int unitId) {
+			bool result = false;
+			Unit* unit = findUnitById(unitId);
+			if (unit != NULL) {
+				result = unit->getType()->hasSkillClass(scBeBuilt);
+			}
+
+			return result;
+		}
+
 		void World::unselectUnit(int unitId) {
 			Unit* unit = findUnitById(unitId);
 			if (unit != NULL) {

@@ -504,6 +504,7 @@ namespace
 			luaScript.registerFunction(unhighlightUnit, "unhighlightUnit");
 
 			luaScript.registerFunction(giveStopCommand, "giveStopCommand");
+			luaScript.registerFunction(isBuilding, "isBuilding");
 			luaScript.registerFunction(selectUnit, "selectUnit");
 			luaScript.registerFunction(unselectUnit, "unselectUnit");
 			luaScript.registerFunction(addUnitToGroupSelection,
@@ -534,6 +535,7 @@ namespace
 			luaScript.registerFunction(getLastUnitTriggerEventType,
 				"lastUnitTriggerEventType");
 			luaScript.registerFunction(getUnitProperty, "getUnitProperty");
+			luaScript.registerFunction(setUnitProperty, "setUnitProperty");
 			luaScript.registerFunction(getUnitPropertyName, "getUnitPropertyName");
 			luaScript.registerFunction(disableSpeedChange, "disableSpeedChange");
 			luaScript.registerFunction(enableSpeedChange, "enableSpeedChange");
@@ -2954,6 +2956,17 @@ namespace
 			return world->selectUnit(unitId);
 		}
 
+		bool
+			ScriptManager::isBuilding(int unitId) {
+			if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled)
+				SystemFlags::OutputDebug(SystemFlags::debugLUA,
+					"In [%s::%s Line: %d]\n",
+					extractFileFromDirectoryPath(__FILE__).
+					c_str(), __FUNCTION__, __LINE__);
+
+			return world->isBuilding(unitId);
+		}
+
 		void
 			ScriptManager::unselectUnit(int unitId) {
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled)
@@ -3080,6 +3093,37 @@ namespace
 			//printf("File: %s line: %d result: %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__LINE__,result);
 			return result;
 		}
+
+		int
+			ScriptManager::setUnitProperty(int unitId, UnitTriggerEventType type, int value) {
+			bool result = false;
+
+			//printf("File: %s line: %d type: %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__LINE__,type);
+
+			Unit *
+				unit = world->findUnitById(unitId);
+			if (unit != NULL) {
+				switch (type) {
+					case utet_None:
+						break;
+					case utet_HPChanged:
+						unit->setHp(value);
+						result = true;
+						break;
+					case utet_EPChanged:
+						unit->setEp(value);
+						result = true;
+						break;
+					case utet_FieldChanged:
+						unit->setCurrField(value == 1 ? Field::fAir : Field::fLand);
+						result = true;
+						break;
+				}
+			}
+			//printf("File: %s line: %d result: %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__LINE__,result);
+			return result ? 1 : 0;
+		}
+
 		const string
 			ScriptManager::getUnitPropertyName(int unitId, UnitTriggerEventType type) {
 			string
@@ -5577,6 +5621,20 @@ namespace
 		}
 
 		int
+			ScriptManager::isBuilding(LuaHandle * luaHandle) {
+			LuaArguments
+				luaArguments(luaHandle);
+			try {
+				luaArguments.returnInt(thisScriptManager->
+					isBuilding(luaArguments.getInt(-1)));
+			} catch (const megaglest_runtime_error & ex) {
+				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
+			}
+
+			return luaArguments.getReturnCount();
+		}
+
+		int
 			ScriptManager::selectUnit(LuaHandle * luaHandle) {
 			LuaArguments
 				luaArguments(luaHandle);
@@ -5808,6 +5866,26 @@ namespace
 
 			return luaArguments.getReturnCount();
 		}
+
+		int
+			ScriptManager::setUnitProperty(LuaHandle * luaHandle) {
+			LuaArguments
+				luaArguments(luaHandle);
+			try {
+				bool
+					value =
+					thisScriptManager->setUnitProperty(luaArguments.getInt(-3),
+						static_cast <
+						UnitTriggerEventType>
+						(luaArguments.getInt(-2)), luaArguments.getInt(-1));
+				luaArguments.returnInt(value);
+			} catch (const megaglest_runtime_error & ex) {
+				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
+			}
+
+			return luaArguments.getReturnCount();
+		}
+
 		int
 			ScriptManager::getUnitPropertyName(LuaHandle * luaHandle) {
 			LuaArguments
