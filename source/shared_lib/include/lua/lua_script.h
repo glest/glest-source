@@ -28,94 +28,104 @@ using Shared::Graphics::Vec4f;
 
 using Shared::Xml::XmlNode;
 
-namespace Shared { namespace Lua {
+namespace Shared {
+	namespace Lua {
 
-typedef lua_State LuaHandle;
-typedef int(*LuaFunction)(LuaHandle*);
+		typedef lua_State LuaHandle;
+		typedef int(*LuaFunction)(LuaHandle*);
 
-// =====================================================
-//	class LuaScript
-// =====================================================
+		// =====================================================
+		//	class LuaScript
+		// =====================================================
 
-class LuaScript {
-private:
-	LuaHandle *luaState;
-	int argumentCount;
-	string currentLuaFunction;
-	bool currentLuaFunctionIsValid;
-	string sandboxWrapperFunctionName;
-	string sandboxCode;
+		class LuaScript {
+		private:
+			LuaHandle *luaState;
+			int argumentCount;
+			string currentLuaFunction;
+			bool currentLuaFunctionIsValid;
+			string sandboxWrapperFunctionName;
+			string sandboxCode;
 
-	static bool disableSandbox;
-	static bool debugModeEnabled;
+			static bool disableSandbox;
+			static bool debugModeEnabled;
 
-	void DumpGlobals();
+			void DumpGlobals();
 
-public:
-	LuaScript();
-	~LuaScript();
+		public:
+			LuaScript();
+			~LuaScript();
 
-	static void setDebugModeEnabled(bool value) { debugModeEnabled = value; }
-	static bool getDebugModeEnabled() { return debugModeEnabled; }
+			static void setDebugModeEnabled(bool value) {
+				debugModeEnabled = value;
+			}
+			static bool getDebugModeEnabled() {
+				return debugModeEnabled;
+			}
 
-	static void setDisableSandbox(bool value) { disableSandbox = value; }
+			static void setDisableSandbox(bool value) {
+				disableSandbox = value;
+			}
 
-	void loadCode(string code, string name);
+			void loadCode(string code, string name);
 
-	void beginCall(string functionName);
-	void endCall();
+			void beginCall(string functionName);
+			void endCall();
 
-	int runCode(const string code);
-	void setSandboxWrapperFunctionName(string name);
-	void setSandboxCode(string code);
+			int runCode(const string code);
+			void setSandboxWrapperFunctionName(string name);
+			void setSandboxCode(string code);
 
-	void registerFunction(LuaFunction luaFunction, string functionName);
+			void registerFunction(LuaFunction luaFunction, string functionName);
 
-	void saveGame(XmlNode *rootNode);
-	void loadGame(const XmlNode *rootNode);
+			void saveGame(XmlNode *rootNode);
+			void loadGame(const XmlNode *rootNode);
 
-private:
-	string errorToString(int errorCode);
-};
+		private:
+			string errorToString(int errorCode);
+		};
 
-// =====================================================
-//	class LuaArguments
-// =====================================================
+		// =====================================================
+		//	class LuaArguments
+		// =====================================================
 
-class LuaArguments {
-private:
-	lua_State *luaState;
-	int returnCount;
+		class LuaArguments {
+		private:
+			lua_State *luaState;
+			int returnCount;
 
-public:
-	LuaArguments(lua_State *luaState);
+		public:
+			LuaArguments(lua_State *luaState);
 
-	int getInt(int argumentIndex) const;
-	string getString(int argumentIndex) const;
-	void * getGenericData(int argumentIndex) const;
-	Vec2i getVec2i(int argumentIndex) const;
-	Vec4i getVec4i(int argumentIndex) const;
+			int getInt(int argumentIndex) const;
+			string getString(int argumentIndex) const;
+			void * getGenericData(int argumentIndex) const;
+			Vec2i getVec2i(int argumentIndex) const;
+			Vec4i getVec4i(int argumentIndex) const;
 
-	float getFloat(int argumentIndex) const;
-	Vec2f getVec2f(int argumentIndex) const;
-	Vec3f getVec3f(int argumentIndex) const;
-	Vec4f getVec4f(int argumentIndex) const;
+			float getFloat(int argumentIndex) const;
+			Vec2f getVec2f(int argumentIndex) const;
+			Vec3f getVec3f(int argumentIndex) const;
+			Vec4f getVec4f(int argumentIndex) const;
 
-	int getReturnCount() const					{return returnCount;}
+			int getReturnCount() const {
+				return returnCount;
+			}
 
-	void returnInt(int value);
-	void returnFloat(float value);
-	void returnString(const string &value);
-	void returnVec2i(const Vec2i &value);
-	void returnVec4i(const Vec4i &value);
-	void returnVectorInt(const vector<int> &value);
+			void returnInt(int value);
+			void returnFloat(float value);
+			void returnString(const string &value);
+			void returnVec2i(const Vec2i &value);
+			void returnVec4i(const Vec4i &value);
+			void returnVectorInt(const vector<int> &value);
 
-private:
+		private:
 
-	void throwLuaError(const string &message) const;
-	string getStackText() const;
-};
+			void throwLuaError(const string &message) const;
+			string getStackText() const;
+		};
 
-}}//end namespace
+	}
+}//end namespace
 
 #endif

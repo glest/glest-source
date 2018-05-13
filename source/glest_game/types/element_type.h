@@ -28,142 +28,128 @@ using std::string;
 
 using Shared::Graphics::Texture2D;
 
-namespace Glest
-{
-  namespace Game
-  {
+namespace Glest {
+	namespace Game {
 
-    class UpgradeType;
-    class TechTree;
-    class UnitType;
-    class UpgradeType;
-    class DisplayableType;
-    class ResourceType;
+		class UpgradeType;
+		class TechTree;
+		class UnitType;
+		class UpgradeType;
+		class DisplayableType;
+		class ResourceType;
 
-// =====================================================
-//      class DisplayableType
-//
-///     Base class for anything that has a name and a portrait
-// =====================================================
+		// =====================================================
+		//      class DisplayableType
+		//
+		///     Base class for anything that has a name and a portrait
+		// =====================================================
 
-    class DisplayableType
-    {
-    protected:
-      string name;              //name
-      Texture2D *image;         //portrait  
+		class DisplayableType {
+		protected:
+			string name;              //name
+			Texture2D *image;         //portrait  
 
-    public:
-      DisplayableType ();
-      virtual ~ DisplayableType ()
-      {
-      };
+		public:
+			DisplayableType();
+			virtual ~DisplayableType() {
+			};
 
-      //get
-      virtual string getName (bool translatedValue = false) const;
-      virtual const Texture2D *getImage () const
-      {
-        return image;
-      }
+			//get
+			virtual string getName(bool translatedValue = false) const;
+			virtual const Texture2D *getImage() const {
+				return image;
+			}
 
-      //virtual void saveGame(XmlNode *rootNode) const;
-    };
+			//virtual void saveGame(XmlNode *rootNode) const;
+		};
 
 
-// =====================================================
-//      class RequirableType  
-//
-///     Base class for anything that has requirements
-// =====================================================
+		// =====================================================
+		//      class RequirableType  
+		//
+		///     Base class for anything that has requirements
+		// =====================================================
 
-    class RequirableType:public DisplayableType
-    {
-    private:
-      typedef vector < const UnitType *>UnitReqs;
-      typedef vector < const UpgradeType *>UpgradeReqs;
+		class RequirableType :public DisplayableType {
+		private:
+			typedef vector < const UnitType *>UnitReqs;
+			typedef vector < const UpgradeType *>UpgradeReqs;
 
-    protected:
-      UnitReqs unitReqs;        //needed units
-      UpgradeReqs upgradeReqs;  //needed upgrades
+		protected:
+			UnitReqs unitReqs;        //needed units
+			UpgradeReqs upgradeReqs;  //needed upgrades
 
-    public:
-      //get
-      int getUpgradeReqCount () const
-      {
-        return (int) upgradeReqs.size ();
-      }
-      int getUnitReqCount () const
-      {
-        return (int) unitReqs.size ();
-      }
-      const UpgradeType *getUpgradeReq (int i) const
-      {
-        return upgradeReqs[i];
-      }
-      const UnitType *getUnitReq (int i) const
-      {
-        return unitReqs[i];
-      }
+		public:
+			//get
+			int getUpgradeReqCount() const {
+				return (int) upgradeReqs.size();
+			}
+			int getUnitReqCount() const {
+				return (int) unitReqs.size();
+			}
+			const UpgradeType *getUpgradeReq(int i) const {
+				return upgradeReqs[i];
+			}
+			const UnitType *getUnitReq(int i) const {
+				return unitReqs[i];
+			}
 
-      //other
-      virtual string getReqDesc (bool translatedValue) const;
+			//other
+			virtual string getReqDesc(bool translatedValue) const;
 
-      //virtual void saveGame(XmlNode *rootNode) const;
-    };
+			//virtual void saveGame(XmlNode *rootNode) const;
+		};
 
 
-// =====================================================
-//      class ProducibleType  
-//
-///     Base class for anything that can be produced
-// =====================================================
+		// =====================================================
+		//      class ProducibleType  
+		//
+		///     Base class for anything that can be produced
+		// =====================================================
 
-    class ProducibleType:public RequirableType
-    {
-    private:
-      typedef vector < Resource > Costs;
+		class ProducibleType :public RequirableType {
+		private:
+			typedef vector < Resource > Costs;
 
-    protected:
-      Costs costs;
-      Texture2D *cancelImage;
-      int productionTime;
+		protected:
+			Costs costs;
+			Texture2D *cancelImage;
+			int productionTime;
 
-    public:
-      ProducibleType ();
-      virtual ~ ProducibleType ();
+		public:
+			ProducibleType();
+			virtual ~ProducibleType();
 
-      //get
-      int getCostCount () const
-      {
-        return (int) costs.size ();
-      }
-      const Resource *getCost (int i) const
-      {
-        return &costs[i];
-      }
-      const Resource *getCost (const ResourceType * rt) const;
-      int getProductionTime () const
-      {
-        return productionTime;
-      }
-      const Texture2D *getCancelImage () const
-      {
-        return cancelImage;
-      }
+			//get
+			int getCostCount() const {
+				return (int) costs.size();
+			}
+			const Resource *getCost(int i) const {
+				return &costs[i];
+			}
+			const Resource *getCost(const ResourceType * rt) const;
+			int getProductionTime() const {
+				return productionTime;
+			}
+			const Texture2D *getCancelImage() const {
+				return cancelImage;
+			}
 
-      //varios
-      void checkCostStrings (TechTree * techTree);
+			//varios
+			void checkCostStrings(TechTree * techTree);
 
-      virtual string getReqDesc (bool translatedValue) const;
-      string getResourceReqDesc (bool lineBreaks, bool translatedValue) const;
-      string getUnitAndUpgradeReqDesc (bool lineBreaks,
-                                       bool translatedValue) const;
-      string getReqDesc (bool ignoreResourceRequirements,
-                         bool translatedValue) const;
+			virtual string getReqDesc(bool translatedValue) const;
+			string getResourceReqDesc(bool lineBreaks, bool translatedValue) const;
+			string getUnitAndUpgradeReqDesc(bool lineBreaks,
+				bool translatedValue) const;
+			string getReqDesc(bool ignoreResourceRequirements,
+				bool translatedValue) const;
 
-//      virtual void saveGame(XmlNode *rootNode) const;
-//      void loadGame(const XmlNode *rootNode);
-    };
+			//      virtual void saveGame(XmlNode *rootNode) const;
+			//      void loadGame(const XmlNode *rootNode);
+		};
 
-}}                              //end namespace
+	}
+}                              //end namespace
 
 #endif

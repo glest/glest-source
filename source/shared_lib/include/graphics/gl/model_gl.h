@@ -15,21 +15,27 @@
 #include "model.h"
 #include "leak_dumper.h"
 
-namespace Shared{ namespace Graphics{ namespace Gl{
+namespace Shared {
+	namespace Graphics {
+		namespace Gl {
 
-// =====================================================
-//	class ModelGl
-// =====================================================
+			// =====================================================
+			//	class ModelGl
+			// =====================================================
 
-class ModelGl: public Model{
-    friend class GraphicsFactoryGl;
-protected:
-    ModelGl(const string &path,TextureManager* textureManager,bool deletePixMapAfterLoad,std::map<string,vector<pair<string, string> > > *loadedFileList, string *sourceLoader);
-public:
-	virtual void init(){}
-	virtual void end(){}
-};
+			class ModelGl : public Model {
+				friend class GraphicsFactoryGl;
+			protected:
+				ModelGl(const string &path, TextureManager* textureManager, bool deletePixMapAfterLoad, std::map<string, vector<pair<string, string> > > *loadedFileList, string *sourceLoader);
+			public:
+				virtual void init() {
+				}
+				virtual void end() {
+				}
+			};
 
-}}}//end namespace
+		}
+	}
+}//end namespace
 
 #endif

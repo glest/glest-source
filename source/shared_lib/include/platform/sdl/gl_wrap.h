@@ -36,61 +36,67 @@ using std::string;
 
 using Shared::Graphics::FontMetrics;
 
-namespace Shared{ namespace Platform{
+namespace Shared {
+	namespace Platform {
 
-// =====================================================
-//	class PlatformContextGl
-// =====================================================
+		// =====================================================
+		//	class PlatformContextGl
+		// =====================================================
 
-class PlatformContextGl {
-protected:
-	SDL_Surface *icon;
-	SDL_Window *window;
-	SDL_GLContext glcontext;
+		class PlatformContextGl {
+		protected:
+			SDL_Surface *icon;
+			SDL_Window *window;
+			SDL_GLContext glcontext;
 
-public:
-	// Example values:
-	// DEFAULT_CHARSET (English) = 1
-	// GB2312_CHARSET (Chinese)  = 134
-	#ifdef WIN32
-	static DWORD charSet;
-	#else
-	static int charSet;
-	#endif
-
-public:
-	PlatformContextGl();
-	virtual ~PlatformContextGl();
-
-	virtual void init(int colorBits, int depthBits, int stencilBits,
-			bool hardware_acceleration, bool fullscreen_anti_aliasing,
-			float gammaValue);
-	virtual void end();
-
-	virtual void makeCurrent();
-	virtual void swapBuffers();
-
-	SDL_Window * getScreenWindow() { return window; }
-	SDL_Surface * getScreenSurface();
-
-	DeviceContextHandle getHandle() const	{ return 0; }
-};
-
-// =====================================================
-//	Global Fcs
-// =====================================================
-
-#if defined(__APPLE__)
-void createGlFontBitmaps(uint32 &base, const string &type, int size, int width, int charCount, FontMetrics &metrics);
-void createGlFontOutlines(uint32 &base, const string &type, int width, float depth, int charCount, FontMetrics &metrics);
+		public:
+			// Example values:
+			// DEFAULT_CHARSET (English) = 1
+			// GB2312_CHARSET (Chinese)  = 134
+#ifdef WIN32
+			static DWORD charSet;
 #else
-void createGlFontBitmaps(uint32 &base, const string &type, int size, int width, int charCount, FontMetrics &metrics);
-void createGlFontOutlines(uint32 &base, const string &type, int width, float depth, int charCount, FontMetrics &metrics);
+			static int charSet;
 #endif
 
-const char *getPlatformExtensions(const PlatformContextGl *pcgl);
-void* getGlProcAddress(const char *procName);
+		public:
+			PlatformContextGl();
+			virtual ~PlatformContextGl();
 
-}}//end namespace
+			virtual void init(int colorBits, int depthBits, int stencilBits,
+				bool hardware_acceleration, bool fullscreen_anti_aliasing,
+				float gammaValue);
+			virtual void end();
+
+			virtual void makeCurrent();
+			virtual void swapBuffers();
+
+			SDL_Window * getScreenWindow() {
+				return window;
+			}
+			SDL_Surface * getScreenSurface();
+
+			DeviceContextHandle getHandle() const {
+				return 0;
+			}
+		};
+
+		// =====================================================
+		//	Global Fcs
+		// =====================================================
+
+#if defined(__APPLE__)
+		void createGlFontBitmaps(uint32 &base, const string &type, int size, int width, int charCount, FontMetrics &metrics);
+		void createGlFontOutlines(uint32 &base, const string &type, int width, float depth, int charCount, FontMetrics &metrics);
+#else
+		void createGlFontBitmaps(uint32 &base, const string &type, int size, int width, int charCount, FontMetrics &metrics);
+		void createGlFontOutlines(uint32 &base, const string &type, int width, float depth, int charCount, FontMetrics &metrics);
+#endif
+
+		const char *getPlatformExtensions(const PlatformContextGl *pcgl);
+		void* getGlProcAddress(const char *procName);
+
+	}
+}//end namespace
 
 #endif

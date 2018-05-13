@@ -16,37 +16,51 @@
 #include "quaternion.h"
 #include "leak_dumper.h"
 
-namespace Shared{ namespace Graphics{
+namespace Shared {
+	namespace Graphics {
 
-// =====================================================
-//	class Camera
-// =====================================================
+		// =====================================================
+		//	class Camera
+		// =====================================================
 
-class Camera{
-private:
-	Quaternion orientation;
-	Vec3f position;
-public:
-	Camera();
+		class Camera {
+		private:
+			Quaternion orientation;
+			Vec3f position;
+		public:
+			Camera();
 
-	Vec3f getPosition() const			{return position;}
-	Quaternion getOrientation() const	{return orientation;}
+			Vec3f getPosition() const {
+				return position;
+			}
+			Quaternion getOrientation() const {
+				return orientation;
+			}
 
-	const Vec3f & getConstPosition() const			{return position;}
-	const Quaternion & getConstOrientation() const	{return orientation;}
+			const Vec3f & getConstPosition() const {
+				return position;
+			}
+			const Quaternion & getConstOrientation() const {
+				return orientation;
+			}
 
-	void setPosition(const Vec3f &position)				{this->position= position;}
-	void setOrientation(const Quaternion &orientation)	{this->orientation= orientation;}
+			void setPosition(const Vec3f &position) {
+				this->position = position;
+			}
+			void setOrientation(const Quaternion &orientation) {
+				this->orientation = orientation;
+			}
 
-	void moveLocalX(float amount);
-	void moveLocalY(float amount);
-	void moveLocalZ(float amount);
+			void moveLocalX(float amount);
+			void moveLocalY(float amount);
+			void moveLocalZ(float amount);
 
-	void addYaw(float amount);
-	void addPitch(float amount);
-	void addRoll(float amount);
-};
+			void addYaw(float amount);
+			void addPitch(float amount);
+			void addRoll(float amount);
+		};
 
-}}//end namespace
+	}
+}//end namespace
 
 #endif

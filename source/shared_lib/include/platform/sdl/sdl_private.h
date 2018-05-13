@@ -16,13 +16,17 @@
 
 #include "leak_dumper.h"
 
-namespace Shared{ namespace PlatformCommon { namespace Private {
+namespace Shared {
+	namespace PlatformCommon {
+		namespace Private {
 
-extern bool shouldBeFullscreen;
-extern int ScreenWidth;
-extern int ScreenHeight;
+			extern bool shouldBeFullscreen;
+			extern int ScreenWidth;
+			extern int ScreenHeight;
 
-}}}
+		}
+	}
+}
 
 #endif
 

@@ -24,51 +24,53 @@
 using std::runtime_error;
 using std::string;
 
-namespace Shared{ namespace Graphics{ namespace Gl{
+namespace Shared {
+	namespace Graphics {
+		namespace Gl {
 
-using Util::intToStr;
+			using Util::intToStr;
 
-// =====================================================
-//	Globals
-// =====================================================
+			// =====================================================
+			//	Globals
+			// =====================================================
 
-bool getVBOSupported();
-void setVBOSupported(bool value);
+			bool getVBOSupported();
+			void setVBOSupported(bool value);
 
-//void overrideGlExtensionSupport(const char *extensionName,bool value);
-bool isGlExtensionSupported(const char *extensionName);
-//bool isGlVersionSupported(int major, int minor, int release);
-const char *getGlVersion();
-const char *getGlRenderer();
-const char *getGlVendor();
-const char *getGlExtensions();
-const char *getGlPlatformExtensions();
-int getGlMaxLights();
-int getGlMaxTextureSize();
-int getGlMaxTextureUnits();
-int getGlModelviewMatrixStackDepth();
-int getGlProjectionMatrixStackDepth();
-//void checkGlExtension(const char *extensionName);
+			//void overrideGlExtensionSupport(const char *extensionName,bool value);
+			bool isGlExtensionSupported(const char *extensionName);
+			//bool isGlVersionSupported(int major, int minor, int release);
+			const char *getGlVersion();
+			const char *getGlRenderer();
+			const char *getGlVendor();
+			const char *getGlExtensions();
+			const char *getGlPlatformExtensions();
+			int getGlMaxLights();
+			int getGlMaxTextureSize();
+			int getGlMaxTextureUnits();
+			int getGlModelviewMatrixStackDepth();
+			int getGlProjectionMatrixStackDepth();
+			//void checkGlExtension(const char *extensionName);
 
-void inline _assertGl(const char *file, int line, GLenum *forceErrorNumber = NULL) {
-	GLenum error = (forceErrorNumber != NULL ? *forceErrorNumber : glGetError());
-	if(error != GL_NO_ERROR) {
+			void inline _assertGl(const char *file, int line, GLenum *forceErrorNumber = NULL) {
+				GLenum error = (forceErrorNumber != NULL ? *forceErrorNumber : glGetError());
+				if (error != GL_NO_ERROR) {
 #ifdef _DEBUG
-		if(error == GL_INVALID_ENUM) {
-			return;
-		}
+					if (error == GL_INVALID_ENUM) {
+						return;
+					}
 #endif
 
-		//if(error != GL_INVALID_ENUM) {
-			const char *errorString= reinterpret_cast<const char*>(gluErrorString(error));
-			char szBuf[8096]="";
-			snprintf(szBuf,8096,"OpenGL error #%d [0x%X] : [%s] at file: [%s], line: %d",error,error,errorString,file,line);
-			//throw megaglest_runtime_error("OpenGL error #" + intToStr(error) + " : " + string(errorString) + " at file: " + string(file) + ", line " + intToStr(line));
-			throw megaglest_runtime_error(szBuf);
-		//}
-	}
+					//if(error != GL_INVALID_ENUM) {
+					const char *errorString = reinterpret_cast<const char*>(gluErrorString(error));
+					char szBuf[8096] = "";
+					snprintf(szBuf, 8096, "OpenGL error #%d [0x%X] : [%s] at file: [%s], line: %d", error, error, errorString, file, line);
+					//throw megaglest_runtime_error("OpenGL error #" + intToStr(error) + " : " + string(errorString) + " at file: " + string(file) + ", line " + intToStr(line));
+					throw megaglest_runtime_error(szBuf);
+					//}
+				}
 
-}
+			}
 
 #ifdef NDEBUG
 
@@ -79,9 +81,11 @@ void inline _assertGl(const char *file, int line, GLenum *forceErrorNumber = NUL
 
 #define assertGl() _assertGl(__FILE__, __LINE__);
 #define assertGlWithErrorNumber(forceErrorNumber) _assertGl(__FILE__, __LINE__, &forceErrorNumber);
-	
+
 #endif
 
-}}}//end namespace
+		}
+	}
+}//end namespace
 
 #endif

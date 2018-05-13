@@ -24,12 +24,11 @@
 #include "math_private.h"
 
 namespace streflop_libm {
-int
-__signbitf (Simple x)
-{
-  int32_t hx;
+	int
+		__signbitf(Simple x) {
+		int32_t hx;
 
-  GET_FLOAT_WORD (hx, x);
-  return hx & 0x80000000;
-}
+		GET_FLOAT_WORD(hx, x);
+		return hx & 0x80000000;
+	}
 }

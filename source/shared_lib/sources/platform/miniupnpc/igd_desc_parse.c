@@ -10,17 +10,16 @@
 #include <stdio.h>
 #include <string.h>
 
-/* Start element handler :
- * update nesting level counter and copy element name */
-void IGDstartelt(void * d, const char * name, int l)
-{
+ /* Start element handler :
+  * update nesting level counter and copy element name */
+void IGDstartelt(void * d, const char * name, int l) {
 	struct IGDdatas * datas = (struct IGDdatas *)d;
-	if(l >= MINIUPNPC_URL_MAXSIZE)
-		l = MINIUPNPC_URL_MAXSIZE-1;
+	if (l >= MINIUPNPC_URL_MAXSIZE)
+		l = MINIUPNPC_URL_MAXSIZE - 1;
 	memcpy(datas->cureltname, name, l);
 	datas->cureltname[l] = '\0';
 	datas->level++;
-	if( (l==7) && !memcmp(name, "service", l) ) {
+	if ((l == 7) && !memcmp(name, "service", l)) {
 		datas->tmp.controlurl[0] = '\0';
 		datas->tmp.eventsuburl[0] = '\0';
 		datas->tmp.scpdurl[0] = '\0';
@@ -33,24 +32,22 @@ void IGDstartelt(void * d, const char * name, int l)
 /* End element handler :
  * update nesting level counter and update parser state if
  * service element is parsed */
-void IGDendelt(void * d, const char * name, int l)
-{
+void IGDendelt(void * d, const char * name, int l) {
 	struct IGDdatas * datas = (struct IGDdatas *)d;
 	datas->level--;
 	/*printf("endelt %2d %.*s\n", datas->level, l, name);*/
-	if( (l==7) && !memcmp(name, "service", l) )
-	{
-		if(COMPARE(datas->tmp.servicetype,
-		           "urn:schemas-upnp-org:service:WANCommonInterfaceConfig:")) {
+	if ((l == 7) && !memcmp(name, "service", l)) {
+		if (COMPARE(datas->tmp.servicetype,
+			"urn:schemas-upnp-org:service:WANCommonInterfaceConfig:")) {
 			memcpy(&datas->CIF, &datas->tmp, sizeof(struct IGDdatas_service));
-		} else if(COMPARE(datas->tmp.servicetype,
-			                "urn:schemas-upnp-org:service:WANIPv6FirewallControl:")) {
+		} else if (COMPARE(datas->tmp.servicetype,
+			"urn:schemas-upnp-org:service:WANIPv6FirewallControl:")) {
 			memcpy(&datas->IPv6FC, &datas->tmp, sizeof(struct IGDdatas_service));
-		} else if(COMPARE(datas->tmp.servicetype,
-		                  "urn:schemas-upnp-org:service:WANIPConnection:")
-		         || COMPARE(datas->tmp.servicetype,
-		                    "urn:schemas-upnp-org:service:WANPPPConnection:") ) {
-			if(datas->first.servicetype[0] == '\0') {
+		} else if (COMPARE(datas->tmp.servicetype,
+			"urn:schemas-upnp-org:service:WANIPConnection:")
+			|| COMPARE(datas->tmp.servicetype,
+				"urn:schemas-upnp-org:service:WANPPPConnection:")) {
+			if (datas->first.servicetype[0] == '\0') {
 				memcpy(&datas->first, &datas->tmp, sizeof(struct IGDdatas_service));
 			} else {
 				memcpy(&datas->second, &datas->tmp, sizeof(struct IGDdatas_service));
@@ -61,38 +58,35 @@ void IGDendelt(void * d, const char * name, int l)
 
 /* Data handler :
  * copy data depending on the current element name and state */
-void IGDdata(void * d, const char * data, int l)
-{
+void IGDdata(void * d, const char * data, int l) {
 	struct IGDdatas * datas = (struct IGDdatas *)d;
 	char * dstmember = 0;
 	/*printf("%2d %s : %.*s\n",
-           datas->level, datas->cureltname, l, data);	*/
-	if( !strcmp(datas->cureltname, "URLBase") )
+		   datas->level, datas->cureltname, l, data);	*/
+	if (!strcmp(datas->cureltname, "URLBase"))
 		dstmember = datas->urlbase;
-	else if( !strcmp(datas->cureltname, "presentationURL") )
+	else if (!strcmp(datas->cureltname, "presentationURL"))
 		dstmember = datas->presentationurl;
-	else if( !strcmp(datas->cureltname, "serviceType") )
+	else if (!strcmp(datas->cureltname, "serviceType"))
 		dstmember = datas->tmp.servicetype;
-	else if( !strcmp(datas->cureltname, "controlURL") )
+	else if (!strcmp(datas->cureltname, "controlURL"))
 		dstmember = datas->tmp.controlurl;
-	else if( !strcmp(datas->cureltname, "eventSubURL") )
+	else if (!strcmp(datas->cureltname, "eventSubURL"))
 		dstmember = datas->tmp.eventsuburl;
-	else if( !strcmp(datas->cureltname, "SCPDURL") )
+	else if (!strcmp(datas->cureltname, "SCPDURL"))
 		dstmember = datas->tmp.scpdurl;
-/*	else if( !strcmp(datas->cureltname, "deviceType") )
-		dstmember = datas->devicetype_tmp;*/
-	if(dstmember)
-	{
-		if(l>=MINIUPNPC_URL_MAXSIZE)
-			l = MINIUPNPC_URL_MAXSIZE-1;
+	/*	else if( !strcmp(datas->cureltname, "deviceType") )
+			dstmember = datas->devicetype_tmp;*/
+	if (dstmember) {
+		if (l >= MINIUPNPC_URL_MAXSIZE)
+			l = MINIUPNPC_URL_MAXSIZE - 1;
 		memcpy(dstmember, data, l);
 		dstmember[l] = '\0';
 	}
 }
 
 #ifdef DEBUG
-void printIGD(struct IGDdatas * d)
-{
+void printIGD(struct IGDdatas * d) {
 	printf("urlbase = '%s'\n", d->urlbase);
 	printf("WAN Device (Common interface config) :\n");
 	/*printf(" deviceType = '%s'\n", d->CIF.devicetype);*/

@@ -49,7 +49,7 @@ namespace math {
 	using std::exp;
 	using std::frexp;
 	using std::ldexp;
-// the following are C99 functions -> not supported by VS C
+	// the following are C99 functions -> not supported by VS C
 #if !defined(_MSC_VER) || _MSC_VER < 1500
 	using std::isnan;
 	using std::isinf;

@@ -39,29 +39,29 @@
  * ////////////////////////////////////////////////////////////////////// */
 
 
-/** \file glob.h
- *
- * Contains the declarations for the glob() API.
- */
+ /** \file glob.h
+  *
+  * Contains the declarations for the glob() API.
+  */
 
 #ifndef SYNSOFT_UNIXEM_INCL_H_GLOB
 #define SYNSOFT_UNIXEM_INCL_H_GLOB
 
 #include "leak_dumper.h"
 
-/* ////////////////////////////////////////////////////////////////////// */
+  /* ////////////////////////////////////////////////////////////////////// */
 
-/** \weakgroup unixem Synesis Software UNIX Emulation for Win32
- * \brief The UNIX emulation library
- */
+  /** \weakgroup unixem Synesis Software UNIX Emulation for Win32
+   * \brief The UNIX emulation library
+   */
 
-/** \weakgroup unixem_glob glob() API
- * \ingroup UNIXem unixem
- * \brief This API provides facilities for enumerating the file-system contents
- * @{
- */
+   /** \weakgroup unixem_glob glob() API
+	* \ingroup UNIXem unixem
+	* \brief This API provides facilities for enumerating the file-system contents
+	* @{
+	*/
 
-/* ////////////////////////////////////////////////////////////////////// */
+	/* ////////////////////////////////////////////////////////////////////// */
 
 #ifndef _WIN32
 # error This file is only currently defined for compilation on Win32 systems
@@ -71,7 +71,7 @@
  * Constants and definitions
  */
 
-/* Error codes */
+ /* Error codes */
 #define GLOB_NOSPACE    (1)             /*!< \brief (Error result code:) An attempt to allocate memory failed, or if errno was 0 GLOB_LIMIT was specified in the flags and ARG_MAX patterns were matched. */
 #define GLOB_ABORTED    (2)             /*!< \brief (Error result code:) The scan was stopped because an error was encountered and either GLOB_ERR was set or (*errfunc)() returned non-zero. */
 #define GLOB_NOMATCH    (3)             /*!< \brief (Error result code:) The pattern does not match any existing pathname, and GLOB_NOCHECK was not set int flags. */
@@ -103,17 +103,16 @@
  * Typedefs
  */
 
-/** \brief Result structure for glob()
- *
- * This structure is used by glob() to return the results of the search.
- */
-typedef struct
-{
-  int   gl_pathc;   /*!< count of total paths so far */
-  int   gl_matchc;  /*!< count of paths matching pattern */
-  int   gl_offs;    /*!< reserved at beginning of gl_pathv */
-  int   gl_flags;   /*!< returned flags */
-  char  **gl_pathv; /*!< list of paths matching pattern */
+ /** \brief Result structure for glob()
+  *
+  * This structure is used by glob() to return the results of the search.
+  */
+typedef struct {
+	int   gl_pathc;   /*!< count of total paths so far */
+	int   gl_matchc;  /*!< count of paths matching pattern */
+	int   gl_offs;    /*!< reserved at beginning of gl_pathv */
+	int   gl_flags;   /*!< returned flags */
+	char  **gl_pathv; /*!< list of paths matching pattern */
 } glob_t;
 
 /* /////////////////////////////////////////////////////////////////////////
@@ -124,34 +123,34 @@ typedef struct
 extern "C" {
 #endif /* __cplusplus */
 
-/** \brief Generates pathnames matching a pattern
- *
- * This function is a pathname generator that implements the rules for
- * file name pattern matching used by the UNIX shell.
- *
- * \param pattern The pattern controlling the search
- * \param flags A combination of the <b>GLOB_*</b> flags
- * \param errfunc A function that is called each time part of the search processing fails
- * \param pglob Pointer to a glob_t structure to receive the search results
- * \return 0 on success, otherwise one of the <b>GLOB_*</b> error codes
- */
-int glob( char const  *pattern
-        , int         flags
+	/** \brief Generates pathnames matching a pattern
+	 *
+	 * This function is a pathname generator that implements the rules for
+	 * file name pattern matching used by the UNIX shell.
+	 *
+	 * \param pattern The pattern controlling the search
+	 * \param flags A combination of the <b>GLOB_*</b> flags
+	 * \param errfunc A function that is called each time part of the search processing fails
+	 * \param pglob Pointer to a glob_t structure to receive the search results
+	 * \return 0 on success, otherwise one of the <b>GLOB_*</b> error codes
+	 */
+	int glob(char const  *pattern
+		, int         flags
 #if defined(__COMO__)
-        , int       (*errfunc)(char const *, int)
+		, int(*errfunc)(char const *, int)
 #else /* ? compiler */
-        , const int (*errfunc)(char const *, int)
+		, const int(*errfunc)(char const *, int)
 #endif /* compiler */
-        , glob_t      *pglob);
+		, glob_t      *pglob);
 
-/** \brief Frees the results of a call to glob
- *
- * This function releases any memory allocated in a call to glob. It must
- * always be called for a successful call to glob.
- *
- * \param pglob Pointer to a glob_t structure to receive the search results
- */
-void globfree(glob_t *pglob);
+	/** \brief Frees the results of a call to glob
+	 *
+	 * This function releases any memory allocated in a call to glob. It must
+	 * always be called for a successful call to glob.
+	 *
+	 * \param pglob Pointer to a glob_t structure to receive the search results
+	 */
+	void globfree(glob_t *pglob);
 
 #ifdef __cplusplus
 }

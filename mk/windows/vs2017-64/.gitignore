@@ -18,3 +18,5 @@
 *.pch
 *.ini
 *.obj
+*.res
+*.user

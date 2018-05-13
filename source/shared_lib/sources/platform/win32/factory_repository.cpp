@@ -13,34 +13,35 @@
 
 #include "leak_dumper.h"
 
-namespace Shared{ namespace Platform{
+namespace Shared {
+	namespace Platform {
 
-// =====================================================
-//	class FactoryRepository
-// =====================================================
+		// =====================================================
+		//	class FactoryRepository
+		// =====================================================
 
-FactoryRepository &FactoryRepository::getInstance(){
-	static FactoryRepository factoryRepository;
-	return factoryRepository;
-}
+		FactoryRepository &FactoryRepository::getInstance() {
+			static FactoryRepository factoryRepository;
+			return factoryRepository;
+		}
 
-GraphicsFactory *FactoryRepository::getGraphicsFactory(const string &name){
-	if(name == "OpenGL"){
-		return &graphicsFactoryGl;
+		GraphicsFactory *FactoryRepository::getGraphicsFactory(const string &name) {
+			if (name == "OpenGL") {
+				return &graphicsFactoryGl;
+			}
+
+			throw megaglest_runtime_error("Unknown graphics factory: [" + name + "]");
+		}
+
+		SoundFactory *FactoryRepository::getSoundFactory(const string &name) {
+			if (name == "OpenAL") {
+				return &soundFactoryOpenAL;
+			} else if (name == "" || name == "None") {
+				return &soundFactoryNone;
+			}
+
+			throw megaglest_runtime_error("Unknown sound factory: [" + name + "]");
+		}
+
 	}
-
-	throw megaglest_runtime_error("Unknown graphics factory: [" + name + "]");
-}
-
-SoundFactory *FactoryRepository::getSoundFactory(const string &name){
-	if(name == "OpenAL") {
-		return &soundFactoryOpenAL;
-	}
-	else if(name == "" || name == "None") {
-		return &soundFactoryNone;
-	}
-
-	throw megaglest_runtime_error("Unknown sound factory: [" + name + "]");
-}
-
-}}//end namespace
+}//end namespace

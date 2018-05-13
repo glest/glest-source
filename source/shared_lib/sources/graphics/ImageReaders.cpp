@@ -12,21 +12,23 @@
 #include "ImageReaders.h"
 #include "leak_dumper.h"
 
-namespace Shared{ namespace Graphics{
+namespace Shared {
+	namespace Graphics {
 
-// =====================================================
-//	namespace ImageRegisterer
-// =====================================================
+		// =====================================================
+		//	namespace ImageRegisterer
+		// =====================================================
 
-/**Create & register all known Readers*/
-bool ImageRegisterer::registerImageReaders() {
-	static BMPReader imageReaderBmp;
-	static JPGReader imageReaderJpg;
-	static PNGReader imageReaderPng;
-	static PNGReader3D imageReader3DPng;
-	static TGAReader imageReaderTga;
-	static TGAReader3D imageReader3DTga;
-	return true;
-}
+		/**Create & register all known Readers*/
+		bool ImageRegisterer::registerImageReaders() {
+			static BMPReader imageReaderBmp;
+			static JPGReader imageReaderJpg;
+			static PNGReader imageReaderPng;
+			static PNGReader3D imageReader3DPng;
+			static TGAReader imageReaderTga;
+			static TGAReader3D imageReader3DTga;
+			return true;
+		}
 
-}} //end namespace
+	}
+} //end namespace

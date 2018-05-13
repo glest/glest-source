@@ -18,48 +18,56 @@
 
 using std::vector;
 
-namespace Shared{ namespace Graphics{
+namespace Shared {
+	namespace Graphics {
 
-// =====================================================
-//	class TextureManager
-// =====================================================
-typedef vector<Texture*> TextureContainer;
+		// =====================================================
+		//	class TextureManager
+		// =====================================================
+		typedef vector<Texture*> TextureContainer;
 
-//manages textures, creation on request and deletion on destruction
-class TextureManager{
-	
-protected:
-	TextureContainer textures;
-	
-	Texture::Filter textureFilter;
-	int maxAnisotropy;
+		//manages textures, creation on request and deletion on destruction
+		class TextureManager {
 
-public:
-	TextureManager();
-	~TextureManager();
-	void init(bool forceInit=false);
-	void end();
+		protected:
+			TextureContainer textures;
 
-	void setFilter(Texture::Filter textureFilter);
-	void setMaxAnisotropy(int maxAnisotropy);
-	void initTexture(Texture *texture);
-	void endTexture(Texture *texture,bool mustExistInList=false);
-	void endLastTexture(bool mustExistInList=false);
-	void reinitTextures();
+			Texture::Filter textureFilter;
+			int maxAnisotropy;
 
-	Texture::Filter getTextureFilter() const {return textureFilter;}
-	int getMaxAnisotropy() const {return maxAnisotropy;}
+		public:
+			TextureManager();
+			~TextureManager();
+			void init(bool forceInit = false);
+			void end();
 
-	Texture *getTexture(const string &path);
-	Texture1D *newTexture1D();
-	Texture2D *newTexture2D();
-	Texture3D *newTexture3D();
-	TextureCube *newTextureCube();
+			void setFilter(Texture::Filter textureFilter);
+			void setMaxAnisotropy(int maxAnisotropy);
+			void initTexture(Texture *texture);
+			void endTexture(Texture *texture, bool mustExistInList = false);
+			void endLastTexture(bool mustExistInList = false);
+			void reinitTextures();
 
-	const TextureContainer &getTextures() const {return textures;}
-};
+			Texture::Filter getTextureFilter() const {
+				return textureFilter;
+			}
+			int getMaxAnisotropy() const {
+				return maxAnisotropy;
+			}
+
+			Texture *getTexture(const string &path);
+			Texture1D *newTexture1D();
+			Texture2D *newTexture2D();
+			Texture3D *newTexture3D();
+			TextureCube *newTextureCube();
+
+			const TextureContainer &getTextures() const {
+				return textures;
+			}
+		};
 
 
-}}//end namespace
+	}
+}//end namespace
 
 #endif

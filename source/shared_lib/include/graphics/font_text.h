@@ -24,9 +24,8 @@ enum FontTextHandlerType {
 /**
  * Base class upon which all text rendering calls are made.
  */
-//====================================================================
-class Text
-{
+ //====================================================================
+class Text {
 protected:
 	FontTextHandlerType type;
 public:

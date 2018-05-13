@@ -1,13 +1,13 @@
 /*
-    streflop: STandalone REproducible FLOating-Point
-    Copyright 2006 Nicolas Brodu
+	streflop: STandalone REproducible FLOating-Point
+	Copyright 2006 Nicolas Brodu
 			  2012 Mark Vejvoda
-    Code released according to the GNU Lesser General Public License
+	Code released according to the GNU Lesser General Public License
 
-    Heavily relies on GNU Libm, itself depending on netlib fplibm, GNU MP, and IBM MP lib.
-    Uses SoftFloat too.
+	Heavily relies on GNU Libm, itself depending on netlib fplibm, GNU MP, and IBM MP lib.
+	Uses SoftFloat too.
 
-    Please read the history and copyright information in the documentation provided with the source code
+	Please read the history and copyright information in the documentation provided with the source code
 */
 
 
@@ -65,18 +65,18 @@
 // Avoid conflict with system types, if any
 namespace streflop {
 
-// Use the assumption above for char
-typedef char int8_t;
-typedef unsigned char uint8_t;
+	// Use the assumption above for char
+	typedef char int8_t;
+	typedef unsigned char uint8_t;
 
-// Now "run" the meta-program to define the types
-// Entry point is (unsigned) short, then all types above are tried till the size match
-typedef SizedInteger<16>::Type int16_t;
-typedef SizedUnsignedInteger<16>::Type uint16_t;
-typedef SizedInteger<32>::Type int32_t;
-typedef SizedUnsignedInteger<32>::Type uint32_t;
-typedef SizedInteger<64>::Type int64_t;
-typedef SizedUnsignedInteger<64>::Type uint64_t;
+	// Now "run" the meta-program to define the types
+	// Entry point is (unsigned) short, then all types above are tried till the size match
+	typedef SizedInteger<16>::Type int16_t;
+	typedef SizedUnsignedInteger<16>::Type uint16_t;
+	typedef SizedInteger<32>::Type int32_t;
+	typedef SizedUnsignedInteger<32>::Type uint32_t;
+	typedef SizedInteger<64>::Type int64_t;
+	typedef SizedUnsignedInteger<64>::Type uint64_t;
 
 }
 

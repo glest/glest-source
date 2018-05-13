@@ -12,8 +12,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6B0C65F1-D031-46AF-AC0D-7C38892D2952}</ProjectGuid>
-    <RootNamespace>glest_game</RootNamespace>
-    <ProjectName>glest_game</ProjectName>
+    <RootNamespace>zetaglest</RootNamespace>
+    <ProjectName>zetaglest</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

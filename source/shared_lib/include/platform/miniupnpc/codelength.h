@@ -7,20 +7,20 @@
 #ifndef CODELENGTH_H_INCLUDED
 #define CODELENGTH_H_INCLUDED
 
-/* Encode length by using 7bit per Byte :
- * Most significant bit of each byte specifies that the
- * following byte is part of the code */
+ /* Encode length by using 7bit per Byte :
+  * Most significant bit of each byte specifies that the
+  * following byte is part of the code */
 
-/* n : unsigned
- * p : unsigned char *
- */
+  /* n : unsigned
+   * p : unsigned char *
+   */
 #define DECODELENGTH(n, p) n = 0; \
                            do { n = (n << 7) | (*p & 0x7f); } \
                            while((*(p++)&0x80) && (n<(1<<25)));
 
-/* n :    unsigned
- * READ : function/macro to read one byte (unsigned char)
- */
+   /* n :    unsigned
+	* READ : function/macro to read one byte (unsigned char)
+	*/
 #define DECODELENGTH_READ(n, READ) \
 	n = 0; \
 	do { \
@@ -30,10 +30,10 @@
 		if(!(c&0x80)) break; \
 	} while(n<(1<<25));
 
-/* n :       unsigned
- * p :       unsigned char *
- * p_limit : unsigned char *
- */
+	/* n :       unsigned
+	 * p :       unsigned char *
+	 * p_limit : unsigned char *
+	 */
 #define DECODELENGTH_CHECKLIMIT(n, p, p_limit) \
 	n = 0; \
 	do { \
@@ -42,9 +42,9 @@
 	} while((*((p)++)&0x80) && (n<(1<<25)));
 
 
-/* n : unsigned
- * p : unsigned char *
- */
+	 /* n : unsigned
+	  * p : unsigned char *
+	  */
 #define CODELENGTH(n, p) if(n>=268435456) *(p++) = (n >> 28) | 0x80; \
                          if(n>=2097152) *(p++) = (n >> 21) | 0x80; \
                          if(n>=16384) *(p++) = (n >> 14) | 0x80; \

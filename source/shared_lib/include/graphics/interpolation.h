@@ -17,39 +17,47 @@
 #include <map>
 #include "leak_dumper.h"
 
-namespace Shared{ namespace Graphics{
+namespace Shared {
+	namespace Graphics {
 
-// =====================================================
-//	class InterpolationData
-// =====================================================
+		// =====================================================
+		//	class InterpolationData
+		// =====================================================
 
-class InterpolationData{
-private:
-	const Mesh *mesh;
+		class InterpolationData {
+		private:
+			const Mesh *mesh;
 
-	Vec3f *vertices;
-	Vec3f *normals;
+			Vec3f *vertices;
+			Vec3f *normals;
 
-	int raw_frame_ofs;
+			int raw_frame_ofs;
 
-	static bool enableInterpolation;
-	
-	void update(const Vec3f* src, Vec3f* &dest, float t, bool cycle);
+			static bool enableInterpolation;
 
-public:
-	InterpolationData(const Mesh *mesh);
-	~InterpolationData();
+			void update(const Vec3f* src, Vec3f* &dest, float t, bool cycle);
 
-	static void setEnableInterpolation(bool enabled) { enableInterpolation = enabled; }
+		public:
+			InterpolationData(const Mesh *mesh);
+			~InterpolationData();
 
-	const Vec3f *getVertices() const	{return !vertices || !enableInterpolation? mesh->getVertices()+raw_frame_ofs: vertices;}
-	const Vec3f *getNormals() const		{return !normals || !enableInterpolation? mesh->getNormals()+raw_frame_ofs: normals;}
-	
-	void update(float t, bool cycle);
-	void updateVertices(float t, bool cycle);
-	void updateNormals(float t, bool cycle);
-};
+			static void setEnableInterpolation(bool enabled) {
+				enableInterpolation = enabled;
+			}
 
-}}//end namespace
+			const Vec3f *getVertices() const {
+				return !vertices || !enableInterpolation ? mesh->getVertices() + raw_frame_ofs : vertices;
+			}
+			const Vec3f *getNormals() const {
+				return !normals || !enableInterpolation ? mesh->getNormals() + raw_frame_ofs : normals;
+			}
+
+			void update(float t, bool cycle);
+			void updateVertices(float t, bool cycle);
+			void updateNormals(float t, bool cycle);
+		};
+
+	}
+}//end namespace
 
 #endif

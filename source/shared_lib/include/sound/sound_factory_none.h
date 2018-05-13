@@ -12,17 +12,21 @@
 #include "sound_factory.h"
 #include "leak_dumper.h"
 
-namespace Shared{ namespace Sound{
+namespace Shared {
+	namespace Sound {
 
-// ===============================
-//	class SoundFactoryOpenAL
-// ===============================
+		// ===============================
+		//	class SoundFactoryOpenAL
+		// ===============================
 
-class SoundFactoryNone : public SoundFactory{
-public:
-	virtual SoundPlayer* newSoundPlayer()	{return NULL;}
-};
+		class SoundFactoryNone : public SoundFactory {
+		public:
+			virtual SoundPlayer* newSoundPlayer() {
+				return NULL;
+			}
+		};
 
-}}//end namespace
+	}
+}//end namespace
 
 #endif

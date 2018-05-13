@@ -1,5 +1,4 @@
-# Windows
-ZetaGlest build system for Windows
+# Build ZetaGlest for Windows
 
 **To build ZetaGlest for the first time:**
 
@@ -34,16 +33,20 @@ To be able to run ZetaGlest from within Visual Studio using the debugger, you ne
 2. Right-click `glest_game` -> `Properties` -> `Debugging` and change `Working Directory` to `$(SolutionDir)$(TargetName)\`
    Do this also for `g3d_viewer` and `map_editor`.
 
-Configuration in Visual Studio must be left as "Release", otherwise it won't compile, but one can still use debugging options by making the following changes in the project properties:
+Configuration in Visual Studio **must be left as `Release`**, and it must match the project architecture as otherwise it won't compile. The settings involved are the following:
 
-Debug:
+![VS Image](https://i.imgur.com/UFURP4x.png)
+
+Although the configuration *must be set as `Release`*, one can still use debugging options by making the following changes in the project properties.
+
+To manually emulate `Debug`:
 
 	Inline Function Expansion: Disabled
 	Enable Intrinsic Functions: No
 	Favor Size Or Speed: Neither
 	Preprocessor: DEBUG instead of NDEBUG
 	
-Release:
+To manually emulate `Release`:
 
 	Inline Function Expansion: Any Suitable
 	Enable Intrinsic Functions: Yes

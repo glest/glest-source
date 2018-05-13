@@ -35,52 +35,52 @@
 #ifndef	_SYS_QUEUE_H_
 #define	_SYS_QUEUE_H_
 
-/*
- * This file defines five types of data structures: singly-linked lists,
- * lists, simple queues, tail queues, and circular queues.
- *
- *
- * A singly-linked list is headed by a single forward pointer. The elements
- * are singly linked for minimum space and pointer manipulation overhead at
- * the expense of O(n) removal for arbitrary elements. New elements can be
- * added to the list after an existing element or at the head of the list.
- * Elements being removed from the head of the list should use the explicit
- * macro for this purpose for optimum efficiency. A singly-linked list may
- * only be traversed in the forward direction.  Singly-linked lists are ideal
- * for applications with large datasets and few or no removals or for
- * implementing a LIFO queue.
- *
- * A list is headed by a single forward pointer (or an array of forward
- * pointers for a hash table header). The elements are doubly linked
- * so that an arbitrary element can be removed without a need to
- * traverse the list. New elements can be added to the list before
- * or after an existing element or at the head of the list. A list
- * may only be traversed in the forward direction.
- *
- * A simple queue is headed by a pair of pointers, one the head of the
- * list and the other to the tail of the list. The elements are singly
- * linked to save space, so elements can only be removed from the
- * head of the list. New elements can be added to the list before or after
- * an existing element, at the head of the list, or at the end of the
- * list. A simple queue may only be traversed in the forward direction.
- *
- * A tail queue is headed by a pair of pointers, one to the head of the
- * list and the other to the tail of the list. The elements are doubly
- * linked so that an arbitrary element can be removed without a need to
- * traverse the list. New elements can be added to the list before or
- * after an existing element, at the head of the list, or at the end of
- * the list. A tail queue may be traversed in either direction.
- *
- * A circle queue is headed by a pair of pointers, one to the head of the
- * list and the other to the tail of the list. The elements are doubly
- * linked so that an arbitrary element can be removed without a need to
- * traverse the list. New elements can be added to the list before or after
- * an existing element, at the head of the list, or at the end of the list.
- * A circle queue may be traversed in either direction, but has a more
- * complex end of list detection.
- *
- * For details on the use of these macros, see the queue(3) manual page.
- */
+ /*
+  * This file defines five types of data structures: singly-linked lists,
+  * lists, simple queues, tail queues, and circular queues.
+  *
+  *
+  * A singly-linked list is headed by a single forward pointer. The elements
+  * are singly linked for minimum space and pointer manipulation overhead at
+  * the expense of O(n) removal for arbitrary elements. New elements can be
+  * added to the list after an existing element or at the head of the list.
+  * Elements being removed from the head of the list should use the explicit
+  * macro for this purpose for optimum efficiency. A singly-linked list may
+  * only be traversed in the forward direction.  Singly-linked lists are ideal
+  * for applications with large datasets and few or no removals or for
+  * implementing a LIFO queue.
+  *
+  * A list is headed by a single forward pointer (or an array of forward
+  * pointers for a hash table header). The elements are doubly linked
+  * so that an arbitrary element can be removed without a need to
+  * traverse the list. New elements can be added to the list before
+  * or after an existing element or at the head of the list. A list
+  * may only be traversed in the forward direction.
+  *
+  * A simple queue is headed by a pair of pointers, one the head of the
+  * list and the other to the tail of the list. The elements are singly
+  * linked to save space, so elements can only be removed from the
+  * head of the list. New elements can be added to the list before or after
+  * an existing element, at the head of the list, or at the end of the
+  * list. A simple queue may only be traversed in the forward direction.
+  *
+  * A tail queue is headed by a pair of pointers, one to the head of the
+  * list and the other to the tail of the list. The elements are doubly
+  * linked so that an arbitrary element can be removed without a need to
+  * traverse the list. New elements can be added to the list before or
+  * after an existing element, at the head of the list, or at the end of
+  * the list. A tail queue may be traversed in either direction.
+  *
+  * A circle queue is headed by a pair of pointers, one to the head of the
+  * list and the other to the tail of the list. The elements are doubly
+  * linked so that an arbitrary element can be removed without a need to
+  * traverse the list. New elements can be added to the list before or after
+  * an existing element, at the head of the list, or at the end of the list.
+  * A circle queue may be traversed in either direction, but has a more
+  * complex end of list detection.
+  *
+  * For details on the use of these macros, see the queue(3) manual page.
+  */
 
 #ifdef QUEUE_MACRO_DEBUG
 #define _Q_INVALIDATE(a) (a) = ((void *)-1)
@@ -88,9 +88,9 @@
 #define _Q_INVALIDATE(a)
 #endif
 
-/*
- * Singly-linked List definitions.
- */
+  /*
+   * Singly-linked List definitions.
+   */
 #define SLIST_HEAD(name, type)						\
 struct name {								\
 	struct type *slh_first;	/* first element */			\
@@ -108,9 +108,9 @@ struct {								\
 	struct type *sle_next;	/* next element */			\
 }
 
-/*
- * Singly-linked List access methods.
- */
+   /*
+	* Singly-linked List access methods.
+	*/
 #define	SLIST_FIRST(head)	((head)->slh_first)
 #define	SLIST_END(head)		NULL
 #define	SLIST_EMPTY(head)	(SLIST_FIRST(head) == SLIST_END(head))
@@ -126,9 +126,9 @@ struct {								\
 	    ((var) = *(varp)) != SLIST_END(head);			\
 	    (varp) = &SLIST_NEXT((var), field))
 
-/*
- * Singly-linked List functions.
- */
+	/*
+	 * Singly-linked List functions.
+	 */
 #define	SLIST_INIT(head) {						\
 	SLIST_FIRST(head) = SLIST_END(head);				\
 }
@@ -165,9 +165,9 @@ struct {								\
 	}								\
 } while (0)
 
-/*
- * List definitions.
- */
+	 /*
+	  * List definitions.
+	  */
 #define LIST_HEAD(name, type)						\
 struct name {								\
 	struct type *lh_first;	/* first element */			\
@@ -182,9 +182,9 @@ struct {								\
 	struct type **le_prev;	/* address of previous next element */	\
 }
 
-/*
- * List access methods
- */
+	  /*
+	   * List access methods
+	   */
 #define	LIST_FIRST(head)		((head)->lh_first)
 #define	LIST_END(head)			NULL
 #define	LIST_EMPTY(head)		(LIST_FIRST(head) == LIST_END(head))
@@ -195,9 +195,9 @@ struct {								\
 	    (var)!= LIST_END(head);					\
 	    (var) = LIST_NEXT(var, field))
 
-/*
- * List functions.
- */
+	   /*
+		* List functions.
+		*/
 #define	LIST_INIT(head) do {						\
 	LIST_FIRST(head) = LIST_END(head);				\
 } while (0)
@@ -243,9 +243,9 @@ struct {								\
 	_Q_INVALIDATE((elm)->field.le_next);				\
 } while (0)
 
-/*
- * Simple queue definitions.
- */
+		/*
+		 * Simple queue definitions.
+		 */
 #define SIMPLEQ_HEAD(name, type)					\
 struct name {								\
 	struct type *sqh_first;	/* first element */			\
@@ -260,9 +260,9 @@ struct {								\
 	struct type *sqe_next;	/* next element */			\
 }
 
-/*
- * Simple queue access methods.
- */
+		 /*
+		  * Simple queue access methods.
+		  */
 #define	SIMPLEQ_FIRST(head)	    ((head)->sqh_first)
 #define	SIMPLEQ_END(head)	    NULL
 #define	SIMPLEQ_EMPTY(head)	    (SIMPLEQ_FIRST(head) == SIMPLEQ_END(head))
@@ -273,9 +273,9 @@ struct {								\
 	    (var) != SIMPLEQ_END(head);					\
 	    (var) = SIMPLEQ_NEXT(var, field))
 
-/*
- * Simple queue functions.
- */
+		  /*
+		   * Simple queue functions.
+		   */
 #define	SIMPLEQ_INIT(head) do {						\
 	(head)->sqh_first = NULL;					\
 	(head)->sqh_last = &(head)->sqh_first;				\
@@ -304,9 +304,9 @@ struct {								\
 		(head)->sqh_last = &(head)->sqh_first;			\
 } while (0)
 
-/*
- * Tail queue definitions.
- */
+		   /*
+			* Tail queue definitions.
+			*/
 #define TAILQ_HEAD(name, type)						\
 struct name {								\
 	struct type *tqh_first;	/* first element */			\
@@ -322,15 +322,15 @@ struct {								\
 	struct type **tqe_prev;	/* address of previous next element */	\
 }
 
-/*
- * tail queue access methods
- */
+			/*
+			 * tail queue access methods
+			 */
 #define	TAILQ_FIRST(head)		((head)->tqh_first)
 #define	TAILQ_END(head)			NULL
 #define	TAILQ_NEXT(elm, field)		((elm)->field.tqe_next)
 #define TAILQ_LAST(head, headname)					\
 	(*(((struct headname *)((head)->tqh_last))->tqh_last))
-/* XXX */
+			 /* XXX */
 #define TAILQ_PREV(elm, headname, field)				\
 	(*(((struct headname *)((elm)->field.tqe_prev))->tqh_last))
 #define	TAILQ_EMPTY(head)						\
@@ -411,9 +411,9 @@ struct {								\
 	_Q_INVALIDATE((elm)->field.tqe_next);				\
 } while (0)
 
-/*
- * Circular queue definitions.
- */
+ /*
+  * Circular queue definitions.
+  */
 #define CIRCLEQ_HEAD(name, type)					\
 struct name {								\
 	struct type *cqh_first;		/* first element */		\
@@ -429,9 +429,9 @@ struct {								\
 	struct type *cqe_prev;		/* previous element */		\
 }
 
-/*
- * Circular queue access methods
- */
+  /*
+   * Circular queue access methods
+   */
 #define	CIRCLEQ_FIRST(head)		((head)->cqh_first)
 #define	CIRCLEQ_LAST(head)		((head)->cqh_last)
 #define	CIRCLEQ_END(head)		((void *)(head))
@@ -450,9 +450,9 @@ struct {								\
 	    (var) != CIRCLEQ_END(head);					\
 	    (var) = CIRCLEQ_PREV(var, field))
 
-/*
- * Circular queue functions.
- */
+   /*
+	* Circular queue functions.
+	*/
 #define	CIRCLEQ_INIT(head) do {						\
 	(head)->cqh_first = CIRCLEQ_END(head);				\
 	(head)->cqh_last = CIRCLEQ_END(head);				\

@@ -13,8 +13,8 @@
 #define _MAPEDITOR_MAIN_H_
 
 #ifdef WIN32
-    #include <winsock2.h>
-    #include <winsock.h>
+#include <winsock2.h>
+#include <winsock.h>
 #endif
 
 #include <string>
@@ -34,344 +34,348 @@ using namespace Shared::PlatformCommon;
 
 namespace MapEditor {
 
-class GlCanvas;
+	class GlCanvas;
 
-enum BrushType {
-	btHeight,
-	btGradient,
-	btSurface,
-	btObject,
-	btResource,
-	btStartLocation
-};
-
-enum StatusItems {
-	siNULL_ENTRY,
-	siFILE_NAME,
-	siFILE_TYPE,
-	siCURR_OBJECT,
-	siBRUSH_TYPE,
-	siBRUSH_VALUE,
-	siBRUSH_RADIUS,
-	siPOS_VALUE,
-	siCOUNT
-};
-
-const char *object_descs[] = {
-	"None (Erase)",
-	"Tree",
-	"Dead tree",
-	"Stone (non harvest)",
-	"Bush",
-	"Water object",
-	"Big tree",
-	"Hanged/Impaled",
-	"Statues",
-	"Mountain",
-	"Invisible blocking"
-};
-
-const char *resource_descs[] = {
-	"None (Erase)", "Gold", "Stone", "Custom 4", "Custom 5", "Custom 6"
-};
-
-
-const char *surface_descs[] = {
-	"Grass", "Sec. grass", "Road", "Stone", "Ground"
-};
-
-
-class MainToolBar : public wxToolBar {
-private:
-	DECLARE_EVENT_TABLE()
-
-public:
-
-    MainToolBar(wxWindow *parent,
-              wxWindowID id) : wxToolBar(parent,id) {}
-
-	void onMouseMove(wxMouseEvent &event);
-};
-
-// =====================================================
-//	class MainWindow
-// =====================================================
-
-class MainWindow: public wxFrame {
-private:
-	DECLARE_EVENT_TABLE()
-
-private:
-	static const string versionString;
-	static const string winHeader;
-	static const int heightCount = 11;
-	static const int surfaceCount = 5;
-	static const int objectCount = 11;
-	static const int resourceCount = 6;
-	static const int startLocationCount = 8;
-	static const int radiusCount = 9;
-
-private:
-	enum MenuId {
-		miFileLoad,
-		miFileSave,
-		miFileSaveAs,
-		miFileExit,
-
-		miEditUndo,
-		miEditRedo,
-		miEditReset,
-		miEditResetPlayers,
-		miEditResize,
-		miEditFlipDiagonal,
-		miEditFlipX,
-		miEditFlipY,
-
-		miEditMirrorX,
-		miEditMirrorY,
-		miEditMirrorXY,
-		miEditRotatecopyX,
-		miEditRotatecopyY,
-		miEditRotatecopyXY,
-		miEditRotatecopyCorner,
-		miEditMirror,
-
-		miEditRandomizeHeights,
-		miEditRandomize,
-		miEditSwitchSurfaces,
-		miEditInfo,
-		miEditAdvanced,
-
-		miViewResetZoomAndPos,
-		miViewGrid,
-		miViewHeightMap,
-		miHideWater,
-		miViewAbout,
-		miViewHelp,
-
-		toolPlayer,
-
-		miBrushHeight,
-		miBrushGradient = miBrushHeight + heightCount + 1,
-		miBrushSurface = miBrushGradient + heightCount + 1,
-		miBrushObject = miBrushSurface + surfaceCount + 1,
-		miBrushResource = miBrushObject + objectCount + 1,
-		miBrushStartLocation = miBrushResource + resourceCount + 1,
-
-		miRadius = miBrushStartLocation + startLocationCount + 1
+	enum BrushType {
+		btHeight,
+		btGradient,
+		btSurface,
+		btObject,
+		btResource,
+		btStartLocation
 	};
 
-private:
-	GlCanvas *glCanvas;
-	Program *program;
-	int lastX, lastY;
+	enum StatusItems {
+		siNULL_ENTRY,
+		siFILE_NAME,
+		siFILE_TYPE,
+		siCURR_OBJECT,
+		siBRUSH_TYPE,
+		siBRUSH_VALUE,
+		siBRUSH_RADIUS,
+		siPOS_VALUE,
+		siCOUNT
+	};
 
-	wxPanel *panel;
+	const char *object_descs[] = {
+		"None (Erase)",
+		"Tree",
+		"Dead tree",
+		"Stone (non harvest)",
+		"Bush",
+		"Water object",
+		"Big tree",
+		"Hanged/Impaled",
+		"Statues",
+		"Mountain",
+		"Invisible blocking"
+	};
 
-	wxMenuBar *menuBar;
-	wxMenu *menuFile;
-	wxMenu *menuEdit;
-	wxMenu *menuEditMirror;
-	wxMenu *menuView;
-	wxMenu *menuBrush;
-	wxMenu *menuBrushHeight;
-	wxMenu *menuBrushGradient;
+	const char *resource_descs[] = {
+		"None (Erase)", "Gold", "Stone", "Custom 4", "Custom 5", "Custom 6"
+	};
 
-	wxMenu *menuBrushSurface;
-	wxMenu *menuBrushObject;
-	wxMenu *menuBrushResource;
-	wxMenu *menuBrushStartLocation;
-	wxMenu *menuRadius;
 
-	wxFileDialog *fileDialog;
+	const char *surface_descs[] = {
+		"Grass", "Sec. grass", "Road", "Stone", "Ground"
+	};
 
-	string currentFile;
 
-	BrushType currentBrush;
-	int height;
-	int surface;
-	int radius;
-	int object;
-	int resource;
-	int startLocation;
-	int resourceUnderMouse;
-	int objectUnderMouse;
+	class MainToolBar : public wxToolBar {
+	private:
+		DECLARE_EVENT_TABLE()
 
-	bool randomWithReset;
-	int randomMinimumHeight;
-	int randomMaximumHeight;
-	int randomChanceDivider;
-	int randomRecursions;
+	public:
 
-	ChangeType enabledGroup;
+		MainToolBar(wxWindow *parent,
+			wxWindowID id) : wxToolBar(parent, id) {
+		}
 
-	string fileName;
-	bool fileModified;
-	Chrono lastPaintEvent;
+		void onMouseMove(wxMouseEvent &event);
+	};
 
-	wxBoxSizer *boxsizer;
+	// =====================================================
+	//	class MainWindow
+	// =====================================================
 
-	bool startupSettingsInited;
-	string appPath;
+	class MainWindow : public wxFrame {
+	private:
+		DECLARE_EVENT_TABLE()
 
-public:
-	explicit MainWindow(string appPath);
-	~MainWindow();
+	private:
+		static const string versionString;
+		static const string winHeader;
+		static const int heightCount = 11;
+		static const int surfaceCount = 5;
+		static const int objectCount = 11;
+		static const int resourceCount = 6;
+		static const int startLocationCount = 8;
+		static const int radiusCount = 9;
 
-	void refreshMapRender();
-	void init(string fname);
+	private:
+		enum MenuId {
+			miFileLoad,
+			miFileSave,
+			miFileSaveAs,
+			miFileExit,
 
-	void onClose(wxCloseEvent &event);
+			miEditUndo,
+			miEditRedo,
+			miEditReset,
+			miEditResetPlayers,
+			miEditResize,
+			miEditFlipDiagonal,
+			miEditFlipX,
+			miEditFlipY,
 
-	void onMouseDown(wxMouseEvent &event, int x, int y);
-	void onMouseMove(wxMouseEvent &event, int x, int y);
-	void onMouseWheelDown(wxMouseEvent &event);
-	void onMouseWheelUp(wxMouseEvent &event);
+			miEditMirrorX,
+			miEditMirrorY,
+			miEditMirrorXY,
+			miEditRotatecopyX,
+			miEditRotatecopyY,
+			miEditRotatecopyXY,
+			miEditRotatecopyCorner,
+			miEditMirror,
 
-	void onPaint(wxPaintEvent &event);
-	void onKeyDown(wxKeyEvent &e);
+			miEditRandomizeHeights,
+			miEditRandomize,
+			miEditSwitchSurfaces,
+			miEditInfo,
+			miEditAdvanced,
 
-	void onMenuFileLoad(wxCommandEvent &event);
-	void onMenuFileSave(wxCommandEvent &event);
-	void onMenuFileSaveAs(wxCommandEvent &event);
-	void onMenuFileExit(wxCommandEvent &event);
+			miViewResetZoomAndPos,
+			miViewGrid,
+			miViewHeightMap,
+			miHideWater,
+			miViewAbout,
+			miViewHelp,
 
-	void onMenuEditUndo(wxCommandEvent &event);
-	void onMenuEditRedo(wxCommandEvent &event);
-	void onMenuEditReset(wxCommandEvent &event);
-	void onMenuEditResetPlayers(wxCommandEvent &event);
-	void onMenuEditResize(wxCommandEvent &event);
-	void onMenuEditFlipDiagonal(wxCommandEvent &event);
-	void onMenuEditFlipX(wxCommandEvent &event);
-	void onMenuEditFlipY(wxCommandEvent &event);
+			toolPlayer,
 
-	void onMenuEditMirrorX(wxCommandEvent &event); // copy left to right
-	void onMenuEditMirrorY(wxCommandEvent &event); // copy top to bottom
-	void onMenuEditMirrorXY(wxCommandEvent &event); // copy bottomleft to topright
-	void onMenuEditRotatecopyX(wxCommandEvent &event); // copy left to right, rotated
-	void onMenuEditRotatecopyY(wxCommandEvent &event); // copy top to bottom, rotated
-	void onMenuEditRotatecopyXY(wxCommandEvent &event);  // copy bottomleft to topright, rotated
-	void onMenuEditRotatecopyCorner(wxCommandEvent &event); // copy top left 1/4 to top right 1/4, rotated
+			miBrushHeight,
+			miBrushGradient = miBrushHeight + heightCount + 1,
+			miBrushSurface = miBrushGradient + heightCount + 1,
+			miBrushObject = miBrushSurface + surfaceCount + 1,
+			miBrushResource = miBrushObject + objectCount + 1,
+			miBrushStartLocation = miBrushResource + resourceCount + 1,
 
-	void onMenuEditRandomizeHeights(wxCommandEvent &event);
-	void onMenuEditRandomize(wxCommandEvent &event);
-	void onMenuEditSwitchSurfaces(wxCommandEvent &event);
-	void onMenuEditInfo(wxCommandEvent &event);
-	void onMenuEditAdvanced(wxCommandEvent &event);
+			miRadius = miBrushStartLocation + startLocationCount + 1
+		};
 
-	void onMenuViewResetZoomAndPos(wxCommandEvent &event);
-	void onMenuViewGrid(wxCommandEvent &event);
-	void onMenuViewHeightMap(wxCommandEvent &event);
-	void onMenuHideWater(wxCommandEvent &event);
-	void onMenuViewAbout(wxCommandEvent &event);
-	void onMenuViewHelp(wxCommandEvent &event);
+	private:
+		GlCanvas *glCanvas;
+		Program *program;
+		int lastX, lastY;
 
-	void onMenuBrushHeight(wxCommandEvent &event);
-	void onMenuBrushGradient(wxCommandEvent &event);
-	void onMenuBrushSurface(wxCommandEvent &event);
-	void onMenuBrushObject(wxCommandEvent &event);
-	void onMenuBrushResource(wxCommandEvent &event);
-	void onMenuBrushStartLocation(wxCommandEvent &event);
-	void onMenuRadius(wxCommandEvent &event);
+		wxPanel *panel;
 
-	void onToolPlayer(wxCommandEvent &event);
+		wxMenuBar *menuBar;
+		wxMenu *menuFile;
+		wxMenu *menuEdit;
+		wxMenu *menuEditMirror;
+		wxMenu *menuView;
+		wxMenu *menuBrush;
+		wxMenu *menuBrushHeight;
+		wxMenu *menuBrushGradient;
 
-	void change(int x, int y);
+		wxMenu *menuBrushSurface;
+		wxMenu *menuBrushObject;
+		wxMenu *menuBrushResource;
+		wxMenu *menuBrushStartLocation;
+		wxMenu *menuRadius;
 
-	void uncheckBrush();
-	void uncheckRadius();
+		wxFileDialog *fileDialog;
 
-private:
+		string currentFile;
 
-	bool isDirty() const	{ return fileModified; }
-	void setDirty(bool val=true);
-	void setExtension();
-	void setupStartupSettings();
-	void initGlCanvas();
-};
+		BrushType currentBrush;
+		int height;
+		int surface;
+		int radius;
+		int object;
+		int resource;
+		int startLocation;
+		int resourceUnderMouse;
+		int objectUnderMouse;
 
-// =====================================================
-//	class GlCanvas
-// =====================================================
+		bool randomWithReset;
+		int randomMinimumHeight;
+		int randomMaximumHeight;
+		int randomChanceDivider;
+		int randomRecursions;
 
-class GlCanvas: public wxGLCanvas {
-private:
-	DECLARE_EVENT_TABLE()
+		ChangeType enabledGroup;
 
-public:
-	GlCanvas(MainWindow *mainWindow, wxWindow *parent, int *args);
-	~GlCanvas();
+		string fileName;
+		bool fileModified;
+		Chrono lastPaintEvent;
 
-	void onMouseDown(wxMouseEvent &event);
-	void onMouseMove(wxMouseEvent &event);
-	void onMouseWheel(wxMouseEvent &event);
-	void onKeyDown(wxKeyEvent &event);
-    void onPaint(wxPaintEvent &event);
+		wxBoxSizer *boxsizer;
 
-    void setCurrentGLContext();
-private:
-	MainWindow *mainWindow;
-	wxGLContext *context;
-};
+		bool startupSettingsInited;
+		string appPath;
 
-// =====================================================
-//	class SimpleDialog
-// =====================================================
+	public:
+		explicit MainWindow(string appPath);
+		~MainWindow();
 
-class SimpleDialog: public wxDialog {
-private:
-	typedef vector<pair<string, string> > Values;
+		void refreshMapRender();
+		void init(string fname);
 
-private:
-	Values values;
+		void onClose(wxCloseEvent &event);
 
-public:
-	void addValue(const string &key, const string &value, const string &help="");
-	string getValue(const string &key);
+		void onMouseDown(wxMouseEvent &event, int x, int y);
+		void onMouseMove(wxMouseEvent &event, int x, int y);
+		void onMouseWheelDown(wxMouseEvent &event);
+		void onMouseWheelUp(wxMouseEvent &event);
 
-	bool show(const string &title="Edit values", bool wide=false);
-};
+		void onPaint(wxPaintEvent &event);
+		void onKeyDown(wxKeyEvent &e);
 
-// =====================================================
-//	class SimpleDialog
-// =====================================================
+		void onMenuFileLoad(wxCommandEvent &event);
+		void onMenuFileSave(wxCommandEvent &event);
+		void onMenuFileSaveAs(wxCommandEvent &event);
+		void onMenuFileExit(wxCommandEvent &event);
 
-class MsgDialog: public wxDialog {
+		void onMenuEditUndo(wxCommandEvent &event);
+		void onMenuEditRedo(wxCommandEvent &event);
+		void onMenuEditReset(wxCommandEvent &event);
+		void onMenuEditResetPlayers(wxCommandEvent &event);
+		void onMenuEditResize(wxCommandEvent &event);
+		void onMenuEditFlipDiagonal(wxCommandEvent &event);
+		void onMenuEditFlipX(wxCommandEvent &event);
+		void onMenuEditFlipY(wxCommandEvent &event);
 
-private:
+		void onMenuEditMirrorX(wxCommandEvent &event); // copy left to right
+		void onMenuEditMirrorY(wxCommandEvent &event); // copy top to bottom
+		void onMenuEditMirrorXY(wxCommandEvent &event); // copy bottomleft to topright
+		void onMenuEditRotatecopyX(wxCommandEvent &event); // copy left to right, rotated
+		void onMenuEditRotatecopyY(wxCommandEvent &event); // copy top to bottom, rotated
+		void onMenuEditRotatecopyXY(wxCommandEvent &event);  // copy bottomleft to topright, rotated
+		void onMenuEditRotatecopyCorner(wxCommandEvent &event); // copy top left 1/4 to top right 1/4, rotated
 
-	wxSizer *m_sizerText;
+		void onMenuEditRandomizeHeights(wxCommandEvent &event);
+		void onMenuEditRandomize(wxCommandEvent &event);
+		void onMenuEditSwitchSurfaces(wxCommandEvent &event);
+		void onMenuEditInfo(wxCommandEvent &event);
+		void onMenuEditAdvanced(wxCommandEvent &event);
 
-public:
-	MsgDialog(wxWindow *parent,
-                     const wxString& message,
-                     const wxString& caption,
-                     long style = wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxOK | wxCENTRE,
-                     const wxPoint& pos = wxDefaultPosition);
-	virtual ~MsgDialog();
-};
+		void onMenuViewResetZoomAndPos(wxCommandEvent &event);
+		void onMenuViewGrid(wxCommandEvent &event);
+		void onMenuViewHeightMap(wxCommandEvent &event);
+		void onMenuHideWater(wxCommandEvent &event);
+		void onMenuViewAbout(wxCommandEvent &event);
+		void onMenuViewHelp(wxCommandEvent &event);
 
-// =====================================================
-//	class App
-// =====================================================
+		void onMenuBrushHeight(wxCommandEvent &event);
+		void onMenuBrushGradient(wxCommandEvent &event);
+		void onMenuBrushSurface(wxCommandEvent &event);
+		void onMenuBrushObject(wxCommandEvent &event);
+		void onMenuBrushResource(wxCommandEvent &event);
+		void onMenuBrushStartLocation(wxCommandEvent &event);
+		void onMenuRadius(wxCommandEvent &event);
 
-// =====================================================
-//	class App
-// =====================================================
+		void onToolPlayer(wxCommandEvent &event);
 
-class App: public wxApp {
-private:
-	MainWindow *mainWindow;
+		void change(int x, int y);
 
-public:
-	App() : wxApp() {
-		mainWindow = NULL;
-	}
-	virtual ~App() {}
-	virtual bool OnInit();
-	virtual int MainLoop();
-	virtual int OnExit();
-};
+		void uncheckBrush();
+		void uncheckRadius();
+
+	private:
+
+		bool isDirty() const {
+			return fileModified;
+		}
+		void setDirty(bool val = true);
+		void setExtension();
+		void setupStartupSettings();
+		void initGlCanvas();
+	};
+
+	// =====================================================
+	//	class GlCanvas
+	// =====================================================
+
+	class GlCanvas : public wxGLCanvas {
+	private:
+		DECLARE_EVENT_TABLE()
+
+	public:
+		GlCanvas(MainWindow *mainWindow, wxWindow *parent, int *args);
+		~GlCanvas();
+
+		void onMouseDown(wxMouseEvent &event);
+		void onMouseMove(wxMouseEvent &event);
+		void onMouseWheel(wxMouseEvent &event);
+		void onKeyDown(wxKeyEvent &event);
+		void onPaint(wxPaintEvent &event);
+
+		void setCurrentGLContext();
+	private:
+		MainWindow *mainWindow;
+		wxGLContext *context;
+	};
+
+	// =====================================================
+	//	class SimpleDialog
+	// =====================================================
+
+	class SimpleDialog : public wxDialog {
+	private:
+		typedef vector<pair<string, string> > Values;
+
+	private:
+		Values values;
+
+	public:
+		void addValue(const string &key, const string &value, const string &help = "");
+		string getValue(const string &key);
+
+		bool show(const string &title = "Edit values", bool wide = false);
+	};
+
+	// =====================================================
+	//	class SimpleDialog
+	// =====================================================
+
+	class MsgDialog : public wxDialog {
+
+	private:
+
+		wxSizer *m_sizerText;
+
+	public:
+		MsgDialog(wxWindow *parent,
+			const wxString& message,
+			const wxString& caption,
+			long style = wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxOK | wxCENTRE,
+			const wxPoint& pos = wxDefaultPosition);
+		virtual ~MsgDialog();
+	};
+
+	// =====================================================
+	//	class App
+	// =====================================================
+
+	// =====================================================
+	//	class App
+	// =====================================================
+
+	class App : public wxApp {
+	private:
+		MainWindow *mainWindow;
+
+	public:
+		App() : wxApp() {
+			mainWindow = NULL;
+		}
+		virtual ~App() {
+		}
+		virtual bool OnInit();
+		virtual int MainLoop();
+		virtual int OnExit();
+	};
 
 }// end namespace
 

@@ -12,9 +12,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FE5C7C7C-F109-44F5-8329-25A4E24F162C}</ProjectGuid>
-    <RootNamespace>g3d_viewer</RootNamespace>
+    <RootNamespace>g3dviewer</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <ProjectName>g3d_viewer</ProjectName>
+    <ProjectName>g3dviewer</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -161,7 +161,7 @@
     <ClCompile>
       <AdditionalOptions>/arch:SSE2 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>..\dependencies\src\wxwidgets\include;..\..\..\source\shared_lib\include\util;..\..\..\source\shared_lib\include\graphics\gl;..\..\..\source\shared_lib\include\graphics;../dependencies/src/wxwidgets/include;..\..\..\source\shared_lib\include\platform\sdl;../../../source/shared_lib/include/platform/common;..\dependencies\src\sdl2\include;../dependencies/src/curl/include;..\..\..\source\glest_game\graphics;..\..\..\source\shared_lib\include\xml;../dependencies/src/xerces/src;..\..\..\source\glest_game\global;..\..\..\source\glest_game\sound;..\..\..\source\shared_lib\include\sound;..\..\..\source\glest_game\game;../../../source/shared_lib/include/map;../dependencies/src/png;..\..\..\source\glest_game\facilities;../dependencies/src/glew/include;..\..\..\source\shared_lib\include\xml\rapidxml;../../../source/shared_lib/include/platform/win32;..\dependencies\src\wxwidgets\lib\vc_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WINDOWS;WIN32;NDEBUG;CURL_STATICLIB;UNICODE;_UNICODE;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;NDEBUG;_CRT_SECURE_NO_WARNINGS;CURL_STATICLIB;UNICODE;_UNICODE;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -261,9 +261,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-	<Content Include="..\glest.ini">
-		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</Content>
+    <Content Include="..\glest.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

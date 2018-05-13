@@ -21,9 +21,19 @@ Open games and [Server list and player stats](https://zetaglest.dreamhosters.com
 
 [Detailed information about units in the game](https://zetaglest.github.io/)
 
+## Stay Informed (Updates)
+
+* [ChangeLog.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/ChangeLog.md)<br >
+* [![RSS](rss_23x23.jpeg)](https://github.com/ZetaGlest/zetaglest-source/commits/develop.atom)
+[Recent Commits to zetaglest-source:develop](https://github.com/ZetaGlest/zetaglest-source/commits/develop.atom)<br >
+* [![RSS](rss_23x23.jpeg)](https://github.com/ZetaGlest/zetaglest-data/commits/develop.atom)
+[Recent Commits to zetaglest-data:develop](https://github.com/ZetaGlest/zetaglest-data/commits/develop.atom)<br >
+* [![RSS](rss_23x23.jpeg)](https://github.com/ZetaGlest/zetaglest.github.io/commits/master.atom)
+[Recent Commits to the web site](https://github.com/ZetaGlest/zetaglest.github.io/commits/master.atom)
+
 ## Why this fork? (Project Goals)
 
-ZetaGlest forked from MegaGlest at v3.13.0-dev
+ZetaGlest forked from MegaGlest at v3.13.0-dev ([12998eb](https://github.com/ZetaGlest/zetaglest-source/commit/12998eb10f6447ac89a45d1e6d76f17946647b7a))
 
 I noticed that there were some good feature requests in the MegaGlest
 forum, as well as some mods, but it seemed that implementing and
@@ -99,4 +109,5 @@ for extended, important instructions and guidelines for contributing.
 ## Contact
 
 * [Discord](https://discord.gg/WaAaXS7)
+* [Message Board](https://groups.google.com/forum/#!forum/zetaglest)
 * email: andy400-dev@yahoo.com

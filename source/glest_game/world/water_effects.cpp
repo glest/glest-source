@@ -15,55 +15,57 @@
 #include "map.h"
 #include "leak_dumper.h"
 
-namespace Glest{ namespace Game{
+namespace Glest {
+	namespace Game {
 
-// =====================================================
-//	class WaterSplash
-// =====================================================
+		// =====================================================
+		//	class WaterSplash
+		// =====================================================
 
-WaterSplash::WaterSplash(const Vec2f &pos, int size){
-	this->pos= pos;
-	this->size=1+(size-1)/2;
-	anim= 0.f;
-	enabled= true;
+		WaterSplash::WaterSplash(const Vec2f &pos, int size) {
+			this->pos = pos;
+			this->size = 1 + (size - 1) / 2;
+			anim = 0.f;
+			enabled = true;
 
-}
-
-void WaterSplash::update(float amount){
-	if(enabled){
-		anim+= amount/size;
-		if(anim>1.f){
-			enabled= false;
 		}
-	}
-}
 
-// ===============================
-// 	class WaterEffects  
-// ===============================
-
-WaterEffects::WaterEffects(){
-	anim= 0;
-}
-
-void WaterEffects::update(float speed){
-	anim+= 0.5f/GameConstants::updateFps;
-	if(anim>1.f){
-		anim= 0;
-	}
-	for(int i=0; i < (int)waterSplashes.size(); ++i){
-		waterSplashes[i].update(speed/GameConstants::updateFps);
-	}
-}
-
-void WaterEffects::addWaterSplash(const Vec2f &pos, int size){
-	for(int i=0; i < (int)waterSplashes.size(); ++i){
-		if(!waterSplashes[i].getEnabled()){
-			waterSplashes[i]= WaterSplash(pos,size);
-			return;
+		void WaterSplash::update(float amount) {
+			if (enabled) {
+				anim += amount / size;
+				if (anim > 1.f) {
+					enabled = false;
+				}
+			}
 		}
-	}
-	waterSplashes.push_back(WaterSplash(pos,size));
-}
 
-}}//end namespace
+		// ===============================
+		// 	class WaterEffects  
+		// ===============================
+
+		WaterEffects::WaterEffects() {
+			anim = 0;
+		}
+
+		void WaterEffects::update(float speed) {
+			anim += 0.5f / GameConstants::updateFps;
+			if (anim > 1.f) {
+				anim = 0;
+			}
+			for (int i = 0; i < (int) waterSplashes.size(); ++i) {
+				waterSplashes[i].update(speed / GameConstants::updateFps);
+			}
+		}
+
+		void WaterEffects::addWaterSplash(const Vec2f &pos, int size) {
+			for (int i = 0; i < (int) waterSplashes.size(); ++i) {
+				if (!waterSplashes[i].getEnabled()) {
+					waterSplashes[i] = WaterSplash(pos, size);
+					return;
+				}
+			}
+			waterSplashes.push_back(WaterSplash(pos, size));
+		}
+
+	}
+}//end namespace

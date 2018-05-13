@@ -15,50 +15,77 @@
 #include "data_types.h"
 #include "leak_dumper.h"
 
-namespace Shared{ namespace Graphics{
+namespace Shared {
+	namespace Graphics {
 
-using Platform::uint32;
-using Platform::int8;
+		using Platform::uint32;
+		using Platform::int8;
 
-// =====================================================
-//	class Context
-// =====================================================
+		// =====================================================
+		//	class Context
+		// =====================================================
 
-class Context{
-protected:
-	uint32 colorBits;
-	uint32 depthBits;
-	uint32 stencilBits;
-	int8 hardware_acceleration;
-	int8 fullscreen_anti_aliasing;
-	float gammaValue;
+		class Context {
+		protected:
+			uint32 colorBits;
+			uint32 depthBits;
+			uint32 stencilBits;
+			int8 hardware_acceleration;
+			int8 fullscreen_anti_aliasing;
+			float gammaValue;
 
-public:
-	Context();
-	virtual ~Context(){}
+		public:
+			Context();
+			virtual ~Context() {
+			}
 
-	uint32 getColorBits() const		{return colorBits;}
-	uint32 getDepthBits() const		{return depthBits;}
-	uint32 getStencilBits() const	{return stencilBits;}
-	int8 getHardware_acceleration() const { return hardware_acceleration; }
-	int8 getFullscreen_anti_aliasing() const { return fullscreen_anti_aliasing; }
-	float getGammaValue() const { return gammaValue; }
+			uint32 getColorBits() const {
+				return colorBits;
+			}
+			uint32 getDepthBits() const {
+				return depthBits;
+			}
+			uint32 getStencilBits() const {
+				return stencilBits;
+			}
+			int8 getHardware_acceleration() const {
+				return hardware_acceleration;
+			}
+			int8 getFullscreen_anti_aliasing() const {
+				return fullscreen_anti_aliasing;
+			}
+			float getGammaValue() const {
+				return gammaValue;
+			}
 
-	void setColorBits(uint32 colorBits)		{this->colorBits= colorBits;}
-	void setDepthBits(uint32 depthBits)		{this->depthBits= depthBits;}
-	void setStencilBits(uint32 stencilBits)	{this->stencilBits= stencilBits;}
-	void setHardware_acceleration(int8 value) { hardware_acceleration = value; }
-	void setFullscreen_anti_aliasing(int8 value) { fullscreen_anti_aliasing = value; }
-	void setGammaValue(float value) { gammaValue = value; }
+			void setColorBits(uint32 colorBits) {
+				this->colorBits = colorBits;
+			}
+			void setDepthBits(uint32 depthBits) {
+				this->depthBits = depthBits;
+			}
+			void setStencilBits(uint32 stencilBits) {
+				this->stencilBits = stencilBits;
+			}
+			void setHardware_acceleration(int8 value) {
+				hardware_acceleration = value;
+			}
+			void setFullscreen_anti_aliasing(int8 value) {
+				fullscreen_anti_aliasing = value;
+			}
+			void setGammaValue(float value) {
+				gammaValue = value;
+			}
 
-	virtual void init()= 0;
-	virtual void end()= 0;
-	virtual void reset()= 0;
+			virtual void init() = 0;
+			virtual void end() = 0;
+			virtual void reset() = 0;
 
-	virtual void makeCurrent()= 0;
-	virtual void swapBuffers()= 0;
-};
+			virtual void makeCurrent() = 0;
+			virtual void swapBuffers() = 0;
+		};
 
-}}//end namespace
+	}
+}//end namespace
 
 #endif
