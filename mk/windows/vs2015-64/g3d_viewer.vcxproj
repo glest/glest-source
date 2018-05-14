@@ -243,8 +243,7 @@
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <EnableEnhancedInstructionSet>
-      </EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <PrecompiledHeaderFile>
@@ -261,6 +260,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <OmitFramePointers>false</OmitFramePointers>
     </ClCompile>
     <Link>
       <AdditionalDependencies>wxbase29u.lib;wxbase29u_net.lib;wxbase29u_xml.lib;wxexpat.lib;wxjpeg.lib;wxtiff.lib;wxmsw29u_adv.lib;wxmsw29u_aui.lib;wxmsw29u_core.lib;wxmsw29u_gl.lib;wxmsw29u_html.lib;wxmsw29u_media.lib;wxmsw29u_qa.lib;wxmsw29u_richtext.lib;wxmsw29u_xrc.lib;wxregexu.lib;winmm.lib;rpcrt4.lib;kernel32.lib;user32.lib;gdi32.lib;ole32.lib;oleaut32.lib;comctl32.lib;comdlg32.lib;uuid.lib;advapi32.lib;shell32.lib;Dbghelp.lib;sdl2-static.lib;sdl2main.lib;dxguid.lib;libcurl.lib;ws2_32.lib;xerces-c.lib;libpng.lib;turbojpeg-static.lib;ftgl_static.lib;freetype.lib;glew.lib;zlib.lib;version.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
