@@ -3115,7 +3115,7 @@ namespace
 						result = true;
 						break;
 					case utet_FieldChanged:
-						unit->setCurrField(value == 1 ? Field::fAir : Field::fLand);
+						unit->setCurrField(value == 1 ? Glest::Game::Field::fAir : Glest::Game::Field::fLand);
 						result = true;
 						break;
 				}
