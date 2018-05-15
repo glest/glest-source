@@ -53,9 +53,9 @@ snapshots](https://github.com/ZetaGlest/windows-binaries/releases) are
 available. You will also need to download the
 [data](https://github.com/ZetaGlest/zetaglest-data/releases).
 
-We are having [build issues on Mac OSX
+We are having [build issues on **Mac OSX**
 systems](https://github.com/ZetaGlest/zetaglest-source/issues/25). One
-person reported he couldn't get ZetaGlest to build, and other reported
+person reported he couldn't get ZetaGlest to build, and another reported
 that once built, it would not run. Please help if you can.
 
 For other operating systems, you must [build from
