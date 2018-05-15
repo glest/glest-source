@@ -129,7 +129,7 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 
     # GCC specific Compiler Options
     ELSE()
-        ADD_DEFINITIONS("-frounding-math -fsignaling-nans")
+        ADD_DEFINITIONS("-std=gnu++11 -frounding-math -fsignaling-nans")
 
 #                IF(NOT MINGW)
 #                        set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -rdynamic")
