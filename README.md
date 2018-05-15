@@ -54,10 +54,12 @@ available. You will also need to download the
 [data](https://github.com/ZetaGlest/zetaglest-data/releases).
 
 For other operating system, you must [build from
-source](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)<br />
-(Later, we'll be providing binary packages). If you would like to play
-with other users, we recommend this [dev
-snapshot](https://github.com/ZetaGlest/zetaglest-source/releases).
+source](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md) (Later,
+we'll be providing binary packages). If you would like to play
+with other users, we recommend this **[dev
+snapshot](https://github.com/ZetaGlest/zetaglest-source/releases)**.
+You will also need to download the
+[data](https://github.com/ZetaGlest/zetaglest-data/releases).
 
 (The ETA for the first official release can be viewed from the [0.8.01
 milestone](https://github.com/ZetaGlest/zetaglest-source/milestone/1).)
