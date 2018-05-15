@@ -53,7 +53,7 @@ snapshots](https://github.com/ZetaGlest/windows-binaries/releases) are
 available. You will also need to download the
 [data](https://github.com/ZetaGlest/zetaglest-data/releases).
 
-For other operating system, you must [build from
+For other operating systems, you must [build from
 source](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md) (Later,
 we'll be providing binary packages). If you would like to play
 with other users, we recommend this **[dev
