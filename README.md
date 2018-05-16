@@ -125,4 +125,4 @@ for extended, important instructions and guidelines for contributing.
 
 * [Discord](https://discord.gg/WaAaXS7)
 * [Message Board](https://groups.google.com/forum/#!forum/zetaglest)
-* Email: andy400-dev@yahoo.com
+* Email: zetaglest@gmail.com
