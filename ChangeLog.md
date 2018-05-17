@@ -5,6 +5,10 @@ This documents notable or significant changes to
 information about the game from which it was forked, please see the
 [MegaGlest home page](https://megaglest.org/).
 
+## 2018-05-16
+
+[16 maps added](https://github.com/ZetaGlest/zetaglest-data/compare/4c67d4bfba21...9dfb37450e07)
+
 ## 2018-05-08
 
 OpenBSD build instructions added
