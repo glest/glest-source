@@ -49,7 +49,7 @@ been for me.
 ## Download executable files
 
 On Windows, the easiest way to get started is to [download and run the installer](https://github.com/ZetaGlest/windows-installer).
-If you want to contribute with the code on Windows, [follow these instructions](https://github.com/ZetaGlest/zetaglest-source/tree/develop/mk/windows).
+If you want to contribute with the code on Windows, [please follow these instructions](https://github.com/ZetaGlest/zetaglest-source/blob/develop/mk/windows/README.md).
 
 We are having [build issues on **Mac OSX**
 systems](https://github.com/ZetaGlest/zetaglest-source/issues/25). One
