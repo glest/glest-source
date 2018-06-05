@@ -1,14 +1,21 @@
-// ==============================================================
-//	This file is part of MegaGlest Shared Library (www.glest.org)
+//      ircclient.cpp:
 //
-//	Copyright (C) 2009-2010 Titus Tscharntke (info@titusgames.de) and
-//                          Mark Vejvoda (mark_vejvoda@hotmail.com)
+//      Copyright (C) 2018  The ZetaGlest team <https://github.com/ZetaGlest>
 //
-//	You can redistribute this code and/or modify it under
-//	the terms of the GNU General Public License as published
-//	by the Free Software Foundation; either version 2 of the
-//	License, or (at your option) any later version
-// ==============================================================
+//      ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+//
+//      This program is free software: you can redistribute it and/or modify
+//      it under the terms of the GNU General Public License as published by
+//      the Free Software Foundation, either version 3 of the License, or
+//      (at your option) any later version.
+//
+//      This program is distributed in the hope that it will be useful,
+//      but WITHOUT ANY WARRANTY; without even the implied warranty of
+//      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//      GNU General Public License for more details.
+//
+//      You should have received a copy of the GNU General Public License
+//      along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "ircclient.h"
 #include "util.h"
@@ -169,7 +176,7 @@ namespace Shared {
 
 					if (SystemFlags::VERBOSE_MODE_ENABLED || IRCThread::debugEnabled) printf("===> IRC: Line: %d\n", __LINE__);
 
-					//irc_cmd_msg (session, params[0], "MG Bot says hello!");
+					//irc_cmd_msg (session, params[0], "ZG Bot says hello!");
 					ctx->setHasJoinedChannel(true);
 
 					if (SystemFlags::VERBOSE_MODE_ENABLED || IRCThread::debugEnabled) printf("===> IRC: Line: %d\n", __LINE__);
@@ -475,8 +482,8 @@ namespace Shared {
 									get_nickname(tokens[j].c_str(), realNick, 127);
 									if (SystemFlags::VERBOSE_MODE_ENABLED || IRCThread::debugEnabled) printf("===> IRC: LIBIRC_RFC_RPL_NAMREPLY user joined channel realNick [%s] tokens[j] [%s]\n", realNick, tokens[j].c_str());
 
-									// Only show MegaGlest users in the user list
-									//if(strncmp(&realNick[0],"MG_",3) == 0) {
+									// Only show ZetaGlest users in the user list
+									//if(strncmp(&realNick[0],"ZG_",3) == 0) {
 									nickList.push_back(realNick);
 									//}
 								}
@@ -819,7 +826,7 @@ namespace Shared {
 					if (SystemFlags::VERBOSE_MODE_ENABLED || IRCThread::debugEnabled) printf("===> IRC: Line: %d\n", __LINE__);
 
 					safeMutex.Lock();
-					if (irc_connect(ircSession, argv[0].c_str(), IRC_SERVER_PORT, 0, this->nick.c_str(), this->username.c_str(), ("MegagGlest " + glestVersionString).c_str())) {
+					if (irc_connect(ircSession, argv[0].c_str(), IRC_SERVER_PORT, 0, this->nick.c_str(), this->username.c_str(), ("ZetaGlest " + glestVersionString).c_str())) {
 						safeMutex.ReleaseLock();
 						if (SystemFlags::VERBOSE_MODE_ENABLED || IRCThread::debugEnabled) printf("===> IRC Could not connect: %s\n", irc_strerror(irc_errno(ircSession)));
 						return;
