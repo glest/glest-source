@@ -71,11 +71,11 @@ See [Build instructions](https://github.com/ZetaGlest/zetaglest-source/blob/deve
 
 ### Building the game yourself
 
-# On Windows:
+#### On Windows:
 
 [Follow the instructions in this Readme file].
 
-# On Linux:
+#### On Linux:
 
 Use these commands:
 
