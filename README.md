@@ -69,7 +69,7 @@ milestone](https://github.com/ZetaGlest/zetaglest-source/milestone/1).)
 
 See [Build instructions](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
 
-### Try the game without contributing
+### Building the game yourself
 
 Use these commands:
 
