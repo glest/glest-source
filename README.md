@@ -73,7 +73,7 @@ See [Build instructions](https://github.com/ZetaGlest/zetaglest-source/blob/deve
 
 #### On Windows:
 
-[Follow the instructions in this Readme file].
+[Follow the instructions in this Readme file](https://github.com/ZetaGlest/zetaglest-source/blob/develop/mk/windows/README.md).
 
 #### On Linux:
 
