@@ -68,7 +68,7 @@ using namespace Shared::Util;
 namespace Shared {
 	namespace Platform {
 
-		bool Socket::disableNagle = false;
+		bool Socket::disableNagle = true;
 		int Socket::DEFAULT_SOCKET_SENDBUF_SIZE = -1;
 		int Socket::DEFAULT_SOCKET_RECVBUF_SIZE = -1;
 		string Socket::host_name = "";
