@@ -45,10 +45,10 @@ namespace Glest {
 			static const int upCellCount = 36;
 			static const int downCellCount = cellSideCount * cellSideCount;
 			static const int colorCount = 9;
-			static const int imageSize = 32;
+			static const int imageSize = 40;
 			static const int invalidPos = -1;
-			static const int downY = imageSize * 9;
-			static const int infoStringY = imageSize * 4;
+			static const int downY = imageSize * 7;
+			static const int infoStringY = imageSize * 2;
 
 		private:
 			string title;
