@@ -655,7 +655,7 @@ namespace streflop {
 		return isgreater(x, y);
 	}
 	inline bool isgreaterequalf(Simple x, Simple y) {
-		return isgreaterequalf(x, y);
+		return isgreaterequal(x, y);
 	}
 	inline bool islessf(Simple x, Simple y) {
 		return isless(x, y);
