@@ -340,6 +340,7 @@ namespace
 			luaScript.registerFunction(showMessage, "showMessage");
 			luaScript.registerFunction(setDisplayText, "setDisplayText");
 			luaScript.registerFunction(addConsoleText, "addConsoleText");
+			luaScript.registerFunction(translate, "translate");
 			luaScript.registerFunction(addConsoleLangText, "addConsoleLangText");
 			luaScript.registerFunction(DisplayFormattedText,
 				"DisplayFormattedText");
@@ -453,6 +454,7 @@ namespace
 			luaScript.registerFunction(showMarker, "showMarker");
 
 			luaScript.registerFunction(getUnitFaction, "unitFaction");
+			luaScript.registerFunction(getFactionName, "getFactionName");
 			luaScript.registerFunction(getUnitName, "unitName");
 			luaScript.registerFunction(getResourceAmount, "resourceAmount");
 
@@ -1574,6 +1576,11 @@ namespace
 		void
 			ScriptManager::addConsoleText(const string & text) {
 			world->addConsoleText(text);
+		}
+
+		string
+			ScriptManager::translate(const string & text) {
+			return world->translate(text);
 		}
 		void
 			ScriptManager::addConsoleLangText(const char *fmt, ...) {
@@ -2795,6 +2802,17 @@ namespace
 		}
 
 		const string
+			ScriptManager::getFactionName(int factionIndex) {
+			if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled)
+				SystemFlags::OutputDebug(SystemFlags::debugLUA,
+					"In [%s::%s Line: %d]\n",
+					extractFileFromDirectoryPath(__FILE__).
+					c_str(), __FUNCTION__, __LINE__);
+
+			return world->getFactionName(factionIndex);
+		}
+
+		const string
 			ScriptManager::getPlayerName(int factionIndex) {
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled)
 				SystemFlags::OutputDebug(SystemFlags::debugLUA,
@@ -3451,6 +3469,20 @@ namespace
 
 			try {
 				thisScriptManager->addConsoleText(luaArguments.getString(-1));
+			} catch (const megaglest_runtime_error & ex) {
+				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
+			}
+
+			return luaArguments.getReturnCount();
+		}
+
+		int
+			ScriptManager::translate(LuaHandle * luaHandle) {
+			LuaArguments
+				luaArguments(luaHandle);
+
+			try {
+				luaArguments.returnString(thisScriptManager->translate(luaArguments.getString(-1)));
 			} catch (const megaglest_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
@@ -4901,6 +4933,20 @@ namespace
 			try {
 				luaArguments.returnString(thisScriptManager->
 					getPlayerName(luaArguments.getInt(-1)));
+			} catch (const megaglest_runtime_error & ex) {
+				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
+			}
+
+			return luaArguments.getReturnCount();
+		}
+
+		int
+			ScriptManager::getFactionName(LuaHandle * luaHandle) {
+			LuaArguments
+				luaArguments(luaHandle);
+			try {
+				luaArguments.returnString(thisScriptManager->
+					getFactionName(luaArguments.getInt(-1)));
 			} catch (const megaglest_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}

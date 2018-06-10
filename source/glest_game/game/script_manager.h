@@ -473,6 +473,8 @@ namespace
 				setDisplayText(const string & text);
 			void
 				addConsoleText(const string & text);
+			string
+				translate(const string & text);
 			void
 				addConsoleLangText(const char *fmt, ...);
 			void
@@ -692,6 +694,8 @@ namespace
 				getSystemMacroValue(const string & key);
 			const string
 				getPlayerName(int factionIndex);
+			const string
+				getFactionName(int factionIndex);
 
 			vector < int >
 				getUnitsForFaction(int factionIndex, const string & commandTypeName,
@@ -793,6 +797,8 @@ namespace
 				setDisplayText(LuaHandle * luaHandle);
 			static int
 				addConsoleText(LuaHandle * luaHandle);
+			static int
+				translate(LuaHandle * luaHandle);
 			static int
 				addConsoleLangText(LuaHandle * luaHandle);
 			static int
@@ -1001,6 +1007,8 @@ namespace
 				getSystemMacroValue(LuaHandle * luaHandle);
 			static int
 				getPlayerName(LuaHandle * luaHandle);
+			static int
+				getFactionName(LuaHandle * luaHandle);
 			static int
 				scenarioDir(LuaHandle * luaHandle);
 

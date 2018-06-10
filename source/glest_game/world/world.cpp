@@ -1726,6 +1726,9 @@ namespace Glest {
 		void World::addConsoleText(const string &text) {
 			game->getConsole()->addStdScenarioMessage(text);
 		}
+		string World::translate(const string &text) {
+			return Lang::getInstance().getScenarioString(text);
+		}
 		void World::addConsoleTextWoLang(const string &text) {
 			game->getConsole()->addLine(text);
 		}
@@ -1748,6 +1751,10 @@ namespace Glest {
 
 		const string World::getPlayerName(int factionIndex) {
 			return game->getGameSettings()->getNetworkPlayerName(factionIndex);
+		}
+
+		const string World::getFactionName(int factionIndex) {
+			return game->getGameSettings()->getFactionTypeName(factionIndex);
 		}
 
 		void World::giveUpgradeCommand(int unitId, const string &upgradeName) {

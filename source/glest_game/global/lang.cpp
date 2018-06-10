@@ -643,7 +643,7 @@ namespace Glest {
 						__FILE__, __FUNCTION__, __LINE__,
 						ex.what());
 				}
-				return s;
+				return getTechTreeString(s);
 			}
 		}
 

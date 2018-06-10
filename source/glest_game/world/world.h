@@ -310,6 +310,7 @@ namespace Glest {
 			void moveToUnit(int unitId, int destUnitId);
 			void togglePauseGame(bool pauseStatus, bool forceAllowPauseStateChange);
 			void addConsoleText(const string &text);
+			string translate(const string &text);
 			void addConsoleTextWoLang(const string &text);
 
 			void giveResource(const string &resourceName, int factionIndex, int amount);
@@ -329,6 +330,7 @@ namespace Glest {
 
 			const string getSystemMacroValue(const string key);
 			const string getPlayerName(int factionIndex);
+			const string getFactionName(int factionIndex);
 
 			void highlightUnit(int unitId, float radius, float thickness, Vec4f color);
 			void unhighlightUnit(int unitId);
