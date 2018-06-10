@@ -370,7 +370,7 @@ namespace Glest {
 			virtual void updateCamera();
 			virtual void render();
 			virtual void tick();
-			bool Game::checkRightDoubleClick(void);
+			bool checkRightDoubleClick(void);
 
 			//event managing
 			virtual bool textInput(std::string text);
