@@ -2725,14 +2725,10 @@ namespace Glest {
 			// The default command is executed when a unit is produced and sent to a meeting point
 			// or when the unit is selected and right clicked to a position.
 			if (commandType == NULL) {
-				// move
-				// commandType = type->getFirstCtOfClass (ccMove);
-
-				// attack
-				// Is the unit class warrior? if yes, attack by default, else walk.
-				commandType =
-					type->getFirstCtOfClass(this->getType()->
-						isOfClass(ucWarrior) ? ccAttack : ccMove);
+				CommandClass command = ccMove; //default command
+				if (this->getType()->isOfClass(ucWarrior) && (targetUnit == nullptr || this->getTeam() != targetUnit->getTeam()))
+					command = ccAttack;
+				commandType = type->getFirstCtOfClass(command);
 
 				// FIXME: I think a better solution would be to have a hotkey for this,
 				// the user can decide, and toggle in-game -andy5995 2018-02-03
