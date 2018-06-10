@@ -54,10 +54,6 @@ namespace Glest {
 
 		bool Selection::select(Unit *unit, bool addToSelection) {
 			bool result = false;
-			if ((int) selectedUnits.size() >= Config::getInstance().getInt("MaxUnitSelectCount", intToStr(maxUnits).c_str())) {
-				return result;
-			}
-
 			// Fix Bug reported on sourceforge.net: Glest::Game::Selection::select crash with NULL pointer - ID: 3608835
 			if (unit != NULL) {
 				//check if already selected
@@ -261,8 +257,6 @@ namespace Glest {
 				throw megaglest_runtime_error("Invalid value for groupIndex = " + intToStr(groupIndex));
 			}
 			bool alreadyExists = false;
-			bool groupIsFull = (int) groups[groupIndex].size() >= Config::getInstance().getInt("MaxUnitSelectCount", intToStr(maxUnits).c_str());
-
 			for (int i = 0; i < (int) groups[groupIndex].size(); ++i) {
 				if (groups[groupIndex][i] == unit) {
 					alreadyExists = true;
@@ -302,7 +296,7 @@ namespace Glest {
 				}
 			}
 
-			if (unit != NULL && !groupIsFull) {
+			if (unit != NULL) {
 				groups[groupIndex].push_back(unit);
 				return true;
 			} else {

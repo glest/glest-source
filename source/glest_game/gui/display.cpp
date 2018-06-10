@@ -63,7 +63,8 @@ namespace Glest {
 		}
 
 		void Display::setUpImage(int i, const Texture2D *image) {
-			if (i >= upCellCount) throw megaglest_runtime_error("i>=upCellCount in Display::setUpImage");
+			if (i >= upCellCount)
+				return;
 			upImages[i] = image;
 			calculateUpDimensions(i);
 		}

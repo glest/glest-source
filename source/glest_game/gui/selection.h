@@ -49,7 +49,6 @@ namespace Glest {
 
 		public:
 			static const int maxGroups = 10;
-			static const int maxUnits = 36;
 
 		private:
 			int factionIndex;
