@@ -214,7 +214,7 @@ namespace Glest {
 
 		void
 			Program::ShowMessageProgramState::mouseMove(int x, int y,
-				const MouseState &
+				const MouseState *
 				mouseState) {
 			mouseX = x;
 			mouseY = y;

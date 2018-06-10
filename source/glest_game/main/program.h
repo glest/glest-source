@@ -263,7 +263,7 @@ namespace Glest {
 				virtual void
 					mouseDownLeft(int x, int y);
 				virtual void
-					mouseMove(int x, int y, const MouseState & mouseState);
+					mouseMove(int x, int y, const MouseState * mouseState);
 				virtual void
 					keyPress(SDL_KeyboardEvent c);
 				virtual void
