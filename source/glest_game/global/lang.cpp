@@ -627,10 +627,8 @@ namespace Glest {
 					&& this->language != DEFAULT_LANGUAGE) {
 					return getString(s, DEFAULT_LANGUAGE, false);
 				}
-
-				//return "???" + s + "???";
 			}
-			return "???" + s + "???";
+			return s;
 		}
 
 		string Lang::getScenarioString(const string & s) {
@@ -645,7 +643,7 @@ namespace Glest {
 						__FILE__, __FUNCTION__, __LINE__,
 						ex.what());
 				}
-				return "???" + s + "???";
+				return s;
 			}
 		}
 
@@ -718,9 +716,8 @@ namespace Glest {
 						__FILE__, __FUNCTION__, __LINE__,
 						ex.what());
 				}
-				//return "???" + s + "???";
 			}
-			return "???" + s + "???";
+			return s;
 		}
 
 		string Lang::getTilesetString(const string & s, const char *defaultValue) {
@@ -748,9 +745,8 @@ namespace Glest {
 						__FILE__, __FUNCTION__, __LINE__,
 						ex.what());
 				}
-				//return "???" + s + "???";
 			}
-			return "???" + s + "???";
+			return s;
 		}
 
 		bool Lang::fileMatchesISO630Code(string uselanguage,
