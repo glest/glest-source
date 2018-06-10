@@ -51,7 +51,6 @@ using namespace Shared::CompressionUtil;
 
 namespace Glest {
 	namespace Game {
-
 		string GameSettings::playerDisconnectedText = "";
 		Game *thisGamePtr = NULL;
 
@@ -88,7 +87,7 @@ namespace Glest {
 			aiInterfaces.clear();
 			videoPlayer = NULL;
 			playingStaticVideo = false;
-
+			SendMove = false;
 			mouse2d = 0;
 			mouseX = 0;
 			mouseY = 0;
@@ -5716,7 +5715,6 @@ namespace Glest {
 			if (this->masterserverMode == true) {
 				return;
 			}
-
 			if (currentUIState != NULL) {
 				currentUIState->mouseDownRight(x, y);
 				return;
@@ -5750,6 +5748,8 @@ namespace Glest {
 					if (map->isInside(xCell, yCell)
 						&& map->
 						isInsideSurface(map->toSurfCoords(Vec2i(xCell, yCell)))) {
+						if (checkRightDoubleClick())
+							SendMove = true;
 						gui.mouseDownRightGraphics(xCell, yCell, true);
 					}
 				} else {
@@ -5758,6 +5758,8 @@ namespace Glest {
 					targetPos = getMouseCellPos();
 					if (isValidMouseCellPos() == true &&
 						map->isInsideSurface(map->toSurfCoords(targetPos)) == true) {
+						if (checkRightDoubleClick())
+							SendMove = true;
 						gui.mouseDownRightGraphics(x, y, false);
 					}
 				}
@@ -5820,7 +5822,6 @@ namespace Glest {
 					currentUIState->mouseUpLeft(x, y);
 					return;
 				}
-
 				gui.mouseUpLeftGraphics(x, y);
 			} catch (const exception & ex) {
 				char szBuf[8096] = "";
@@ -5895,6 +5896,28 @@ namespace Glest {
 					networkManager.getGameNetworkInterface()->quitGame(true);
 				}
 				ErrorDisplayMessage(ex.what(), true);
+			}
+		}
+
+		bool Game::checkRightDoubleClick(void) {
+			static Uint32 LastClickTicks;
+			Uint32 CurrentClickTicks;
+			/* The first time this function is called, LastClickTicks has not been initialised yet. */
+			if (!LastClickTicks) {
+				LastClickTicks = SDL_GetTicks();
+				return false;
+			} else {
+				CurrentClickTicks = SDL_GetTicks();
+				/* If the period between the two clicks is smaller or equal to a pre-defined number, we report a DoubleClick event. */
+				if (CurrentClickTicks - LastClickTicks <= 400) {
+					/* Update LastClickTicks and signal a DoubleClick. */
+					LastClickTicks = CurrentClickTicks;
+					return true;
+				} else {
+					/* Update LastClickTicks and signal a SingleClick. */
+					LastClickTicks = CurrentClickTicks;
+					return false;
+				}
 			}
 		}
 

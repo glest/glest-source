@@ -9,6 +9,7 @@
 //      License, or (at your option) any later version
 // ==============================================================
 
+#include <map>
 #include "commander.h"
 
 #include "world.h"
@@ -426,7 +427,6 @@ namespace
 				const Unit * targetUnit,
 				bool tryQueue,
 				int unitCommandGroupId) const {
-
 			if (this->pauseNetworkCommands == true) {
 				return std::pair < CommandResult, string >(crFailUndefined, "");
 			}
@@ -453,37 +453,35 @@ namespace
 
 				//give orders to all selected units
 				refPos = world->getMap()->computeRefPos(selection);
+
+				bool ignoreBuildings = false;
+
+				std::map<int, const CommandType*> command;
 				for (int i = 0; i < selection->getCount(); ++i) {
 					//every unit is ordered to a different pos
-					const Unit *
-						unit = selection->getUnit(i);
+					const Unit * unit = selection->getUnit(i);
 					assert(unit != NULL);
-
-					currPos =
-						world->getMap()->computeDestPos(refPos,
-							unit->
-							getPosNotThreadSafe(),
-							pos);
-
 					//get command type
-					const CommandType *
-						commandType = unit->computeCommandType(pos, targetUnit);
-
+					const CommandType *commandType = unit->computeCommandType(pos, targetUnit);
+					if (commandType != NULL)
+						ignoreBuildings = true;
+					command[i] = commandType;
+				}
+				Game* game = world->getGame();
+				bool isMove = game->SendMove;
+				game->SendMove = false;
+				for (int i = 0; i < selection->getCount(); ++i) {
+					const Unit * unit = selection->getUnit(i);
+					const CommandType *commandType = command[i];
+					currPos = world->getMap()->computeDestPos(refPos, unit->getPosNotThreadSafe(), pos);
 					//give commands
 					if (commandType != NULL) {
-						int
-							targetId =
-							targetUnit ==
-							NULL ? Unit::invalidId : targetUnit->getId();
-						int
-							unitId = unit->getId();
-
-						std::pair < CommandResult,
-							string > resultCur(crFailUndefined, "");
-
-						bool
-							canSubmitCommand =
-							canSubmitCommandType(unit, commandType);
+						if (isMove && commandType->commandTypeClass == CommandClass::ccAttack)
+							commandType = unit->getType()->getFirstCtOfClass(CommandClass::ccMove);
+						int targetId = targetUnit == NULL ? Unit::invalidId : targetUnit->getId();
+						int unitId = unit->getId();
+						std::pair < CommandResult, string> resultCur(crFailUndefined, "");
+						bool canSubmitCommand = canSubmitCommandType(unit, commandType);
 						if (canSubmitCommand == true) {
 							NetworkCommand
 								networkCommand(this->world, nctGiveCommand,
@@ -493,7 +491,7 @@ namespace
 							resultCur = pushNetworkCommand(&networkCommand);
 						}
 						results.push_back(resultCur);
-					} else if (unit->isMeetingPointSettable() == true) {
+					} else if (!ignoreBuildings && unit->isMeetingPointSettable()) {
 						NetworkCommand
 							command(this->world, nctSetMeetingPoint,
 								unit->getId(), -1, currPos, -1, -1, -1, false,

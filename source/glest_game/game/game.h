@@ -87,6 +87,7 @@ namespace Glest {
 			public CustomInputCallbackInterface, public ClientLagCallbackInterface {
 		public:
 			static const float highlightTime;
+			bool SendMove;
 
 		private:
 			typedef vector < Ai * > Ais;
@@ -369,6 +370,7 @@ namespace Glest {
 			virtual void updateCamera();
 			virtual void render();
 			virtual void tick();
+			bool Game::checkRightDoubleClick(void);
 
 			//event managing
 			virtual bool textInput(std::string text);
@@ -381,6 +383,7 @@ namespace Glest {
 			virtual void mouseUpCenter(int x, int y);
 			virtual void mouseUpLeft(int x, int y);
 			virtual void mouseDoubleClickLeft(int x, int y);
+			//virtual void mouseDoubleClickRight(int x, int y);
 			virtual void eventMouseWheel(int x, int y, int zDelta);
 			virtual void mouseMove(int x, int y, const MouseState * mouseState);
 
