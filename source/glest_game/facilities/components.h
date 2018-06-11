@@ -171,6 +171,7 @@ namespace Glest {
 				this->enabled = enabled;
 			}
 			virtual void setEditable(bool editable) {
+				//editable = true;
 				this->editable = editable;
 			}
 			virtual void setVisible(bool value) {

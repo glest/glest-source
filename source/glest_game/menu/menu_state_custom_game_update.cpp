@@ -594,8 +594,8 @@ namespace Glest {
 					int i = mapInfo.players;
 					do {
 						listBoxControls[i].setSelectedItemIndex(ctClosed);
-						listBoxControls[i].setEditable(false);
-						listBoxControls[i].setEnabled(false);
+						listBoxControls[i].setEditable(true);
+						listBoxControls[i].setEnabled(true);
 					} while (++i < GameConstants::maxPlayers);
 				}
 

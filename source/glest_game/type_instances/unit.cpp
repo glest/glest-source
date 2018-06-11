@@ -2726,7 +2726,7 @@ namespace Glest {
 			// or when the unit is selected and right clicked to a position.
 			if (commandType == NULL) {
 				CommandClass command = ccMove; //default command
-				if (this->getType()->isOfClass(ucWarrior) && (targetUnit == NULL || this->getTeam() != targetUnit->getTeam()))
+				if (this->getType()->hasSkillClass(scAttack) && (targetUnit == NULL || this->getTeam() != targetUnit->getTeam()))
 					command = ccAttack;
 				commandType = type->getFirstCtOfClass(command);
 

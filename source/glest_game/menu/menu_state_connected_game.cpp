@@ -671,33 +671,19 @@ namespace Glest {
 
 
 			//scenario listbox
-			vector < string > resultsScenarios;
+			vector<string> resultsScenarios;
 			findDirs(dirList, resultsScenarios);
-			// Filter out only scenarios with no network slots
 			for (int i = 0; i < (int) resultsScenarios.size(); ++i) {
 				string scenario = resultsScenarios[i];
 				string file = Scenario::getScenarioPath(dirList, scenario);
-
 				try {
 					if (file != "") {
 						bool isTutorial = Scenario::isGameTutorial(file);
 						Scenario::loadScenarioInfo(file, &scenarioInfo, isTutorial);
-
-						bool isNetworkScenario = false;
-						for (unsigned int j = 0;
-							isNetworkScenario == false
-							&& j < (unsigned int) GameConstants::maxPlayers; ++j) {
-							if (scenarioInfo.factionControls[j] == ctNetwork) {
-								isNetworkScenario = true;
-							}
-						}
-						if (isNetworkScenario == true) {
-							scenarioFiles.push_back(scenario);
-						}
+						scenarioFiles.push_back(resultsScenarios[i]);
 					}
 				} catch (const std::exception & ex) {
-					char
-						szBuf[8096] = "";
+					char szBuf[8096] = "";
 					snprintf(szBuf, 8096,
 						"In [%s::%s %d]\nError loading scenario [%s]:\n%s\n",
 						extractFileFromDirectoryPath(__FILE__).c_str(),
@@ -706,17 +692,15 @@ namespace Glest {
 					if (SystemFlags::
 						getSystemSettingType(SystemFlags::debugSystem).enabled)
 						SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
-
 					showMessageBox(szBuf, "Error", false);
 					//throw megaglest_runtime_error(szBuf);
 				}
 			}
-			resultsScenarios.clear();
-			for (int i = 0; i < (int) scenarioFiles.size(); ++i) {
+			for (int i = 0; i < (int) scenarioFiles.size(); ++i)
 				resultsScenarios.push_back(formatString(scenarioFiles[i]));
-			}
 			listBoxScenario.setItems(resultsScenarios);
-			checkBoxScenario.setEnabled(false);
+			if (resultsScenarios.empty())
+				checkBoxScenario.setEnabled(false);
 
 			if (config.getBool("EnableFTPXfer", "true") == true) {
 				ClientInterface *

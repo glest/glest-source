@@ -170,8 +170,7 @@ namespace Glest {
 			for (int idx = 0; idx < (int) dirList.size(); idx++) {
 				string currentPath = dirList[idx];
 				endPathWithSlash(currentPath);
-				scenarioFile =
-					currentPath + scenarioName + "/" + scenarioName + ".xml";
+				scenarioFile = currentPath + scenarioName + "/" + scenarioName + ".xml";
 				//printf("\n[%s:%s] Line: %d scenarioName [%s] scenarioFile [%s]\n",__FILE__,__FUNCTION__,__LINE__,scenarioName.c_str(),scenarioFile.c_str());
 
 				if (SystemFlags::VERBOSE_MODE_ENABLED)

@@ -560,6 +560,7 @@ namespace Glest {
 		}
 
 		void GraphicListBox::setEditable(bool editable) {
+			//editable = true;
 			graphButton1.setEditable(editable);
 			graphButton2.setEditable(editable);
 			GraphicComponent::setEditable(editable);
@@ -581,7 +582,7 @@ namespace Glest {
 			iter = find(items.begin(), items.end(), item);
 
 			if (iter == items.end()) {
-				if (errorOnMissing == true) {
+				/*if (errorOnMissing == true) {
 					for (int idx = 0; idx < (int) items.size(); idx++) {
 						SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d]\ninstanceName [%s] idx = %d items[idx] = [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, instanceName.c_str(), idx, items[idx].c_str());
 					}
@@ -589,7 +590,7 @@ namespace Glest {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "Value not found in listbox name: [%s] value: %s", this->instanceName.c_str(), item.c_str());
 					throw megaglest_runtime_error(szBuf);
-				}
+				}*/
 			} else {
 				setSelectedItemIndex(iter - items.begin());
 			}

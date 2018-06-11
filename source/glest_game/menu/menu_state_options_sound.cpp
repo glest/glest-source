@@ -200,7 +200,7 @@ namespace
 					setText(lang.getString("MusicVolume"));
 				//currentLine-=lineOffset;
 
-				for (int i = 0; i <= 100; i += 5) {
+				for (int i = 0; i <= 100; i++) {
 					listBoxVolumeFx.pushBackItem(intToStr(i));
 					listBoxVolumeAmbient.
 						pushBackItem(intToStr(i));
@@ -208,13 +208,13 @@ namespace
 						pushBackItem(intToStr(i));
 				}
 				listBoxVolumeFx.
-					setSelectedItem(intToStr(config.getInt("SoundVolumeFx") / 5 * 5));
+					setSelectedItem(intToStr(config.getInt("SoundVolumeFx")));
 				listBoxVolumeAmbient.
 					setSelectedItem(intToStr
-					(config.getInt("SoundVolumeAmbient") / 5 * 5));
+					(config.getInt("SoundVolumeAmbient")));
 				listBoxVolumeMusic.
 					setSelectedItem(intToStr
-					(config.getInt("SoundVolumeMusic") / 5 * 5));
+					(config.getInt("SoundVolumeMusic")));
 
 				//currentLine-=lineOffset/2;
 

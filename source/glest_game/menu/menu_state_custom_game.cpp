@@ -472,29 +472,16 @@ namespace Glest {
 				checkBoxScenario.setValue(false);
 
 				//scenario listbox
-				vector < string > resultsScenarios;
+				vector<string> resultsScenarios;
 				findDirs(dirList, resultsScenarios);
-				// Filter out only scenarios with no network slots
 				for (int i = 0; i < (int) resultsScenarios.size(); ++i) {
 					string scenario = resultsScenarios[i];
 					string file = Scenario::getScenarioPath(dirList, scenario);
-
 					try {
 						if (file != "") {
 							bool isTutorial = Scenario::isGameTutorial(file);
 							Scenario::loadScenarioInfo(file, &scenarioInfo, isTutorial);
-
-							bool isNetworkScenario = false;
-							for (unsigned int j = 0;
-								isNetworkScenario == false
-								&& j < (unsigned int) GameConstants::maxPlayers; ++j) {
-								if (scenarioInfo.factionControls[j] == ctNetwork) {
-									isNetworkScenario = true;
-								}
-							}
-							if (isNetworkScenario == true) {
-								scenarioFiles.push_back(scenario);
-							}
+							scenarioFiles.push_back(resultsScenarios[i]);
 						}
 					} catch (const std::exception & ex) {
 						char szBuf[8096] = "";
@@ -503,24 +490,19 @@ namespace Glest {
 							extractFileFromDirectoryPath(__FILE__).c_str(),
 							__FUNCTION__, __LINE__, scenario.c_str(), ex.what());
 						SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-						if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
-							enabled)
-							SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s",
-								szBuf);
-
-						showGeneralError = true;
-						generalErrorToShow = szBuf;
-						//throw megaglest_runtime_error(szBuf);
-					}
+						if (SystemFlags::
+								getSystemSettingType(SystemFlags::debugSystem).enabled)
+								SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
+							showMessageBox(szBuf, "Error", false);
+							//throw megaglest_runtime_error(szBuf);
+						}
 				}
 				resultsScenarios.clear();
-				for (int i = 0; i < (int) scenarioFiles.size(); ++i) {
+				for (int i = 0; i < (int) scenarioFiles.size(); ++i)
 					resultsScenarios.push_back(formatString(scenarioFiles[i]));
-				}
 				listBoxScenario.setItems(resultsScenarios);
-				if (resultsScenarios.empty() == true) {
+				if (resultsScenarios.empty())
 					checkBoxScenario.setEnabled(false);
-				}
 				// Advanced Options
 				labelAdvanced.registerGraphicComponent(containerName,
 					"labelAdvanced");
@@ -5659,12 +5641,8 @@ namespace Glest {
 			try {
 				if (checkBoxScenario.getValue() == true) {
 					//printf("listBoxScenario.getSelectedItemIndex() = %d [%s] scenarioFiles.size() = %d\n",listBoxScenario.getSelectedItemIndex(),listBoxScenario.getSelectedItem().c_str(),scenarioFiles.size());
-					loadScenarioInfo(Scenario::getScenarioPath(dirList,
-						scenarioFiles
-						[listBoxScenario.getSelectedItemIndex
-						()]), &scenarioInfo);
-					string scenarioDir =
-						Scenario::getScenarioDir(dirList, scenarioInfo.name);
+					loadScenarioInfo(Scenario::getScenarioPath(dirList, scenarioFiles[listBoxScenario.getSelectedItemIndex()]), &scenarioInfo);
+					string scenarioDir = Scenario::getScenarioDir(dirList, scenarioInfo.name);
 
 					//printf("scenarioInfo.fogOfWar = %d scenarioInfo.fogOfWar_exploredFlag = %d\n",scenarioInfo.fogOfWar,scenarioInfo.fogOfWar_exploredFlag);
 					if (scenarioInfo.fogOfWar == false
@@ -5931,19 +5909,19 @@ namespace Glest {
 					for (int i = 0; i < GameConstants::maxPlayers; ++i) {
 						listBoxControls[i].setEditable(false);
 						listBoxFactions[i].setEditable(false);
-						listBoxRMultiplier[i].setEditable(false);
-						listBoxTeams[i].setEditable(false);
+						listBoxRMultiplier[i].setEditable(true);
+						listBoxTeams[i].setEditable(true);
 					}
-					listBoxFogOfWar.setEditable(false);
+					listBoxFogOfWar.setEditable(true);
 					checkBoxAllowObservers.setEditable(false);
-					checkBoxAllowTeamUnitSharing.setEditable(false);
-					checkBoxAllowTeamResourceSharing.setEditable(false);
+					checkBoxAllowTeamUnitSharing.setEditable(true);
+					checkBoxAllowTeamResourceSharing.setEditable(true);
 					//listBoxPathFinderType.setEditable(false);
 					checkBoxEnableSwitchTeamMode.setEditable(false);
-					listBoxAISwitchTeamAcceptPercent.setEditable(false);
-					listBoxFallbackCpuMultiplier.setEditable(false);
+					listBoxAISwitchTeamAcceptPercent.setEditable(true);
+					listBoxFallbackCpuMultiplier.setEditable(true);
 					listBoxMap.setEditable(false);
-					listBoxTileset.setEditable(false);
+					listBoxTileset.setEditable(true);
 					listBoxMapFilter.setEditable(false);
 					listBoxTechTree.setEditable(false);
 					// END - Disable changes to controls while in Scenario mode
