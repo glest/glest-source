@@ -7,6 +7,9 @@ information about the game from which it was forked, please see the
 
 ## 2018-06-10
 
+[80](https://github.com/ZetaGlest/zetaglest-source/issues/80)
+Double right-clicking now sends a move command instead of attack
+
 [#28](https://github.com/ZetaGlest/zetaglest-source/issues/28)
 Maximum unit selection removed
 
