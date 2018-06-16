@@ -24,7 +24,7 @@ Part of the template for the site is in the perl script, and another part is in
 
 ### Files in [docs](https://github.com/ZetaGlest/zetaglest.github.io/tree/master/docs)
 
-See the [README in that folder](https://github.com/ZetaGlest/zetaglest.github.io/blob/master/docs/README) 
+See the [README in that folder](https://github.com/ZetaGlest/zetaglest.github.io/blob/master/docs/README)
 for an explanation of how to edit the html files in zetaglest.github.io/docs.
 
 ## Server list and player stats
@@ -35,8 +35,14 @@ The repo is at
 
 https://github.com/ZetaGlest/zetaglest-masterserver
 
-Most of the website can be changed by editing a
-[PHP script](https://github.com/ZetaGlest/zetaglest-masterserver/blob/develop/showServers.php).
+These instructions assume you are familiar with testing php and mysql changes
 
-I don't know of a good solution for testing changes but I'll try to
-update the documentation.
+These 2 files should allow you to set up the database and, using the code
+from the master-server repo, view how the web page would look. It should look similar to this:<br />
+https://zetaglest.dreamhosters.com/
+
+ * [exported database](https://github.com/ZetaGlest/zetaglest-masterserver/blob/develop/docs/mysql_zetaglest_dreamhosters_com_exported_20180616.sql) in SQL format
+ * [database scheme file](https://github.com/ZetaGlest/zetaglest-masterserver/blob/develop/install/scheme_mysql.sql)
+
+Once you've confirmed that a web page will display, you can edit the
+PHP, html, and CSS and test your changes locally.
