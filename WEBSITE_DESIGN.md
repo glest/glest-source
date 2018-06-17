@@ -33,16 +33,12 @@ for an explanation of how to edit the html files in zetaglest.github.io/docs.
 
 The repo is at
 
-https://github.com/ZetaGlest/zetaglest-masterserver
+https://github.com/ZetaGlest/zetaglest-masterserver and the
+instructions are in
+[docs/README.txt](https://github.com/ZetaGlest/zetaglest-masterserver/blob/develop/docs/README.txt)
 
-These instructions assume you are familiar with testing php and mysql changes
-
-These 2 files should allow you to set up the database and, using the code
-from the master-server repo, view how the web page would look. It should look similar to this:<br />
-https://zetaglest.dreamhosters.com/
+To help with testing you can also use this:
 
  * [exported database](https://github.com/ZetaGlest/zetaglest-masterserver/blob/develop/docs/mysql_zetaglest_dreamhosters_com_exported_20180616.sql) in SQL format
- * [database scheme file](https://github.com/ZetaGlest/zetaglest-masterserver/blob/develop/install/scheme_mysql.sql)
 
-Once you've confirmed that a web page will display, you can edit the
-PHP, html, and CSS and test your changes locally.
+
