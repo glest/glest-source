@@ -1170,6 +1170,8 @@ namespace Glest {
 
 		const CommandType *UnitType::getFirstCtOfClass(CommandClass commandClass) const {
 			if (firstCommandTypeOfClass[commandClass] == NULL) {
+				if (commandClass == CommandClass::ccAttack)
+					return firstCommandTypeOfClass[CommandClass::ccMove];
 				//if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] commandClass = %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,commandClass);
 
 				/*
@@ -1189,6 +1191,8 @@ namespace Glest {
 
 		const SkillType *UnitType::getFirstStOfClass(SkillClass skillClass) const {
 			if (firstSkillTypeOfClass[skillClass] == NULL) {
+				if (skillClass == SkillClass::scAttack)
+					return firstSkillTypeOfClass[SkillClass::scMove];
 				/*
 				   for(int j= 0; j<scCount; ++j){
 				   for(int i= 0; i<skillTypes.size(); ++i){
