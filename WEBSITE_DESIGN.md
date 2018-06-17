@@ -24,7 +24,7 @@ Part of the template for the site is in the perl script, and another part is in
 
 ### Files in [docs](https://github.com/ZetaGlest/zetaglest.github.io/tree/master/docs)
 
-See the [README in that folder](https://github.com/ZetaGlest/zetaglest.github.io/blob/master/docs/README) 
+See the [README in that folder](https://github.com/ZetaGlest/zetaglest.github.io/blob/master/docs/README)
 for an explanation of how to edit the html files in zetaglest.github.io/docs.
 
 ## Server list and player stats
@@ -33,10 +33,12 @@ for an explanation of how to edit the html files in zetaglest.github.io/docs.
 
 The repo is at
 
-https://github.com/ZetaGlest/zetaglest-masterserver
+https://github.com/ZetaGlest/zetaglest-masterserver and the
+instructions are in
+[docs/README.txt](https://github.com/ZetaGlest/zetaglest-masterserver/blob/develop/docs/README.txt)
 
-Most of the website can be changed by editing a
-[PHP script](https://github.com/ZetaGlest/zetaglest-masterserver/blob/develop/showServers.php).
+To help with testing you can also use this:
 
-I don't know of a good solution for testing changes but I'll try to
-update the documentation.
+ * [exported database](https://github.com/ZetaGlest/zetaglest-masterserver/blob/develop/docs/mysql_zetaglest_dreamhosters_com_exported_20180616.sql) in SQL format
+
+
