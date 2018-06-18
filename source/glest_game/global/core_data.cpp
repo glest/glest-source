@@ -61,14 +61,16 @@ namespace Glest {
 
 		static const string CORE_WATER_SOUNDS_PATH = CORE_PATH + "/water_sounds/";
 
+		static const string data_path = getGameReadWritePath(GameConstants::path_data_CacheLookupKey);
+
 		// Sound effects
-		const string sfxAttention = data_path + CORE_MENU_SOUND_PATH + "attention.wav";
-		const string sfxHighlight = data_path + CORE_MENU_SOUND_PATH + "highlight.wav";
-		const string sfxNewServer = data_path + CORE_MENU_SOUND_PATH + "attention.wav";
-		const string sfxMarker = data_path + CORE_MENU_SOUND_PATH + "sonar.wav";
-		const string sfxMenuClickA = data_path + CORE_MENU_SOUND_PATH + "click_a.wav";
-		const string sfxMenuClickB = data_path + CORE_MENU_SOUND_PATH + "click_b.wav";
-		const string sfxMenuClickC = data_path + CORE_MENU_SOUND_PATH + "click_c.wav";
+		const string CoreData::sfxAttention = data_path + CORE_MENU_SOUND_PATH + "attention.wav";
+		const string CoreData::sfxHighlight = data_path + CORE_MENU_SOUND_PATH + "highlight.wav";
+		const string CoreData::sfxNewServer = data_path + CORE_MENU_SOUND_PATH + "attention.wav";
+		const string CoreData::sfxMarker = data_path + CORE_MENU_SOUND_PATH + "sonar.wav";
+		const string CoreData::sfxMenuClickA = data_path + CORE_MENU_SOUND_PATH + "click_a.wav";
+		const string CoreData::sfxMenuClickB = data_path + CORE_MENU_SOUND_PATH + "click_b.wav";
+		const string CoreData::sfxMenuClickC = data_path + CORE_MENU_SOUND_PATH + "click_c.wav";
 
 		CoreData & CoreData::getInstance() {
 			static CoreData coreData;
@@ -642,50 +644,7 @@ namespace Glest {
 		}
 
 		void CoreData::loadSounds(string data_path) {
-			// sounds
-	  //      try {
-	  //              clickSoundA.load(
-	  //                              getGameCustomCoreDataPath(data_path,
-	  //                                              CORE_MENU_SOUND_PATH + "click_a.wav"));
-	  //              clickSoundB.load(
-	  //                              getGameCustomCoreDataPath(data_path,
-	  //                                              CORE_MENU_SOUND_PATH + "click_b.wav"));
-	  //              clickSoundC.load(
-	  //                              getGameCustomCoreDataPath(data_path,
-	  //                                              CORE_MENU_SOUND_PATH + "click_c.wav"));
-	  //              attentionSound.load(
-	  //                              getGameCustomCoreDataPath(data_path,
-	  //                                              CORE_MENU_SOUND_PATH + "attention.wav"));
-	  //              highlightSound.load(
-	  //                              getGameCustomCoreDataPath(data_path,
-	  //                                              CORE_MENU_SOUND_PATH + "highlight.wav"));
-	  //              markerSound.load(
-	  //                              getGameCustomCoreDataPath(data_path,
-	  //                                              CORE_MENU_SOUND_PATH + "sonar.wav"));
-	  //      }
-	  //      catch (const megaglest_runtime_error& ex) {
-	  //              message(ex.what(), GlobalStaticFlags::getIsNonGraphicalModeEnabled(),
-	  //                              tempDataLocation);
-	  //      }
 
-	  //      cleanup();
-	  //      waterSounds.resize(6);
-	  //
-	  //      for (int i = 0; i < 6; ++i) {
-	  //              waterSounds[i] = new StaticSound();
-	  //              if (waterSounds[i]) {
-	  //                      try {
-	  //                              waterSounds[i]->load(
-	  //                                              getGameCustomCoreDataPath(data_path,
-	  //                                                              CORE_WATER_SOUNDS_PATH + "water" + intToStr(i)
-	  //                                                                              + ".wav"));
-	  //                      } catch (const megaglest_runtime_error& ex) {
-	  //                              message(ex.what(),
-	  //                                              GlobalStaticFlags::getIsNonGraphicalModeEnabled(),
-	  //                                              tempDataLocation);
-	  //                      }
-	  //              }
-	  //      }
 		}
 
 

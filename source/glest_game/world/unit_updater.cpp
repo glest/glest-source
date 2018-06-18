@@ -3064,9 +3064,8 @@ namespace Glest {
 							attackWarnings.push_back(awd);
 
 							if (world->getAttackWarningsEnabled() == true) {
-								static PlaySoundClip snd;
-
-								SoundRenderer::getInstance().playFx(snd.getSound(snd.sfxAttention), true);
+								CoreData & coreData = CoreData::getInstance();
+								SoundRenderer::getInstance().playFx(coreData.getSound(coreData.sfxAttention), true);
 								world->addAttackEffects(enemyUnit);
 							}
 						}
