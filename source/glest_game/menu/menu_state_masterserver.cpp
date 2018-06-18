@@ -525,8 +525,8 @@ namespace Glest {
 					string helpSTr = szBuf;
 					if (helpSTr.find(currentIrcNick) != string::npos) {
 						SoundRenderer & soundRenderer = SoundRenderer::getInstance();
-						static PlaySoundClip snd;
-						soundRenderer.playFx(snd.getSound(snd.sfxHighlight));
+						CoreData & coreData = CoreData::getInstance();
+						soundRenderer.playFx(coreData.getSound(coreData.sfxHighlight));
 					}
 					consoleIRC.addLine(szBuf);
 				}
@@ -1112,8 +1112,8 @@ namespace Glest {
 				30);
 
 			if (playServerFoundSound) {
-				static PlaySoundClip snd;
-				SoundRenderer::getInstance().playFx(snd.getSound(snd.sfxNewServer));
+				CoreData & coreData = CoreData::getInstance();
+				SoundRenderer::getInstance().playFx(coreData.getSound(coreData.sfxNewServer));
 
 				//switch on music again!!
 				Config & config = Config::getInstance();
