@@ -5695,9 +5695,9 @@ namespace Glest {
 						}
 						if (currentConnectionCount > soundConnectionCount) {
 							soundConnectionCount = currentConnectionCount;
-							static PlaySoundClip snd;
+							CoreData & coreData = CoreData::getInstance();
 							SoundRenderer::getInstance().
-								playFx(snd.getSound(snd.sfxAttention));
+								playFx(coreData.getSound(coreData.sfxAttention));
 							//switch on music again!!
 							Config & config = Config::getInstance();
 							float

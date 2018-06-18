@@ -669,10 +669,10 @@ namespace
 								if (StartsWith(msg.chatText, "*")) {
 									if (msg.chatText.find(playerName) !=
 										string::npos) {
-										static PlaySoundClip snd;
+										CoreData & coreData = CoreData::getInstance ();
 										SoundRenderer & soundRenderer =
 											SoundRenderer::getInstance();
-										soundRenderer.playFx(snd.getSound(snd.sfxHighlight),
+										soundRenderer.playFx(coreData.getSound(coreData.sfxHighlight),
 											true);
 									}
 									console->addLine(msg.chatText.

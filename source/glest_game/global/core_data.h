@@ -55,13 +55,13 @@ namespace Glest {
 		class GameSettings;
 
 		class CoreData {
-			friend class PlaySoundClip;
 		private:
 			std::map < int, bool > itemLoadAttempted;
 
 			StrSound introMusic;
 			StrSound menuMusic;
 			SoundContainer waterSounds;
+			StaticSound playSound;
 
 			Texture2D *logoTexture;
 			std::vector < Texture2D * >logoTextureList;
@@ -199,6 +199,15 @@ namespace Glest {
 			StrSound *getIntroMusic();
 			StrSound *getMenuMusic();
 
+			StaticSound * getSound(const std::string& clipFile);
+			static const string sfxAttention;
+			static const string sfxHighlight;
+			static const string sfxNewServer;
+			static const string sfxMarker;
+			static const string sfxMenuClickA;
+			static const string sfxMenuClickB;
+			static const string sfxMenuClickC;
+
 			// When issue #63 was done
 			// <https://github.com/ZetaGlest/zetaglest-source/issues/63>
 			// and the PlaySoundFile class was created,
@@ -331,23 +340,6 @@ namespace Glest {
 				string fontTypeFamily,
 				string fontUniqueKey);
 
-
-		};
-
-		class PlaySoundClip {
-		private:
-			StaticSound iniPlaySound;
-		public:
-			StaticSound * getSound(const std::string& iniPlaySoundVal);
-			static const string sfxAttention;
-			static const string sfxHighlight;
-			static const string sfxNewServer;
-			static const string sfxMarker;
-			static const string sfxMenuClickA;
-			static const string sfxMenuClickB;
-			static const string sfxMenuClickC;
-			PlaySoundClip();
-			~PlaySoundClip();
 
 		};
 	}
