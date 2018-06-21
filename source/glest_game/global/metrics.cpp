@@ -57,7 +57,7 @@ namespace Glest {
 
 			displayX = 800;
 			displayY = 250;
-			displayW = 128;
+			displayW = 160;
 			displayH = 480;
 		}
 

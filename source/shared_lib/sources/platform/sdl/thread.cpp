@@ -197,7 +197,10 @@ namespace Shared {
 				//sleep(100);
 
 				MutexSafeWrapper safeMutex(cleanupThreadMutex.get());
-				cleanupThread.reset(0);
+				try {
+					cleanupThread.reset(0);
+				} catch (...) {
+				}
 				//printf("In Thread::shutdownThreads Line: %d\n",__LINE__);
 			}
 		}

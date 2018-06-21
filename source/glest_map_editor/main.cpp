@@ -457,7 +457,7 @@ namespace MapEditor {
 			currentFile = fname;
 			fileName = cutLastExt(extractFileFromDirectoryPath(fname.c_str()));
 			fileDialog->SetPath(ToUnicode(fname));
-			SetTitle(ToUnicode(winHeader + "; " + fname));
+			SetTitle(ToUnicode(winHeader + " - " + fname));
 		} else
 			SetTitle(ToUnicode(winHeader));
 		//setDirty(false);
@@ -534,7 +534,7 @@ namespace MapEditor {
 			//currentFile = fname;
 			fileName = cutLastExt(extractFileFromDirectoryPath(currentFile.c_str()));
 			fileDialog->SetPath(ToUnicode(currentFile));
-			SetTitle(ToUnicode(winHeader + "; " + currentFile));
+			SetTitle(ToUnicode(winHeader + " - " + currentFile));
 		} else
 			SetTitle(ToUnicode(winHeader));
 		
@@ -749,7 +749,7 @@ namespace MapEditor {
 				fileName = cutLastExt(extractFileFromDirectoryPath(currentFile.c_str()));
 				setDirty(false);
 				setExtension();
-				SetTitle(ToUnicode(winHeader + "; " + currentFile));
+				SetTitle(ToUnicode(winHeader + " - " + currentFile));
 			}
 		} catch (const string &e) {
 			MsgDialog(this, ToUnicode(e), wxT("Exception"), wxOK | wxICON_ERROR).ShowModal();
@@ -824,7 +824,7 @@ namespace MapEditor {
 			fileName = cutLastExt(extractFileFromDirectoryPath(currentFile.c_str()));
 			setDirty(false);
 		}
-		SetTitle(ToUnicode(winHeader + "; " + currentFile));
+		SetTitle(ToUnicode(winHeader + " - " + currentFile));
 	}
 
 	void MainWindow::onMenuFileExit(wxCommandEvent &event) {
