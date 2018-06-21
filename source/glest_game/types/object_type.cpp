@@ -45,12 +45,12 @@ namespace Glest {
 			Model *model =
 				Renderer::getInstance().newModel(rsGame, path, false,
 					loadedFileList, &parentLoader);
-			color = Vec3f(0.f);
+			color = Vec4f(0.f);
 			if (model && model->getMeshCount() > 0
 				&& model->getMesh(0)->getTexture(0) != NULL) {
 				const Pixmap2D *p =
 					model->getMesh(0)->getTexture(0)->getPixmapConst();
-				color = p->getPixel3f(p->getW() / 2, p->getH() / 2);
+				color = p->getPixel4f(p->getW() / 2, p->getH() / 2);
 			}
 			TilesetModelType *modelType = new TilesetModelType();
 			modelType->setModel(model);

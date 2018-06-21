@@ -523,7 +523,7 @@ namespace Glest {
 			void renderGhostModel(const UnitType *building, const Vec2i pos, CardinalDir facing, Vec4f *forceColor = NULL);
 
 			void renderBackground(const Texture2D *texture);
-			void renderTextureQuad(int x, int y, int w, int h, const Texture2D *texture, float alpha = 1.f, const Vec3f *color = NULL);
+			void renderTextureQuad(int x, int y, int w, int h, const Texture2D *texture, const Vec4f *color = NULL);
 			void renderConsole(const Console *console, ConsoleMode mode = consoleNormal, int overrideMaxConsoleLines = -1);
 			void renderConsoleLine3D(int lineIndex, int xPosition, int yPosition, int lineHeight, Font3D* font, string stringToHightlight, const ConsoleLineInfo *lineInfo);
 			void renderConsoleLine(int lineIndex, int xPosition, int yPosition, int lineHeight, Font2D* font, string stringToHightlight, const ConsoleLineInfo *lineInfo);
@@ -558,7 +558,6 @@ namespace Glest {
 
 			//components
 			void renderLabel(GraphicLabel *label);
-			void renderLabel(GraphicLabel *label, const Vec3f *color);
 			void renderLabel(GraphicLabel *label, const Vec4f *color);
 			void renderButton(GraphicButton *button, const Vec4f *fontColorOverride = NULL, bool *lightedOverride = NULL);
 			void renderCheckBox(const GraphicCheckBox *box);
@@ -632,8 +631,8 @@ namespace Glest {
 			inline bool getAllowRenderUnitTitles() {
 				return allowRenderUnitTitles;
 			}
-			void renderUnitTitles(Font2D *font, Vec3f color);
-			void renderUnitTitles3D(Font3D *font, Vec3f color);
+			void renderUnitTitles(Font2D *font, Vec4f color);
+			void renderUnitTitles3D(Font3D *font, Vec4f color);
 			Vec3f computeScreenPosition(const Vec3f &worldPos);
 
 			void setPhotoMode(bool value) {
@@ -744,8 +743,8 @@ namespace Glest {
 			bool isHealthBarVisible(const Unit *unit, int healthbarMode);
 			void renderHealthBar(Vec3f v, Unit *unit, float height, bool lineBorder, const Texture2D *texture = NULL, const Texture2D *backgroundTexture = NULL);
 			void internalRenderHp(int numberOfBars, int barNumber, float hp, Vec3f posVector, float width, float singleHPheight, Vec3f rightVector, Vec3f upVector);
-			void renderTeamColorEffect(Vec3f &v, int heigth, int size, Vec3f color, const Texture2D *texture);
-			void renderArrow(const Vec3f &pos1, const Vec3f &pos2, const Vec3f &color, float width);
+			void renderTeamColorEffect(Vec3f &v, int heigth, int size, Vec4f color, const Texture2D *texture);
+			void renderArrow(const Vec3f &pos1, const Vec3f &pos2, const Vec4f &color, float width);
 			//void renderTile(const Vec2i &pos);
 			void renderQuad(int x, int y, int w, int h, const Texture2D *texture);
 

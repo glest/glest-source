@@ -139,11 +139,11 @@ namespace Glest {
 		}
 
 		void Console::addLineOnly(const string & line) {
-			addLine(line, false, -1, Vec3f(1.f, 1.f, 1.f), false, true);
+			addLine(line, false, -1, Vec4f(1.f, 1.f, 1.f, 1.f), false, true);
 		}
 
 		void Console::addLine(const string & line, bool playSound,
-			int playerIndex, Vec3f textColor, bool teamMode,
+			int playerIndex, Vec4f textColor, bool teamMode,
 			bool clearOtherLines) {
 			try {
 				if (playSound == true) {
@@ -195,7 +195,7 @@ namespace Glest {
 		}
 
 		void Console::addLine(const string & line, bool playSound,
-			const string & playerName, Vec3f textColor,
+			const string & playerName, Vec4f textColor,
 			bool teamMode) {
 			try {
 				if (playSound == true) {

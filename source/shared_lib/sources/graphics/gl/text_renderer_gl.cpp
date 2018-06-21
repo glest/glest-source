@@ -48,7 +48,7 @@ namespace Shared {
 				rendering = true;
 			}
 
-			void TextRenderer2DGl::render(const string &text, float x, float y, bool centered, Vec3f *color) {
+			void TextRenderer2DGl::render(const string &text, float x, float y, bool centered, Vec4f *color) {
 				if (SystemFlags::VERBOSE_MODE_ENABLED) printf("**** RENDERING 2D text [%s]\n", text.c_str());
 
 				assert(rendering);
@@ -57,7 +57,7 @@ namespace Shared {
 
 				if (color != NULL) {
 					glPushAttrib(GL_CURRENT_BIT);
-					glColor3fv(color->ptr());
+					glColor4fv(color->ptr());
 				}
 
 				string renderText = text;
@@ -377,7 +377,7 @@ namespace Shared {
 				//assertGl();
 			}
 
-			void TextRenderer3DGl::render(const string &text, float  x, float y, bool centered, Vec3f *color) {
+			void TextRenderer3DGl::render(const string &text, float  x, float y, bool centered, Vec4f *color) {
 				assert(rendering);
 
 				if (text.empty() == false) {
@@ -433,7 +433,7 @@ namespace Shared {
 				//}
 			}
 
-			void TextRenderer3DGl::internalRender(const string &text, float  x, float y, bool centered, Vec3f *color) {
+			void TextRenderer3DGl::internalRender(const string &text, float  x, float y, bool centered, Vec4f *color) {
 				//assert(rendering);
 
 				if (color != NULL) {
@@ -442,7 +442,7 @@ namespace Shared {
 
 					//assertGl();
 
-					glColor3fv(color->ptr());
+					glColor4fv(color->ptr());
 
 					//assertGl();
 				}

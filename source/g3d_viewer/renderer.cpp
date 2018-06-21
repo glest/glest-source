@@ -54,7 +54,7 @@ namespace Shared {
 				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_RGB, GL_SRC_ALPHA);
 
 				//set alpha to 1
-				glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_REPLACE);
+				glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, hasAlpha ? GL_COMBINE : GL_REPLACE);
 				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_TEXTURE);
 				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
 
@@ -75,7 +75,7 @@ namespace Shared {
 				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
 
 				//set alpha to 1
-				glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_REPLACE);
+				glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, hasAlpha ? GL_COMBINE : GL_REPLACE);
 				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_PRIMARY_COLOR);
 				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
 
@@ -115,6 +115,7 @@ namespace Shared {
 			customTextureCyan = NULL;
 			customTextureOrange = NULL;
 			customTextureMagenta = NULL;
+			customTextureTransparent = NULL;
 			particleManager = NULL;
 		}
 
@@ -239,43 +240,48 @@ namespace Shared {
 
 			//red tex
 			customTextureRed = textureManager->newTexture2D();
-			customTextureRed->getPixmap()->init(1, 1, 3);
-			customTextureRed->getPixmap()->setPixel(0, 0, Vec3f(1.f, 0.f, 0.f));
+			customTextureRed->getPixmap()->init(1, 1, 4);
+			customTextureRed->getPixmap()->setPixel(0, 0, Vec4f(1.f, 0.f, 0.f, 1.0f));
 
 			//blue tex
 			customTextureBlue = textureManager->newTexture2D();
-			customTextureBlue->getPixmap()->init(1, 1, 3);
-			customTextureBlue->getPixmap()->setPixel(0, 0, Vec3f(0.f, 0.f, 1.f));
+			customTextureBlue->getPixmap()->init(1, 1, 4);
+			customTextureBlue->getPixmap()->setPixel(0, 0, Vec4f(0.f, 0.f, 1.f, 1.0f));
 
 			//green tex
 			customTextureGreen = textureManager->newTexture2D();
-			customTextureGreen->getPixmap()->init(1, 1, 3);
-			customTextureGreen->getPixmap()->setPixel(0, 0, Vec3f(0.f, 0.5f, 0.f));
+			customTextureGreen->getPixmap()->init(1, 1, 4);
+			customTextureGreen->getPixmap()->setPixel(0, 0, Vec4f(0.f, 0.5f, 0.f, 1.0f));
 
 			//yellow tex
 			customTextureYellow = textureManager->newTexture2D();
-			customTextureYellow->getPixmap()->init(1, 1, 3);
-			customTextureYellow->getPixmap()->setPixel(0, 0, Vec3f(1.f, 1.f, 0.f));
+			customTextureYellow->getPixmap()->init(1, 1, 4);
+			customTextureYellow->getPixmap()->setPixel(0, 0, Vec4f(1.f, 1.f, 0.f, 1.0f));
 
 			//white tex
 			customTextureWhite = textureManager->newTexture2D();
-			customTextureWhite->getPixmap()->init(1, 1, 3);
-			customTextureWhite->getPixmap()->setPixel(0, 0, Vec3f(1.f, 1.f, 1.f));
+			customTextureWhite->getPixmap()->init(1, 1, 4);
+			customTextureWhite->getPixmap()->setPixel(0, 0, Vec4f(1.f, 1.f, 1.f, 1.0f));
 
 			//cyan tex
 			customTextureCyan = textureManager->newTexture2D();
-			customTextureCyan->getPixmap()->init(1, 1, 3);
-			customTextureCyan->getPixmap()->setPixel(0, 0, Vec3f(0.f, 1.f, 0.8f));
+			customTextureCyan->getPixmap()->init(1, 1, 4);
+			customTextureCyan->getPixmap()->setPixel(0, 0, Vec4f(0.f, 1.f, 0.8f, 1.0f));
 
 			//orange tex
 			customTextureOrange = textureManager->newTexture2D();
-			customTextureOrange->getPixmap()->init(1, 1, 3);
-			customTextureOrange->getPixmap()->setPixel(0, 0, Vec3f(1.f, 0.5f, 0.f));
+			customTextureOrange->getPixmap()->init(1, 1, 4);
+			customTextureOrange->getPixmap()->setPixel(0, 0, Vec4f(1.f, 0.5f, 0.f, 1.0f));
 
 			//magenta tex
 			customTextureMagenta = textureManager->newTexture2D();
-			customTextureMagenta->getPixmap()->init(1, 1, 3);
-			customTextureMagenta->getPixmap()->setPixel(0, 0, Vec3f(1.f, 0.5f, 1.f));
+			customTextureMagenta->getPixmap()->init(1, 1, 4);
+			customTextureMagenta->getPixmap()->setPixel(0, 0, Vec4f(1.f, 0.5f, 1.f, 1.0f));
+
+			//transparent tex
+			customTextureTransparent = textureManager->newTexture2D();
+			customTextureTransparent->getPixmap()->init(1, 1, 4);
+			customTextureTransparent->getPixmap()->setPixel(0, 0, Vec4f(1.0f, 1.0f, 1.0f, 0.0f));
 
 			glClearColor(red, green, blue, alpha);  //backgroundcolor constant 0.3
 			//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -332,6 +338,7 @@ namespace Shared {
 			glTranslatef(0, -1.5, -5);
 
 			Texture2D *customTexture = NULL;
+			bool hasAlpha = false;
 			switch (playerColor) {
 				case pcRed:
 					customTexture = customTextureRed;
@@ -357,11 +364,15 @@ namespace Shared {
 				case pcMagenta:
 					customTexture = customTextureMagenta;
 					break;
+				case pcTransparent:
+					customTexture = customTextureTransparent;
+					hasAlpha = true;
+					break;
 				default:
 					assert(false);
 					break;
 			}
-			meshCallbackTeamColor.setTeamTexture(customTexture);
+			meshCallbackTeamColor.setTeamTexture(customTexture, hasAlpha);
 
 			if (wireframe) {
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -482,6 +493,9 @@ namespace Shared {
 					break;
 				case pcMagenta:
 					customTexture = customTextureMagenta;
+					break;
+				case pcTransparent:
+					customTexture = customTextureTransparent;
 					break;
 				default:
 					throw megaglest_runtime_error("Unknown playercolor: " + intToStr(playerColor));

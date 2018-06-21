@@ -39,7 +39,7 @@ namespace Glest {
 		bool NetworkInterface::allowDownloadDataSynch = false;
 		DisplayMessageFunction NetworkInterface::pCB_DisplayMessage = NULL;
 
-		Vec3f MarkedCell::static_system_marker_color(MAGENTA.x, MAGENTA.y, MAGENTA.z);
+		Vec4f MarkedCell::static_system_marker_color = MAGENTA;
 
 		NetworkInterface::NetworkInterface() {
 			networkAccessMutex = new Mutex(CODE_AT_LINE);

@@ -714,14 +714,12 @@ namespace Glest {
 
 					if (score == bestScore && stats.getVictory(i)) {
 						if (CoreData::getInstance().getGameWinnerTexture() != NULL) {
-							renderer.renderTextureQuad(textX, bm + 420, -1, -1,
-								CoreData::
-								getInstance().getGameWinnerTexture
-								(), 0.7f);
+							Vec4f color = Vec4f(1.f, 1.f, 1.f, 0.7f);
+							renderer.renderTextureQuad(textX, bm + 420, -1, -1, CoreData::getInstance().getGameWinnerTexture(), &color);
 						}
 					}
 
-					Vec3f color = stats.getPlayerColor(i);
+					Vec4f color = stats.getPlayerColor(i);
 					if (stats.getPlayerName(i) != "") {
 						string textToRender = stats.getPlayerName(i).substr(0, 11);
 						if (stats.getPlayerLeftBeforeEnd(i) == true) {
@@ -738,7 +736,7 @@ namespace Glest {
 							bm + 400, false, &color);
 					}
 
-					Vec3f highliteColor = Vec3f(WHITE.x, WHITE.y, WHITE.z);
+					Vec4f highliteColor = Vec4f(WHITE.x, WHITE.y, WHITE.z, WHITE.w);
 					if (disableStatsColorCoding == false) {
 						highliteColor.x = 0.85f;
 						highliteColor.y = 0.8f;

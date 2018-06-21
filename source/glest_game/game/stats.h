@@ -67,7 +67,7 @@ namespace
 				playerLeftBeforeEnd;
 			int
 				timePlayerLeft;
-			Vec3f
+			Vec4f
 				playerColor;
 
 			string
@@ -253,7 +253,7 @@ namespace
 				setPlayerLeftBeforeEnd(int factionIndex, bool value) {
 				playerStats[factionIndex].playerLeftBeforeEnd = value;
 			}
-			Vec3f
+			Vec4f
 				getPlayerColor(int factionIndex) const {
 				return
 					playerStats[factionIndex].
@@ -339,7 +339,7 @@ namespace
 				playerStats[playerIndex].playerName = value;
 			}
 			void
-				setPlayerColor(int playerIndex, Vec3f value) {
+				setPlayerColor(int playerIndex, Vec4f value) {
 				playerStats[playerIndex].playerColor = value;
 			}
 

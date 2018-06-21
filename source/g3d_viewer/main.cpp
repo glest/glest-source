@@ -407,7 +407,8 @@ namespace Shared {
 			menuCustomColor->AppendCheckItem(miColorWhite, wxT("&White\t4"));
 			menuCustomColor->AppendCheckItem(miColorCyan, wxT("&Cyan\t5"));
 			menuCustomColor->AppendCheckItem(miColorOrange, wxT("&Orange\t6"));
-			menuCustomColor->AppendCheckItem(miColorMagenta, wxT("&Pink\t7")); // it is called Pink everywhere else so...
+			menuCustomColor->AppendCheckItem(miColorMagenta, wxT("&Pink\t7"));
+			menuCustomColor->AppendCheckItem(miColorTransparent, wxT("&Transparent\t8"));
 			menu->Append(menuCustomColor, wxT("&Custom Color"));
 
 			menuMode->Check(miModeGrid, true);
@@ -1388,8 +1389,7 @@ namespace Shared {
 								Vec3f vec = Vec3f(0.f, height / 2.f, 0.f);
 								ups->setPos(vec);
 							}
-							//ups->setFactionColor(getFaction()->getTexture()->getPixmap()->getPixel3f(0,0));
-							ups->setFactionColor(renderer->getPlayerColorTexture(playerColor)->getPixmap()->getPixel3f(0, 0));
+							ups->setFactionColor(renderer->getPlayerColorTexture(playerColor)->getPixmap()->getPixel4f(0, 0));
 							unitParticleSystems.push_back(ups);
 							renderer->manageParticleSystem(ups);
 
@@ -1502,7 +1502,7 @@ namespace Shared {
 								Vec3f vec2 = Vec3f(size * 2.f, height * 2.f, height * 2.f);
 								ps->setPath(vec, vec2);
 							}
-							ps->setFactionColor(renderer->getPlayerColorTexture(playerColor)->getPixmap()->getPixel3f(0, 0));
+							ps->setFactionColor(renderer->getPlayerColorTexture(playerColor)->getPixmap()->getPixel4f(0, 0));
 
 							projectileParticleSystems.push_back(ps);
 
@@ -1609,7 +1609,7 @@ namespace Shared {
 								//Vec3f vec2 = Vec3f(size * 2.f, height * 2.f, height * 2.f);   // <------- removed relative projectile
 								//ps->setPath(vec, vec2);                                       // <------- removed relative projectile
 							}
-							ps->setFactionColor(renderer->getPlayerColorTexture(playerColor)->getPixmap()->getPixel3f(0, 0));
+							ps->setFactionColor(renderer->getPlayerColorTexture(playerColor)->getPixmap()->getPixel4f(0, 0));
 
 							splashParticleSystems.push_back(ps);
 
@@ -1706,6 +1706,7 @@ namespace Shared {
 				menuCustomColor->Check(miColorCyan, false);
 				menuCustomColor->Check(miColorOrange, false);
 				menuCustomColor->Check(miColorMagenta, false);
+				menuCustomColor->Check(miColorTransparent, false);
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
 				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Error"), wxOK | wxICON_ERROR).ShowModal();
@@ -1723,6 +1724,7 @@ namespace Shared {
 				menuCustomColor->Check(miColorCyan, false);
 				menuCustomColor->Check(miColorOrange, false);
 				menuCustomColor->Check(miColorMagenta, false);
+				menuCustomColor->Check(miColorTransparent, false);
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
 				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Error"), wxOK | wxICON_ERROR).ShowModal();
@@ -1740,6 +1742,7 @@ namespace Shared {
 				menuCustomColor->Check(miColorCyan, false);
 				menuCustomColor->Check(miColorOrange, false);
 				menuCustomColor->Check(miColorMagenta, false);
+				menuCustomColor->Check(miColorTransparent, false);
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
 				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Error"), wxOK | wxICON_ERROR).ShowModal();
@@ -1757,6 +1760,7 @@ namespace Shared {
 				menuCustomColor->Check(miColorCyan, false);
 				menuCustomColor->Check(miColorOrange, false);
 				menuCustomColor->Check(miColorMagenta, false);
+				menuCustomColor->Check(miColorTransparent, false);
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
 				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Error"), wxOK | wxICON_ERROR).ShowModal();
@@ -1774,6 +1778,7 @@ namespace Shared {
 				menuCustomColor->Check(miColorCyan, false);
 				menuCustomColor->Check(miColorOrange, false);
 				menuCustomColor->Check(miColorMagenta, false);
+				menuCustomColor->Check(miColorTransparent, false);
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
 				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Error"), wxOK | wxICON_ERROR).ShowModal();
@@ -1791,6 +1796,7 @@ namespace Shared {
 				menuCustomColor->Check(miColorCyan, true);
 				menuCustomColor->Check(miColorOrange, false);
 				menuCustomColor->Check(miColorMagenta, false);
+				menuCustomColor->Check(miColorTransparent, false);
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
 				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Error"), wxOK | wxICON_ERROR).ShowModal();
@@ -1808,6 +1814,7 @@ namespace Shared {
 				menuCustomColor->Check(miColorCyan, false);
 				menuCustomColor->Check(miColorOrange, true);
 				menuCustomColor->Check(miColorMagenta, false);
+				menuCustomColor->Check(miColorTransparent, false);
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
 				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Error"), wxOK | wxICON_ERROR).ShowModal();
@@ -1825,6 +1832,25 @@ namespace Shared {
 				menuCustomColor->Check(miColorCyan, false);
 				menuCustomColor->Check(miColorOrange, false);
 				menuCustomColor->Check(miColorMagenta, true);
+				menuCustomColor->Check(miColorTransparent, false);
+			} catch (std::runtime_error &e) {
+				std::cout << e.what() << std::endl;
+				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Error"), wxOK | wxICON_ERROR).ShowModal();
+			}
+		}
+
+		void MainWindow::onMenuColorTransparent(wxCommandEvent &event) {
+			try {
+				playerColor = Renderer::pcTransparent;
+				menuCustomColor->Check(miColorRed, false);
+				menuCustomColor->Check(miColorBlue, false);
+				menuCustomColor->Check(miColorGreen, false);
+				menuCustomColor->Check(miColorYellow, false);
+				menuCustomColor->Check(miColorWhite, false);
+				menuCustomColor->Check(miColorCyan, false);
+				menuCustomColor->Check(miColorOrange, false);
+				menuCustomColor->Check(miColorMagenta, false);
+				menuCustomColor->Check(miColorTransparent, true);
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
 				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Error"), wxOK | wxICON_ERROR).ShowModal();
@@ -1982,6 +2008,7 @@ namespace Shared {
 			EVT_MENU(miColorCyan, MainWindow::onMenuColorCyan)
 			EVT_MENU(miColorOrange, MainWindow::onMenuColorOrange)
 			EVT_MENU(miColorMagenta, MainWindow::onMenuColorMagenta)
+			EVT_MENU(miColorTransparent, MainWindow::onMenuColorTransparent)
 
 			EVT_MENU(miChangeBackgroundColor, MainWindow::OnChangeColor)
 			END_EVENT_TABLE()

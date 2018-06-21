@@ -216,7 +216,7 @@ namespace Glest {
 							const XmlNode *textureNode = surfaceNode->getChild("texture", j);
 							if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false) {
 								surfPixmaps[i][j] = new Pixmap2D();
-								surfPixmaps[i][j]->init(3);
+								surfPixmaps[i][j]->init(4);
 								surfPixmaps[i][j]->load(textureNode->getAttribute("path")->getRestrictedValue(currentPath));
 							}
 							loadedFileList[textureNode->getAttribute("path")->getRestrictedValue(currentPath)].push_back(make_pair(sourceXMLFile, textureNode->getAttribute("path")->getRestrictedValue()));
@@ -242,7 +242,7 @@ namespace Glest {
 
 						try {
 							pixmap = new Pixmap2D();
-							pixmap->init(3);
+							pixmap->init(4);
 							pixmap->load(textureNode->getAttribute("path")->getRestrictedValue(currentPath));
 							loadedFileList[textureNode->getAttribute("path")->getRestrictedValue(currentPath)].push_back(make_pair(sourceXMLFile, textureNode->getAttribute("path")->getRestrictedValue()));
 
@@ -288,7 +288,7 @@ namespace Glest {
 							for (int y = 0; y < parts; ++y) {
 								if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false) {
 									surfPixmaps[i][j] = new Pixmap2D();
-									surfPixmaps[i][j]->init(partsize, partsize, 3);
+									surfPixmaps[i][j]->init(partsize, partsize, 4);
 									surfPixmaps[i][j]->copyImagePart(x*partsize, y*partsize, pixmap);
 								}
 								surfProbs[i][j] = -1;

@@ -71,7 +71,8 @@ namespace Shared {
 				miColorWhite,
 				miColorCyan,
 				miColorOrange,
-				miColorMagenta
+				miColorMagenta,
+				miColorTransparent
 			};
 
 		private:
@@ -172,6 +173,7 @@ namespace Shared {
 			void onMenuColorCyan(wxCommandEvent &event);
 			void onMenuColorOrange(wxCommandEvent &event);
 			void onMenuColorMagenta(wxCommandEvent &event);
+			void onMenuColorTransparent(wxCommandEvent &event);
 			void onMouseWheelDown(wxMouseEvent &event);
 			void onMouseWheelUp(wxMouseEvent &event);
 			void onMouseMove(wxMouseEvent &event);

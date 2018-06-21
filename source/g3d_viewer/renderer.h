@@ -55,13 +55,19 @@ namespace Shared {
 		class MeshCallbackTeamColor : public MeshCallback {
 		private:
 			const Texture *teamTexture;
+			bool hasAlpha;
 
 		public:
 			MeshCallbackTeamColor() : MeshCallback() {
 				teamTexture = NULL;
+				hasAlpha = false;
 			}
-			void setTeamTexture(const Texture *teamTexture) {
+			void setTeamTexture(const Texture *teamTexture, bool hasAlpha) {
 				this->teamTexture = teamTexture;
+				this->hasAlpha = hasAlpha;
+			}
+			bool getHasAlpha() {
+				return hasAlpha;
 			}
 			virtual void execute(const Mesh *mesh);
 		};
@@ -86,7 +92,8 @@ namespace Shared {
 				pcWhite,
 				pcCyan,
 				pcOrange,
-				pcMagenta
+				pcMagenta,
+				pcTransparent
 			};
 
 		private:
@@ -112,6 +119,7 @@ namespace Shared {
 			Texture2D *customTextureCyan;
 			Texture2D *customTextureOrange;
 			Texture2D *customTextureMagenta;
+			Texture2D *customTextureTransparent;
 			MeshCallbackTeamColor meshCallbackTeamColor;
 
 			float red;

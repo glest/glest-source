@@ -339,8 +339,7 @@ namespace Glest {
 			Renderer & renderer = Renderer::getInstance();
 
 			if (scenarioLogoTexture != NULL) {
-				renderer.renderTextureQuad(450, 200, 533, 400, scenarioLogoTexture,
-					1.0f);
+				renderer.renderTextureQuad(450, 200, 533, 400, scenarioLogoTexture, NULL);
 				//renderer.renderBackground(scenarioLogoTexture);
 			}
 

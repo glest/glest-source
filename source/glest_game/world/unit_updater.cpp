@@ -2700,7 +2700,7 @@ namespace Glest {
 					psProj->setObserver(new ParticleDamager(unit, (*pt), this, gameCamera));
 					psProj->setVisible(visible);
 					if (unit->getFaction()->getTexture()) {
-						psProj->setFactionColor(unit->getFaction()->getTexture()->getPixmapConst()->getPixel3f(0, 0));
+						psProj->setFactionColor(unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0));
 					}
 					renderer.manageParticleSystem(psProj, rsGame);
 					unit->addAttackParticleSystem(psProj);
@@ -2710,7 +2710,7 @@ namespace Glest {
 						psSplash->setPos(endPos);
 						psSplash->setVisible(visible);
 						if (unit->getFaction()->getTexture()) {
-							psSplash->setFactionColor(unit->getFaction()->getTexture()->getPixmapConst()->getPixel3f(0, 0));
+							psSplash->setFactionColor(unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0));
 						}
 						renderer.manageParticleSystem(psSplash, rsGame);
 						unit->addAttackParticleSystem(psSplash);
@@ -2731,7 +2731,7 @@ namespace Glest {
 					psSplash->setPos(endPos);
 					psSplash->setVisible(visible);
 					if (unit->getFaction()->getTexture()) {
-						psSplash->setFactionColor(unit->getFaction()->getTexture()->getPixmapConst()->getPixel3f(0, 0));
+						psSplash->setFactionColor(unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0));
 					}
 					renderer.manageParticleSystem(psSplash, rsGame);
 					unit->addAttackParticleSystem(psSplash);

@@ -133,7 +133,7 @@ namespace Glest {
 					(*it)->setValues(ups);
 					ups->setPos(this->pos);
 					ups->setRotation(this->rotation);
-					ups->setFactionColor(Vec3f(0, 0, 0));
+					ups->setFactionColor(Vec4f(0, 0, 0, 1));
 					ups->setVisible(false);
 					this->unitParticleSystems.push_back(ups);
 					Renderer::getInstance().manageParticleSystem(ups, rsGame);

@@ -107,7 +107,7 @@ namespace Glest {
 			//tex
 			tex = renderer.newTexture2D(rsGame);
 			if (tex) {
-				tex->getPixmap()->init(scaledW, scaledH, 3);
+				tex->getPixmap()->init(scaledW, scaledH, 4);
 				tex->setMipmap(false);
 			}
 
@@ -261,7 +261,7 @@ namespace Glest {
 
 		void Minimap::computeTexture(const World *world) {
 
-			Vec3f color;
+			Vec4f color;
 			const Map *map = world->getMap();
 
 			if (tex) {
@@ -273,16 +273,17 @@ namespace Glest {
 
 						if (sc->getObject() == NULL || sc->getObject()->getType() == NULL) {
 							const Pixmap2D *p = world->getTileset()->getSurfPixmap(sc->getSurfaceType(), 0);
-							color = p->getPixel3f(p->getW() / 2, p->getH() / 2);
+							color = p->getPixel4f(p->getW() / 2, p->getH() / 2);
 							color = color * static_cast<float>(sc->getVertex().y / 6.f);
 
 							if (sc->getVertex().y <= world->getMap()->getWaterLevel()) {
-								color += Vec3f(0.5f, 0.5f, 1.0f);
+								color += Vec4f(0.5f, 0.5f, 1.0f, 1.0f);
 							}
 
 							if (color.x > 1.f) color.x = 1.f;
 							if (color.y > 1.f) color.y = 1.f;
 							if (color.z > 1.f) color.z = 1.f;
+							if (color.w > 1.f) color.w = 1.f;
 						} else {
 							color = sc->getObject()->getType()->getColor();
 						}

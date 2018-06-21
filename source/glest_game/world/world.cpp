@@ -2082,7 +2082,7 @@ namespace Glest {
 				stats.setResourceMultiplier(i, (gs->getResourceMultiplierIndex(i) + 5)*0.1f);
 				stats.setPlayerName(i, gs->getNetworkPlayerName(i));
 				if (getFaction(i)->getTexture()) {
-					stats.setPlayerColor(i, getFaction(i)->getTexture()->getPixmapConst()->getPixel3f(0, 0));
+					stats.setPlayerColor(i, getFaction(i)->getTexture()->getPixmapConst()->getPixel4f(0, 0));
 				}
 			}
 

@@ -1274,7 +1274,7 @@ namespace Glest {
 
 								//announcementLabel.setText(announcementTxt);
 								consoleIRC.addLine(announcementTxt, true,
-									Vec3f(1.0f, 1.0f, 0.0f));
+									Vec4f(1.0f, 1.0f, 0.0f, 1.0f));
 
 								while (true) {
 									lastIndex = announcementTxt.find("\n", lastIndex + 1);
@@ -1314,7 +1314,7 @@ namespace Glest {
 
 								//versionInfoLabel.setText(versionTxt);
 								consoleIRC.addLine(versionTxt, true,
-									Vec3f(1.0f, 0.0f, 0.0f));
+									Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
 
 								while (true) {
 									lastIndex = versionTxt.find("\n", lastIndex + 1);

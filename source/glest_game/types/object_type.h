@@ -29,7 +29,7 @@ namespace Glest {
 	namespace Game {
 
 		using Shared::Graphics::Model;
-		using Shared::Graphics::Vec3f;
+		using Shared::Graphics::Vec4f;
 
 		// =====================================================
 		//      class ObjectType  
@@ -50,7 +50,7 @@ namespace Glest {
 
 		private:
 			ModelTypes modeltypes;
-			Vec3f color;
+			Vec4f color;
 			int objectClass;
 			bool walkable;
 			int height;
@@ -75,7 +75,7 @@ namespace Glest {
 			inline int getModelCount() const {
 				return (int) modeltypes.size();
 			}
-			inline const Vec3f & getColor() const {
+			inline const Vec4f & getColor() const {
 				return color;
 			}
 			inline int getClass() const {

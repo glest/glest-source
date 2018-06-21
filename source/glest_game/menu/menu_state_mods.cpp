@@ -2824,8 +2824,7 @@ namespace Glest {
 							}
 						}
 						if (modPreviewImage != NULL) {
-							renderer.renderTextureQuad(508, 90, 485, 325, modPreviewImage,
-								1.0f);
+							renderer.renderTextureQuad(508, 90, 485, 325, modPreviewImage, NULL);
 						}
 					}
 				}
@@ -3126,8 +3125,7 @@ namespace Glest {
 				}
 				if (validMapPreview) {
 					if (mapPreviewTexture != NULL) {
-						renderer.renderTextureQuad(5, 185, 150, 150, mapPreviewTexture,
-							1.0f);
+						renderer.renderTextureQuad(5, 185, 150, 150, mapPreviewTexture, NULL);
 					}
 					if (enableMapPreview && (mapPreview.hasFileLoaded() == true)) {
 

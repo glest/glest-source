@@ -103,7 +103,7 @@ namespace Glest {
 				"versionWarningLabel");
 			versionWarningLabel.init(550, 350);
 			versionWarningLabel.setText("");
-			versionWarningLabel.setTextColor(Vec3f(1.0f, 0.5f, 0.5f));
+			versionWarningLabel.setTextColor(Vec4f(1.0f, 0.5f, 0.5f, 1.0f));
 
 
 			infoTextLabel.registerGraphicComponent(containerName, "infoTextLabel");
@@ -497,7 +497,7 @@ namespace Glest {
 			if (previewTexture != NULL) {
 				renderer.renderTextureQuad(550,
 					slotLinesYBase - 300 + slotsLineHeight,
-					400, 300, previewTexture, 1.0f);
+					400, 300, previewTexture, NULL);
 			}
 
 			if (mainMessageBox.getEnabled()) {

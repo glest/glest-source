@@ -7715,14 +7715,10 @@ namespace Glest {
 
 				if (Renderer::renderText3DEnabled == true) {
 					renderer.renderText3D(scriptManager.getDisplayText(),
-						coreData.getMenuFontNormal3D(),
-						Vec3f(fontColor.x, fontColor.y,
-							fontColor.z), 200, 660, false);
+						coreData.getMenuFontNormal3D(), fontColor, 200, 660, false);
 				} else {
 					renderer.renderText(scriptManager.getDisplayText(),
-						coreData.getMenuFontNormal(),
-						Vec3f(fontColor.x, fontColor.y,
-							fontColor.z), 200, 660, false);
+						coreData.getMenuFontNormal(), fontColor, 200, 660, false);
 				}
 			}
 
@@ -7808,16 +7804,12 @@ namespace Glest {
 
 				for (int i = 0; i < world.getFactionCount(); ++i) {
 					string factionInfo = factionDebugInfo[i];
-					Vec3f
-						playerColor =
-						world.getFaction(i)->getTexture()->
-						getPixmapConst()->getPixel3f(0, 0);
+					Vec4f playerColor = world.getFaction(i)->getTexture()->getPixmapConst()->getPixel4f(0, 0);
 
 					if (Renderer::renderText3DEnabled == true) {
 						renderer.renderText3D(factionInfo,
 							coreData.getMenuFontBig3D(),
-							Vec4f(playerColor.x, playerColor.y,
-								playerColor.z, 1.0), 10,
+							playerColor, 10,
 							//metrics.getVirtualH() - mh - 90 - 280 - (i * 16),
 							metrics.getVirtualH() - mh - 60 -
 							playerPosY - fontHeightBig -
@@ -7825,8 +7817,7 @@ namespace Glest {
 					} else {
 						renderer.renderText(factionInfo,
 							coreData.getMenuFontBig(),
-							Vec4f(playerColor.x, playerColor.y,
-								playerColor.z, 1.0), 10,
+							playerColor, 10,
 							//metrics.getVirtualH() - mh - 90 - 280 - (i * 16),
 							metrics.getVirtualH() - mh - 60 -
 							playerPosY - fontHeightBig -
@@ -7842,10 +7833,10 @@ namespace Glest {
 
 					if (Renderer::renderText3DEnabled == true) {
 						renderer.renderUnitTitles3D(coreData.getMenuFontNormal3D(),
-							Vec3f(1.0f));
+							Vec4f(1.0f));
 					} else {
 						renderer.renderUnitTitles(coreData.getMenuFontNormal(),
-							Vec3f(1.0f));
+							Vec4f(1.0f));
 					}
 				}
 			}

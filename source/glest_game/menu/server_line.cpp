@@ -40,10 +40,10 @@ namespace Glest {
 			masterServerInfo = *mServerInfo;
 			int i = 5;
 			this->baseY = baseY;
-			Vec3f color = Vec3f(1.0f, 1.0f, 1.0f);
+			Vec4f color = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 			if (masterServerInfo.getConnectedClients() == 0) {
-				color = Vec3f(0.6f, 0.7f, 1.0f);
+				color = Vec4f(0.6f, 0.7f, 1.0f, 1.0f);
 			}
 
 
@@ -139,7 +139,7 @@ namespace Glest {
 			//      i+=100;
 
 			wrongVersionLabel.init(i, baseY - lineOffset);
-			wrongVersionLabel.setTextColor(Vec3f(1.0f, 0.0f, 0.0f));
+			wrongVersionLabel.setTextColor(Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
 			wrongVersionLabel.setText(lang.getString("IncompatibleVersion"));
 
 			//game setup info:
@@ -270,10 +270,11 @@ namespace Glest {
 			//game info:
 			renderer.renderLabel(&serverTitleLabel);
 			if (countryTexture != NULL) {
+				Vec4f color = Vec4f(1.f, 1.f, 1.f, 0.7f);
 				renderer.renderTextureQuad(country.getX() + 1, country.getY() + 4,
 					countryTexture->getTextureWidth(),
 					countryTexture->getTextureHeight(),
-					countryTexture, 0.7f);
+					countryTexture, &color);
 			} else {
 				renderer.renderLabel(&country);
 			}

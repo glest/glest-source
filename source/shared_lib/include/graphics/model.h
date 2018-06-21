@@ -339,7 +339,6 @@ namespace Shared {
 				recycleUniqueColor();
 			}
 
-			//static const int COLOR_COMPONENTS = 3;
 			static const int COLOR_COMPONENTS = 4;
 			static void init(int bufferSize);
 			static void beginPicking();

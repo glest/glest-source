@@ -526,8 +526,8 @@ namespace Shared {
 			particleSize = particleSystemNode->getAttribute("particleSize")->getFloatValue();
 			//	float speed;
 			speed = particleSystemNode->getAttribute("speed")->getFloatValue();
-			//	Vec3f factionColor;
-			factionColor = Vec3f::strToVec3(particleSystemNode->getAttribute("factionColor")->getValue());
+			//	Vec4f factionColor;
+			factionColor = Vec4f::strToVec4(particleSystemNode->getAttribute("factionColor")->getValue());
 			//    bool teamcolorNoEnergy;
 			teamcolorNoEnergy = particleSystemNode->getAttribute("teamcolorNoEnergy")->getIntValue() != 0;
 			//    bool teamcolorEnergy;
@@ -627,7 +627,7 @@ namespace Shared {
 			aliveParticleCount--;
 		}
 
-		void ParticleSystem::setFactionColor(Vec3f factionColor) {
+		void ParticleSystem::setFactionColor(Vec4f factionColor) {
 			this->factionColor = factionColor;
 			Vec3f tmpCol;
 

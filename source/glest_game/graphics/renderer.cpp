@@ -65,16 +65,12 @@ namespace Glest {
 
 				//set color to interpolation
 				glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_INTERPOLATE);
-
 				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_TEXTURE);
 				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
-
 				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, GL_TEXTURE1);
 				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
-
 				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_RGB, GL_TEXTURE);
 				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_RGB, GL_SRC_ALPHA);
-
 				//set alpha to 1
 				glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_REPLACE);
 				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_TEXTURE);
@@ -96,10 +92,14 @@ namespace Glest {
 				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, GL_PREVIOUS);
 				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
 
-				//set alpha to 1
-				glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_REPLACE);
-				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_PRIMARY_COLOR);
+				//Interpolate alpha with alpha of previous texture
+				glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_INTERPOLATE);
+				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_TEXTURE);
+				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_ALPHA, GL_PREVIOUS);
+				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_ALPHA, GL_TEXTURE);
 				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
+				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_ALPHA, GL_SRC_ALPHA);
+				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_ALPHA, GL_SRC_ALPHA);
 
 				glActiveTexture(GL_TEXTURE0);
 			} else {
@@ -1615,7 +1615,8 @@ namespace Glest {
 				if (downPos != Display::invalidPos) {
 					// in state of doing something
 					const Texture2D *texture = display->getDownImage(downPos);
-					renderTextureQuad(x + 18, y - 50, 32, 32, texture, 0.8f);
+					Vec4f color = Vec4f(1.f, 1.f, 1.f, 0.8f);
+					renderTextureQuad(x + 18, y - 50, 32, 32, texture, &color);
 				}
 				//		else {
 				//			// Display current commandtype
@@ -1632,14 +1633,14 @@ namespace Glest {
 				//				}
 				//			}
 				//		}
-
+				Vec4f color = Vec4f(1.f, 1.f, 1.f, 0.8f);
 				if (game->isMarkCellMode() == true) {
 					const Texture2D *texture = game->getMarkCellTexture();
-					renderTextureQuad(x, y, texture->getTextureWidth(), texture->getTextureHeight(), texture, 0.8f);
+					renderTextureQuad(x, y, texture->getTextureWidth(), texture->getTextureHeight(), texture, &color);
 				}
 				if (game->isUnMarkCellMode() == true) {
 					const Texture2D *texture = game->getUnMarkCellTexture();
-					renderTextureQuad(x, y, texture->getTextureWidth(), texture->getTextureHeight(), texture, 0.8f);
+					renderTextureQuad(x, y, texture->getTextureWidth(), texture->getTextureHeight(), texture, &color);
 				}
 			}
 
@@ -1837,7 +1838,7 @@ namespace Glest {
 			assertGl();
 		}
 
-		void Renderer::renderTextureQuad(int x, int y, int w, int h, const Texture2D *texture, float alpha, const Vec3f *color) {
+		void Renderer::renderTextureQuad(int x, int y, int w, int h, const Texture2D *texture, const Vec4f *color) {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
 				return;
 			}
@@ -1851,11 +1852,9 @@ namespace Glest {
 			glEnable(GL_BLEND);
 
 			if (color != NULL) {
-				Vec4f newColor(*color);
-				newColor.w = alpha;
-				glColor4fv(newColor.ptr());
+				glColor4fv(color->ptr());
 			} else {
-				glColor4f(1.f, 1.f, 1.f, alpha);
+				glColor4f(1.f, 1.f, 1.f, 1.f);
 			}
 			renderQuad(x, y, w, h, texture);
 
@@ -1887,10 +1886,8 @@ namespace Glest {
 
 			if (lineInfo->PlayerIndex >= 0) {
 				std::map<int, Texture2D *> &crcPlayerTextureCache = CacheManager::getCachedItem< std::map<int, Texture2D *> >(GameConstants::playerTextureCacheLookupKey);
-				Vec3f playerColor = crcPlayerTextureCache[lineInfo->PlayerIndex]->getPixmap()->getPixel3f(0, 0);
-				fontColor.x = playerColor.x;
-				fontColor.y = playerColor.y;
-				fontColor.z = playerColor.z;
+				Vec4f playerColor = crcPlayerTextureCache[lineInfo->PlayerIndex]->getPixmap()->getPixel4f(0, 0);
+				fontColor = playerColor;
 
 				GameNetworkInterface *gameNetInterface = NetworkManager::getInstance().getGameNetworkInterface();
 				if (gameNetInterface != NULL && gameNetInterface->getGameSettings() != NULL) {
@@ -1991,10 +1988,8 @@ namespace Glest {
 
 			if (lineInfo->PlayerIndex >= 0) {
 				std::map<int, Texture2D *> &crcPlayerTextureCache = CacheManager::getCachedItem< std::map<int, Texture2D *> >(GameConstants::playerTextureCacheLookupKey);
-				Vec3f playerColor = crcPlayerTextureCache[lineInfo->PlayerIndex]->getPixmap()->getPixel3f(0, 0);
-				fontColor.x = playerColor.x;
-				fontColor.y = playerColor.y;
-				fontColor.z = playerColor.z;
+				Vec4f playerColor = crcPlayerTextureCache[lineInfo->PlayerIndex]->getPixmap()->getPixel4f(0, 0);
+				fontColor = playerColor;
 
 				GameNetworkInterface *gameNetInterface = NetworkManager::getInstance().getGameNetworkInterface();
 				if (gameNetInterface != NULL && gameNetInterface->getGameSettings() != NULL) {
@@ -2541,7 +2536,7 @@ namespace Glest {
 
 			//draw resource status
 			if (localFactionResourcesOnly == true) {
-				Vec4f resourceFontColor = Vec4f(factionForResourceView->getTexture()->getPixmapConst()->getPixel3f(0, 0));
+				Vec4f resourceFontColor = factionForResourceView->getTexture()->getPixmapConst()->getPixel4f(0, 0);
 				int resourceCol = 0;
 				int resourceRow = startRow;
 
@@ -2549,7 +2544,7 @@ namespace Glest {
 				int y = resourceYStart - (resourceRowHeigth * resourceRow);
 				int h = 16;
 				int w = 8;
-				glColor3f(resourceFontColor.x, resourceFontColor.y, resourceFontColor.z);
+				glColor4f(resourceFontColor.x, resourceFontColor.y, resourceFontColor.z, resourceFontColor.w);
 				glBegin(GL_TRIANGLE_STRIP);
 				glVertex2i(x, y + h);
 				glVertex2i(x, y);
@@ -3177,33 +3172,23 @@ namespace Glest {
 					glPopAttrib();
 				}
 			}
-			Vec3f labelColor = label->getTextColor();
-			Vec4f colorWithAlpha = Vec4f(labelColor.x, labelColor.y, labelColor.z, GraphicComponent::getFade());
-			renderLabel(label, &colorWithAlpha);
+			Vec4f labelColor = label->getTextColor();
+			renderLabel(label, &labelColor);
 		}
 
-		void Renderer::renderLabel(GraphicLabel *label, const Vec3f *color) {
+		void Renderer::renderLabel(GraphicLabel *label, const Vec4f *colorWithAlpha) {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
 				return;
 			}
-
-			if (color != NULL) {
-				Vec4f colorWithAlpha = Vec4f(*color);
-				colorWithAlpha.w = GraphicComponent::getFade();
-				renderLabel(label, &colorWithAlpha);
-			} else {
-				Vec4f *colorWithAlpha = NULL;
-				renderLabel(label, colorWithAlpha);
-			}
-		}
-
-		void Renderer::renderLabel(GraphicLabel *label, const Vec4f *color) {
-			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				return;
-			}
-
 			if (label->getVisible() == false) {
 				return;
+			}
+			Vec4f clr;
+			const Vec4f *color = NULL;
+			if (colorWithAlpha != NULL) {
+				clr = *colorWithAlpha;
+				clr.w *= GraphicComponent::getFade();
+				color = &clr;
 			}
 			try {
 				glPushAttrib(GL_ENABLE_BIT);
@@ -3324,13 +3309,13 @@ namespace Glest {
 				}
 
 				//button
-				Vec4f fontColor(GraphicComponent::getCustomTextColor());
+				Vec4f fontColor = WHITE;
 
 				if (fontColorOverride != NULL) {
 					fontColor = *fontColorOverride;
 				} else {
 					// white shadowed is default ( in the menu for example )
-					fontColor.w = GraphicComponent::getFade();
+					fontColor.w *= GraphicComponent::getFade();
 				}
 
 				//Vec4f color= Vec4f(1.f, 1.f, 1.f, GraphicComponent::getFade());
@@ -3766,15 +3751,15 @@ namespace Glest {
 				float anim = GraphicComponent::getAnim();
 				if (anim > 0.5f) anim = 1.f - anim;
 
-				Vec3f color = listBox->getTextColor();
+				Vec4f color = listBox->getTextColor();
 				int x = listBox->getX() + listBox->getButton1()->getW();
 				int y = listBox->getY();
 				int h = listBox->getH();
 				int w = listBox->getW() - listBox->getButton1()->getW() - listBox->getButton2()->getW();
 
 				const int lightSize = 0;
-				const Vec4f color1 = Vec4f(color.x, color.y, color.z, 0.1f + anim * 0.5f);
-				const Vec4f color2 = Vec4f(color.x, color.y, color.z, 0.3f + anim);
+				const Vec4f color1 = Vec4f(color.x, color.y, color.z, color.w * (0.1f + anim * 0.5f));
+				const Vec4f color2 = Vec4f(color.x, color.y, color.z, color.w * (0.3f + anim));
 
 				glBegin(GL_TRIANGLE_FAN);
 
@@ -5094,8 +5079,8 @@ namespace Glest {
 					visibleUnitIndex < (int) qCache.visibleQuadUnitList.size(); ++visibleUnitIndex) {
 					Unit *unit = qCache.visibleQuadUnitList[visibleUnitIndex];
 					Vec3f currVec = unit->getCurrVectorFlat();
-					Vec3f color = unit->getFaction()->getTexture()->getPixmapConst()->getPixel3f(0, 0);
-					glColor4f(color.x, color.y, color.z, 0.7f);
+					Vec4f color = unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0);
+					glColor4f(color.x, color.y, color.z, color.w * 0.7f);
 					renderSelectionCircle(currVec, unit->getType()->getSize(), 0.8f, 0.05f);
 				}
 				glPopAttrib();
@@ -5125,20 +5110,14 @@ namespace Glest {
 
 					std::map<int, HighlightSpecialUnitInfo>::iterator iterFindSpecialUnit = unitHighlightList.find(unit->getId());
 					if (iterFindSpecialUnit != unitHighlightList.end()) {
-						Vec3f color = unit->getFaction()->getTexture()->getPixmapConst()->getPixel3f(0, 0);
+						Vec4f color = unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0);
 						float radius = 1.0f;
 						float thickness = 0.1f;
-						float alpha = 0.65f;
+						color.w *= 0.65f;
 
 						HighlightSpecialUnitInfo &specialInfo = iterFindSpecialUnit->second;
-						if (specialInfo.color.x >= 0) {
-							color.x = specialInfo.color.x;
-							color.y = specialInfo.color.y;
-							color.z = specialInfo.color.z;
-						}
-						if (specialInfo.color.w >= 0) {
-							alpha = specialInfo.color.w;
-						}
+						if (specialInfo.color.x >= 0)
+							color = specialInfo.color;
 						if (specialInfo.radius > 0) {
 							radius = specialInfo.radius;
 						}
@@ -5146,7 +5125,7 @@ namespace Glest {
 							thickness = specialInfo.thickness;
 						}
 
-						glColor4f(color.x, color.y, color.z, alpha);
+						glColor4f(color.x, color.y, color.z, color.w);
 
 						Vec3f currVec = unit->getCurrVectorFlat();
 						renderSelectionCircle(currVec, unit->getType()->getSize(), radius, thickness);
@@ -5175,7 +5154,7 @@ namespace Glest {
 					if (unit->isAlive()) {
 						Vec3f currVec = unit->getCurrVectorFlat();
 						renderTeamColorEffect(currVec, visibleUnitIndex, unit->getType()->getSize(),
-							unit->getFaction()->getTexture()->getPixmapConst()->getPixel3f(0, 0), texture);
+							unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0), texture);
 					}
 				}
 				glDisable(GL_COLOR_MATERIAL);
@@ -5383,8 +5362,8 @@ namespace Glest {
 					visibleUnitIndex < (int) qCache.visibleQuadUnitBuildList.size(); ++visibleUnitIndex) {
 					const UnitBuildInfo &buildUnit = qCache.visibleQuadUnitBuildList[visibleUnitIndex];
 					//Vec4f modelColor= Vec4f(0.f, 1.f, 0.f, 0.5f);
-					const Vec3f teamColor = buildUnit.unit->getFaction()->getTexture()->getPixmapConst()->getPixel3f(0, 0);
-					Vec4f modelColor = Vec4f(teamColor.x, teamColor.y, teamColor.z, 0.4f);
+					const Vec4f teamColor = buildUnit.unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0);
+					Vec4f modelColor = Vec4f(teamColor.x, teamColor.y, teamColor.z, teamColor.w * 0.4f);
 					renderGhostModel(buildUnit.buildUnit, buildUnit.pos, buildUnit.facing, &modelColor);
 
 					//printf("Rendering to build unit index = %d\n",visibleUnitIndex);
@@ -5401,7 +5380,7 @@ namespace Glest {
 
 		}
 
-		void Renderer::renderTeamColorEffect(Vec3f &v, int heigth, int size, Vec3f color, const Texture2D *texture) {
+		void Renderer::renderTeamColorEffect(Vec3f &v, int heigth, int size, Vec4f color, const Texture2D *texture) {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
 				return;
 			}
@@ -5412,7 +5391,7 @@ namespace Glest {
 			float heigthoffset = 0.5 + heigth % 25 * 0.004;
 			glPushMatrix();
 			glBindTexture(GL_TEXTURE_2D, static_cast<const Texture2DGl*>(texture)->getHandle());
-			glColor4f(color.x, color.y, color.z, 1.0f);
+			glColor4f(color.x, color.y, color.z, color.w);
 			glBegin(GL_TRIANGLE_STRIP);
 			glTexCoord2i(0, 1);
 			glVertex3f(v.x - halfSize, v.y + heigthoffset, v.z + halfSize);
@@ -5609,7 +5588,7 @@ namespace Glest {
 						map->clampPos(pos);
 
 						Vec3f arrowTarget = Vec3f(pos.x, map->getCell(pos)->getHeight(), pos.y);
-						renderArrow(unit->getCurrVectorFlat(), arrowTarget, Vec3f(0.f, 0.f, 1.f), 0.3f);
+						renderArrow(unit->getCurrVectorFlat(), arrowTarget, Vec4f(0.f, 0.f, 1.f, 0.8f), 0.3f);
 					}
 				}
 			}
@@ -5631,17 +5610,17 @@ namespace Glest {
 						if (ct->getClicks() != cOne) {
 
 							//arrow color
-							Vec3f arrowColor;
+							Vec4f arrowColor;
 							switch (ct->getClass()) {
 								case ccMove:
-									arrowColor = Vec3f(0.f, 1.f, 0.f);
+									arrowColor = Vec4f(0.f, 1.f, 0.f, 0.8f);
 									break;
 								case ccAttack:
 								case ccAttackStopped:
-									arrowColor = Vec3f(1.f, 0.f, 0.f);
+									arrowColor = Vec4f(1.f, 0.f, 0.f, 0.8f);
 									break;
 								default:
-									arrowColor = Vec3f(1.f, 1.f, 0.f);
+									arrowColor = Vec4f(1.f, 1.f, 0.f, 0.8f);
 									break;
 							}
 
@@ -5932,7 +5911,7 @@ namespace Glest {
 			Texture2D *hudTexture = game->getGui()->getHudTexture();
 			if (hudTexture != NULL) {
 				const Metrics &metrics = Metrics::getInstance();
-				renderTextureQuad(0, 0, metrics.getVirtualW(), metrics.getVirtualH(), hudTexture, 1.0f);
+				renderTextureQuad(0, 0, metrics.getVirtualW(), metrics.getVirtualH(), hudTexture, NULL);
 			}
 		}
 
@@ -6185,7 +6164,7 @@ namespace Glest {
 				uint32 unitIdx = 0;
 				vector<Vec2f> unit_vertices;
 				unit_vertices.resize(visibleUnitList.size() * 4);
-				vector<Vec3f> unit_colors;
+				vector<Vec4f> unit_colors;
 				unit_colors.resize(visibleUnitList.size() * 4);
 
 				for (int visibleIndex = 0;
@@ -6197,7 +6176,7 @@ namespace Glest {
 
 					Vec2i pos = unit->getPos() / Map::cellScale;
 					int size = unit->getType()->getSize();
-					Vec3f color = unit->getFaction()->getTexture()->getPixmapConst()->getPixel3f(0, 0);
+					Vec4f color = unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0);
 
 					unit_colors[unitIdx] = color;
 					unit_vertices[unitIdx] = Vec2f(mx + pos.x*zoom.x, my + mh - (pos.y*zoom.y));
@@ -6217,9 +6196,10 @@ namespace Glest {
 				}
 
 				if (unitIdx > 0) {
+					glEnable(GL_BLEND);
 					glEnableClientState(GL_COLOR_ARRAY);
 					glEnableClientState(GL_VERTEX_ARRAY);
-					glColorPointer(3, GL_FLOAT, 0, &unit_colors[0]);
+					glColorPointer(4, GL_FLOAT, 0, &unit_colors[0]);
 					glVertexPointer(2, GL_FLOAT, 0, &unit_vertices[0]);
 					glDrawArrays(GL_QUADS, 0, unitIdx);
 					glDisableClientState(GL_COLOR_ARRAY);
@@ -6300,18 +6280,17 @@ namespace Glest {
 					const MarkedCell *mc = &highlightedCells->at(i);
 					if (mc->getFaction() == NULL || (mc->getFaction()->getTeam() == game->getWorld()->getThisFaction()->getTeam())) {
 						const Texture2D *texture = game->getHighlightCellTexture();
-						Vec3f color(MarkedCell::static_system_marker_color);
+						Vec4f color = MarkedCell::static_system_marker_color;
 						if (mc->getFaction() != NULL) {
-							color = mc->getFaction()->getTexture()->getPixmapConst()->getPixel3f(0, 0);
+							color = mc->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0);
 						}
 						int lighting = (mc->getAliveCount() % 15);
-						Vec3f myColor = Vec3f(color.x / 2 + .5f / lighting, color.y / 2 + .5f / lighting, color.z / 2 + .5f / lighting);
+						color = Vec4f(color.x / 2 + .5f / lighting, color.y / 2 + .5f / lighting, color.z / 2 + .5f / lighting, color.w);
 
 						Vec2i pos = mc->getTargetPos();
 						if (texture != NULL) {
 							//float alpha = 0.49f+0.5f/(mc->getAliveCount()%15);
-							float alpha = 1.0f;
-							renderTextureQuad((int) (pos.x*zoom.x) + pointersize, my + mh - (int) (pos.y*zoom.y), pointersize, pointersize, texture, alpha, &myColor);
+							renderTextureQuad((int) (pos.x*zoom.x) + pointersize, my + mh - (int) (pos.y*zoom.y), pointersize, pointersize, texture, &color);
 						}
 					}
 				}
@@ -6359,25 +6338,25 @@ namespace Glest {
 						Vec2i pos = bm.getTargetPos() / Map::cellScale;
 						float size = 0.5f;
 
-						Vec3f color(MarkedCell::static_system_marker_color);
+						Vec4f color = MarkedCell::static_system_marker_color;
 						if (bm.getFaction() != NULL) {
-							color = bm.getFaction()->getTexture()->getPixmapConst()->getPixel3f(0, 0);
+							color = bm.getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0);
 						}
-						float alpha = 0.65f;
+						color.w *= 0.65f;
 
-						unit_colors[unitIdx] = Vec4f(color.x, color.y, color.z, alpha);
+						unit_colors[unitIdx] = color;
 						unit_vertices[unitIdx] = Vec2f(mx + pos.x*zoom.x, my + mh - (pos.y*zoom.y));
 						unitIdx++;
 
-						unit_colors[unitIdx] = Vec4f(color.x, color.y, color.z, alpha);
+						unit_colors[unitIdx] = color;
 						unit_vertices[unitIdx] = Vec2f(mx + (pos.x + 1)*zoom.x + size, my + mh - (pos.y*zoom.y));
 						unitIdx++;
 
-						unit_colors[unitIdx] = Vec4f(color.x, color.y, color.z, alpha);
+						unit_colors[unitIdx] = color;
 						unit_vertices[unitIdx] = Vec2f(mx + (pos.x + 1)*zoom.x + size, my + mh - ((pos.y + size)*zoom.y));
 						unitIdx++;
 
-						unit_colors[unitIdx] = Vec4f(color.x, color.y, color.z, alpha);
+						unit_colors[unitIdx] = color;
 						unit_vertices[unitIdx] = Vec2f(mx + pos.x*zoom.x, my + mh - ((pos.y + size)*zoom.y));
 						unitIdx++;
 					}
@@ -6494,14 +6473,14 @@ namespace Glest {
 								glEnable(GL_BLEND);
 								glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-								Vec3f color(MarkedCell::static_system_marker_color);
+								Vec4f color = MarkedCell::static_system_marker_color;
 								if (bm.getFaction() != NULL) {
-									color = bm.getFaction()->getTexture()->getPixmapConst()->getPixel3f(0, 0);
+									color = bm.getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0);
 								}
-
+								color.w *= 0.8f;
 								renderTextureQuad(
 									bmVisible.second.x, bmVisible.second.y + yOffset,
-									texture->getTextureWidth(), texture->getTextureHeight(), texture, 0.8f, &color);
+									texture->getTextureWidth(), texture->getTextureHeight(), texture, &color);
 
 								/*
 														glActiveTexture(GL_TEXTURE1);
@@ -8613,8 +8592,7 @@ namespace Glest {
 			//	glEnd();
 		}
 
-		void Renderer::renderArrow(const Vec3f &pos1, const Vec3f &pos2,
-			const Vec3f &color, float width) {
+		void Renderer::renderArrow(const Vec3f &pos1, const Vec3f &pos2, const Vec4f &color, float width) {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
 				return;
 			}
@@ -8651,7 +8629,8 @@ namespace Glest {
 				float t = static_cast<float>(i) / tesselation;
 				Vec3f a = pos1Left.lerp(t, pos2Left);
 				Vec3f b = pos1Right.lerp(t, pos2Right);
-				Vec4f c = Vec4f(color, t*0.25f*alphaFactor);
+				Vec4f c = color;
+				c.w *= t * 0.25f * alphaFactor;
 
 				glColor4fv(c.ptr());
 
@@ -8904,7 +8883,7 @@ namespace Glest {
 		}
 
 		// This method renders titles for units
-		void Renderer::renderUnitTitles3D(Font3D *font, Vec3f color) {
+		void Renderer::renderUnitTitles3D(Font3D *font, Vec4f color) {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
 				return;
 			}
@@ -8957,7 +8936,7 @@ namespace Glest {
 		}
 
 		// This method renders titles for units
-		void Renderer::renderUnitTitles(Font2D *font, Vec3f color) {
+		void Renderer::renderUnitTitles(Font2D *font, Vec4f color) {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
 				return;
 			}
@@ -9644,7 +9623,7 @@ namespace Glest {
 
 			Vec2f *vertices = new Vec2f[map->getMaxFactions() * 4];
 			Vec3f *colors = new Vec3f[map->getMaxFactions() * 4];
-
+			
 			for (int i = 0; i < map->getMaxFactions(); i++) {
 				Vec3f color;
 				switch (i) {

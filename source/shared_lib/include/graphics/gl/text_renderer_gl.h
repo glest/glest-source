@@ -41,7 +41,7 @@ namespace Shared {
 				virtual ~TextRenderer2DGl();
 
 				virtual void begin(Font2D *font);
-				virtual void render(const string &text, float x, float y, bool centered = false, Vec3f *color = NULL);
+				virtual void render(const string &text, float x, float y, bool centered = false, Vec4f *color = NULL);
 				virtual void end();
 			};
 
@@ -55,7 +55,7 @@ namespace Shared {
 				bool rendering;
 				int currentFTGLErrorCount;
 
-				void internalRender(const string &text, float  x, float y, bool centered, Vec3f *color);
+				void internalRender(const string &text, float  x, float y, bool centered, Vec4f *color);
 				void specialFTGLErrorCheckWorkaround(string text);
 
 			public:
@@ -63,7 +63,7 @@ namespace Shared {
 				virtual ~TextRenderer3DGl();
 
 				virtual void begin(Font3D *font);
-				virtual void render(const string &text, float x, float y, bool centered = false, Vec3f *color = NULL);
+				virtual void render(const string &text, float x, float y, bool centered = false, Vec4f *color = NULL);
 				virtual void end();
 			};
 

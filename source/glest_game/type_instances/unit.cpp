@@ -399,7 +399,7 @@ namespace Glest {
 					if (unit->getFaction()->getTexture()) {
 						ups->setFactionColor(unit->getFaction()->
 							getTexture()->getPixmapConst()->
-							getPixel3f(0, 0));
+							getPixel4f(0, 0));
 					}
 					//printf("Adding attack boost particle to deferred buffer: %p\n",ups);
 					Renderer::
@@ -3052,7 +3052,7 @@ namespace Glest {
 									currentAttackBoostOriginatorEffect.
 										currentAppliedEffect->ups->
 										setFactionColor(getFaction()->getTexture()->
-											getPixmapConst()->getPixel3f(0, 0));
+											getPixmapConst()->getPixel4f(0, 0));
 								}
 								Renderer::
 									getInstance().manageParticleSystem
@@ -3215,7 +3215,7 @@ namespace Glest {
 										currentAppliedEffect->ups->
 										setFactionColor(getFaction()->
 											getTexture()->getPixmapConst()->
-											getPixel3f(0, 0));
+											getPixel4f(0, 0));
 								}
 								Renderer::
 									getInstance().manageParticleSystem
@@ -3557,7 +3557,7 @@ namespace Glest {
 							if (getFaction()->getTexture()) {
 								ups->setFactionColor(getFaction()->
 									getTexture()->getPixmapConst()->
-									getPixel3f(0, 0));
+									getPixel4f(0, 0));
 							}
 							unitParticleSystems.push_back(ups);
 							Renderer::getInstance().manageParticleSystem(ups, rsGame);
@@ -3721,7 +3721,7 @@ namespace Glest {
 						if (getFaction()->getTexture()) {
 							effect->ups->setFactionColor(getFaction()->
 								getTexture()->getPixmapConst()->
-								getPixel3f(0, 0));
+								getPixel4f(0, 0));
 						}
 						Renderer::getInstance().manageParticleSystem(effect->ups,
 							rsGame);
@@ -5155,7 +5155,7 @@ namespace Glest {
 								if (getFaction()->getTexture()) {
 									ups->setFactionColor(getFaction()->
 										getTexture()->getPixmapConst()->
-										getPixel3f(0, 0));
+										getPixel4f(0, 0));
 								}
 								unitParticleSystems.push_back(ups);
 								Renderer::getInstance().manageParticleSystem(ups, rsGame);
@@ -5344,7 +5344,7 @@ namespace Glest {
 							if (getFaction()->getTexture()) {
 								ups->setFactionColor(getFaction()->
 									getTexture()->getPixmapConst()->
-									getPixel3f(0, 0));
+									getPixel4f(0, 0));
 							}
 							damageParticleSystems.push_back(ups);
 							damageParticleSystemsInUse[i] = ups;
@@ -5381,7 +5381,7 @@ namespace Glest {
 							if (getFaction()->getTexture()) {
 								ups->setFactionColor(getFaction()->
 									getTexture()->getPixmapConst()->
-									getPixel3f(0, 0));
+									getPixel4f(0, 0));
 							}
 							damageParticleSystems.push_back(ups);
 							damageParticleSystemsInUse[i] = ups;

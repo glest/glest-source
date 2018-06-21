@@ -457,8 +457,9 @@ namespace MapEditor {
 			currentFile = fname;
 			fileName = cutLastExt(extractFileFromDirectoryPath(fname.c_str()));
 			fileDialog->SetPath(ToUnicode(fname));
-		}
-		SetTitle(ToUnicode(currentFile + " - " + winHeader));
+			SetTitle(ToUnicode(winHeader + "; " + fname));
+		} else
+			SetTitle(ToUnicode(winHeader));
 		//setDirty(false);
 		//setExtension();
 
@@ -533,8 +534,10 @@ namespace MapEditor {
 			//currentFile = fname;
 			fileName = cutLastExt(extractFileFromDirectoryPath(currentFile.c_str()));
 			fileDialog->SetPath(ToUnicode(currentFile));
-		}
-		SetTitle(ToUnicode(currentFile + " - " + winHeader));
+			SetTitle(ToUnicode(winHeader + "; " + currentFile));
+		} else
+			SetTitle(ToUnicode(winHeader));
+		
 		setDirty(false);
 		setExtension();
 	}

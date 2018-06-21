@@ -28,7 +28,7 @@ namespace Shared {
 
 		class TextRenderer {
 		public:
-			virtual void render(const string &text, float x, float y, bool centered = false, Vec3f *color = NULL) = 0;
+			virtual void render(const string &text, float x, float y, bool centered = false, Vec4f *color = NULL) = 0;
 			virtual void end() = 0;
 
 			virtual ~TextRenderer() {

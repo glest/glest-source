@@ -267,11 +267,11 @@ namespace
 										console->addLine(text, false,
 											this->
 											manualPlayerNameOverride,
-											Vec3f(1.f, 1.f, 1.f),
+											Vec4f(1.f, 1.f, 1.f, 1.f),
 											teamMode);
 									} else {
 										console->addLine(text, false, playerIndex,
-											Vec3f(1.f, 1.f, 1.f),
+											Vec4f(1.f, 1.f, 1.f, 1.f),
 											teamMode);
 									}
 
@@ -679,13 +679,11 @@ namespace
 										substr(1,
 											msg.chatText.size()),
 										true, msg.chatPlayerIndex,
-										Vec3f(1.f, 1.f, 1.f),
+										Vec4f(1.f, 1.f, 1.f, 1.f),
 										teamMode);
 								} else {
 									console->addLine(msg.chatText, true,
-										msg.chatPlayerIndex, Vec3f(1.f,
-											1.f,
-											1.f),
+										msg.chatPlayerIndex, Vec4f(1.f, 1.f, 1.f, 1.f),
 										teamMode);
 								}
 

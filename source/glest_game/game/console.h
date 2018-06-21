@@ -48,7 +48,7 @@ namespace
 		using
 			Shared::Graphics::FontChangedCallbackInterface;
 		using
-			Shared::Graphics::Vec3f;
+			Shared::Graphics::Vec4f;
 		// =====================================================
 		//      class Console
 		//
@@ -66,7 +66,7 @@ namespace
 				PlayerIndex;
 			string
 				originalPlayerName;
-			Vec3f
+			Vec4f
 				color;
 			bool
 				teamMode;
@@ -254,14 +254,14 @@ namespace
 				addLineOnly(const string & line);
 			void
 				addLine(const string & line, bool playSound = false, int playerIndex =
-					-1, Vec3f textColor = Vec3f(1.f, 1.f, 1.f), bool teamMode =
+					-1, Vec4f textColor = Vec4f(1.f, 1.f, 1.f, 1.f), bool teamMode =
 					false, bool clearOtherLines = false);
 			void
 				addLine(const string & line, bool playSound, const string & playerName,
-					Vec3f textColor = Vec3f(1.f, 1.f, 1.f), bool teamMode =
+					Vec4f textColor = Vec4f(1.f, 1.f, 1.f, 1.f), bool teamMode =
 					false);
 			void
-				addLine(const string & line, bool playSound, Vec3f textColor) {
+				addLine(const string & line, bool playSound, Vec4f textColor) {
 				addLine(line, playSound, "", textColor, false);
 			}
 			void

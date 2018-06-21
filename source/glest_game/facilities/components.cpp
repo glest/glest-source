@@ -37,9 +37,6 @@ namespace Glest {
 		float GraphicComponent::fade = 0.f;
 		const float GraphicComponent::animSpeed = 0.02f;
 		const float GraphicComponent::fadeSpeed = 0.01f;
-		// WHITE
-		Vec3f GraphicComponent::customTextColor = Vec3f(1.0, 1.0, 1.0);
-
 		std::map<std::string, std::map<std::string, GraphicComponent *> > GraphicComponent::registeredGraphicComponentList;
 
 		GraphicComponent::GraphicComponent(const std::string &containerName, const std::string &objName, bool registerControl) {
@@ -378,7 +375,7 @@ namespace Glest {
 			texture = NULL;
 		}
 
-		void GraphicLabel::init(int x, int y, int w, int h, bool centered, Vec3f textColor, bool wordWrap) {
+		void GraphicLabel::init(int x, int y, int w, int h, bool centered, Vec4f textColor, bool wordWrap) {
 			GraphicComponent::init(x, y, w, h);
 			this->centered = centered;
 			this->textColor = textColor;
@@ -469,7 +466,7 @@ namespace Glest {
 			leftControlled = false;
 		}
 
-		void GraphicListBox::init(int x, int y, int w, int h, Vec3f textColor) {
+		void GraphicListBox::init(int x, int y, int w, int h, Vec4f textColor) {
 			GraphicComponent::init(x, y, w, h);
 
 			this->textColor = textColor;

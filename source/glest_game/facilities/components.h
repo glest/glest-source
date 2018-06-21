@@ -24,6 +24,7 @@
 #include "font.h"
 #include "texture.h"
 #include "leak_dumper.h"
+#include "game_constants.h"
 #include "vec.h"
 
 using std::string;
@@ -66,7 +67,6 @@ namespace Glest {
 
 			static float anim;
 			static float fade;
-			static Vec3f customTextColor;
 
 			string containerName;
 			string instanceName;
@@ -78,13 +78,6 @@ namespace Glest {
 		public:
 			GraphicComponent(const std::string &containerName = "", const std::string &objName = "", bool registerControl = true);
 			virtual ~GraphicComponent();
-
-			static void setCustomTextColor(Vec3f value) {
-				customTextColor = value;
-			}
-			static Vec3f getCustomTextColor() {
-				return customTextColor;
-			}
 
 			static void clearRegisteredComponents(std::string containerName = "");
 			static void clearRegisterGraphicComponent(std::string containerName, std::string objName);
@@ -205,7 +198,7 @@ namespace Glest {
 
 		private:
 			bool centered;
-			Vec3f textColor;
+			Vec4f textColor;
 			bool wordWrap;
 
 			int centeredW;
@@ -223,7 +216,7 @@ namespace Glest {
 
 		public:
 			GraphicLabel(const std::string &containerName = "", const std::string &objName = "", bool registerControl = true);
-			void init(int x, int y, int w = defW, int h = defH, bool centered = false, Vec3f textColor = GraphicComponent::customTextColor, bool wordWrap = false);
+			void init(int x, int y, int w = defW, int h = defH, bool centered = false, Vec4f textColor = WHITE, bool wordWrap = false);
 
 			virtual bool mouseMove(int x, int y);
 
@@ -263,10 +256,10 @@ namespace Glest {
 			bool getCenteredH() const;
 			//void setCenteredH(bool centered);
 
-			Vec3f getTextColor() const {
+			Vec4f getTextColor() const {
 				return textColor;
 			}
-			void setTextColor(Vec3f color) {
+			void setTextColor(Vec4f color) {
 				this->textColor = color;
 			}
 
@@ -383,12 +376,12 @@ namespace Glest {
 			vector<string> translated_items;
 			int selectedItemIndex;
 			bool lighted;
-			Vec3f textColor;
+			Vec4f textColor;
 			bool leftControlled;
 
 		public:
 			GraphicListBox(const std::string &containerName = "", const std::string &objName = "");
-			void init(int x, int y, int w = defW, int h = defH, Vec3f textColor = GraphicComponent::customTextColor);
+			void init(int x, int y, int w = defW, int h = defH, Vec4f textColor = WHITE);
 
 			int getItemCount() const {
 				return (int) items.size();
@@ -418,10 +411,10 @@ namespace Glest {
 				return leftControlled;
 			}
 			void setLeftControlled(bool leftControlled);
-			Vec3f getTextColor() const {
+			Vec4f getTextColor() const {
 				return textColor;
 			}
-			void setTextColor(Vec3f color) {
+			void setTextColor(Vec4f color) {
 				this->textColor = color;
 			}
 

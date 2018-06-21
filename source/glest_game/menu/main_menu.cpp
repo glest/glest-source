@@ -79,15 +79,15 @@ namespace
 					"In [%s::%s %d]\n", __FILE__, __FUNCTION__,
 					__LINE__);
 
-			Config &
+			/*Config &
 				config = Config::getInstance();
 			if (config.getString("CustomMenuTextColor", "") != "") {
 				string
 					customMenuTextColor = config.getString("CustomMenuTextColor");
 				Vec3f
 					customTextColor = Vec3f::strToVec3(customMenuTextColor);
-				GraphicComponent::setCustomTextColor(customTextColor);
-			}
+				GraphicComponent::setCustomTextColor(Vec4f(customTextColor));
+			}*/
 
 			setState(new MenuStateRoot(program, this));
 
@@ -143,7 +143,6 @@ namespace
 
 			//SoundRenderer &soundRenderer= SoundRenderer::getInstance();
 			//soundRenderer.stopAllSounds();
-			GraphicComponent::setCustomTextColor(Vec3f(1.0f, 1.0f, 1.0f));
 
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
 				enabled)

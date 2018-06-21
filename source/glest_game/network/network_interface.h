@@ -103,7 +103,7 @@ namespace Glest {
 			int aliveCount;
 
 		public:
-			static Vec3f static_system_marker_color;
+			static Vec4f static_system_marker_color;
 
 			MarkedCell() {
 				faction = NULL;

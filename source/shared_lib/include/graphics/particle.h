@@ -185,7 +185,7 @@ namespace Shared {
 			float speed;
 			float speedUpRelative;
 			float speedUpConstant;
-			Vec3f factionColor;
+			Vec4f factionColor;
 			bool teamcolorNoEnergy;
 			bool teamcolorEnergy;
 			int alternations;
@@ -268,7 +268,7 @@ namespace Shared {
 			void setParticleSystemStartDelay(int delay) {
 				this->particleSystemStartDelay = delay;
 			}
-			virtual void setFactionColor(Vec3f factionColor);
+			virtual void setFactionColor(Vec4f factionColor);
 
 			static BlendMode strToBlendMode(const string &str);
 			//misc

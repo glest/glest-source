@@ -902,10 +902,11 @@ namespace Glest {
 					}
 
 					if (text->getTexture() != NULL) {
+						Vec4f color = Vec4f(1.f, 1.f, 1.f, alpha);
 						renderer.renderTextureQuad(text->getPos().x, text->getPos().y,
 							text->getSize().x,
 							text->getSize().y,
-							text->getTexture(), alpha);
+							text->getTexture(), &color);
 					}
 				}
 			}

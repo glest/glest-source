@@ -233,7 +233,7 @@ namespace Glest {
 				getMenuFontBig());
 			labelWaitingForPlayers.setFont3D(CoreData::getInstance().
 				getMenuFontBig3D());
-			labelWaitingForPlayers.setTextColor(Vec3f(1.0f, 1.0f, 0.f));
+			labelWaitingForPlayers.setTextColor(Vec4f(1.0f, 1.0f, 0.f, 1.0f));
 
 			timerLabelFlash = time(NULL);
 			labelDataSynchInfo.registerGraphicComponent(containerName,
@@ -625,7 +625,7 @@ namespace Glest {
 			listBoxPlayerStatus.registerGraphicComponent(containerName,
 				"listBoxPlayerStatus");
 			listBoxPlayerStatus.init(buttonx, buttony, 165);
-			listBoxPlayerStatus.setTextColor(Vec3f(1.0f, 0.f, 0.f));
+			listBoxPlayerStatus.setTextColor(Vec4f(1.0f, 0.f, 0.f, 1.0f));
 			listBoxPlayerStatus.setLighted(true);
 			playerStatuses.push_back(lang.getString("PlayerStatusSetup"));
 			playerStatuses.push_back(lang.getString("PlayerStatusBeRightBack"));
@@ -2259,13 +2259,13 @@ namespace Glest {
 							__LINE__);
 
 					if (getNetworkPlayerStatus() == npst_PickSettings) {
-						listBoxPlayerStatus.setTextColor(Vec3f(1.0f, 0.0f, 0.0f));
+						listBoxPlayerStatus.setTextColor(Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
 						listBoxPlayerStatus.setLighted(true);
 					} else if (getNetworkPlayerStatus() == npst_BeRightBack) {
-						listBoxPlayerStatus.setTextColor(Vec3f(1.0f, 1.0f, 0.0f));
+						listBoxPlayerStatus.setTextColor(Vec4f(1.0f, 1.0f, 0.0f, 1.0f));
 						listBoxPlayerStatus.setLighted(true);
 					} else if (getNetworkPlayerStatus() == npst_Ready) {
-						listBoxPlayerStatus.setTextColor(Vec3f(0.0f, 1.0f, 0.0f));
+						listBoxPlayerStatus.setTextColor(Vec4f(0.0f, 1.0f, 0.0f, 1.0f));
 						listBoxPlayerStatus.setLighted(false);
 					}
 
@@ -3583,8 +3583,7 @@ namespace Glest {
 
 				if (factionTexture != NULL) {
 					if (factionVideo == NULL || factionVideo->isPlaying() == false) {
-						renderer.renderTextureQuad(800, 600, 200, 150, factionTexture,
-							1);
+						renderer.renderTextureQuad(800, 600, 200, 150, factionTexture, NULL);
 					}
 				}
 				if (factionVideo != NULL) {
@@ -3613,7 +3612,7 @@ namespace Glest {
 						this->render_mapPreviewTexture_Y,
 						this->render_mapPreviewTexture_W,
 						this->render_mapPreviewTexture_H,
-						mapPreviewTexture, 1.0f);
+						mapPreviewTexture, NULL);
 					if (this->zoomedMap == true) {
 						return;
 					}
@@ -3621,8 +3620,7 @@ namespace Glest {
 				}
 
 				if (scenarioLogoTexture != NULL) {
-					renderer.renderTextureQuad(300, 350, 400, 300, scenarioLogoTexture,
-						1.0f);
+					renderer.renderTextureQuad(300, 350, 400, 300, scenarioLogoTexture, NULL);
 					//renderer.renderBackground(scenarioLogoTexture);
 				}
 
@@ -3701,9 +3699,9 @@ namespace Glest {
 					if (crcPlayerTextureCache[i] != NULL) {
 						// Render the player # label the player's color
 
-						Vec3f
+						Vec4f
 							playerColor =
-							crcPlayerTextureCache[i]->getPixmap()->getPixel3f(0, 0);
+							crcPlayerTextureCache[i]->getPixmap()->getPixel4f(0, 0);
 						if (clientInterface != NULL
 							&& clientInterface->getGameSettings() != NULL
 							&& clientInterface->
@@ -3745,11 +3743,11 @@ namespace Glest {
 						renderer.renderListBox(&listBoxFactions[i]);
 						int
 							teamnumber = listBoxTeams[i].getSelectedItemIndex();
-						Vec3f teamcolor = Vec3f(1.0f, 1.0f, 1.0f);
+						Vec4f teamcolor = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
 						if (teamnumber >= 0 && teamnumber < 8) {
 							teamcolor =
 								crcPlayerTextureCache[teamnumber]->
-								getPixmap()->getPixel3f(0, 0);
+								getPixmap()->getPixel4f(0, 0);
 						}
 						listBoxTeams[i].setTextColor(teamcolor);
 						renderer.renderListBox(&listBoxTeams[i]);

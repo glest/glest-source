@@ -31,7 +31,7 @@ namespace Glest {
 			//playerName = "";
 			playerLeftBeforeEnd = false;
 			timePlayerLeft = -1;
-			playerColor = Vec3f(0, 0, 0);
+			playerColor = Vec4f(0, 0, 0, 1);
 		}
 
 		string PlayerStats::getStats() const {
@@ -222,7 +222,7 @@ namespace Glest {
 				//              string playerName;
 				statsNodePlayer->addAttribute("playerName", stat.playerName,
 					mapTagReplacements);
-				//              Vec3f playerColor;
+				//              Vec4f playerColor;
 				statsNodePlayer->addAttribute("playerColor",
 					stat.playerColor.getString(),
 					mapTagReplacements);
@@ -312,9 +312,9 @@ namespace Glest {
 				//              string playerName;
 				stat.playerName =
 					statsNodePlayer->getAttribute("playerName")->getValue();
-				//              Vec3f playerColor;
+				//              Vec4f playerColor;
 				stat.playerColor =
-					Vec3f::strToVec3(statsNodePlayer->getAttribute("playerColor")->
+					Vec4f::strToVec4(statsNodePlayer->getAttribute("playerColor")->
 						getValue());
 			}
 			//      string description;

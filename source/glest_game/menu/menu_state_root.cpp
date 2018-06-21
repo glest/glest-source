@@ -668,10 +668,9 @@ namespace Glest {
 			logoMainH =
 				Config::getInstance().getInt(string(containerName) + "_MainLogo_h",
 					intToStr(logoMainH).c_str());
-
+			Vec4f color = Vec4f(1.f, 1.f, 1.f, GraphicComponent::getFade());
 			renderer.renderTextureQuad(logoMainX, logoMainY, logoMainW, logoMainH,
-				coreData.getLogoTexture(),
-				GraphicComponent::getFade());
+				coreData.getLogoTexture(), &color);
 
 			int maxLogoWidth = 0;
 			for (int idx = 0; idx < (int) coreData.getLogoTextureExtraCount();
@@ -705,10 +704,10 @@ namespace Glest {
 				logoMainH =
 					Config::getInstance().getInt(logoTagName + "h",
 						intToStr(logoMainH).c_str());
-
+				Vec4f color = Vec4f(1.f, 1.f, 1.f, GraphicComponent::getFade());
 				renderer.renderTextureQuad(logoMainX, logoMainY,
 					logoMainW, logoMainH,
-					extraLogo, GraphicComponent::getFade());
+					extraLogo, &color);
 
 				currentX += extraLogo->getPixmap()->getW();
 			}

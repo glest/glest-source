@@ -92,7 +92,7 @@ namespace Glest {
 					//	throw megaglest_runtime_error("Could not create new texture (NULL)");
 					//}
 					t->setWrapMode(Texture::wmClampToEdge);
-					t->getPixmap()->init(surfaceSize, surfaceSize, 3);
+					t->getPixmap()->init(surfaceSize, surfaceSize, 4);
 				}
 
 				si->setCoord(Vec2f(0.f, 0.f));

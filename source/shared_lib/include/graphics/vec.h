@@ -745,7 +745,7 @@ namespace Shared {
 				x += v.x;
 				y += v.y;
 				z += v.z;
-				w += w.z;
+				w += v.w;
 				return *this;
 			}
 
@@ -753,7 +753,7 @@ namespace Shared {
 				x -= v.x;
 				y -= v.y;
 				z -= v.z;
-				w -= w.z;
+				w -= v.w;
 				return *this;
 			}
 			inline bool operator <(const Vec4<T> &v) const {
