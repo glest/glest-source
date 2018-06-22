@@ -8,6 +8,7 @@ IF /I "%AREYOUSURE%"=="N" GOTO END
 cd dependencies
 call .\update-all.bat
 
+echo.
 echo Updating zetaglest-code...
 cd ..
 cd ..\..
