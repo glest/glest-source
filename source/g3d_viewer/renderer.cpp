@@ -35,7 +35,6 @@ namespace Shared {
 		// ===============================================
 
 		void MeshCallbackTeamColor::execute(const Mesh *mesh) {
-
 			//team color
 			if (mesh->getCustomTexture() && teamTexture != NULL) {
 				//texture 0
@@ -43,18 +42,14 @@ namespace Shared {
 
 				//set color to interpolation
 				glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_INTERPOLATE);
-
 				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_TEXTURE);
 				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
-
 				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, GL_TEXTURE1);
 				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
-
 				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_RGB, GL_TEXTURE);
 				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_RGB, GL_SRC_ALPHA);
-
 				//set alpha to 1
-				glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, hasAlpha ? GL_COMBINE : GL_REPLACE);
+				glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_REPLACE);
 				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_TEXTURE);
 				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
 
@@ -74,10 +69,14 @@ namespace Shared {
 				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, GL_PREVIOUS);
 				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
 
-				//set alpha to 1
-				glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, hasAlpha ? GL_COMBINE : GL_REPLACE);
-				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_PRIMARY_COLOR);
+				//Interpolate alpha with alpha of previous texture
+				glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_INTERPOLATE);
+				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_TEXTURE);
+				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_ALPHA, GL_PREVIOUS);
+				glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_ALPHA, GL_TEXTURE);
 				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
+				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_ALPHA, GL_SRC_ALPHA);
+				glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_ALPHA, GL_SRC_ALPHA);
 
 				glActiveTexture(GL_TEXTURE0);
 			} else {
@@ -338,7 +337,6 @@ namespace Shared {
 			glTranslatef(0, -1.5, -5);
 
 			Texture2D *customTexture = NULL;
-			bool hasAlpha = false;
 			switch (playerColor) {
 				case pcRed:
 					customTexture = customTextureRed;
@@ -366,13 +364,12 @@ namespace Shared {
 					break;
 				case pcTransparent:
 					customTexture = customTextureTransparent;
-					hasAlpha = true;
 					break;
 				default:
 					assert(false);
 					break;
 			}
-			meshCallbackTeamColor.setTeamTexture(customTexture, hasAlpha);
+			meshCallbackTeamColor.setTeamTexture(customTexture);
 
 			if (wireframe) {
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

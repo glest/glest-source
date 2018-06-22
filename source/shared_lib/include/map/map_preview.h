@@ -50,7 +50,7 @@ namespace Shared {
 		static const int DEFAULT_MAP_CELL_HEIGHT = 10;
 
 		static const int MIN_MAP_FACTIONCOUNT = 1;
-		static const int MAX_MAP_FACTIONCOUNT = 8;
+		static const int MAX_MAP_FACTIONCOUNT = 10;
 		static const int DEFAULT_MAP_FACTIONCOUNT = 8;
 
 		static const int DEFAULT_MAP_CELL_WIDTH = 128;

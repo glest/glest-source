@@ -3744,7 +3744,7 @@ namespace Glest {
 						int
 							teamnumber = listBoxTeams[i].getSelectedItemIndex();
 						Vec4f teamcolor = Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-						if (teamnumber >= 0 && teamnumber < 8) {
+						if (teamnumber >= 0 && teamnumber <= GameConstants::maxPlayers) {
 							teamcolor =
 								crcPlayerTextureCache[teamnumber]->
 								getPixmap()->getPixel4f(0, 0);

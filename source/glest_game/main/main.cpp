@@ -7222,7 +7222,7 @@ namespace
 					crcPlayerTextureCache =
 					CacheManager::getCachedItem < std::map < int,
 					Texture2D * > >(GameConstants::playerTextureCacheLookupKey);
-				for (int index = 0; index < GameConstants::maxPlayers; ++index) {
+				for (int index = 0; index <= GameConstants::maxPlayers; ++index) {
 					string
 						playerTexture =
 						getGameCustomCoreDataPath(data_path,

@@ -60,14 +60,9 @@ namespace Shared {
 		public:
 			MeshCallbackTeamColor() : MeshCallback() {
 				teamTexture = NULL;
-				hasAlpha = false;
 			}
-			void setTeamTexture(const Texture *teamTexture, bool hasAlpha) {
+			void setTeamTexture(const Texture *teamTexture) {
 				this->teamTexture = teamTexture;
-				this->hasAlpha = hasAlpha;
-			}
-			bool getHasAlpha() {
-				return hasAlpha;
 			}
 			virtual void execute(const Mesh *mesh);
 		};
