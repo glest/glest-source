@@ -5,10 +5,10 @@ SET /P AREYOUSURE=Are you sure you want to do this? (y/[n])
 IF /I "%AREYOUSURE%" NEQ "y" GOTO END
 IF /I "%AREYOUSURE%" NEQ "Y" GOTO END
 
-IF EXIST .\dependencies\src (
-	cd .\dependencies\src
-	CALL :DELETE
-	cd ..\..\
+IF EXIST .\dependencies (
+	cd .\dependencies
+	CALL .\clean-deps.bat
+	cd ..\
 )
 
 IF EXIST .\vs2015-32 (
@@ -70,6 +70,8 @@ del /S *.lastbuildstate
 del /S *.exp
 del /S *.ipch
 del /S *.pch
+del /S *.res
+del /S *.user
 EXIT /B
 
 :END

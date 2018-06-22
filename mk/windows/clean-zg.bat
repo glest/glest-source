@@ -64,6 +64,8 @@ del /S *.lastbuildstate
 del /S *.exp
 del /S *.ipch
 del /S *.pch
+del /S *.res
+del /S *.user
 EXIT /B
 
 :END
