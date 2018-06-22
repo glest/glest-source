@@ -39,13 +39,13 @@ using namespace Shared::Platform;
 namespace Glest {
 	namespace Game {
 
-		const char *mailString = " https://github.com/ZetaGlest";
+		const char *mailString = "https://github.com/ZetaGlest";
 
 		// !! Use minor versions !!  Only major and minor version control compatibility!
-		// typical version numbers look like this: v3.13-beta1.0   v3.12-dev   v3.12.1
+		// typical version numbers look like this: v0.8.01
 		// don't forget to update file: source/version.txt
-		const string glestVersionString = "v0.8.01-dev";
-		const string lastCompatibleSaveGameVersionString = "v3.11.1";
+		const string glestVersionString = "v0.8.02";
+		const string lastCompatibleSaveGameVersionString = "v0.8.01";
 
 		string getCrashDumpFileName() {
 			return "zetaglest" + glestVersionString + ".dmp";
