@@ -115,26 +115,12 @@
     <TargetName>libglest</TargetName>
     <OutDir>$(SolutionDir)\$(TargetName)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
-    <Linkage-libjpeg>static</Linkage-libjpeg>
-    <Linkage-curl>static</Linkage-curl>
-    <Linkage-libogg>static</Linkage-libogg>
-    <Linkage-openssl>static</Linkage-openssl>
-    <Linkage-freetype>static</Linkage-freetype>
-    <Linkage-libssh2>static</Linkage-libssh2>
-    <Linkage-glew>static</Linkage-glew>
     <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>libglest</TargetName>
     <OutDir>$(SolutionDir)\$(TargetName)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
-    <Linkage-libjpeg>static</Linkage-libjpeg>
-    <Linkage-curl>static</Linkage-curl>
-    <Linkage-libogg>static</Linkage-libogg>
-    <Linkage-openssl>static</Linkage-openssl>
-    <Linkage-freetype>static</Linkage-freetype>
-    <Linkage-libssh2>static</Linkage-libssh2>
-    <Linkage-glew>static</Linkage-glew>
     <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|x64'">
