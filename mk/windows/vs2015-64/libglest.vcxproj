@@ -115,7 +115,6 @@
     <TargetName>libglest</TargetName>
     <OutDir>$(SolutionDir)\$(TargetName)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
-    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
     <Linkage-libjpeg>static</Linkage-libjpeg>
     <Linkage-curl>static</Linkage-curl>
     <Linkage-libogg>static</Linkage-libogg>
@@ -129,7 +128,6 @@
     <TargetName>libglest</TargetName>
     <OutDir>$(SolutionDir)\$(TargetName)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
-    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
     <Linkage-libjpeg>static</Linkage-libjpeg>
     <Linkage-curl>static</Linkage-curl>
     <Linkage-libogg>static</Linkage-libogg>
@@ -143,7 +141,6 @@
     <TargetName>libglest</TargetName>
     <OutDir>$(SolutionDir)\$(TargetName)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
-    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
