@@ -64,7 +64,7 @@ snapshot](https://github.com/ZetaGlest/zetaglest-source/releases)**.
 You will also need to download the
 [data](https://github.com/ZetaGlest/zetaglest-data/releases).
 
-(The ETA for the first official release can be viewed from the [0.8.01
+(The ETA for the first official release can be viewed from the [development
 milestone](https://github.com/ZetaGlest/zetaglest-source/milestone/1).)
 
 See [Build instructions](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
