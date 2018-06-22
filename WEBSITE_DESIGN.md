@@ -24,7 +24,7 @@ Part of the template for the site is in the perl script, and another part is in
 
 ### Files in [docs](https://github.com/ZetaGlest/zetaglest.github.io/tree/master/docs)
 
-See the [README in that folder](https://github.com/ZetaGlest/zetaglest.github.io/blob/master/docs/README)
+See the [README in that folder](https://github.com/ZetaGlest/zetaglest.github.io/blob/master/docs/README.md)
 for an explanation of how to edit the html files in zetaglest.github.io/docs.
 
 ## Server list and player stats
