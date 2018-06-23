@@ -57,7 +57,7 @@ int is_int(char const* s) {
 	return 1;
 }
 
-static void DisplayInfos(struct UPNPUrls * urls,
+void DisplayInfos(struct UPNPUrls * urls,
 	struct IGDdatas * data) {
 	char externalIPAddress[40];
 	char connectionType[64];
@@ -110,7 +110,7 @@ static void DisplayInfos(struct UPNPUrls * urls,
 	}
 }
 
-static void GetConnectionStatus(struct UPNPUrls * urls,
+void GetConnectionStatus(struct UPNPUrls * urls,
 	struct IGDdatas * data) {
 	unsigned int bytessent, bytesreceived, packetsreceived, packetssent;
 	DisplayInfos(urls, data);
@@ -122,7 +122,7 @@ static void GetConnectionStatus(struct UPNPUrls * urls,
 	printf("Packets: Sent: %8u\tRecv: %8u\n", packetssent, packetsreceived);
 }
 
-static void ListRedirections(struct UPNPUrls * urls,
+void ListRedirections(struct UPNPUrls * urls,
 	struct IGDdatas * data) {
 	int r;
 	int i = 0;
@@ -168,7 +168,7 @@ static void ListRedirections(struct UPNPUrls * urls,
 	} while (r == 0);
 }
 
-static void NewListRedirections(struct UPNPUrls * urls,
+void NewListRedirections(struct UPNPUrls * urls,
 	struct IGDdatas * data) {
 	int r;
 	int i = 0;
@@ -226,7 +226,7 @@ static void NewListRedirections(struct UPNPUrls * urls,
  * 2 - get extenal ip address
  * 3 - Add port mapping
  * 4 - get this port mapping from the IGD */
-static void SetRedirectAndTest(struct UPNPUrls * urls,
+void SetRedirectAndTest(struct UPNPUrls * urls,
 	struct IGDdatas * data,
 	const char * iaddr,
 	const char * iport,
@@ -293,8 +293,7 @@ static void SetRedirectAndTest(struct UPNPUrls * urls,
 	}
 }
 
-static void
-RemoveRedirect(struct UPNPUrls * urls,
+void RemoveRedirect(struct UPNPUrls * urls,
 	struct IGDdatas * data,
 	const char * eport,
 	const char * proto,
@@ -313,8 +312,7 @@ RemoveRedirect(struct UPNPUrls * urls,
 	printf("UPNP_DeletePortMapping() returned : %d\n", r);
 }
 
-static void
-RemoveRedirectRange(struct UPNPUrls * urls,
+void RemoveRedirectRange(struct UPNPUrls * urls,
 	struct IGDdatas * data,
 	const char * ePortStart, char const * ePortEnd,
 	const char * proto, const char * manage) {
@@ -337,7 +335,7 @@ RemoveRedirectRange(struct UPNPUrls * urls,
 }
 
 /* IGD:2, functions for service WANIPv6FirewallControl:1 */
-static void GetFirewallStatus(struct UPNPUrls * urls, struct IGDdatas * data) {
+void GetFirewallStatus(struct UPNPUrls * urls, struct IGDdatas * data) {
 	unsigned int bytessent, bytesreceived, packetsreceived, packetssent;
 	int firewallEnabled = 0, inboundPinholeAllowed = 0;
 
@@ -356,7 +354,7 @@ static void GetFirewallStatus(struct UPNPUrls * urls, struct IGDdatas * data) {
 /* Test function
  * 1 - Add pinhole
  * 2 - Check if pinhole is working from the IGD side */
-static void SetPinholeAndTest(struct UPNPUrls * urls, struct IGDdatas * data,
+void SetPinholeAndTest(struct UPNPUrls * urls, struct IGDdatas * data,
 	const char * remoteaddr, const char * eport,
 	const char * intaddr, const char * iport,
 	const char * proto, const char * lease_time) {
@@ -400,7 +398,7 @@ static void SetPinholeAndTest(struct UPNPUrls * urls, struct IGDdatas * data,
 /* Test function
  * 1 - Check if pinhole is working from the IGD side
  * 2 - Update pinhole */
-static void GetPinholeAndUpdate(struct UPNPUrls * urls, struct IGDdatas * data,
+void GetPinholeAndUpdate(struct UPNPUrls * urls, struct IGDdatas * data,
 	const char * uniqueID, const char * lease_time) {
 	int isWorking = 0;
 	int r;
@@ -424,7 +422,7 @@ static void GetPinholeAndUpdate(struct UPNPUrls * urls, struct IGDdatas * data,
 /* Test function
  * Get pinhole timeout
  */
-static void GetPinholeOutboundTimeout(struct UPNPUrls * urls, struct IGDdatas * data,
+void GetPinholeOutboundTimeout(struct UPNPUrls * urls, struct IGDdatas * data,
 	const char * remoteaddr, const char * eport,
 	const char * intaddr, const char * iport,
 	const char * proto) {
@@ -444,8 +442,7 @@ static void GetPinholeOutboundTimeout(struct UPNPUrls * urls, struct IGDdatas * 
 		printf("GetOutboundPinholeTimeout: ([%s]:%s -> [%s]:%s) / Timeout = %d\n", intaddr, iport, remoteaddr, eport, timeout);
 }
 
-static void
-GetPinholePackets(struct UPNPUrls * urls,
+void GetPinholePackets(struct UPNPUrls * urls,
 	struct IGDdatas * data, const char * uniqueID) {
 	int r, pinholePackets = 0;
 	if (!uniqueID) {
@@ -459,8 +456,7 @@ GetPinholePackets(struct UPNPUrls * urls,
 		printf("GetPinholePackets: Pinhole ID = %s / PinholePackets = %d\n", uniqueID, pinholePackets);
 }
 
-static void
-CheckPinhole(struct UPNPUrls * urls,
+void CheckPinhole(struct UPNPUrls * urls,
 	struct IGDdatas * data, const char * uniqueID) {
 	int r, isWorking = 0;
 	if (!uniqueID) {
@@ -474,8 +470,7 @@ CheckPinhole(struct UPNPUrls * urls,
 		printf("CheckPinholeWorking: Pinhole ID = %s / IsWorking = %s\n", uniqueID, (isWorking) ? "Yes" : "No");
 }
 
-static void
-RemovePinhole(struct UPNPUrls * urls,
+void RemovePinhole(struct UPNPUrls * urls,
 	struct IGDdatas * data, const char * uniqueID) {
 	int r;
 	if (!uniqueID) {

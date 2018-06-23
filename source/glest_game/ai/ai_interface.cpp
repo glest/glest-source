@@ -561,8 +561,9 @@ namespace
 				throw
 					megaglest_runtime_error(szBuf);
 			}
-			/*if (unit->getProgress2() != NULL)
-				return result;*/
+			Command* currentCommand = unit->getCurrCommand();
+			if (currentCommand != NULL && currentCommand->getCommandType()->commandTypeClass == CommandClass::ccUpgrade && commandType->commandTypeClass != CommandClass::ccAttack)
+				return result;
 			const UnitType *
 				unitType = unit->getType();
 			if (unitType == NULL) {
@@ -661,8 +662,9 @@ namespace
 				throw
 					megaglest_runtime_error(szBuf);
 			}
-			/*if (unit->getProgress2() != NULL)
-				return result;*/
+			Command* currentCommand = unit->getCurrCommand();
+			if (currentCommand != NULL && currentCommand->getCommandType()->commandTypeClass == CommandClass::ccUpgrade && commandType->commandTypeClass != CommandClass::ccAttack)
+				return result;
 			const UnitType *
 				unitType = unit->getType();
 			if (unitType == NULL) {
@@ -750,8 +752,9 @@ namespace
 				throw
 					megaglest_runtime_error(szBuf);
 			}
-			/*if (unit->getProgress2() != NULL)
-				return result;*/
+			Command* currentCommand = unit->getCurrCommand();
+			if (currentCommand != NULL && currentCommand->getCommandType()->commandTypeClass == CommandClass::ccUpgrade && commandType->commandTypeClass != CommandClass::ccAttack)
+				return result;
 			const UnitType *
 				unitType = unit->getType();
 			if (unitType == NULL) {
@@ -838,8 +841,9 @@ namespace
 				throw
 					megaglest_runtime_error(szBuf);
 			}
-			/*if (unit->getProgress2() != NULL)
-				return result;*/
+			Command* currentCommand = unit->getCurrCommand();
+			if (currentCommand != NULL && currentCommand->getCommandType()->commandTypeClass == CommandClass::ccUpgrade && commandType->commandTypeClass != CommandClass::ccAttack)
+				return result;
 			const UnitType *
 				unitType = unit->getType();
 			if (unitType == NULL) {
