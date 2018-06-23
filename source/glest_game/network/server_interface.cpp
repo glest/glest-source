@@ -801,8 +801,8 @@ namespace Glest {
 							}
 
 							if ((gameSettings.getNetworkPauseGameForLaggedClients() == false ||
-								(maxFrameCountLagAllowedEver > 0 && clientLagCount > maxFrameCountLagAllowedEver) ||
-								(maxClientLagTimeAllowedEver > 0 && clientLagTime > maxClientLagTimeAllowedEver) &&
+								((maxFrameCountLagAllowedEver > 0 && clientLagCount > maxFrameCountLagAllowedEver) ||
+								(maxClientLagTimeAllowedEver > 0 && clientLagTime > maxClientLagTimeAllowedEver)) &&
 								connectionSlot->getGraceLagCtr() > GRACE_LAG_CTR_LIMIT)) {
 
 								//printf("Closing connection slot lagged out!\n");

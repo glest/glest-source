@@ -76,9 +76,6 @@ namespace
 			Console :
 			public
 			FontChangedCallbackInterface {
-		private:
-			static const int
-				consoleLines = 5;
 
 		public:
 

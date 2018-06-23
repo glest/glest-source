@@ -96,7 +96,7 @@ namespace
 			int
 				yPos;
 			int
-				maxTextLenght;
+				maxTextLength;
 			Font2D *
 				font;
 			Font3D *
@@ -181,11 +181,11 @@ namespace
 			int
 				getMaxTextLenght() const {
 				return
-					maxTextLenght;
+					maxTextLength;
 			}
 			void
-				setMaxTextLenght(int maxTextLenght) {
-				this->maxTextLenght = maxTextLenght;
+				setMaxTextLenght(int maxTextLength) {
+				this->maxTextLength = maxTextLength;
 			}
 			Font2D *
 				getFont() const {

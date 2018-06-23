@@ -44,7 +44,7 @@ namespace Glest {
 			MainMenu * mainMenu) :MenuState(program,
 				mainMenu,
 				"root"),
-			updatesHttpServerThread(NULL), buttonNewGame("MainMenu",
+			buttonNewGame("MainMenu",
 				"buttonNewGame"),
 			buttonLoadGame("MainMenu", "buttonLoadGame"), buttonMods("MainMenu",
 				"buttonMods"),
@@ -56,7 +56,7 @@ namespace Glest {
 				"mainMessageBox"),
 			errorMessageBox("MainMenu", "errorMessageBox"),
 			ftpMessageBox("MainMenu", "ftpMessageBox"), popupMenu("MainMenu",
-				"popupMenu") {
+				"popupMenu"), updatesHttpServerThread(NULL) {
 			containerName = "MainMenu";
 
 			ftpClientThread = NULL;

@@ -39,11 +39,11 @@ namespace Glest {
 			, positionX(pos.x)
 			, positionY(pos.y)
 			, wantQueue(wantQueue)
+			, unitFactionUnitCount(0)
+			, unitFactionIndex(0)
 			, commandStateType(commandStateType)
 			, commandStateValue(commandStateValue)
-			, unitCommandGroupId(unitCommandGroupId)
-			, unitFactionUnitCount(0)
-			, unitFactionIndex(0) {
+			, unitCommandGroupId(unitCommandGroupId) {
 
 			assert(targetId == -1 || facing == -1);
 			this->targetId = targetId >= 0 ? targetId : facing;

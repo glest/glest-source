@@ -4361,7 +4361,6 @@ namespace Glest {
 			highlightedCells.push_back(mc);
 
 			if (this->masterserverMode == false) {
-				CoreData & coreData = CoreData::getInstance();
 				SoundRenderer & soundRenderer = SoundRenderer::getInstance();
 
 				const Faction *faction = mc.getFaction();

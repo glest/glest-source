@@ -57,8 +57,8 @@ namespace
 			thisTeamIndex = -1;
 			disableTeamMode = false;
 			xPos = 75;
-			yPos = 155;
-			maxTextLenght = 90;
+			yPos = 140;
+			maxTextLength = 100;
 			textCharLength.
 				clear();
 			text = "";
@@ -67,7 +67,7 @@ namespace
 			inMenu = false;
 			customCB = NULL;
 			this->
-				maxCustomTextLength = maxTextLenght;
+				maxCustomTextLength = maxTextLength;
 		}
 
 		void
@@ -140,7 +140,7 @@ namespace
 
 			int
 				maxTextLenAllowed =
-				(customCB != NULL ? this->maxCustomTextLength : maxTextLenght);
+				(customCB != NULL ? this->maxCustomTextLength : maxTextLength);
 			string
 				textToAdd =
 				getTextWithLengthCheck(inputText, textCharLength.size(),
@@ -517,7 +517,7 @@ namespace
 				c.keysym.sym, c.keysym.sym);
 
 			// no more textinput with keyPress in SDL2!
-			//      int maxTextLenAllowed = (customCB != NULL ? this->maxCustomTextLength : maxTextLenght);
+			//      int maxTextLenAllowed = (customCB != NULL ? this->maxCustomTextLength : maxTextLength);
 			//      if(editEnabled && (int)text.size() < maxTextLenAllowed) {
 			//              SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] key = [%c] [%d]\n",__FILE__,__FUNCTION__,__LINE__,c.keysym.sym,c.keysym.sym);
 			//              //space is the first meaningful code
@@ -537,7 +537,7 @@ namespace
 			if (maxCustomTextLength > 0) {
 				this->maxCustomTextLength = maxCustomTextLength;
 			} else {
-				this->maxCustomTextLength = maxTextLenght;
+				this->maxCustomTextLength = maxTextLength;
 			}
 		}
 
@@ -611,7 +611,7 @@ namespace
 			ChatManager::addText(string text) {
 			int
 				maxTextLenAllowed =
-				(customCB != NULL ? this->maxCustomTextLength : maxTextLenght);
+				(customCB != NULL ? this->maxCustomTextLength : maxTextLength);
 			if (editEnabled
 				&& (int) text.size() + (int) this->text.size() <=
 				maxTextLenAllowed) {

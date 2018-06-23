@@ -66,7 +66,7 @@ namespace Glest {
 		const int
 			mapPreviewTexture_X = 5;
 		const int
-			mapPreviewTexture_Y = 185;
+			mapPreviewTexture_Y = 160;
 		const int
 			mapPreviewTexture_W = 150;
 		const int
