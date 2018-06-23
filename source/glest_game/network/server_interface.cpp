@@ -50,7 +50,6 @@ using namespace Shared::Map;
 
 namespace Glest {
 	namespace Game {
-
 		double maxFrameCountLagAllowed = 30;
 		double maxClientLagTimeAllowed = 25;
 		double maxFrameCountLagAllowedEver = 30;
@@ -59,10 +58,10 @@ namespace Glest {
 		double warnFrameCountLagPercent = 0.50;
 		double LAG_CHECK_GRACE_PERIOD = 15;
 		double LAG_CHECK_INTERVAL_PERIOD = 4;
-		int GRACE_LAG_CTR_LIMIT = 5;
+		int GRACE_LAG_CTR_LIMIT = 10;
 
 		const int MAX_CLIENT_WAIT_SECONDS_FOR_PAUSE_MILLISECONDS = 15000;
-		const int MAX_CLIENT_PAUSE_FOR_LAG_COUNT = 3;
+		const int MAX_CLIENT_PAUSE_FOR_LAG_COUNT = 5;
 		const int MAX_SLOT_THREAD_WAIT_TIME_MILLISECONDS = 1500;
 		const int MASTERSERVER_HEARTBEAT_GAME_STATUS_SECONDS = 30;
 
@@ -800,8 +799,8 @@ namespace Glest {
 								}
 							}
 
-							if ((gameSettings.getNetworkPauseGameForLaggedClients() == false ||
-								((maxFrameCountLagAllowedEver > 0 && clientLagCount > maxFrameCountLagAllowedEver) ||
+							if (gameSettings.getNetworkPauseGameForLaggedClients() == false ||
+								(((maxFrameCountLagAllowedEver > 0 && clientLagCount > maxFrameCountLagAllowedEver) ||
 								(maxClientLagTimeAllowedEver > 0 && clientLagTime > maxClientLagTimeAllowedEver)) &&
 								connectionSlot->getGraceLagCtr() > GRACE_LAG_CTR_LIMIT)) {
 

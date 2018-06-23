@@ -143,7 +143,7 @@ int testxmlparser(const char * xml, int size) {
 	return r;
 }
 
-int main(int argc, char * * argv) {
+/*int main(int argc, char * * argv) {
 	int r;
 	(void) argc; (void) argv;
 
@@ -151,5 +151,5 @@ int main(int argc, char * * argv) {
 	if (r)
 		printf("minixml validation test failed\n");
 	return r;
-}
+}*/
 
