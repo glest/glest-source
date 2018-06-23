@@ -561,8 +561,8 @@ namespace
 				throw
 					megaglest_runtime_error(szBuf);
 			}
-			/*if (unit->getProgress2() != NULL)
-				return result;*/
+			if (unit->getProgress2() != NULL)
+				return result;
 			const UnitType *
 				unitType = unit->getType();
 			if (unitType == NULL) {
@@ -661,8 +661,8 @@ namespace
 				throw
 					megaglest_runtime_error(szBuf);
 			}
-			/*if (unit->getProgress2() != NULL)
-				return result;*/
+			if (unit->getProgress2() != NULL)
+				return result;
 			const UnitType *
 				unitType = unit->getType();
 			if (unitType == NULL) {
@@ -750,8 +750,8 @@ namespace
 				throw
 					megaglest_runtime_error(szBuf);
 			}
-			/*if (unit->getProgress2() != NULL)
-				return result;*/
+			if (unit->getProgress2() != NULL)
+				return result;
 			const UnitType *
 				unitType = unit->getType();
 			if (unitType == NULL) {
@@ -838,8 +838,8 @@ namespace
 				throw
 					megaglest_runtime_error(szBuf);
 			}
-			/*if (unit->getProgress2() != NULL)
-				return result;*/
+			if (unit->getProgress2() != NULL)
+				return result;
 			const UnitType *
 				unitType = unit->getType();
 			if (unitType == NULL) {
