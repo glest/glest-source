@@ -240,10 +240,10 @@ namespace Shared {
 					ftFont->Render(str, len);
 					//assertGl();
 					GLenum error = glGetError();
-					if (error != GL_NO_ERROR) {
+					/*if (error != GL_NO_ERROR) {
 						printf("\n[%s::%s] Line %d Error = %d [%s] for text [%s]\n", __FILE__, __FUNCTION__, __LINE__, error, gluErrorString(error), str);
 						fflush(stdout);
-					}
+					}*/
 
 					if (ftFont->Error()) {
 						char szBuf[8096] = "";
@@ -308,10 +308,10 @@ namespace Shared {
 				FTBBox box = ftFont->BBox(TextFTGL::langHeightText.c_str());
 
 				GLenum error = glGetError();
-				if (error != GL_NO_ERROR) {
+				/*if (error != GL_NO_ERROR) {
 					printf("\n[%s::%s] Line %d Error = %d [%s] for text [%s]\n", __FILE__, __FUNCTION__, __LINE__, error, gluErrorString(error), str);
 					fflush(stdout);
-				}
+				}*/
 
 				result = box.Upper().Yf() - box.Lower().Yf();
 				if (result == 0) {

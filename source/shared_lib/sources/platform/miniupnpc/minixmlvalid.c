@@ -49,8 +49,8 @@ int evtlistcmp(struct eventlist * a, struct eventlist * b) {
 	return 0;
 }
 
-/* Test data */
-static const char xmldata[] =
+//Test data
+/*static const char xmldata[] =
 "<xmlroot>\n"
 " <elt1 att1=\"attvalue1\" att2=\"attvalue2\">"
 "character data"
@@ -58,7 +58,7 @@ static const char xmldata[] =
 "<elt1b/>"
 "<elt1>\n<![CDATA[ <html>stuff !\n ]]> \n</elt1>\n"
 "<elt2a> \t<elt2b>chardata1</elt2b><elt2b> chardata2 </elt2b></elt2a>"
-"</xmlroot>";
+"</xmlroot>";*/
 
 static const struct event evtref[] =
 {
