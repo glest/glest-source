@@ -199,7 +199,7 @@ class G3DMeshHeaderv3:										 #Read Meshheader
 			self.customalpha = True
 		else:
 			self.customalpha = False
-		
+
 class G3DMeshHeaderv4:										 #Read Meshheader
 	binary_format = "<64c3I8f2I"
 	texname_format = "<64c"
@@ -227,6 +227,10 @@ class G3DMeshHeaderv4:										 #Read Meshheader
 		self.istwosided  = bool(self.properties & 2)
 		self.noselect    = bool(self.properties & 4)
 		self.glow    = bool(self.properties & 8)
+		# Get last 8 bits for teamcolor transparency.
+		# The value is inverted for compatibility with megaglest.
+		self.teamcoloralpha = 255 - (self.properties >> 24)
+
 
 		self.hastexture = False
 		self.diffusetexture  = None
@@ -360,6 +364,7 @@ def createMesh(filename, header, data, toblender, operator):
 	if header.isv4:
 		mesh.g3d_noSelect = header.noselect
 		mesh.g3d_glow = header.glow
+		mesh.teamcolor_alpha = header.teamcoloralpha
 	else:
 		mesh.g3d_noSelect = False
 		mesh.glow = False
@@ -528,6 +533,7 @@ def G3DLoader(filepath, toblender, operator):			#Main Import Routine
 			print ("specularcolor   : %1.6f %1.6f %1.6f" %meshheader.specularcolor)
 			print ("specularpower   : %1.6f" %meshheader.specularpower)
 			print ("opacity         : %1.6f" %meshheader.opacity)
+			print ("teamcoloralpha  : %d" %meshheader.teamcoloralpha)
 			print ("properties      : " + str(meshheader.properties))
 			print ("textures        : " + str(meshheader.textures))
 			print ("texturename     : " + str(meshheader.diffusetexture))
@@ -704,13 +710,14 @@ def G3DSaver(filepath, context, toglest, operator):
 		properties = 0
 		if mesh.g3d_customColor:
 			properties |= 1
+			properties |= (255 - mesh.teamcolor_alpha) << 24
 		if mesh.show_double_sided:
 			properties |= 2
 		if mesh.g3d_noSelect:
 			properties |= 4
 		if mesh.g3d_glow:
 			properties |= 8
-
+		
 		#MeshData
 		vertices = []
 		normals = []
@@ -784,13 +791,15 @@ class G3DPanel(bpy.types.Panel):
 	bl_space_type = 'PROPERTIES'
 	bl_region_type = 'WINDOW'
 	bl_context = "data"
-
 	@classmethod
 	def poll(cls, context):
 		return (context.object is not None and context.object.type == 'MESH')
 
 	def draw(self, context):
 		self.layout.prop(context.object.data, "g3d_customColor")
+		col = self.layout.column()
+		col.prop(context.object.data, "teamcolor_alpha")
+		col.enabled = context.object.data.g3d_customColor
 		self.layout.prop(context.object.data, "show_double_sided", text="double sided")
 		self.layout.prop(context.object.data, "g3d_noSelect")
 		self.layout.prop(context.object.data, "g3d_fullyOpaque")
@@ -900,6 +909,11 @@ def register():
 	bpy.types.Mesh.g3d_glow = bpy.props.BoolProperty(
 			name="glow",
 			description="let objects glow like particles")
+	bpy.types.Mesh.teamcolor_alpha = bpy.props.IntProperty(
+			name="team color alpha",
+			description="set the transparency of the teamcolor part of the texture only",
+			default=0,
+			min=0, max=2**8-1)
 
 	bpy.utils.register_module(__name__)
 
