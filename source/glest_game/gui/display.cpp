@@ -29,10 +29,10 @@ namespace Glest {
 		Display::Display() {
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-			colors[0] = Vec4f(1.f, 1.f, 1.f, 0.0f);
-			colors[1] = Vec4f(1.f, 0.5f, 0.5f, 0.0f);
-			colors[2] = Vec4f(0.5f, 0.5f, 1.0f, 0.0f);
-			colors[3] = Vec4f(0.5f, 1.0f, 0.5f, 0.0f);
+			colors[0] = Vec4f(1.f, 1.f, 1.f, 1.0f);
+			colors[1] = Vec4f(1.f, 0.5f, 0.5f, 1.0f);
+			colors[2] = Vec4f(0.5f, 0.5f, 1.0f, 1.0f);
+			colors[3] = Vec4f(0.5f, 1.0f, 0.5f, 1.0f);
 			colors[4] = Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
 			colors[5] = Vec4f(0.0f, 0.0f, 1.0f, 1.0f);
 			colors[6] = Vec4f(1.0f, 0.0f, 0.0f, 1.0f);

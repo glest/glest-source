@@ -36,7 +36,7 @@ namespace Shared {
 				ModelRendererGl();
 				virtual void begin(bool renderNormals, bool renderTextures, bool renderColors, bool colorPickingMode, MeshCallback *meshCallback);
 				virtual void end();
-				virtual void render(Model *model, int renderMode = rmNormal);
+				virtual void render(Model *model, int renderMode = rmNormal, float alpha = 1.0f);
 				virtual void renderNormalsOnly(Model *model);
 
 				void setDuplicateTexCoords(bool duplicateTexCoords) {
@@ -48,7 +48,7 @@ namespace Shared {
 
 			private:
 
-				void renderMesh(Mesh *mesh, int renderMode = rmNormal);
+				void renderMesh(Mesh *mesh, int renderMode = rmNormal, float alpha = 1.0f);
 				void renderMeshNormals(Mesh *mesh);
 			};
 

@@ -124,7 +124,7 @@ namespace Shared {
 				assertGl();
 			}
 
-			void ModelRendererGl::render(Model *model, int renderMode) {
+			void ModelRendererGl::render(Model *model, int renderMode, float alpha) {
 				//assertions
 				assert(rendering);
 				assertGl();
@@ -134,7 +134,7 @@ namespace Shared {
 				//render every mesh
 				//if(model->getIsStaticModel() == true) {
 				for (uint32 i = 0; i < model->getMeshCount(); ++i) {
-					renderMesh(model->getMeshPtr(i), renderMode);
+					renderMesh(model->getMeshPtr(i), renderMode, alpha);
 				}
 				//}
 				//assertions
@@ -159,7 +159,7 @@ namespace Shared {
 
 			// ===================== PRIVATE =======================
 
-			void ModelRendererGl::renderMesh(Mesh *mesh, int renderMode) {
+			void ModelRendererGl::renderMesh(Mesh *mesh, int renderMode, float alpha) {
 
 				if (renderMode == rmSelection && mesh->getNoSelect() == true) {// don't render this and do nothing
 					return;
@@ -174,17 +174,19 @@ namespace Shared {
 				} else {
 					glEnable(GL_CULL_FACE);
 				}
-
+				glEnable(GL_BLEND);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				
+				//glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, Vec4f(1.0f, 1.0f, 1.0f, alpha).ptr());
 				if (renderMode == rmNormal && mesh->getGlow() == true) {
 					// glow on
 					glDisable(GL_LIGHTING);
-					glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 				}
 
 				if (this->colorPickingMode == false) {
 					//set color
 					if (renderColors) {
-						Vec4f color(mesh->getDiffuseColor(), mesh->getOpacity());
+						Vec4f color(mesh->getDiffuseColor(), mesh->getOpacity() * alpha);
 						glColor4fv(color.ptr());
 					}
 

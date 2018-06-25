@@ -2773,7 +2773,7 @@ namespace Glest {
 			textRenderer3D->render(text, pos.x, pos.y);
 			safeTextRender.end();
 
-			glDisable(GL_BLEND);
+			//glDisable(GL_BLEND);
 			glPopAttrib();
 		}
 
@@ -2794,7 +2794,7 @@ namespace Glest {
 			//textRenderer3D->end();
 			safeTextRender.end();
 
-			glDisable(GL_BLEND);
+			//glDisable(GL_BLEND);
 			glPopAttrib();
 		}
 
@@ -2990,7 +2990,7 @@ namespace Glest {
 			textRenderer3D->render(text, pos.x, pos.y);
 			safeTextRender.end();
 
-			glDisable(GL_BLEND);
+			//glDisable(GL_BLEND);
 			glPopAttrib();
 		}
 
@@ -3010,7 +3010,7 @@ namespace Glest {
 			textRenderer3D->render(text, pos.x, pos.y, centered);
 			safeTextRender.end();
 
-			glDisable(GL_BLEND);
+			//glDisable(GL_BLEND);
 			glPopAttrib();
 		}
 
@@ -5287,15 +5287,13 @@ namespace Glest {
 
 					//dead alpha
 					const SkillType *st = unit->getCurrSkill();
+					float alpha = 1.0f;
 					if (st->getClass() == scDie && static_cast<const DieSkillType*>(st)->getFade()) {
-						float alpha = 1.0f - unit->getAnimProgressAsFloat();
-						glDisable(GL_COLOR_MATERIAL);
-						glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, Vec4f(1.0f, 1.0f, 1.0f, alpha).ptr());
-					} else {
-						glEnable(GL_COLOR_MATERIAL);
-						// we cut off a tiny bit here to avoid problems with fully transparent texture parts cutting units in background rendered later.
-						glAlphaFunc(GL_GREATER, 0.02f);
+						alpha = 1.0f - unit->getAnimProgressAsFloat();
 					}
+					glEnable(GL_COLOR_MATERIAL);
+					// we cut off a tiny bit here to avoid problems with fully transparent texture parts cutting units in background rendered later.
+					glAlphaFunc(GL_GREATER, 0.02f);
 
 					//render
 					Model *model = unit->getCurrentModelPtr();
@@ -5305,7 +5303,7 @@ namespace Glest {
 					model->updateInterpolationData(unit->getAnimProgressAsFloat(), unit->isAlive() && !unit->isAnimProgressBound());
 					//}
 
-					modelRenderer->render(model);
+					modelRenderer->render(model, alpha);
 					triangleCount += model->getTriangleCount();
 					pointCount += model->getVertexCount();
 
@@ -6021,7 +6019,7 @@ namespace Glest {
 			glVertex2i(mx + mw, my + mh);
 			glEnd();
 
-			glDisable(GL_BLEND);
+			//glDisable(GL_BLEND);
 
 			glActiveTexture(fowTexUnit);
 			glDisable(GL_TEXTURE_2D);
@@ -6140,7 +6138,7 @@ namespace Glest {
 				}
 			}
 
-			glDisable(GL_BLEND);
+			//glDisable(GL_BLEND);
 
 			//draw units
 			VisibleQuadContainerCache &qCache = getQuadCache();
@@ -6374,7 +6372,7 @@ namespace Glest {
 					glDisableClientState(GL_COLOR_ARRAY);
 					glDisableClientState(GL_VERTEX_ARRAY);
 
-					glDisable(GL_BLEND);
+					//glDisable(GL_BLEND);
 				}
 			}
 		}
@@ -6752,7 +6750,7 @@ namespace Glest {
 					}
 					glEnd();
 				}
-				glDisable(GL_BLEND);
+				//glDisable(GL_BLEND);
 
 				//raindrops
 				if (menuBackground->getRain()) {
@@ -8059,7 +8057,7 @@ namespace Glest {
 			glColor4fv(defColor.ptr());
 
 			//blend state
-			glDisable(GL_BLEND);
+			//glDisable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 			//if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
@@ -8150,7 +8148,7 @@ namespace Glest {
 			//if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
 
 			//disable everything
-			glDisable(GL_BLEND);
+			//glDisable(GL_BLEND);
 			glDisable(GL_LIGHTING);
 			glDisable(GL_ALPHA_TEST);
 			glDisable(GL_DEPTH_TEST);
@@ -8322,7 +8320,7 @@ namespace Glest {
 			glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
 
 			//blend state
-			glDisable(GL_BLEND);
+			//glDisable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 			//alpha test state
@@ -8692,7 +8690,7 @@ namespace Glest {
 			glVertex2i(x + maxSize, y + progressbarHeight);
 			glVertex2i(x + maxSize, y);
 			glEnd();
-			glDisable(GL_BLEND);
+			//glDisable(GL_BLEND);
 
 			//text
 			//glColor3fv(defColor.ptr());
@@ -8744,7 +8742,7 @@ namespace Glest {
 			glVertex2i(x + maxSize, y + 10);
 			glVertex2i(x + maxSize, y);
 			glEnd();
-			glDisable(GL_BLEND);
+			//glDisable(GL_BLEND);
 
 			//text
 			glColor3fv(defColor.ptr());

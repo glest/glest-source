@@ -58,7 +58,7 @@ namespace Shared {
 			ModelRenderer() {
 				renderNormals = false;
 				renderTextures = false;
-				renderColors = false;
+				renderColors = true;
 				colorPickingMode = false;
 
 				meshCallback = NULL;
@@ -69,7 +69,7 @@ namespace Shared {
 
 			virtual void begin(bool renderNormals, bool renderTextures, bool renderColors, bool colorPickingMode, MeshCallback *meshCallback = NULL) = 0;
 			virtual void end() = 0;
-			virtual void render(Model *model, int renderMode = rmNormal) = 0;
+			virtual void render(Model *model, int renderMode = rmNormal, float alpha = 1.0f) = 0;
 			virtual void renderNormalsOnly(Model *model) = 0;
 		};
 
