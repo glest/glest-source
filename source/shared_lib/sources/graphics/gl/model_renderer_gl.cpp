@@ -30,6 +30,8 @@ namespace Shared {
 				if (!mesh->getCustomTexture() || opacity == 0 || teamTexture == NULL || MeshCallback::noTeamColors) {
 					glActiveTexture(GL_TEXTURE1);
 					glDisable(GL_TEXTURE_2D);
+					glActiveTexture(GL_TEXTURE2);
+					glDisable(GL_TEXTURE_2D);
 					glActiveTexture(GL_TEXTURE0);
 					glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 				} else {
@@ -80,8 +82,8 @@ namespace Shared {
 					glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_ALPHA, GL_CONSTANT);
 					glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_ALPHA, GL_SRC_ALPHA);
 					
+					glActiveTexture(GL_TEXTURE2);
 					if (alpha < 1.f - FLT_EPSILON) {
-						glActiveTexture(GL_TEXTURE2);
 						glEnable(GL_TEXTURE_2D);
 						glMultiTexCoord2f(GL_TEXTURE1, 0.f, 0.f);
 						glBindTexture(GL_TEXTURE_2D, handle);
@@ -98,7 +100,8 @@ namespace Shared {
 						glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
 						glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_ALPHA, GL_CONSTANT);
 						glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_ALPHA, GL_SRC_ALPHA);
-					}
+					} else
+						glDisable(GL_TEXTURE_2D);
 
 					glActiveTexture(GL_TEXTURE0);
 				}
