@@ -8080,7 +8080,7 @@ namespace Glest {
 					//printf("TECHS i = %d results [%s] scenario [%s]\n",i,results[i].c_str(),scenario.c_str());
 
 					results.at(i) = formatString(results.at(i));
-					if (config.getString("InitialTechTree", "Megapack") ==
+					if (config.getString("InitialTechTree", "Zetapack") ==
 						results.at(i)) {
 						initialTechSelection = i;
 					}

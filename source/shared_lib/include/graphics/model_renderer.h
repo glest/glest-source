@@ -72,7 +72,6 @@ namespace Shared {
 			virtual void render(Model *model, int renderMode = rmNormal, float alpha = 1.0f) = 0;
 			virtual void renderNormalsOnly(Model *model) = 0;
 		};
-
 	}
 }//end namespace
 

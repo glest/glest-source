@@ -723,7 +723,7 @@ namespace Shared {
 					float numUsedToSmooth = 0.f;
 					for (int k = -1; k <= 1; ++k) {
 						for (int l = -1; l <= 1; ++l) {
-							int tmpHeight = oldHeights[(j + k) * w + (i + l)];
+							int tmpHeight = (int) oldHeights[(j + k) * w + (i + l)];
 							if (limitHeight && tmpHeight > 20) {
 								tmpHeight = 20;
 							}

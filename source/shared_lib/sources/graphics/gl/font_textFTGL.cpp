@@ -239,7 +239,7 @@ namespace Shared {
 
 					ftFont->Render(str, len);
 					//assertGl();
-					GLenum error = glGetError();
+					/*GLenum error =*/ glGetError();
 					/*if (error != GL_NO_ERROR) {
 						printf("\n[%s::%s] Line %d Error = %d [%s] for text [%s]\n", __FILE__, __FUNCTION__, __LINE__, error, gluErrorString(error), str);
 						fflush(stdout);
@@ -307,7 +307,7 @@ namespace Shared {
 				//if(result == -1000) {
 				FTBBox box = ftFont->BBox(TextFTGL::langHeightText.c_str());
 
-				GLenum error = glGetError();
+				/*GLenum error =*/ glGetError();
 				/*if (error != GL_NO_ERROR) {
 					printf("\n[%s::%s] Line %d Error = %d [%s] for text [%s]\n", __FILE__, __FUNCTION__, __LINE__, error, gluErrorString(error), str);
 					fflush(stdout);

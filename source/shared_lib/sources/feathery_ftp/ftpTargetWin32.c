@@ -107,14 +107,14 @@ const char* ftpReadDir(void* dirHandle) {
 		else
 			strcat(p->path, "*");
 
-		p->findHandle = FindFirstFile(p->path, &findData);
+		p->findHandle = FindFirstFileA(p->path, &findData);
 		if (p->findHandle != INVALID_HANDLE_VALUE) {
 			strcpy(p->path, findData.cFileName);
 			return p->path;
 		}
 		return NULL;
 	} else {
-		if (FindNextFile(p->findHandle, &findData)) {
+		if (FindNextFileA(p->findHandle, &findData)) {
 			strcpy(p->path, findData.cFileName);
 			return p->path;
 		}
@@ -186,11 +186,11 @@ int ftpStat(const char* path, ftpPathInfo_S *info) {
 
 int ftpMakeDir(const char* path) {
 
-	return !CreateDirectory(path, NULL);
+	return !CreateDirectoryA(path, NULL);
 }
 
 int ftpRemoveDir(const char* path) {
-	return !RemoveDirectory(path);
+	return !RemoveDirectoryA(path);
 }
 
 

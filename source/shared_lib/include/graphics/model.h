@@ -46,7 +46,7 @@ namespace Shared {
 		class Mesh {
 		private:
 			//mesh data
-			Texture2D *textures[meshTextureCount];
+			Texture2D * textures[meshTextureCount];
 			bool texturesOwned[meshTextureCount];
 			string texturePaths[meshTextureCount];
 
@@ -75,6 +75,7 @@ namespace Shared {
 			bool customColor;
 			bool noSelect;
 			bool glow;
+			uint8 factionColorOpacity;
 
 			uint32 textureFlags;
 
@@ -175,6 +176,9 @@ namespace Shared {
 			bool getCustomTexture() const {
 				return customColor;
 			}
+			uint8 getFactionColorOpacity() const {
+				return factionColorOpacity;
+			}
 			bool getNoSelect() const {
 				return noSelect;
 			}
@@ -235,7 +239,7 @@ namespace Shared {
 
 		class Model {
 		private:
-			TextureManager *textureManager;
+			TextureManager * textureManager;
 
 		private:
 			uint8 fileVersion;

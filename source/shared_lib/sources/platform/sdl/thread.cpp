@@ -510,9 +510,8 @@ namespace Shared {
 				MutexSafeWrapper safeMutexX(Mutex::mutexMutexList.get());
 				std::vector<Mutex *>::iterator iterFind = std::find(Mutex::mutexList.begin(), Mutex::mutexList.end(), this);
 				if (iterFind == Mutex::mutexList.end()) {
-					char szBuf[8096] = "";
-					snprintf(szBuf, 8095, "In [%s::%s Line: %d] iterFind == Mutex::mutexList.end()", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-					throw megaglest_runtime_error(szBuf);
+					printf("In [%s::%s Line: %d] iterFind == Mutex::mutexList.end()", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
+					//throw megaglest_runtime_error(szBuf);
 				}
 				Mutex::mutexList.erase(iterFind);
 				safeMutexX.ReleaseLock();
@@ -520,14 +519,12 @@ namespace Shared {
 
 			SDLMutexSafeWrapper safeMutex(&mutexAccessor, true);
 			if (mutex == NULL) {
-				char szBuf[8096] = "";
-				snprintf(szBuf, 8095, "In [%s::%s Line: %d] mutex == NULL refCount = %d owner [%s] deleteownerId [%s]", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, refCount, ownerId.c_str(), deleteownerId.c_str());
-				throw megaglest_runtime_error(szBuf);
+				printf("In [%s::%s Line: %d] mutex == NULL refCount = %d owner [%s] deleteownerId [%s]", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, refCount, ownerId.c_str(), deleteownerId.c_str());
+				//throw megaglest_runtime_error(szBuf);
 				//printf("%s\n",szBuf);
 			} else if (refCount >= 1) {
-				char szBuf[8096] = "";
-				snprintf(szBuf, 8095, "In [%s::%s Line: %d] about to destroy mutex refCount = %d owner [%s] deleteownerId [%s]", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, refCount, ownerId.c_str(), deleteownerId.c_str());
-				throw megaglest_runtime_error(szBuf);
+				printf("In [%s::%s Line: %d] about to destroy mutex refCount = %d owner [%s] deleteownerId [%s]", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, refCount, ownerId.c_str(), deleteownerId.c_str());
+				//throw megaglest_runtime_error(szBuf);
 			}
 
 			if (debugMutexLock == true) {
@@ -609,9 +606,8 @@ namespace Shared {
 
 		Semaphore::~Semaphore() {
 			if (semaphore == NULL) {
-				char szBuf[8096] = "";
-				snprintf(szBuf, 8095, "In [%s::%s Line: %d] semaphore == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				printf("In [%s::%s Line: %d] semaphore == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
+				//throw megaglest_runtime_error(szBuf);
 			}
 			SDL_DestroySemaphore(semaphore);
 			semaphore = NULL;
@@ -728,9 +724,8 @@ namespace Shared {
 			if (debugMasterSlaveThreadController) printf("In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
 			if (trigger == NULL) {
-				char szBuf[8096] = "";
-				snprintf(szBuf, 8095, "In [%s::%s Line: %d] trigger == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				printf("In [%s::%s Line: %d] trigger == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
+				//throw megaglest_runtime_error(szBuf);
 			}
 			if (debugMasterSlaveThreadController) printf("In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 

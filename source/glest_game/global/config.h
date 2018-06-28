@@ -129,9 +129,8 @@ namespace Glest {
 				NULL) const;
 			float getFloat(const char *key, const char *defaultValueIfNotFound =
 				NULL) const;
-			const string getString(const char *key,
-				const char *defaultValueIfNotFound =
-				NULL) const;
+			const string getString(const char *key,	const char *defaultValueIfNotFound = "") const;
+			const bool hasString(const char *key) const;
 			//char getCharKey(const char *key) const;
 			SDL_Keycode getSDLKey(const char *key) const;
 

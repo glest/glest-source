@@ -115,7 +115,7 @@ namespace Shared {
 			float getFloat(const string &key, const char *defaultValueIfNotFound = NULL) const;
 			float getFloat(const string &key, float min, float max, const char *defaultValueIfNotFound = NULL) const;
 
-			const string getString(const string &key, const char *defaultValueIfNotFound = NULL) const;
+			const string getString(const string &key, const char *defaultValueIfNotFound = "") const;
 
 			int getInt(const char *key, const char *defaultValueIfNotFound = NULL) const;
 			bool getBool(const char *key, const char *defaultValueIfNotFound = NULL) const;

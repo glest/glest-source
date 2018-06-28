@@ -29,6 +29,7 @@
 #include "texture.h"
 #include "model_manager.h"
 #include "graphics_factory_gl.h"
+#include "model_renderer_gl.h"
 #include "font_manager.h"
 #include "camera.h"
 #include <vector>
@@ -71,25 +72,6 @@ namespace Glest {
 		class ConsoleLineInfo;
 		class SurfaceCell;
 		class Program;
-		// =====================================================
-		// 	class MeshCallbackTeamColor
-		// =====================================================
-
-		class MeshCallbackTeamColor : public MeshCallback {
-		private:
-			const Texture *teamTexture;
-
-		public:
-			MeshCallbackTeamColor() : MeshCallback() {
-				teamTexture = NULL;
-			}
-			void setTeamTexture(const Texture *teamTexture) {
-				this->teamTexture = teamTexture;
-			}
-			virtual void execute(const Mesh *mesh);
-
-			static bool noTeamColors;
-		};
 
 		// ===========================================================
 		// 	class Renderer

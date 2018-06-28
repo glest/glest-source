@@ -18,6 +18,7 @@
 #endif
 
 #include "model_renderer.h"
+#include "model_renderer_gl.h"
 #include "texture_manager.h"
 #include "model.h"
 #include "texture.h"
@@ -37,6 +38,7 @@ using Shared::Graphics::Texture2D;
 using Shared::Graphics::ParticleRenderer;
 using Shared::Graphics::ParticleManager;
 using Shared::Graphics::ParticleSystem;
+using Shared::Graphics::Gl::MeshCallbackTeamColor;
 //#include "model_renderer.h"
 
 using Shared::Graphics::MeshCallback;
@@ -47,26 +49,6 @@ using namespace Shared::Graphics;
 
 namespace Shared {
 	namespace G3dViewer {
-
-		// ===============================================
-		// 	class MeshCallbackTeamColor
-		// ===============================================
-
-		class MeshCallbackTeamColor : public MeshCallback {
-		private:
-			const Texture *teamTexture;
-			bool hasAlpha;
-
-		public:
-			MeshCallbackTeamColor() : MeshCallback() {
-				teamTexture = NULL;
-			}
-			void setTeamTexture(const Texture *teamTexture) {
-				this->teamTexture = teamTexture;
-			}
-			virtual void execute(const Mesh *mesh);
-		};
-
 		// ===============================
 		// 	class Renderer
 		// ===============================

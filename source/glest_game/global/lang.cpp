@@ -546,14 +546,15 @@ namespace Glest {
 							false);
 					}
 					//string result2 = otherLanguageStrings[uselanguage].getString(s);
-					gameStringsAllLanguages[uselanguage].getString(s);
+					result = gameStringsAllLanguages[uselanguage].getString(s).length() != 0;
 					//printf("#b result2 [%s]\n",result2.c_str());
-
-					result = true;
 				} else {
 					//string result2 = strings.getString(s);
-					gameStringsAllLanguages[this->language].getString(s);
-					result = true;
+					result = gameStringsAllLanguages[this->language].getString(s).length() != 0;
+				}
+				if (!result && fallbackToDefault == true && uselanguage != DEFAULT_LANGUAGE
+					&& this->language != DEFAULT_LANGUAGE) {
+					result = hasString(s, DEFAULT_LANGUAGE, false);
 				}
 			} catch (exception & ex) {
 				if (gameStringsAllLanguages[this->language].getpath() != "") {
@@ -568,8 +569,6 @@ namespace Glest {
 				if (fallbackToDefault == true && uselanguage != DEFAULT_LANGUAGE
 					&& this->language != DEFAULT_LANGUAGE) {
 					result = hasString(s, DEFAULT_LANGUAGE, false);
-				} else {
-
 				}
 			}
 			return result;
@@ -650,8 +649,7 @@ namespace Glest {
 		bool Lang::hasScenarioString(const string & s) {
 			bool result = false;
 			try {
-				scenarioStrings.getString(s);
-				result = true;
+				result = scenarioStrings.getString(s).length() != 0;
 			} catch (exception & ex) {
 				if (scenarioStrings.getpath() != "") {
 					if (SystemFlags::VERBOSE_MODE_ENABLED)

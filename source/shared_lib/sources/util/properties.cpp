@@ -514,8 +514,8 @@ namespace Shared {
 					//printf("In [%s::%s - %d]defaultValueIfNotFound = [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,defaultValueIfNotFound);
 					return string(defaultValueIfNotFound);
 				} else {
-					//throw megaglest_runtime_error("Value not found in propertyMap: " + key + ", loaded from: " + path);
-					throw runtime_error("Value not found in propertyMap: " + key + ", loaded from: " + path);
+					//throw runtime_error("Value not found in propertyMap: " + key + ", loaded from: " + path);
+					return string();
 				}
 			} else {
 				return (it->second != "" ? it->second : (defaultValueIfNotFound != NULL ? defaultValueIfNotFound : it->second));
@@ -618,8 +618,8 @@ namespace Shared {
 					//printf("In [%s::%s - %d]defaultValueIfNotFound = [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,defaultValueIfNotFound);
 					return string(defaultValueIfNotFound);
 				} else {
-					//throw megaglest_runtime_error("Value not found in propertyMap: " + string(key) + ", loaded from: " + path);
-					throw runtime_error("Value not found in propertyMap: " + string(key) + ", loaded from: " + path);
+					//throw runtime_error("Value not found in propertyMap: " + string(key) + ", loaded from: " + path);
+					return string();
 				}
 			} else {
 				return (it->second != "" ? it->second : (defaultValueIfNotFound != NULL ? defaultValueIfNotFound : it->second));

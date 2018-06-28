@@ -7361,7 +7361,7 @@ namespace
 											gameSettings = &startupGameSettings;
 										gameSettings->setMap(autoloadMapName);
 										gameSettings->setTileset(tileset);
-										gameSettings->setTech("megapack");
+										gameSettings->setTech("zetapack");
 										gameSettings->setDefaultUnits(false);
 										gameSettings->setDefaultResources(false);
 										gameSettings->setDefaultVictoryConditions(true);

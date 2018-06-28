@@ -227,6 +227,7 @@ namespace Shared {
 			customColor = false;
 			noSelect = false;
 			glow = false;
+			factionColorOpacity = 255;
 
 			textureFlags = 0;
 
@@ -335,28 +336,28 @@ namespace Shared {
 					// Generate And Bind The Vertex Buffer
 					glGenBuffersARB(1, (GLuint*) &m_nVBOVertices);					// Get A Valid Name
 					glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_nVBOVertices);			// Bind The Buffer
-					// Load The Data
+																					// Load The Data
 					glBufferDataARB(GL_ARRAY_BUFFER_ARB, sizeof(Vec3f)*frameCount*vertexCount, vertices, GL_STATIC_DRAW_ARB);
 					glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
 
 					// Generate And Bind The Texture Coordinate Buffer
 					glGenBuffersARB(1, (GLuint*) &m_nVBOTexCoords);					// Get A Valid Name
 					glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_nVBOTexCoords);		// Bind The Buffer
-					// Load The Data
+																				// Load The Data
 					glBufferDataARB(GL_ARRAY_BUFFER_ARB, sizeof(Vec2f)*vertexCount, texCoords, GL_STATIC_DRAW_ARB);
 					glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
 
 					// Generate And Bind The Normal Buffer
 					glGenBuffersARB(1, (GLuint*) &m_nVBONormals);					// Get A Valid Name
 					glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_nVBONormals);			// Bind The Buffer
-					// Load The Data
+																					// Load The Data
 					glBufferDataARB(GL_ARRAY_BUFFER_ARB, sizeof(Vec3f)*frameCount*vertexCount, normals, GL_STATIC_DRAW_ARB);
 					glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
 
 					// Generate And Bind The Index Buffer
 					glGenBuffersARB(1, (GLuint*) &m_nVBOIndexes);					// Get A Valid Name
 					glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, m_nVBOIndexes);			// Bind The Buffer
-					// Load The Data
+																							// Load The Data
 					glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER_ARB, sizeof(uint32)*indexCount, indices, GL_STATIC_DRAW_ARB);
 					glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
 
@@ -445,6 +446,7 @@ namespace Shared {
 			customColor = false;
 			noSelect = false;
 			glow = false;
+			factionColorOpacity = 255;
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("Load v2, this = %p Found meshHeader.hasTexture = %d, texName [%s] mtDiffuse = %d meshIndex = %d modelFile [%s]\n", this, meshHeader.hasTexture, toLower(reinterpret_cast<char*>(meshHeader.texName)).c_str(), mtDiffuse, meshIndex, modelFile.c_str());
 
@@ -583,6 +585,7 @@ namespace Shared {
 			//misc
 			twoSided = (meshHeader.properties & mp3TwoSided) != 0;
 			customColor = (meshHeader.properties & mp3CustomColor) != 0;
+			factionColorOpacity = 255 - (meshHeader.properties >> 24);
 			noSelect = false;
 			glow = false;
 
@@ -779,6 +782,7 @@ namespace Shared {
 			twoSided = (meshHeader.properties & mpfTwoSided) != 0;
 			noSelect = (meshHeader.properties & mpfNoSelect) != 0;
 			glow = (meshHeader.properties & mpfGlow) != 0;
+			factionColorOpacity = 255 - (meshHeader.properties >> 24);
 
 			//material
 			diffuseColor = Vec3f(meshHeader.diffuseColor);
@@ -890,7 +894,7 @@ namespace Shared {
 			//properties
 			meshHeader.properties = 0;
 			if (customColor) {
-				meshHeader.properties |= mpfCustomColor;
+				meshHeader.properties |= (255 - (factionColorOpacity << 24)) | mpfCustomColor;
 			}
 			if (twoSided) {
 				meshHeader.properties |= mpfTwoSided;
@@ -1516,6 +1520,7 @@ namespace Shared {
 			dest->customColor = this->customColor;
 			dest->noSelect = this->noSelect;
 			dest->glow = this->glow;
+			dest->factionColorOpacity = this->factionColorOpacity;
 
 			dest->textureFlags = this->textureFlags;
 
@@ -1535,33 +1540,33 @@ namespace Shared {
 		void Model::autoJoinMeshFrames() {
 
 			/*
-				print "auto-joining compatible meshes..."
-					meshes = {}
-					for mesh in self.meshes:
-						key = (mesh.texture,mesh.frame_count,mesh.twoSided|mesh.customColour)
-						if key in meshes:
-							meshes[key].append(mesh)
-						else:
-							meshes[key] = [mesh]
-					for joinable in meshes.values():
-						if len(joinable) < 2: continue
-						base = joinable[0]
-						print "\tjoining to",base
-						for mesh in joinable[1:]:
-							if base.index_count+mesh.index_count > 0xffff:
-								base = mesh
-								print "\tjoining to",base
-								continue
-							print "\t\t",mesh
-							for a,b in zip(base.frames,mesh.frames):
-								a.vertices.extend(b.vertices)
-								a.normals.extend(b.normals)
-							if base.texture:
-								base.textures.extend(mesh.textures)
-							base.indices.extend(index+base.vertex_count for index in mesh.indices)
-							base.vertex_count += mesh.vertex_count
-							base.index_count += mesh.index_count
-							self.meshes.remove(mesh)
+			print "auto-joining compatible meshes..."
+			meshes = {}
+			for mesh in self.meshes:
+			key = (mesh.texture,mesh.frame_count,mesh.twoSided|mesh.customColour)
+			if key in meshes:
+			meshes[key].append(mesh)
+			else:
+			meshes[key] = [mesh]
+			for joinable in meshes.values():
+			if len(joinable) < 2: continue
+			base = joinable[0]
+			print "\tjoining to",base
+			for mesh in joinable[1:]:
+			if base.index_count+mesh.index_count > 0xffff:
+			base = mesh
+			print "\tjoining to",base
+			continue
+			print "\t\t",mesh
+			for a,b in zip(base.frames,mesh.frames):
+			a.vertices.extend(b.vertices)
+			a.normals.extend(b.normals)
+			if base.texture:
+			base.textures.extend(mesh.textures)
+			base.indices.extend(index+base.vertex_count for index in mesh.indices)
+			base.vertex_count += mesh.vertex_count
+			base.index_count += mesh.index_count
+			self.meshes.remove(mesh)
 			*/
 
 
@@ -1576,13 +1581,13 @@ namespace Shared {
 				// Duplicate mesh vertices are considered to be those with the same
 				// 1. texture 2. framecount 3. twosided flag value 4. same custom texture color
 
-		//		It's possible the texture is missing and will be NULL
-		//		if(mesh.getTextureFlags() & 1) {
-		//			printf("Mesh has textures:\n");
-		//			for(unsigned int meshTexIndex = 0; meshTexIndex < meshTextureCount; ++meshTexIndex) {
-		//				printf("Mesh texture index: %d [%p] [%s]\n",meshTexIndex,mesh.getTexture(meshTexIndex),(mesh.getTexture(meshTexIndex) != NULL ? mesh.getTexture(meshTexIndex)->getPath().c_str() : "n/a"));
-		//			}
-		//		}
+				//		It's possible the texture is missing and will be NULL
+				//		if(mesh.getTextureFlags() & 1) {
+				//			printf("Mesh has textures:\n");
+				//			for(unsigned int meshTexIndex = 0; meshTexIndex < meshTextureCount; ++meshTexIndex) {
+				//				printf("Mesh texture index: %d [%p] [%s]\n",meshTexIndex,mesh.getTexture(meshTexIndex),(mesh.getTexture(meshTexIndex) != NULL ? mesh.getTexture(meshTexIndex)->getPath().c_str() : "n/a"));
+				//			}
+				//		}
 				string mesh_key = ((mesh.getTextureFlags() & 1) && mesh.getTexture(0) ? mesh.getTexture(0)->getPath() : "none");
 				mesh_key += string("_") + intToStr(mesh.getFrameCount()) +
 					string("_") + intToStr(mesh.getTwoSided()) +
@@ -1590,6 +1595,7 @@ namespace Shared {
 					string("_") + intToStr(mesh.getNoSelect()) +
 					string("_") + floatToStr(mesh.getOpacity()) +
 					string("_") + floatToStr(mesh.getGlow()) +
+					string("_") + intToStr(mesh.getFactionColorOpacity()) +
 					string("_") + mesh.getDiffuseColor().getString() +
 					string("_") + mesh.getSpecularColor().getString() +
 					string("_") + floatToStr(mesh.getSpecularPower());
@@ -1638,7 +1644,7 @@ namespace Shared {
 							//	mesh->copyInto(base, true, true);
 							//}
 							//else {
-								// Need to add verticies for each from from mesh to base
+							// Need to add verticies for each from from mesh to base
 							uint32 originalBaseVertexCount = base->getVertexCount();
 
 							uint32 newVertexCount =
@@ -1748,14 +1754,14 @@ namespace Shared {
 
 				/*
 				for(int i = 0; i < pboCount; ++i) {
-					if(SystemFlags::VERBOSE_MODE_ENABLED) printf("PBO Gen i = %d\n",i);
+				if(SystemFlags::VERBOSE_MODE_ENABLED) printf("PBO Gen i = %d\n",i);
 
-					pboIds.push_back(0);
-					glGenBuffersARB(1, (GLuint*)&pboIds[i]);
-					// create pixel buffer objects, you need to delete them when program exits.
-					// glBufferDataARB with NULL pointer reserves only memory space.
-					glBindBufferARB(GL_PIXEL_PACK_BUFFER_ARB, pboIds[i]);
-					glBufferDataARB(GL_PIXEL_PACK_BUFFER_ARB, bufferSize, 0, GL_STREAM_READ_ARB);
+				pboIds.push_back(0);
+				glGenBuffersARB(1, (GLuint*)&pboIds[i]);
+				// create pixel buffer objects, you need to delete them when program exits.
+				// glBufferDataARB with NULL pointer reserves only memory space.
+				glBindBufferARB(GL_PIXEL_PACK_BUFFER_ARB, pboIds[i]);
+				glBufferDataARB(GL_PIXEL_PACK_BUFFER_ARB, bufferSize, 0, GL_STREAM_READ_ARB);
 				}
 				glBindBufferARB(GL_PIXEL_PACK_BUFFER_ARB, 0);
 				*/
@@ -1849,7 +1855,7 @@ namespace Shared {
 						codeSection = "J";
 						if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 						glUnmapBufferARB(GL_PIXEL_PACK_BUFFER_ARB);     // release pointer to the mapped buffer
-						//pixmapScreenShot->save("debugPBO.png");
+																		//pixmapScreenShot->save("debugPBO.png");
 					}
 					codeSection = "K";
 					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
@@ -2184,7 +2190,7 @@ namespace Shared {
 						//					if(memcmp(pixel,oldpixel,3)) continue;
 						//				}
 
-										// Skip duplicate scanned colors
+						// Skip duplicate scanned colors
 						map<unsigned char, map<unsigned char, map<unsigned char, bool> > >::const_iterator iterFind1 = colorAlreadyPickedList.find(pixel[0]);
 						if (iterFind1 != colorAlreadyPickedList.end()) {
 							map<unsigned char, map<unsigned char, bool> >::const_iterator iterFind2 = iterFind1->second.find(pixel[1]);
@@ -2241,12 +2247,12 @@ namespace Shared {
 				uniqueColorID[2]);
 
 			/*
-				 glColor3f(	uniqueColorID[0] / 255.0f,
-							uniqueColorID[1] / 255.0f,
-							uniqueColorID[2] / 255.0f);
-							//uniqueColorID[3] / 255.0f);
-							 *
-							 */
+			glColor3f(	uniqueColorID[0] / 255.0f,
+			uniqueColorID[1] / 255.0f,
+			uniqueColorID[2] / 255.0f);
+			//uniqueColorID[3] / 255.0f);
+			*
+			*/
 		}
 
 

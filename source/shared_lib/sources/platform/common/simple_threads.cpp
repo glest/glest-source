@@ -121,13 +121,13 @@ namespace Shared {
 						findDirs(techDataPaths, techPaths);
 						if (techPaths.empty() == false) {
 							// Always calc megapack first so its up to date sooner
-							const string megapackTechtreeName = "megapack";
-							vector<string>::iterator iterFindMegaPack = std::find(techPaths.begin(), techPaths.end(), megapackTechtreeName);
-							if (iterFindMegaPack != techPaths.end()) {
-								techPaths.erase(iterFindMegaPack);
-								techPaths.insert(techPaths.begin(), megapackTechtreeName);
+							const string zetapackTechtreeName = "zetapack";
+							vector<string>::iterator iterFindZetaPack = std::find(techPaths.begin(), techPaths.end(), zetapackTechtreeName);
+							if (iterFindZetaPack != techPaths.end()) {
+								techPaths.erase(iterFindZetaPack);
+								techPaths.insert(techPaths.begin(), zetapackTechtreeName);
 
-								if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] Found megapack techtree and placing it at the TOP of the list\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
+								if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] Found zetapack techtree and placing it at the TOP of the list\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 							}
 							unsigned int techsPerWorker = ((unsigned int) techPaths.size() / (unsigned int) MAX_FileCRCPreCacheThread_WORKER_THREADS);
 							if (techPaths.size() % MAX_FileCRCPreCacheThread_WORKER_THREADS != 0) {
@@ -433,7 +433,7 @@ namespace Shared {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, ex.what());
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d] uniqueID [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, this->getUniqueID().c_str());
 
-				throw megaglest_runtime_error(ex.what());
+				//throw megaglest_runtime_error(ex.what());
 				//abort();
 			}
 			//printf("~SimpleTaskThread LINE: %d this = %p\n",__LINE__,this);

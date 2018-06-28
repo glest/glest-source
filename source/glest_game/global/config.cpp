@@ -123,8 +123,6 @@ namespace Glest {
 		//      class Config
 		// =====================================================
 
-		const string defaultNotFoundValue = "~~NOT FOUND~~";
-
 		map < ConfigType, Config > Config::configList;
 
 		Config::Config() {
@@ -287,18 +285,13 @@ namespace Glest {
 			}
 
 			if (cfgType.first == cfgMainGame) {
-				if (properties.first.
-					getString("UserData_Root",
-						defaultNotFoundValue.c_str()) != defaultNotFoundValue) {
+				if (properties.first.hasString("UserData_Root")) {
 					string userData = properties.first.getString("UserData_Root");
 					if (userData != "") {
 						endPathWithSlash(userData);
 					}
 					fileName.second = userData + fileNameParameter.second;
-				} else if (properties.first.
-					getString("UserOverrideFile",
-						defaultNotFoundValue.c_str()) !=
-					defaultNotFoundValue) {
+				} else if (properties.first.hasString("UserOverrideFile")) {
 					string userData = properties.first.getString("UserOverrideFile");
 					if (userData != "") {
 						endPathWithSlash(userData);
@@ -312,18 +305,13 @@ namespace Glest {
 
 			} else if (cfgType.first == cfgMainKeys) {
 				Config & mainCfg = Config::getInstance();
-				if (mainCfg.
-					getString("UserData_Root",
-						defaultNotFoundValue.c_str()) != defaultNotFoundValue) {
+				if (mainCfg.hasString("UserData_Root")) {
 					string userData = mainCfg.getString("UserData_Root");
 					if (userData != "") {
 						endPathWithSlash(userData);
 					}
 					fileName.second = userData + fileNameParameter.second;
-				} else if (mainCfg.
-					getString("UserOverrideFile",
-						defaultNotFoundValue.c_str()) !=
-					defaultNotFoundValue) {
+				} else if (mainCfg.hasString("UserOverrideFile")) {
 					string userData = mainCfg.getString("UserOverrideFile");
 					if (userData != "") {
 						endPathWithSlash(userData);
@@ -487,29 +475,21 @@ namespace Glest {
 		}
 
 		int Config::getInt(const char *key, const char *defaultValueIfNotFound) const {
-			if (tempProperties.getString(key, defaultNotFoundValue.c_str()) !=
-				defaultNotFoundValue) {
+			if (tempProperties.hasString(key)) {
 				return tempProperties.getInt(key, defaultValueIfNotFound);
 			}
-			if (fileLoaded.second == true &&
-				properties.second.getString(key,
-					defaultNotFoundValue.c_str()) !=
-				defaultNotFoundValue) {
+			if (fileLoaded.second == true && properties.second.hasString(key)) {
 				return properties.second.getInt(key, defaultValueIfNotFound);
 			}
 			return properties.first.getInt(key, defaultValueIfNotFound);
 		}
 
 		bool Config::getBool(const char *key, const char *defaultValueIfNotFound) const {
-			if (tempProperties.getString(key, defaultNotFoundValue.c_str()) !=
-				defaultNotFoundValue) {
+			if (tempProperties.hasString(key)) {
 				return tempProperties.getBool(key, defaultValueIfNotFound);
 			}
 
-			if (fileLoaded.second == true &&
-				properties.second.getString(key,
-					defaultNotFoundValue.c_str()) !=
-				defaultNotFoundValue) {
+			if (fileLoaded.second == true && properties.second.hasString(key)) {
 				return properties.second.getBool(key, defaultValueIfNotFound);
 			}
 
@@ -518,32 +498,23 @@ namespace Glest {
 
 		float Config::getFloat(const char *key,
 			const char *defaultValueIfNotFound) const {
-			if (tempProperties.getString(key, defaultNotFoundValue.c_str()) !=
-				defaultNotFoundValue) {
+			if (tempProperties.hasString(key)) {
 				return tempProperties.getFloat(key, defaultValueIfNotFound);
 			}
 
-			if (fileLoaded.second == true &&
-				properties.second.getString(key,
-					defaultNotFoundValue.c_str()) !=
-				defaultNotFoundValue) {
+			if (fileLoaded.second == true && properties.second.hasString(key)) {
 				return properties.second.getFloat(key, defaultValueIfNotFound);
 			}
 
 			return properties.first.getFloat(key, defaultValueIfNotFound);
 		}
 
-		const string Config::getString(const char *key,
-			const char *defaultValueIfNotFound) const {
-			if (tempProperties.getString(key, defaultNotFoundValue.c_str()) !=
-				defaultNotFoundValue) {
+		const string Config::getString(const char *key,	const char *defaultValueIfNotFound) const {
+			if (tempProperties.hasString(key)) {
 				return tempProperties.getString(key, defaultValueIfNotFound);
 			}
 
-			if (fileLoaded.second == true &&
-				properties.second.getString(key,
-					defaultNotFoundValue.c_str()) !=
-				defaultNotFoundValue) {
+			if (fileLoaded.second == true && properties.second.hasString(key)) {
 				return properties.second.getString(key, defaultValueIfNotFound);
 			}
 
@@ -552,15 +523,11 @@ namespace Glest {
 
 		int Config::getInt(const string & key,
 			const char *defaultValueIfNotFound) const {
-			if (tempProperties.getString(key, defaultNotFoundValue.c_str()) !=
-				defaultNotFoundValue) {
+			if (tempProperties.hasString(key)) {
 				return tempProperties.getInt(key, defaultValueIfNotFound);
 			}
 
-			if (fileLoaded.second == true &&
-				properties.second.getString(key,
-					defaultNotFoundValue.c_str()) !=
-				defaultNotFoundValue) {
+			if (fileLoaded.second == true && properties.second.hasString(key)) {
 				return properties.second.getInt(key, defaultValueIfNotFound);
 			}
 
@@ -569,15 +536,12 @@ namespace Glest {
 
 		bool Config::getBool(const string & key,
 			const char *defaultValueIfNotFound) const {
-			if (tempProperties.getString(key, defaultNotFoundValue.c_str()) !=
-				defaultNotFoundValue) {
+			if (tempProperties.hasString(key)) {
 				return tempProperties.getBool(key, defaultValueIfNotFound);
 			}
 
 			if (fileLoaded.second == true &&
-				properties.second.getString(key,
-					defaultNotFoundValue.c_str()) !=
-				defaultNotFoundValue) {
+				properties.second.hasString(key)) {
 				return properties.second.getBool(key, defaultValueIfNotFound);
 			}
 
@@ -586,15 +550,11 @@ namespace Glest {
 
 		float Config::getFloat(const string & key,
 			const char *defaultValueIfNotFound) const {
-			if (tempProperties.getString(key, defaultNotFoundValue.c_str()) !=
-				defaultNotFoundValue) {
+			if (tempProperties.hasString(key)) {
 				return tempProperties.getFloat(key, defaultValueIfNotFound);
 			}
 
-			if (fileLoaded.second == true &&
-				properties.second.getString(key,
-					defaultNotFoundValue.c_str()) !=
-				defaultNotFoundValue) {
+			if (fileLoaded.second == true && properties.second.hasString(key)) {
 				return properties.second.getFloat(key, defaultValueIfNotFound);
 			}
 
@@ -603,19 +563,19 @@ namespace Glest {
 
 		const string Config::getString(const string & key,
 			const char *defaultValueIfNotFound) const {
-			if (tempProperties.getString(key, defaultNotFoundValue.c_str()) !=
-				defaultNotFoundValue) {
+			if (tempProperties.hasString(key)) {
 				return tempProperties.getString(key, defaultValueIfNotFound);
 			}
 
-			if (fileLoaded.second == true &&
-				properties.second.getString(key,
-					defaultNotFoundValue.c_str()) !=
-				defaultNotFoundValue) {
+			if (fileLoaded.second == true && properties.second.hasString(key)) {
 				return properties.second.getString(key, defaultValueIfNotFound);
 			}
 
 			return properties.first.getString(key, defaultValueIfNotFound);
+		}
+
+		const bool Config::hasString(const char *key) const {
+			return getString(key).length() != 0;
 		}
 
 		SDL_Keycode Config::translateStringToSDLKey(const string & value) const {
@@ -698,10 +658,7 @@ namespace Glest {
 		}
 
 		SDL_Keycode Config::getSDLKey(const char *key) const {
-			if (fileLoaded.second == true &&
-				properties.second.getString(key,
-					defaultNotFoundValue.c_str()) !=
-				defaultNotFoundValue) {
+			if (fileLoaded.second == true && properties.second.hasString(key)) {
 
 				string value = properties.second.getString(key);
 				return translateStringToSDLKey(value);
