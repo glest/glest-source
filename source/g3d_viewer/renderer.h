@@ -38,10 +38,9 @@ using Shared::Graphics::Texture2D;
 using Shared::Graphics::ParticleRenderer;
 using Shared::Graphics::ParticleManager;
 using Shared::Graphics::ParticleSystem;
-using Shared::Graphics::Gl::MeshCallbackTeamColor;
+using Shared::Graphics::Gl::MeshCallback;
 //#include "model_renderer.h"
 
-using Shared::Graphics::MeshCallback;
 using Shared::Graphics::Mesh;
 using Shared::Graphics::Texture;
 
@@ -97,7 +96,7 @@ namespace Shared {
 			Texture2D *customTextureOrange;
 			Texture2D *customTextureMagenta;
 			Texture2D *customTextureTransparent;
-			MeshCallbackTeamColor meshCallbackTeamColor;
+			MeshCallback meshCallback;
 
 			float red;
 			float green;

@@ -18,29 +18,17 @@
 
 namespace Shared {
 	namespace Graphics {
+		namespace Gl {
+			class MeshCallback;
+		}
 
 		enum RenderMode {
 			rmNormal,
 			rmSelection,
-
 			renderModeCount
 		};
 
-
 		class Texture;
-
-		// =====================================================
-		//	class MeshCallback
-		//
-		/// This gets called before rendering mesh
-		// =====================================================
-
-		class MeshCallback {
-		public:
-			virtual ~MeshCallback() {
-			};
-			virtual void execute(const Mesh *mesh) = 0;
-		};
 
 		// =====================================================
 		//	class ModelRenderer
@@ -52,7 +40,7 @@ namespace Shared {
 			bool renderTextures;
 			bool renderColors;
 			bool colorPickingMode;
-			MeshCallback *meshCallback;
+			Gl::MeshCallback *meshCallback;
 
 		public:
 			ModelRenderer() {
@@ -67,7 +55,7 @@ namespace Shared {
 			virtual ~ModelRenderer() {
 			};
 
-			virtual void begin(bool renderNormals, bool renderTextures, bool renderColors, bool colorPickingMode, MeshCallback *meshCallback = NULL) = 0;
+			virtual void begin(bool renderNormals, bool renderTextures, bool renderColors, bool colorPickingMode, Gl::MeshCallback *meshCallback = NULL) = 0;
 			virtual void end() = 0;
 			virtual void render(Model *model, int renderMode = rmNormal, float alpha = 1.0f) = 0;
 			virtual void renderNormalsOnly(Model *model) = 0;

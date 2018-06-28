@@ -6279,339 +6279,262 @@ namespace Glest {
 
 					//printf("In game checking keypress for key [%d] camera left [%d]\n",key.keysym.sym,configKeys.getSDLKey("CameraModeLeft"));
 
-					if (isKeyPressed
-					(configKeys.getSDLKey("RenderInGamePerformance"), key,
-						false) == true) {
+					if (isKeyPressed(configKeys.getSDLKey("RenderInGamePerformance"), key, false) == true) {
 						renderInGamePerformance = !renderInGamePerformance;
 
 						Config::getInstance().setBool("PerformanceWarningEnabled",
 							renderInGamePerformance, true);
 					}
 					//if(key == configKeys.getCharKey("RenderNetworkStatus")) {
-					else
-						if (isKeyPressed
-						(configKeys.getSDLKey("RenderNetworkStatus"), key,
-							false) == true) {
-							renderNetworkStatus = !renderNetworkStatus;
-						}
+					else if (isKeyPressed(configKeys.getSDLKey("RenderNetworkStatus"), key, false) == true) {
+						renderNetworkStatus = !renderNetworkStatus;
+					}
 					//else if(key == configKeys.getCharKey("ShowFullConsole")) {
-						else
-							if (isKeyPressed
-							(configKeys.getSDLKey("ShowFullConsole"), key,
-								false) == true) {
-								showFullConsole = true;
-							} else
-								if (isKeyPressed
-								(configKeys.getSDLKey("SetMarker"), key,
-									setMarkerKeyAllowsModifier) == true) {
-									setMarker = true;
-									printf("%d\n", key.keysym.scancode);
+					else if (isKeyPressed(configKeys.getSDLKey("ShowFullConsole"), key, false) == true) {
+						showFullConsole = true;
+					} else if (isKeyPressed(configKeys.getSDLKey("SetMarker"), key, setMarkerKeyAllowsModifier) == true) {
+						setMarker = true;
+						printf("%d\n", key.keysym.scancode);
+					}
+					else if (isKeyPressed(configKeys.getSDLKey("TogglePhotoMode"), key, false) == true) {
+						photoModeEnabled = !photoModeEnabled;
+						if (photoModeEnabled == true &&
+							this->gameSettings.isNetworkGame() == false) {
+							gameCamera.setMaxHeight(PHOTO_MODE_MAXHEIGHT);
+						} else if (photoModeEnabled == false) {
+							gameCamera.setMaxHeight(-1);
+						}
+
+					}
+					//Toggle Healthbars
+					else if (isKeyPressed(configKeys.getSDLKey("ToggleHealthbars"), key, false) == true) {
+						switch (healthbarMode) {
+							case hbvUndefined:
+								healthbarMode = hbvOff;
+								console.addLine(lang.getString("Healthbar2") + ": " +
+									lang.getString("HealthbarsOff"));
+								break;
+							case hbvOff:
+								healthbarMode = hbvAlways;
+								console.addLine(lang.getString("Healthbar2") + ": " +
+									lang.getString("HealthbarsAlways"));
+								break;
+							case hbvAlways:
+								healthbarMode = hbvIfNeeded;
+								console.addLine(lang.getString("Healthbar2") + ": " +
+									lang.getString("HealthbarsIfNeeded"));
+								break;
+							case hbvIfNeeded:
+								healthbarMode = hbvSelected;
+								console.addLine(lang.getString("Healthbar2") + ": " +
+									lang.getString("HealthbarsSelected"));
+								break;
+							case hbvSelected:
+								healthbarMode = hbvSelected | hbvIfNeeded;
+								console.addLine(lang.getString("Healthbar2") + ": " +
+									lang.getString("HealthbarsSelectedOrNeeded"));
+								break;
+							case (hbvSelected | hbvIfNeeded):
+								healthbarMode = hbvUndefined;
+								console.addLine(lang.getString("Healthbar2") + ": " +
+									lang.getString("HealthbarsFactionDefault"));
+								break;
+							default:
+								printf
+								("In [%s::%s Line: %d] Toggle Healthbars Hotkey - Invalid Value. Setting to default.\n",
+									extractFileFromDirectoryPath(__FILE__).c_str(),
+									__FUNCTION__, __LINE__);
+								healthbarMode = hbvUndefined;
+								break;
+						}
+					}
+					//Toggle music
+					else if (isKeyPressed(configKeys.getSDLKey("ToggleMusic"), key, false) == true) {
+						if (this->masterserverMode == false) {
+							Config & config = Config::getInstance();
+							StrSound *gameMusic =
+								world.getThisFaction()->getType()->getMusic();
+							if (gameMusic != NULL) {
+								float
+									configVolume = (config.getInt("SoundVolumeMusic") / 100.f);
+								float currentVolume = gameMusic->getVolume();
+								if (currentVolume > 0) {
+									gameMusic->setVolume(0);
+									console.addLine(lang.getString("GameMusic") +
+										" " + lang.getString("Off"));
+								} else {
+									//If the config says zero, use the default music volume
+									gameMusic->setVolume(configVolume ? configVolume : 0.9);
+									console.addLine(lang.getString("GameMusic"));
 								}
-							//else if(key == configKeys.getCharKey("TogglePhotoMode")) {
-								else
-									if (isKeyPressed
-									(configKeys.getSDLKey("TogglePhotoMode"), key,
-										false) == true) {
-										photoModeEnabled = !photoModeEnabled;
-										if (photoModeEnabled == true &&
-											this->gameSettings.isNetworkGame() == false) {
-											gameCamera.setMaxHeight(PHOTO_MODE_MAXHEIGHT);
-										} else if (photoModeEnabled == false) {
-											gameCamera.setMaxHeight(-1);
-										}
+							}
+						}
+					}
+					//move camera left
+					else if (isKeyPressed(configKeys.getSDLKey("CameraModeLeft"), key, false) == true) {
+						gameCamera.setMoveX(-1);
+						camLeftButtonDown = true;
+					}
+					//move camera right
+					else if (isKeyPressed(configKeys.getSDLKey("CameraModeRight"), key, false) == true) {
+						gameCamera.setMoveX(1);
+						camRightButtonDown = true;
+					}
+					//move camera up
+					else if (isKeyPressed(configKeys.getSDLKey("CameraModeUp"), key, false) == true) {
+						gameCamera.setMoveZ(1);
+						camUpButtonDown = true;
+					}
+					//move camera down
+					else if (isKeyPressed(configKeys.getSDLKey("CameraModeDown"), key, false) == true) {
+						gameCamera.setMoveZ(-1);
+						camDownButtonDown = true;
+					}
+					//change camera mode
+					else if (isKeyPressed(configKeys.getSDLKey("FreeCameraMode"), key, false) == true) {
+						if (gameCamera.getState() == GameCamera::sFree) {
+							gameCamera.setState(GameCamera::sGame);
+							string
+								stateString =
+								gameCamera.getState() ==
+								GameCamera::
+								sGame ? lang.getString("GameCamera") :
+								lang.getString("FreeCamera");
+							console.addLine(lang.getString("CameraModeSet") + " " +
+								stateString);
+						} else if (gameCamera.getState() == GameCamera::sGame) {
+							gameCamera.setState(GameCamera::sFree);
+							string
+								stateString =
+								gameCamera.getState() ==
+								GameCamera::
+								sGame ? lang.getString("GameCamera") :
+								lang.getString("FreeCamera");
+							console.addLine(lang.getString("CameraModeSet") + " " +
+								stateString);
+						}
+						//else ignore!
+					}
+					//reset camera mode to normal
+					else if (isKeyPressed(configKeys.getSDLKey("ResetCameraMode"), key, false) == true) {
+						if (currentCameraFollowUnit != NULL) {
+							currentCameraFollowUnit = NULL;
+						}
+						gameCamera.setState(GameCamera::sGame);
+					}
+					//pause
+					else if (isKeyPressed(configKeys.getSDLKey("PauseGame"), key, false) == true) {
+						//printf("Toggle pause paused = %d\n",paused);
+						//setPaused(!paused);
 
-									}
-							//Toggle Healthbars
-									else
-										if (isKeyPressed
-										(configKeys.getSDLKey("ToggleHealthbars"), key,
-											false) == true) {
-											switch (healthbarMode) {
-												case hbvUndefined:
-													healthbarMode = hbvOff;
-													console.addLine(lang.getString("Healthbar2") + ": " +
-														lang.getString("HealthbarsOff"));
-													break;
-												case hbvOff:
-													healthbarMode = hbvAlways;
-													console.addLine(lang.getString("Healthbar2") + ": " +
-														lang.getString("HealthbarsAlways"));
-													break;
-												case hbvAlways:
-													healthbarMode = hbvIfNeeded;
-													console.addLine(lang.getString("Healthbar2") + ": " +
-														lang.getString("HealthbarsIfNeeded"));
-													break;
-												case hbvIfNeeded:
-													healthbarMode = hbvSelected;
-													console.addLine(lang.getString("Healthbar2") + ": " +
-														lang.getString("HealthbarsSelected"));
-													break;
-												case hbvSelected:
-													healthbarMode = hbvSelected | hbvIfNeeded;
-													console.addLine(lang.getString("Healthbar2") + ": " +
-														lang.getString("HealthbarsSelectedOrNeeded"));
-													break;
-												case (hbvSelected | hbvIfNeeded):
-													healthbarMode = hbvUndefined;
-													console.addLine(lang.getString("Healthbar2") + ": " +
-														lang.getString("HealthbarsFactionDefault"));
-													break;
-												default:
-													printf
-													("In [%s::%s Line: %d] Toggle Healthbars Hotkey - Invalid Value. Setting to default.\n",
-														extractFileFromDirectoryPath(__FILE__).c_str(),
-														__FUNCTION__, __LINE__);
-													healthbarMode = hbvUndefined;
-													break;
-											}
-										}
-							//Toggle music
-							//else if(key == configKeys.getCharKey("ToggleMusic")) {
-										else
-											if (isKeyPressed
-											(configKeys.getSDLKey("ToggleMusic"), key, false) == true) {
+						bool allowAdminMenuItems = false;
+						NetworkManager & networkManager = NetworkManager::getInstance();
+						NetworkRole role = networkManager.getNetworkRole();
+						if (role == nrServer) {
+							allowAdminMenuItems = true;
+						} else if (role == nrClient) {
+							ClientInterface *clientInterface =
+								dynamic_cast <
+								ClientInterface *>(networkManager.getClientInterface());
 
-												if (this->masterserverMode == false) {
-													Config & config = Config::getInstance();
-													StrSound *gameMusic =
-														world.getThisFaction()->getType()->getMusic();
-													if (gameMusic != NULL) {
-														float
-															configVolume = (config.getInt("SoundVolumeMusic") / 100.f);
-														float currentVolume = gameMusic->getVolume();
-														if (currentVolume > 0) {
-															gameMusic->setVolume(0);
-															console.addLine(lang.getString("GameMusic") +
-																" " + lang.getString("Off"));
-														} else {
-															//If the config says zero, use the default music volume
-															gameMusic->setVolume(configVolume ? configVolume : 0.9);
-															console.addLine(lang.getString("GameMusic"));
-														}
-													}
-												}
-											}
-							//move camera left
-							//else if(key == configKeys.getCharKey("CameraModeLeft")) {
-											else
-												if (isKeyPressed
-												(configKeys.getSDLKey("CameraModeLeft"), key, false) == true) {
-													gameCamera.setMoveX(-1);
-													camLeftButtonDown = true;
-												}
-							//move camera right
-							//else if(key == configKeys.getCharKey("CameraModeRight")) {
-												else
-													if (isKeyPressed
-													(configKeys.getSDLKey("CameraModeRight"), key,
-														false) == true) {
-														gameCamera.setMoveX(1);
-														camRightButtonDown = true;
-													}
-							//move camera up
-							//else if(key == configKeys.getCharKey("CameraModeUp")) {
-													else
-														if (isKeyPressed
-														(configKeys.getSDLKey("CameraModeUp"), key, false) == true) {
-															gameCamera.setMoveZ(1);
-															camUpButtonDown = true;
-														}
-							//move camera down
-							//else if(key == configKeys.getCharKey("CameraModeDown")) {
-														else
-															if (isKeyPressed
-															(configKeys.getSDLKey("CameraModeDown"), key, false) == true) {
-																gameCamera.setMoveZ(-1);
-																camDownButtonDown = true;
-															}
-							//change camera mode
-							//else if(key == configKeys.getCharKey("FreeCameraMode")) {
-															else
-																if (isKeyPressed
-																(configKeys.getSDLKey("FreeCameraMode"), key, false) == true) {
-																	if (gameCamera.getState() == GameCamera::sFree) {
-																		gameCamera.setState(GameCamera::sGame);
-																		string
-																			stateString =
-																			gameCamera.getState() ==
-																			GameCamera::
-																			sGame ? lang.getString("GameCamera") :
-																			lang.getString("FreeCamera");
-																		console.addLine(lang.getString("CameraModeSet") + " " +
-																			stateString);
-																	} else if (gameCamera.getState() == GameCamera::sGame) {
-																		gameCamera.setState(GameCamera::sFree);
-																		string
-																			stateString =
-																			gameCamera.getState() ==
-																			GameCamera::
-																			sGame ? lang.getString("GameCamera") :
-																			lang.getString("FreeCamera");
-																		console.addLine(lang.getString("CameraModeSet") + " " +
-																			stateString);
-																	}
-																	//else ignore!
-																}
-							//reset camera mode to normal
-							//else if(key == configKeys.getCharKey("ResetCameraMode")) {
-																else
-																	if (isKeyPressed
-																	(configKeys.getSDLKey("ResetCameraMode"), key,
-																		false) == true) {
-																		if (currentCameraFollowUnit != NULL) {
-																			currentCameraFollowUnit = NULL;
-																		}
-																		gameCamera.setState(GameCamera::sGame);
-																	}
-							//pause
-							//else if(key == configKeys.getCharKey("PauseGame")) {
-																	else
-																		if (isKeyPressed
-																		(configKeys.getSDLKey("PauseGame"), key, false) == true) {
-																			//printf("Toggle pause paused = %d\n",paused);
-																			//setPaused(!paused);
+							if (clientInterface != NULL &&
+								gameSettings.getMasterserver_admin() ==
+								clientInterface->getSessionKey()) {
+								allowAdminMenuItems = true;
+							}
+						}
 
-																			bool allowAdminMenuItems = false;
-																			NetworkManager & networkManager = NetworkManager::getInstance();
-																			NetworkRole role = networkManager.getNetworkRole();
-																			if (role == nrServer) {
-																				allowAdminMenuItems = true;
-																			} else if (role == nrClient) {
-																				ClientInterface *clientInterface =
-																					dynamic_cast <
-																					ClientInterface *>(networkManager.getClientInterface());
+						if (allowAdminMenuItems) {
+							if (getPaused() == false) {
+								commander.tryPauseGame(false, false);
+							} else {
+								commander.tryResumeGame(false, false);
+							}
+						}
+					} else if (isKeyPressed(configKeys.getSDLKey("ExtraTeamColorMarker"), key, false) == true) {
+						//printf("Toggle ExtraTeamColorMarker\n");
+						toggleTeamColorMarker();
+					}
+					//switch display color
+					else if (isKeyPressed (configKeys.getSDLKey("ChangeFontColor"), key, false) == true) {
+						gui.switchToNextDisplayColor();
+					}
+					//increment speed
+					else if (isKeyPressed(configKeys.getSDLKey("GameSpeedIncrease"), key, false) == true) {
+						bool
+							speedChangesAllowed =
+							!NetworkManager::
+							getInstance().isNetworkGameWithConnectedClients();
+						if (speedChangesAllowed) {
+							incSpeed();
+						}
+					}
+					//decrement speed
+					else if (isKeyPressed(configKeys.getSDLKey("GameSpeedDecrease"), key, false) == true) {
+						bool
+							speedChangesAllowed =
+							!NetworkManager::
+							getInstance().isNetworkGameWithConnectedClients();
+						if (speedChangesAllowed) {
+							decSpeed();
+						}
+					} else if (isKeyPressed(configKeys.getSDLKey("BookmarkAdd"), key, false) == true) {
+						startMarkCell();
+					} else if (isKeyPressed(configKeys.getSDLKey("BookmarkRemove"), key, false) == true) {
+						isUnMarkCellEnabled = true;
+					} else if (isKeyPressed(configKeys.getSDLKey("CameraFollowSelectedUnit"), key, false) == true) {
+						startCameraFollowUnit();
+					}
+					//exit
+					else if (isKeyPressed(configKeys.getSDLKey("ExitKey"), key, false) == true) {
+						popupMenu.setEnabled(!popupMenu.getEnabled());
+						popupMenu.setVisible(popupMenu.getEnabled());
+					}
 
-																				if (clientInterface != NULL &&
-																					gameSettings.getMasterserver_admin() ==
-																					clientInterface->getSessionKey()) {
-																					allowAdminMenuItems = true;
-																				}
-																			}
+					//hotkeys
+					if (SystemFlags::
+						getSystemSettingType(SystemFlags::debugSystem).enabled)
+						SystemFlags::OutputDebug(SystemFlags::debugSystem,
+							"In [%s::%s Line: %d] gameCamera.getState() = %d\n",
+							extractFileFromDirectoryPath(__FILE__).
+							c_str(), __FUNCTION__, __LINE__,
+							gameCamera.getState());
 
-																			if (allowAdminMenuItems) {
-																				if (getPaused() == false) {
-																					commander.tryPauseGame(false, false);
-																				} else {
-																					commander.tryResumeGame(false, false);
-																				}
-																			}
-																		} else
-																			if (isKeyPressed
-																			(configKeys.getSDLKey("ExtraTeamColorMarker"), key,
-																				false) == true) {
-																				//printf("Toggle ExtraTeamColorMarker\n");
-																				toggleTeamColorMarker();
-																			}
-																		//switch display color
-																		//else if(key == configKeys.getCharKey("ChangeFontColor")) {
-																			else
-																				if (isKeyPressed
-																				(configKeys.getSDLKey("ChangeFontColor"), key,
-																					false) == true) {
-																					gui.switchToNextDisplayColor();
-																				}
-																		//increment speed
-																		//else if(key == configKeys.getCharKey("GameSpeedIncrease")) {
-																				else
-																					if (isKeyPressed
-																					(configKeys.getSDLKey("GameSpeedIncrease"), key,
-																						false) == true) {
-																						bool
-																							speedChangesAllowed =
-																							!NetworkManager::
-																							getInstance().isNetworkGameWithConnectedClients();
-																						if (speedChangesAllowed) {
-																							incSpeed();
-																						}
-																					}
-																		//decrement speed
-																		//else if(key == configKeys.getCharKey("GameSpeedDecrease")) {
-																					else
-																						if (isKeyPressed
-																						(configKeys.getSDLKey("GameSpeedDecrease"), key,
-																							false) == true) {
-																							bool
-																								speedChangesAllowed =
-																								!NetworkManager::
-																								getInstance().isNetworkGameWithConnectedClients();
-																							if (speedChangesAllowed) {
-																								decSpeed();
-																							}
-																						} else
-																							if (isKeyPressed
-																							(configKeys.getSDLKey("BookmarkAdd"), key, false) == true) {
-																								startMarkCell();
-																							} else
-																								if (isKeyPressed
-																								(configKeys.getSDLKey("BookmarkRemove"), key, false) == true) {
-																									isUnMarkCellEnabled = true;
-																								} else
-																									if (isKeyPressed
-																									(configKeys.getSDLKey("CameraFollowSelectedUnit"), key,
-																										false) == true) {
-																										startCameraFollowUnit();
-																									}
-																								//exit
-																									else
-																										if (isKeyPressed(configKeys.getSDLKey("ExitKey"), key, false)
-																											== true) {
-																											popupMenu.setEnabled(!popupMenu.getEnabled());
-																											popupMenu.setVisible(popupMenu.getEnabled());
-																										}
+					if (gameCamera.getState() != GameCamera::sFree) {
+						if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
+							enabled)
+							SystemFlags::OutputDebug(SystemFlags::debugSystem,
+								"In [%s::%s Line: %d] key = %d\n",
+								extractFileFromDirectoryPath
+								(__FILE__).c_str(), __FUNCTION__,
+								__LINE__, key);
 
-																								//hotkeys
-																								if (SystemFlags::
-																									getSystemSettingType(SystemFlags::debugSystem).enabled)
-																									SystemFlags::OutputDebug(SystemFlags::debugSystem,
-																										"In [%s::%s Line: %d] gameCamera.getState() = %d\n",
-																										extractFileFromDirectoryPath(__FILE__).
-																										c_str(), __FUNCTION__, __LINE__,
-																										gameCamera.getState());
+						gui.hotKey(key);
+					} else {
+						//rotate camera leftt
+						//if(key == configKeys.getCharKey("CameraRotateLeft")) {
+						if (isKeyPressed(configKeys.getSDLKey("CameraRotateLeft"), key) == true) {
+							gameCamera.setRotate(-1);
+						}
+						//rotate camera right
+						//else if(key == configKeys.getCharKey("CameraRotateRight")){
+						else if (isKeyPressed(configKeys.getSDLKey("CameraRotateRight"), key) == true) {
+							gameCamera.setRotate(1);
+						}
+						//camera up
+						//else if(key == configKeys.getCharKey("CameraRotateUp")) {
+						else if (isKeyPressed(configKeys.getSDLKey("CameraRotateUp"), key) == true) {
+							gameCamera.setMoveY(1);
+						}
+						//camera down
+						else if (isKeyPressed(configKeys.getSDLKey("CameraRotateDown"), key) == true) {
+							gameCamera.setMoveY(-1);
+						}
+					}
 
-																								if (gameCamera.getState() != GameCamera::sFree) {
-																									if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
-																										enabled)
-																										SystemFlags::OutputDebug(SystemFlags::debugSystem,
-																											"In [%s::%s Line: %d] key = %d\n",
-																											extractFileFromDirectoryPath
-																											(__FILE__).c_str(), __FUNCTION__,
-																											__LINE__, key);
-
-																									gui.hotKey(key);
-																								} else {
-																									//rotate camera leftt
-																									//if(key == configKeys.getCharKey("CameraRotateLeft")) {
-																									if (isKeyPressed
-																									(configKeys.getSDLKey("CameraRotateLeft"), key) == true) {
-																										gameCamera.setRotate(-1);
-																									}
-																									//rotate camera right
-																									//else if(key == configKeys.getCharKey("CameraRotateRight")){
-																									else
-																										if (isKeyPressed
-																										(configKeys.getSDLKey("CameraRotateRight"), key) == true) {
-																											gameCamera.setRotate(1);
-																										}
-																									//camera up
-																									//else if(key == configKeys.getCharKey("CameraRotateUp")) {
-																										else
-																											if (isKeyPressed
-																											(configKeys.getSDLKey("CameraRotateUp"), key) == true) {
-																												gameCamera.setMoveY(1);
-																											}
-																									//camera down
-																									//else if(key == configKeys.getCharKey("CameraRotateDown")) {
-																											else
-																												if (isKeyPressed
-																												(configKeys.getSDLKey("CameraRotateDown"), key) == true) {
-																													gameCamera.setMoveY(-1);
-																												}
-																								}
-
-																								if (isKeyPressed(configKeys.getSDLKey("SaveGame"), key) == true) {
-																									saveGame();
-																								}
+					if (isKeyPressed(configKeys.getSDLKey("SaveGame"), key) == true) {
+						saveGame();
+					}
 				}
 			} catch (const exception & ex) {
 				char szBuf[8096] = "";

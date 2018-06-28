@@ -22,12 +22,12 @@ using namespace Shared::Platform;
 namespace Shared {
 	namespace Graphics {
 		namespace Gl {
-			bool MeshCallbackTeamColor::noTeamColors = false;
+			bool MeshCallback::noTeamColors = false;
 
-			void MeshCallbackTeamColor::execute(const Mesh *mesh) {
+			void MeshCallback::execute(const Mesh *mesh, float alpha) {
 				//team color
 				uint8 opacity = mesh->getFactionColorOpacity();
-				if (!mesh->getCustomTexture() || opacity == 0 || teamTexture == NULL || MeshCallbackTeamColor::noTeamColors) {
+				if (!mesh->getCustomTexture() || opacity == 0 || teamTexture == NULL || MeshCallback::noTeamColors) {
 					glActiveTexture(GL_TEXTURE1);
 					glDisable(GL_TEXTURE_2D);
 					glActiveTexture(GL_TEXTURE0);
@@ -44,7 +44,7 @@ namespace Shared {
 					glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
 					glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_RGB, GL_TEXTURE);
 					glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_RGB, GL_SRC_ALPHA);
-					//set alpha to 1
+
 					glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_REPLACE);
 					glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_TEXTURE);
 					glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
@@ -56,10 +56,10 @@ namespace Shared {
 					GLuint handle = static_cast<const Texture2DGl*>(teamTexture)->getHandle();
 					glBindTexture(GL_TEXTURE_2D, handle);
 					float color[4];
-					color[0] = 1.0f;    // Red
-					color[1] = 1.0f;    // Green
-					color[2] = 1.0f;    // Blue
-					color[3] = opacity * 0.00392156862f;    // Alpha
+					color[0] = 1.0f; // Red
+					color[1] = 1.0f; // Green
+					color[2] = 1.0f; // Blue
+					color[3] = opacity * 0.00392156862f; // Alpha
 					glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, color);
 
 					glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
@@ -72,14 +72,33 @@ namespace Shared {
 					glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, GL_PREVIOUS);
 					glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
 
-					//set alpha to 1
 					glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_INTERPOLATE);
 					glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_TEXTURE);
-					glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_ALPHA, GL_PREVIOUS);
-					glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_ALPHA, GL_CONSTANT);
 					glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
+					glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_ALPHA, GL_PREVIOUS);
 					glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_ALPHA, GL_SRC_ALPHA);
+					glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE2_ALPHA, GL_CONSTANT);
 					glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND2_ALPHA, GL_SRC_ALPHA);
+					
+					if (alpha < 1.f - FLT_EPSILON) {
+						glActiveTexture(GL_TEXTURE2);
+						glEnable(GL_TEXTURE_2D);
+						glMultiTexCoord2f(GL_TEXTURE1, 0.f, 0.f);
+						glBindTexture(GL_TEXTURE_2D, handle);
+						color[3] = alpha;
+						glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, color);
+
+						glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
+						glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_REPLACE);
+						glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_PREVIOUS);
+						glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
+
+						glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_MODULATE);
+						glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_PREVIOUS);
+						glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
+						glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_ALPHA, GL_CONSTANT);
+						glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_ALPHA, GL_SRC_ALPHA);
+					}
 
 					glActiveTexture(GL_TEXTURE0);
 				}
@@ -248,7 +267,7 @@ namespace Shared {
 				if (this->colorPickingMode == false) {
 					//set color
 					if (renderColors) {
-						Vec4f color(mesh->getDiffuseColor(), mesh->getOpacity() * alpha);
+						Vec4f color(mesh->getDiffuseColor(), mesh->getOpacity());
 						glColor4fv(color.ptr());
 					}
 
@@ -272,7 +291,7 @@ namespace Shared {
 					}
 
 					if (meshCallback != NULL) {
-						meshCallback->execute(mesh);
+						meshCallback->execute(mesh, alpha);
 					}
 				}
 

@@ -5160,7 +5160,7 @@ namespace Glest {
 
 			//Unit *unit=NULL;
 			//const World *world= game->getWorld();
-			MeshCallbackTeamColor meshCallbackTeamColor;
+			MeshCallback meshCallback;
 
 			//assert
 			assertGl();
@@ -5183,7 +5183,7 @@ namespace Glest {
 					if ((airUnits == false && unit->getType()->getField() == fAir) || (airUnits == true && unit->getType()->getField() != fAir)) {
 						continue;
 					}
-					meshCallbackTeamColor.setTeamTexture(unit->getFaction()->getTexture());
+					meshCallback.setTeamTexture(unit->getFaction()->getTexture());
 
 					if (modelRenderStarted == false) {
 						modelRenderStarted = true;
@@ -5204,7 +5204,7 @@ namespace Glest {
 						}
 						glActiveTexture(baseTexUnit);
 
-						modelRenderer->begin(true, true, true, false, &meshCallbackTeamColor);
+						modelRenderer->begin(true, true, true, false, &meshCallback);
 					}
 
 					glMatrixMode(GL_MODELVIEW);
@@ -5243,7 +5243,7 @@ namespace Glest {
 					model->updateInterpolationData(unit->getAnimProgressAsFloat(), unit->isAlive() && !unit->isAnimProgressBound());
 					//}
 
-					modelRenderer->render(model, alpha);
+					modelRenderer->render(model, 0, alpha);
 					triangleCount += model->getTriangleCount();
 					pointCount += model->getVertexCount();
 

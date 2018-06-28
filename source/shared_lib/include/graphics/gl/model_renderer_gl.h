@@ -12,7 +12,6 @@
 #ifndef _SHARED_GRAPHICS_GL_MODELRENDERERGL_H_
 #define _SHARED_GRAPHICS_GL_MODELRENDERERGL_H_
 
-#include <array>
 #include "model_renderer.h"
 #include "model.h"
 #include "opengl.h"
@@ -24,6 +23,23 @@ using ::Shared::Graphics::Gl::Texture2DGl;
 namespace Shared {
 	namespace Graphics {
 		namespace Gl {
+			class MeshCallback {
+			private:
+				const Texture *teamTexture;
+
+			public:
+				MeshCallback() {
+					teamTexture = NULL;
+				}
+
+				void setTeamTexture(const Texture *teamTexture) {
+					this->teamTexture = teamTexture;
+				}
+
+				void execute(const Mesh *mesh, float alpha);
+
+				static bool noTeamColors;
+			};
 
 			// =====================================================
 			//	class ModelRendererGl
@@ -54,24 +70,6 @@ namespace Shared {
 
 				void renderMesh(Mesh *mesh, int renderMode = rmNormal, float alpha = 1.0f);
 				void renderMeshNormals(Mesh *mesh);
-			};
-
-			class MeshCallbackTeamColor : public MeshCallback {
-			private:
-				const Texture *teamTexture;
-
-			public:
-				MeshCallbackTeamColor() : MeshCallback() {
-					teamTexture = NULL;
-				}
-
-				void setTeamTexture(const Texture *teamTexture) {
-					this->teamTexture = teamTexture;
-				}
-
-				virtual void execute(const Mesh *mesh);
-
-				static bool noTeamColors;
 			};
 		}
 	}

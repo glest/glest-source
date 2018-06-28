@@ -312,7 +312,7 @@ namespace Shared {
 					assert(false);
 					break;
 			}
-			meshCallbackTeamColor.setTeamTexture(customTexture);
+			meshCallback.setTeamTexture(customTexture);
 
 			if (wireframe) {
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -371,7 +371,7 @@ namespace Shared {
 
 		void Renderer::renderTheModel(Model *model, float f) {
 			if (model != NULL) {
-				modelRenderer->begin(true, true, !wireframe, false, &meshCallbackTeamColor);
+				modelRenderer->begin(true, true, !wireframe, false, &meshCallback);
 				model->updateInterpolationData(f, true);
 				modelRenderer->render(model);
 

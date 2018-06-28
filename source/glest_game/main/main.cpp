@@ -6815,7 +6815,7 @@ namespace
 					setAllowAltEnterFullscreenToggle(allowAltEnterFullscreenToggle);
 
 				if (config.getBool("noTeamColors", "false") == true) {
-					MeshCallbackTeamColor::noTeamColors = true;
+					MeshCallback::noTeamColors = true;
 				}
 
 
@@ -7259,770 +7259,747 @@ namespace
 					true) {
 					program->initServer(mainWindow, false, true);
 					gameInitialized = true;
-				} else
-					if (hasCommandArgument
-					(argc, argv,
-						string(GAME_ARGS[GAME_ARG_MASTERSERVER_MODE])) == true) {
-						program->initServer(mainWindow, false, true, true);
-						gameInitialized = true;
-					} else
-						if (hasCommandArgument
-						(argc, argv,
-							string(GAME_ARGS[GAME_ARG_AUTOSTART_LASTGAME])) == true) {
-							program->initServer(mainWindow, true, false);
-							gameInitialized = true;
-						} else
-							if (hasCommandArgument
-							(argc, argv,
-								string(GAME_ARGS[GAME_ARG_AUTOSTART_LAST_SAVED_GAME])) ==
-								true) {
+				} else if (hasCommandArgument(argc, argv, string(GAME_ARGS[GAME_ARG_MASTERSERVER_MODE])) == true) {
+					program->initServer(mainWindow, false, true, true);
+					gameInitialized = true;
+				} else if (hasCommandArgument(argc, argv, string(GAME_ARGS[GAME_ARG_AUTOSTART_LASTGAME])) == true) {
+					program->initServer(mainWindow, true, false);
+					gameInitialized = true;
+				} else if (hasCommandArgument(argc, argv, string(GAME_ARGS[GAME_ARG_AUTOSTART_LAST_SAVED_GAME])) == true) {
+					string
+						fileName = "";
+					int
+						foundParamIndIndex = -1;
+					hasCommandArgument(argc, argv,
+						string(GAME_ARGS
+							[GAME_ARG_AUTOSTART_LAST_SAVED_GAME]) +
+						string("="), &foundParamIndIndex);
+					if (foundParamIndIndex >= 0) {
+						string
+							loadfileName = argv[foundParamIndIndex];
+						vector < string > paramPartTokens;
+						Tokenize(loadfileName, paramPartTokens, "=");
+						if (paramPartTokens.size() >= 2
+							&& paramPartTokens[1].length() > 0) {
+							fileName = paramPartTokens[1];
+
+							if (fileExists(fileName) == false) {
+								// Save the file now
 								string
-									fileName = "";
-								int
-									foundParamIndIndex = -1;
-								hasCommandArgument(argc, argv,
-									string(GAME_ARGS
-										[GAME_ARG_AUTOSTART_LAST_SAVED_GAME]) +
-									string("="), &foundParamIndIndex);
-								if (foundParamIndIndex >= 0) {
-									string
-										loadfileName = argv[foundParamIndIndex];
-									vector < string > paramPartTokens;
-									Tokenize(loadfileName, paramPartTokens, "=");
-									if (paramPartTokens.size() >= 2
-										&& paramPartTokens[1].length() > 0) {
-										fileName = paramPartTokens[1];
-
-										if (fileExists(fileName) == false) {
-											// Save the file now
-											string
-												saveGameFile = "saved/" + fileName;
-											if (getGameReadWritePath
-											(GameConstants::path_logs_CacheLookupKey) != "") {
-												saveGameFile =
-													getGameReadWritePath
-													(GameConstants::path_logs_CacheLookupKey) + saveGameFile;
-											} else {
-												saveGameFile = userData + saveGameFile;
-											}
-											if (fileExists(saveGameFile) == true) {
-												fileName = saveGameFile;
-											}
-										}
-
-										if (fileExists(fileName) == false) {
-											char
-												szBuf[8096] = "";
-											snprintf(szBuf, 8096,
-												"File specified for loading a saved game cannot be found: [%s]",
-												fileName.c_str());
-											printf
-											("\n\n======================================================================================\n%s\n======================================================================================\n\n\n",
-												szBuf);
-
-											throw
-												megaglest_runtime_error(szBuf);
-										}
-									}
+									saveGameFile = "saved/" + fileName;
+								if (getGameReadWritePath
+								(GameConstants::path_logs_CacheLookupKey) != "") {
+									saveGameFile =
+										getGameReadWritePath
+										(GameConstants::path_logs_CacheLookupKey) + saveGameFile;
+								} else {
+									saveGameFile = userData + saveGameFile;
 								}
-								program->initSavedGame(mainWindow, false, fileName);
-								gameInitialized = true;
-							} else
-								if (hasCommandArgument
-								(argc, argv, string(GAME_ARGS[GAME_ARG_PREVIEW_MAP])) == true) {
-									int
-										foundParamIndIndex = -1;
-									hasCommandArgument(argc, argv,
-										string(GAME_ARGS[GAME_ARG_PREVIEW_MAP]) +
-										string("="), &foundParamIndIndex);
-									if (foundParamIndIndex < 0) {
-										hasCommandArgument(argc, argv,
-											string(GAME_ARGS[GAME_ARG_PREVIEW_MAP]),
-											&foundParamIndIndex);
-									}
-									string
-										mapName = argv[foundParamIndIndex];
-									vector < string > paramPartTokens;
-									Tokenize(mapName, paramPartTokens, "=");
-									if (paramPartTokens.size() >= 2
-										&& paramPartTokens[1].length() > 0) {
-										vector < string > paramPartTokens2;
-										string
-											tileset = "forest";
-										Tokenize(paramPartTokens[1], paramPartTokens2, ",");
-										if (paramPartTokens2.size() >= 2
-											&& paramPartTokens2[1].length() > 0) {
-											tileset = paramPartTokens2[1];
-										}
-										string
-											autoloadMapName = paramPartTokens2[0];
-
-										GameSettings *
-											gameSettings = &startupGameSettings;
-										gameSettings->setMap(autoloadMapName);
-										gameSettings->setTileset(tileset);
-										gameSettings->setTech("zetapack");
-										gameSettings->setDefaultUnits(false);
-										gameSettings->setDefaultResources(false);
-										gameSettings->setDefaultVictoryConditions(true);
-										gameSettings->setFogOfWar(false);
-										gameSettings->setAllowObservers(true);
-										gameSettings->setPathFinderType(pfBasic);
-
-										for (int i = 0; i < GameConstants::maxPlayers; ++i) {
-											ControlType
-												ct = ctClosed;
-
-											gameSettings->setNetworkPlayerStatuses(i, npst_None);
-											gameSettings->setFactionControl(i, ct);
-											gameSettings->setStartLocationIndex(i, i);
-											gameSettings->setResourceMultiplierIndex(i, 10);
-											gameSettings->setNetworkPlayerName(i,
-												GameConstants::
-												NETWORK_SLOT_CLOSED_SLOTNAME);
-										}
-
-										ControlType
-											ct = ctHuman;
-
-										gameSettings->setNetworkPlayerStatuses(0, npst_None);
-										gameSettings->setFactionControl(0, ct);
-										gameSettings->setFactionTypeName(0,
-											formatString
-											(GameConstants::
-												OBSERVER_SLOTNAME));
-										gameSettings->setTeam(0,
-											GameConstants::maxPlayers + fpt_Observer -
-											1);
-										gameSettings->setStartLocationIndex(0, 0);
-										gameSettings->setNetworkPlayerName(0,
-											GameConstants::
-											OBSERVER_SLOTNAME);
-
-										gameSettings->setFactionCount(1);
-
-										Config & config = Config::getInstance();
-										gameSettings->setEnableServerControlledAI(config.getBool
-										("ServerControlledAI",
-											"true"));
-										gameSettings->setNetworkFramePeriod(config.getInt
-										("NetworkSendFrameCount",
-											"20"));
-
-										program->initServer(mainWindow, gameSettings);
-										gameInitialized = true;
-									} else {
-										printf
-										("\nInvalid map name specified on commandline [%s] map [%s]\n\n",
-											argv[foundParamIndIndex],
-											(paramPartTokens.size() >=
-												2 ? paramPartTokens[1].c_str() : NULL));
-										printParameterHelp(argv[0], foundInvalidArgs);
-										delete
-											mainWindow;
-										mainWindow = NULL;
-										return 1;
-									}
+								if (fileExists(saveGameFile) == true) {
+									fileName = saveGameFile;
 								}
+							}
 
-								else
-									if (hasCommandArgument
-									(argc, argv, string(GAME_ARGS[GAME_ARG_CONNECT])) == true) {
-										int
-											foundParamIndIndex = -1;
-										hasCommandArgument(argc, argv,
-											string(GAME_ARGS[GAME_ARG_CONNECT]) +
-											string("="), &foundParamIndIndex);
-										if (foundParamIndIndex < 0) {
-											hasCommandArgument(argc, argv,
-												string(GAME_ARGS[GAME_ARG_CONNECT]),
-												&foundParamIndIndex);
-										}
-										string
-											serverToConnectTo = argv[foundParamIndIndex];
-										vector < string > paramPartTokens;
-										Tokenize(serverToConnectTo, paramPartTokens, "=");
-										if (paramPartTokens.size() >= 2
-											&& paramPartTokens[1].length() > 0) {
-											string
-												autoConnectServer = paramPartTokens[1];
+							if (fileExists(fileName) == false) {
+								char
+									szBuf[8096] = "";
+								snprintf(szBuf, 8096,
+									"File specified for loading a saved game cannot be found: [%s]",
+									fileName.c_str());
+								printf
+								("\n\n======================================================================================\n%s\n======================================================================================\n\n\n",
+									szBuf);
 
-											int
-												port = config.getInt("PortServer",
-													intToStr(GameConstants::
-														serverPort).c_str());
-											vector < string > paramPartTokens2;
-											Tokenize(autoConnectServer, paramPartTokens2, ":");
-											autoConnectServer = paramPartTokens2[0];
-											if (paramPartTokens2.size() >= 2
-												&& paramPartTokens2[1].length() > 0) {
-												port = strToInt(paramPartTokens2[1]);
-											}
+								throw
+									megaglest_runtime_error(szBuf);
+							}
+						}
+					}
+					program->initSavedGame(mainWindow, false, fileName);
+					gameInitialized = true;
+				} else if (hasCommandArgument(argc, argv, string(GAME_ARGS[GAME_ARG_PREVIEW_MAP])) == true) {
+					int
+						foundParamIndIndex = -1;
+					hasCommandArgument(argc, argv,
+						string(GAME_ARGS[GAME_ARG_PREVIEW_MAP]) +
+						string("="), &foundParamIndIndex);
+					if (foundParamIndIndex < 0) {
+						hasCommandArgument(argc, argv,
+							string(GAME_ARGS[GAME_ARG_PREVIEW_MAP]),
+							&foundParamIndIndex);
+					}
+					string
+						mapName = argv[foundParamIndIndex];
+					vector < string > paramPartTokens;
+					Tokenize(mapName, paramPartTokens, "=");
+					if (paramPartTokens.size() >= 2
+						&& paramPartTokens[1].length() > 0) {
+						vector < string > paramPartTokens2;
+						string
+							tileset = "forest";
+						Tokenize(paramPartTokens[1], paramPartTokens2, ",");
+						if (paramPartTokens2.size() >= 2
+							&& paramPartTokens2[1].length() > 0) {
+							tileset = paramPartTokens2[1];
+						}
+						string
+							autoloadMapName = paramPartTokens2[0];
 
-											printf("Connecting to host [%s] using port: %d\n",
-												autoConnectServer.c_str(), port);
-											if (autoConnectServer == "auto-connect") {
-												program->initClientAutoFindHost(mainWindow);
-											} else {
-												program->initClient(mainWindow, autoConnectServer, port);
-											}
-											gameInitialized = true;
-										} else {
+						GameSettings *
+							gameSettings = &startupGameSettings;
+						gameSettings->setMap(autoloadMapName);
+						gameSettings->setTileset(tileset);
+						gameSettings->setTech("zetapack");
+						gameSettings->setDefaultUnits(false);
+						gameSettings->setDefaultResources(false);
+						gameSettings->setDefaultVictoryConditions(true);
+						gameSettings->setFogOfWar(false);
+						gameSettings->setAllowObservers(true);
+						gameSettings->setPathFinderType(pfBasic);
 
-											printf
-											("\nInvalid host specified on commandline [%s] host [%s]\n\n",
-												argv[foundParamIndIndex],
-												(paramPartTokens.size() >=
-													2 ? paramPartTokens[1].c_str() : NULL));
-											printParameterHelp(argv[0], foundInvalidArgs);
-											delete
-												mainWindow;
-											mainWindow = NULL;
-											return 1;
-										}
-									}
+						for (int i = 0; i < GameConstants::maxPlayers; ++i) {
+							ControlType
+								ct = ctClosed;
 
-									else
-										if (hasCommandArgument
-										(argc, argv, string(GAME_ARGS[GAME_ARG_CLIENT])) == true) {
-											int
-												foundParamIndIndex = -1;
-											hasCommandArgument(argc, argv,
-												string(GAME_ARGS[GAME_ARG_CLIENT]) +
-												string("="), &foundParamIndIndex);
-											if (foundParamIndIndex < 0) {
-												hasCommandArgument(argc, argv,
-													string(GAME_ARGS[GAME_ARG_CLIENT]),
-													&foundParamIndIndex);
-											}
-											string
-												serverToConnectTo = argv[foundParamIndIndex];
-											vector < string > paramPartTokens;
-											Tokenize(serverToConnectTo, paramPartTokens, "=");
-											if (paramPartTokens.size() >= 2
-												&& paramPartTokens[1].length() > 0) {
-												string
-													autoConnectServer = paramPartTokens[1];
+							gameSettings->setNetworkPlayerStatuses(i, npst_None);
+							gameSettings->setFactionControl(i, ct);
+							gameSettings->setStartLocationIndex(i, i);
+							gameSettings->setResourceMultiplierIndex(i, 10);
+							gameSettings->setNetworkPlayerName(i,
+								GameConstants::
+								NETWORK_SLOT_CLOSED_SLOTNAME);
+						}
 
-												if (autoConnectServer == "auto-connect") {
-													program->initClientAutoFindHost(mainWindow);
-												} else {
-													program->initClient(mainWindow, autoConnectServer);
-												}
-												gameInitialized = true;
-											} else {
+						ControlType
+							ct = ctHuman;
 
-												printf
-												("\nInvalid host specified on commandline [%s] host [%s]\n\n",
-													argv[foundParamIndIndex],
-													(paramPartTokens.size() >=
-														2 ? paramPartTokens[1].c_str() : NULL));
-												printParameterHelp(argv[0], foundInvalidArgs);
-												delete
-													mainWindow;
-												mainWindow = NULL;
-												return 1;
-											}
-										} else
-											if (hasCommandArgument
-											(argc, argv, string(GAME_ARGS[GAME_ARG_LOADSCENARIO])) == true) {
+						gameSettings->setNetworkPlayerStatuses(0, npst_None);
+						gameSettings->setFactionControl(0, ct);
+						gameSettings->setFactionTypeName(0,
+							formatString
+							(GameConstants::
+								OBSERVER_SLOTNAME));
+						gameSettings->setTeam(0,
+							GameConstants::maxPlayers + fpt_Observer -
+							1);
+						gameSettings->setStartLocationIndex(0, 0);
+						gameSettings->setNetworkPlayerName(0,
+							GameConstants::
+							OBSERVER_SLOTNAME);
 
-												int
-													foundParamIndIndex = -1;
-												hasCommandArgument(argc, argv,
-													string(GAME_ARGS[GAME_ARG_LOADSCENARIO]) +
-													string("="), &foundParamIndIndex);
-												if (foundParamIndIndex < 0) {
-													hasCommandArgument(argc, argv,
-														string(GAME_ARGS[GAME_ARG_LOADSCENARIO]),
-														&foundParamIndIndex);
-												}
-												string
-													scenarioName = argv[foundParamIndIndex];
-												vector < string > paramPartTokens;
-												Tokenize(scenarioName, paramPartTokens, "=");
-												if (paramPartTokens.size() >= 2
-													&& paramPartTokens[1].length() > 0) {
-													string
-														autoloadScenarioName = paramPartTokens[1];
+						gameSettings->setFactionCount(1);
 
-													program->initScenario(mainWindow, autoloadScenarioName);
-													gameInitialized = true;
-												} else {
-													printf
-													("\nInvalid scenario name specified on commandline [%s] scenario [%s]\n\n",
-														argv[foundParamIndIndex],
-														(paramPartTokens.size() >=
-															2 ? paramPartTokens[1].c_str() : NULL));
-													printParameterHelp(argv[0], foundInvalidArgs);
-													delete
-														mainWindow;
-													mainWindow = NULL;
-													return 1;
-												}
-											} else {
-												program->initNormal(mainWindow);
-											}
+						Config & config = Config::getInstance();
+						gameSettings->setEnableServerControlledAI(config.getBool
+						("ServerControlledAI",
+							"true"));
+						gameSettings->setNetworkFramePeriod(config.getInt
+						("NetworkSendFrameCount",
+							"20"));
 
-										SystemFlags::OutputDebug(SystemFlags::debugSystem,
-											"In [%s::%s Line: %d]\n", __FILE__,
-											__FUNCTION__, __LINE__);
+						program->initServer(mainWindow, gameSettings);
+						gameInitialized = true;
+					} else {
+						printf
+						("\nInvalid map name specified on commandline [%s] map [%s]\n\n",
+							argv[foundParamIndIndex],
+							(paramPartTokens.size() >=
+								2 ? paramPartTokens[1].c_str() : NULL));
+						printParameterHelp(argv[0], foundInvalidArgs);
+						delete
+							mainWindow;
+						mainWindow = NULL;
+						return 1;
+					}
+				} else if (hasCommandArgument(argc, argv, string(GAME_ARGS[GAME_ARG_CONNECT])) == true) {
+					int
+						foundParamIndIndex = -1;
+					hasCommandArgument(argc, argv,
+						string(GAME_ARGS[GAME_ARG_CONNECT]) +
+						string("="), &foundParamIndIndex);
+					if (foundParamIndIndex < 0) {
+						hasCommandArgument(argc, argv,
+							string(GAME_ARGS[GAME_ARG_CONNECT]),
+							&foundParamIndIndex);
+					}
+					string
+						serverToConnectTo = argv[foundParamIndIndex];
+					vector < string > paramPartTokens;
+					Tokenize(serverToConnectTo, paramPartTokens, "=");
+					if (paramPartTokens.size() >= 2
+						&& paramPartTokens[1].length() > 0) {
+						string
+							autoConnectServer = paramPartTokens[1];
 
-										SystemFlags::OutputDebug(SystemFlags::debugSystem,
-											"In [%s::%s Line: %d] OpenGL Info:\n%s\n",
-											__FILE__, __FUNCTION__, __LINE__,
-											renderer.getGlInfo().c_str());
+						int
+							port = config.getInt("PortServer",
+								intToStr(GameConstants::
+									serverPort).c_str());
+						vector < string > paramPartTokens2;
+						Tokenize(autoConnectServer, paramPartTokens2, ":");
+						autoConnectServer = paramPartTokens2[0];
+						if (paramPartTokens2.size() >= 2
+							&& paramPartTokens2[1].length() > 0) {
+							port = strToInt(paramPartTokens2[1]);
+						}
 
-										if (hasCommandArgument(argc, argv, GAME_ARGS[GAME_ARG_OPENGL_INFO])
-											== true) {
-											printf("%s", renderer.getGlInfo().c_str());
-											printf("%s", renderer.getGlMoreInfo().c_str());
+						printf("Connecting to host [%s] using port: %d\n",
+							autoConnectServer.c_str(), port);
+						if (autoConnectServer == "auto-connect") {
+							program->initClientAutoFindHost(mainWindow);
+						} else {
+							program->initClient(mainWindow, autoConnectServer, port);
+						}
+						gameInitialized = true;
+					} else {
 
-											delete
-												mainWindow;
-											mainWindow = NULL;
-											return 0;
-										}
+						printf
+						("\nInvalid host specified on commandline [%s] host [%s]\n\n",
+							argv[foundParamIndIndex],
+							(paramPartTokens.size() >=
+								2 ? paramPartTokens[1].c_str() : NULL));
+						printParameterHelp(argv[0], foundInvalidArgs);
+						delete
+							mainWindow;
+						mainWindow = NULL;
+						return 1;
+					}
+				} else if (hasCommandArgument(argc, argv, string(GAME_ARGS[GAME_ARG_CLIENT])) == true) {
+					int
+						foundParamIndIndex = -1;
+					hasCommandArgument(argc, argv,
+						string(GAME_ARGS[GAME_ARG_CLIENT]) +
+						string("="), &foundParamIndIndex);
+					if (foundParamIndIndex < 0) {
+						hasCommandArgument(argc, argv,
+							string(GAME_ARGS[GAME_ARG_CLIENT]),
+							&foundParamIndIndex);
+					}
+					string
+						serverToConnectTo = argv[foundParamIndIndex];
+					vector < string > paramPartTokens;
+					Tokenize(serverToConnectTo, paramPartTokens, "=");
+					if (paramPartTokens.size() >= 2
+						&& paramPartTokens[1].length() > 0) {
+						string
+							autoConnectServer = paramPartTokens[1];
 
-										if (hasCommandArgument
-										(argc, argv, GAME_ARGS[GAME_ARG_CONVERT_MODELS]) == true) {
-											int
-												foundParamIndIndex = -1;
-											hasCommandArgument(argc, argv,
-												string(GAME_ARGS[GAME_ARG_CONVERT_MODELS]) +
-												string("="), &foundParamIndIndex);
-											if (foundParamIndIndex < 0) {
-												hasCommandArgument(argc, argv,
-													string(GAME_ARGS[GAME_ARG_CONVERT_MODELS]),
-													&foundParamIndIndex);
-											}
-											string
-												paramValue = argv[foundParamIndIndex];
-											vector < string > paramPartTokens;
-											Tokenize(paramValue, paramPartTokens, "=");
-											if (paramPartTokens.size() >= 2
-												&& paramPartTokens[1].length() > 0) {
-												string
-													modelFile = paramPartTokens[1];
-												printf("About to convert model(s) [%s]\n", modelFile.c_str());
+						if (autoConnectServer == "auto-connect") {
+							program->initClientAutoFindHost(mainWindow);
+						} else {
+							program->initClient(mainWindow, autoConnectServer);
+						}
+						gameInitialized = true;
+					} else {
 
-												string
-													textureFormat = "";
-												if (paramPartTokens.size() >= 3
-													&& paramPartTokens[1].length() > 0) {
-													textureFormat = paramPartTokens[2];
-													printf("About to convert using texture format [%s]\n",
-														textureFormat.c_str());
-												}
+						printf
+						("\nInvalid host specified on commandline [%s] host [%s]\n\n",
+							argv[foundParamIndIndex],
+							(paramPartTokens.size() >=
+								2 ? paramPartTokens[1].c_str() : NULL));
+						printParameterHelp(argv[0], foundInvalidArgs);
+						delete
+							mainWindow;
+						mainWindow = NULL;
+						return 1;
+					}
+				} else if (hasCommandArgument(argc, argv, string(GAME_ARGS[GAME_ARG_LOADSCENARIO])) == true) {
+					int
+						foundParamIndIndex = -1;
+					hasCommandArgument(argc, argv,
+						string(GAME_ARGS[GAME_ARG_LOADSCENARIO]) +
+						string("="), &foundParamIndIndex);
+					if (foundParamIndIndex < 0) {
+						hasCommandArgument(argc, argv,
+							string(GAME_ARGS[GAME_ARG_LOADSCENARIO]),
+							&foundParamIndIndex);
+					}
+					string
+						scenarioName = argv[foundParamIndIndex];
+					vector < string > paramPartTokens;
+					Tokenize(scenarioName, paramPartTokens, "=");
+					if (paramPartTokens.size() >= 2
+						&& paramPartTokens[1].length() > 0) {
+						string
+							autoloadScenarioName = paramPartTokens[1];
 
-												bool
-													keepsmallest = false;
-												if (paramPartTokens.size() >= 4
-													&& paramPartTokens[1].length() > 0) {
-													keepsmallest = (paramPartTokens[3] == "keepsmallest");
-													printf("About to convert using keepsmallest = %d\n",
-														keepsmallest);
-												}
+						program->initScenario(mainWindow, autoloadScenarioName);
+						gameInitialized = true;
+					} else {
+						printf
+						("\nInvalid scenario name specified on commandline [%s] scenario [%s]\n\n",
+							argv[foundParamIndIndex],
+							(paramPartTokens.size() >=
+								2 ? paramPartTokens[1].c_str() : NULL));
+						printParameterHelp(argv[0], foundInvalidArgs);
+						delete
+							mainWindow;
+						mainWindow = NULL;
+						return 1;
+					}
+				} else {
+					program->initNormal(mainWindow);
+				}
 
-												showCursor(true);
+				SystemFlags::OutputDebug(SystemFlags::debugSystem,
+					"In [%s::%s Line: %d]\n", __FILE__,
+					__FUNCTION__, __LINE__);
 
-												const
-													Metrics &
-													metrics = Metrics::getInstance();
-												renderer.clearBuffers();
-												renderer.clearZBuffer();
-												renderer.reset2d();
+				SystemFlags::OutputDebug(SystemFlags::debugSystem,
+					"In [%s::%s Line: %d] OpenGL Info:\n%s\n",
+					__FILE__, __FUNCTION__, __LINE__,
+					renderer.getGlInfo().c_str());
 
-												if (CoreData::getInstance().getMenuFontBig3D() != NULL) {
-													renderer.renderText3D("Please wait, converting models...",
-														CoreData::getInstance().
-														getMenuFontBig3D(), Vec3f(1.f, 1.f,
-															0.f),
-															(metrics.getScreenW() / 2) - 400,
-														(metrics.getScreenH() / 2), true);
-												} else {
-													renderer.renderText("Please wait, converting models...",
-														CoreData::getInstance().getMenuFontBig(),
-														Vec3f(1.f, 1.f, 0.f),
-														(metrics.getScreenW() / 2) - 400,
-														(metrics.getScreenH() / 2), true);
-												}
-												renderer.swapBuffers();
+				if (hasCommandArgument(argc, argv, GAME_ARGS[GAME_ARG_OPENGL_INFO])
+					== true) {
+					printf("%s", renderer.getGlInfo().c_str());
+					printf("%s", renderer.getGlMoreInfo().c_str());
 
-												std::vector < string > models;
-												if (isdir(modelFile.c_str()) == true) {
-													models =
-														getFolderTreeContentsListRecursively(modelFile, ".g3d");
-												} else {
-													models.push_back(modelFile);
-												}
+					delete
+						mainWindow;
+					mainWindow = NULL;
+					return 0;
+				}
 
-												sleep(0);
-												::Shared::Platform::Window::handleEvent();
-												SDL_PumpEvents();
+				if (hasCommandArgument
+				(argc, argv, GAME_ARGS[GAME_ARG_CONVERT_MODELS]) == true) {
+					int
+						foundParamIndIndex = -1;
+					hasCommandArgument(argc, argv,
+						string(GAME_ARGS[GAME_ARG_CONVERT_MODELS]) +
+						string("="), &foundParamIndIndex);
+					if (foundParamIndIndex < 0) {
+						hasCommandArgument(argc, argv,
+							string(GAME_ARGS[GAME_ARG_CONVERT_MODELS]),
+							&foundParamIndIndex);
+					}
+					string
+						paramValue = argv[foundParamIndIndex];
+					vector < string > paramPartTokens;
+					Tokenize(paramValue, paramPartTokens, "=");
+					if (paramPartTokens.size() >= 2
+						&& paramPartTokens[1].length() > 0) {
+						string
+							modelFile = paramPartTokens[1];
+						printf("About to convert model(s) [%s]\n", modelFile.c_str());
 
-												int
-													result = 0;
-												char
-													szTextBuf[8096] = "";
-												for (unsigned int i = 0; i < models.size(); ++i) {
-													string & file = models[i];
+						string
+							textureFormat = "";
+						if (paramPartTokens.size() >= 3
+							&& paramPartTokens[1].length() > 0) {
+							textureFormat = paramPartTokens[2];
+							printf("About to convert using texture format [%s]\n",
+								textureFormat.c_str());
+						}
 
-													renderer.clearBuffers();
-													renderer.clearZBuffer();
-													renderer.reset2d();
-													snprintf(szTextBuf, 8096,
-														"Please wait, converting models [%u of "
-														MG_SIZE_T_SPECIFIER "] ...", i, models.size());
+						bool
+							keepsmallest = false;
+						if (paramPartTokens.size() >= 4
+							&& paramPartTokens[1].length() > 0) {
+							keepsmallest = (paramPartTokens[3] == "keepsmallest");
+							printf("About to convert using keepsmallest = %d\n",
+								keepsmallest);
+						}
 
-													if (CoreData::getInstance().getMenuFontBig3D() != NULL) {
-														renderer.renderText3D(szTextBuf,
-															CoreData::getInstance().
-															getMenuFontBig3D(), Vec3f(1.f, 1.f,
-																0.f),
-																(metrics.getScreenW() / 2) - 400,
-															(metrics.getScreenH() / 2), true);
-													} else {
-														renderer.renderText(szTextBuf,
-															CoreData::getInstance().
-															getMenuFontBig(), Vec3f(1.f, 1.f, 0.f),
-															(metrics.getScreenW() / 2) - 400,
-															(metrics.getScreenH() / 2), true);
-													}
-													renderer.swapBuffers();
+						showCursor(true);
 
-													sleep(0);
-													::Shared::Platform::Window::handleEvent();
-													SDL_PumpEvents();
+						const
+							Metrics &
+							metrics = Metrics::getInstance();
+						renderer.clearBuffers();
+						renderer.clearZBuffer();
+						renderer.reset2d();
 
-													try {
-														printf("About to load model [%s] [%u of " MG_SIZE_T_SPECIFIER
-															"]\n", file.c_str(), i, models.size());
-														Model *
-															model = renderer.newModel(rsGlobal, file);
-														printf("About to save converted model [%s]\n",
-															file.c_str());
-														model->save(file, textureFormat, keepsmallest);
-														Renderer::getInstance().endModel(rsGlobal, model);
-													} catch (const exception & ex) {
-														result = 1;
-														printf("ERROR loading model [%s] message [%s]\n",
-															file.c_str(), ex.what());
-													}
+						if (CoreData::getInstance().getMenuFontBig3D() != NULL) {
+							renderer.renderText3D("Please wait, converting models...",
+								CoreData::getInstance().
+								getMenuFontBig3D(), Vec3f(1.f, 1.f,
+									0.f),
+									(metrics.getScreenW() / 2) - 400,
+								(metrics.getScreenH() / 2), true);
+						} else {
+							renderer.renderText("Please wait, converting models...",
+								CoreData::getInstance().getMenuFontBig(),
+								Vec3f(1.f, 1.f, 0.f),
+								(metrics.getScreenW() / 2) - 400,
+								(metrics.getScreenH() / 2), true);
+						}
+						renderer.swapBuffers();
 
-												}
+						std::vector < string > models;
+						if (isdir(modelFile.c_str()) == true) {
+							models =
+								getFolderTreeContentsListRecursively(modelFile, ".g3d");
+						} else {
+							models.push_back(modelFile);
+						}
 
-												delete
-													mainWindow;
-												mainWindow = NULL;
-												return result;
-											} else {
-												printf
-												("\nInvalid model specified on commandline [%s] texture [%s]\n\n",
-													argv[foundParamIndIndex],
-													(paramPartTokens.size() >=
-														2 ? paramPartTokens[1].c_str() : NULL));
-												printParameterHelp(argv[0], foundInvalidArgs);
-												delete
-													mainWindow;
-												mainWindow = NULL;
-												return 1;
-											}
-										}
+						sleep(0);
+						::Shared::Platform::Window::handleEvent();
+						SDL_PumpEvents();
 
-										if (hasCommandArgument
-										(argc, argv, GAME_ARGS[GAME_ARG_VALIDATE_TECHTREES]) == true
-											|| hasCommandArgument(argc, argv,
-												GAME_ARGS[GAME_ARG_VALIDATE_FACTIONS]) ==
-											true
-											|| hasCommandArgument(argc, argv,
-												GAME_ARGS[GAME_ARG_VALIDATE_SCENARIO]) ==
-											true) {
-											runTechValidationReport(argc, argv);
+						int
+							result = 0;
+						char
+							szTextBuf[8096] = "";
+						for (unsigned int i = 0; i < models.size(); ++i) {
+							string & file = models[i];
 
-											delete
-												mainWindow;
-											mainWindow = NULL;
-											return 0;
-										}
+							renderer.clearBuffers();
+							renderer.clearZBuffer();
+							renderer.reset2d();
+							snprintf(szTextBuf, 8096,
+								"Please wait, converting models [%u of "
+								MG_SIZE_T_SPECIFIER "] ...", i, models.size());
 
-										if (hasCommandArgument
-										(argc, argv, GAME_ARGS[GAME_ARG_TRANSLATE_TECHTREES]) == true) {
-											runTechTranslationExtraction(argc, argv);
-											delete
-												mainWindow;
-											mainWindow = NULL;
-											return 0;
-										}
+							if (CoreData::getInstance().getMenuFontBig3D() != NULL) {
+								renderer.renderText3D(szTextBuf,
+									CoreData::getInstance().
+									getMenuFontBig3D(), Vec3f(1.f, 1.f,
+										0.f),
+										(metrics.getScreenW() / 2) - 400,
+									(metrics.getScreenH() / 2), true);
+							} else {
+								renderer.renderText(szTextBuf,
+									CoreData::getInstance().
+									getMenuFontBig(), Vec3f(1.f, 1.f, 0.f),
+									(metrics.getScreenW() / 2) - 400,
+									(metrics.getScreenH() / 2), true);
+							}
+							renderer.swapBuffers();
 
-										if (hasCommandArgument
-										(argc, argv, GAME_ARGS[GAME_ARG_VALIDATE_TILESET]) == true) {
-											runTilesetValidationReport(argc, argv);
+							sleep(0);
+							::Shared::Platform::Window::handleEvent();
+							SDL_PumpEvents();
 
-											delete
-												mainWindow;
-											mainWindow = NULL;
-											return 0;
-										}
+							try {
+								printf("About to load model [%s] [%u of " MG_SIZE_T_SPECIFIER
+									"]\n", file.c_str(), i, models.size());
+								Model *
+									model = renderer.newModel(rsGlobal, file);
+								printf("About to save converted model [%s]\n",
+									file.c_str());
+								model->save(file, textureFormat, keepsmallest);
+								Renderer::getInstance().endModel(rsGlobal, model);
+							} catch (const exception & ex) {
+								result = 1;
+								printf("ERROR loading model [%s] message [%s]\n",
+									file.c_str(), ex.what());
+							}
 
-										gameInitialized = true;
+						}
 
-										SystemFlags::OutputDebug(SystemFlags::debugSystem,
-											"In [%s::%s Line: %d]\n", __FILE__,
-											__FUNCTION__, __LINE__);
+						delete
+							mainWindow;
+						mainWindow = NULL;
+						return result;
+					} else {
+						printf
+						("\nInvalid model specified on commandline [%s] texture [%s]\n\n",
+							argv[foundParamIndIndex],
+							(paramPartTokens.size() >=
+								2 ? paramPartTokens[1].c_str() : NULL));
+						printParameterHelp(argv[0], foundInvalidArgs);
+						delete
+							mainWindow;
+						mainWindow = NULL;
+						return 1;
+					}
+				}
 
-										CheckForDuplicateData();
+				if (hasCommandArgument
+				(argc, argv, GAME_ARGS[GAME_ARG_VALIDATE_TECHTREES]) == true
+					|| hasCommandArgument(argc, argv,
+						GAME_ARGS[GAME_ARG_VALIDATE_FACTIONS]) ==
+					true
+					|| hasCommandArgument(argc, argv,
+						GAME_ARGS[GAME_ARG_VALIDATE_SCENARIO]) ==
+					true) {
+					runTechValidationReport(argc, argv);
 
-										SystemFlags::OutputDebug(SystemFlags::debugSystem,
-											"In [%s::%s Line: %d]\n", __FILE__,
-											__FUNCTION__, __LINE__);
+					delete
+						mainWindow;
+					mainWindow = NULL;
+					return 0;
+				}
 
-										//throw "BLAH!";
+				if (hasCommandArgument
+				(argc, argv, GAME_ARGS[GAME_ARG_TRANSLATE_TECHTREES]) == true) {
+					runTechTranslationExtraction(argc, argv);
+					delete
+						mainWindow;
+					mainWindow = NULL;
+					return 0;
+				}
 
-										// START Test out SIGSEGV error handling
-										//int *foo = (int*)-1; // make a bad pointer
-										//printf("%d\n", *foo);       // causes segfault
-										// END
+				if (hasCommandArgument
+				(argc, argv, GAME_ARGS[GAME_ARG_VALIDATE_TILESET]) == true) {
+					runTilesetValidationReport(argc, argv);
 
-										bool
-											startCRCPrecacheThread =
-											config.getBool("PreCacheCRCThread", "true");
-										//printf("### In [%s::%s Line: %d] precache thread enabled = %d SystemFlags::VERBOSE_MODE_ENABLED = %d\n",__FILE__,__FUNCTION__,__LINE__,startCRCPrecacheThread,SystemFlags::VERBOSE_MODE_ENABLED);
-										if (SystemFlags::VERBOSE_MODE_ENABLED)
-											printf("In [%s::%s Line: %d] precache thread enabled = %d\n",
-												__FILE__, __FUNCTION__, __LINE__, startCRCPrecacheThread);
-										if (startCRCPrecacheThread == true
-											&& GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false) {
-											static
-												string
-												mutexOwnerId =
-												string(extractFileFromDirectoryPath(__FILE__).c_str()) +
-												string("_") + intToStr(__LINE__);
-											vector < string > techDataPaths =
-												config.getPathListForType(ptTechs);
+					delete
+						mainWindow;
+					mainWindow = NULL;
+					return 0;
+				}
 
-											FileCRCPreCacheThread::setPreCacheThreadCacheLookupKey
-											(GameConstants::preCacheThreadCacheLookupKey);
-											FileCRCPreCacheThread *&
-												preCacheCRCThreadPtr =
-												CacheManager::getCachedItem <
-												FileCRCPreCacheThread *
-												>(GameConstants::preCacheThreadCacheLookupKey);
-											if (preCacheCRCThreadPtr == NULL) {
-												preCacheCRCThreadPtr = new FileCRCPreCacheThread();
-											}
-											preCacheThread = preCacheCRCThreadPtr;
-											preCacheThread->setUniqueID(mutexOwnerId);
-											preCacheThread->setTechDataPaths(techDataPaths);
-											//preCacheThread->setFileCRCPreCacheThreadCallbackInterface(&preCacheThreadGame);
-											preCacheThread->start();
-										}
+				gameInitialized = true;
 
-										auto_ptr < NavtiveLanguageNameListCacheGenerator > lngCacheGen;
-										auto_ptr < SimpleTaskThread > languageCacheGen;
+				SystemFlags::OutputDebug(SystemFlags::debugSystem,
+					"In [%s::%s Line: %d]\n", __FILE__,
+					__FUNCTION__, __LINE__);
 
-										bool
-											startNativeLanguageNamesPrecacheThread =
-											config.getBool("PreCacheNativeLanguageNamesThread", "true");
-										if (startNativeLanguageNamesPrecacheThread == true
-											&& GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false) {
-											lngCacheGen.reset(new NavtiveLanguageNameListCacheGenerator());
-											languageCacheGen.reset(new
-												SimpleTaskThread(lngCacheGen.get(), 1));
+				CheckForDuplicateData();
 
-											languageCacheGen->start();
-										}
+				SystemFlags::OutputDebug(SystemFlags::debugSystem,
+					"In [%s::%s Line: %d]\n", __FILE__,
+					__FUNCTION__, __LINE__);
 
-										// test
-										//Shared::Platform::MessageBox(NULL,"Mark's test.","Test",0);
-										//throw megaglest_runtime_error("test!");
-										//ExceptionHandler::DisplayMessage("test!", false);
+				//throw "BLAH!";
 
-										// Check for commands being input from stdin
-										string
-											command = "";
+				// START Test out SIGSEGV error handling
+				//int *foo = (int*)-1; // make a bad pointer
+				//printf("%d\n", *foo);       // causes segfault
+				// END
+
+				bool
+					startCRCPrecacheThread =
+					config.getBool("PreCacheCRCThread", "true");
+				//printf("### In [%s::%s Line: %d] precache thread enabled = %d SystemFlags::VERBOSE_MODE_ENABLED = %d\n",__FILE__,__FUNCTION__,__LINE__,startCRCPrecacheThread,SystemFlags::VERBOSE_MODE_ENABLED);
+				if (SystemFlags::VERBOSE_MODE_ENABLED)
+					printf("In [%s::%s Line: %d] precache thread enabled = %d\n",
+						__FILE__, __FUNCTION__, __LINE__, startCRCPrecacheThread);
+				if (startCRCPrecacheThread == true
+					&& GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false) {
+					static
+						string
+						mutexOwnerId =
+						string(extractFileFromDirectoryPath(__FILE__).c_str()) +
+						string("_") + intToStr(__LINE__);
+					vector < string > techDataPaths =
+						config.getPathListForType(ptTechs);
+
+					FileCRCPreCacheThread::setPreCacheThreadCacheLookupKey
+					(GameConstants::preCacheThreadCacheLookupKey);
+					FileCRCPreCacheThread *&
+						preCacheCRCThreadPtr =
+						CacheManager::getCachedItem <
+						FileCRCPreCacheThread *
+						>(GameConstants::preCacheThreadCacheLookupKey);
+					if (preCacheCRCThreadPtr == NULL) {
+						preCacheCRCThreadPtr = new FileCRCPreCacheThread();
+					}
+					preCacheThread = preCacheCRCThreadPtr;
+					preCacheThread->setUniqueID(mutexOwnerId);
+					preCacheThread->setTechDataPaths(techDataPaths);
+					//preCacheThread->setFileCRCPreCacheThreadCallbackInterface(&preCacheThreadGame);
+					preCacheThread->start();
+				}
+
+				auto_ptr < NavtiveLanguageNameListCacheGenerator > lngCacheGen;
+				auto_ptr < SimpleTaskThread > languageCacheGen;
+
+				bool
+					startNativeLanguageNamesPrecacheThread =
+					config.getBool("PreCacheNativeLanguageNamesThread", "true");
+				if (startNativeLanguageNamesPrecacheThread == true
+					&& GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false) {
+					lngCacheGen.reset(new NavtiveLanguageNameListCacheGenerator());
+					languageCacheGen.reset(new
+						SimpleTaskThread(lngCacheGen.get(), 1));
+
+					languageCacheGen->start();
+				}
+
+				// test
+				//Shared::Platform::MessageBox(NULL,"Mark's test.","Test",0);
+				//throw megaglest_runtime_error("test!");
+				//ExceptionHandler::DisplayMessage("test!", false);
+
+				// Check for commands being input from stdin
+				string
+					command = "";
 
 #ifndef WIN32
-										pollfd
-											cinfd[1];
+				pollfd
+					cinfd[1];
 #else
-										HANDLE
-											h = 0;
+				HANDLE
+					h = 0;
 #endif
-										if (disableheadless_console == false) {
+				if (disableheadless_console == false) {
 #ifndef WIN32
-											// Theoretically this should always be 0, but one fileno call isn't going to hurt, and if
-											// we try to run somewhere that stdin isn't fd 0 then it will still just work
-											cinfd[0].fd = fileno(stdin);
-											cinfd[0].events = POLLIN;
+					// Theoretically this should always be 0, but one fileno call isn't going to hurt, and if
+					// we try to run somewhere that stdin isn't fd 0 then it will still just work
+					cinfd[0].fd = fileno(stdin);
+					cinfd[0].events = POLLIN;
 #else
-											h = GetStdHandle(STD_INPUT_HANDLE);
-											//DWORD dwMode;
-											//GetConsoleMode(h, &dwMode);
-											//SetConsoleMode(h, dwMode & ~ENABLE_MOUSE_INPUT);
-											FlushConsoleInputBuffer(h);
+					h = GetStdHandle(STD_INPUT_HANDLE);
+					//DWORD dwMode;
+					//GetConsoleMode(h, &dwMode);
+					//SetConsoleMode(h, dwMode & ~ENABLE_MOUSE_INPUT);
+					FlushConsoleInputBuffer(h);
 #endif
-										}
+				}
 
-										if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-											printf("Headless server is now running...\n");
-											printf("To shutdown type: quit\n");
-											printf("All commands require you to press ENTER\n");
-										}
+				if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+					printf("Headless server is now running...\n");
+					printf("To shutdown type: quit\n");
+					printf("All commands require you to press ENTER\n");
+				}
 
-										//throw megaglest_runtime_error("Test!");
-										//printf("About to throw an exception...\n");
-										//throw 123;
+				//throw megaglest_runtime_error("Test!");
+				//printf("About to throw an exception...\n");
+				//throw 123;
 
-										//main loop
-										while (program->isShutdownApplicationEnabled() == false
-											&& ::Shared::Platform::Window::handleEvent()) {
-											if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+				//main loop
+				while (program->isShutdownApplicationEnabled() == false
+					&& ::Shared::Platform::Window::handleEvent()) {
+					if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
 
-												if (disableheadless_console == false) {
+						if (disableheadless_console == false) {
 #ifndef WIN32
-													int
-														pollresult = poll(cinfd, 1, 0);
-													int
-														pollerror = errno;
-													if (pollresult)
+							int
+								pollresult = poll(cinfd, 1, 0);
+							int
+								pollerror = errno;
+							if (pollresult)
 #else
-													// This is problematic because input on Windows is not line-buffered so this will return
-													// even if getline may block.  I haven't found a good way to fix it, so for the moment
-													// I just strongly suggest only running the server from the Python frontend, which does
-													// line buffer input.  This does work okay as long as the user doesn't enter characters
-													// without pressing enter, and then try to end the server another way (say a remote
-													// console command), in which case we'll still be waiting for the stdin EOL and hang.
+							// This is problematic because input on Windows is not line-buffered so this will return
+							// even if getline may block.  I haven't found a good way to fix it, so for the moment
+							// I just strongly suggest only running the server from the Python frontend, which does
+							// line buffer input.  This does work okay as long as the user doesn't enter characters
+							// without pressing enter, and then try to end the server another way (say a remote
+							// console command), in which case we'll still be waiting for the stdin EOL and hang.
 
-													DWORD
-														saveMode;
-													GetConsoleMode(h, &saveMode);
-													DWORD
-														dwMode = saveMode;
-													dwMode &= ~ENABLE_MOUSE_INPUT;
-													dwMode &= ~ENABLE_WINDOW_INPUT;
-													SetConsoleMode(h, dwMode);
+							DWORD
+								saveMode;
+							GetConsoleMode(h, &saveMode);
+							DWORD
+								dwMode = saveMode;
+							dwMode &= ~ENABLE_MOUSE_INPUT;
+							dwMode &= ~ENABLE_WINDOW_INPUT;
+							SetConsoleMode(h, dwMode);
 
-													bool
-														gotData = (WaitForSingleObject(h, 0) == WAIT_OBJECT_0);
-													SetConsoleMode(h, saveMode);
-													if (gotData == true)
+							bool
+								gotData = (WaitForSingleObject(h, 0) == WAIT_OBJECT_0);
+							SetConsoleMode(h, saveMode);
+							if (gotData == true)
 #endif
-													{
+							{
 
 
 #ifdef WIN32
-														bool
-															skip = true;
-														DWORD
-															nNumberOfCharsToRead = 1024;
-														DWORD
-															nRead = 0;
-														INPUT_RECORD
-															irInRec[1025];
+								bool
+									skip = true;
+								DWORD
+									nNumberOfCharsToRead = 1024;
+								DWORD
+									nRead = 0;
+								INPUT_RECORD
+									irInRec[1025];
 
-														PeekConsoleInput(h, &irInRec[0], nNumberOfCharsToRead,
-															&nRead);
-														for (int i = 0; i < nRead; ++i) {
-															INPUT_RECORD & inr = irInRec[i];
+								PeekConsoleInput(h, &irInRec[0], nNumberOfCharsToRead,
+									&nRead);
+								for (int i = 0; i < nRead; ++i) {
+									INPUT_RECORD & inr = irInRec[i];
 
-															//printf("inr.EventType = %d\n",inr.EventType);
-															if (inr.EventType == KEY_EVENT) {
-																if (inr.Event.KeyEvent.bKeyDown) {
-																	char
-																		cHoldKey = inr.Event.KeyEvent.uChar.AsciiChar;
-																	if (cHoldKey == '\r') {
-																		skip = false;
-																		break;
-																	}
-																}
-															}
-														}
+									//printf("inr.EventType = %d\n",inr.EventType);
+									if (inr.EventType == KEY_EVENT) {
+										if (inr.Event.KeyEvent.bKeyDown) {
+											char
+												cHoldKey = inr.Event.KeyEvent.uChar.AsciiChar;
+											if (cHoldKey == '\r') {
+												skip = false;
+												break;
+											}
+										}
+									}
+								}
 #else
-														bool
-															skip = false;
+								bool
+									skip = false;
 #endif
-														if (skip == false) {
-															getline(cin, command);
-															cin.clear();
+								if (skip == false) {
+									getline(cin, command);
+									cin.clear();
 
-															printf("server command [%s]\n", command.c_str());
-															if (command == "quit") {
-																break;
-															}
+									printf("server command [%s]\n", command.c_str());
+									if (command == "quit") {
+										break;
+									}
 
 #ifndef WIN32
-															if (cinfd[0].revents & POLLNVAL) {
-																printf("invalid file descriptor\n");
-															}
-															if (cinfd[0].revents & POLLERR) {
-																printf("error in file descriptor\n");
-															}
-															if (cinfd[0].revents & POLLHUP) {
-																printf("hang up in file descriptor\n");
-															}
+									if (cinfd[0].revents & POLLNVAL) {
+										printf("invalid file descriptor\n");
+									}
+									if (cinfd[0].revents & POLLERR) {
+										printf("error in file descriptor\n");
+									}
+									if (cinfd[0].revents & POLLHUP) {
+										printf("hang up in file descriptor\n");
+									}
 
-															if (pollresult < 0) {
-																printf("pollresult = %d errno = %d [%s]\n", pollresult,
-																	pollerror, strerror(pollerror));
+									if (pollresult < 0) {
+										printf("pollresult = %d errno = %d [%s]\n", pollresult,
+											pollerror, strerror(pollerror));
 
-																cinfd[0].fd = fileno(stdin);
-																cinfd[0].events = POLLIN;
-															}
+										cinfd[0].fd = fileno(stdin);
+										cinfd[0].events = POLLIN;
+									}
 #endif
-														}
-													}
-												}
-												//printf("looping\n");
-											}
+								}
+							}
+						}
+						//printf("looping\n");
+					}
 
-											program->loop();
+					program->loop();
 
-											// Because OpenGL really doesn't do multi-threading well
-											//                      if(difftime(time(NULL),lastTextureLoadEvent) >= 3) {
-											//                              lastTextureLoadEvent = time(NULL);
-											//                              vector<Texture2D *> textureList = preCacheThread->getPendingTextureList(1);
-											//                              for(unsigned int i = 0; i < textureList.size(); ++i) {
-											//                                      Texture2D * factionLogo = textureList[i];
-											//                                      if(factionLogo != NULL) {
-											//                                              printf("\n\n\n\n|||||||||||||||||||||||||| Load texture [%s]\n",factionLogo->getPath().c_str());
-											//                                              //Renderer::findTexture(factionLogo);
-											//                                              renderer.initTexture(rsGlobal,factionLogo);
-											//                                      }
-											//                              }
-											//                      }
-										}
+					// Because OpenGL really doesn't do multi-threading well
+					//                      if(difftime(time(NULL),lastTextureLoadEvent) >= 3) {
+					//                              lastTextureLoadEvent = time(NULL);
+					//                              vector<Texture2D *> textureList = preCacheThread->getPendingTextureList(1);
+					//                              for(unsigned int i = 0; i < textureList.size(); ++i) {
+					//                                      Texture2D * factionLogo = textureList[i];
+					//                                      if(factionLogo != NULL) {
+					//                                              printf("\n\n\n\n|||||||||||||||||||||||||| Load texture [%s]\n",factionLogo->getPath().c_str());
+					//                                              //Renderer::findTexture(factionLogo);
+					//                                              renderer.initTexture(rsGlobal,factionLogo);
+					//                                      }
+					//                              }
+					//                      }
+				}
 
-										if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-											printf("\nHeadless server is about to quit...\n");
-										}
+				if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+					printf("\nHeadless server is about to quit...\n");
+				}
 
-										if (SystemFlags::VERBOSE_MODE_ENABLED)
-											printf
-											("In [%s::%s Line: %d] starting normal application shutdown\n",
-												__FILE__, __FUNCTION__, __LINE__);
+				if (SystemFlags::VERBOSE_MODE_ENABLED)
+					printf
+					("In [%s::%s Line: %d] starting normal application shutdown\n",
+						__FILE__, __FUNCTION__, __LINE__);
 
-										if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false) {
-											soundThreadManager = program->getSoundThreadManager(true);
-											if (soundThreadManager) {
-												SoundRenderer & soundRenderer = SoundRenderer::getInstance();
-												soundRenderer.stopAllSounds(shutdownFadeSoundMilliseconds);
-												chronoshutdownFadeSound.start();
-											}
-										}
+				if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false) {
+					soundThreadManager = program->getSoundThreadManager(true);
+					if (soundThreadManager) {
+						SoundRenderer & soundRenderer = SoundRenderer::getInstance();
+						soundRenderer.stopAllSounds(shutdownFadeSoundMilliseconds);
+						chronoshutdownFadeSound.start();
+					}
+				}
 
-										cleanupCRCThread();
-										SystemFlags::OutputDebug(SystemFlags::debugSystem,
-											"In [%s::%s Line: %d]\n", __FILE__,
-											__FUNCTION__, __LINE__);
+				cleanupCRCThread();
+				SystemFlags::OutputDebug(SystemFlags::debugSystem,
+					"In [%s::%s Line: %d]\n", __FILE__,
+					__FUNCTION__, __LINE__);
 
-										showCursor(true);
-										//showWindowCursorState = true;
-										SystemFlags::OutputDebug(SystemFlags::debugSystem,
-											"In [%s::%s Line: %d]\n", __FILE__,
-											__FUNCTION__, __LINE__);
-										if (SystemFlags::VERBOSE_MODE_ENABLED)
-											printf("In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
+				showCursor(true);
+				//showWindowCursorState = true;
+				SystemFlags::OutputDebug(SystemFlags::debugSystem,
+					"In [%s::%s Line: %d]\n", __FILE__,
+					__FUNCTION__, __LINE__);
+				if (SystemFlags::VERBOSE_MODE_ENABLED)
+					printf("In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 			} catch (const megaglest_runtime_error & e) {
 
 				if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false) {
