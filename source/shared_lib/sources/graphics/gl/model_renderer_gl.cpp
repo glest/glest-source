@@ -17,6 +17,8 @@
 #include "interpolation.h"
 #include "leak_dumper.h"
 
+#define FLT_EPSILON 1.192092896e-07F
+
 using namespace Shared::Platform;
 
 namespace Shared {
@@ -25,15 +27,38 @@ namespace Shared {
 			bool MeshCallback::noTeamColors = false;
 
 			void MeshCallback::execute(const Mesh *mesh, float alpha) {
+				alpha *= mesh->getOpacity();
 				//team color
-				uint8 opacity = mesh->getFactionColorOpacity();
-				if (!mesh->getCustomTexture() || opacity == 0 || teamTexture == NULL || MeshCallback::noTeamColors) {
+				uint8 factionOpacity = mesh->getFactionColorOpacity();
+				float color[4];
+				color[0] = 1.0f; // Red
+				color[1] = 1.0f; // Green
+				color[2] = 1.0f; // Blue
+				if (!mesh->getCustomTexture() || factionOpacity == 0 || teamTexture == NULL || MeshCallback::noTeamColors) {
+					glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 					glActiveTexture(GL_TEXTURE1);
-					glDisable(GL_TEXTURE_2D);
+					if (alpha < 1.f - FLT_EPSILON) {
+						glEnable(GL_TEXTURE_2D);
+						glMultiTexCoord2f(GL_TEXTURE1, 0.f, 0.f);
+						glBindTexture(GL_TEXTURE_2D, teamTexture == NULL ? 0 : static_cast<const Texture2DGl*>(teamTexture)->getHandle());
+						color[3] = alpha;
+						glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, color);
+
+						glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
+						glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_REPLACE);
+						glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_PREVIOUS);
+						glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
+
+						glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_MODULATE);
+						glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_PREVIOUS);
+						glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
+						glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_ALPHA, GL_CONSTANT);
+						glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_ALPHA, GL_SRC_ALPHA);
+					} else
+						glDisable(GL_TEXTURE_2D);
 					glActiveTexture(GL_TEXTURE2);
 					glDisable(GL_TEXTURE_2D);
 					glActiveTexture(GL_TEXTURE0);
-					glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 				} else {
 					//texture 0
 					glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
@@ -57,11 +82,7 @@ namespace Shared {
 					glMultiTexCoord2f(GL_TEXTURE1, 0.f, 0.f);
 					GLuint handle = static_cast<const Texture2DGl*>(teamTexture)->getHandle();
 					glBindTexture(GL_TEXTURE_2D, handle);
-					float color[4];
-					color[0] = 1.0f; // Red
-					color[1] = 1.0f; // Green
-					color[2] = 1.0f; // Blue
-					color[3] = opacity * 0.00392156862f; // Alpha
+					color[3] = factionOpacity * 0.00392156862f; // Alpha
 					glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, color);
 
 					glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
@@ -270,7 +291,7 @@ namespace Shared {
 				if (this->colorPickingMode == false) {
 					//set color
 					if (renderColors) {
-						Vec4f color(mesh->getDiffuseColor(), mesh->getOpacity());
+						Vec4f color(mesh->getDiffuseColor(), 1.f);
 						glColor4fv(color.ptr());
 					}
 
