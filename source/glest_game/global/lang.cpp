@@ -533,43 +533,23 @@ namespace Glest {
 			}
 		}
 
-		bool Lang::hasString(const string & s, string uselanguage,
-			bool fallbackToDefault) {
-			bool result = false;
-			try {
-				if (uselanguage != "") {
-					//printf("#a fallbackToDefault = %d [%s] uselanguage [%s] DEFAULT_LANGUAGE  [%s] this->language [%s]\n",fallbackToDefault,s.c_str(),uselanguage.c_str(),DEFAULT_LANGUAGE,this->language.c_str());
-					if (gameStringsAllLanguages.find(uselanguage) ==
-						gameStringsAllLanguages.end()) {
-						loadGameStringProperties(uselanguage,
-							gameStringsAllLanguages[uselanguage],
-							false);
-					}
-					//string result2 = otherLanguageStrings[uselanguage].getString(s);
-					result = gameStringsAllLanguages[uselanguage].getString(s).length() != 0;
-					//printf("#b result2 [%s]\n",result2.c_str());
-				} else {
-					//string result2 = strings.getString(s);
-					result = gameStringsAllLanguages[this->language].getString(s).length() != 0;
+		bool Lang::hasString(const string & s, string uselanguage, bool fallbackToDefault) {
+			bool result;
+			if (uselanguage != "") {
+				//printf("#a fallbackToDefault = %d [%s] uselanguage [%s] DEFAULT_LANGUAGE  [%s] this->language [%s]\n",fallbackToDefault,s.c_str(),uselanguage.c_str(),DEFAULT_LANGUAGE,this->language.c_str());
+				if (gameStringsAllLanguages.find(uselanguage) ==
+					gameStringsAllLanguages.end()) {
+					loadGameStringProperties(uselanguage,
+						gameStringsAllLanguages[uselanguage],
+						false);
 				}
-				if (!result && fallbackToDefault == true && uselanguage != DEFAULT_LANGUAGE
-					&& this->language != DEFAULT_LANGUAGE) {
-					result = hasString(s, DEFAULT_LANGUAGE, false);
-				}
-			} catch (exception & ex) {
-				if (gameStringsAllLanguages[this->language].getpath() != "") {
-					if (SystemFlags::VERBOSE_MODE_ENABLED)
-						SystemFlags::OutputDebug(SystemFlags::debugError,
-							"In [%s::%s Line: %d] Error [%s] for uselanguage [%s]\n",
-							__FILE__, __FUNCTION__, __LINE__,
-							ex.what(), uselanguage.c_str());
-				}
-
-				//printf("#1 fallbackToDefault = %d [%s] uselanguage [%s] DEFAULT_LANGUAGE  [%s] this->language [%s]\n",fallbackToDefault,s.c_str(),uselanguage.c_str(),DEFAULT_LANGUAGE,this->language.c_str());
-				if (fallbackToDefault == true && uselanguage != DEFAULT_LANGUAGE
-					&& this->language != DEFAULT_LANGUAGE) {
-					result = hasString(s, DEFAULT_LANGUAGE, false);
-				}
+				result = gameStringsAllLanguages[uselanguage].getString(s).length() != 0;
+			} else {
+				result = gameStringsAllLanguages[this->language].getString(s).length() != 0;
+			}
+			if (!result && fallbackToDefault == true && uselanguage != DEFAULT_LANGUAGE
+				&& this->language != DEFAULT_LANGUAGE) {
+				result = hasString(s, DEFAULT_LANGUAGE, false);
 			}
 			return result;
 		}
@@ -579,172 +559,99 @@ namespace Glest {
 		}
 
 		string Lang::parseResult(const string & key, const string & value) {
-			if (value != "$USE_DEFAULT_LANGUAGE_VALUE") {
+			if (key.length() == 0 || value != "$USE_DEFAULT_LANGUAGE_VALUE") {
 				return value;
 			}
 			string result = Lang::getString(key, DEFAULT_LANGUAGE);
 			return result;
 		}
-		string Lang::getString(const string & s, string uselanguage,
-			bool fallbackToDefault) {
-			try {
-				string result = "";
 
-				if (uselanguage != "") {
-					if (gameStringsAllLanguages.find(uselanguage) ==
-						gameStringsAllLanguages.end()) {
-						loadGameStringProperties(uselanguage,
-							gameStringsAllLanguages[uselanguage],
-							false);
-					}
-					result = gameStringsAllLanguages[uselanguage].getString(s);
-					replaceAll(result, "\\n", "\n");
-				} else {
-					result = gameStringsAllLanguages[this->language].getString(s);
-					replaceAll(result, "\\n", "\n");
+		string Lang::getString(const string & s, string uselanguage, bool fallbackToDefault) {
+			string result = "";
+
+			if (uselanguage != "") {
+				if (gameStringsAllLanguages.find(uselanguage) ==
+					gameStringsAllLanguages.end()) {
+					loadGameStringProperties(uselanguage,
+						gameStringsAllLanguages[uselanguage],
+						false);
 				}
-
-				return parseResult(s, result);;
-			} catch (exception & ex) {
-				if (gameStringsAllLanguages[this->language].getpath() != "") {
-					if (fallbackToDefault == false || SystemFlags::VERBOSE_MODE_ENABLED) {
-						if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false) {
-							if (SystemFlags::VERBOSE_MODE_ENABLED)
-								SystemFlags::OutputDebug(SystemFlags::debugError,
-									"In [%s::%s Line: %d] Error [%s] uselanguage [%s] text [%s]\n",
-									__FILE__, __FUNCTION__, __LINE__,
-									ex.what(), uselanguage.c_str(),
-									s.c_str());
-						}
-					}
-				}
-
-				//printf("#2 fallbackToDefault = %d [%s] uselanguage [%s] DEFAULT_LANGUAGE  [%s] this->language [%s]\n",fallbackToDefault,s.c_str(),uselanguage.c_str(),DEFAULT_LANGUAGE,this->language.c_str());
-
-				//if(fallbackToDefault == true && uselanguage != DEFAULT_LANGUAGE && this->language != DEFAULT_LANGUAGE) {
-				if (uselanguage != DEFAULT_LANGUAGE
-					&& this->language != DEFAULT_LANGUAGE) {
-					return getString(s, DEFAULT_LANGUAGE, false);
-				}
+				result = gameStringsAllLanguages[uselanguage].getString(s);
+				replaceAll(result, "\\n", "\n");
+			} else {
+				result = gameStringsAllLanguages[this->language].getString(s);
+				replaceAll(result, "\\n", "\n");
 			}
+			if (result.length() != 0)
+				return parseResult(s, result);
+
+			if (uselanguage != DEFAULT_LANGUAGE
+				&& this->language != DEFAULT_LANGUAGE) {
+				return getString(s, DEFAULT_LANGUAGE, false);
+			}
+
 			return s;
 		}
 
 		string Lang::getScenarioString(const string & s) {
-			try {
-				string result = scenarioStrings.getString(s);
-				replaceAll(result, "\\n", "\n");
-				return result;
-			} catch (exception & ex) {
-				if (scenarioStrings.getpath() != "") {
-					SystemFlags::OutputDebug(SystemFlags::debugError,
-						"In [%s::%s Line: %d] Error [%s]\n",
-						__FILE__, __FUNCTION__, __LINE__,
-						ex.what());
-				}
+			string result = scenarioStrings.getString(s);
+			if (result.length() == 0)
 				return getTechTreeString(s);
-			}
-		}
-
-		bool Lang::hasScenarioString(const string & s) {
-			bool result = false;
-			try {
-				result = scenarioStrings.getString(s).length() != 0;
-			} catch (exception & ex) {
-				if (scenarioStrings.getpath() != "") {
-					if (SystemFlags::VERBOSE_MODE_ENABLED)
-						SystemFlags::OutputDebug(SystemFlags::debugError,
-							"In [%s::%s Line: %d] Error [%s]\n",
-							__FILE__, __FUNCTION__, __LINE__,
-							ex.what());
-				}
-			}
+			replaceAll(result, "\\n", "\n");
 			return result;
 		}
 
-		string Lang::getTechTreeString(const string & s,
-			const char *defaultValue) {
-			try {
-				string result = "";
-				string default_language = "default";
+		bool Lang::hasScenarioString(const string & s) {
+			return scenarioStrings.getString(s).length() != 0;
+		}
 
-				//printf("Line: %d techNameLoaded = %s s = %s this->language = %s\n",__LINE__,techNameLoaded.c_str(),s.c_str(),this->language.c_str());
+		string Lang::getTechTreeString(const string & s, const char *defaultValue) {
+			string result = "";
+			string default_language = "default";
 
-				if (allowNativeLanguageTechtree == true &&
-					(techTreeStringsAllLanguages[techNameLoaded][this->language].
-						hasString(s) == true || defaultValue == NULL)) {
-					if (techTreeStringsAllLanguages[techNameLoaded][this->language].
-						hasString(s) == false
-						&&
-						techTreeStringsAllLanguages[techNameLoaded][default_language].
-						hasString(s) == true) {
+			//printf("Line: %d techNameLoaded = %s s = %s this->language = %s\n",__LINE__,techNameLoaded.c_str(),s.c_str(),this->language.c_str());
 
-						//printf("Line: %d techNameLoaded = %s s = %s this->language = %s\n",__LINE__,techNameLoaded.c_str(),s.c_str(),this->language.c_str());
-
-						result =
-							techTreeStringsAllLanguages[techNameLoaded][default_language].
-							getString(s);
-					} else {
-
-						//printf("Line: %d techNameLoaded = %s s = %s this->language = %s\n",__LINE__,techNameLoaded.c_str(),s.c_str(),this->language.c_str());
-
-						result =
-							techTreeStringsAllLanguages[techNameLoaded][this->language].
-							getString(s);
-					}
-				} else if (allowNativeLanguageTechtree == true &&
-					techTreeStringsAllLanguages[techNameLoaded]
-					[default_language].hasString(s) == true) {
+			if (allowNativeLanguageTechtree == true && 
+				(techTreeStringsAllLanguages[techNameLoaded][this->language].hasString(s) == true || defaultValue == NULL)) {
+				if (techTreeStringsAllLanguages[techNameLoaded][this->language].hasString(s) == false && 
+					techTreeStringsAllLanguages[techNameLoaded][default_language].hasString(s) == true) {
 
 					//printf("Line: %d techNameLoaded = %s s = %s this->language = %s\n",__LINE__,techNameLoaded.c_str(),s.c_str(),this->language.c_str());
 
-					result =
-						techTreeStringsAllLanguages[techNameLoaded][default_language].
-						getString(s);
-				} else if (defaultValue != NULL) {
-					result = defaultValue;
+					result = techTreeStringsAllLanguages[techNameLoaded][default_language].getString(s);
+				} else {
+					//printf("Line: %d techNameLoaded = %s s = %s this->language = %s\n",__LINE__,techNameLoaded.c_str(),s.c_str(),this->language.c_str());
+					result = techTreeStringsAllLanguages[techNameLoaded][this->language].getString(s);
 				}
-				replaceAll(result, "\\n", "\n");
-				return result;
-			} catch (exception & ex) {
-				if (techTreeStringsAllLanguages[techNameLoaded][this->language].
-					getpath() != "") {
-					SystemFlags::OutputDebug(SystemFlags::debugError,
-						"In [%s::%s Line: %d] Error [%s]\n",
-						__FILE__, __FUNCTION__, __LINE__,
-						ex.what());
-				}
+			} else if (allowNativeLanguageTechtree == true && techTreeStringsAllLanguages[techNameLoaded][default_language].hasString(s) == true) {
+
+				//printf("Line: %d techNameLoaded = %s s = %s this->language = %s\n",__LINE__,techNameLoaded.c_str(),s.c_str(),this->language.c_str());
+
+				result = techTreeStringsAllLanguages[techNameLoaded][default_language].getString(s);
+			} else if (defaultValue != NULL) {
+				result = defaultValue;
 			}
-			return s;
+			replaceAll(result, "\\n", "\n");
+			return result.length() == 0 && defaultValue == NULL ? s : result;
 		}
 
 		string Lang::getTilesetString(const string & s, const char *defaultValue) {
-			try {
-				string result = "";
+			string result = "";
 
-				if (tilesetStrings.hasString(s) == true || defaultValue == NULL) {
-					if (tilesetStrings.hasString(s) == false
-						&& tilesetStringsDefault.hasString(s) == true) {
-						result = tilesetStringsDefault.getString(s);
-					} else {
-						result = tilesetStrings.getString(s);
-					}
-				} else if (tilesetStringsDefault.hasString(s) == true) {
+			if (tilesetStrings.hasString(s) == true || defaultValue == NULL) {
+				if (tilesetStrings.hasString(s) == false
+					&& tilesetStringsDefault.hasString(s) == true) {
 					result = tilesetStringsDefault.getString(s);
-				} else if (defaultValue != NULL) {
-					result = defaultValue;
+				} else {
+					result = tilesetStrings.getString(s);
 				}
-				replaceAll(result, "\\n", "\n");
-				return result;
-			} catch (exception & ex) {
-				if (tilesetStrings.getpath() != "") {
-					SystemFlags::OutputDebug(SystemFlags::debugError,
-						"In [%s::%s Line: %d] Error [%s]\n",
-						__FILE__, __FUNCTION__, __LINE__,
-						ex.what());
-				}
+			} else if (tilesetStringsDefault.hasString(s) == true) {
+				result = tilesetStringsDefault.getString(s);
+			} else if (defaultValue != NULL) {
+				result = defaultValue;
 			}
-			return s;
+			replaceAll(result, "\\n", "\n");
+			return result.length() == 0 && defaultValue == NULL ? s : result;
 		}
 
 		bool Lang::fileMatchesISO630Code(string uselanguage,
@@ -812,24 +719,12 @@ namespace Glest {
 			} else {
 				Properties stringsTest;
 				stringsTest.load(testLanguageFile);
-
-				try {
-					result = stringsTest.getString("NativeLanguageName");
+				result = stringsTest.getString("NativeLanguageName");
+				if (result.length() == 0) {
+					if (SystemFlags::VERBOSE_MODE_ENABLED)
+						printf("ERROR Caching native language name for [%s] msg: [UNKNOWN]\n", testLanguageFile.c_str());
+				} else
 					cachedNativeLanguageNames[testLanguageFile] = result;
-
-					if (SystemFlags::VERBOSE_MODE_ENABLED)
-						printf("Caching native language name for [%s] = [%s]\n",
-							testLanguageFile.c_str(), result.c_str());
-				} catch (const exception & ex) {
-					if (SystemFlags::VERBOSE_MODE_ENABLED)
-						printf("ERROR Caching native language name for [%s] msg: [%s]\n",
-							testLanguageFile.c_str(), ex.what());
-				} catch (...) {
-					if (SystemFlags::VERBOSE_MODE_ENABLED)
-						printf
-						("ERROR Caching native language name for [%s] msg: [UNKNOWN]\n",
-							testLanguageFile.c_str());
-				}
 			}
 
 			return result;
