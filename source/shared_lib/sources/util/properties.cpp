@@ -234,6 +234,7 @@ namespace Shared {
 				//string appPath="";
 				//appPath.assign(&pMBBuffer[0]); // Now assign the char* to the string, and there you have it!!! :) 
 				std::string appPath = utf8_encode(szPath);
+				replaceAll(appPath, "\\", "/");
 
 				//string appPath = szPath;
 				mapTagReplacementValues["$APPDATA"] = appPath;

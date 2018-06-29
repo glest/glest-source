@@ -16,6 +16,7 @@
 #include <map>
 #include <vector>
 #include "leak_dumper.h"
+#include "platform_common.h"
 
 using std::map;
 using std::vector;
@@ -60,6 +61,7 @@ namespace Shared {
 
 		public:
 			static void setApplicationPath(string value) {
+				Shared::PlatformCommon::replaceAll(value, "\\", "/");
 				applicationPath = value;
 			}
 			static string getApplicationPath() {
@@ -67,6 +69,7 @@ namespace Shared {
 			}
 
 			static void setApplicationDataPath(string value) {
+				Shared::PlatformCommon::replaceAll(value, "\\", "/");
 				applicationDataPath = value;
 			}
 			static string getApplicationDataPath() {
@@ -74,6 +77,7 @@ namespace Shared {
 			}
 
 			static void setGameVersion(string value) {
+				Shared::PlatformCommon::replaceAll(value, "\\", "/");
 				gameVersion = value;
 			}
 			static string getGameVersion() {
@@ -81,18 +85,21 @@ namespace Shared {
 			}
 
 			static void setTechtreePath(string value) {
+				Shared::PlatformCommon::replaceAll(value, "\\", "/");
 				techtreePath = value;
 			}
 			static string getTechtreePath() {
 				return techtreePath;
 			}
 			static void setScenarioPath(string value) {
+				Shared::PlatformCommon::replaceAll(value, "\\", "/");
 				scenarioPath = value;
 			}
 			static string getScenarioPath() {
 				return scenarioPath;
 			}
 			static void setTutorialPath(string value) {
+				Shared::PlatformCommon::replaceAll(value, "\\", "/");
 				tutorialPath = value;
 			}
 			static string getTutorialPath() {

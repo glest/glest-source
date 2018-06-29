@@ -102,10 +102,7 @@ namespace Glest {
 
 				for (int i = 0; i < (int) scriptsNode->getChildCount(); ++i) {
 					const XmlNode *scriptNode = scriptsNode->getChild(i);
-
-					scripts.push_back(Script
-					(getFunctionName(scriptNode),
-						scriptNode->getText()));
+					scripts.push_back(Script(getFunctionName(scriptNode), scriptNode->getText()));
 				}
 			}
 			//Exception handling (conversions and so on);

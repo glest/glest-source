@@ -17,7 +17,9 @@
 #include "interpolation.h"
 #include "leak_dumper.h"
 
+#ifndef FLT_EPSILON
 #define FLT_EPSILON 1.192092896e-07F
+#endif
 
 using namespace Shared::Platform;
 
@@ -28,8 +30,7 @@ namespace Shared {
 
 			void MeshCallback::execute(const Mesh *mesh, float alpha) {
 				alpha *= mesh->getOpacity();
-				//team color
-				uint8 factionOpacity = mesh->getFactionColorOpacity();
+				uint8 factionOpacity = mesh->getFactionColorOpacity(); //team color
 				float color[4];
 				color[0] = 1.0f; // Red
 				color[1] = 1.0f; // Green
