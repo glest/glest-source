@@ -69,7 +69,6 @@ namespace Shared {
 				pcCyan,
 				pcOrange,
 				pcMagenta,
-				pcTransparent
 			};
 
 		private:
@@ -95,7 +94,6 @@ namespace Shared {
 			Texture2D *customTextureCyan;
 			Texture2D *customTextureOrange;
 			Texture2D *customTextureMagenta;
-			Texture2D *customTextureTransparent;
 			MeshCallback meshCallback;
 
 			float red;

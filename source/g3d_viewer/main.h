@@ -72,7 +72,6 @@ namespace Shared {
 				miColorCyan,
 				miColorOrange,
 				miColorMagenta,
-				miColorTransparent
 			};
 
 		private:

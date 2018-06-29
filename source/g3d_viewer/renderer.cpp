@@ -57,7 +57,6 @@ namespace Shared {
 			customTextureCyan = NULL;
 			customTextureOrange = NULL;
 			customTextureMagenta = NULL;
-			customTextureTransparent = NULL;
 			particleManager = NULL;
 		}
 
@@ -220,11 +219,6 @@ namespace Shared {
 			customTextureMagenta->getPixmap()->init(1, 1, 4);
 			customTextureMagenta->getPixmap()->setPixel(0, 0, Vec4f(1.f, 0.5f, 1.f, 1.0f));
 
-			//transparent tex
-			customTextureTransparent = textureManager->newTexture2D();
-			customTextureTransparent->getPixmap()->init(1, 1, 4);
-			customTextureTransparent->getPixmap()->setPixel(0, 0, Vec4f(1.0f, 1.0f, 1.0f, 0.0f));
-
 			glClearColor(red, green, blue, alpha);  //backgroundcolor constant 0.3
 			//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -304,9 +298,6 @@ namespace Shared {
 					break;
 				case pcMagenta:
 					customTexture = customTextureMagenta;
-					break;
-				case pcTransparent:
-					customTexture = customTextureTransparent;
 					break;
 				default:
 					assert(false);
@@ -433,9 +424,6 @@ namespace Shared {
 					break;
 				case pcMagenta:
 					customTexture = customTextureMagenta;
-					break;
-				case pcTransparent:
-					customTexture = customTextureTransparent;
 					break;
 				default:
 					throw megaglest_runtime_error("Unknown playercolor: " + intToStr(playerColor));

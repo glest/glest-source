@@ -408,7 +408,6 @@ namespace Shared {
 			menuCustomColor->AppendCheckItem(miColorCyan, wxT("&Cyan\t5"));
 			menuCustomColor->AppendCheckItem(miColorOrange, wxT("&Orange\t6"));
 			menuCustomColor->AppendCheckItem(miColorMagenta, wxT("&Pink\t7"));
-			menuCustomColor->AppendCheckItem(miColorTransparent, wxT("&Transparent\t8"));
 			menu->Append(menuCustomColor, wxT("&Custom Color"));
 
 			menuMode->Check(miModeGrid, true);
@@ -1706,7 +1705,6 @@ namespace Shared {
 				menuCustomColor->Check(miColorCyan, false);
 				menuCustomColor->Check(miColorOrange, false);
 				menuCustomColor->Check(miColorMagenta, false);
-				menuCustomColor->Check(miColorTransparent, false);
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
 				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Error"), wxOK | wxICON_ERROR).ShowModal();
@@ -1724,7 +1722,6 @@ namespace Shared {
 				menuCustomColor->Check(miColorCyan, false);
 				menuCustomColor->Check(miColorOrange, false);
 				menuCustomColor->Check(miColorMagenta, false);
-				menuCustomColor->Check(miColorTransparent, false);
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
 				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Error"), wxOK | wxICON_ERROR).ShowModal();
@@ -1742,7 +1739,6 @@ namespace Shared {
 				menuCustomColor->Check(miColorCyan, false);
 				menuCustomColor->Check(miColorOrange, false);
 				menuCustomColor->Check(miColorMagenta, false);
-				menuCustomColor->Check(miColorTransparent, false);
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
 				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Error"), wxOK | wxICON_ERROR).ShowModal();
@@ -1760,7 +1756,6 @@ namespace Shared {
 				menuCustomColor->Check(miColorCyan, false);
 				menuCustomColor->Check(miColorOrange, false);
 				menuCustomColor->Check(miColorMagenta, false);
-				menuCustomColor->Check(miColorTransparent, false);
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
 				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Error"), wxOK | wxICON_ERROR).ShowModal();
@@ -1778,7 +1773,6 @@ namespace Shared {
 				menuCustomColor->Check(miColorCyan, false);
 				menuCustomColor->Check(miColorOrange, false);
 				menuCustomColor->Check(miColorMagenta, false);
-				menuCustomColor->Check(miColorTransparent, false);
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
 				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Error"), wxOK | wxICON_ERROR).ShowModal();
@@ -1796,7 +1790,6 @@ namespace Shared {
 				menuCustomColor->Check(miColorCyan, true);
 				menuCustomColor->Check(miColorOrange, false);
 				menuCustomColor->Check(miColorMagenta, false);
-				menuCustomColor->Check(miColorTransparent, false);
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
 				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Error"), wxOK | wxICON_ERROR).ShowModal();
@@ -1814,7 +1807,6 @@ namespace Shared {
 				menuCustomColor->Check(miColorCyan, false);
 				menuCustomColor->Check(miColorOrange, true);
 				menuCustomColor->Check(miColorMagenta, false);
-				menuCustomColor->Check(miColorTransparent, false);
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
 				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Error"), wxOK | wxICON_ERROR).ShowModal();
@@ -1832,31 +1824,11 @@ namespace Shared {
 				menuCustomColor->Check(miColorCyan, false);
 				menuCustomColor->Check(miColorOrange, false);
 				menuCustomColor->Check(miColorMagenta, true);
-				menuCustomColor->Check(miColorTransparent, false);
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
 				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Error"), wxOK | wxICON_ERROR).ShowModal();
 			}
 		}
-
-		void MainWindow::onMenuColorTransparent(wxCommandEvent &event) {
-			try {
-				playerColor = Renderer::pcTransparent;
-				menuCustomColor->Check(miColorRed, false);
-				menuCustomColor->Check(miColorBlue, false);
-				menuCustomColor->Check(miColorGreen, false);
-				menuCustomColor->Check(miColorYellow, false);
-				menuCustomColor->Check(miColorWhite, false);
-				menuCustomColor->Check(miColorCyan, false);
-				menuCustomColor->Check(miColorOrange, false);
-				menuCustomColor->Check(miColorMagenta, false);
-				menuCustomColor->Check(miColorTransparent, true);
-			} catch (std::runtime_error &e) {
-				std::cout << e.what() << std::endl;
-				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Error"), wxOK | wxICON_ERROR).ShowModal();
-			}
-		}
-
 
 		void MainWindow::onTimer(wxTimerEvent &event) {
 			anim = anim + speed;
@@ -2008,7 +1980,6 @@ namespace Shared {
 			EVT_MENU(miColorCyan, MainWindow::onMenuColorCyan)
 			EVT_MENU(miColorOrange, MainWindow::onMenuColorOrange)
 			EVT_MENU(miColorMagenta, MainWindow::onMenuColorMagenta)
-			EVT_MENU(miColorTransparent, MainWindow::onMenuColorTransparent)
 
 			EVT_MENU(miChangeBackgroundColor, MainWindow::OnChangeColor)
 			END_EVENT_TABLE()
