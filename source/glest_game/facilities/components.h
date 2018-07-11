@@ -370,7 +370,7 @@ namespace Glest {
 			static const int defH;
 			static const int defW;
 
-		private:
+		protected:
 			GraphicButton graphButton1, graphButton2;
 			vector<string> items;
 			vector<string> translated_items;

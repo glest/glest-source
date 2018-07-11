@@ -10,6 +10,7 @@ which includes the _MegaGlest_ commit log.
 
 * [Andy Alt](https://github.com/andy5995)
 * [James Sherratt](https://github.com/Jammyjamjamman)
+* [João Marcos](https://github.com/JoaoMarcosCSilva)
 
 ### php || mysql
 

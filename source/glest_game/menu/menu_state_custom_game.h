@@ -46,19 +46,33 @@ namespace Glest {
 		class SwitchSetupRequest;
 		class ServerInterface;
 		class TechTree;
+		class MenuStateCustomGame;
 
 		enum ParentMenuState {
 			pNewGame,
 			pMasterServer,
 			pLanGame
 		};
+		// =====================================================
+		//      class GraphicListBoxFactions
+        // =====================================================
 
+		class GraphicListBoxFactions : public GraphicListBox {
+		private:
+			MenuStateCustomGame * menu;
+			int index;
+		public:
+			GraphicListBoxFactions(const std::string &containerName = "", const std::string &objName = "");
+			void addInformation(MenuStateCustomGame* m, int i);
+			bool mouseClick(int x, int y, string advanceToItemStartingWith);
+		};
 		// ===============================
 		//      class MenuStateCustomGame
 		// ===============================
 
 		class MenuStateCustomGame :
 			public MenuState, public SimpleTaskCallbackInterface {
+			friend class GraphicListBoxFactions;
 		private:
 			GraphicButton buttonReturn;
 			GraphicButton buttonPlayNow;
@@ -93,7 +107,7 @@ namespace Glest {
 			GraphicListBox listBoxControls[GameConstants::maxPlayers];
 			GraphicButton buttonBlockPlayers[GameConstants::maxPlayers];
 			GraphicListBox listBoxRMultiplier[GameConstants::maxPlayers];
-			GraphicListBox listBoxFactions[GameConstants::maxPlayers];
+			GraphicListBoxFactions listBoxFactions[GameConstants::maxPlayers];
 			GraphicListBox listBoxTeams[GameConstants::maxPlayers];
 			GraphicLabel labelNetStatus[GameConstants::maxPlayers];
 			MapInfo mapInfo;
