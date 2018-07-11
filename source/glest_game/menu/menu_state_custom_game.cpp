@@ -77,7 +77,6 @@ namespace Glest {
 		void GraphicListBoxFactions::addInformation(MenuStateCustomGame *menu, int index) {
 			this->menu = menu;
 			this->index = index;
-			printf("Index = %d\n", index);
 		}
 		bool GraphicListBoxFactions::mouseClick(int x, int y, string advanceToItemStartingWith) {
 			if (this->getVisible() == false) {
