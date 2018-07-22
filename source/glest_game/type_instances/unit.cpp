@@ -1657,9 +1657,11 @@ namespace Glest {
 			//iterate through all cells
 			int sightRange =
 				this->getType()->getTotalSight(this->getTotalUpgrade());
+			FowAlphaCellsLookupItem result;
+			if (sightRange == 0)
+				return result;
 			int radius = sightRange + World::indirectSightRange;
 			PosCircularIterator pci(map, this->getPosNotThreadSafe(), radius);
-			FowAlphaCellsLookupItem result;
 			while (pci.next()) {
 				const Vec2i sightpos = pci.getPos();
 				Vec2i surfPos = Map::toSurfCoords(sightpos);
