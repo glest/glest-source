@@ -68,7 +68,116 @@ namespace Glest {
 				s = formatString(s);
 			}
 		};
+		// =====================================================
+		//      class GraphicListBoxFactions
+		// =====================================================
 
+		GraphicListBoxFactions::GraphicListBoxFactions(const std::string &containerName, const std::string &objName) : GraphicListBox::GraphicListBox(containerName, objName) {}
+
+		void GraphicListBoxFactions::addInformation(MenuStateCustomGame *menu, int index) {
+			this->menu = menu;
+			this->index = index;
+		}
+		bool GraphicListBoxFactions::mouseClick(int x, int y, string advanceToItemStartingWith) {
+			if (this->getVisible() == false) {
+				return false;
+			}
+
+			if (!items.empty()) {
+
+				bool b1 = graphButton1.mouseClick(x, y);
+				bool b2 = graphButton2.mouseClick(x, y);
+
+				int superj = selectedItemIndex;
+
+				if (b1) {
+					bool bFound = false;
+					if (advanceToItemStartingWith != "") {
+						for (int i = selectedItemIndex - 1; i >= 0; --i) {
+							string item = items[i];
+							if ((int)translated_items.size() > i) item = translated_items[i];
+							if (StartsWith(toLower(item), toLower(advanceToItemStartingWith)) == true) {
+								bFound = true;
+								selectedItemIndex = i;
+								break;
+							}
+						}
+						if (bFound == false) {
+							for (int i = (int)items.size() - 1; i >= selectedItemIndex; --i) {
+								string item = items[i];
+								if ((int)translated_items.size() > i) item = translated_items[i];
+								if (StartsWith(toLower(item), toLower(advanceToItemStartingWith)) == true) {
+									bFound = true;
+									selectedItemIndex = i;
+									break;
+								}
+							}
+						}
+					}
+					if (bFound == false) {
+						--selectedItemIndex %= items.size();
+
+						int type = 0;
+						std::string faction = "";
+						if (menu != NULL) {
+							type = (menu->listBoxControls)[index].getSelectedItemIndex();
+							faction = menu->factionFiles[getSelectedItemIndex()];
+						}
+						if (menu != NULL
+							&& faction == formatString(GameConstants::OBSERVER_SLOTNAME)
+							&& (type == ctCpuEasy || type == ctCpu || type == ctCpuUltra || type == ctCpuZeta)) {
+							--selectedItemIndex %= items.size();
+						}
+
+
+					}
+
+				}
+				else if (b2) {
+					bool bFound = false;
+					if (advanceToItemStartingWith != "") {
+						for (int i = selectedItemIndex + 1; i < (int)items.size(); ++i) {
+							string item = items[i];
+							if ((int)translated_items.size() > i) item = translated_items[i];
+							if (StartsWith(toLower(item), toLower(advanceToItemStartingWith)) == true) {
+								bFound = true;
+								selectedItemIndex = i;
+								break;
+							}
+						}
+						if (bFound == false) {
+							for (int i = 0; i <= selectedItemIndex; ++i) {
+								string item = items[i];
+								if ((int)translated_items.size() > i) item = translated_items[i];
+								if (StartsWith(toLower(item), toLower(advanceToItemStartingWith)) == true) {
+									bFound = true;
+									selectedItemIndex = i;
+									break;
+								}
+							}
+						}
+					}
+					if (bFound == false) {
+						++selectedItemIndex %= items.size();
+
+						int type = 0;
+						std::string faction = "";
+						if (menu != NULL) {
+							type = (menu->listBoxControls)[index].getSelectedItemIndex();
+							faction = menu->factionFiles[getSelectedItemIndex()];
+						}
+						if (menu != NULL
+							&& faction == formatString(GameConstants::OBSERVER_SLOTNAME)
+							&& (type == ctCpuEasy || type == ctCpu || type == ctCpuUltra || type == ctCpuZeta)) {
+							++selectedItemIndex %= items.size();
+						}
+					}
+				}
+				setText(getSelectedItem());
+				return b1 || b2;
+			}
+			return false;
+		}
 		// =====================================================
 		//      class MenuStateCustomGame
 		// =====================================================
@@ -1979,7 +2088,7 @@ namespace Glest {
 									}
 
 									//printf("checkControTypeClicked = %d selectedControlItemIndex = %d i = %d\n",checkControTypeClicked,selectedControlItemIndex,i);
-
+									listBoxFactions[i].addInformation(this, i);
 									if (selectedControlItemIndex != ctHuman &&
 										checkControTypeClicked == true &&
 										listBoxControls[i].mouseClick(x, y)) {
@@ -5795,6 +5904,7 @@ namespace Glest {
 								//printf("DONE Setting scenario faction i = %d [ %s]\n",i,scenarioInfo.factionTypeNames[i].c_str());
 
 								// Disallow CPU players to be observers
+								listBoxFactions[i].addInformation(this, i);
 								if (factionFiles
 									[listBoxFactions[i].getSelectedItemIndex()] ==
 									formatString(GameConstants::OBSERVER_SLOTNAME)
