@@ -88,8 +88,6 @@ namespace Glest {
 				bool b1 = graphButton1.mouseClick(x, y);
 				bool b2 = graphButton2.mouseClick(x, y);
 
-				int superj = selectedItemIndex;
-
 				if (b1) {
 					bool bFound = false;
 					if (advanceToItemStartingWith != "") {

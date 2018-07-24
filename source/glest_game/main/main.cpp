@@ -324,7 +324,7 @@ namespace
 			int
 				lastLazyThreadDump = 0;
 			for (; Thread::getThreadList().size() > 0 &&
-				difftime((long int) time(NULL), elapsed) <= 10;) {
+				difftime((long int) time(NULL), elapsed) <= 5;) {
 
 				if (difftime((long int) time(NULL), elapsed) > 1) {
 					if (lastLazyThreadDump !=
