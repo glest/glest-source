@@ -27,24 +27,10 @@ if [ "$Compiler_version" != "" ] && [ "$Compiler_version" != "default" ]; then
     fi
     set -x
     if [ "$VersionAvByDefault" = "" ]; then
-	if [ "$distribution" = "Ubuntu" ]; then
-	    #if [ "$Compiler_name" = "gcc" ] || ( [ "$Compiler_name" = "clang" ] && [ "$codename" = "precise" ] ); then
-	    if [ "$Compiler_name" = "gcc" ] || [ "$Compiler_name" = "clang" ]; then
+	if [ "$Compiler_name" = "gcc" ]; then
 		# https://launchpad.net/~ubuntu-toolchain-r/+archive/ubuntu/test
 		sudo add-apt-repository --yes "deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu ${codename} main"
 		#sudo add-apt-repository --yes "deb-src http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu ${codename} main"
-	    fi
-	fi
-	if [ "$distribution" = "Ubuntu" ] || [ "$distribution" = "Debian" ]; then
-	    if [ "$Compiler_name" = "clang" ]; then
-		# http://apt.llvm.org/
-		sudo add-apt-repository --yes "deb http://apt.llvm.org/${codename}/ llvm-toolchain-${codename} main"
-		#sudo add-apt-repository --yes "deb-src http://apt.llvm.org/${codename}/ llvm-toolchain-${codename} main"
-		sudo add-apt-repository --yes "deb http://apt.llvm.org/${codename}/ llvm-toolchain-${codename}-${Compiler_version} main"
-		#sudo add-apt-repository --yes "deb-src http://apt.llvm.org/${codename}/ llvm-toolchain-${codename}-${Compiler_version} main"
-
-		wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
-	    fi
 	fi
     fi
 fi
@@ -80,19 +66,3 @@ set -x
 
 # INSTALL OUR DEPENDENCIES
 sudo $SCRIPTDIR/mk/linux/setupBuildDeps.sh --quiet
-
-if [ "$distribution" = "Ubuntu" ]; then
-    case $release in
-	12.04*)
-	    SDL2_version="2.0.5"
-	    wget https://www.libsdl.org/release/SDL2-${SDL2_version}.tar.gz
-	    tar xf SDL2-${SDL2_version}.tar.gz
-	    ( cd SDL2-${SDL2_version}
-	    ./configure --enable-static --disable-shared
-	    make
-	    sudo make install )
-	    ;;
-	*)
-	    ;;
-    esac
-fi
