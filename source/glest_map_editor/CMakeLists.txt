@@ -6,15 +6,7 @@ SET(TARGET_NAME_MANPAGE "${TARGET_NAME}.6")
 
 IF(BUILD_ZETAGLEST_MAP_EDITOR)
 	MESSAGE(STATUS "Will try to build ZetaGlest map editor")
-
-	IF(UNIX AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-		IF("${CMAKE_CXX_COMPILER_VERSION}" VERSION_LESS 4.7 OR NOT "${CMAKE_CXX_COMPILER_VERSION}")
-			ADD_DEFINITIONS("-std=gnu++0x")
-		# build fails on Ubuntu trusty using gcc 5.5.0 if this flag isn't given
-		ELSEIF("${CMAKE_CXX_COMPILER_VERSION}" VERSION_LESS 6)
-			ADD_DEFINITIONS("-std=c++11")
-		ENDIF()
-		# Was required at least on bsd and macos.
+	ADD_DEFINITIONS("-std=c++11")
 	ENDIF()
 
 	FIND_PACKAGE(${SDL_VERSION_NAME} REQUIRED)
