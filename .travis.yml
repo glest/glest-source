@@ -21,9 +21,6 @@ matrix:
       compiler: gcc
       env: Tr_Compiler_Version="8"
     - os: linux
-      compiler: gcc
-      env: Tr_Compiler_Version="default"
-    - os: linux
       compiler: clang
       addons:
           apt:
