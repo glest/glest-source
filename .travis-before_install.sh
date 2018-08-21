@@ -65,4 +65,8 @@ apt-cache search ^clang-[0-9] | grep -v '[0-9]-[a-zA-Z]'
 set -x
 
 # INSTALL OUR DEPENDENCIES
+
+# These 2 don't get installed automatically, but are required for libsdl2-dev
+sudo apt-get install -y -q libegl1-mesa-dev libgles2-mesa-dev
+
 sudo $SCRIPTDIR/mk/linux/setupBuildDeps.sh --quiet
