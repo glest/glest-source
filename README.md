@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/ZetaGlest/zetaglest-source.svg?branch=develop)](https://travis-ci.org/ZetaGlest/zetaglest-source)
+[![Coverity Scan Build Status](https://scan.coverity.com/projects/16606/badge.svg)](https://scan.coverity.com/projects/zetaglest)
 
 **This is the game engine source code repository.**
 
