@@ -20,23 +20,16 @@ matrix:
     - os: linux
       compiler: gcc
       env: Tr_Compiler_Version="8"
+
+      # clang
     - os: linux
       compiler: clang
-      addons:
-          apt:
-            sources:
-            - ubuntu-toolchain-r-test
-            - sourceline: 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-6.0 main'
-            packages:
-            - clang-6.0
-      env: Tr_Compiler_Version="6.0"
-    - os: linux
-      compiler: clang
-      addons:
-          apt:
-            packages:
-            - libsdl2-dev
       env: Tr_Compiler_Version="default"
+    - os: linux
+      compiler: clang
+      env: Tr_Compiler_Version="6.0"
+
+      # osx
     - os: osx
       osx_image: xcode9.2
       env: Tr_Xcode_Version="9.2"
@@ -46,10 +39,6 @@ matrix:
 
 git:
   submodules: false
-
-#branches:
-#  only:
-#    - master
 
 before_install:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./.travis-before_install.sh "$CC" "$Tr_Compiler_Version"; fi
