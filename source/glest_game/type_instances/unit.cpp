@@ -2044,6 +2044,8 @@ namespace Glest {
 		}
 
 		void Unit::replaceCurrCommand(Command * cmd) {
+			if (cmd == NULL)
+				return;
 			static string mutexOwnerId =
 				string(__FILE__) + string("_") + intToStr(__LINE__);
 			MutexSafeWrapper safeMutex(mutexCommands, mutexOwnerId);
@@ -2084,6 +2086,11 @@ namespace Glest {
 		//give one command (clear, and push back)
 		std::pair < CommandResult, string > Unit::giveCommand(Command * command,
 			bool tryQueue) {
+			std::pair < CommandResult, string > result(crFailUndefined, "");
+			if (command == NULL) {
+				/*throw megaglest_runtime_error("command == NULL");*/
+				return result;
+			}
 			if (SystemFlags::
 				getSystemSettingType(SystemFlags::debugUnitCommands).enabled)
 				SystemFlags::OutputDebug(SystemFlags::debugUnitCommands,
@@ -2091,7 +2098,6 @@ namespace Glest {
 					tryQueue, this->toString().c_str(),
 					command->toString(false).c_str());
 
-			std::pair < CommandResult, string > result(crFailUndefined, "");
 			changedActiveCommand = false;
 
 			Chrono chrono;
@@ -2099,9 +2105,6 @@ namespace Glest {
 				getSystemSettingType(SystemFlags::debugPerformance).enabled)
 				chrono.start();
 
-			if (command == NULL) {
-				throw megaglest_runtime_error("command == NULL");
-			}
 			if (command->getCommandType() == NULL) {
 				throw megaglest_runtime_error("command->getCommandType() == NULL");
 			}
@@ -4691,7 +4694,8 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: command == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				/*throw megaglest_runtime_error(szBuf);*/
+				return result;
 			}
 
 			//if not operative or has not command type => fail

@@ -1350,24 +1350,26 @@ namespace Glest {
 										if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
 										Command* new_command = this->game->getCommander()->buildCommand(&networkCommand);
-										new_command->setStateType(cst_EmergencyReturnResource);
-										new_command->setStateValue(1);
-										std::pair<CommandResult, string> cr = unit->checkCommand(new_command);
-										if (cr.first == crSuccess) {
-											//printf("\n\n#1b return harvested resources\n\n");
+										if (new_command != NULL) {
+											new_command->setStateType(cst_EmergencyReturnResource);
+											new_command->setStateValue(1);
+											std::pair<CommandResult, string> cr = unit->checkCommand(new_command);
+											if (cr.first == crSuccess) {
+												//printf("\n\n#1b return harvested resources\n\n");
 
-											if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
-											unit->replaceCurrCommand(new_command);
+												if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
+												unit->replaceCurrCommand(new_command);
 
-											unit->setCurrSkill(previousHarvestCmd->getStopLoadedSkillType()); // make sure we use the right harvest animation
-										} else {
-											//printf("\n\n#1c return harvested resources\n\n");
+												unit->setCurrSkill(previousHarvestCmd->getStopLoadedSkillType()); // make sure we use the right harvest animation
+											} else {
+												//printf("\n\n#1c return harvested resources\n\n");
 
-											if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
-											delete new_command;
+												if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
+												delete new_command;
 
-											unit->setCurrSkill(scStop);
-											unit->finishCommand();
+												unit->setCurrSkill(scStop);
+												unit->finishCommand();
+											}
 										}
 									}
 								}

@@ -558,8 +558,9 @@ namespace
 				snprintf(szBuf, 8096,
 					"In [%s::%s Line: %d] Can not find AI unit in AI factionIndex = %d. Game out of synch.",
 					__FILE__, __FUNCTION__, __LINE__, factionIndex);
-				throw
-					megaglest_runtime_error(szBuf);
+				/*throw
+					megaglest_runtime_error(szBuf);*/
+				return result;
 			}
 			Command* currentCommand = unit->getCurrCommand();
 			if (currentCommand != NULL && currentCommand->getCommandType()->commandTypeClass == CommandClass::ccUpgrade && commandType->commandTypeClass != CommandClass::ccAttack)
@@ -573,8 +574,9 @@ namespace
 					"In [%s::%s Line: %d] Can not find AI unittype with unit id: %d, AI factionIndex = %d. Game out of synch.",
 					__FILE__, __FUNCTION__, __LINE__, unit->getId(),
 					factionIndex);
-				throw
-					megaglest_runtime_error(szBuf);
+				/*throw
+					megaglest_runtime_error(szBuf);*/
+				return result;
 			}
 			if (commandType == NULL) {
 				char
@@ -583,8 +585,9 @@ namespace
 					"In [%s::%s Line: %d] commandType == NULL, unit id: %d, AI factionIndex = %d. Game out of synch.",
 					__FILE__, __FUNCTION__, __LINE__, unit->getId(),
 					factionIndex);
-				throw
-					megaglest_runtime_error(szBuf);
+				/*throw
+					megaglest_runtime_error(szBuf);*/
+				return result;
 			}
 			const CommandType *
 				ct = unit->getType()->findCommandTypeById(commandType->getId());
@@ -603,11 +606,12 @@ namespace
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n",
 						szBuf);
 
-				std::string worldLog = world->DumpWorldToLog();
+				/*std::string worldLog = world->DumpWorldToLog();
 				std::string sError =
 					"worldLog = " + worldLog + " " + string(szBuf);
 				throw
-					megaglest_runtime_error(sError);
+					megaglest_runtime_error(sError);*/
+				return result;
 			}
 
 			if (executeCommandOverNetwork() == true) {
@@ -659,8 +663,9 @@ namespace
 					"In [%s::%s Line: %d] Can not find AI unit with index: %d, AI factionIndex = %d. Game out of synch.",
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					factionIndex);
-				throw
-					megaglest_runtime_error(szBuf);
+				/*throw
+					megaglest_runtime_error(szBuf);*/
+				return result;
 			}
 			Command* currentCommand = unit->getCurrCommand();
 			if (currentCommand != NULL && currentCommand->getCommandType()->commandTypeClass == CommandClass::ccUpgrade && commandType->commandTypeClass != CommandClass::ccAttack)
@@ -674,8 +679,9 @@ namespace
 					"In [%s::%s Line: %d] Can not find AI unittype with unit index: %d, AI factionIndex = %d. Game out of synch.",
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					factionIndex);
-				throw
-					megaglest_runtime_error(szBuf);
+				/*throw
+					megaglest_runtime_error(szBuf);*/
+				return result;
 			}
 			const CommandType *
 				ct = unit->getType()->findCommandTypeById(commandType->getId());
@@ -694,11 +700,12 @@ namespace
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n",
 						szBuf);
 
-				std::string worldLog = world->DumpWorldToLog();
+				/*std::string worldLog = world->DumpWorldToLog();
 				std::string sError =
 					"worldLog = " + worldLog + " " + string(szBuf);
 				throw
-					megaglest_runtime_error(sError);
+					megaglest_runtime_error(sError);*/
+				return result;
 			}
 
 			if (executeCommandOverNetwork() == true) {
@@ -749,8 +756,9 @@ namespace
 					"In [%s::%s Line: %d] Can not find AI unit with index: %d, AI factionIndex = %d. Game out of synch.",
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					factionIndex);
-				throw
-					megaglest_runtime_error(szBuf);
+				/*throw
+					megaglest_runtime_error(szBuf);*/
+				return result;
 			}
 			Command* currentCommand = unit->getCurrCommand();
 			if (currentCommand != NULL && currentCommand->getCommandType()->commandTypeClass == CommandClass::ccUpgrade && commandType->commandTypeClass != CommandClass::ccAttack)
@@ -764,8 +772,9 @@ namespace
 					"In [%s::%s Line: %d] Can not find AI unittype with unit index: %d, AI factionIndex = %d. Game out of synch.",
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					factionIndex);
-				throw
-					megaglest_runtime_error(szBuf);
+				/*throw
+					megaglest_runtime_error(szBuf);*/
+				return result;
 			}
 			const CommandType *
 				ct = unit->getType()->findCommandTypeById(commandType->getId());
@@ -784,11 +793,12 @@ namespace
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n",
 						szBuf);
 
-				std::string worldLog = world->DumpWorldToLog();
+				/*std::string worldLog = world->DumpWorldToLog();
 				std::string sError =
 					"worldLog = " + worldLog + " " + string(szBuf);
 				throw
-					megaglest_runtime_error(sError);
+					megaglest_runtime_error(sError);*/
+				return result;
 			}
 
 			if (executeCommandOverNetwork() == true) {
@@ -838,8 +848,9 @@ namespace
 					"In [%s::%s Line: %d] Can not find AI unit with index: %d, AI factionIndex = %d. Game out of synch.",
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					factionIndex);
-				throw
-					megaglest_runtime_error(szBuf);
+				/*throw
+					megaglest_runtime_error(szBuf);*/
+				return result;
 			}
 			Command* currentCommand = unit->getCurrCommand();
 			if (currentCommand != NULL && currentCommand->getCommandType()->commandTypeClass == CommandClass::ccUpgrade && commandType->commandTypeClass != CommandClass::ccAttack)
@@ -853,8 +864,9 @@ namespace
 					"In [%s::%s Line: %d] Can not find AI unittype with unit index: %d, AI factionIndex = %d. Game out of synch.",
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					factionIndex);
-				throw
-					megaglest_runtime_error(szBuf);
+				/*throw
+					megaglest_runtime_error(szBuf);*/
+				return result;
 			}
 			const CommandType *
 				ct =
@@ -876,11 +888,12 @@ namespace
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n",
 						szBuf);
 
-				std::string worldLog = world->DumpWorldToLog();
+				/*std::string worldLog = world->DumpWorldToLog();
 				std::string sError =
 					"worldLog = " + worldLog + " " + string(szBuf);
 				throw
-					megaglest_runtime_error(sError);
+					megaglest_runtime_error(sError);*/
+				return result;
 			}
 
 			if (executeCommandOverNetwork() == true) {

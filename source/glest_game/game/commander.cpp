@@ -685,8 +685,9 @@ namespace
 						gameNetworkInterface->
 							sendTextMessage(szMsg, -1, true, "");
 					}
-					throw
-						megaglest_runtime_error(szBuf);
+					/*throw
+						megaglest_runtime_error(szBuf);*/
+					return result;
 				}
 			}
 
@@ -1599,7 +1600,9 @@ namespace
 				throw
 					megaglest_runtime_error(szBuf);
 			}
-
+			// Create the command.
+			Command *
+				command = NULL;
 			// Get the unit.
 			Unit *
 				target = NULL;
@@ -1634,8 +1637,9 @@ namespace
 					gameNetworkInterface->sendTextMessage(szMsg, -1, true, "");
 				}
 
-				throw
-					megaglest_runtime_error(szBuf);
+				/*throw
+					megaglest_runtime_error(szBuf);*/
+				return command;
 			}
 
 			// Get the command type for the unit.
@@ -1701,11 +1705,12 @@ namespace
 					gameNetworkInterface->sendTextMessage(szMsg, -1, true, "");
 				}
 
-				// Kill the game.
+				/*// Kill the game.
 				std::string sError =
 					"Error [#1]: Game is out of sync (Unit / Faction mismatch)\nplease check log files for details.";
 				throw
-					megaglest_runtime_error(sError);
+					megaglest_runtime_error(sError);*/
+				return command;
 			}
 
 			const UnitType *
@@ -1774,11 +1779,11 @@ namespace
 					gameNetworkInterface->sendTextMessage(szMsg, -1, true, "");
 				}
 
-				std::string sError =
+				/*std::string sError =
 					"Error [#3]: Game is out of sync, please check log files for details.";
-				//abort();
 				throw
-					megaglest_runtime_error(sError);
+					megaglest_runtime_error(sError);*/
+				return command;
 			}
 
 			CardinalDir
@@ -1807,9 +1812,6 @@ namespace
 				}
 			}
 
-			// Create the command.
-			Command *
-				command = NULL;
 			if (isCancelPreMorphCommand == false) {
 				if (unitType != NULL) {
 					command =
