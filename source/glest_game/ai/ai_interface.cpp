@@ -553,10 +553,7 @@ namespace
 
 			std::pair < CommandResult, string > result(crFailUndefined, "");
 			if (unit == NULL) {
-				char
-					szBuf[8096] = "";
-				snprintf(szBuf, 8096,
-					"In [%s::%s Line: %d] Can not find AI unit in AI factionIndex = %d. Game out of synch.",
+				printf("In [%s::%s Line: %d] Can not find AI unit in AI factionIndex = %d. Game out of synch.",
 					__FILE__, __FUNCTION__, __LINE__, factionIndex);
 				/*throw
 					megaglest_runtime_error(szBuf);*/
@@ -568,21 +565,14 @@ namespace
 			const UnitType *
 				unitType = unit->getType();
 			if (unitType == NULL) {
-				char
-					szBuf[8096] = "";
-				snprintf(szBuf, 8096,
-					"In [%s::%s Line: %d] Can not find AI unittype with unit id: %d, AI factionIndex = %d. Game out of synch.",
-					__FILE__, __FUNCTION__, __LINE__, unit->getId(),
-					factionIndex);
+				printf("In [%s::%s Line: %d] Can not find AI unittype with unit id: %d, AI factionIndex = %d. Game out of synch.",
+					__FILE__, __FUNCTION__, __LINE__, unit->getId(), factionIndex);
 				/*throw
 					megaglest_runtime_error(szBuf);*/
 				return result;
 			}
 			if (commandType == NULL) {
-				char
-					szBuf[8096] = "";
-				snprintf(szBuf, 8096,
-					"In [%s::%s Line: %d] commandType == NULL, unit id: %d, AI factionIndex = %d. Game out of synch.",
+				printf("In [%s::%s Line: %d] commandType == NULL, unit id: %d, AI factionIndex = %d. Game out of synch.",
 					__FILE__, __FUNCTION__, __LINE__, unit->getId(),
 					factionIndex);
 				/*throw
@@ -600,7 +590,7 @@ namespace
 					unit->getFullName(false).c_str(),
 					unit->getDesc(false).c_str(),
 					unit->getFaction()->getIndex());
-
+				printf(szBuf);
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
 					enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n",
@@ -657,10 +647,7 @@ namespace
 			const Unit *
 				unit = getMyUnit(unitIndex);
 			if (unit == NULL) {
-				char
-					szBuf[8096] = "";
-				snprintf(szBuf, 8096,
-					"In [%s::%s Line: %d] Can not find AI unit with index: %d, AI factionIndex = %d. Game out of synch.",
+				printf("In [%s::%s Line: %d] Can not find AI unit with index: %d, AI factionIndex = %d. Game out of synch.",
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					factionIndex);
 				/*throw
@@ -673,10 +660,7 @@ namespace
 			const UnitType *
 				unitType = unit->getType();
 			if (unitType == NULL) {
-				char
-					szBuf[8096] = "";
-				snprintf(szBuf, 8096,
-					"In [%s::%s Line: %d] Can not find AI unittype with unit index: %d, AI factionIndex = %d. Game out of synch.",
+				printf("In [%s::%s Line: %d] Can not find AI unittype with unit index: %d, AI factionIndex = %d. Game out of synch.",
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					factionIndex);
 				/*throw
@@ -694,7 +678,7 @@ namespace
 					unit->getFullName(false).c_str(),
 					unit->getDesc(false).c_str(),
 					unit->getFaction()->getIndex());
-
+				printf(szBuf);
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
 					enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n",
@@ -750,10 +734,7 @@ namespace
 			const Unit *
 				unit = getMyUnit(unitIndex);
 			if (unit == NULL) {
-				char
-					szBuf[8096] = "";
-				snprintf(szBuf, 8096,
-					"In [%s::%s Line: %d] Can not find AI unit with index: %d, AI factionIndex = %d. Game out of synch.",
+				printf("In [%s::%s Line: %d] Can not find AI unit with index: %d, AI factionIndex = %d. Game out of synch.",
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					factionIndex);
 				/*throw
@@ -766,10 +747,7 @@ namespace
 			const UnitType *
 				unitType = unit->getType();
 			if (unitType == NULL) {
-				char
-					szBuf[8096] = "";
-				snprintf(szBuf, 8096,
-					"In [%s::%s Line: %d] Can not find AI unittype with unit index: %d, AI factionIndex = %d. Game out of synch.",
+				printf("In [%s::%s Line: %d] Can not find AI unittype with unit index: %d, AI factionIndex = %d. Game out of synch.",
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					factionIndex);
 				/*throw
@@ -787,7 +765,7 @@ namespace
 					unit->getFullName(false).c_str(),
 					unit->getDesc(false).c_str(),
 					unit->getFaction()->getIndex());
-
+				printf(szBuf);
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
 					enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n",
@@ -842,10 +820,7 @@ namespace
 			const Unit *
 				unit = getMyUnit(unitIndex);
 			if (unit == NULL) {
-				char
-					szBuf[8096] = "";
-				snprintf(szBuf, 8096,
-					"In [%s::%s Line: %d] Can not find AI unit with index: %d, AI factionIndex = %d. Game out of synch.",
+				printf("In [%s::%s Line: %d] Can not find AI unit with index: %d, AI factionIndex = %d. Game out of synch.",
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					factionIndex);
 				/*throw
@@ -858,10 +833,7 @@ namespace
 			const UnitType *
 				unitType = unit->getType();
 			if (unitType == NULL) {
-				char
-					szBuf[8096] = "";
-				snprintf(szBuf, 8096,
-					"In [%s::%s Line: %d] Can not find AI unittype with unit index: %d, AI factionIndex = %d. Game out of synch.",
+				printf("In [%s::%s Line: %d] Can not find AI unittype with unit index: %d, AI factionIndex = %d. Game out of synch.",
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					factionIndex);
 				/*throw
@@ -882,7 +854,7 @@ namespace
 					unit->getFullName(false).c_str(),
 					unit->getDesc(false).c_str(),
 					unit->getFaction()->getIndex());
-
+				printf(szBuf);
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
 					enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n",

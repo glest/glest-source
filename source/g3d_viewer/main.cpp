@@ -199,13 +199,13 @@ namespace Shared {
 			printf("\n\n                     \tWhere x is a g3d filename to load separated with a");
 			printf("\n\n                     \tcomma and one or more skill names to try loading.");
 			printf("\n\n                     \texample:");
-			printf("\n\n                     \t%s %s=techs/megapack/factions/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_UNIT]));
+			printf("\n\n                     \t%s %s=techs/zetapack/factions/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_UNIT]));
 			printf("\n\n                     \ttech/units/battle_machine,attack_skill,stop_skill");
 
 			printf("\n\n%s=x  \tAuto load the model specified in path/filename x.", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_MODEL]));
 			printf("\n\n                     \tWhere x is a g3d filename to load.");
 			printf("\n\n                     \texample:");
-			printf("\n\n                     \t%s %s=techs/megapack/factions/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_MODEL]));
+			printf("\n\n                     \t%s %s=techs/zetapack/factions/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_MODEL]));
 			printf("\n\n                     \ttech/units/battle_machine/models/battle_machine_dying.g3d");
 
 			printf("\n\n%s=x  ", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_MODEL_ANIMATION_VALUE]));
@@ -225,14 +225,14 @@ namespace Shared {
 			printf("\n\n                     \texample:");
 			printf("\n\n                     \t%s %s=transparent,", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_AUTO_SCREENSHOT]));
 			printf("\n\n                     \tdisable_grid,saveas-test.png,resize-800x600");
-			printf("\n\n                     \t%s=techs/megapack/factions/tech/units/", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_MODEL]));
+			printf("\n\n                     \t%s=techs/zetapack/factions/tech/units/", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_MODEL]));
 			printf("\n\n                     \tbattle_machine/models/battle_machine_dying.g3d");
 
 			//         "================================================================================"
 			printf("\n\n%s=x  \tAuto load the particle specified in path/filename x.", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE]));
 			printf("\n\n                     \tWhere x is a Particle XML filename to load.");
 			printf("\n\n                     \texample:");
-			printf("\n\n                     \t%s %s=techs/megapack/factions/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE]));
+			printf("\n\n                     \t%s %s=techs/zetapack/factions/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE]));
 			printf("\n\n                     \tpersian/units/genie/glow_particles.xml");
 
 			printf("\n\n%s=x  ", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_PROJECTILE]));
@@ -241,7 +241,7 @@ namespace Shared {
 			printf("\n\n                     \tWhere x is a Projectile Particle Definition XML");
 			printf("\n\n                     \t    filename to load.");
 			printf("\n\n                     \texample:");
-			printf("\n\n                     \t%s %s=techs/megapack/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_PROJECTILE]));
+			printf("\n\n                     \t%s %s=techs/zetapack/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_PROJECTILE]));
 			printf("\n\n                     \tfactions/persian/units/genie/particle_proj.xml");
 
 			printf("\n\n%s=x  ", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_SPLASH]));
@@ -250,7 +250,7 @@ namespace Shared {
 			printf("\n\n                     \tWhere x is a Splash Particle Definition XML");
 			printf("\n\n                     \t    filename to load.");
 			printf("\n\n                     \texample:");
-			printf("\n\n                     \t%s %s=techs/megapack/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_SPLASH]));
+			printf("\n\n                     \t%s %s=techs/zetapack/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_SPLASH]));
 			printf("\n\n                     \tfactions/persian/units/genie/particle_splash.xml");
 
 			printf("\n\n%s=x  ", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_LOOP_VALUE]));

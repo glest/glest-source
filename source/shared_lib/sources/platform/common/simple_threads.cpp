@@ -120,7 +120,7 @@ namespace Shared {
 						vector<string> techPaths;
 						findDirs(techDataPaths, techPaths);
 						if (techPaths.empty() == false) {
-							// Always calc megapack first so its up to date sooner
+							// Always calc zetapack first so its up to date sooner
 							const string zetapackTechtreeName = "zetapack";
 							vector<string>::iterator iterFindZetaPack = std::find(techPaths.begin(), techPaths.end(), zetapackTechtreeName);
 							if (iterFindZetaPack != techPaths.end()) {

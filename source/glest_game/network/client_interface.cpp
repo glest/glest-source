@@ -498,7 +498,7 @@ namespace Glest {
 
 					string sMsg = "may go out of synch: client requestedCommands.size() = " + intToStr(requestedCommands.size());
 					sendTextMessage(sMsg, -1, true, "");
-					sleep(1);
+					sleep(0);
 				}
 			} catch (const megaglest_runtime_error &ex) {
 				SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, ex.what());

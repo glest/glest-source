@@ -666,7 +666,7 @@ namespace Glest {
 				checkBoxAllowInGameJoinPlayer.registerGraphicComponent(containerName,
 					"checkBoxAllowInGameJoinPlayer");
 				checkBoxAllowInGameJoinPlayer.init(20, networkPos - 30);
-				checkBoxAllowInGameJoinPlayer.setValue(false);
+				checkBoxAllowInGameJoinPlayer.setValue(true);
 				checkBoxAllowInGameJoinPlayer.setVisible(allowInProgressJoin);
 
 
