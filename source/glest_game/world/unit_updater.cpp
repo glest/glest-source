@@ -1161,7 +1161,7 @@ namespace Glest {
 									builtUnit->create();
 
 									if (builtUnitType->hasSkillClass(scBeBuilt) == false) {
-										printf((string("Unit [") + builtUnitType->getName(false) + "] has no be_built skill, producer was [" + intToStr(unit->getId()) + " - " + unit->getType()->getName(false) + "].").c_str());
+										printf("%s", (string("Unit [") + builtUnitType->getName(false) + "] has no be_built skill, producer was [" + intToStr(unit->getId()) + " - " + unit->getType()->getName(false) + "].").c_str());
 										//throw megaglest_runtime_error("Unit [" + builtUnitType->getName(false) + "] has no be_built skill, producer was [" + intToStr(unit->getId()) + " - " + unit->getType()->getName(false) + "].");
 										return;
 									}

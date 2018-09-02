@@ -590,7 +590,7 @@ namespace
 					unit->getFullName(false).c_str(),
 					unit->getDesc(false).c_str(),
 					unit->getFaction()->getIndex());
-				printf(szBuf);
+				printf("%s", szBuf);
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
 					enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n",
@@ -678,7 +678,7 @@ namespace
 					unit->getFullName(false).c_str(),
 					unit->getDesc(false).c_str(),
 					unit->getFaction()->getIndex());
-				printf(szBuf);
+				printf("%s", szBuf);
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
 					enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n",
@@ -765,7 +765,7 @@ namespace
 					unit->getFullName(false).c_str(),
 					unit->getDesc(false).c_str(),
 					unit->getFaction()->getIndex());
-				printf(szBuf);
+				printf("%s", szBuf);
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
 					enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n",
@@ -854,7 +854,7 @@ namespace
 					unit->getFullName(false).c_str(),
 					unit->getDesc(false).c_str(),
 					unit->getFaction()->getIndex());
-				printf(szBuf);
+				printf("%s", szBuf);
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
 					enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n",
