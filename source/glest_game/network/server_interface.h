@@ -46,6 +46,22 @@ namespace Shared {
 
 namespace Glest {
 	namespace Game {
+		extern double maxFrameCountLagAllowed;
+		extern double maxClientLagTimeAllowed;
+		extern double maxFrameCountLagAllowedEver;
+		extern double maxClientLagTimeAllowedEver;
+		extern double warnFrameCountLagPercent;
+
+		const double LAG_CHECK_GRACE_PERIOD = 15;
+		const double LAG_CHECK_INTERVAL_PERIOD = 4;
+		const int GRACE_LAG_CTR_LIMIT = 10;
+
+		const int MAX_CLIENT_WAIT_SECONDS_FOR_PAUSE_MILLISECONDS = 15000;
+		const int MAX_CLIENT_PAUSE_FOR_LAG_COUNT = 5;
+		const int MAX_SLOT_THREAD_WAIT_TIME_MILLISECONDS = 1500;
+		const int MASTERSERVER_HEARTBEAT_GAME_STATUS_SECONDS = 30;
+
+		const int MAX_EMPTY_NETWORK_COMMAND_LIST_BROADCAST_INTERVAL_MILLISECONDS = 4000;
 
 		class Stats;
 		// =====================================================

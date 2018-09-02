@@ -8635,7 +8635,7 @@ namespace Glest {
 				bool networkPauseGameForLaggedClients) {
 			if (networkPauseGameForLaggedClients == true) {
 				printf
-				("**WARNING** Detected lag from client: %d networkPauseGameForLaggedClients: %d\n",
+				("WARNING: Detected lag from client %d networkPauseGameForLaggedClients: %d\n",
 					slotIndex, networkPauseGameForLaggedClients);
 			} else {
 				printf

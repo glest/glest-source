@@ -1344,8 +1344,6 @@ namespace Glest {
 							// This may end up continuously lagging and not disconnecting players who have
 							// just the 'wrong' amount of lag (but not enough to be horrible for a disconnect)
 							if (Config::getInstance().getBool("AutoClientLagCorrection", "true") == true) {
-								double LAG_CHECK_GRACE_PERIOD = 15;
-
 								//printf("#4 Server slot got currentFrameCount = %d\n",currentFrameCount);
 
 								if (this->serverInterface->getGameStartTime() > 0 &&
@@ -1355,9 +1353,6 @@ namespace Glest {
 										double clientLag = this->serverInterface->getCurrentFrameCount() - this->getCurrentFrameCount();
 										double clientLagCount = (gameSettings.getNetworkFramePeriod() > 0 ? (clientLag / gameSettings.getNetworkFramePeriod()) : 0);
 										double clientLagTime = difftime((long int) time(NULL), this->getLastReceiveCommandListTime());
-
-										double maxFrameCountLagAllowed = 10;
-										double maxClientLagTimeAllowed = 8;
 
 										// New lag check
 										if ((clientLagCount > maxFrameCountLagAllowed) ||

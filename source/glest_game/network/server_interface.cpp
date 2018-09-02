@@ -54,18 +54,7 @@ namespace Glest {
 		double maxClientLagTimeAllowed = 25;
 		double maxFrameCountLagAllowedEver = 30;
 		double maxClientLagTimeAllowedEver = 25;
-
 		double warnFrameCountLagPercent = 0.50;
-		double LAG_CHECK_GRACE_PERIOD = 15;
-		double LAG_CHECK_INTERVAL_PERIOD = 4;
-		int GRACE_LAG_CTR_LIMIT = 10;
-
-		const int MAX_CLIENT_WAIT_SECONDS_FOR_PAUSE_MILLISECONDS = 15000;
-		const int MAX_CLIENT_PAUSE_FOR_LAG_COUNT = 5;
-		const int MAX_SLOT_THREAD_WAIT_TIME_MILLISECONDS = 1500;
-		const int MASTERSERVER_HEARTBEAT_GAME_STATUS_SECONDS = 30;
-
-		const int MAX_EMPTY_NETWORK_COMMAND_LIST_BROADCAST_INTERVAL_MILLISECONDS = 4000;
 
 		ServerInterface::ServerInterface(bool publishEnabled, ClientLagCallbackInterface *clientLagCallbackInterface) : GameNetworkInterface() {
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
@@ -773,14 +762,14 @@ namespace Glest {
 							for (unsigned int index = 0; index < languageList.size(); ++index) {
 								char szBuf[4096] = "";
 
-								string msgTemplate = "DROPPING %s, exceeded max allowed LAG count of %f [time = %f], clientLag = %f [%f], disconnecting client.";
+								string msgTemplate = "DROPPING %s, exceeded max LAG count of %f [time = %f], clientLag = %f [%f], disconnecting client";
 								if (lang.hasString("ClientLagDropping") == true) {
 									msgTemplate = lang.getString("ClientLagDropping", languageList[index]);
 								}
 								if (gameSettings.getNetworkPauseGameForLaggedClients() == true &&
 									((maxFrameCountLagAllowedEver <= 0 || clientLagCount <= maxFrameCountLagAllowedEver) &&
 									(maxClientLagTimeAllowedEver <= 0 || clientLagTime <= maxClientLagTimeAllowedEver))) {
-									msgTemplate = "PAUSING GAME TEMPORARILY for %s, exceeded max allowed LAG count of %f [time = %f], clientLag = %f [%f], waiting for client to catch up...";
+									msgTemplate = "PAUSING GAME TEMPORARILY for %s, exceeded max LAG count of %f [time = %f], clientLag = %f [%f], waiting for client to catch up";
 									if (lang.hasString("ClientLagPausing") == true) {
 										msgTemplate = lang.getString("ClientLagPausing", languageList[index]);
 									}
@@ -829,7 +818,7 @@ namespace Glest {
 								for (unsigned int index = 0; index < languageList.size(); ++index) {
 									char szBuf[4096] = "";
 
-									string msgTemplate = "LAG WARNING for %s, may exceed max allowed LAG count of %f [time = %f], clientLag = %f [%f], WARNING...";
+									string msgTemplate = "LAG WARNING for %s, may exceed max LAG count of %f [time = %f], clientLag = %f [%f]";
 									if (lang.hasString("ClientLagWarning") == true) {
 										msgTemplate = lang.getString("ClientLagWarning", languageList[index]);
 									}
