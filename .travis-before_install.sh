@@ -55,7 +55,7 @@ if [ "$Compiler_version" != "" ] && [ "$Compiler_version" != "default" ]; then
     wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
     sudo -E apt-add-repository "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-6.0 main"
     sudo -E apt-get -yq update &>> ~/apt-get-update.log
-    sudo -E apt-get -yq --no-install-suggests \
+    sudo -E apt-get -yq --no-install-suggests --allow-unauthenticated \
         --no-install-recommends $TRAVIS_APT_OPTS install clang-${Compiler_version}
   fi
 fi
