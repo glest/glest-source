@@ -28,11 +28,8 @@ if [ "$Compiler_version" != "" ] && [ "$Compiler_version" != "default" ]; then
   fi
   set -x
   if [ "$VersionAvByDefault" = "" ]; then
-    if [ "$Compiler_name" = "gcc" ]; then
-
-      # ubuntu test toolchain needed for more recent version of gcc
-      sudo add-apt-repository --yes "deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu ${codename} main"
-    fi
+    # ubuntu test toolchain needed for more recent version of gcc and clang-6.0
+    sudo add-apt-repository --yes "deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu ${codename} main"
   fi
 fi
 
