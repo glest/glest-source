@@ -7,39 +7,29 @@ matrix:
   include:
     - os: linux
       compiler: gcc
-      addons:
-          apt:
-            packages:
-            - libsdl2-dev
-      env: Tr_Compiler_Version="7"
-      # https://launchpad.net/~ubuntu-toolchain-r/+archive/ubuntu/test
-      dist: trusty # broken compiler on 12.04
+      env: Tr_Compiler_Version="default"
     - os: linux
       compiler: gcc
-      addons:
-          apt:
-            packages:
-            - libsdl2-dev
-      env: Tr_Compiler_Version="default"
-      dist: trusty
+      env: Tr_Compiler_Version="5"
+    - os: linux
+      compiler: gcc
+      env: Tr_Compiler_Version="6"
+    - os: linux
+      compiler: gcc
+      env: Tr_Compiler_Version="7"
+    - os: linux
+      compiler: gcc
+      env: Tr_Compiler_Version="8"
+
+      # clang
     - os: linux
       compiler: clang
-      addons:
-          apt:
-            packages:
-            - libsdl2-dev
-      env: Tr_Compiler_Version="5.0"
-      # http://apt.llvm.org/, compiler not newer than available on debian testing
-      # https://packages.debian.org/search?suite=testing&keywords=clang-
-      dist: trusty
+      env: Tr_Compiler_Version="default"
     - os: linux
       compiler: clang
-      addons:
-          apt:
-            packages:
-            - libsdl2-dev
-      env: Tr_Compiler_Version="default"
-      dist: trusty # broken compiler on 12.04
+      env: Tr_Compiler_Version="6.0"
+
+      # osx
     - os: osx
       osx_image: xcode9.2
       env: Tr_Xcode_Version="9.2"
@@ -49,10 +39,6 @@ matrix:
 
 git:
   submodules: false
-
-#branches:
-#  only:
-#    - master
 
 before_install:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./.travis-before_install.sh "$CC" "$Tr_Compiler_Version"; fi
