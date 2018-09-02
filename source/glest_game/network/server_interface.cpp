@@ -1888,6 +1888,8 @@ namespace Glest {
 						connectionSlot->receiveMessage(&msg);
 					}
 					break;
+					default:
+						break;
 				}
 			}
 			return discard;

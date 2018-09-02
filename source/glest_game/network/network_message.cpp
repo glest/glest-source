@@ -188,6 +188,8 @@ namespace Glest {
 					case netmsgstAverageRecvSize:
 						result += "recv avg size: " + intToStr(iterMap->second) + "\n";
 						break;
+					default:
+						break;
 
 				}
 			}

@@ -2567,6 +2567,8 @@ namespace Glest {
 						case mt_Scenario:
 							fileName += "scenario_";
 							break;
+						default:
+							break;
 					}
 					fileName += extractFileFromDirectoryPath(modInfo->imageUrl);
 				}
