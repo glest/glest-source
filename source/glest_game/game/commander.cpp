@@ -1654,10 +1654,9 @@ namespace
 				char
 					szBuf[8096] = "";
 				snprintf(szBuf, 8096,
-					"In [%s::%s Line: %d]\nUnit / Faction mismatch for network command = [%s]\n%s\nfor unit = %d\n[%s]\n[%s]\nactual local factionIndex = %d.\nGame out of synch.",
+					"In [%s::%s Line: %d]\nUnit / Faction mismatch for network command = [%s]\nfor unit = %d\n[%s]\n[%s]\nactual local factionIndex = %d.\nGame out of synch.",
 					__FILE__, __FUNCTION__, __LINE__,
 					networkCommand->toString().c_str(),
-					unit->getType()->getCommandTypeListDesc().c_str(),
 					unit->getId(), unit->getFullName(false).c_str(),
 					unit->getDesc(false).c_str(),
 					unit->getFaction()->getIndex());
@@ -1667,8 +1666,8 @@ namespace
 					enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n",
 						szBuf);
-				//std::string worldLog = world->DumpWorldToLog();
-				world->DumpWorldToLog();
+
+				//world->DumpWorldToLog();
 
 				// Broadcast the error if player is still connected and print locally.
 				GameNetworkInterface *
@@ -1746,11 +1745,10 @@ namespace
 				char
 					szBuf[8096] = "";
 				snprintf(szBuf, 8096,
-					"In [%s::%s Line: %d]\nCan not find command type for network command = [%s]\n%s\nfor unit = %d\n[%s]\n[%s]\nactual local factionIndex = %d.\nUnit Type Info:\n[%s]\nNetwork unit type:\n[%s]\nisCancelPreMorphCommand: %d\nGame out of synch.",
+					"In [%s::%s Line: %d]\nCan not find command type for network command = [%s]\nfor unit = %d\n[%s]\n[%s]\nactual local factionIndex = %d.\nUnit Type Info:\n[%s]\nNetwork unit type:\n[%s]\nisCancelPreMorphCommand: %d\nGame out of synch.",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__,
 					networkCommand->toString().c_str(),
-					unit->getType()->getCommandTypeListDesc().c_str(),
 					unit->getId(), unit->getFullName(false).c_str(),
 					unit->getDesc(false).c_str(),
 					unit->getFaction()->getIndex(),
@@ -1761,7 +1759,7 @@ namespace
 
 				SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n", szBuf);
 				SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szBuf);
-				world->DumpWorldToLog();
+				//world->DumpWorldToLog();
 
 				GameNetworkInterface *
 					gameNetworkInterface =
