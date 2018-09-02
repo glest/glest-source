@@ -54,15 +54,21 @@ if [ "$Compiler_version" != "" ] && [ "$Compiler_version" != "default" ]; then
       sudo apt-get --allow-unauthenticated install -qq --force-yes gcc-${Compiler_version} g++-${Compiler_version}
     fi
   elif [ "$Compiler_name" = "clang" && ]; then
-      export DEBIAN_FRONTEND=noninteractive
+    export DEBIAN_FRONTEND=noninteractive
 
-      # llvm-toolchain needed for more recent version of clang
-      echo "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-6.0 main" | sudo tee -a /etc/apt/sources.list >/dev/null
-      sudo -E apt-get -yq update &>> ~/apt-get-update.log
-      sudo -E apt-get -yq --allow-unauthenticated --no-install-suggests \
-          --no-install-recommends $TRAVIS_APT_OPTS install clang-${Compiler_version}
+    # llvm-toolchain needed for more recent version of clang
+    echo "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-6.0 main" | sudo tee -a /etc/apt/sources.list >/dev/null
+    sudo -E apt-get -yq update &>> ~/apt-get-update.log
+    sudo -E apt-get -yq --allow-unauthenticated --no-install-suggests \
+        --no-install-recommends $TRAVIS_APT_OPTS install clang-${Compiler_version}
   fi
 fi
+
+# what available versions we can use
+set +x
+apt-cache search ^g[c+][c+]-[0-9] | grep -v '[0-9]-[a-zA-Z]'
+apt-cache search ^clang-[0-9] | grep -v '[0-9]-[a-zA-Z]'
+set -x
 
 # INSTALL OUR DEPENDENCIES
 
