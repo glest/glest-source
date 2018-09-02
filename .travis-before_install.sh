@@ -29,6 +29,8 @@ if [ "$Compiler_version" != "" ] && [ "$Compiler_version" != "default" ]; then
   set -x
   if [ "$VersionAvByDefault" = "" ]; then
     if [ "$Compiler_name" = "gcc" ]; then
+
+      # ubuntu test toolchain needed for more recent version of gcc
       sudo add-apt-repository --yes "deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu ${codename} main"
     fi
   fi
@@ -51,13 +53,14 @@ if [ "$Compiler_version" != "" ] && [ "$Compiler_version" != "default" ]; then
     else
       sudo apt-get --allow-unauthenticated install -qq --force-yes gcc-${Compiler_version} g++-${Compiler_version}
     fi
-  elif [ "$Compiler_name" = "clang" && ]; then
-      export DEBIAN_FRONTEND=noninteractive
-      echo "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-6.0 main" | sudo tee -a /etc/apt/sources.list >/dev/null
-      sudo -E apt-get -yq update &>> ~/apt-get-update.log
-      sudo -E apt-get -yq --allow-unauthenticated --no-install-suggests \
-          --no-install-recommends $TRAVIS_APT_OPTS install clang-${Compiler_version}
-    #    sudo apt-get  install -qq --force-yes clang-${Compiler_version}
+  elif [ "$Compiler_name" = "clang" ]; then
+    export DEBIAN_FRONTEND=noninteractive
+
+    # llvm-toolchain needed for more recent version of clang
+    echo "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-6.0 main" | sudo tee -a /etc/apt/sources.list >/dev/null
+    sudo -E apt-get -yq update &>> ~/apt-get-update.log
+    sudo -E apt-get -yq --allow-unauthenticated --no-install-suggests \
+        --no-install-recommends $TRAVIS_APT_OPTS install clang-${Compiler_version}
   fi
 fi
 
