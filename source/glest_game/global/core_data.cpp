@@ -213,6 +213,8 @@ namespace Glest {
 				case tsyst_healthbarBackgroundTexture:
 					result = healthbarBackgroundTexture;
 					break;
+				default:
+					break;
 
 					//std::vector<Texture2D *> miscTextureList;
 			}

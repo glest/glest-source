@@ -7556,6 +7556,8 @@ namespace Glest {
 					case ctCpuZeta:
 						factionInfo += " CPU Zeta" + multiplier;
 						break;
+					default:
+						break;
 				}
 
 				factionInfo +=

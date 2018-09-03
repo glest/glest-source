@@ -1217,6 +1217,9 @@ namespace Glest {
 									if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d] got tsBlocked\n", __FILE__, __FUNCTION__, __LINE__);
 								}
 								break;
+
+							default:
+								break;
 						}
 					}
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance, "In [%s::%s Line: %d] took msecs: %lld\n", __FILE__, __FUNCTION__, __LINE__, chrono.getMillis());

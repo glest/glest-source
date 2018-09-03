@@ -1393,6 +1393,9 @@ namespace
 				}
 				break;
 
+				default:
+					break;
+
 			}
 
 			if (commandWasHandled == false) {

@@ -3136,6 +3136,8 @@ namespace
 						unit->setCurrField(value == 1 ? Glest::Game::Field::fAir : Glest::Game::Field::fLand);
 						result = true;
 						break;
+					default:
+						break;
 				}
 			}
 			//printf("File: %s line: %d result: %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__LINE__,result);

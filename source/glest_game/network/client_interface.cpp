@@ -2224,6 +2224,9 @@ namespace Glest {
 					this->receiveMessage(&msg);
 				}
 				break;
+
+				default:
+				break;
 			}
 
 			return discard;

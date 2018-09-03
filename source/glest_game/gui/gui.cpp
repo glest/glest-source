@@ -1084,6 +1084,9 @@ namespace Glest {
 				case crSomeFailed:
 					console->addStdMessage("SomeOrdersFailed", result.second);
 					break;
+
+				default:
+					break;
 			}
 		}
 
