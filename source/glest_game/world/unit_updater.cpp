@@ -1132,7 +1132,7 @@ namespace Glest {
 								switch (this->game->getGameSettings()->getPathFinderType()) {
 									case pfBasic:
 										if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d] tsArrived about to call map->isFreeCells() for command->getPos() = %s, ut->getSize() = %d\n", __FILE__, __FUNCTION__, __LINE__, command->getPos().getString().c_str(), ut->getSize());
-										canOccupyCell = map->isFreeCells(command->getPos(), ut->getSize(), fLand);
+										canOccupyCell = map->isFreeCells(command->getPos(), ut->getSize(), fLand, true);
 										break;
 									default:
 										throw megaglest_runtime_error("detected unsupported pathfinder type!");

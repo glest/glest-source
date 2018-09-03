@@ -5127,7 +5127,7 @@ namespace Glest {
 			if (forceColor != NULL) {
 				color = *forceColor;
 			} else {
-				if (map->isFreeCells(pos, building->getSize(), fLand)) {
+				if (map->isFreeCells(pos, building->getSize(), fLand, true)) {
 					color = Vec4f(1.f, 1.f, 1.f, 0.5f);
 				} else {
 					//			Uint64 tc=game->getTickCount();
