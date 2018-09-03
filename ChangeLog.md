@@ -5,6 +5,11 @@ This documents notable or significant changes to
 information about the game from which it was forked, please see the
 [MegaGlest home page](https://megaglest.org/).
 
+## 2018-09-03
+
+[203](https://github.com/ZetaGlest/zetaglest-source/issues/203)
+Buildings will now still be built even units are in the way
+
 ## 2018-06-10
 
 [80](https://github.com/ZetaGlest/zetaglest-source/issues/80)
