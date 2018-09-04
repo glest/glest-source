@@ -1,5 +1,7 @@
 @echo off
 setlocal EnableDelayedExpansion
+SET WINDOWS_SDK=8.1
+REM 10.0.10586.0
 if NOT "%~1"=="" GOTO SETENV
 SET /P PLATFORM_SELECT=Compile ZetaGlest for 64-bit Windows ('n' for 32-bit)? ([y]/n): 
 IF /I "%PLATFORM_SELECT%"=="y" GOTO SIXTYFOUR
@@ -69,87 +71,87 @@ cd .\dependencies\src
 
 Echo Building zlib...
 cd .\zlib\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET% zlib.sln
+msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% zlib.sln
 cd ..\..
 
 Echo Building freetype...
 cd .\freetype\builds\windows\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET% freetype.sln
+msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% freetype.sln
 cd ..\..\..\..
 
 Echo Building fribidi...
 cd .\fribidi\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET% libfribidi.sln
+msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% libfribidi.sln
 cd ..\..
 
 Echo Building glew...
 cd .\glew\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET% glew.sln
+msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% glew.sln
 cd ..\..
 
 Echo Building glut...
 cd .\glut\freeglut\freeglut\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET% freeglut.sln
+msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% freeglut.sln
 cd ..\..\..\..
 
 Echo Building irc...
 cd .\irc\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET% libircclient.sln
+msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% libircclient.sln
 cd ..\..
 
 Echo Building jpeg...
 cd .\jpeg\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET% libjpeg-turbo.sln
+msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% libjpeg-turbo.sln
 cd ..\..
 
 Echo Building lua...
 cd .\lua\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET% lua.sln
+msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% lua.sln
 cd ..\..
 
 Echo Building ogg...
 cd .\ogg\win32\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET% libogg_static.sln
+msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% libogg_static.sln
 cd ..\..\..
 
 Echo Building openal...
 cd .\openal\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET% openal.sln
+msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% openal.sln
 cd ..\..
 
 Echo Building png...
 cd .\png\projects\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET% vstudio.sln
+msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% vstudio.sln
 cd ..\..\..
 
 Echo Building ftgl...
 cd .\ftgl\msvc\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET% ftgl.sln
+msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% ftgl.sln
 cd ..\..\..
 
 Echo Building sdl2...
 cd .\sdl2\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET% sdl2.sln
+msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% sdl2.sln
 cd ..\..
 
 Echo Building vorbis...
 cd .\vorbis\win32\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET% vorbis_static.sln
+msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% vorbis_static.sln
 cd ..\..\..
 
 Echo Building xerces...
 cd .\xerces\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET% xerces-c.sln
+msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% xerces-c.sln
 cd ..\..
 
 Echo Building curl...
 cd .\curl\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET% Curl.sln
+msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% Curl.sln
 cd ..\..
 
 Echo Building wxwidgets...
 cd .\wxwidgets\build\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET% wx.sln
+msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% wx.sln
 cd ..\..\..
 
 cd ..\..
