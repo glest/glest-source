@@ -94,7 +94,7 @@ namespace
 			shakeOffset = Vec2f(0.f);
 
 			//maxRenderDistance = Config::getInstance().getFloat("RenderDistanceMax","64");
-			maxHeight = Config::getInstance().getFloat("CameraMaxDistance", "20");
+			setMaxHeight(-1);
 			minHeight = Config::getInstance().getFloat("CameraMinDistance", "7");
 			//maxCameraDist = maxHeight;
 			//minCameraDist = minHeight;
@@ -126,8 +126,9 @@ namespace
 		void
 			GameCamera::setMaxHeight(float value) {
 			if (value < 0) {
-				maxHeight =
-					Config::getInstance().getFloat("CameraMaxDistance", "20");
+				maxHeight = Config::getInstance().getFloat("CameraMaxDistance", "0");
+				if (maxHeight == 0.0f)
+					maxHeight = PHOTO_MODE_MAXHEIGHT;
 			} else {
 				maxHeight = value;
 			}
@@ -136,9 +137,9 @@ namespace
 		void
 			GameCamera::setCalculatedDefault(float calculatedDefault) {
 			this->calculatedDefault = calculatedDefault;
-			if (maxHeight > 0 && maxHeight < calculatedDefault) {
-				setMaxHeight(calculatedDefault);
-			}
+			//if (maxHeight > 0 && maxHeight < calculatedDefault) {
+				setMaxHeight(PHOTO_MODE_MAXHEIGHT);
+			//}
 			resetPosition();
 		}
 

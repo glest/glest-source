@@ -39,6 +39,8 @@ namespace Glest {
 
 		class Config;
 
+		const float PHOTO_MODE_MAXHEIGHT = 200.0;
+
 		// =====================================================
 		//      class GameCamera
 		//

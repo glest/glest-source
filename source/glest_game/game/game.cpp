@@ -60,8 +60,6 @@ namespace Glest {
 
 		// ===================== PUBLIC ========================
 
-		const float PHOTO_MODE_MAXHEIGHT = 500.0;
-
 		const int CREATE_NEW_TEAM = -100;
 		const int CANCEL_SWITCH_TEAM = -1;
 
@@ -6302,7 +6300,7 @@ namespace Glest {
 							this->gameSettings.isNetworkGame() == false) {
 							gameCamera.setMaxHeight(PHOTO_MODE_MAXHEIGHT);
 						} else if (photoModeEnabled == false) {
-							gameCamera.setMaxHeight(-1);
+							gameCamera.setMaxHeight(/*-1*/PHOTO_MODE_MAXHEIGHT);
 						}
 
 					}
