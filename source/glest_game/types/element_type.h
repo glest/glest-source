@@ -74,10 +74,12 @@ namespace Glest {
 		private:
 			typedef vector < const UnitType *>UnitReqs;
 			typedef vector < const UpgradeType *>UpgradeReqs;
+			typedef vector < Resource > Costs;
 
 		protected:
 			UnitReqs unitReqs;        //needed units
 			UpgradeReqs upgradeReqs;  //needed upgrades
+			Costs costs;              //needed costs
 
 		public:
 			//get
@@ -93,9 +95,23 @@ namespace Glest {
 			const UnitType *getUnitReq(int i) const {
 				return unitReqs[i];
 			}
+			//get
+			int getCostCount() const {
+				return (int) costs.size();
+			}
+			const Resource *getCost(int i) const {
+				return &costs[i];
+			}
+			const Resource *getCost(const ResourceType * rt) const;
 
 			//other
 			virtual string getReqDesc(bool translatedValue) const;
+
+			string getResourceReqDesc(bool lineBreaks, bool translatedValue) const;
+			string getUnitAndUpgradeReqDesc(bool lineBreaks,
+				bool translatedValue) const;
+			string getReqDesc(bool ignoreResourceRequirements,
+				bool translatedValue) const;
 
 			//virtual void saveGame(XmlNode *rootNode) const;
 		};
@@ -108,11 +124,7 @@ namespace Glest {
 		// =====================================================
 
 		class ProducibleType :public RequirableType {
-		private:
-			typedef vector < Resource > Costs;
-
 		protected:
-			Costs costs;
 			Texture2D *cancelImage;
 			int productionTime;
 
@@ -120,30 +132,12 @@ namespace Glest {
 			ProducibleType();
 			virtual ~ProducibleType();
 
-			//get
-			int getCostCount() const {
-				return (int) costs.size();
-			}
-			const Resource *getCost(int i) const {
-				return &costs[i];
-			}
-			const Resource *getCost(const ResourceType * rt) const;
 			int getProductionTime() const {
 				return productionTime;
 			}
 			const Texture2D *getCancelImage() const {
 				return cancelImage;
 			}
-
-			//varios
-			void checkCostStrings(TechTree * techTree);
-
-			virtual string getReqDesc(bool translatedValue) const;
-			string getResourceReqDesc(bool lineBreaks, bool translatedValue) const;
-			string getUnitAndUpgradeReqDesc(bool lineBreaks,
-				bool translatedValue) const;
-			string getReqDesc(bool ignoreResourceRequirements,
-				bool translatedValue) const;
 
 			//      virtual void saveGame(XmlNode *rootNode) const;
 			//      void loadGame(const XmlNode *rootNode);

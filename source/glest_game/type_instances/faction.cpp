@@ -1122,6 +1122,18 @@ namespace Glest {
 				}
 			}
 
+			//required resources
+			for (int i = 0; i < rt->getCostCount(); i++) {
+				const ResourceType *resource = rt->getCost(i)->getType();
+				int cost = rt->getCost(i)->getAmount();
+				if (cost > 0) {
+					int available = getResource(resource)->getAmount();
+					if (cost > available) {
+						return false;
+					}
+				}
+			}
+
 			if (dynamic_cast <const UnitType *>(rt) != NULL) {
 				const UnitType *producedUnitType =
 					dynamic_cast <const UnitType *>(rt);

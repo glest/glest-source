@@ -56,38 +56,74 @@ namespace Glest {
 		// =====================================================
 
 		string RequirableType::getReqDesc(bool translatedValue) const {
-			bool anyReqs = false;
+			return getReqDesc(false, translatedValue);
+		}
 
-			string reqString = "";
-			for (int i = 0; i < getUnitReqCount(); ++i) {
-				if (getUnitReq(i) == NULL) {
-					throw megaglest_runtime_error("getUnitReq(i) == NULL");
+		const Resource *RequirableType::getCost(const ResourceType * rt) const {
+			for (int i = 0; i < (int) costs.size(); ++i) {
+				if (costs[i].getType() == rt) {
+					return &costs[i];
 				}
-				reqString += getUnitReq(i)->getName(translatedValue);
-				reqString += "\n";
-				anyReqs = true;
+			}
+			return NULL;
+		}
+
+
+		string RequirableType::getResourceReqDesc(bool lineBreaks,
+			bool translatedValue) const {
+			string str = "";
+			for (int i = 0; i < getCostCount(); ++i) {
+				if (getCost(i)->getAmount() != 0) {
+					str += getCost(i)->getType()->getName(translatedValue);
+					str += ": " + intToStr(getCost(i)->getAmount());
+					if (lineBreaks == true) {
+						str += "\n";
+					} else {
+						str += " ";
+					}
+				}
+			}
+
+			return str;
+		}
+
+		string RequirableType::getUnitAndUpgradeReqDesc(bool lineBreaks,
+			bool translatedValue)
+			const {
+			string str = "";
+			for (int i = 0; i < getUnitReqCount(); ++i) {
+				str += getUnitReq(i)->getName(translatedValue);
+				if (lineBreaks == true) {
+					str += "\n";
+				} else {
+					str += " ";
+				}
 			}
 
 			for (int i = 0; i < getUpgradeReqCount(); ++i) {
-				if (getUpgradeReq(i) == NULL) {
-					throw megaglest_runtime_error("getUpgradeReq(i) == NULL");
+				str += getUpgradeReq(i)->getName(translatedValue);
+				if (lineBreaks == true) {
+					str += "\n";
+				} else {
+					str += " ";
 				}
-
-				reqString += getUpgradeReq(i)->getName(translatedValue);
-				reqString += "\n";
-				anyReqs = true;
 			}
 
-			string str = getName(translatedValue);
-			if (anyReqs) {
-				return str + " " + Lang::getInstance().getString("Reqs",
-					(translatedValue ==
-						true ? "" :
-						"english")) +
-					":\n" + reqString;
-			} else {
-				return str;
+			return str;
+		}
+
+		string RequirableType::getReqDesc(bool ignoreResourceRequirements, bool translatedValue) const {
+			string str =
+				getName(translatedValue) + " " +
+				Lang::getInstance().getString("Reqs",
+				(translatedValue ==
+					true ? "" : "english")) + ":\n";
+			if (ignoreResourceRequirements == false) {
+				str += getResourceReqDesc(true, translatedValue);
 			}
+
+			str += getUnitAndUpgradeReqDesc(true, translatedValue);
+			return str;
 		}
 
 		//void RequirableType::saveGame(XmlNode *rootNode) const {
@@ -122,77 +158,6 @@ namespace Glest {
 		}
 
 		ProducibleType::~ProducibleType() {
-		}
-
-		const Resource *ProducibleType::getCost(const ResourceType * rt) const {
-			for (int i = 0; i < (int) costs.size(); ++i) {
-				if (costs[i].getType() == rt) {
-					return &costs[i];
-				}
-			}
-			return NULL;
-		}
-
-		string ProducibleType::getReqDesc(bool translatedValue) const {
-			return getReqDesc(false, translatedValue);
-		}
-
-		string ProducibleType::getResourceReqDesc(bool lineBreaks,
-			bool translatedValue) const {
-			string str = "";
-			for (int i = 0; i < getCostCount(); ++i) {
-				if (getCost(i)->getAmount() != 0) {
-					str += getCost(i)->getType()->getName(translatedValue);
-					str += ": " + intToStr(getCost(i)->getAmount());
-					if (lineBreaks == true) {
-						str += "\n";
-					} else {
-						str += " ";
-					}
-				}
-			}
-
-			return str;
-		}
-
-		string ProducibleType::getUnitAndUpgradeReqDesc(bool lineBreaks,
-			bool translatedValue)
-			const {
-			string str = "";
-			for (int i = 0; i < getUnitReqCount(); ++i) {
-				str += getUnitReq(i)->getName(translatedValue);
-				if (lineBreaks == true) {
-					str += "\n";
-				} else {
-					str += " ";
-				}
-			}
-
-			for (int i = 0; i < getUpgradeReqCount(); ++i) {
-				str += getUpgradeReq(i)->getName(translatedValue);
-				if (lineBreaks == true) {
-					str += "\n";
-				} else {
-					str += " ";
-				}
-			}
-
-			return str;
-		}
-
-		string ProducibleType::getReqDesc(bool ignoreResourceRequirements,
-			bool translatedValue) const {
-			string str =
-				getName(translatedValue) + " " +
-				Lang::getInstance().getString("Reqs",
-				(translatedValue ==
-					true ? "" : "english")) + ":\n";
-			if (ignoreResourceRequirements == false) {
-				str += getResourceReqDesc(true, translatedValue);
-			}
-
-			str += getUnitAndUpgradeReqDesc(true, translatedValue);
-			return str;
 		}
 
 		//void ProducibleType::saveGame(XmlNode *rootNode) const {
