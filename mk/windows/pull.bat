@@ -7,10 +7,10 @@ IF /I "%AREYOUSURE%"=="N" GOTO END
 
 cd dependencies
 call .\update-all.bat
+cd ..
 
 echo.
 echo Updating zetaglest-code...
-cd ..
 cd ..\..
 git pull
 Echo.
