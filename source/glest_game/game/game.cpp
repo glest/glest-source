@@ -6300,7 +6300,7 @@ namespace Glest {
 							this->gameSettings.isNetworkGame() == false) {
 							gameCamera.setMaxHeight(PHOTO_MODE_MAXHEIGHT);
 						} else if (photoModeEnabled == false) {
-							gameCamera.setMaxHeight(/*-1*/PHOTO_MODE_MAXHEIGHT);
+							gameCamera.setMaxHeight(-1);
 						}
 
 					}

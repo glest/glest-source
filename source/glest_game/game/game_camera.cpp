@@ -138,7 +138,7 @@ namespace
 			GameCamera::setCalculatedDefault(float calculatedDefault) {
 			this->calculatedDefault = calculatedDefault;
 			//if (maxHeight > 0 && maxHeight < calculatedDefault) {
-				setMaxHeight(PHOTO_MODE_MAXHEIGHT);
+				setMaxHeight(-1);
 			//}
 			resetPosition();
 		}
