@@ -281,13 +281,13 @@ namespace Shared {
 					glEnable(GL_CULL_FACE);
 				}
 				glEnable(GL_BLEND);
-				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 				
 				//glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, Vec4f(1.0f, 1.0f, 1.0f, alpha).ptr());
 				if (renderMode == rmNormal && mesh->getGlow() == true) {
 					// glow on
-					glDisable(GL_LIGHTING);
-				}
+					glBlendFunc(GL_ONE, GL_ONE);
+				} else
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 				if (this->colorPickingMode == false) {
 					//set color
@@ -295,7 +295,7 @@ namespace Shared {
 						Vec4f color(mesh->getDiffuseColor(), 1.f);
 						glColor4fv(color.ptr());
 					}
-
+					
 					//texture state
 					const Texture2DGl *texture = static_cast<const Texture2DGl*>(mesh->getTexture(mtDiffuse));
 					if (texture != NULL && renderTextures) {
@@ -429,11 +429,9 @@ namespace Shared {
 
 					glDrawRangeElements(GL_TRIANGLES, 0, vertexCount - 1, indexCount, GL_UNSIGNED_INT, mesh->getIndices());
 				}
-
 				// glow
 				if (renderMode == rmNormal && mesh->getGlow() == true) {
 					// glow off
-					glEnable(GL_LIGHTING);
 					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 				}
 				//assertions
