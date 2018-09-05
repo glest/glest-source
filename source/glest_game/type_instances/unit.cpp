@@ -629,7 +629,7 @@ namespace Glest {
 		const int64 Unit::PROGRESS_SPEED_MULTIPLIER = 100000;
 
 		const int Unit::speedDivider = 100;
-		const int Unit::maxDeadCount = 1000;        //time in until the corpse disapears - should be about 40 seconds
+		const int Unit::maxDeadCount = 800;        //time in until the corpse disapears - should be about 40 seconds
 		const int Unit::invalidId = -1;
 
 		//set<int> Unit::livingUnits;

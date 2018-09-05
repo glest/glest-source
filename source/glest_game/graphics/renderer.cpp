@@ -5228,8 +5228,11 @@ namespace Glest {
 					//dead alpha
 					const SkillType *st = unit->getCurrSkill();
 					float alpha = 1.0f;
-					if (st->getClass() == scDie && static_cast<const DieSkillType*>(st)->getFade()) {
-						alpha = 1.0f - unit->getAnimProgressAsFloat();
+					if (st->getClass() == scDie) {
+						if (static_cast<const DieSkillType*>(st)->getFade())
+							alpha = 1.0f - unit->getAnimProgressAsFloat();
+						else
+							alpha = 1.0f - 0.75f * unit->getAnimProgressAsFloat();
 					}
 					glEnable(GL_COLOR_MATERIAL);
 					// we cut off a tiny bit here to avoid problems with fully transparent texture parts cutting units in background rendered later.
