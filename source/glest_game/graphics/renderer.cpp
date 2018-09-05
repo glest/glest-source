@@ -5232,7 +5232,7 @@ namespace Glest {
 						if (static_cast<const DieSkillType*>(st)->getFade())
 							alpha = 1.0f - unit->getAnimProgressAsFloat();
 						else
-							alpha = 1.0f - 0.75f * unit->getAnimProgressAsFloat();
+							alpha = 1.0f - 0.625f * unit->getAnimProgressAsFloat();
 					}
 					glEnable(GL_COLOR_MATERIAL);
 					// we cut off a tiny bit here to avoid problems with fully transparent texture parts cutting units in background rendered later.
