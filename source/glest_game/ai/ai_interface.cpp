@@ -817,6 +817,9 @@ namespace
 			assert(this->commander != NULL);
 
 			std::pair < CommandResult, string > result(crFailUndefined, "");
+
+			if (commandType == NULL)
+				return result;
 			const Unit *
 				unit = getMyUnit(unitIndex);
 			if (unit == NULL) {

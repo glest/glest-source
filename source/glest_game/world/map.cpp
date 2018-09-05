@@ -350,7 +350,7 @@ namespace Glest {
 			cells = NULL;
 			surfaceCells = NULL;
 			startLocations = NULL;
-
+			hardMaxPlayers = 0;
 			title = "";
 			waterLevel = 0;
 			heightFactor = 0;

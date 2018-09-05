@@ -2115,7 +2115,8 @@ namespace
 												c_str() : "n/a"));
 										aiInterface->printLog(4, szBuf);
 									}
-									aiInterface->giveCommand(bestIndex, defCt);
+									if (defCt != NULL)
+										aiInterface->giveCommand(bestIndex, defCt);
 								}
 							} else {
 								if (currentCommandCount == 0) {
@@ -2183,8 +2184,8 @@ namespace
 												c_str() : "n/a"));
 										aiInterface->printLog(4, szBuf);
 									}
-
-									aiInterface->giveCommand(bestIndex, defCt);
+									if (defCt != NULL)
+										aiInterface->giveCommand(bestIndex, defCt);
 								}
 								if (SystemFlags::
 									getSystemSettingType(SystemFlags::debugSystem).
@@ -2243,8 +2244,8 @@ namespace
 											c_str() : "n/a"));
 									aiInterface->printLog(4, szBuf);
 								}
-
-								aiInterface->giveCommand(bestIndex, defCt);
+								if (defCt != NULL)
+									aiInterface->giveCommand(bestIndex, defCt);
 							}
 						}
 					} else {
@@ -2311,7 +2312,8 @@ namespace
 									c_str() : "(null)"));
 							aiInterface->printLog(4, szBuf);
 						}
-						aiInterface->giveCommand(producerIndex, defCt);
+						if (defCt != NULL)
+							aiInterface->giveCommand(producerIndex, defCt);
 					}
 				}
 			}

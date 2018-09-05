@@ -213,6 +213,7 @@ namespace Glest {
 			GameConstants::updateFps = 40;
 			GameConstants::cameraFps = 100;
 			captureAvgTestStatus = false;
+			SendMove = false;
 			updateFpsAvgTest = 0;
 			renderFpsAvgTest = 0;
 			lastRenderLog2d = 0;
@@ -359,6 +360,7 @@ namespace Glest {
 			updateFpsAvgTest = 0;
 			renderFpsAvgTest = 0;
 			cameraDragAllowed = false;
+			SendMove = false;
 
 			if (this->masterserverMode == true) {
 				printf("Starting a new game...\n");
