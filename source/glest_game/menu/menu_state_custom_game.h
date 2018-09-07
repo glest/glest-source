@@ -60,7 +60,7 @@ namespace Glest {
 		class GraphicListBoxFactions : public GraphicListBox {
 		private:
 			MenuStateCustomGame * menu;
-			int index;
+			int index = 0;
 		public:
 			GraphicListBoxFactions(const std::string &containerName = "", const std::string &objName = "");
 			void addInformation(MenuStateCustomGame* m, int i);
