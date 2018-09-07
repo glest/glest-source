@@ -1,0 +1,4600 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "LIBIRCCLIENT" "1" "Aug 26, 2018" "1.9" "Libircclient"
+.SH NAME
+libircclient \- Libircclient Documentation
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH INTRODUCTION
+.SS Introduction
+.SS Overview
+.sp
+Libircclient is a small but extremely powerful library which implements the client IRC protocol. It is designed to be small, fast, portable and compatible
+with the RFC standards as well as non\-standard but popular features. It is perfect for building the IRC clients and bots.
+.SS Features
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+Comprehensive C API;
+.IP \(bu 2
+Full coverage of the IRC protocol using providing functions;
+.IP \(bu 2
+Supports multiple simultaneous connection to different IRC servers or even to the same server;
+.IP \(bu 2
+Supports both plain and SSL connections to the IRC servers with the optional certificate check;
+.IP \(bu 2
+Full multi\-threading support, the library is thread\-safe;
+.IP \(bu 2
+All the processing could be handled by a single thread even if multiple connections are used;
+.IP \(bu 2
+Non\-blocking, asynchronous event\-based interface implemented with callbacks;
+.IP \(bu 2
+Extra support for the socket\-based applications, which use select();
+.IP \(bu 2
+CTCP support with optional build\-in reply code;
+.IP \(bu 2
+Supports CTCP PING necessary to pass the “spoof check” implemented by most IRC servers;
+.IP \(bu 2
+Flexible DCC support, including both DCC chat, and DCC file transfer;
+.IP \(bu 2
+Can both initiate and react to initiated DCC;
+.IP \(bu 2
+Can accept or decline DCC sessions asynchronously;
+.IP \(bu 2
+Written in plain C, very small binary size (around 30K depending on platform);
+.IP \(bu 2
+Compatible all tested IRC clients;
+.IP \(bu 2
+Free software licensed under the LGPLv3 license;
+.IP \(bu 2
+Supports Linux as well as any POSIX\-compliant Unix, Mac OS X and Microsoft Windows;
+.IP \(bu 2
+Supports 32/64bit architectures as well as non\-x86 architectures;
+.IP \(bu 2
+IPv6 support (optional, must be compiled in);
+.IP \(bu 2
+OpenSSL support (optional, must be compiled in);
+.IP \(bu 2
+Cocoa interface by Nathan Ollerenshaw;
+.IP \(bu 2
+Comprehensive documentation, examples and the FAQ;
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.SS Known issues
+.sp
+Even though possible by using multiple sessions, the library is not suitable to connect to a large number of IRC servers simultaneously. If you still want to use it, you’d have to overcome the following:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+You cannot use the main loop in \fBirc_run()\fP because it only supports one session. You would have to use \fBirc_add_select_descriptors()\fP
+.IP \(bu 2
+You’d have to handle reconnections separately by processing the relevant \fBirc_process_select_descriptors()\fP return values
+.IP \(bu 2
+If you wish to use poll/epoll() instead of select() you’d have to write more logic as it is not directly supported. See the FAQ\&.
+.IP \(bu 2
+The library is not optimized to have a low per\-connection memory footprint, each non\-SSL connection uses at least 4K, with around 32K per connection for SSL.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.SS Author
+.sp
+This library is created by George Yunaev, copyright 2004\-2016. Please see \fI\%http://www.ulduzsoft.com/linux/libircclient\fP
+.SS License
+.sp
+Libircclient is licensed under Lesser General Public License version 3 or higher. The complete license text is provided in the Appendix.
+.SH INTEGRATION
+.SS Integration
+.SS Requirements
+.SS Supported operating systems and compilers
+.sp
+The library has been extensively tested on Linux x86 and x86_64. It has also been tested on Solaris x86, Linux on ARM and Linux on MIPS platforms, on Mac OS X on x86 and on various versions of Microsoft Windows.
+.SS Compilation
+.sp
+On Linux, FreeBSD and Mac OS X the library has to be compiled and installed before use unless you use a precompiled package provided by your operating system distribution. If it is provided, you are recommended to use it as it would be updated
+from the central repository when the bugs are fixed.
+.sp
+On Microsoft Windows the official library binaries are provided, so you do not have to build it. Unless you have experience building with Cygwin, you’re advised not to build from source and use the official binary.
+.SS Required libraries
+.sp
+The library depends only on libc (glibc\-devel on Linux) and gcc, although the examples require also libstdc++ (libstdc++\-devel) and g++. Minimum supported version is glibc 2.2,
+although if IPv6 is requested, at least glibc 2.4 is required.
+.sp
+If the library is built with SSL support, the openssl development package (openssl\-devel) needs to be installed.
+.sp
+On Microsoft Windows the Cygwin with necessary development packages must be installed (and openssl\-devel as well).
+.SS Compiling
+.sp
+The library is configured and built the standard Unix way:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+\&./configure [\-\-enable\-openssl] [\-\-enable\-ipv6]
+make
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS Installing
+.sp
+Although no install is necessary to use the libraries, the install target is provided for convenience and could be invoked via \fBsudo make install\fP
+.SS Linking
+.sp
+Link your application with either libircclient.a or libircclient.so depending on your needs. If you use the system\-provided library, please link with libircclient.so.
+.sp
+If you have built the library with SSL support, you will need to link with OpenSSL libraries; add \fB\-lcrypto \-lssl\fP to your LDFLAGS
+.sp
+On Microsoft Windows please link with libircclient.lib which implicitly links with libircclient.dll
+.SS Coding
+.SS Initialization
+.SS Include the headers
+.sp
+Before using the library you need to include the library header \fIlibircclient.h\fP\&. You may also want to include \fIlibirc_rfcnumeric.h\fP which provides the RFC codes:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+#include "libircclient.h"
+#include "libirc_rfcnumeric.h"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS Create event handlers
+.sp
+Unlike most network protocols such as HTTP or SMTP, the IRC protocol is event\-based. The events come from server asynchronously. Some events are triggered by your
+action (such as joining the channel or changing your nick), some are triggered by other IRC users (such as sending you a message), and some are triggered by the IRC
+server itself (such as sending operation notes or invoking NickServ services).
+.sp
+Libircclient helps handling those events by providing the \fBevent handling structure\fP\&. It declares the events you can define in your application,
+and when such event is received from the server, the appropriate callback will be called. The number of events you need to handle depending on the complexity of your client
+and the functionality it supports.
+.sp
+Generally there are only two events you must handle to provide a bare minimum functionality: \fBevent_connect\fP and \fBevent_numeric\fP\&. However it is recommended
+to create an event dump function and use it for all unused events to make sure you do not miss an important event because you expected a wrong one. See function \fBdump_event\fP in
+the file examples/irctest.c
+.SS Windows\-specific initialization
+.sp
+If you link with the \fBstatic\fP library on Microsoft Windows, you need to initialize the Winsock2 library before calling the library functions. It could be done by following:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+WSADATA wsaData;
+
+if ( WSAStartup ( MAKEWORD (2, 2), &wsaData) != 0 )
+    // report an error
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+However if you link with the \fBdynamic\fP library (libircclient.dll) which is default if you use the official build, this is not needed because the DLL initializes it automatically on load.
+.SS Create an IRC session
+.sp
+To use the library at least one \fBIRC session\fP needs to be created. One session could be used to establish a single connection to one IRC server for one nick.
+However more than one session could be created if needed.
+.sp
+To create a session, call the \fBirc_create_session()\fP function:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+// The IRC callbacks structure
+irc_callbacks_t callbacks;
+
+// Init it
+memset ( &callbacks, 0, sizeof(callbacks) );
+
+// Set up the mandatory events
+callbacks.event_connect = event_connect;
+callbacks.event_numeric = event_numeric;
+
+// Set up the rest of events
+
+// Now create the session
+irc_session_t * session = irc_create_session( &callbacks );
+
+if ( !session )
+    // Handle the error
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This code could be repeated as many times as needed to create multiple sessions. The same callback structure could be reused for multiple sessions.
+.SS Set options
+.sp
+Besides debugging there are two options you may need to use. The \fBLIBIRC_OPTION_STRIPNICKS\fP enables automatic parsing of nicknames,
+and since it is hard to imagine the case when it should not be enabled, we enable it:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+irc_option_set( session, LIBIRC_OPTION_STRIPNICKS );
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The second option you may need if you use SSL connections and plan to connect to the servers which use self\-signed certificates. See the
+documentation for \fBLIBIRC_OPTION_SSL_NO_VERIFY\fP
+.SS Connect to the server
+.sp
+To initiate the connection to the IRC server, call the \fBirc_connect()\fP function:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+// Connect to a regular IRC server
+if ( irc_connect (session, "irc.example.com", 6667, 0, "mynick", "myusername", "myrealname" ) )
+  // Handle the error: irc_strerror() and irc_errno()
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+To initiate the connection to the IRC server over SSL, call the \fBirc_connect()\fP function and prefix the host name or IP address with a hash symbol:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+// Connect to the SSL server; #192.168.1.1 is also possible
+if ( irc_connect (session, "#irc.example.com", 6669, 0, "mynick", "myusername", "myrealname" ) )
+  // Handle the error: irc_strerror() and irc_errno()
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This function only initiates the connection, so when it successfully returns the connection is only initiated, but not established yet. Then one
+of the following happens after you invoke the networking handler:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+If the connection is established, you will receive the \fBevent_connect\fP \- this is why it is important to handle it
+.IP \(bu 2
+If the connection failed, the networking handler function will return failure
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.SS Connect to the IPv6 server
+.sp
+To initiate the connection to the IPv6 server, call the \fBirc_connect6()\fP function:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+if ( irc_connect6 (session, "2001:0db8:85a3:0042:1000:8a2e:0370:7334", 6669, 0, "mynick", "myusername", "myrealname" ) )
+  // Handle the error: irc_strerror() and irc_errno()
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The rest of the details, including the return value and the SSL are the same as with regular connect.
+.SS Start the networking loop
+.sp
+To let the library handle the events, there are two scenarios. You can either invoke the built\-in networking loop which will handle the networking and
+call your events, or you can write your own loop.
+.sp
+Invoking the build\-in networking loop is simpler but limited. Since it loops until the connection terminates, it is not an option for a GUI application
+(unless you start the loop in a separate thread which you can do). And since this loop only can handle one session, it is impossible to use it if you want
+to handle multiple IRC sessions. In those cases the custom networking loop, described below, should be used.
+.sp
+To start the event loop call the \fBirc_run()\fP function:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+if ( irc_run (s) )
+  // Either the connection to the server could not be established or terminated. See irc_errno()
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Remember that irc_run() call \fBwill not return\fP until the server connection is not active anymore.
+.SS Use the custom networking loop
+.sp
+If you use multiple sessions or have your own socket handler, you can use the custom networking loop. In this case your application must be select()\-based
+(see the FAQ if you want to use other polling methods). And you need to run the following loop:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+// Make sure that all the IRC sessions are connected
+if ( !irc_is_connected(session) )
+  // reconnect it, or abort
+
+// Create the structures for select()
+struct timeval tv;
+fd_set in_set, out_set;
+int maxfd = 0;
+
+// Wait 0.25 sec for the events \- you can wait longer if you want to, but the library has internal timeouts
+// so it needs to be called periodically even if there are no network events
+tv.tv_usec = 250000;
+tv.tv_sec = 0;
+
+// Initialize the sets
+FD_ZERO (&in_set);
+FD_ZERO (&out_set);
+
+// Add your own descriptors you need to wait for, if any
+\&...
+
+// Add the IRC session descriptors \- call irc_add_select_descriptors() for each active session
+irc_add_select_descriptors( session, &in_set, &out_set, &maxfd );
+
+// Call select()
+if ( select (maxfd + 1, &in_set, &out_set, 0, &tv) < 0 )
+   // Error
+
+// You may also check if any descriptor is active, but again the library needs to handle internal timeouts,
+// so you need to call irc_process_select_descriptors() for each session at least once in a few seconds
+\&...
+
+// Call irc_process_select_descriptors() for each session with the descriptor set
+if ( irc_process_select_descriptors (session, &in_set, &out_set) )
+    // The connection failed, or the server disconnected. Handle it.
+
+// Do it again
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS Channels and users
+.sp
+Before calling any of those functions make sure you have connected to the server.
+.SS Join and leave a channel
+.sp
+To join the channel call the \fBirc_cmd_join()\fP function with the channel name:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+// Join the channel #linux
+if ( irc_cmd_join( session, "#linux", 0 ) )
+  // most likely connection error
+
+// Join the channel $science protected by the secret key *superpassword*
+if ( irc_cmd_join( session, "$science", "superpassword" ) )
+  // most likely connection error
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+You can join as many channels as you want, although the serer may restrict the number of channels you can join simultaneously.
+.sp
+If the join was successful you will receive the \fBevent_join\fP event. You need to wait for this event before you can perform any channel operations (such as sending the messages). However you do NOT
+have to wait for this event to issue a second JOIN command as shown in the example above.
+.sp
+If the join was not successful, you will receive the error via \fBevent_numeric\fP\&.
+.sp
+To leave the channel call the \fBirc_cmd_part()\fP function with the channel name:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+// Leave the channel #linux
+if ( irc_cmd_part( session, "#linux" ) )
+  // most likely connection error
+
+// Leave the channel $science
+if ( irc_cmd_part( session, "$science" ) )
+  // most likely connection error
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS Send a message to a channel or to a user
+.sp
+After you have joined the channel, you can send a message to the channel by using the \fBirc_cmd_msg()\fP function with the channel name:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+// Say "Hi!" to everyone in the channel #linux
+if ( irc_cmd_msg( session, "#linux", "Hi!" ) )
+  // most likely connection error
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Technically the protocol does not require one to join the channel to send the messages into the channel. However most servers by default set
+the channel mode which prevents the users who did not join the channel from sending the message into the channel.
+.sp
+Same function is used to send a “private” message to another user. The “private” messages do not go through the channels, but they still go through
+the IRC server (sometime multiple servers) and can be seen or even logged by the IRC network operators.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+// Say "Hi!" to IRC user john
+if ( irc_cmd_msg( session, "john", "Hi!" ) )
+  // most likely connection error
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+If the message was sent successfully you will not receive any confirmation or event. You will only receive the error via \fBevent_numeric\fP
+if the message was not sent.
+.SS Receive messages from a channel or from a user
+.sp
+You receive the channel messages by handling the \fBevent_channel\fP\&. Each time someone says something in the channel this event is called.
+.sp
+You receive the “private” messages from other users by handling the \fBevent_privmsg\fP\&.
+.sp
+Those event handlers should be created in your application and passed to the library when you \fI\%create an IRC session\fP
+.SS Send an action message
+.sp
+“Action” messages, also called /me messages, are specially formatted CTCP messages. However the library contains a special function to send
+them, \fBirc_cmd_me()\fP\&. Actions sent by other people are handled by the \fBevent_ctcp_action\fP event.
+.sp
+Same as with sending messages no confirmation is received on success.
+.SS Send a CTCP request
+.sp
+Other CTCP requests such as PING, VERSION etc should be sent by calling \fBirc_cmd_ctcp_request()\fP\&. If the CTCP response is received,
+it is handled by the \fBevent_ctcp_rep\fP event.
+.SS Handling DCC chat
+.SS Implementing the DCC callback
+.sp
+No matter whether you plan to initiate DCC chats or respond to them you must implement the \fBDCC callback\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+void dcc_callback (irc_session_t * session, irc_dcc_t id, int status, void * ctx, const char * data, unsigned int length)
+{
+   if ( status )
+   {
+       // If status is LIBIRC_ERR_CLOSED, the chat has been closed by the remote party.
+       // Otherwise it is an error; the CHAT either terminated or could not be established. status is the error code; see irc_strerror(status)
+   }
+   else if ( length == 0 )
+   {
+       // The remote side has accepted the chat request, send "hello" something to them
+       irc_dcc_text( session, id, "Hello!" );
+   }
+   else
+   {
+       // We have received the chat message from the remote party
+       printf ("Remote party said: %s\en", data );
+   }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This callback should be passed to either \fBirc_dcc_chat()\fP function which initiates the request, or to \fBirc_dcc_accept()\fP function
+which accepts the DCC CHAT request initiated by another user.
+.SS Initiating the DCC CHAT
+.sp
+You can initiate the DCC chat with another user by calling \fBirc_dcc_chat()\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+// The DCC chat session id will be returned in this variable
+irc_dcc_t dccid;
+
+// Initiate the DCC chat with the IRC user "john"
+if ( irc_dcc_chat( session, 0, "john", dcc_callback, &dccid ) )
+  // report error
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Now you can proceed with other tasks. When John accepts or declines the chat, the dcc_callback() will be called, and it will be possible
+to use the \fBirc_dcc_text()\fP function to send the chat messages. The callback will also be called each time a new chat message is
+received, or when the chat is finished or terminated because of network error.
+.SS Responding to DCC CHAT requests
+.sp
+To respond to the DCC CHAT equests your application should implement for the \fBevent_dcc_chat_req\fP event.
+The callback could be implemented as following:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+void callback_event_dcc_chat( irc_session_t * session, const char * nick, const char * addr, irc_dcc_t dccid )
+{
+    // User \(aqnick\(aq from the IP address \(aqaddr\(aq tries to initiate the DCC chat with us.
+    // Store this information in the application internal queue together with the dccid so the callback can return
+    dcc_queue.store( dccid, "CHAT from " + nick + " IP address: " + addr  );
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+and registered when the IRC session is created.
+If your application does not handle DCC at all you can just call the \fBirc_dcc_decline()\fP function inside the callback.
+.sp
+If it does, we only store this information in the callback, and return. This is because the event processing will stop
+until the callback returns, so popping up the dialog asking for the user confirmation would stop further events such as
+channel messages from being processed. Even if your application is automatic and doesn’t pop up dialogs it is still better to
+separate the chat logic from the callback logic.
+.sp
+Somewhere later the application would check the queue in the GUI thread, get this information, and pop up the dialog asking the user
+feedback. Then if the chat request was accepted, the application would call the \fBirc_dcc_accept()\fP function, and if it was
+declined, the application would call the \fBirc_dcc_decline()\fP function. Both functions will accept the \fIdccid\fP which identifies
+this specific request:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+// Somewhere in the GUI thread
+if ( !dcc_queue.empty() )
+{
+    // Get the DCC information and show the dialog to the user
+    irc_dcc_t dccid = dcc_chat_queue.top().dccid;
+
+    ...
+
+    // React to the user entry
+    if ( dialog.isAccepted() )
+        irc_dcc_accept( session, dccid, 0, dcc_callback );
+    else
+        irc_dcc_decline( session, dccid );
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS Send CHAT messages
+.sp
+Once the chat session is established, you can send the chat messages using \fBirc_dcc_text()\fP function. Note that you need to pass the
+dcc session id instead of nick:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+irc_dcc_text( session, dccid, "Hello there!" );
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS Handling DCC file transfer
+.sp
+This section covers handling sending and receiving files via DCC.
+.SS Implementing the callback
+.sp
+No matter whether you plan to send or receive files via dcc you must implement the \fBDCC callback\fP\&.
+While the same callback may be used both for sending and receiving, this is not recommended since the logic is different. Therefore
+the suggested implementation would be to use different callbacks as suggested:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+// This callback is used when we send a file to the remote party
+void callback_dcc_send_file (irc_session_t * session, irc_dcc_t id, int status, void * ctx, const char * data, unsigned int length)
+{
+   if ( status )
+   {
+       // It is an error; the send operation was either terminated or the connection could not be established. status is the error code; see irc_strerror(status)
+   }
+   else
+   {
+       // We have sent some data to the remote party, \(aqlength\(aq indicates how much data was sent
+       printf ("Sent bytes: %d\en", length );
+   }
+}
+
+// This callback is used when we receive a file from the remote party
+void callback_dcc_recv_file (irc_session_t * session, irc_dcc_t id, int status, void * ctx, const char * data, unsigned int length)
+{
+   if ( status )
+   {
+       // It is an error; the send operation was either terminated or the connection could not be established. status is the error code; see irc_strerror(status)
+   }
+   else if ( data == 0 )
+   {
+       // File transfer has been finished
+       printf ("File has been received successfully\en" );
+   }
+   else
+   {
+       // More file content has been received. Store it in memory, write to disk or something
+       printf ("Received %d bytes of data\en", length );
+   }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This callback should be passed to either \fBirc_dcc_sendfile()\fP function which initiates the request, or to \fBirc_dcc_accept()\fP function
+which accepts the DCC RECVFILE request initiated by another user.
+.SS Sending the file via DCC
+.sp
+You can initiate sending the file via DCC to another user by calling \fBirc_dcc_sendfile()\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+// The DCC session id will be returned in this variable
+irc_dcc_t dccid;
+
+// Initiate sending of file "/etc/passwd" via DCC chat to the IRC user "john"
+if ( irc_dcc_sendfile( session, 0, "john", "/etc/passwd", callback_dcc_send_file, &dccid ) )
+  // report error
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Now you can proceed with other tasks. When John accepts the request, the file will be sent and callback_dcc_send_file() will be called
+each time a piece of file is sent. The callback will also be called when the file has been sent, or when sending was terminated
+because of network error.
+.SS Receive a file via DCC
+.sp
+To receive the file via DCC a remote user must initiate the DCC request to send you a file. To receive this request your application
+should implement the \fBevent_dcc_send_req\fP event. The callback could be implemented as following:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+void callback_event_dcc_file( irc_session_t * session, const char * nick, const char * addr, const char * filename, unsigned long size, irc_dcc_t dccid )
+{
+    // User \(aqnick\(aq from the IP address \(aqaddr\(aq tries to initiate the DCC chat with us.
+    // Store this information in the application internal queue together with the dccid so the callback can return
+    dcc_queue.store( dccid, "CHAT from " + nick + " IP address: " + addr + ", filename " + filename  );
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+If your application does not handle DCC at all you can just call the \fBirc_dcc_decline()\fP function inside the callback.
+.sp
+If it does, we only store this information in the callback, and return. This is because the event processing will stop
+until the callback returns, so popping up the dialog asking for the user confirmation would stop further events such as
+channel messages from being processed. Even if your application is automatic and doesn’t pop up dialogs it is still better to
+separate the chat logic from the callback logic.
+.sp
+Somewhere later the application would check the queue in the GUI thread, get this information, and pop up the dialog asking the user
+feedback. Then if the chat request was accepted, the application would call the \fBirc_dcc_accept()\fP function, and if it was
+declined, the application would call the \fBirc_dcc_decline()\fP function. Both functions will accept the \fIdccid\fP which identifies
+this specific request:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+// Somewhere in the GUI thread
+if ( !dcc_queue.empty() )
+{
+    // Get the DCC information and show the dialog to the user
+    irc_dcc_t dccid = dcc_chat_queue.top().dccid;
+
+    ...
+
+    // React to the user entry
+    if ( dialog.isAccepted() )
+        irc_dcc_accept( session, dccid, 0, dcc_callback );
+    else
+        irc_dcc_decline( session, dccid );
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Note that it is not possible to request a remote user to send you a file.
+.SS Handling colors
+.SS Stripping colors from the message
+.sp
+If your bot reacts on the text messages, you need to strip down the colors from the text messages before processing them. Otherwise the user sending
+the colored message won’t get the same reaction as the user who doesn’t use colors, and some users use colors by default.
+.sp
+Use the \fBirc_color_strip_from_mirc()\fP function to strip the ANSI colors from the text message. It does not modify the message which doesn’t use colors.
+.SS Color conversion
+.sp
+The library supports color translation, and can convert colors between the ANSI colors used by the IRC clients and their textual representation.
+Colors usage is typically limited to the messages and user specified reasons. You cannot use colors as part of your nick or channel name.
+.sp
+Use the \fBirc_color_convert_from_mirc()\fP function to convert colors from ANSI to the library textual representation, and \fBirc_color_convert_to_mirc()\fP
+to convert the library textual representation of colors into ANSI.
+.sp
+Do not forget to free() the returned pointer once it is not used anymore.
+.SS Miscellaneous
+.SS Tracking user nicks
+.sp
+If your application maintains some user\-specific quotas, it is important to track the nick changes. Since the nick is the only identifier
+available to you, each time the user changes the nick you need to update your quota database. To do so you need to intercept the \fBevent_nick\fP
+event. See the examples/censor.c for details.
+.SH API REFERENCE
+.SS Callbacks
+.sp
+This section describes the callbacks supported by the library.
+.SS irc_event_callback_t
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B typedef void (*irc_event_callback_t)(irc_session_t *\fI\ session\fP, const char *\fI\ event\fP, const char *\fI\ origin\fP, const char **\fI\ params\fP, unsigned int\fI\ count\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+The IRC session, which generated the event
+T}
+_
+T{
+\fIevent\fP
+T}	T{
+The text name of the event. Useful in case a single event handler is used to handle multiple events
+T}
+_
+T{
+\fIorigin\fP
+T}	T{
+The originator of the event. Depends on the event.
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+Extra parameters, if any, for this event. The number of extra parameters depends on the event, and may be zero.
+Each parameter is a NULL\-terminated text string. None of the params can be NULL, but the \fIparams\fP pointer itself could be NULL for some events.
+T}
+_
+T{
+\fIcount\fP
+T}	T{
+The number of entries in the \fIparams\fP argument supplied.
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+Every IRC event generates a callback. This type of callback is universal and is used by almost all IRC events. Depending on the event nature, it can have zero or more parameters.
+For each type of event, the number of provided parameters is fixed, and their meaning is described in the \fBirc_callbacks_t\fP structure.
+.sp
+Every event has an origin (i.e. who originated the event). In some cases the \fIorigin\fP variable may be NULL, which indicates that event origin is unknown. The origin usually looks like \fInick!host@ircserver\fP,
+i.e. like \fItim!home@irc.server.net\fP\&. Such origins can not be used in IRC commands, and need to be stripped (i.e. host and server part should be cut off) before using. This can be done either manually, by
+calling \fBirc_target_get_nick()\fP, or automatically for all the events \- by setting the \fBLIBIRC_OPTION_STRIPNICKS\fP option with \fBirc_option_set()\fP\&.
+.SS irc_event_dcc_chat_t
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B typedef void (*irc_event_dcc_chat_t)(irc_session_t *\fI\ session\fP, const char *\fI\ nick\fP, const char *\fI\ addr\fP, irc_dcc_t\fI\ dccid\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session, which generates an event (the one returned by irc_create_session)
+T}
+_
+T{
+\fInick\fP
+T}	T{
+User who requested the chat
+T}
+_
+T{
+\fIaddr\fP
+T}	T{
+IP address of the person such as 189.12.34.56
+T}
+_
+T{
+\fIdccid\fP
+T}	T{
+Identifier associated with this request which should be passed to the \fBirc_dcc_accept()\fP / \fBirc_dcc_decline()\fP functions
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This callback is called when someone requests DCC CHAT with you. DCC CHAT is the type of chat which goes directly between the clients, instead of going through the IRC server. Since the TCP connection must be
+established for it to happen, typically the initiator must either have the public IP or special software on the firewall which handles the necessary port forwarding.
+.sp
+You must respond to the chat request either by calling \fBirc_dcc_accept()\fP to accept it, or by calling \fBirc_dcc_decline()\fP to decline it.
+.SS irc_event_dcc_send_t
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B typedef void (*irc_event_dcc_send_t)(irc_session_t *\fI\ session\fP, const char *\fI\ nick\fP, const char *\fI\ addr\fP, const char *\fI\ filename\fP, unsigned long\fI\ size\fP, irc_dcc_t\fI\ dccid\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+The IRC session, which generates an event (the one returned by irc_create_session)
+T}
+_
+T{
+\fInick\fP
+T}	T{
+The user who requested the chat
+T}
+_
+T{
+\fIaddr\fP
+T}	T{
+The IP address of the person such as 189.12.34.56
+T}
+_
+T{
+\fIfilename\fP
+T}	T{
+The name of the file the user is trying to send you
+T}
+_
+T{
+\fIsize\fP
+T}	T{
+The size of the file
+T}
+_
+T{
+\fIdccid\fP
+T}	T{
+Identifier associated with this request which should be passed to the \fBirc_dcc_accept()\fP / \fBirc_dcc_decline()\fP functions
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This callback is called when someone wants to send you a file by using DCC SEND. DCC SEND goes directly between the clients, and requires the TCP connection to be established
+established for it to happen. Therefore the initiator must either have the public IP or special software on the firewall which handles the necessary port forwarding.
+.sp
+You must respond to the chat request either by calling \fBirc_dcc_accept()\fP to accept it, or by calling \fBirc_dcc_decline()\fP to decline it.
+.SS irc_dcc_callback_t
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B typedef void (*irc_dcc_callback_t)(irc_session_t *\fI\ session\fP, irc_dcc_t\fI\ id\fP, int\fI\ status\fP, void *\fI\ ctx\fP, const char *\fI\ data\fP, unsigned int\fI\ length\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+The IRC session, which generates an event (the one returned by irc_create_session)
+T}
+_
+T{
+\fIid\fP
+T}	T{
+The DCC session id
+T}
+_
+T{
+\fIstatus\fP
+T}	T{
+The DCC connection status. 0 means there is no error, otherwise contains an error code
+T}
+_
+T{
+\fIctx\fP
+T}	T{
+The user\-provided context
+T}
+_
+T{
+\fIdata\fP
+T}	T{
+Data received (if available), otherwise NULL
+T}
+_
+T{
+\fIlength\fP
+T}	T{
+Size of the data received if any data
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This callback is called for all DCC functions when state change occurs.
+.INDENT 0.0
+.TP
+.B For DCC CHAT, the callback is called as following:
+.INDENT 7.0
+.IP \(bu 2
+\fIstatus\fP is \fBLIBIRC_ERR_CLOSED\fP: connection is closed by remote peer. After returning from the callback, the DCC session is automatically destroyed
+.IP \(bu 2
+\fIstatus\fP is nonzero but not \fBLIBIRC_ERR_CLOSED\fP: socket I/O error  (connect error, accept error, recv error, send error). After returning from the callback, the DCC session is automatically destroyed
+.IP \(bu 2
+\fIstatus\fP is zero and \fIlength\fP is zero: the remote side accepted the chat request
+.IP \(bu 2
+\fIstatus\fP is zero and \fIlength\fP is nonzero: new chat message received, \fIdata\fP contains the message (a null\-terminated string), \fIlength\fP contains the string length without null terminator
+.UNINDENT
+.TP
+.B For DCC SEND, while file is being sent, the callback is called as following:
+.INDENT 7.0
+.IP \(bu 2
+\fIstatus\fP is nonzero: socket I/O error (connect error, accept error, recv error, send error). After returning from the callback, the DCC session is automatically destroyed
+.IP \(bu 2
+\fIstatus\fP is zero: another data packet has been sent, \fIlength\fP contains the total amount of data sent so far, \fIdata\fP is NULL
+.UNINDENT
+.TP
+.B For DCC RECV, while file is being sending, callback called as following:
+.INDENT 7.0
+.IP \(bu 2
+\fIstatus\fP is nonzero: socket I/O error (connect error, accept error, recv error, send error). After returning from the callback, the DCC session is automatically destroyed.
+.IP \(bu 2
+\fIstatus\fP is zero, and \fIdata\fP is NULL: the file has been received successfully. After returning from the callback, the DCC session is automatically destroyed.
+.IP \(bu 2
+\fIstatus\fP is zero, and \fIdata\fP is not NULL: new data received, \fIdata\fP contains the data received, \fIlength\fP contains the amount of data received.
+.UNINDENT
+.UNINDENT
+.SS irc_eventcode_callback_t
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B typedef void (*irc_eventcode_callback_t)(irc_session_t *\fI\ session\fP, unsigned int\fI\ event\fP, const char *\fI\ origin\fP, const char **\fI\ params\fP, unsigned int\fI\ count\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+The IRC session, which generates an event (the one returned by irc_create_session)
+T}
+_
+T{
+\fIevent\fP
+T}	T{
+The numeric code of the event. Useful in case a single event handler is used to handle multiple events
+T}
+_
+T{
+\fIorigin\fP
+T}	T{
+The originator of the event. Depends on the event.
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+Extra parameters, if any, for this event. The number of extra parameters depends on the event, and may be zero.
+Each parameter is a NULL\-terminated text string. None of the params can be NULL, but the \fIparams\fP pointer itself could be NULL for some events.
+T}
+_
+T{
+\fIcount\fP
+T}	T{
+The number of entries in the \fIparams\fP argument supplied.
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This is an advanced callback for those who want to handle events deeper. Most times the IRC server replies to your actions with numeric events.
+Most of those events are error codes, and some are list\-start and list\-stop markers. Every code has its own set of params; for details you can either experiment, or read RFC 1459
+(don’t expect servers to follow it closely though).
+.sp
+Every event has an origin (i.e. who originated the event). In some cases the \fIorigin\fP variable may be NULL, which indicates that event origin is unknown. The origin usually looks like \fInick!host@ircserver\fP,
+i.e. like \fItim!home@irc.server.net\fP\&. Such origins can not be used in IRC commands, and need to be stripped (i.e. host and server part should be cut off) before using. This can be done either manually, by
+calling \fBirc_target_get_nick()\fP, or automatically for all the events \- by setting the \fBLIBIRC_OPTION_STRIPNICKS\fP option with \fBirc_option_set()\fP\&.
+.SS Functions
+.sp
+This section describes the functions defined in the library which are grouped by the purpose.
+.SS Library initialization and shutdown
+.SS irc_create_session
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B irc_session_t * irc_create_session(irc_callbacks_t *\fI\ callbacks\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|.
+_
+T{
+\fIcallbacks\fP | Event callbacks structure, which defines several callbacks, which will be called on appropriate events. Cannot be NULL.
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+Creates and initiates a new IRC session. Every session represents a single user connection to a single IRC server, and possibly to one or more users via DCC.
+Almost every library function requires this object to be passed to, and therefore this function should be called first.
+Multiple sessions could be allocated to support multiple connections.
+.sp
+When it is not needed anymore, the session must be destroyed by calling the \fI\%irc_destroy_session()\fP function.
+.sp
+\fBReturn value:\fP
+.sp
+An \fBirc_session_t\fP object, or 0 if creation failed. Usually, failure is caused by out of memory error.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads. Same callback structure may be reused by multiple threads.
+.SS irc_destroy_session
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B void irc_destroy_session(irc_session_t *\fI\ session\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|.
+_
+T{
+\fIsession\fP | The IRC session handle
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function destroys an IRC session, closes the connection to the IRC server, and frees all the used resources. After calling this function you should not use this session object anymore.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS Connecting, disconnecting and running the main event loop
+.SS irc_connect6
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_connect6(irc_session_t *\fI\ session\fP, const char *\fI\ server\fP, unsigned short\fI\ port\fP, const char *\fI\ password\fP, const char *\fI\ nick\fP, const char *\fI\ username\fP, const char *\fI\ realname\fP)
+.UNINDENT
+.SS irc_connect
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_connect(irc_session_t *\fI\ session\fP, const char *\fI\ server\fP, unsigned short\fI\ port\fP, const char *\fI\ password\fP, const char *\fI\ nick\fP, const char *\fI\ username\fP, const char *\fI\ realname\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIserver\fP
+T}	T{
+IP address or the host name of the server. If prefixed with #, the library will try to establish the SSL connection
+IPv4 address should be in numeric form such as 154.23.112.33; IPv6 address should be in IPv6 form
+T}
+_
+T{
+\fIport\fP
+T}	T{
+Port number to connect to, usually 6667
+T}
+_
+T{
+\fIpassword\fP
+T}	T{
+IRC server password, if the server requires it. May be NULL, in this case password will not be send to the IRC
+server. Vast majority of IRC servers do not require passwords. This is NOT NickServ/ChanServ password
+T}
+_
+T{
+\fInick\fP
+T}	T{
+Nick which will be used to log into the IRC server. Cannot be NULL
+T}
+_
+T{
+\fIusername\fP
+T}	T{
+Username of the Unix account which is used to connect to the IRC server. This is for information only, will be shown in
+“user properties” dialogs and returned by /whois request. Can be NULL in which case “nobody” would be used
+T}
+_
+T{
+\fIrealname\fP
+T}	T{
+A real name of the person, who connects to the IRC. In reality nobody uses this field for that. Instead this field is
+used as user self\-description, advertising, or other purposes. This information also will be shown in “user properties”
+dialogs and returned by /whois request. May be NULL, in this case “noname” will be used
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function initiates the connection to the IPv4 (irc_connect) or IPv6 (irc_connect6) IRC server. The server could be specified either by an IP address or by the DNS name.
+The irc_connect6 works only if the library was built with the IPv6 support.
+.sp
+If the library was built with the OpenSSL support, and the IP address or the host name is prefixed by a hash, such as \fB"#irc.example.com"\fP, the library attempts to establish the SSL connection.
+.sp
+The connection is established asynchronously, and the \fBevent_connect\fP is called once the connection is established.
+.sp
+A single IRC session object can only be connected to a single IRC server and only with a single nick, meaning it is not possible to have multiple nicks sharing a single connection.
+.sp
+\fBReturn value:\fP
+.sp
+Returns 0 if the connection is initiated successfully. This doesn’t mean the connection is established \- the \fBevent_connect\fP is called when it happens. If the connection cannot be established,
+either \fI\%irc_run()\fP or \fI\%irc_process_select_descriptors()\fP will return an error.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads, but not using the same session object.
+.SS irc_disconnect
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B void irc_disconnect(irc_session_t *\fI\ session\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|.
+_
+T{
+\fIsession\fP   | IRC session handle
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function closes the IRC connection. After that connection is closed, if the libirc was looped in the \fI\%irc_run()\fP loop, it automatically leaves the loop and \fI\%irc_run()\fP returns.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads, but not using the same session object.
+.SS irc_is_connected
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_is_connected(irc_session_t *\fI\ session\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+.TE
+.sp
+\fBReturn value:\fP
+.sp
+This function returns 1 if the connection to the IRC server is established or 0 if it is not.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_run
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_run(irc_session_t *\fI\ session\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function enters into forever loop, processing the IRC events, and calling the relevant callbacks. This function will not return
+until the server connection is terminated \- either by server, or by calling \fI\%irc_cmd_quit\fP\&. This function should only be used
+if you use a single IRC session and don’t need asynchronous request processing (i.e. your bot just reacts on the events, and doesn’t
+generate it asynchronously). Even in last case, you still can call this function and start the asynchronous thread in \fBevent_connect\fP handler.
+See the examples.
+.sp
+\fBReturn value:\fP
+.sp
+This function returns a nonzero value if the connection to the IRC server could not be established, or was terminated.
+.sp
+\fBThread safety:\fP
+.sp
+This function cannot be called from multiple threads. Use \fI\%irc_add_select_descriptors()\fP and \fI\%irc_process_select_descriptors()\fP instead.
+.SS irc_add_select_descriptors
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_add_select_descriptors(irc_session_t *\fI\ session\fP, fd_set\fI\ *in_set\fP, fd_set\fI\ *out_set\fP, int *\fI\ maxfd\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIin_set\fP
+T}	T{
+fd_set input descriptor set for select()
+T}
+_
+T{
+\fIout_set\fP
+T}	T{
+fd_set output descriptor set for select()
+T}
+_
+T{
+\fImaxfd\fP
+T}	T{
+Largest descriptor already in all the sets. Will be updated if libirc adds larger number to the FD_SET array
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function should be used after you called \fI\%irc_connect()\fP\&. It is useful when you have your own select\-based event processing loop. To use it
+you should put your own descriptors into the sets, call this function to add the library descriptor(s) into the set, and then call select().
+When it returns, you should call \fI\%irc_process_select_descriptors()\fP which will handle the events and calls your callbacks(!). Then you can process
+your sockets events from set. See the example.
+.sp
+What if you use epoll? See the FAQ
+.sp
+\fBReturn value:\fP
+.sp
+This function returns a nonzero value if the \fI\%irc_connect()\fP was not called before calling this function.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads, but it rarely makes sense.
+.SS irc_process_select_descriptors
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_process_select_descriptors(irc_session_t *\fI\ session\fP, fd_set\fI\ *in_set\fP, fd_set\fI\ *out_set\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIin_set\fP
+T}	T{
+fd_set input descriptor set for select()
+T}
+_
+T{
+\fIout_set\fP
+T}	T{
+fd_set output descriptor set for select()
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function should be used in pair with \fI\%irc_add_select_descriptors()\fP function, which documentation describes how they work together.
+.sp
+Note that while processing the events this function calls your callbacks and it will not return until all your callbacks return. Keep that in mind
+if you pop up a dialog in your application, such as a DCC CHAT or DCC SEND confirmation dialog.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means success. Other value means error, the error code may be obtained through irc_errno().
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads for different IRC session objects only.
+.SS Managing the IRC channels: joining, leaving, inviting
+.SS irc_cmd_join
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_cmd_join(irc_session_t *\fI\ session\fP, const char *\fI\ channel\fP, const char *\fI\ key\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIchannel\fP
+T}	T{
+Channel name to join. Cannot be NULL.
+T}
+_
+T{
+\fIkey\fP
+T}	T{
+Secret key for the channel. Can be NULL if not needed
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+Use this function to join the new IRC channel. If the channel does not exist, it will be automatically created by the IRC server.
+Note that to JOIN the password\-protected channel, you must know the password, and specify it in the key argument.
+If join is successful, the \fBevent_join\fP will be called (with your nick as the origin), then typically the \fBevent_topic\fP is be called and then you
+receive the list of users who are on the channel (by using LIBIRC_RFC_RPL_NAMREPLY), which will include the user who just joined.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed, and you need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.INDENT 0.0
+.TP
+.B Possible error responces for this command from the RFC1459:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_ERR_BANNEDFROMCHAN
+.IP \(bu 2
+LIBIRC_RFC_ERR_INVITEONLYCHAN
+.IP \(bu 2
+LIBIRC_RFC_ERR_BADCHANNELKEY
+.IP \(bu 2
+LIBIRC_RFC_ERR_CHANNELISFULL
+.IP \(bu 2
+LIBIRC_RFC_ERR_BADCHANMASK
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOSUCHCHANNEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_TOOMANYCHANNELS
+.UNINDENT
+.UNINDENT
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_cmd_part
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_cmd_part(irc_session_t *\fI\ session\fP, const char *\fI\ channel\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIchannel\fP
+T}	T{
+Channel name to leave. Cannot be NULL.
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+Use this function to leave the IRC channel you’ve already joined to. An attempt to leave the channel you aren’t in results a LIBIRC_RFC_ERR_NOTONCHANNEL server error.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed, and you need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.INDENT 0.0
+.TP
+.B Possible error responces for this command from the RFC1459:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOSUCHCHANNEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTONCHANNEL
+.UNINDENT
+.UNINDENT
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_cmd_invite
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_cmd_invite(irc_session_t *\fI\ session\fP, const char *\fI\ nick\fP, const char *\fI\ channel\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fInick\fP
+T}	T{
+Nick name of the user to invite
+T}
+_
+T{
+\fIchannel\fP
+T}	T{
+Channel name to join. Cannot be NULL
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function is used to invite someone to invite\-only channel. “Invite\-only” is a channel mode, which restricts anyone, except invided, to join this channel.
+After invitation, the user could join this channel. The user, who is invited, will receive the \fBevent_invite\fP event. Note that you must be a channel operator to invite the users.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed, and you need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.INDENT 0.0
+.TP
+.B On success one of the following replies returned:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_RPL_INVITING
+.IP \(bu 2
+LIBIRC_RFC_RPL_AWAY
+.UNINDENT
+.TP
+.B Possible error responces for this command from the RFC1459:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_ERR_NEEDMOREPARAMS
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOSUCHNICK
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTONCHANNEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_ERR_USERONCHANNEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_ERR_CHANOPRIVSNEEDED
+.UNINDENT
+.UNINDENT
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_cmd_names
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_cmd_names (irc_session_t * session, const char * channel);
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIchannel\fP
+T}	T{
+A channel name(s) to obtain user list. Multiple channel names must be separated by a comma
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function is used to to ask the IRC server for the list of the users who are joined the specified channel. You can list all nicknames
+that are visible to you on any channel that you can see. The list of users will be returned using LIBIRC_RFC_RPL_NAMREPLY and LIBIRC_RFC_RPL_ENDOFNAMES numeric codes.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed, and you need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.INDENT 0.0
+.TP
+.B The channel names are returned by \fBevent_numeric\fP event using the following reply codes:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_RPL_NAMREPLY
+.IP \(bu 2
+LIBIRC_RFC_RPL_ENDOFNAMES
+.UNINDENT
+.UNINDENT
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_cmd_list
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_cmd_list(irc_session_t *\fI\ session\fP, const char *\fI\ channel\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIchannel\fP
+T}	T{
+A channel name(s) to list. Multiple channel names must be separated by a comma. If NULL, all channels are listed
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function is used to ask the IRC server for the active (existing) channels list. The list will be returned using the LIBIRC_RFC_RPL_LISTSTART,
+multiple LIBIRC_RFC_RPL_LIST, and LIBIRC_RFC_RPL_LISTEND event sequence. Note that “private” channels are listed (without their topics) as channel
+“Prv” unless the client generating the LIST query is actually on that channel. Likewise, secret channels are not listed at all unless the client
+is active at the channel in question.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed, and you need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.INDENT 0.0
+.TP
+.B The list of channels is returned by \fBevent_numeric\fP event using the following reply codes:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_RPL_LISTSTART
+.IP \(bu 2
+LIBIRC_RFC_RPL_LISTEND
+.IP \(bu 2
+LIBIRC_RFC_RPL_LIST
+.UNINDENT
+.UNINDENT
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_cmd_topic
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_cmd_topic(irc_session_t *\fI\ session\fP, const char *\fI\ channel\fP, const char *\fI\ topic\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIchannel\fP
+T}	T{
+A channel name
+T}
+_
+T{
+\fItopic\fP
+T}	T{
+A new channel topic. If NULL, the old topic would be returned and nothing would change. To set the empty topic use “”
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function is used to change or view the topic (title) of a channel. Note that depending on \fI+t\fP channel mode, you may be required to be
+a channel operator to change the channel topic.
+.sp
+If the command succeeds, the IRC server will generate a LIBIRC_RFC_RPL_NOTOPIC or LIBIRC_RFC_RPL_TOPIC message, containing either the old
+or changed topic. Also the IRC server can (but does not have to) generate the non\-RFC LIBIRC_RFC_RPL_TOPIC_EXTRA message, containing the
+nick of person who changed the topic, and the date/time of the last change.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed, and you need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.INDENT 0.0
+.TP
+.B The topic information is returned using one of following reply codes:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_RPL_NOTOPIC
+.IP \(bu 2
+LIBIRC_RFC_RPL_TOPIC
+.UNINDENT
+.UNINDENT
+.sp
+If the topic change was requested and it was successfully changed, the \fBevent_topic\fP is generated as well.
+.INDENT 0.0
+.TP
+.B Possible error responces for this command from the RFC1459:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_ERR_NEEDMOREPARAMS
+.IP \(bu 2
+LIBIRC_RFC_ERR_CHANOPRIVSNEEDED
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTONCHANNEL
+.UNINDENT
+.UNINDENT
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_cmd_channel_mode
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_cmd_channel_mode(irc_session_t *\fI\ session\fP, const char *\fI\ channel\fP, const char *\fI\ mode\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIchannel\fP
+T}	T{
+A channel name
+T}
+_
+T{
+\fImode\fP
+T}	T{
+A mode to change. If NULL, the channel mode is not changed but the old mode is returned
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function is used to is used to change or view the channel modes. Note that only the channel operators can change the channel mode.
+.sp
+Channel mode is represended by the multiple letters combination. Every letter has its own meaning in channel modes. Most channel mode letters
+are boolean (i.e. could only be set or reset), but a few channel mode letters accept a parameter. All channel options are set by adding a
+plus sign before the letter, and reset by adding a minus sign before the letter.
+.sp
+Here is the list of ‘standard’ channel modes:
+.TS
+center;
+|l|l|.
+_
+T{
+o nickname
+T}	T{
+gives (+o nickname) to, or takes (\-o nickname) the channel operator privileges from a \fInickname\fP\&. This mode affects
+the users in channel, not the channel itself. Examples: “+o tim”, “\-o watson”
+T}
+_
+T{
+p
+T}	T{
+sets (+p) or resets (\-p) private channel flag. Private channels are shown in channel list as ‘Prv’, without the topic
+T}
+_
+T{
+s
+T}	T{
+sets (+s) or resets (\-s) secret channel flag. Secret channels aren’t shown in channel list at all
+T}
+_
+T{
+i
+T}	T{
+sets (+i) or resets (\-i) invite\-only channel flag. When the flag is set, only the people who are invited by the
+\fI\%irc_cmd_invite()\fP can join this channel
+T}
+_
+T{
+t
+T}	T{
+allows (+t) or denies (\-t) changing the topic by the non\-channel operator users. When the flag is set, only the channel
+operators can change the channel topic
+T}
+_
+T{
+n
+T}	T{
+sets (+n) or resets (\-n) the protection from the users who did not join the channel. When the +n mode is set, only the
+users who have joined the channel can send the messages to the channel
+T}
+_
+T{
+m
+T}	T{
+sets (+m) or resets (\-m) the moderation of the channel. When the moderation mode is set, only channel operators and the
+users who have +v user mode can speak in the channel
+T}
+_
+T{
+v nickname
+T}	T{
+gives (+v nick) or takes (\-v nick) from user the ability to speak on a moderated channel. Examples: “+v bob”, “\-v joy”
+T}
+_
+T{
+l number
+T}	T{
+sets (+l 20) or removes (\-l) the restriction of maximum number of users allowed in channel. When the restriction is set
+and there is a number of users in the channel, no one can join the channel anymore
+T}
+_
+T{
+k key
+T}	T{
+sets (+k password) or removes (\-k) the password from the channel. When the restriction is set, any user joining the
+channel required to provide a channel key
+T}
+_
+T{
+b mask
+T}	T{
+sets (+b \fI!*@\fP\&.mil) or removes (\-b \fI!*@\fP\&.mil) the ban mask on a user to keep him out of channel. Note that to remove the
+ban you must specify the ban mask to remove, not just “\-b”.
+T}
+_
+.TE
+.sp
+Note that the actual list of channel modes depends on the IRC server, and can be bigger. If you know the popular channel modes which aren’t listed here \- please contact me
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed, and you need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.INDENT 0.0
+.TP
+.B The old mode information is returned by using following numeric codes:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_RPL_CHANNELMODEIS
+.IP \(bu 2
+LIBIRC_RFC_RPL_BANLIST
+.IP \(bu 2
+LIBIRC_RFC_RPL_ENDOFBANLIST
+.UNINDENT
+.TP
+.B Possible error responces for this command from the RFC1459:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_ERR_NEEDMOREPARAMS
+.IP \(bu 2
+LIBIRC_RFC_ERR_CHANOPRIVSNEEDED
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOSUCHNICK
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTONCHANNEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_KEYSET
+.IP \(bu 2
+LIBIRC_RFC_ERR_UNKNOWNMODE
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOSUCHCHANNEL
+.UNINDENT
+.UNINDENT
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_cmd_user_mode
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_cmd_user_mode(irc_session_t *\fI\ session\fP, const char *\fI\ mode\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fImode\fP
+T}	T{
+A mode to change. If NULL, the user mode is not changed but the old mode is returned
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function is used to change or view the user modes. Note that, unlike channel modes, some user modes cannot be changed at all.
+.sp
+User mode is represended by the letters combination. All the user mode letters are boolean (i.e. could only be set or reset), they are set
+by adding a plus sign before the letter, and reset by adding a minus sign before the letter.
+.sp
+Here is the list of ‘standard’ user modes:
+.TS
+center;
+|l|l|.
+_
+T{
+o
+T}	T{
+represents an IRC operator status. Could not be set directly (but can be reset though), to set it use the IRC a OPER command
+T}
+_
+T{
+i
+T}	T{
+if set, marks a user as ‘invisible’ \- that is, not seen by lookups if the user is not in a channel
+T}
+_
+T{
+w
+T}	T{
+if set, marks a user as ‘receiving wallops’ \- special messages generated by IRC operators using WALLOPS command
+T}
+_
+T{
+s
+T}	T{
+if set, marks a user for receipt of server notices
+T}
+_
+T{
+r
+T}	T{
+NON\-STANDARD MODE. If set, user has been authenticated with the NickServ IRC service
+T}
+_
+T{
+x
+T}	T{
+NON\-STANDARD MODE. If set, user’s real IP is masked by the IRC server
+T}
+_
+.TE
+.sp
+Note that the actual list of user modes depends on the IRC server, and can be bigger. If you know the popular user modes, which aren’t mentioned here \- please contact me.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed, and you need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.sp
+The old mode information is returned by using the numeric code LIBIRC_RFC_RPL_UMODEIS:
+.INDENT 0.0
+.TP
+.B Possible error responces for this command from the RFC1459:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_ERR_NEEDMOREPARAMS
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOSUCHNICK
+.IP \(bu 2
+LIBIRC_RFC_ERR_UNKNOWNMODE
+.IP \(bu 2
+LIBIRC_RFC_ERR_USERSDONTMATCH
+.IP \(bu 2
+LIBIRC_RFC_ERR_UMODEUNKNOWNFLAG
+.UNINDENT
+.UNINDENT
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_cmd_kick
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_cmd_kick (irc_session_t * session, const char * nick, const char * channel, const char * reason);
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fInick\fP
+T}	T{
+The nick to kick
+T}
+_
+T{
+\fIchannel\fP
+T}	T{
+The channel to kick the nick from
+T}
+_
+T{
+\fInick\fP
+T}	T{
+If not NULL, the reason to kick the user
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function is used to kick a person out of channel. Note that you must be a channel operator to kick anyone from a channel.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed, and you need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.sp
+If the command succeed, the \fBevent_kick\fP will be generated.
+.INDENT 0.0
+.TP
+.B If the command failed, one of the following \fBevent_numeric\fP responses will be generated:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_ERR_NEEDMOREPARAMS
+.IP \(bu 2
+LIBIRC_RFC_ERR_BADCHANMASK
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOSUCHCHANNEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTONCHANNEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_CHANOPRIVSNEEDED
+.UNINDENT
+.UNINDENT
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS Sending the messages, notices, /me messages and working with CTCP
+.SS irc_cmd_msg
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_cmd_msg(irc_session_t *\fI\ session\fP, const char *\fI\ nch\fP, const char *\fI\ text\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fInch\fP
+T}	T{
+Target nick or target channel
+T}
+_
+T{
+\fItext\fP
+T}	T{
+Message text
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function is used to send the message to the channel or privately to another nick. “Privately” here means the message is not posted to the public,
+but the message still goes through the IRC server and could be seen by the IRC netwrk operators. The message target is determined by the \fInch\fP argument:
+if it is a nick, this will be a private message, but if it is a channel name it will be posted into the channel.
+.sp
+The protocol does not require you to join the channel to post the message into it, but most channels set the channel mode preventing you from posting into a channel unless you join it.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed. You need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.sp
+If the command succeed, no event is typically generated except the possibility of LIBIRC_RFC_RPL_AWAY.
+.INDENT 0.0
+.TP
+.B However if the command failed, one of the following numeric events may be generated:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_ERR_NORECIPIENT
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTEXTTOSEND
+.IP \(bu 2
+LIBIRC_RFC_ERR_CANNOTSENDTOCHAN
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTONCHANNEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTOPLEVEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_WILDTOPLEVEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_TOOMANYTARGETS
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOSUCHNICK
+.UNINDENT
+.UNINDENT
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_cmd_me
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_cmd_me(irc_session_t *\fI\ session\fP, const char *\fI\ nch\fP, const char *\fI\ text\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fInch\fP
+T}	T{
+Target nick or target channel
+T}
+_
+T{
+\fItext\fP
+T}	T{
+Message text
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function is used to send the /me message (CTCP ACTION) to the channel or privately to another nick. “Privately” here means the message is not posted to the public,
+but the message still goes through the IRC server and could be seen by the IRC netwrk operators. The message target is determined by the \fInch\fP argument:
+if it is a nick, this will be a private message, but if it is a channel name it will be posted into the channel.
+.sp
+The protocol does not require you to join the channel to post the message into it, but most channels set the channel mode preventing you from posting into a channel unless you join it.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed. You need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.sp
+If the command succeed, no event is typically generated except the possibility of LIBIRC_RFC_RPL_AWAY.
+.INDENT 0.0
+.TP
+.B However if the command failed, one of the following numeric events may be generated:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_ERR_NORECIPIENT
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTEXTTOSEND
+.IP \(bu 2
+LIBIRC_RFC_ERR_CANNOTSENDTOCHAN
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTONCHANNEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTOPLEVEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_WILDTOPLEVEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_TOOMANYTARGETS
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOSUCHNICK
+.UNINDENT
+.UNINDENT
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_cmd_notice
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_cmd_notice(irc_session_t *\fI\ session\fP, const char *\fI\ nch\fP, const char *\fI\ text\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fInch\fP
+T}	T{
+Target nick or target channel
+T}
+_
+T{
+\fItext\fP
+T}	T{
+Message text
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function is used to send the notice to the channel or privately to another nick. “Privately” here means the message is not posted to the public,
+but the message still goes through the IRC server and could be seen by the IRC netwrk operators. The message target is determined by the \fInch\fP argument:
+if it is a nick, this will be a private message, but if it is a channel name it will be posted into the channel.
+.sp
+The protocol does not require you to join the channel to post the notice into it, but most channels set the channel mode preventing you from posting into a channel unless you join it.
+.sp
+The only difference between a message and a notice is that the RFC explicitly says the automatic bots must not reply to NOTICE automatically.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed, and you need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.sp
+If the command succeed, no event is typically generated except the possibility of LIBIRC_RFC_RPL_AWAY.
+.INDENT 0.0
+.TP
+.B However if the command failed, one of the following numeric events may be generated:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_ERR_NORECIPIENT
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTEXTTOSEND
+.IP \(bu 2
+LIBIRC_RFC_ERR_CANNOTSENDTOCHAN
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTONCHANNEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTOPLEVEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_WILDTOPLEVEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_TOOMANYTARGETS
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOSUCHNICK
+.UNINDENT
+.UNINDENT
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_cmd_ctcp_request
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_cmd_ctcp_request(irc_session_t *\fI\ session\fP, const char *\fI\ nick\fP, const char *\fI\ request\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fInick\fP
+T}	T{
+Target nick
+T}
+_
+T{
+\fIrequest\fP
+T}	T{
+CTCP request tex
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function is used to send a CTCP request. There are four CTCP requests supported by most IRC clients:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+VERSION \- get the client software name and version
+.IP \(bu 2
+FINGER  \- get the client username, host and real name.
+.IP \(bu 2
+PING    \- get the client delay.
+.IP \(bu 2
+TIME    \- get the client local time.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Some clients may support other requests. The RFC does not list the requests and does not mandate any CTCP support.
+.sp
+If you send the CTCP request, make sure you define the handler for the \fBevent_ctcp_rep\fP to process the reply;
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed, and you need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.INDENT 0.0
+.TP
+.B Possible error responces for this command from the RFC1459:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_ERR_NORECIPIENT
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTEXTTOSEND
+.IP \(bu 2
+LIBIRC_RFC_ERR_CANNOTSENDTOCHAN
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTONCHANNEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTOPLEVEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_WILDTOPLEVEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_TOOMANYTARGETS
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOSUCHNICK
+.UNINDENT
+.UNINDENT
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_cmd_ctcp_reply
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_cmd_ctcp_reply(irc_session_t *\fI\ session\fP, const char *\fI\ nick\fP, const char *\fI\ reply\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fInick\fP
+T}	T{
+Target nick
+T}
+_
+T{
+\fIreply\fP
+T}	T{
+CTCP reply
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function is used to send a reply to the CTCP request received from \fBevent_ctcp_req\fP event. Note that you will not receive this event
+unless you specify your own handler during the IRC session initialization.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed, and you need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.INDENT 0.0
+.TP
+.B Possible error responces for this command from the RFC1459:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_ERR_NORECIPIENT
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTEXTTOSEND
+.IP \(bu 2
+LIBIRC_RFC_ERR_CANNOTSENDTOCHAN
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTONCHANNEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTOPLEVEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_WILDTOPLEVEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_TOOMANYTARGETS
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOSUCHNICK
+.UNINDENT
+.UNINDENT
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS Miscellaneous: library version, raw data, changing nick, quitting
+.SS irc_cmd_nick
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_cmd_nick(irc_session_t *\fI\ session\fP, const char *\fI\ newnick\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fInick\fP
+T}	T{
+New nick
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function is used to change your current nick to another nick. Note that such a change is not always possible; for example
+you cannot change nick to the existing nick, or (on some servers) to the registered nick.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed, and you need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.INDENT 0.0
+.TP
+.B If the operation succeed, the server will send the \fBevent_nick\fP event. If not, it will send a numeric error. Possible error responces for this command from the RFC1459:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_ERR_NONICKNAMEGIVEN
+.IP \(bu 2
+LIBIRC_RFC_ERR_ERRONEUSNICKNAME
+.IP \(bu 2
+LIBIRC_RFC_ERR_NICKNAMEINUSE
+.IP \(bu 2
+LIBIRC_RFC_ERR_NICKCOLLISION
+.UNINDENT
+.UNINDENT
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_cmd_whois
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_cmd_whois(irc_session_t *\fI\ session\fP, const char *\fI\ nick\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fInick\fP
+T}	T{
+Nick or comma\-separated list of nicks to query the information about
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function queries various information about the nick. The amount of information depends on the IRC server but typically includes username,
+real name (as defined by the client at login), the IRC server used, the channels user is in, idle time, away mode and so on.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed, and you need to wait
+for the appropriate \fBevent_numeric\fP event.
+.INDENT 0.0
+.TP
+.B If the request succeed, the information is returned through the following numeric codes which return the information:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_RPL_WHOISUSER
+.IP \(bu 2
+LIBIRC_RFC_RPL_WHOISCHANNELS
+.IP \(bu 2
+LIBIRC_RFC_RPL_WHOISSERVER
+.IP \(bu 2
+LIBIRC_RFC_RPL_AWAY
+.IP \(bu 2
+LIBIRC_RFC_RPL_WHOISOPERATOR
+.IP \(bu 2
+LIBIRC_RFC_RPL_WHOISIDLE
+.IP \(bu 2
+LIBIRC_RFC_RPL_ENDOFWHOIS \- this event terminates the WHOIS information
+.UNINDENT
+.TP
+.B Possible error responces for this command from the RFC1459:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOSUCHSERVER
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOSUCHNICK
+.IP \(bu 2
+LIBIRC_RFC_ERR_NONICKNAMEGIVEN
+.UNINDENT
+.UNINDENT
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_cmd_quit
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_cmd_quit(irc_session_t *\fI\ session\fP, const char *\fI\ reason\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIreason\fP
+T}	T{
+If not NULL, the reason to quit
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+This function sends the QUIT command to the IRC server. This command forces the IRC server to close the IRC connection, and terminate the session.
+.sp
+The difference between this command and calling the irc_disconnect is that this command allows to specify the reason to quit which will be shown
+to all the users in the channels you joined. Also it would make it clear that you left the IRC channels by purpose, and not merely got disconnected.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed, and you need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_send_raw
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_send_raw (irc_session_t * session, const char * format, ...);
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIformat\fP
+T}	T{
+printf\-type formatting string followed by the format arguments
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function sends the raw data as\-is to the IRC server. Use it to generate a server command, which is not (yet) provided by libircclient directly.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed, and you need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_target_get_nick
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B void irc_target_get_nick(const char *\fI\ origin\fP, char\fI\ *nick\fP, size_t\fI\ size\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+Nick in the common IRC server format such as tim!root@mycomain.com
+T}
+_
+T{
+\fInick\fP
+T}	T{
+Buffer to retrieve the parsed nick name
+T}
+_
+T{
+\fIsize\fP
+T}	T{
+Size of the \fInick\fP buffer. If the parsed nick is larger than the buffer size it will be truncated
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+For most events IRC server returns ‘origin’ (i.e. the person, who generated this event) in so\-called “common” form, like \fI\%nick!host@domain\fP\&.
+However, all the irc_cmd_* functions require just a nick. This function parses this origin, and retrieves the nick, storing it into the user\-provided buffer.
+.sp
+A buffer of size 128 should be enough for most nicks.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_target_get_host
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B void irc_target_get_host(const char *\fI\ target\fP, char\fI\ *host\fP, size_t\fI\ size\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+Nick in the common IRC server format such as tim!root@mycomain.com
+T}
+_
+T{
+\fIhost\fP
+T}	T{
+Buffer to retrieve the parsed hostname
+T}
+_
+T{
+\fIsize\fP
+T}	T{
+Size of the \fIhost\fP buffer. If the parsed nick is larger than the buffer size it will be truncated
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+For most events IRC server returns ‘origin’ (i.e. the person, who generated this event) in so\-called “common” form, like nick!host@domain.
+This function parses this origin, and retrieves the host, storing it into the user\-provided buffer.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS DCC initiating and accepting chat sessions, sending and receiving files
+.SS irc_dcc_chat
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_dcc_chat(irc_session_t *\fI\ session\fP, void *\fI\ ctx\fP, const char *\fI\ nick\fP, irc_dcc_callback_t\fI\ callback\fP, irc_dcc_t *\fI\ dccid\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIctx\fP
+T}	T{
+User\-defined context which will be passed to the callback. May be NULL
+T}
+_
+T{
+\fInick\fP
+T}	T{
+Target nick
+T}
+_
+T{
+\fIcallback\fP
+T}	T{
+DCC callback which will be used for DCC and chat events
+T}
+_
+T{
+\fIdccid\fP
+T}	T{
+If this function succeeds, the DCC session identifier is stored in this field
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function requests a DCC CHAT between you and other IRC user. DCC CHAT is like private chat, but it goes directly between two users,
+and bypasses the IRC server. DCC CHAT request must be accepted by other side before you can send anything.
+.sp
+When the chat is accepted, declined, terminated, or some data is received, the \fIcallback\fP function is called. To be specific,
+the callback will be called when:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+The chat request is accepted;
+.IP \(bu 2
+The chat request is denied;
+.IP \(bu 2
+The new chat message is received;
+.IP \(bu 2
+The chat is terminated by the remote party;
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+See the details in \fBirc_dcc_callback_t\fP declaration.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed, and you need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.INDENT 0.0
+.TP
+.B Possible error responces for this command from the RFC1459:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_ERR_NORECIPIENT
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTEXTTOSEND
+.IP \(bu 2
+LIBIRC_RFC_ERR_CANNOTSENDTOCHAN
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTONCHANNEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTOPLEVEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_WILDTOPLEVEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_TOOMANYTARGETS
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOSUCHNICK
+.UNINDENT
+.UNINDENT
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_dcc_msg
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_dcc_msg(irc_session_t *\fI\ session\fP, irc_dcc_t\fI\ dccid\fP, const char *\fI\ text\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIdccid\fP
+T}	T{
+DCC session identifier for the DCC CHAT session which is active
+T}
+_
+T{
+\fItext\fP
+T}	T{
+NULL\-terminated message to send
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function is used to send the DCC CHAT message to an active DCC CHAT. To be active, DCC CHAT request must be initiated by one side and accepted by another side.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means success. Other value means error, the error code may be obtained through irc_errno().
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_dcc_accept
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_dcc_accept(irc_session_t *\fI\ session\fP, irc_dcc_t\fI\ dccid\fP, void *\fI\ ctx\fP, irc_dcc_callback_t\fI\ callback\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIdccid\fP
+T}	T{
+DCC session identifier returned by the callback
+T}
+_
+T{
+\fIctx\fP
+T}	T{
+User\-defined context which will be passed to the callback. May be NULL
+T}
+_
+T{
+\fIcallback\fP
+T}	T{
+DCC callback which will be used for DCC and chat events
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function accepts a remote DCC chat or file transfer request. After the request is accepted the \fIcallback\fP will be called for the further DCC events,
+including the termination of the DCC session. See the \fBDCC callback information\fP\&.
+.sp
+This function should be called only after either \fBevent_dcc_chat_req\fP or \fBevent_dcc_send_req\fP events are received. You don’t have to call irc_dcc_accept()
+or irc_dcc_decline() immediately in the event processing function \- you may just store the \fIdccid\fP and return, and call those functions later. However to
+prevent memory leaks you must call either irc_dcc_decline() or irc_dcc_accept() for any incoming DCC request within 60 seconds after receiving it.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means success. Other value means error, the error code may be obtained through \fI\%irc_errno()\fP\&.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_dcc_decline
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_dcc_decline(irc_session_t *\fI\ session\fP, irc_dcc_t\fI\ dccid\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIdccid\fP
+T}	T{
+DCC session identifier returned by the callback
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function declines a remote DCC chat or file transfer request.
+.sp
+This function should be called only after either \fBevent_dcc_chat_req\fP or \fBevent_dcc_send_req\fP events are received. You don’t have to call irc_dcc_accept()
+or irc_dcc_decline() immediately in the event processing function \- you may just store the \fIdccid\fP and return, and call those functions later. However to
+prevent memory leaks you must call either irc_dcc_decline() or irc_dcc_accept() for any incoming DCC request within 60 seconds after receiving it.
+.sp
+Do not use this function to forecefully close the previously accepted or initiated DCC session. Use \fI\%irc_dcc_destroy()\fP instead.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means success. Other value means error, the error code may be obtained through \fI\%irc_errno()\fP\&.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_dcc_sendfile
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_dcc_sendfile(irc_session_t *\fI\ session\fP, void *\fI\ ctx\fP, const char *\fI\ nick\fP, const char *\fI\ filename\fP, irc_dcc_callback_t\fI\ callback\fP, irc_dcc_t *\fI\ dccid\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIctx\fP
+T}	T{
+User\-defined context which will be passed to the callback. May be NULL
+T}
+_
+T{
+\fInick\fP
+T}	T{
+Target nick
+T}
+_
+T{
+\fIfilename\fP
+T}	T{
+Full path to the file which will be sent. Must be an existing file
+T}
+_
+T{
+\fIcallback\fP
+T}	T{
+DCC callback which will be used for DCC and chat events
+T}
+_
+T{
+\fIdccid\fP
+T}	T{
+If this function succeeds, the DCC session identifier is stored in this field
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function generates a DCC SEND request to send the file. When it is accepted, the file is sent to the remote party, and the DCC session is
+closed. The send operation progress and result can be checked in the callback. See the \fBDCC callback information\fP\&.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means the command was sent to the IRC server successfully. This does not mean the operation succeed, and you need to wait
+for the appropriate event or for the error code via \fBevent_numeric\fP event.
+.INDENT 0.0
+.TP
+.B Possible error responces for this command from the RFC1459:
+.INDENT 7.0
+.IP \(bu 2
+LIBIRC_RFC_ERR_NORECIPIENT
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTEXTTOSEND
+.IP \(bu 2
+LIBIRC_RFC_ERR_CANNOTSENDTOCHAN
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTONCHANNEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOTOPLEVEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_WILDTOPLEVEL
+.IP \(bu 2
+LIBIRC_RFC_ERR_TOOMANYTARGETS
+.IP \(bu 2
+LIBIRC_RFC_ERR_NOSUCHNICK
+.UNINDENT
+.UNINDENT
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_dcc_destroy
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_dcc_destroy(irc_session_t *\fI\ session\fP, irc_dcc_t\fI\ dccid\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIdccid\fP
+T}	T{
+DCC session identifier of a session to destroy
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function closes the DCC connection (if available), and destroys the DCC session, freeing the used resources. It can be called anytime, even from callbacks or from different threads.
+.sp
+Note that when DCC session is finished (either with success or failure), you should not destroy it \- it will be destroyed automatically.
+.sp
+\fBReturn value:\fP
+.sp
+Return code 0 means success. Other value means error, the error code may be obtained through \fI\%irc_errno()\fP\&.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS Handling the colored messages
+.SS irc_color_strip_from_mirc
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B char * irc_color_strip_from_mirc(const char *\fI\ message\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fImessage\fP
+T}	T{
+Original message with colors
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function strips all the ANSI color codes from the message, and returns a new message with no color information. Useful for the bots which react to strings,
+to make sure the bot is not confused if the string uses colors.
+.sp
+This function does not modify the message which doesn’t use colors.
+.sp
+\fBReturn value:\fP
+.sp
+Returns a new message with stripped color codes. Note that the memory for the new message is allocated using malloc(), so you should free
+it using free() when it is not used anymore. If memory allocation failed, returns 0.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_color_convert_from_mirc
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B char * irc_color_convert_from_mirc(const char *\fI\ message\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fImessage\fP
+T}	T{
+Original message with colors
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function converts all the color codes and format options to libircclient internal colors.
+.sp
+\fBReturn value:\fP
+.sp
+Returns a pointer to the new message with converted ANSI color codes and format options. See the \fI\%irc_color_convert_to_mirc\fP help for details.
+.sp
+Note that the memory for the new message is allocated using malloc(), so you should free it using free() when it is not used anymore.
+If memory allocation failed, returns 0.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_color_convert_to_mirc
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B char * irc_color_convert_to_mirc(const char *\fI\ message\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fImessage\fP
+T}	T{
+Original message with colors
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function converts all the color codes and format options from internal libircclient colors to ANSI used by mIRC and other IRC clients.
+.sp
+\fBReturn value:\fP
+.sp
+Returns a new message with converted color codes and format options, or 0 if memory could not be allocated. Note that the memory for the
+new message is allocated using malloc(), so you should free it using free() when it is not used anymore.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.sp
+The color system of libircclient is designed to be easy to use, and portable between different IRC clients. Every color or format option
+is described using plain text commands written between square brackets.
+.INDENT 0.0
+.TP
+.B The possible codes are:
+.INDENT 7.0
+.IP \(bu 2
+[B] … [/B] \- bold format mode. Everything between [B] and [/B] is written in \fBbold\fP\&.
+.IP \(bu 2
+[I] … [/I] \- italic/reverse format mode. Everything between [I] and [/I] is written in \fIitalic\fP, or reversed (however, because some clients are incapable of rendering italic text, most clients display this as normal text with the background and foreground colors swapped).
+.IP \(bu 2
+[U] … [/U] \- underline format mode. Everything between [U] and [/U] is written underlined.
+.IP \(bu 2
+[COLOR=RED] … [/COLOR] \- write the text using specified foreground color. The color is set by using the COLOR keyword, and equal sign followed by text color code (see below).
+.IP \(bu 2
+[COLOR=RED/BLUE] … [/COLOR] \- write the text using specified foreground and background color. The color is set by using the COLOR keyword, an equal sign followed by text foreground color code, a dash and a text background color code.
+.UNINDENT
+.TP
+.B The following colors are supported:
+.INDENT 7.0
+.IP \(bu 2
+WHITE
+.IP \(bu 2
+BLACK
+.IP \(bu 2
+DARKBLUE
+.IP \(bu 2
+DARKGREEN
+.IP \(bu 2
+RED
+.IP \(bu 2
+BROWN
+.IP \(bu 2
+PURPLE
+.IP \(bu 2
+OLIVE
+.IP \(bu 2
+YELLOW
+.IP \(bu 2
+GREEN
+.IP \(bu 2
+TEAL
+.IP \(bu 2
+CYAN
+.IP \(bu 2
+BLUE
+.IP \(bu 2
+MAGENTA
+.IP \(bu 2
+DARKGRAY
+.IP \(bu 2
+LIGHTGRAY
+.UNINDENT
+.UNINDENT
+.sp
+Examples of color sequences:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Hello, [B]Tim[/B].
+[U]Arsenal[/U] got a [COLOR=RED]red card[/COLOR]
+The tree[U]s[/U] are [COLOR=GREEN/BLACK]green[/COLOR]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS Changing the library options
+.SS irc_get_version
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B void irc_get_version(unsigned int *\fI\ high\fP, unsigned int *\fI\ low\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIhigh\fP
+T}	T{
+Stores the high version number
+T}
+_
+T{
+\fIlow\fP
+T}	T{
+Stores the low version number
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function returns the libircclient version. You can use the version either to check whether required options are available, or to output the version.
+The preferred printf\-like format string to output the version is:
+.sp
+\fBprintf ("Version: %d.%02d", high, low);\fP
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_set_ctx
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B void irc_set_ctx(irc_session_t *\fI\ session\fP, void *\fI\ ctx\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIctx\fP
+T}	T{
+User\-defined context
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function sets the user\-defined context for this IRC session. This context is not used by libircclient. Its purpose is to store session\-specific
+user data, which may be obtained later by calling \fI\%irc_get_ctx\fP\&. Note that libircclient just carries out this pointer. If you allocate some memory,
+and store its address in ctx (most common usage), it is your responsibility to free it before calling \fI\%irc_destroy_session()\fP\&.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_get_ctx
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B void * irc_get_ctx(irc_session_t *\fI\ session\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function returns the IRC session context, which was set by \fI\%irc_set_ctx\fP\&.
+.sp
+\fBReturn value:\fP
+.sp
+If no context was set, this function returns NULL.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_option_set
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B void irc_option_set(irc_session_t *\fI\ session\fP, unsigned int\fI\ option\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIoption\fP
+T}	T{
+One of the Libirc options to set
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function sets the libircclient option, changing libircclient behavior. See the options list for the meaning for every option.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS irc_option_reset
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B void irc_option_reset(irc_session_t *\fI\ session\fP, unsigned int\fI\ option\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+T{
+\fIoption\fP
+T}	T{
+One of the Libirc options to set
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function resets the libircclient option, changing libircclient behavior. See the options list for the meaning for every option.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS Handling the errors
+.SS irc_errno
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B int irc_errno(irc_session_t *\fI\ session\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIsession\fP
+T}	T{
+IRC session handle
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function returns the last error code associated with last operation of this IRC session. Possible error codes are defined in libirc_errors.h
+.sp
+As usual, typical errno rules apply:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+irc_errno() should be called ONLY if the called function fails;
+.IP \(bu 2
+irc_errno() doesn’t return 0 if function succeed; actually, the return value will be undefined.
+.IP \(bu 2
+you should call irc_errno() IMMEDIATELY after function fails, before calling any other libircclient function.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fBReturn value:\fP
+.sp
+The error code.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads. Local error code is per IRC context, not per thread.
+.SS irc_strerror
+.sp
+\fBPrototype:\fP
+.INDENT 0.0
+.TP
+.B const char * irc_strerror(int\fI\ ircerrno\fP)
+.UNINDENT
+.sp
+\fBParameters:\fP
+.TS
+center;
+|l|l|.
+_
+T{
+\fIircerrno\fP
+T}	T{
+IRC error code returned by \fI\%irc_errno()\fP
+T}
+_
+.TE
+.sp
+\fBDescription:\fP
+.sp
+This function returns the text representation of the given error code.
+.sp
+\fBReturn value:\fP
+.sp
+Returns an internal English string with a short description of the error code.
+.sp
+\fBThread safety:\fP
+.sp
+This function can be called simultaneously from multiple threads.
+.SS Types
+.sp
+This section describes various types defined by the library.
+.SS irc_session_t
+.INDENT 0.0
+.TP
+.B typedef struct irc_session_s irc_session_t
+.UNINDENT
+.sp
+The IRC session handle created by callind \fBirc_create_session()\fP\&. Most of the library function calls expect this handle as a parameter. You can create as many handles as you want.
+Each handle could be used to establish a single IRC connection to an IRC server as a single user.
+.sp
+Once the handle is not used anymore, it should be destroyed by calling \fBirc_destroy_session()\fP\&.
+.SS irc_dcc_session_t
+.INDENT 0.0
+.TP
+.B typedef struct irc_dcc_session_s irc_dcc_session_t
+.UNINDENT
+.sp
+This structure describes a DCC session used by libircclient. Its members are internal to libircclient, and should not be used directly.
+.SS irc_dcc_t
+.INDENT 0.0
+.TP
+.B typedef unsigned int irc_dcc_t
+.UNINDENT
+.sp
+This type is a DCC session identifier, used to identify the DCC sessions in callbacks and various functions.
+.SS irc_callbacks_t
+.INDENT 0.0
+.TP
+.B typedef struct irc_callbacks_t
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+typedef struct
+{
+  irc_event_callback_t         event_connect;
+  irc_event_callback_t         event_nick;
+  irc_event_callback_t         event_quit;
+  irc_event_callback_t         event_join;
+  irc_event_callback_t         event_part;
+  irc_event_callback_t         event_mode;
+  irc_event_callback_t         event_umode;
+  irc_event_callback_t         event_topic;
+  irc_event_callback_t         event_kick;
+  irc_event_callback_t         event_channel;
+  irc_event_callback_t         event_privmsg;
+  irc_event_callback_t         event_notice;
+  irc_event_callback_t         event_channel_notice;
+  irc_event_callback_t         event_invite;
+  irc_event_callback_t         event_ctcp_req;
+  irc_event_callback_t         event_ctcp_rep;
+  irc_event_callback_t         event_ctcp_action;
+  irc_event_callback_t         event_unknown;
+  irc_eventcode_callback_t     event_numeric;
+  irc_event_dcc_chat_t         event_dcc_chat_req;
+  irc_event_dcc_send_t         event_dcc_send_req;
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Describes the event callbacks structure which is used in registering the callbacks.
+.sp
+All the communication with the IRC network is based on events. Generally speaking, event is anything generated by someone else in the network, or by the IRC server itself.
+“Someone sends you a message”, “Someone has joined the channel”, “Someone has quits IRC” \- all these messages are events.
+.sp
+Every event has its own event handler, which is called when the appropriate event is received.
+You don’t have to define all the event handlers; define only the handlers for the events you need to intercept, and set the remaining handler pointers to NULL.
+.INDENT 0.0
+.TP
+.B event_connect
+.UNINDENT
+.sp
+This event is triggered when the connection to the IRC server is successfully established, and the MOTD is received. Depending on the server it may also be possible to send the commands before this event.
+.sp
+This event uses \fBirc_event_callback_t\fP callback with the following values:
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+Unused, set to NULL
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+Unused, set to NULL
+T}
+_
+.TE
+.INDENT 0.0
+.TP
+.B event_nick
+.UNINDENT
+.sp
+This event is triggered when the NICK message is received. It happens when one of the users (including you) in one of the channels you are watching (have joined) changed their nick.
+.sp
+Changing your own nick will also generate this event. Note that the server may change your nick independently, so you must track this event.
+.sp
+This event uses \fBirc_event_callback_t\fP callback with the following values:
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+The original nick (may be yours!)
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+params[0] contains a new nick.
+T}
+_
+.TE
+.INDENT 0.0
+.TP
+.B event_quit
+.UNINDENT
+.sp
+This event is triggered when the QUIT message is received. It happens when one of the users in one of the channels you are watching (have joined) disconnected from the IRC server.
+.sp
+This event uses \fBirc_event_callback_t\fP callback with the following values:
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+The user who disconnected
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+params[0] is optional, contains the user\-specified reason to quit
+T}
+_
+.TE
+.INDENT 0.0
+.TP
+.B event_join
+.UNINDENT
+.sp
+This event is triggered upon receipt of a JOIN message. It happens when a new user joins the channel you are watching (have joined). It also happens when you joined the new channel.
+.sp
+Note that you may be “forced” to join the channel (and therefore receive this event) without issuing the JOIN command. A typical case is when the NickServ bot on the server is configured to auto\-join you to specific channels.
+.sp
+This event uses \fBirc_event_callback_t\fP callback with the following values:
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+The user who joined the channel (this may be you!)
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+params[0] contains the channel name
+T}
+_
+.TE
+.INDENT 0.0
+.TP
+.B event_part
+.UNINDENT
+.sp
+This event is triggered upon receipt of a PART message. It happens when a user leaves the channel you are watching (have joined). It also happens when you leave a channel.
+.sp
+This event uses \fBirc_event_callback_t\fP callback with the following values:
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+The user who left the channel (this may be you!)
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+params[0] contains the channel name
+params[1] is optional and contains the user\-specified reason
+T}
+_
+.TE
+.INDENT 0.0
+.TP
+.B event_mode
+.UNINDENT
+.sp
+This event is triggered upon receipt of a channel MODE message. It happens when someone changed the mode(s) of the channel you are watching (have joined).
+.sp
+This event uses \fBirc_event_callback_t\fP callback with the following values:
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+The user who performed the change
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+params[0] contains the channel name
+params[1] contains the channel mode changes, such as “+t”, “\-i”
+params[2] optional, contains the argument for the channel mode
+(for example, a nick for the +o mode)
+T}
+_
+.TE
+.INDENT 0.0
+.TP
+.B event_umode
+.UNINDENT
+.sp
+This event is triggered upon receipt of a user MODE message. It happens when your user mode is changed.
+.sp
+This event uses \fBirc_event_callback_t\fP callback with the following values:
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+The user who performed the change
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+params[0] contains the channel name
+params[1] contains the user mode changes, such as “+t”, “\-i”
+T}
+_
+.TE
+.INDENT 0.0
+.TP
+.B event_topic
+.UNINDENT
+.sp
+This event is triggered upon receipt of a TOPIC message. It happens when someone changed the topic on the channel you are watching (have joined).
+.sp
+This event uses \fBirc_event_callback_t\fP callback with the following values:
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+The user who performed the change
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+params[0] contains the channel name
+params[1] optional, contains the new topic
+T}
+_
+.TE
+.INDENT 0.0
+.TP
+.B event_kick
+.UNINDENT
+.sp
+This event is triggered upon receipt of a KICK message. It happens when someone (including you) kicked someone (including you) from the channel you are watching (have joined).
+.sp
+It is possible to kick yourself from the channel.
+.sp
+This event uses \fBirc_event_callback_t\fP callback with the following values:
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+The user who performed the action (may be you)
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+params[0] contains the channel name
+params[1] optional, contains the nick of the kicked
+params[2] optional, contains the reason for the kick
+T}
+_
+.TE
+.INDENT 0.0
+.TP
+.B event_channel
+.UNINDENT
+.sp
+This event is triggered upon receipt of a PRIVMSG message sent to the channel. It happens when someone (but not you) sent a message to the channel you are watching (have joined).
+.sp
+Your own messages do not trigger this event. However the server can still “force” you to send a message to the channel by generating this event.
+.sp
+This event uses \fBirc_event_callback_t\fP callback with the following values:
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+The user who sent a message
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+params[0] contains the channel name
+params[1] optional, contains the message text
+T}
+_
+.TE
+.INDENT 0.0
+.TP
+.B event_privmsg
+.UNINDENT
+.sp
+This event is triggered upon receipt of a PRIVMSG message sent privately to you. It happens when someone sent you a message.
+.sp
+This event uses \fBirc_event_callback_t\fP callback with the following values:
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+The user who sent a message
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+params[0] contains your nick
+params[1] optional, contains the message text
+T}
+_
+.TE
+.INDENT 0.0
+.TP
+.B event_notice
+.UNINDENT
+.sp
+This event is triggered upon receipt of a NOTICE message. This message is similar to PRIVMSG and matches the 
+.nf
+event_privmsg_
+.fi
+\&.
+According to RFC 1459, the only difference between NOTICE and PRIVMSG is that you should NEVER automatically reply to NOTICE messages.
+Unfortunately, this rule is frequently violated by IRC servers itself \- for example, NICKSERV messages require reply, and are sent as NOTICE.
+.sp
+This event uses \fBirc_event_callback_t\fP callback with the following values:
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+The user who sent a message
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+params[0] contains the target nick name
+params[1] optional, contains the message text
+T}
+_
+.TE
+.INDENT 0.0
+.TP
+.B event_channel_notice
+.UNINDENT
+.sp
+This event is triggered upon receipt of a NOTICE message. This message is similar to PRIVMSG and matches the 
+.nf
+event_channel_
+.fi
+\&.
+According to RFC 1459, the only difference between NOTICE and PRIVMSG is that you should NEVER automatically reply to NOTICE messages.
+Unfortunately, this rule is frequently violated by IRC servers itself \- for example, NICKSERV messages require reply, and are sent as NOTICE.
+.sp
+This event uses \fBirc_event_callback_t\fP callback with the following values:
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+The user who sent a message
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+params[0] contains the channel name
+params[1] optional, contains the message text
+T}
+_
+.TE
+.INDENT 0.0
+.TP
+.B event_invite
+.UNINDENT
+.sp
+This event is triggered upon receipt of an INVITE message. It happens when someone invited you to a channel which has +i (invite\-only) mode.
+.sp
+This event uses \fBirc_event_callback_t\fP callback with the following values:
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+The user who invited you
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+params[0] contains your nick
+params[1] optional, contains the channel name
+T}
+_
+.TE
+.sp
+See also: \fBirc_cmd_invite()\fP
+.INDENT 0.0
+.TP
+.B event_ctcp_req
+.UNINDENT
+.sp
+This event is triggered upon receipt of an CTCP request. By default, the built\-in CTCP request handler is used.
+.sp
+Mirc generates \fIPING\fP, \fIFINGER\fP, \fIVERSION\fP, \fITIME\fP and \fIACTION\fP messages which are automatically handled by the library if this event is not handled by your application. Those messages are replied automatically
+except the ACTION message which triggers 
+.nf
+event_ctcp_action_
+.fi
+ event.
+If you need to handle more types of the message, define this event handler,  and check the source code of \fBlibirc_event_ctcp_internal\fP function to see how to write your own CTCP request handler.
+Note that you must support at least CTCP PING to pass the spoof check by some IRC servers.
+.sp
+Also you may find useful this question in FAQ: ref faq4
+.sp
+This event uses \fBirc_event_callback_t\fP callback with the following values:
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+The user who generated the message
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+params[0] contains the complete CTCP message
+T}
+_
+.TE
+.INDENT 0.0
+.TP
+.B event_ctcp_rep
+.UNINDENT
+.sp
+This event is triggered upon receipt of an CTCP response. Thus if you generate the CTCP message and the remote user responded, this event handler will be called.
+.sp
+This event uses \fBirc_event_callback_t\fP callback with the following values:
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+The user who generated the message
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+params[0] contains the complete CTCP message
+T}
+_
+.TE
+.INDENT 0.0
+.TP
+.B event_ctcp_action
+.UNINDENT
+.sp
+This event is triggered upon receipt of an CTCP ACTION message. It is only invoked if you did not define the 
+.nf
+event_ctcp_req_
+.fi
+ event handler.
+.sp
+Such messages typically look like that in the IRC client:
+.INDENT 0.0
+.TP
+.B ::
+[08:32:55] * Michael is having fun
+[08:32:55] * Bobby’s getting jealous
+.UNINDENT
+.sp
+This event uses \fBirc_event_callback_t\fP callback with the following values:
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+The user who generated the message
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+params[0] contains the content of ACTION message
+T}
+_
+.TE
+.INDENT 0.0
+.TP
+.B event_unknown
+.UNINDENT
+.sp
+This event is triggered upon receipt of an unknown message which is not handled by the library.
+.sp
+This event uses \fBirc_event_callback_t\fP callback with the following values:
+.TS
+center;
+|l|l|.
+_
+T{
+\fIorigin\fP
+T}	T{
+The user who generated the event
+T}
+_
+T{
+\fIparams\fP
+T}	T{
+Zero or more parameters provided with the event
+T}
+_
+.TE
+.INDENT 0.0
+.TP
+.B event_numeric
+.UNINDENT
+.sp
+This event is triggered upon receipt of every numeric message from the server. The incomplete list of those responses could be found in RFC 1429. This event is necessary to handle for any meaningful client.
+.sp
+This event uses the dedicated 
+.nf
+irc_eventcode_callback_t_
+.fi
+ callback. See the callback documentation.
+.INDENT 0.0
+.TP
+.B event_dcc_chat_req
+.UNINDENT
+.sp
+This event is triggered when someone attempts to establish the DCC CHAT with you.
+.sp
+This event uses the dedicated \fBirc_event_dcc_chat_t\fP callback. See the callback documentation.
+.INDENT 0.0
+.TP
+.B event_dcc_send_req
+.UNINDENT
+.sp
+This event is triggered when someone attempts to send you the file via DCC SEND.
+.sp
+This event uses the dedicated \fBirc_event_dcc_send_t\fP callback. See the callback documentation.
+.SS Constants
+.sp
+This section describes contstants such as options and the error codes.
+.SS Errors
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_OK
+.UNINDENT
+.sp
+(0): No error
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_INVAL
+.UNINDENT
+.sp
+(1): An invalid value was given for one of the arguments to a function. For example, supplying the NULL value as a channel argument of \fBirc_cmd_join()\fP produces this error.
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_RESOLV
+.UNINDENT
+.sp
+(2): The host name supplied for \fBirc_connect()\fP function could not be resolved into valid IP address.
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_SOCKET
+.UNINDENT
+.sp
+(3): The new socket could not be created or made non\-blocking. Usually means that the server is out of resources, or (hopefully not) a bug in libircclient. See also faq_err_socket
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_CONNECT
+.UNINDENT
+.sp
+(4): The socket could not connect to the IRC server, or to the destination DCC part. Usually means that either the IRC server is down or its address is invalid.
+For DCC the reason usually is the firewall on your or destination computer, which refuses DCC transfer.
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_CLOSED
+.UNINDENT
+.sp
+(5): The IRC connection was closed by the IRC server (which could mean that an IRC operator just have banned you from the server \- test your client before connecting to a public server), or the DCC connection
+was closed by remote peer \- for example, the other side just terminates the IRC application.  Usually it is not an error.
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_NOMEM
+.UNINDENT
+.sp
+(6): There are two possible reasons for this error. First is that memory could not be allocated for libircclient internal use, and this error is usually fatal.
+Second reason is that the command buffer (which queues the commands ready to be sent to the IRC server) is full, and could not accept more commands yet.
+In the last case you should just wait, and repeat the command later.
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_ACCEPT
+.UNINDENT
+.sp
+(7): A DCC chat/send connection from the remote peer could not be accepted. Either the connection was just terminated before it is accepted, or there is a bug in libircclient.
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_NODCCSEND
+.UNINDENT
+.sp
+(9):  A filename supplied to \fBirc_dcc_sendfile()\fP could not be sent. Either is is not a regular file (a directory or a socket, for example), or it could not be read. See also \fI\%LIBIRC_ERR_OPENFILE\fP
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_READ
+.UNINDENT
+.sp
+(10): Either a DCC file could not be read (for example, was truncated during sending), or a DCC socket returns a read error, which usually means that the network connection is terminated.
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_WRITE
+.UNINDENT
+.sp
+(11):  Either a DCC file could not be written (for example, there is no free space on disk), or a DCC socket returns a write error, which usually means that the network connection is terminated.
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_STATE
+.UNINDENT
+.sp
+(12):  The function is called when it is not allowed to be called. For example, \fBirc_cmd_join()\fP was called before the connection to IRC server succeed, and \fBevent_connect\fP is called.
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_TIMEOUT
+.UNINDENT
+.sp
+(13):  The DCC request is timed out. There is a timer for each DCC request, which tracks connecting, accepting  and non\-accepted/declined DCC requests. For every request this timer
+is currently set to 60 seconds. If the DCC request was not connected, accepted or declined during this time, it will be terminated with this error.
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_OPENFILE
+.UNINDENT
+.sp
+(14): The file specified in \fBirc_dcc_sendfile()\fP could not be opened.
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_TERMINATED
+.UNINDENT
+.sp
+(15): The connection to the IRC server was terminated.
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_NOIPV6
+.UNINDENT
+.sp
+(16): The function which requires IPv6 support was called, but the IPv6 support was not compiled into the application
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_SSL_NOT_SUPPORTED
+.UNINDENT
+.sp
+(17): The SSL connection was required but the library was not compiled with SSL support
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_SSL_INIT_FAILED
+.UNINDENT
+.sp
+(18): The SSL library could not be initialized.
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_CONNECT_SSL_FAILED
+.UNINDENT
+.sp
+(19): SSL handshare failed when attempting to connect to the server. Typically this means you’re trying to use SSL but attempting to connect to a non\-SSL port.
+.INDENT 0.0
+.TP
+.B LIBIRC_ERR_SSL_CERT_VERIFY_FAILED
+.UNINDENT
+.sp
+(20): The server is using an invalid or the self\-signed certificate. Use \fI\%LIBIRC_OPTION_SSL_NO_VERIFY\fP option to connect to it.
+.SS Options
+.INDENT 0.0
+.TP
+.B LIBIRC_OPTION_DEBUG
+.UNINDENT
+.sp
+If set, enables additional debug output which goes to STDOUT.
+.INDENT 0.0
+.TP
+.B LIBIRC_OPTION_STRIPNICKS
+.UNINDENT
+.sp
+If set, strips the event origins automatically. Every event has an origin (i.e. who originated the event). The origin usually looks like \fInick!host@ircserver\fP,
+i.e. like \fItim!home@irc.server.net\fP\&. Such origins can not be used in IRC commands, and need to be stripped (i.e. host and server part should be cut off) before using.
+This can be done either manually by calling \fBirc_target_get_nick()\fP, or automatically for all the events if this option is set.
+.INDENT 0.0
+.TP
+.B LIBIRC_OPTION_SSL_NO_VERIFY
+.UNINDENT
+.sp
+By default the SSL connection is authenticated by verifying that the certificate presented by the server is signed by a known trusted certificate authority.
+Since those typically cost money, some IRC servers use the self\-signed certificates. They provide the benefits of the SSL connection but since they are
+not signed by the Certificate Authority, their authencity cannot be verified. This option, if set, disables the certificate verification \- the library
+will accept any certificate presented by the server.
+.sp
+This option must be set before the \fBirc_connect\fP function is called.
+.SH APPENDIX
+.SS Frequently asked questions
+.SS Why do I get a LIBIRC_ERR_SOCKET error under Win32 when using a static library?
+.sp
+Because on Win32 you have to initialize the Winsock API before using it:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+WSADATA wsaData;
+
+if ( WSAStartup ( MAKEWORD (2, 2), &wsaData) != 0 )
+    // report an error
+
+// Now you can use libircclient
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+You have to do it ONCE in your application, and since libircclient does not know whether you already initialized it or not, it does not contain any Winsock initialization code.
+.SS What does it mean that the IRC protocol is event\-based?
+.sp
+The IRC protocol itself is asynchronous and server\-driven. For you, this means the following:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+For any IRC command, it is not possible to obtain an immediate response whether the command succeed
+or not. Instead the server will send the reply in a short (or long) period of time.
+.IP \(bu 2
+For some IRC command there is no ‘success’ response at all. For example, when you send a text
+message, IRC server will not send anything to confirm that the message is already sent.
+.IP \(bu 2
+You can send several commands to the IRC server, and then receive several replies regarding every
+command. The order of the replies you receive is generally undefined.
+.IP \(bu 2
+A lot of IRC events sent to you is generated by other users, or the IRC server itself, and are
+sent to you just when they are generated.
+.IP \(bu 2
+Long lists (for example, channel lists) are also sent as events. Moreover, these events could be
+separated by other events (message or notices). And it is your responsibility to separate the data
+(using event codes), and use some sort of data structure that will hold it until the data is complete.
+It is not possible to simply query the list of channels, and expect that its content will immediately arrive.
+.IP \(bu 2
+You may send the request, and not receive a response in case of success (such as when you send a message).
+You may send the request and it will only succeed when you receive a response (which may be after you receive
+ten more unrelated events). Or you can receive a response without even sending a request, as it is the case
+with JOIN \- it is possible for the server to JOIN you to a specific channel implicitly.
+.IP \(bu 2
+You should be prepared to expect the unexpected from the IRC server. For example, the server can change your
+nick (seen on most servers, which use nickserv authentication. You can be “forced” to join the channel, to
+say something, to leave a channel, to change your usermode and so on. Listen what IRC server tells you, and do so.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.SS Why the irc_cmd_join function does not return an error?
+.sp
+A typical example is the \fBirc_cmd_join()\fP call always returns success even when you attempt to join a password\-protected
+channel. Then some time later the IRC server returns an error. This is because the irc_cmd family of functions return
+success when the command is sent to the IRC server. The asynchronous nature of IRC makes it impossible to obtain the
+command result immediately. Please read the question above.
+.SS How to register/auth with NICKSERV?
+.sp
+There is no ‘standard’ way. NICKSERV, CHANSERV and so on are not specified by the RFC. They are IRC extensions which
+behave exactly like the other IRC users but with more power. Typically their messages are sent via Notice events, so
+you can use following algorithm to handle Nickserv registration:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+static void event_notice (irc_session_t * session, const char * event,
+                                                 const char * origin, const char ** params, unsigned int count)
+{
+        char buf[256];
+
+        if ( !origin )
+                return;
+
+        if ( strcasecmp (origin, "nickserv") )
+                return;
+
+        if ( strstr (params[1], "This nick is not registered") == params[1] )
+        {
+                sprintf (buf, "REGISTER %s NOMAIL", gCfg.irc_nickserv_password);
+                irc_cmd_msg(session, "nickserv", buf);
+        }
+        else if ( strstr (params[1], "This nickname is registered and protected") == params[1] )
+        {
+                sprintf (buf, "IDENTIFY %s", gCfg.irc_nickserv_password);
+                irc_cmd_msg(session, "nickserv", buf);
+        }
+        else if ( strstr (params[1], "Password accepted \- you are now recognized") == params[1] )
+                printf ("Nickserv authentication succeed.");
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The idea is to parse the messages sent from NICKSERV, and if they’re matched the specific patterns, react on them appropriately.
+.SS What is CTCP?
+.sp
+CTCP abbreviature is deciphered as “Client\-to\-Client Protocol”. It is used between the IRC clients to query the
+remote client for some data, or to send some information – for example, /me messages are sent via CTCP.
+.sp
+There is no standard list of possible CTCP requests, and different IRC clients often add their own CTCP codes.
+The built\-in handler reacts on TIME, VERSION, PING and FINGER CTCP queries. If you need to react on other requests,
+you’ll have to write your own CTCP handler. See the source code of libirc_event_ctcp_internal function to get an
+idea how to write it.
+.SS When I am made a chanop (+o) why do I not receive the event_umode?
+.sp
+Becoming a channel operator channes the \fBchannel mode\fP, not user mode. Therefore you will receive \fBevent_mode\fP and not \fBevent_umode\fP
+.sp
+If you receive the event_umode with +o this means your user is an IRC server operator.
+.SS What if my application uses epoll?
+.sp
+The library only directly supports the select()\-based loops for historic reasons, so epoll and other polling methods are not supported directly by the library.
+However but if necessart, it could be emulated by converting descriptors between select and epoll as following:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+Call irc_add_select_descriptors with an empty FD_SET
+.IP \(bu 2
+Extract the descriptors from the fd_set arrays (remember fd_array is a bitarray, not the value array). There may be more than one descriptor in case there are DCC sessions.
+.IP \(bu 2
+Pass those descriptors to poll/epoll using relevant events (i.e. use the EPOLLIN for the descriptors in the \fIin_set\fP)
+.IP \(bu 2
+For those descriptors which triggered the events, fill up the relevant in_set and out_set structures (again, remember the bitmasks!) and pass them to \fBirc_process_select_descriptors()\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+While this is cumbersome, the operations are very simple (basically bitmask operations on a small structure) and will not add any significant slowdown to your application.
+.SS GNU LESSER GENERAL PUBLIC LICENSE
+.sp
+Version 3, 29 June 2007
+.sp
+Copyright © 2007 Free Software Foundation, Inc. <\fI\%http://fsf.org/\fP>
+.sp
+Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+.sp
+This version of the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License, supplemented by the additional permissions listed below.
+.INDENT 0.0
+.IP 0. 4
+Additional Definitions.
+.UNINDENT
+.sp
+As used herein, “this License” refers to version 3 of the GNU Lesser General Public License, and the “GNU GPL” refers to version 3 of the GNU General Public License.
+.sp
+“The Library” refers to a covered work governed by this License, other than an Application or a Combined Work as defined below.
+.sp
+An “Application” is any work that makes use of an interface provided by the Library, but which is not otherwise based on the Library. Defining a subclass of a class defined by the Library is deemed a mode of using an interface provided by the Library.
+.sp
+A “Combined Work” is a work produced by combining or linking an Application with the Library. The particular version of the Library with which the Combined Work was made is also called the “Linked Version”.
+.sp
+The “Minimal Corresponding Source” for a Combined Work means the Corresponding Source for the Combined Work, excluding any source code for portions of the Combined Work that, considered in isolation, are based on the Application, and not on the Linked Version.
+.sp
+The “Corresponding Application Code” for a Combined Work means the object code and/or source code for the Application, including any data and utility programs needed for reproducing the Combined Work from the Application, but excluding the System Libraries of the Combined Work.
+1. Exception to Section 3 of the GNU GPL.
+.sp
+You may convey a covered work under sections 3 and 4 of this License without being bound by section 3 of the GNU GPL.
+2. Conveying Modified Versions.
+.sp
+If you modify a copy of the Library, and, in your modifications, a facility refers to a function or data to be supplied by an Application that uses the facility (other than as an argument passed when the facility is invoked), then you may convey a copy of the modified version:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP a. 3
+under this License, provided that you make a good faith effort to ensure that, in the event an Application does not supply the function or data, the facility still operates, and performs whatever part of its purpose remains meaningful, or
+.IP b. 3
+under the GNU GPL, with none of the additional permissions of this License applicable to that copy.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP 3. 3
+Object Code Incorporating Material from Library Header Files.
+.UNINDENT
+.sp
+The object code form of an Application may incorporate material from a header file that is part of the Library. You may convey such object code under terms of your choice, provided that, if the incorporated material is not limited to numerical parameters, data structure layouts and accessors, or small macros, inline functions and templates (ten or fewer lines in length), you do both of the following:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP a. 3
+Give prominent notice with each copy of the object code that the Library is used in it and that the Library and its use are covered by this License.
+.IP b. 3
+Accompany the object code with a copy of the GNU GPL and this license document.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP 4. 3
+Combined Works.
+.UNINDENT
+.sp
+You may convey a Combined Work under terms of your choice that, taken together, effectively do not restrict modification of the portions of the Library contained in the Combined Work and reverse engineering for debugging such modifications, if you also do each of the following:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP a. 3
+Give prominent notice with each copy of the Combined Work that the Library is used in it and that the Library and its use are covered by this License.
+.IP b. 3
+Accompany the Combined Work with a copy of the GNU GPL and this license document.
+.IP c. 3
+For a Combined Work that displays copyright notices during execution, include the copyright notice for the Library among these notices, as well as a reference directing the user to the copies of the GNU GPL and this license document.
+.IP d. 3
+.INDENT 3.0
+.TP
+.B Do one of the following:
+.INDENT 7.0
+.IP 0. 4
+Convey the Minimal Corresponding Source under the terms of this License, and the Corresponding Application Code in a form suitable for, and under terms that permit, the user to recombine or relink the Application with a modified version of the Linked Version to produce a modified Combined Work, in the manner specified by section 6 of the GNU GPL for conveying Corresponding Source.
+.IP 1. 4
+Use a suitable shared library mechanism for linking with the Library. A suitable mechanism is one that (a) uses at run time a copy of the Library already present on the user’s computer system, and (b) will operate properly with a modified version of the Library that is interface\-compatible with the Linked Version.
+.UNINDENT
+.UNINDENT
+.IP e. 3
+Provide Installation Information, but only if you would otherwise be required to provide such information under section 6 of the GNU GPL, and only to the extent that such information is necessary to install and execute a modified version of the Combined Work produced by recombining or relinking the Application with a modified version of the Linked Version. (If you use option 4d0, the Installation Information must accompany the Minimal Corresponding Source and Corresponding Application Code. If you use option 4d1, you must provide the Installation Information in the manner specified by section 6 of the GNU GPL for conveying Corresponding Source.)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP 5. 3
+Combined Libraries.
+.UNINDENT
+.sp
+You may place library facilities that are a work based on the Library side by side in a single library together with other library facilities that are not Applications and are not covered by this License, and convey such a combined library under terms of your choice, if you do both of the following:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP a. 3
+Accompany the combined library with a copy of the same work based on the Library, uncombined with any other library facilities, conveyed under the terms of this License.
+.IP b. 3
+Give prominent notice with the combined library that part of it is a work based on the Library, and explaining where to find the accompanying uncombined form of the same work.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP 6. 3
+Revised Versions of the GNU Lesser General Public License.
+.UNINDENT
+.sp
+The Free Software Foundation may publish revised and/or new versions of the GNU Lesser General Public License from time to time. Such new versions will be similar in spirit to the present version, but may differ in detail to address new problems or concerns.
+.sp
+Each version is given a distinguishing version number. If the Library as you received it specifies that a certain numbered version of the GNU Lesser General Public License “or any later version” applies to it, you have the option of following the terms and conditions either of that published version or of any later version published by the Free Software Foundation. If the Library as you received it does not specify a version number of the GNU Lesser General Public License, you may choose any version of the GNU Lesser General Public License ever published by the Free Software Foundation.
+.sp
+If the Library as you received it specifies that a proxy can decide whether future versions of the GNU Lesser General Public License shall apply, that proxy’s public statement of acceptance of any version is permanent authorization for you to choose that version for the Library.
+.SS Indices and tables
+.INDENT 0.0
+.IP \(bu 2
+genindex
+.IP \(bu 2
+modindex
+.IP \(bu 2
+search
+.UNINDENT
+.SH AUTHOR
+George Yunaev
+.SH COPYRIGHT
+2005-2016 George Yunaev, http://www.ulduzsoft.com/linux/libircclient/
+.\" Generated by docutils manpage writer.
+.

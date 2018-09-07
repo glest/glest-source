@@ -1,9 +1,9 @@
 /* 
- * Copyright (C) 2004-2009 Georgy Yunaev gyunaev@ulduzsoft.com
+ * Copyright (C) 2004-2012 George Yunaev gyunaev@ulduzsoft.com
  *
  * This library is free software; you can redistribute it and/or modify it 
  * under the terms of the GNU Lesser General Public License as published by 
- * the Free Software Foundation; either version 2 of the License, or (at your 
+ * the Free Software Foundation; either version 3 of the License, or (at your 
  * option) any later version.
  *
  * This library is distributed in the hope that it will be useful, but WITHOUT 
@@ -121,7 +121,7 @@ static char * libirc_colorparser_irc2code (const char * source, int strip)
 	unsigned int mask = 0, destlen = 0;
 	char * destline = 0, *d = 0;
 	const char *p;
-	int current_color = 1, current_bg = 0;
+	int current_bg = 0;
 
     /*
      * There will be two passes. First pass calculates the total length of
@@ -205,8 +205,6 @@ static char * libirc_colorparser_irc2code (const char * source, int strip)
 						if ( strip )
 							continue;
 
-						current_color = color;
-						
 						if ( bgcolor != -1 )
 							current_bg = bgcolor;
 

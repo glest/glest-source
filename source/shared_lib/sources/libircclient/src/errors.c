@@ -1,9 +1,9 @@
 /* 
- * Copyright (C) 2004-2009 Georgy Yunaev gyunaev@ulduzsoft.com
+ * Copyright (C) 2004-2012 George Yunaev gyunaev@ulduzsoft.com
  *
  * This library is free software; you can redistribute it and/or modify it 
  * under the terms of the GNU Lesser General Public License as published by 
- * the Free Software Foundation; either version 2 of the License, or (at your 
+ * the Free Software Foundation; either version 3 of the License, or (at your 
  * option) any later version.
  *
  * This library is distributed in the hope that it will be useful, but WITHOUT 
@@ -11,8 +11,6 @@
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public 
  * License for more details.
  */
-#include "libircclient.h"
-#include "libirc_session.h"
 
 static const char * libirc_strerror[LIBIRC_ERR_MAX] = 
 {
@@ -33,6 +31,10 @@ static const char * libirc_strerror[LIBIRC_ERR_MAX] =
 	"Could not open file",
 	"IRC session terminated",
 	"IPv6 not supported",
+	"SSL not supported",
+	"SSL initialization failed",
+	"SSL connection failed",
+	"SSL certificate verify failed",
 };
 
 

@@ -1,9 +1,9 @@
 /* 
- * Copyright (C) 2004-2009 Georgy Yunaev gyunaev@ulduzsoft.com
+ * Copyright (C) 2004-2012 George Yunaev gyunaev@ulduzsoft.com
  *
  * This library is free software; you can redistribute it and/or modify it 
  * under the terms of the GNU Lesser General Public License as published by 
- * the Free Software Foundation; either version 2 of the License, or (at your 
+ * the Free Software Foundation; either version 3 of the License, or (at your 
  * option) any later version.
  *
  * This library is distributed in the hope that it will be useful, but WITHOUT 
@@ -15,7 +15,7 @@
 /*
  * The sockets interface was moved out to simplify going OpenSSL integration.
  */
-#if !defined (WIN32)
+#if !defined (_WIN32)
 	#include <sys/socket.h>
 	#include <netdb.h>
 	#include <arpa/inet.h>	
@@ -32,9 +32,18 @@
 
 	#define IS_SOCKET_ERROR(a)	((a)==SOCKET_ERROR)
 
+#if !defined(EWOULDBLOCK)
 	#define EWOULDBLOCK		WSAEWOULDBLOCK
+#endif
+#if !defined(EINPROGRESS)
 	#define EINPROGRESS		WSAEINPROGRESS
+#endif
+#if !defined(EINTR)
 	#define EINTR			WSAEINTR
+#endif
+#if !defined(EAGAIN)
+	#define EAGAIN			EWOULDBLOCK
+#endif
 
 	typedef SOCKET			socket_t;
 
@@ -47,7 +56,7 @@
 
 static int socket_error()
 {
-#if !defined (WIN32)
+#if !defined (_WIN32)
 	return errno;
 #else
 	return WSAGetLastError();
@@ -64,10 +73,10 @@ static int socket_create (int domain, int type, socket_t * sock)
 
 static int socket_make_nonblocking (socket_t * sock)
 {
-#if !defined (WIN32)
+#if !defined (_WIN32)
 	return fcntl (*sock, F_SETFL, fcntl (*sock, F_GETFL,0 ) | O_NONBLOCK) != 0;
 #else
-	unsigned long mode = 0;
+	unsigned long mode = 1;
 	return ioctlsocket (*sock, FIONBIO, &mode) == SOCKET_ERROR;
 #endif
 }
@@ -75,7 +84,7 @@ static int socket_make_nonblocking (socket_t * sock)
 
 static int socket_close (socket_t * sock)
 {
-#if !defined (WIN32)
+#if !defined (_WIN32)
 	close (*sock);
 #else
 	closesocket (*sock);
@@ -101,7 +110,6 @@ static int socket_connect (socket_t * sock, const struct sockaddr *saddr, sockle
 
 		return 0;
 	}
-	return 0;
 }
 
 
@@ -123,9 +131,13 @@ static int socket_recv (socket_t * sock, void * buf, size_t len)
 {
 	int length;
 
-	while ( (length = recv (*sock, buf, len, 0)) < 0
-	&& socket_error() == EINTR )
-		continue;
+	while ( (length = recv (*sock, buf, len, 0)) < 0 )
+	{
+		int err = socket_error();
+		
+		if ( err != EINTR && err != EAGAIN )
+			break;
+	}
 
 	return length;
 }
@@ -135,9 +147,13 @@ static int socket_send (socket_t * sock, const void *buf, size_t len)
 {
 	int length;
 
-	while ( (length = send (*sock, buf, len, 0)) < 0
-	&& socket_error() == EINTR )
-		continue;
+	while ( (length = send (*sock, buf, len, 0)) < 0 )
+	{
+		int err = socket_error();
+		
+		if ( err != EINTR && err != EAGAIN )
+			break;
+	}
 
 	return length;
 }

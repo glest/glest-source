@@ -1,9 +1,9 @@
 /* 
- * Copyright (C) 2004-2009 Georgy Yunaev gyunaev@ulduzsoft.com
+ * Copyright (C) 2004-2012 George Yunaev gyunaev@ulduzsoft.com
  *
  * This library is free software; you can redistribute it and/or modify it 
  * under the terms of the GNU Lesser General Public License as published by 
- * the Free Software Foundation; either version 2 of the License, or (at your 
+ * the Free Software Foundation; either version 3 of the License, or (at your 
  * option) any later version.
  *
  * This library is distributed in the hope that it will be useful, but WITHOUT 
@@ -16,7 +16,6 @@
 #define LIBIRC_DCC_SENDFILE		2
 #define LIBIRC_DCC_RECVFILE		3
 
-#include "libircclient.h"
 
 static irc_dcc_session_t * libirc_find_dcc_session (irc_session_t * session, irc_dcc_t dccid, int lock_list)
 {
@@ -202,8 +201,6 @@ static void libirc_dcc_add_descriptors (irc_session_t * ircsession, fd_set *in_s
 
              if ( dcc->dccmode == LIBIRC_DCC_SENDFILE && dcc->incoming_offset < 4 )
 				libirc_add_to_set (dcc->sock, in_set, maxfd);
-
-             break;
 		}
 	}
 
@@ -227,7 +224,12 @@ static void libirc_dcc_process_descriptors (irc_session_t * ircsession, fd_set *
 		&& FD_ISSET (dcc->sock, in_set) )
 		{
 			socklen_t len = sizeof(dcc->remote_addr);
+
+#if defined(_WIN32)
+			SOCKET nsock, err = 0;
+#else
 			int nsock, err = 0;
+#endif
 
 			// New connection is available; accept it.
 			if ( socket_accept (&dcc->sock, &nsock, (struct sockaddr *) &dcc->remote_addr, &len) )
@@ -333,7 +335,9 @@ static void libirc_dcc_process_descriptors (irc_session_t * ircsession, fd_set *
 
 						if ( dcc->incoming_offset == 4 )
 						{
-							unsigned int received_size = ntohl (*((unsigned int*)dcc->incoming_buf));
+							// The order is big-endian
+							const unsigned char * bptr = (const unsigned char *) dcc->incoming_buf;
+							unsigned int received_size = (bptr[0] << 24) | (bptr[1] << 16) | (bptr[2] << 8)  | bptr[3];
 
 							// Sent size confirmed
 							if ( dcc->file_confirm_offset == received_size )
@@ -369,7 +373,12 @@ static void libirc_dcc_process_descriptors (irc_session_t * ircsession, fd_set *
                              {
                              	dcc->state = LIBIRC_STATE_CONFIRM_SIZE;
                              	dcc->file_confirm_offset += offset;
-                             	*((unsigned int*)dcc->outgoing_buf) = htonl (dcc->file_confirm_offset);
+								
+								// Store as big endian
+								dcc->outgoing_buf[0] = (char) dcc->file_confirm_offset >> 24;
+								dcc->outgoing_buf[1] = (char) dcc->file_confirm_offset >> 16;
+								dcc->outgoing_buf[2] = (char) dcc->file_confirm_offset >> 8;
+								dcc->outgoing_buf[3] = (char) dcc->file_confirm_offset;
                              	dcc->outgoing_offset = 4;
 							}
 						}
@@ -525,18 +534,35 @@ static int libirc_new_dcc_session (irc_session_t * session, unsigned long ip, un
 
 	if ( !ip )
 	{
-		struct sockaddr_in saddr;
 		unsigned long arg = 1;
 
 		setsockopt (dcc->sock, SOL_SOCKET, SO_REUSEADDR, (char*)&arg, sizeof(arg));
 
-		memset (&saddr, 0, sizeof(saddr));
-		saddr.sin_family = AF_INET;
-		memcpy (&saddr.sin_addr, &session->local_addr, sizeof(session->local_addr));
-        saddr.sin_port = htons (0);
+#if defined (ENABLE_IPV6)
+		if ( session->flags & SESSIONFL_USES_IPV6 )
+		{
+			struct sockaddr_in6 saddr6;
 
-		if ( bind (dcc->sock, (struct sockaddr *) &saddr, sizeof(saddr)) < 0 )
-			goto cleanup_exit_error;
+			memset (&saddr6, 0, sizeof(saddr6));
+			saddr6.sin6_family = AF_INET6;
+			memcpy (&saddr6.sin6_addr, &session->local_addr6, sizeof(session->local_addr6));
+			saddr6.sin6_port = htons (0);
+
+			if ( bind (dcc->sock, (struct sockaddr *) &saddr6, sizeof(saddr6)) < 0 )
+				goto cleanup_exit_error;
+		}
+		else
+#endif
+		{
+			struct sockaddr_in saddr;
+			memset (&saddr, 0, sizeof(saddr));
+			saddr.sin_family = AF_INET;
+			memcpy (&saddr.sin_addr, &session->local_addr, sizeof(session->local_addr));
+			saddr.sin_port = htons (0);
+
+			if ( bind (dcc->sock, (struct sockaddr *) &saddr, sizeof(saddr)) < 0 )
+				goto cleanup_exit_error;
+		}
 
 		if ( listen (dcc->sock, 5) < 0 )
 			goto cleanup_exit_error;
