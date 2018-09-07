@@ -57,10 +57,10 @@ before_install:
 
 script:
 # ALL THE BUILD COMMANDS HERE
-  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ]; then mk/linux/build-zg.sh; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" != "" ]; then mk/linux/build-zg.sh -w; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ]; then mk/linux/build-zg.sh -d; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" != "" ]; then mk/linux/build-zg.sh -d -w; fi
   # ^ -w may be removed on more modern dist: than trusty, problems related with 'new wx+clang+old gcc'
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then mk/macos/build-zg.sh; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then mk/macos/build-zg.sh -d; fi
 
 # https://docs.travis-ci.com/user/notifications/#IRC-notification
 notifications:
