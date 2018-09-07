@@ -1,8 +1,7 @@
-# $Id: Makefile.in 42 2004-10-10 16:16:15Z gyunaev $
 CC = @CC@
 CXX = @CXX@
 CFLAGS = -Wall @CFLAGS@
-LIBS = ../src/libircclient.a -lpthread @LIBS@
+LIBS = -L../src/ -lircclient -lpthread @LIBS@
 INCLUDES=-I../include
 
 EXAMPLES=spammer censor irctest ircftp colors

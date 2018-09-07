@@ -1,1 +1,14 @@
-See doc/html/index.html
+Building from source
+
+The library uses autoconf so it is build in a fairly typical way on most Unix systems:
+
+./configure
+make
+This will build both the library and various examples in the examples subdirectory.
+
+Configure script also accepts parameters, optional useful parameters accepted are –enable-openssl and –enable-ipv6 which correspondingly enable the SSL and IPv6 connectivity. Use –enable-shared to build a shared library.
+
+The same procedure is used to build the Win32 binary using the MinGW compiler.
+
+For the rest see the Doxygen documentation in the header files and http://www.ulduzsoft.com/libircclient/
+

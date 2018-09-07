@@ -1,9 +1,9 @@
 /* 
- * Copyright (C) 2004-2009 Georgy Yunaev gyunaev@ulduzsoft.com
+ * Copyright (C) 2004-2012 George Yunaev gyunaev@ulduzsoft.com
  *
  * This library is free software; you can redistribute it and/or modify it 
  * under the terms of the GNU Lesser General Public License as published by 
- * the Free Software Foundation; either version 2 of the License, or (at your 
+ * the Free Software Foundation; either version 3 of the License, or (at your 
  * option) any later version.
  *
  * This library is distributed in the hope that it will be useful, but WITHOUT 
@@ -12,8 +12,7 @@
  * License for more details.
  */
 
-
-#if !defined (WIN32)
+#if !defined (_WIN32)
 	#include "config.h"
 	#include <stdio.h>
 	#include <stdarg.h>
@@ -61,12 +60,17 @@
 #endif
 
 
+#if defined (ENABLE_SSL)
+	#include <openssl/ssl.h>
+	#include <openssl/err.h>
+	#include <openssl/rand.h>
+#endif
+
+
 #if defined (ENABLE_THREADS)
-
-
 static inline int libirc_mutex_init (port_mutex_t * mutex)
 {
-#if defined (WIN32)
+#if defined (_WIN32)
 	InitializeCriticalSection (mutex);
 	return 0;
 #elif defined (PTHREAD_MUTEX_RECURSIVE)
@@ -79,13 +83,13 @@ static inline int libirc_mutex_init (port_mutex_t * mutex)
 
 	return pthread_mutex_init (mutex, 0);
 
-#endif /* defined (WIN32) */
+#endif /* defined (_WIN32) */
 }
 
 
 static inline void libirc_mutex_destroy (port_mutex_t * mutex)
 {
-#if defined (WIN32)
+#if defined (_WIN32)
 	DeleteCriticalSection (mutex);
 #else
 	pthread_mutex_destroy (mutex);
@@ -95,7 +99,7 @@ static inline void libirc_mutex_destroy (port_mutex_t * mutex)
 
 static inline void libirc_mutex_lock (port_mutex_t * mutex)
 {
-#if defined (WIN32)
+#if defined (_WIN32)
 	EnterCriticalSection (mutex);
 #else
 	pthread_mutex_lock (mutex);
@@ -105,7 +109,7 @@ static inline void libirc_mutex_lock (port_mutex_t * mutex)
 
 static inline void libirc_mutex_unlock (port_mutex_t * mutex)
 {
-#if defined (WIN32)
+#if defined (_WIN32)
 	LeaveCriticalSection (mutex);
 #else
 	pthread_mutex_unlock (mutex);
@@ -127,23 +131,16 @@ static inline void libirc_mutex_unlock (port_mutex_t * mutex)
 /*
  * Stub for WIN32 dll to initialize winsock API
  */
-#if defined (_USRDLL)
+#if defined (WIN32_DLL)
 BOOL WINAPI DllMain (HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved)
 {
-	WORD wVersionRequested = MAKEWORD (1, 1);
-    WSADATA wsaData;
-
 	switch(fdwReason)
 	{
 		case DLL_PROCESS_ATTACH:
-			if ( WSAStartup (wVersionRequested, &wsaData) != 0 )
-				return FALSE;
-
 			DisableThreadLibraryCalls (hinstDll);
 			break;
 
 		case DLL_PROCESS_DETACH:
-			WSACleanup();
 			break;
 	}
 

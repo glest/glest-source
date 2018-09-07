@@ -17,7 +17,7 @@
 #include <errno.h>
 #include <string.h>
 
-#if defined (WIN32)
+#if defined (_WIN32)
 	#include <windows.h>
 
 	#define CREATE_THREAD(id,func,param)	(CreateThread(0, 0, func, param, 0, id) == 0)
@@ -150,6 +150,7 @@ int main (int argc, char **argv)
 	irc_callbacks_t	callbacks;
 	irc_ctx_t ctx;
 	irc_session_t * s;
+	unsigned short port = 6667;
 
 	if ( argc != 4 )
 	{
@@ -180,15 +181,33 @@ int main (int argc, char **argv)
 	irc_set_ctx (s, &ctx);
 	irc_option_set (s, LIBIRC_OPTION_STRIPNICKS);
 
+	// If the port number is specified in the server string, use the port 0 so it gets parsed
+	if ( strchr( argv[1], ':' ) != 0 )
+		port = 0;
+
+	// To handle the "SSL certificate verify failed" from command line we allow passing ## in front 
+	// of the server name, and in this case tell libircclient not to verify the cert
+	if ( argv[1][0] == '#' && argv[1][1] == '#' )
+	{
+		// Skip the first character as libircclient needs only one # for SSL support, i.e. #irc.freenode.net
+		argv[1]++;
+		
+		irc_option_set( s, LIBIRC_OPTION_SSL_NO_VERIFY );
+	}
+	
 	// Initiate the IRC server connection
-	if ( irc_connect (s, argv[1], 6667, 0, argv[2], 0, 0) )
+	if ( irc_connect (s, argv[1], port, 0, argv[2], 0, 0) )
 	{
 		printf ("Could not connect: %s\n", irc_strerror (irc_errno(s)));
 		return 1;
 	}
 
 	// and run into forever loop, generating events
-	irc_run (s);
+	if ( irc_run (s) )
+	{
+		printf ("Could not connect or I/O error: %s\n", irc_strerror (irc_errno(s)));
+		return 1;
+	}
 
 	return 1;
 }

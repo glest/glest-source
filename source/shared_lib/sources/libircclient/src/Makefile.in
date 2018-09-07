@@ -1,39 +1,46 @@
-# $Id: Makefile.in 84 2009-01-10 01:37:29Z chromerium $
+# $Id: Makefile.in 128 2014-07-30 05:51:55Z gyunaev $
 CC = @CC@
 CFLAGS = -Wall -DIN_BUILDING_LIBIRC @CFLAGS@
 AR=@AR@ cr
 RANLIB=@RANLIB@
 INCLUDES=-I../include
 DESTDIR=
-
+APIVERSION = 1
 
 OBJS = libircclient.o
 
-all:	lib
+all:	@TARGET@
 
-lib:	libircclient.a
+static:	libircclient.a
+shared: libircclient.so
+shared_mingw: libircclient.dll
 
-install: lib
+install:
 	-mkdir -p $(DESTDIR)@prefix@/include
-	-mkdir -p $(DESTDIR)@prefix@/lib
+	-mkdir -p $(DESTDIR)@libdir@
 	cp ../include/libircclient.h $(DESTDIR)@prefix@/include/libircclient.h
 	cp ../include/libirc_errors.h $(DESTDIR)@prefix@/include/libirc_errors.h
 	cp ../include/libirc_events.h  $(DESTDIR)@prefix@/include/libirc_events.h 
-	cp libircclient.a $(DESTDIR)@prefix@/lib/libircclient.a
-	cd $(DESTDIR)@prefix@/lib && ln -s libircclient.a libirc.a
+	cp ../include/libirc_options.h  $(DESTDIR)@prefix@/include/libirc_options.h 
+	cp ../include/libirc_rfcnumeric.h  $(DESTDIR)@prefix@/include/libirc_rfcnumeric.h 
+	cp libircclient.so $(DESTDIR)@libdir@/libircclient.so.$(APIVERSION)
+	ln -fs libircclient.so.$(APIVERSION) $(DESTDIR)@libdir@/libircclient.so
 
-$(OBJS): utils.c dcc.c errors.c portable.c sockets.c colors.c
+libircclient.so: libircclient.o
+	$(CC) -shared -s -Wl,-soname,libircclient.so.$(APIVERSION) -o libircclient.so libircclient.o @LDFLAGS@ @LIBS@
 
-libircclient.a: $(OBJS)
-	$(AR) libircclient.a $(OBJS)
+libircclient.dll: libircclient.o
+	$(CC) -shared -s -o libircclient.dll -Wl,-out-implib,libircclient.lib libircclient.o libircclient.def -lkernel32 -lwsock32 @LIBS@
+
+libircclient.a: libircclient.o
+	$(AR) libircclient.a libircclient.o
 	$(RANLIB) libircclient.a
 
 clean:
-	rm -f libircclient.a $(OBJS)
+	rm -f libircclient.a libircclient.o
 
 distclean: clean
 	-rm -f Makefile
 
 .c.o:
-	@echo "Compiling  $<"
-	@$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
+	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
