@@ -24,8 +24,8 @@ import sys, os
 #needs_sphinx = '1.0'
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
-# coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.doctest', 'rst2pdf.pdfbuilder']
+# coming with Sphinx (named 'sphinx.ext.*') or your custom ones.rinoh.frontend.sphinx
+extensions = ['sphinx.ext.doctest']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -169,23 +169,23 @@ htmlhelp_basename = 'Libircclientdoc'
 
 # -- Options for LaTeX output --------------------------------------------------
 
-latex_elements = {
+#latex_elements = {
 # The paper size ('letterpaper' or 'a4paper').
-'papersize': 'letterpaper',
+#'papersize': 'letterpaper',
 
 # The font size ('10pt', '11pt' or '12pt').
-'pointsize': '10pt',
+#'pointsize': '10pt',
 
 # Additional stuff for the LaTeX preamble.
-'preamble': '\setcounter{tocdepth}{4}',
-}
+#'preamble': '\setcounter{tocdepth}{4}',
+#}
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
-latex_documents = [
-  ('index', 'Libircclient.tex', u'Libircclient Documentation',
-   u'George Yunaev', 'manual'),
-]
+#latex_documents = [
+#  ('index', 'Libircclient.tex', u'Libircclient Documentation',
+#   u'George Yunaev', 'manual'),
+#]
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
@@ -283,3 +283,14 @@ epub_copyright = u'2013, George Yunaev'
 
 # Allow duplicate toc entries.
 #epub_tocdup = True
+
+
+# -- Options for Rhinotype output ---------------------------------------------------
+
+rinoh_documents = [('index',            # top-level file (index.rst)
+                    'libircclient',           # output (target.pdf)
+                    'Libircclient Documentation',   # document title
+                    'George Yunaev')]   # document author
+
+rinoh_paper_size = 'letterpaper'
+

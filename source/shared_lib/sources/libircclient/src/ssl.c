@@ -73,9 +73,10 @@ static void cb_openssl_locking_function( int mode, int n, const char * file, int
 }
 
 // OpenSSL callback to get the thread ID
-static unsigned long cb_openssl_id_function()
+
+static void cb_openssl_id_function( CRYPTO_THREADID * id )
 {
-    return ((unsigned long) pthread_self() );
+	CRYPTO_THREADID_set_pointer( id, pthread_self() );
 }
 
 static int alloc_mutexes( unsigned int total )
@@ -106,12 +107,15 @@ static int ssl_init_context( irc_session_t * session )
 		return LIBIRC_ERR_NOMEM;
 
 	// Register our callbacks
-	CRYPTO_set_id_callback( cb_openssl_id_function );
+	CRYPTO_THREADID_set_callback( cb_openssl_id_function );
 	CRYPTO_set_locking_callback( cb_openssl_locking_function );
 
 	// Init it
-	if ( !SSL_library_init() )
-		return LIBIRC_ERR_SSL_INIT_FAILED;
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+	SSL_library_init();
+#else
+	OPENSSL_init_ssl(0, NULL);
+#endif 
 
 	if ( RAND_status() == 0 )
 		return LIBIRC_ERR_SSL_INIT_FAILED;

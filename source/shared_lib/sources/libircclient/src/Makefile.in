@@ -1,6 +1,6 @@
-# $Id: Makefile.in 128 2014-07-30 05:51:55Z gyunaev $
+# $Id: Makefile.in 137 2018-08-27 01:11:08Z gyunaev $
 CC = @CC@
-CFLAGS = -Wall -DIN_BUILDING_LIBIRC @CFLAGS@
+CFLAGS = -Wall -Wno-misleading-indentation -Wno-unused-function -Wno-nonnull -DIN_BUILDING_LIBIRC @CFLAGS@
 AR=@AR@ cr
 RANLIB=@RANLIB@
 INCLUDES=-I../include

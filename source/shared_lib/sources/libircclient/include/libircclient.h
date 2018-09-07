@@ -1052,7 +1052,7 @@ int irc_cmd_ctcp_reply (irc_session_t * session, const char * nick, const char *
  * \fn void irc_target_get_nick (const char * target, char *nick, size_t size)
  * \brief Gets the nick part from the target
  *
- * \param target  A nick in common IRC server form like tim!root\@mycomain.com
+ * \param target  A nick in common IRC server form like tim!root\@mycomain.com; cannot be NULL
  * \param nick    A buffer to hold the nickname.
  * \param size    A buffer size. If nick is longer than buffer size, it will 
  *                be truncated.

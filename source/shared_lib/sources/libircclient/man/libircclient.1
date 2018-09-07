@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "LIBIRCCLIENT" "1" "May 03, 2016" "1.9" "Libircclient"
+.TH "LIBIRCCLIENT" "1" "Aug 26, 2018" "1.9" "Libircclient"
 .SH NAME
 libircclient \- Libircclient Documentation
 .
@@ -89,16 +89,16 @@ Comprehensive documentation, examples and the FAQ;
 .UNINDENT
 .SS Known issues
 .sp
-Even though possible by using multiple sessions, the library is not suitable to connect to a large number of IRC servers simultaneously. If you still want to use it, you\(aqd have to overcome the following:
+Even though possible by using multiple sessions, the library is not suitable to connect to a large number of IRC servers simultaneously. If you still want to use it, you’d have to overcome the following:
 .INDENT 0.0
 .INDENT 3.5
 .INDENT 0.0
 .IP \(bu 2
 You cannot use the main loop in \fBirc_run()\fP because it only supports one session. You would have to use \fBirc_add_select_descriptors()\fP
 .IP \(bu 2
-You\(aqd have to handle reconnections separately by processing the relevant \fBirc_process_select_descriptors()\fP return values
+You’d have to handle reconnections separately by processing the relevant \fBirc_process_select_descriptors()\fP return values
 .IP \(bu 2
-If you wish to use poll/epoll() instead of select() you\(aqd have to write more logic as it is not directly supported. See the \fIFAQ\fP\&.
+If you wish to use poll/epoll() instead of select() you’d have to write more logic as it is not directly supported. See the FAQ\&.
 .IP \(bu 2
 The library is not optimized to have a low per\-connection memory footprint, each non\-SSL connection uses at least 4K, with around 32K per connection for SSL.
 .UNINDENT
@@ -121,7 +121,7 @@ The library has been extensively tested on Linux x86 and x86_64. It has also bee
 On Linux, FreeBSD and Mac OS X the library has to be compiled and installed before use unless you use a precompiled package provided by your operating system distribution. If it is provided, you are recommended to use it as it would be updated
 from the central repository when the bugs are fixed.
 .sp
-On Microsoft Windows the official library binaries are provided, so you do not have to build it. Unless you have experience building with Cygwin, you\(aqre advised not to build from source and use the official binary.
+On Microsoft Windows the official library binaries are provided, so you do not have to build it. Unless you have experience building with Cygwin, you’re advised not to build from source and use the official binary.
 .SS Required libraries
 .sp
 The library depends only on libc (glibc\-devel on Linux) and gcc, although the examples require also libstdc++ (libstdc++\-devel) and g++. Minimum supported version is glibc 2.2,
@@ -336,7 +336,7 @@ Remember that irc_run() call \fBwill not return\fP until the server connection i
 .SS Use the custom networking loop
 .sp
 If you use multiple sessions or have your own socket handler, you can use the custom networking loop. In this case your application must be select()\-based
-(\fIsee the FAQ\fP if you want to use other polling methods). And you need to run the following loop:
+(see the FAQ if you want to use other polling methods). And you need to run the following loop:
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -449,7 +449,7 @@ if ( irc_cmd_msg( session, "#linux", "Hi!" ) )
 Technically the protocol does not require one to join the channel to send the messages into the channel. However most servers by default set
 the channel mode which prevents the users who did not join the channel from sending the message into the channel.
 .sp
-Same function is used to send a "private" message to another user. The "private" messages do not go through the channels, but they still go through
+Same function is used to send a “private” message to another user. The “private” messages do not go through the channels, but they still go through
 the IRC server (sometime multiple servers) and can be seen or even logged by the IRC network operators.
 .INDENT 0.0
 .INDENT 3.5
@@ -470,12 +470,12 @@ if the message was not sent.
 .sp
 You receive the channel messages by handling the \fBevent_channel\fP\&. Each time someone says something in the channel this event is called.
 .sp
-You receive the "private" messages from other users by handling the \fBevent_privmsg\fP\&.
+You receive the “private” messages from other users by handling the \fBevent_privmsg\fP\&.
 .sp
 Those event handlers should be created in your application and passed to the library when you \fI\%create an IRC session\fP
 .SS Send an action message
 .sp
-"Action" messages, also called /me messages, are specially formatted CTCP messages. However the library contains a special function to send
+“Action” messages, also called /me messages, are specially formatted CTCP messages. However the library contains a special function to send
 them, \fBirc_cmd_me()\fP\&. Actions sent by other people are handled by the \fBevent_ctcp_action\fP event.
 .sp
 Same as with sending messages no confirmation is received on success.
@@ -564,7 +564,7 @@ If your application does not handle DCC at all you can just call the \fBirc_dcc_
 .sp
 If it does, we only store this information in the callback, and return. This is because the event processing will stop
 until the callback returns, so popping up the dialog asking for the user confirmation would stop further events such as
-channel messages from being processed. Even if your application is automatic and doesn\(aqt pop up dialogs it is still better to
+channel messages from being processed. Even if your application is automatic and doesn’t pop up dialogs it is still better to
 separate the chat logic from the callback logic.
 .sp
 Somewhere later the application would check the queue in the GUI thread, get this information, and pop up the dialog asking the user
@@ -706,7 +706,7 @@ If your application does not handle DCC at all you can just call the \fBirc_dcc_
 .sp
 If it does, we only store this information in the callback, and return. This is because the event processing will stop
 until the callback returns, so popping up the dialog asking for the user confirmation would stop further events such as
-channel messages from being processed. Even if your application is automatic and doesn\(aqt pop up dialogs it is still better to
+channel messages from being processed. Even if your application is automatic and doesn’t pop up dialogs it is still better to
 separate the chat logic from the callback logic.
 .sp
 Somewhere later the application would check the queue in the GUI thread, get this information, and pop up the dialog asking the user
@@ -742,9 +742,9 @@ Note that it is not possible to request a remote user to send you a file.
 .SS Stripping colors from the message
 .sp
 If your bot reacts on the text messages, you need to strip down the colors from the text messages before processing them. Otherwise the user sending
-the colored message won\(aqt get the same reaction as the user who doesn\(aqt use colors, and some users use colors by default.
+the colored message won’t get the same reaction as the user who doesn’t use colors, and some users use colors by default.
 .sp
-Use the \fBirc_color_strip_from_mirc()\fP function to strip the ANSI colors from the text message. It does not modify the message which doesn\(aqt use colors.
+Use the \fBirc_color_strip_from_mirc()\fP function to strip the ANSI colors from the text message. It does not modify the message which doesn’t use colors.
 .SS Color conversion
 .sp
 The library supports color translation, and can convert colors between the ANSI colors used by the IRC clients and their textual representation.
@@ -1056,7 +1056,7 @@ _
 .sp
 This is an advanced callback for those who want to handle events deeper. Most times the IRC server replies to your actions with numeric events.
 Most of those events are error codes, and some are list\-start and list\-stop markers. Every code has its own set of params; for details you can either experiment, or read RFC 1459
-(don\(aqt expect servers to follow it closely though).
+(don’t expect servers to follow it closely though).
 .sp
 Every event has an origin (i.e. who originated the event). In some cases the \fIorigin\fP variable may be NULL, which indicates that event origin is unknown. The origin usually looks like \fInick!host@ircserver\fP,
 i.e. like \fItim!home@irc.server.net\fP\&. Such origins can not be used in IRC commands, and need to be stripped (i.e. host and server part should be cut off) before using. This can be done either manually, by
@@ -1090,7 +1090,7 @@ Creates and initiates a new IRC session. Every session represents a single user 
 Almost every library function requires this object to be passed to, and therefore this function should be called first.
 Multiple sessions could be allocated to support multiple connections.
 .sp
-When it is not needed anymore, the session must be destroyed by calling the \fBirc_destroy_session()\fP function.
+When it is not needed anymore, the session must be destroyed by calling the \fI\%irc_destroy_session()\fP function.
 .sp
 \fBReturn value:\fP
 .sp
@@ -1182,15 +1182,15 @@ T{
 \fIusername\fP
 T}	T{
 Username of the Unix account which is used to connect to the IRC server. This is for information only, will be shown in
-"user properties" dialogs and returned by /whois request. Can be NULL in which case "nobody" would be used
+“user properties” dialogs and returned by /whois request. Can be NULL in which case “nobody” would be used
 T}
 _
 T{
 \fIrealname\fP
 T}	T{
 A real name of the person, who connects to the IRC. In reality nobody uses this field for that. Instead this field is
-used as user self\-description, advertising, or other purposes. This information also will be shown in "user properties"
-dialogs and returned by /whois request. May be NULL, in this case "noname" will be used
+used as user self\-description, advertising, or other purposes. This information also will be shown in “user properties”
+dialogs and returned by /whois request. May be NULL, in this case “noname” will be used
 T}
 _
 .TE
@@ -1208,8 +1208,8 @@ A single IRC session object can only be connected to a single IRC server and onl
 .sp
 \fBReturn value:\fP
 .sp
-Returns 0 if the connection is initiated successfully. This doesn\(aqt mean the connection is established \- the \fBevent_connect\fP is called when it happens. If the connection cannot be established,
-either \fBirc_run()\fP or \fBirc_process_select_descriptors()\fP will return an error.
+Returns 0 if the connection is initiated successfully. This doesn’t mean the connection is established \- the \fBevent_connect\fP is called when it happens. If the connection cannot be established,
+either \fI\%irc_run()\fP or \fI\%irc_process_select_descriptors()\fP will return an error.
 .sp
 \fBThread safety:\fP
 .sp
@@ -1235,7 +1235,7 @@ _
 .sp
 \fBDescription:\fP
 .sp
-This function closes the IRC connection. After that connection is closed, if the libirc was looped in the \fBirc_run()\fP loop, it automatically leaves the loop and \fBirc_run()\fP returns.
+This function closes the IRC connection. After that connection is closed, if the libirc was looped in the \fI\%irc_run()\fP loop, it automatically leaves the loop and \fI\%irc_run()\fP returns.
 .sp
 \fBThread safety:\fP
 .sp
@@ -1292,8 +1292,8 @@ _
 \fBDescription:\fP
 .sp
 This function enters into forever loop, processing the IRC events, and calling the relevant callbacks. This function will not return
-until the server connection is terminated \- either by server, or by calling \fBirc_cmd_quit\fP\&. This function should only be used
-if you use a single IRC session and don\(aqt need asynchronous request processing (i.e. your bot just reacts on the events, and doesn\(aqt
+until the server connection is terminated \- either by server, or by calling \fI\%irc_cmd_quit\fP\&. This function should only be used
+if you use a single IRC session and don’t need asynchronous request processing (i.e. your bot just reacts on the events, and doesn’t
 generate it asynchronously). Even in last case, you still can call this function and start the asynchronous thread in \fBevent_connect\fP handler.
 See the examples.
 .sp
@@ -1303,7 +1303,7 @@ This function returns a nonzero value if the connection to the IRC server could 
 .sp
 \fBThread safety:\fP
 .sp
-This function cannot be called from multiple threads. Use \fBirc_add_select_descriptors()\fP and \fBirc_process_select_descriptors()\fP instead.
+This function cannot be called from multiple threads. Use \fI\%irc_add_select_descriptors()\fP and \fI\%irc_process_select_descriptors()\fP instead.
 .SS irc_add_select_descriptors
 .sp
 \fBPrototype:\fP
@@ -1345,16 +1345,16 @@ _
 .sp
 \fBDescription:\fP
 .sp
-This function should be used after you called \fBirc_connect()\fP\&. It is useful when you have your own select\-based event processing loop. To use it
+This function should be used after you called \fI\%irc_connect()\fP\&. It is useful when you have your own select\-based event processing loop. To use it
 you should put your own descriptors into the sets, call this function to add the library descriptor(s) into the set, and then call select().
-When it returns, you should call \fBirc_process_select_descriptors()\fP which will handle the events and calls your callbacks(!). Then you can process
+When it returns, you should call \fI\%irc_process_select_descriptors()\fP which will handle the events and calls your callbacks(!). Then you can process
 your sockets events from set. See the example.
 .sp
-What if you use epoll? \fISee the FAQ\fP
+What if you use epoll? See the FAQ
 .sp
 \fBReturn value:\fP
 .sp
-This function returns a nonzero value if the \fBirc_connect()\fP was not called before calling this function.
+This function returns a nonzero value if the \fI\%irc_connect()\fP was not called before calling this function.
 .sp
 \fBThread safety:\fP
 .sp
@@ -1394,7 +1394,7 @@ _
 .sp
 \fBDescription:\fP
 .sp
-This function should be used in pair with \fBirc_add_select_descriptors()\fP function, which documentation describes how they work together.
+This function should be used in pair with \fI\%irc_add_select_descriptors()\fP function, which documentation describes how they work together.
 .sp
 Note that while processing the events this function calls your callbacks and it will not return until all your callbacks return. Keep that in mind
 if you pop up a dialog in your application, such as a DCC CHAT or DCC SEND confirmation dialog.
@@ -1504,7 +1504,7 @@ _
 .sp
 \fBDescription:\fP
 .sp
-Use this function to leave the IRC channel you\(aqve already joined to. An attempt to leave the channel you aren\(aqt in results a LIBIRC_RFC_ERR_NOTONCHANNEL server error.
+Use this function to leave the IRC channel you’ve already joined to. An attempt to leave the channel you aren’t in results a LIBIRC_RFC_ERR_NOTONCHANNEL server error.
 .sp
 \fBReturn value:\fP
 .sp
@@ -1559,7 +1559,7 @@ _
 .sp
 \fBDescription:\fP
 .sp
-This function is used to invite someone to invite\-only channel. "Invite\-only" is a channel mode, which restricts anyone, except invided, to join this channel.
+This function is used to invite someone to invite\-only channel. “Invite\-only” is a channel mode, which restricts anyone, except invided, to join this channel.
 After invitation, the user could join this channel. The user, who is invited, will receive the \fBevent_invite\fP event. Note that you must be a channel operator to invite the users.
 .sp
 \fBReturn value:\fP
@@ -1674,8 +1674,8 @@ _
 \fBDescription:\fP
 .sp
 This function is used to ask the IRC server for the active (existing) channels list. The list will be returned using the LIBIRC_RFC_RPL_LISTSTART,
-multiple LIBIRC_RFC_RPL_LIST, and LIBIRC_RFC_RPL_LISTEND event sequence. Note that "private" channels are listed (without their topics) as channel
-"Prv" unless the client generating the LIST query is actually on that channel. Likewise, secret channels are not listed at all unless the client
+multiple LIBIRC_RFC_RPL_LIST, and LIBIRC_RFC_RPL_LISTEND event sequence. Note that “private” channels are listed (without their topics) as channel
+“Prv” unless the client generating the LIST query is actually on that channel. Likewise, secret channels are not listed at all unless the client
 is active at the channel in question.
 .sp
 \fBReturn value:\fP
@@ -1726,7 +1726,7 @@ _
 T{
 \fItopic\fP
 T}	T{
-A new channel topic. If NULL, the old topic would be returned and nothing would change. To set the empty topic use ""
+A new channel topic. If NULL, the old topic would be returned and nothing would change. To set the empty topic use “”
 T}
 _
 .TE
@@ -1813,7 +1813,7 @@ Channel mode is represended by the multiple letters combination. Every letter ha
 are boolean (i.e. could only be set or reset), but a few channel mode letters accept a parameter. All channel options are set by adding a
 plus sign before the letter, and reset by adding a minus sign before the letter.
 .sp
-Here is the list of \(aqstandard\(aq channel modes:
+Here is the list of ‘standard’ channel modes:
 .TS
 center;
 |l|l|.
@@ -1822,26 +1822,26 @@ T{
 o nickname
 T}	T{
 gives (+o nickname) to, or takes (\-o nickname) the channel operator privileges from a \fInickname\fP\&. This mode affects
-the users in channel, not the channel itself. Examples: "+o tim", "\-o watson"
+the users in channel, not the channel itself. Examples: “+o tim”, “\-o watson”
 T}
 _
 T{
 p
 T}	T{
-sets (+p) or resets (\-p) private channel flag. Private channels are shown in channel list as \(aqPrv\(aq, without the topic
+sets (+p) or resets (\-p) private channel flag. Private channels are shown in channel list as ‘Prv’, without the topic
 T}
 _
 T{
 s
 T}	T{
-sets (+s) or resets (\-s) secret channel flag. Secret channels aren\(aqt shown in channel list at all
+sets (+s) or resets (\-s) secret channel flag. Secret channels aren’t shown in channel list at all
 T}
 _
 T{
 i
 T}	T{
 sets (+i) or resets (\-i) invite\-only channel flag. When the flag is set, only the people who are invited by the
-\fBirc_cmd_invite()\fP can join this channel
+\fI\%irc_cmd_invite()\fP can join this channel
 T}
 _
 T{
@@ -1868,7 +1868,7 @@ _
 T{
 v nickname
 T}	T{
-gives (+v nick) or takes (\-v nick) from user the ability to speak on a moderated channel. Examples: "+v bob", "\-v joy"
+gives (+v nick) or takes (\-v nick) from user the ability to speak on a moderated channel. Examples: “+v bob”, “\-v joy”
 T}
 _
 T{
@@ -1889,12 +1889,12 @@ T{
 b mask
 T}	T{
 sets (+b \fI!*@\fP\&.mil) or removes (\-b \fI!*@\fP\&.mil) the ban mask on a user to keep him out of channel. Note that to remove the
-ban you must specify the ban mask to remove, not just "\-b".
+ban you must specify the ban mask to remove, not just “\-b”.
 T}
 _
 .TE
 .sp
-Note that the actual list of channel modes depends on the IRC server, and can be bigger. If you know the popular channel modes which aren\(aqt listed here \- please contact me
+Note that the actual list of channel modes depends on the IRC server, and can be bigger. If you know the popular channel modes which aren’t listed here \- please contact me
 .sp
 \fBReturn value:\fP
 .sp
@@ -1968,7 +1968,7 @@ This function is used to change or view the user modes. Note that, unlike channe
 User mode is represended by the letters combination. All the user mode letters are boolean (i.e. could only be set or reset), they are set
 by adding a plus sign before the letter, and reset by adding a minus sign before the letter.
 .sp
-Here is the list of \(aqstandard\(aq user modes:
+Here is the list of ‘standard’ user modes:
 .TS
 center;
 |l|l|.
@@ -1982,13 +1982,13 @@ _
 T{
 i
 T}	T{
-if set, marks a user as \(aqinvisible\(aq \- that is, not seen by lookups if the user is not in a channel
+if set, marks a user as ‘invisible’ \- that is, not seen by lookups if the user is not in a channel
 T}
 _
 T{
 w
 T}	T{
-if set, marks a user as \(aqreceiving wallops\(aq \- special messages generated by IRC operators using WALLOPS command
+if set, marks a user as ‘receiving wallops’ \- special messages generated by IRC operators using WALLOPS command
 T}
 _
 T{
@@ -2006,12 +2006,12 @@ _
 T{
 x
 T}	T{
-NON\-STANDARD MODE. If set, user\(aqs real IP is masked by the IRC server
+NON\-STANDARD MODE. If set, user’s real IP is masked by the IRC server
 T}
 _
 .TE
 .sp
-Note that the actual list of user modes depends on the IRC server, and can be bigger. If you know the popular user modes, which aren\(aqt mentioned here \- please contact me.
+Note that the actual list of user modes depends on the IRC server, and can be bigger. If you know the popular user modes, which aren’t mentioned here \- please contact me.
 .sp
 \fBReturn value:\fP
 .sp
@@ -2144,7 +2144,7 @@ _
 .sp
 \fBDescription:\fP
 .sp
-This function is used to send the message to the channel or privately to another nick. "Privately" here means the message is not posted to the public,
+This function is used to send the message to the channel or privately to another nick. “Privately” here means the message is not posted to the public,
 but the message still goes through the IRC server and could be seen by the IRC netwrk operators. The message target is determined by the \fInch\fP argument:
 if it is a nick, this will be a private message, but if it is a channel name it will be posted into the channel.
 .sp
@@ -2217,7 +2217,7 @@ _
 .sp
 \fBDescription:\fP
 .sp
-This function is used to send the /me message (CTCP ACTION) to the channel or privately to another nick. "Privately" here means the message is not posted to the public,
+This function is used to send the /me message (CTCP ACTION) to the channel or privately to another nick. “Privately” here means the message is not posted to the public,
 but the message still goes through the IRC server and could be seen by the IRC netwrk operators. The message target is determined by the \fInch\fP argument:
 if it is a nick, this will be a private message, but if it is a channel name it will be posted into the channel.
 .sp
@@ -2290,7 +2290,7 @@ _
 .sp
 \fBDescription:\fP
 .sp
-This function is used to send the notice to the channel or privately to another nick. "Privately" here means the message is not posted to the public,
+This function is used to send the notice to the channel or privately to another nick. “Privately” here means the message is not posted to the public,
 but the message still goes through the IRC server and could be seen by the IRC netwrk operators. The message target is determined by the \fInch\fP argument:
 if it is a nick, this will be a private message, but if it is a channel name it will be posted into the channel.
 .sp
@@ -2723,7 +2723,7 @@ _
 .sp
 \fBDescription:\fP
 .sp
-For most events IRC server returns \(aqorigin\(aq (i.e. the person, who generated this event) in so\-called "common" form, like \fI\%nick!host@domain\fP\&.
+For most events IRC server returns ‘origin’ (i.e. the person, who generated this event) in so\-called “common” form, like \fI\%nick!host@domain\fP\&.
 However, all the irc_cmd_* functions require just a nick. This function parses this origin, and retrieves the nick, storing it into the user\-provided buffer.
 .sp
 A buffer of size 128 should be enough for most nicks.
@@ -2766,7 +2766,7 @@ _
 .sp
 \fBDescription:\fP
 .sp
-For most events IRC server returns \(aqorigin\(aq (i.e. the person, who generated this event) in so\-called "common" form, like nick!host@domain.
+For most events IRC server returns ‘origin’ (i.e. the person, who generated this event) in so\-called “common” form, like nick!host@domain.
 This function parses this origin, and retrieves the host, storing it into the user\-provided buffer.
 .sp
 \fBThread safety:\fP
@@ -2960,13 +2960,13 @@ _
 This function accepts a remote DCC chat or file transfer request. After the request is accepted the \fIcallback\fP will be called for the further DCC events,
 including the termination of the DCC session. See the \fBDCC callback information\fP\&.
 .sp
-This function should be called only after either \fBevent_dcc_chat_req\fP or \fBevent_dcc_send_req\fP events are received. You don\(aqt have to call irc_dcc_accept()
+This function should be called only after either \fBevent_dcc_chat_req\fP or \fBevent_dcc_send_req\fP events are received. You don’t have to call irc_dcc_accept()
 or irc_dcc_decline() immediately in the event processing function \- you may just store the \fIdccid\fP and return, and call those functions later. However to
 prevent memory leaks you must call either irc_dcc_decline() or irc_dcc_accept() for any incoming DCC request within 60 seconds after receiving it.
 .sp
 \fBReturn value:\fP
 .sp
-Return code 0 means success. Other value means error, the error code may be obtained through \fBirc_errno()\fP\&.
+Return code 0 means success. Other value means error, the error code may be obtained through \fI\%irc_errno()\fP\&.
 .sp
 \fBThread safety:\fP
 .sp
@@ -3002,15 +3002,15 @@ _
 .sp
 This function declines a remote DCC chat or file transfer request.
 .sp
-This function should be called only after either \fBevent_dcc_chat_req\fP or \fBevent_dcc_send_req\fP events are received. You don\(aqt have to call irc_dcc_accept()
+This function should be called only after either \fBevent_dcc_chat_req\fP or \fBevent_dcc_send_req\fP events are received. You don’t have to call irc_dcc_accept()
 or irc_dcc_decline() immediately in the event processing function \- you may just store the \fIdccid\fP and return, and call those functions later. However to
 prevent memory leaks you must call either irc_dcc_decline() or irc_dcc_accept() for any incoming DCC request within 60 seconds after receiving it.
 .sp
-Do not use this function to forecefully close the previously accepted or initiated DCC session. Use \fBirc_dcc_destroy()\fP instead.
+Do not use this function to forecefully close the previously accepted or initiated DCC session. Use \fI\%irc_dcc_destroy()\fP instead.
 .sp
 \fBReturn value:\fP
 .sp
-Return code 0 means success. Other value means error, the error code may be obtained through \fBirc_errno()\fP\&.
+Return code 0 means success. Other value means error, the error code may be obtained through \fI\%irc_errno()\fP\&.
 .sp
 \fBThread safety:\fP
 .sp
@@ -3136,7 +3136,7 @@ Note that when DCC session is finished (either with success or failure), you sho
 .sp
 \fBReturn value:\fP
 .sp
-Return code 0 means success. Other value means error, the error code may be obtained through \fBirc_errno()\fP\&.
+Return code 0 means success. Other value means error, the error code may be obtained through \fI\%irc_errno()\fP\&.
 .sp
 \fBThread safety:\fP
 .sp
@@ -3168,7 +3168,7 @@ _
 This function strips all the ANSI color codes from the message, and returns a new message with no color information. Useful for the bots which react to strings,
 to make sure the bot is not confused if the string uses colors.
 .sp
-This function does not modify the message which doesn\(aqt use colors.
+This function does not modify the message which doesn’t use colors.
 .sp
 \fBReturn value:\fP
 .sp
@@ -3254,15 +3254,15 @@ is described using plain text commands written between square brackets.
 .B The possible codes are:
 .INDENT 7.0
 .IP \(bu 2
-[B] ... [/B] \- bold format mode. Everything between [B] and [/B] is written in \fBbold\fP\&.
+[B] … [/B] \- bold format mode. Everything between [B] and [/B] is written in \fBbold\fP\&.
 .IP \(bu 2
-[I] ... [/I] \- italic/reverse format mode. Everything between [I] and [/I] is written in \fIitalic\fP, or reversed (however, because some clients are incapable of rendering italic text, most clients display this as normal text with the background and foreground colors swapped).
+[I] … [/I] \- italic/reverse format mode. Everything between [I] and [/I] is written in \fIitalic\fP, or reversed (however, because some clients are incapable of rendering italic text, most clients display this as normal text with the background and foreground colors swapped).
 .IP \(bu 2
-[U] ... [/U] \- underline format mode. Everything between [U] and [/U] is written underlined.
+[U] … [/U] \- underline format mode. Everything between [U] and [/U] is written underlined.
 .IP \(bu 2
-[COLOR=RED] ... [/COLOR] \- write the text using specified foreground color. The color is set by using the COLOR keyword, and equal sign followed by text color code (see below).
+[COLOR=RED] … [/COLOR] \- write the text using specified foreground color. The color is set by using the COLOR keyword, and equal sign followed by text color code (see below).
 .IP \(bu 2
-[COLOR=RED/BLUE] ... [/COLOR] \- write the text using specified foreground and background color. The color is set by using the COLOR keyword, an equal sign followed by text foreground color code, a dash and a text background color code.
+[COLOR=RED/BLUE] … [/COLOR] \- write the text using specified foreground and background color. The color is set by using the COLOR keyword, an equal sign followed by text foreground color code, a dash and a text background color code.
 .UNINDENT
 .TP
 .B The following colors are supported:
@@ -3384,7 +3384,7 @@ _
 .sp
 This function sets the user\-defined context for this IRC session. This context is not used by libircclient. Its purpose is to store session\-specific
 user data, which may be obtained later by calling \fI\%irc_get_ctx\fP\&. Note that libircclient just carries out this pointer. If you allocate some memory,
-and store its address in ctx (most common usage), it is your responsibility to free it before calling \fBirc_destroy_session()\fP\&.
+and store its address in ctx (most common usage), it is your responsibility to free it before calling \fI\%irc_destroy_session()\fP\&.
 .sp
 \fBThread safety:\fP
 .sp
@@ -3443,14 +3443,14 @@ _
 T{
 \fIoption\fP
 T}	T{
-One of the \fILibirc options\fP to set
+One of the Libirc options to set
 T}
 _
 .TE
 .sp
 \fBDescription:\fP
 .sp
-This function sets the libircclient option, changing libircclient behavior. See the \fIoptions\fP list for the meaning for every option.
+This function sets the libircclient option, changing libircclient behavior. See the options list for the meaning for every option.
 .sp
 \fBThread safety:\fP
 .sp
@@ -3477,14 +3477,14 @@ _
 T{
 \fIoption\fP
 T}	T{
-One of the \fILibirc options\fP to set
+One of the Libirc options to set
 T}
 _
 .TE
 .sp
 \fBDescription:\fP
 .sp
-This function resets the libircclient option, changing libircclient behavior. See the \fIoptions\fP list for the meaning for every option.
+This function resets the libircclient option, changing libircclient behavior. See the options list for the meaning for every option.
 .sp
 \fBThread safety:\fP
 .sp
@@ -3522,7 +3522,7 @@ As usual, typical errno rules apply:
 .IP \(bu 2
 irc_errno() should be called ONLY if the called function fails;
 .IP \(bu 2
-irc_errno() doesn\(aqt return 0 if function succeed; actually, the return value will be undefined.
+irc_errno() doesn’t return 0 if function succeed; actually, the return value will be undefined.
 .IP \(bu 2
 you should call irc_errno() IMMEDIATELY after function fails, before calling any other libircclient function.
 .UNINDENT
@@ -3552,7 +3552,7 @@ _
 T{
 \fIircerrno\fP
 T}	T{
-IRC error code returned by \fBirc_errno()\fP
+IRC error code returned by \fI\%irc_errno()\fP
 T}
 _
 .TE
@@ -3637,10 +3637,10 @@ typedef struct
 Describes the event callbacks structure which is used in registering the callbacks.
 .sp
 All the communication with the IRC network is based on events. Generally speaking, event is anything generated by someone else in the network, or by the IRC server itself.
-"Someone sends you a message", "Someone has joined the channel", "Someone has quits IRC" \- all these messages are events.
+“Someone sends you a message”, “Someone has joined the channel”, “Someone has quits IRC” \- all these messages are events.
 .sp
 Every event has its own event handler, which is called when the appropriate event is received.
-You don\(aqt have to define all the event handlers; define only the handlers for the events you need to intercept, and set the remaining handler pointers to NULL.
+You don’t have to define all the event handlers; define only the handlers for the events you need to intercept, and set the remaining handler pointers to NULL.
 .INDENT 0.0
 .TP
 .B event_connect
@@ -3725,7 +3725,7 @@ _
 .sp
 This event is triggered upon receipt of a JOIN message. It happens when a new user joins the channel you are watching (have joined). It also happens when you joined the new channel.
 .sp
-Note that you may be "forced" to join the channel (and therefore receive this event) without issuing the JOIN command. A typical case is when the NickServ bot on the server is configured to auto\-join you to specific channels.
+Note that you may be “forced” to join the channel (and therefore receive this event) without issuing the JOIN command. A typical case is when the NickServ bot on the server is configured to auto\-join you to specific channels.
 .sp
 This event uses \fBirc_event_callback_t\fP callback with the following values:
 .TS
@@ -3793,7 +3793,7 @@ T{
 \fIparams\fP
 T}	T{
 params[0] contains the channel name
-params[1] contains the channel mode changes, such as "+t", "\-i"
+params[1] contains the channel mode changes, such as “+t”, “\-i”
 params[2] optional, contains the argument for the channel mode
 (for example, a nick for the +o mode)
 T}
@@ -3821,7 +3821,7 @@ T{
 \fIparams\fP
 T}	T{
 params[0] contains the channel name
-params[1] contains the user mode changes, such as "+t", "\-i"
+params[1] contains the user mode changes, such as “+t”, “\-i”
 T}
 _
 .TE
@@ -3887,7 +3887,7 @@ _
 .sp
 This event is triggered upon receipt of a PRIVMSG message sent to the channel. It happens when someone (but not you) sent a message to the channel you are watching (have joined).
 .sp
-Your own messages do not trigger this event. However the server can still "force" you to send a message to the channel by generating this event.
+Your own messages do not trigger this event. However the server can still “force” you to send a message to the channel by generating this event.
 .sp
 This event uses \fBirc_event_callback_t\fP callback with the following values:
 .TS
@@ -3939,7 +3939,11 @@ _
 .B event_notice
 .UNINDENT
 .sp
-This event is triggered upon receipt of a NOTICE message. This message is similar to PRIVMSG and matches the \fI\%event_privmsg\fP\&.
+This event is triggered upon receipt of a NOTICE message. This message is similar to PRIVMSG and matches the 
+.nf
+event_privmsg_
+.fi
+\&.
 According to RFC 1459, the only difference between NOTICE and PRIVMSG is that you should NEVER automatically reply to NOTICE messages.
 Unfortunately, this rule is frequently violated by IRC servers itself \- for example, NICKSERV messages require reply, and are sent as NOTICE.
 .sp
@@ -3967,7 +3971,11 @@ _
 .B event_channel_notice
 .UNINDENT
 .sp
-This event is triggered upon receipt of a NOTICE message. This message is similar to PRIVMSG and matches the \fI\%event_channel\fP\&.
+This event is triggered upon receipt of a NOTICE message. This message is similar to PRIVMSG and matches the 
+.nf
+event_channel_
+.fi
+\&.
 According to RFC 1459, the only difference between NOTICE and PRIVMSG is that you should NEVER automatically reply to NOTICE messages.
 Unfortunately, this rule is frequently violated by IRC servers itself \- for example, NICKSERV messages require reply, and are sent as NOTICE.
 .sp
@@ -4026,7 +4034,11 @@ See also: \fBirc_cmd_invite()\fP
 This event is triggered upon receipt of an CTCP request. By default, the built\-in CTCP request handler is used.
 .sp
 Mirc generates \fIPING\fP, \fIFINGER\fP, \fIVERSION\fP, \fITIME\fP and \fIACTION\fP messages which are automatically handled by the library if this event is not handled by your application. Those messages are replied automatically
-except the ACTION message which triggers \fI\%event_ctcp_action\fP event.
+except the ACTION message which triggers 
+.nf
+event_ctcp_action_
+.fi
+ event.
 If you need to handle more types of the message, define this event handler,  and check the source code of \fBlibirc_event_ctcp_internal\fP function to see how to write your own CTCP request handler.
 Note that you must support at least CTCP PING to pass the spoof check by some IRC servers.
 .sp
@@ -4080,14 +4092,18 @@ _
 .B event_ctcp_action
 .UNINDENT
 .sp
-This event is triggered upon receipt of an CTCP ACTION message. It is only invoked if you did not define the \fI\%event_ctcp_req\fP event handler.
+This event is triggered upon receipt of an CTCP ACTION message. It is only invoked if you did not define the 
+.nf
+event_ctcp_req_
+.fi
+ event handler.
 .sp
 Such messages typically look like that in the IRC client:
 .INDENT 0.0
 .TP
 .B ::
 [08:32:55] * Michael is having fun
-[08:32:55] * Bobby\(aqs getting jealous
+[08:32:55] * Bobby’s getting jealous
 .UNINDENT
 .sp
 This event uses \fBirc_event_callback_t\fP callback with the following values:
@@ -4188,7 +4204,7 @@ This section describes contstants such as options and the error codes.
 .B LIBIRC_ERR_SOCKET
 .UNINDENT
 .sp
-(3): The new socket could not be created or made non\-blocking. Usually means that the server is out of resources, or (hopefully not) a bug in libircclient. See also \fIfaq_err_socket\fP
+(3): The new socket could not be created or made non\-blocking. Usually means that the server is out of resources, or (hopefully not) a bug in libircclient. See also faq_err_socket
 .INDENT 0.0
 .TP
 .B LIBIRC_ERR_CONNECT
@@ -4222,7 +4238,7 @@ In the last case you should just wait, and repeat the command later.
 .B LIBIRC_ERR_NODCCSEND
 .UNINDENT
 .sp
-(9):  A filename supplied to \fBirc_dcc_sendfile()\fP could not be sent. Either is is not a regular file (a directory or a socket, for example), or it could not be read. See also \fBLIBIRC_ERR_OPENFILE\fP
+(9):  A filename supplied to \fBirc_dcc_sendfile()\fP could not be sent. Either is is not a regular file (a directory or a socket, for example), or it could not be read. See also \fI\%LIBIRC_ERR_OPENFILE\fP
 .INDENT 0.0
 .TP
 .B LIBIRC_ERR_READ
@@ -4283,13 +4299,13 @@ is currently set to 60 seconds. If the DCC request was not connected, accepted o
 .B LIBIRC_ERR_CONNECT_SSL_FAILED
 .UNINDENT
 .sp
-(19): SSL handshare failed when attempting to connect to the server. Typically this means you\(aqre trying to use SSL but attempting to connect to a non\-SSL port.
+(19): SSL handshare failed when attempting to connect to the server. Typically this means you’re trying to use SSL but attempting to connect to a non\-SSL port.
 .INDENT 0.0
 .TP
 .B LIBIRC_ERR_SSL_CERT_VERIFY_FAILED
 .UNINDENT
 .sp
-(20): The server is using an invalid or the self\-signed certificate. Use \fBLIBIRC_OPTION_SSL_NO_VERIFY\fP option to connect to it.
+(20): The server is using an invalid or the self\-signed certificate. Use \fI\%LIBIRC_OPTION_SSL_NO_VERIFY\fP option to connect to it.
 .SS Options
 .INDENT 0.0
 .TP
@@ -4533,7 +4549,7 @@ For a Combined Work that displays copyright notices during execution, include th
 .IP 0. 4
 Convey the Minimal Corresponding Source under the terms of this License, and the Corresponding Application Code in a form suitable for, and under terms that permit, the user to recombine or relink the Application with a modified version of the Linked Version to produce a modified Combined Work, in the manner specified by section 6 of the GNU GPL for conveying Corresponding Source.
 .IP 1. 4
-Use a suitable shared library mechanism for linking with the Library. A suitable mechanism is one that (a) uses at run time a copy of the Library already present on the user\(aqs computer system, and (b) will operate properly with a modified version of the Library that is interface\-compatible with the Linked Version.
+Use a suitable shared library mechanism for linking with the Library. A suitable mechanism is one that (a) uses at run time a copy of the Library already present on the user’s computer system, and (b) will operate properly with a modified version of the Library that is interface\-compatible with the Linked Version.
 .UNINDENT
 .UNINDENT
 .IP e. 3
@@ -4566,15 +4582,15 @@ The Free Software Foundation may publish revised and/or new versions of the GNU 
 .sp
 Each version is given a distinguishing version number. If the Library as you received it specifies that a certain numbered version of the GNU Lesser General Public License “or any later version” applies to it, you have the option of following the terms and conditions either of that published version or of any later version published by the Free Software Foundation. If the Library as you received it does not specify a version number of the GNU Lesser General Public License, you may choose any version of the GNU Lesser General Public License ever published by the Free Software Foundation.
 .sp
-If the Library as you received it specifies that a proxy can decide whether future versions of the GNU Lesser General Public License shall apply, that proxy\(aqs public statement of acceptance of any version is permanent authorization for you to choose that version for the Library.
+If the Library as you received it specifies that a proxy can decide whether future versions of the GNU Lesser General Public License shall apply, that proxy’s public statement of acceptance of any version is permanent authorization for you to choose that version for the Library.
 .SS Indices and tables
 .INDENT 0.0
 .IP \(bu 2
-\fIgenindex\fP
+genindex
 .IP \(bu 2
-\fImodindex\fP
+modindex
 .IP \(bu 2
-\fIsearch\fP
+search
 .UNINDENT
 .SH AUTHOR
 George Yunaev

@@ -32,10 +32,9 @@ fi
 svn export . "$BUILDDIR/" || exit 1
 
 # Build the documentation
-(cd $BUILDDIR/doc && make singlehtml && make man && make latexpdf) || exit 1
+(cd $BUILDDIR/doc && make singlehtml && make man) || exit 1
 
 # Package the documentations
-cp $BUILDDIR/doc/_build/latex/Libircclient.pdf $RELEASEDIR/$PKGDIR.pdf || exit 1
 (cd $BUILDDIR/doc/_build/singlehtml && zip -r ../$PKGDIR-html.zip .)
 mv $BUILDDIR/doc/_build/$PKGDIR-html.zip $RELEASEDIR/ || exit 1
 
@@ -59,7 +58,7 @@ cp include/*.h "$PKGDIR/include"  || exit 1
 mkdir "$PKGDIR/examples"
 cp examples/*.c* $PKGDIR/examples  || exit 1
 mkdir "$PKGDIR/doc"
-cp $RELEASEDIR/$PKGDIR.pdf "$PKGDIR/doc/" || exit 1
+cp $RELEASEDIR/$PKGDIR-html.zip "$PKGDIR/doc/" || exit 1
 
 zip -r $RELEASEDIR/$PKGDIR-win32-dll.zip $PKGDIR || exit 1
 

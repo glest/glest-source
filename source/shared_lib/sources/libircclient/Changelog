@@ -1,3 +1,7 @@
+2018-08-26 George Yunaev
+   * libircclient 1.10 released.
+   * Fixed compatibility with OpenSSL 1.1.x (thanks Antoine Amarilli)
+
 2016-05-03 George Yunaev
    * libircclient 1.9 released.
    * Fixed a few minor Win32 compatibility bugs.
