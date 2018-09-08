@@ -43,10 +43,10 @@ ENDIF()
 # common libraries
 
 SET(EXTERNAL_LIBS "")
-SET(TARGET_NAME "libmegaglest")
+SET(TARGET_NAME "libzetaglest")
 
 IF(BUILD_ZETAGLEST_MODEL_VIEWER OR BUILD_ZETAGLEST_MAP_EDITOR OR BUILD_ZETAGLEST)
-	MESSAGE(STATUS "Will try to build MegaGlest shared library")
+	MESSAGE(STATUS "Building ZetaGlest shared library...")
 
 	INCLUDE (CheckIncludeFiles)
 
@@ -258,7 +258,7 @@ IF(BUILD_ZETAGLEST_MODEL_VIEWER OR BUILD_ZETAGLEST_MAP_EDITOR OR BUILD_ZETAGLEST
 	endif()
 
 	#########################################################################################
-	# megaglest lib
+	# zetaglest lib
 
 	SET(DIRS_WITH_SRC
         compression
@@ -488,10 +488,10 @@ IF(BUILD_ZETAGLEST_MODEL_VIEWER OR BUILD_ZETAGLEST_MAP_EDITOR OR BUILD_ZETAGLEST
 
 	MESSAGE(STATUS "EXTERNAL_LIBS = [${EXTERNAL_LIBS}]")
 
-	OPTION(MINIUPNP_DEBUG_BUILD "Build MegaGlest with UPNP DEBUG enabled" OFF)
+	OPTION(MINIUPNP_DEBUG_BUILD "Build ZetaGlest with UPNP DEBUG enabled" OFF)
 	MARK_AS_ADVANCED(MINIUPNP_DEBUG_BUILD)
 	IF(MINIUPNP_DEBUG_BUILD)
-		MESSAGE(STATUS "Will try to build MegaGlest shared library with DEBUG info for UPNP")
+		MESSAGE(STATUS "Building ZetaGlest shared library with DEBUG info for UPNP...")
 		ADD_DEFINITIONS("-DDEBUG")
 	ENDIF()
 
