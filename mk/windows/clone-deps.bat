@@ -20,8 +20,6 @@ git clone https://github.com/ZetaGlest/glew.git dependencies/src/glew
 Echo.
 git clone https://github.com/ZetaGlest/freeglut.git dependencies/src/glut
 Echo.
-git clone https://github.com/ZetaGlest/libircclient.git dependencies/src/irc
-Echo.
 git clone https://github.com/ZetaGlest/libjpeg-turbo.git dependencies/src/jpeg
 Echo.
 git clone https://github.com/ZetaGlest/lua.git dependencies/src/lua

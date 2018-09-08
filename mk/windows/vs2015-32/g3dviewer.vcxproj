@@ -256,7 +256,7 @@
     <ClCompile Include="..\..\..\source\glest_game\graphics\unit_particle_type.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="libglest.vcxproj">
+    <ProjectReference Include="libzetaglest.vcxproj">
       <Project>{8daa0c24-95cd-4f66-b4c5-19abdd771746}</Project>
     </ProjectReference>
   </ItemGroup>

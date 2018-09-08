@@ -5920,7 +5920,7 @@ namespace
 			LuaArguments
 				luaArguments(luaHandle);
 			try {
-				bool
+				int
 					value =
 					thisScriptManager->setUnitProperty(luaArguments.getInt(-3),
 						static_cast <

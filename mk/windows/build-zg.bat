@@ -94,11 +94,6 @@ cd .\glut\freeglut\freeglut\%FOLDER_NAME%\
 msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% freeglut.sln
 cd ..\..\..\..
 
-Echo Building irc...
-cd .\irc\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% libircclient.sln
-cd ..\..
-
 Echo Building jpeg...
 cd .\jpeg\%FOLDER_NAME%\
 msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% libjpeg-turbo.sln
@@ -155,6 +150,11 @@ msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolse
 cd ..\..\..
 
 cd ..\..
+
+Echo Building libircclient...
+cd ..\..\source\shared_lib\sources\libircclient\%FOLDER_NAME%\
+msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% libircclient.sln
+cd ..\..\..\..\..\mk\windows
 
 GOTO COMPILEZG
 

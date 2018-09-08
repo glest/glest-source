@@ -124,9 +124,9 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>wxbase29u.lib;wxbase29u_net.lib;wxbase29u_xml.lib;wxexpat.lib;wxjpeg.lib;wxmsw29u_adv.lib;wxmsw29u_aui.lib;wxmsw29u_core.lib;wxmsw29u_gl.lib;wxmsw29u_html.lib;wxmsw29u_media.lib;wxmsw29u_qa.lib;wxmsw29u_richtext.lib;wxmsw29u_xrc.lib;wxpng.lib;wxregexu.lib;wxtiff.lib;winmm.lib;rpcrt4.lib;kernel32.lib;user32.lib;gdi32.lib;ole32.lib;oleaut32.lib;comctl32.lib;comdlg32.lib;uuid.lib;advapi32.lib;shell32.lib;libglest.lib;sdl.lib;sdlmain.lib;dsound.lib;dxguid.lib;Dbghelp.lib;libcurl.lib;ws2_32.lib;ftgl_static.lib;freetype244MT.lib;zlibstat.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wxbase29u.lib;wxbase29u_net.lib;wxbase29u_xml.lib;wxexpat.lib;wxjpeg.lib;wxmsw29u_adv.lib;wxmsw29u_aui.lib;wxmsw29u_core.lib;wxmsw29u_gl.lib;wxmsw29u_html.lib;wxmsw29u_media.lib;wxmsw29u_qa.lib;wxmsw29u_richtext.lib;wxmsw29u_xrc.lib;wxpng.lib;wxregexu.lib;wxtiff.lib;winmm.lib;rpcrt4.lib;kernel32.lib;user32.lib;gdi32.lib;ole32.lib;oleaut32.lib;comctl32.lib;comdlg32.lib;uuid.lib;advapi32.lib;shell32.lib;libzetaglest.lib;sdl.lib;sdlmain.lib;dsound.lib;dxguid.lib;Dbghelp.lib;libcurl.lib;ws2_32.lib;ftgl_static.lib;freetype244MT.lib;zlibstat.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)\$(TargetName).exe</OutputFile>
-      <AdditionalLibraryDirectories>../../../source/windows_deps_2015/lib;$(SolutionDir)\libglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../source/windows_deps_2015/lib;$(SolutionDir)\libzetaglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -151,9 +151,9 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>wxbase29u.lib;wxbase29u_net.lib;wxbase29u_xml.lib;wxexpat.lib;wxjpeg.lib;wxmsw29u_adv.lib;wxmsw29u_aui.lib;wxmsw29u_core.lib;wxmsw29u_gl.lib;wxmsw29u_html.lib;wxmsw29u_media.lib;wxmsw29u_qa.lib;wxmsw29u_richtext.lib;wxmsw29u_xrc.lib;wxpng.lib;wxregexu.lib;wxtiff.lib;winmm.lib;rpcrt4.lib;kernel32.lib;user32.lib;gdi32.lib;ole32.lib;oleaut32.lib;comctl32.lib;comdlg32.lib;uuid.lib;advapi32.lib;shell32.lib;libglest.lib;sdl.lib;sdlmain.lib;dsound.lib;dxguid.lib;Dbghelp.lib;libcurl.lib;ws2_32.lib;ftgl_static.lib;freetype244MT.lib;zlibstat.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wxbase29u.lib;wxbase29u_net.lib;wxbase29u_xml.lib;wxexpat.lib;wxjpeg.lib;wxmsw29u_adv.lib;wxmsw29u_aui.lib;wxmsw29u_core.lib;wxmsw29u_gl.lib;wxmsw29u_html.lib;wxmsw29u_media.lib;wxmsw29u_qa.lib;wxmsw29u_richtext.lib;wxmsw29u_xrc.lib;wxpng.lib;wxregexu.lib;wxtiff.lib;winmm.lib;rpcrt4.lib;kernel32.lib;user32.lib;gdi32.lib;ole32.lib;oleaut32.lib;comctl32.lib;comdlg32.lib;uuid.lib;advapi32.lib;shell32.lib;libzetaglest.lib;sdl.lib;sdlmain.lib;dsound.lib;dxguid.lib;Dbghelp.lib;libcurl.lib;ws2_32.lib;ftgl_static.lib;freetype244MT.lib;zlibstat.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)\$(TargetName).exe</OutputFile>
-      <AdditionalLibraryDirectories>../../../source/windows_deps_2015/lib;$(SolutionDir)\libglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../source/windows_deps_2015/lib;$(SolutionDir)\libzetaglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
     </Link>
@@ -178,9 +178,9 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>wxbase29u.lib;wxbase29u_net.lib;wxbase29u_xml.lib;wxexpat.lib;wxjpeg.lib;wxmsw29u_adv.lib;wxmsw29u_aui.lib;wxmsw29u_core.lib;wxmsw29u_gl.lib;wxmsw29u_html.lib;wxmsw29u_media.lib;wxmsw29u_qa.lib;wxmsw29u_richtext.lib;wxmsw29u_xrc.lib;wxpng.lib;wxregexu.lib;wxtiff.lib;winmm.lib;rpcrt4.lib;kernel32.lib;user32.lib;gdi32.lib;ole32.lib;oleaut32.lib;comctl32.lib;comdlg32.lib;uuid.lib;advapi32.lib;shell32.lib;libglest.lib;sdl2.lib;sdl2main.lib;dsound.lib;dxguid.lib;Dbghelp.lib;libcurl.lib;ws2_32.lib;ftgl_static.lib;freetype244MT.lib;zlibstat.lib;libeay32.lib;ssleay32.lib;version.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wxbase29u.lib;wxbase29u_net.lib;wxbase29u_xml.lib;wxexpat.lib;wxjpeg.lib;wxmsw29u_adv.lib;wxmsw29u_aui.lib;wxmsw29u_core.lib;wxmsw29u_gl.lib;wxmsw29u_html.lib;wxmsw29u_media.lib;wxmsw29u_qa.lib;wxmsw29u_richtext.lib;wxmsw29u_xrc.lib;wxpng.lib;wxregexu.lib;wxtiff.lib;winmm.lib;rpcrt4.lib;kernel32.lib;user32.lib;gdi32.lib;ole32.lib;oleaut32.lib;comctl32.lib;comdlg32.lib;uuid.lib;advapi32.lib;shell32.lib;libzetaglest.lib;sdl2.lib;sdl2main.lib;dsound.lib;dxguid.lib;Dbghelp.lib;libcurl.lib;ws2_32.lib;ftgl_static.lib;freetype244MT.lib;zlibstat.lib;libeay32.lib;ssleay32.lib;version.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)\$(TargetName).exe</OutputFile>
-      <AdditionalLibraryDirectories>../../../source/windows_deps_2015/lib;$(SolutionDir)\libglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);$(DXSDK_DIR)/lib/x86;../../../source/windows_deps_2015/Microsoft DirectX SDK %28November 2007%29/Lib/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../source/windows_deps_2015/lib;$(SolutionDir)\libzetaglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);$(DXSDK_DIR)/lib/x86;../../../source/windows_deps_2015/Microsoft DirectX SDK %28November 2007%29/Lib/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>
@@ -214,9 +214,9 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>wxbase29u.lib;wxbase29u_net.lib;wxbase29u_xml.lib;wxexpat.lib;wxjpeg.lib;wxmsw29u_adv.lib;wxmsw29u_aui.lib;wxmsw29u_core.lib;wxmsw29u_gl.lib;wxmsw29u_html.lib;wxmsw29u_media.lib;wxmsw29u_qa.lib;wxmsw29u_richtext.lib;wxmsw29u_xrc.lib;wxpng.lib;wxregexu.lib;wxtiff.lib;winmm.lib;rpcrt4.lib;kernel32.lib;user32.lib;gdi32.lib;ole32.lib;oleaut32.lib;comctl32.lib;comdlg32.lib;uuid.lib;advapi32.lib;shell32.lib;libglest.lib;sdl.lib;sdlmain.lib;dsound.lib;dxguid.lib;Dbghelp.lib;libcurl.lib;ws2_32.lib;ftgl_static.lib;freetype244MT.lib;zlibstat.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wxbase29u.lib;wxbase29u_net.lib;wxbase29u_xml.lib;wxexpat.lib;wxjpeg.lib;wxmsw29u_adv.lib;wxmsw29u_aui.lib;wxmsw29u_core.lib;wxmsw29u_gl.lib;wxmsw29u_html.lib;wxmsw29u_media.lib;wxmsw29u_qa.lib;wxmsw29u_richtext.lib;wxmsw29u_xrc.lib;wxpng.lib;wxregexu.lib;wxtiff.lib;winmm.lib;rpcrt4.lib;kernel32.lib;user32.lib;gdi32.lib;ole32.lib;oleaut32.lib;comctl32.lib;comdlg32.lib;uuid.lib;advapi32.lib;shell32.lib;libzetaglest.lib;sdl.lib;sdlmain.lib;dsound.lib;dxguid.lib;Dbghelp.lib;libcurl.lib;ws2_32.lib;ftgl_static.lib;freetype244MT.lib;zlibstat.lib;libeay32.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)\$(TargetName).exe</OutputFile>
-      <AdditionalLibraryDirectories>../../../source/windows_deps_2015/lib;$(SolutionDir)\libglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);$(DXSDK_DIR)/lib/x86;../../../source/windows_deps_2015/Microsoft DirectX SDK %28November 2007%29/Lib/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../source/windows_deps_2015/lib;$(SolutionDir)\libzetaglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);$(DXSDK_DIR)/lib/x86;../../../source/windows_deps_2015/Microsoft DirectX SDK %28November 2007%29/Lib/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>
@@ -295,9 +295,9 @@
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>wxbase29u.lib;wxbase29u_net.lib;wxbase29u_xml.lib;wxexpat.lib;wxjpeg.lib;wxmsw29u_adv.lib;wxmsw29u_aui.lib;wxmsw29u_core.lib;wxmsw29u_gl.lib;wxmsw29u_html.lib;wxmsw29u_media.lib;wxmsw29u_qa.lib;wxmsw29u_richtext.lib;wxmsw29u_xrc.lib;wxpng.lib;wxregexu.lib;wxtiff.lib;winmm.lib;rpcrt4.lib;kernel32.lib;user32.lib;gdi32.lib;ole32.lib;oleaut32.lib;comctl32.lib;comdlg32.lib;uuid.lib;advapi32.lib;shell32.lib;libglest.lib;sdl2.lib;sdl2main.lib;dsound.lib;dxguid.lib;Dbghelp.lib;libcurl.lib;ws2_32.lib;ftgl_static.lib;freetype244MT.lib;zlibstat.lib;libeay32.lib;ssleay32.lib;version.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wxbase29u.lib;wxbase29u_net.lib;wxbase29u_xml.lib;wxexpat.lib;wxjpeg.lib;wxmsw29u_adv.lib;wxmsw29u_aui.lib;wxmsw29u_core.lib;wxmsw29u_gl.lib;wxmsw29u_html.lib;wxmsw29u_media.lib;wxmsw29u_qa.lib;wxmsw29u_richtext.lib;wxmsw29u_xrc.lib;wxpng.lib;wxregexu.lib;wxtiff.lib;winmm.lib;rpcrt4.lib;kernel32.lib;user32.lib;gdi32.lib;ole32.lib;oleaut32.lib;comctl32.lib;comdlg32.lib;uuid.lib;advapi32.lib;shell32.lib;libzetaglest.lib;sdl2.lib;sdl2main.lib;dsound.lib;dxguid.lib;Dbghelp.lib;libcurl.lib;ws2_32.lib;ftgl_static.lib;freetype244MT.lib;zlibstat.lib;libeay32.lib;ssleay32.lib;version.lib;imm32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)\$(TargetName).exe</OutputFile>
-      <AdditionalLibraryDirectories>../../../source/windows_deps_2015/lib;$(SolutionDir)\libglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);$(DXSDK_DIR)/lib/x64;../../../source/windows_deps_2015/Microsoft DirectX SDK %28November 2007%29/Lib/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../source/windows_deps_2015/lib;$(SolutionDir)\libzetaglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);$(DXSDK_DIR)/lib/x64;../../../source/windows_deps_2015/Microsoft DirectX SDK %28November 2007%29/Lib/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>
@@ -329,7 +329,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="libglest.vcxproj">
+    <ProjectReference Include="libzetaglest.vcxproj">
       <Project>{8daa0c24-95cd-4f66-b4c5-19abdd771746}</Project>
     </ProjectReference>
   </ItemGroup>

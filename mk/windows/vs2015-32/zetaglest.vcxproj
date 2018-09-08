@@ -203,7 +203,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;jpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\libglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libzetaglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -248,7 +248,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;jpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\libglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libzetaglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -292,7 +292,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;jpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\libglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libzetaglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -333,7 +333,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;jpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\libglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libzetaglest$(Platform)\$(Configuration);$(SolutionDir)\libstreflop$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -385,7 +385,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;jpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\libglest$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libzetaglest$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>libcmtd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -489,7 +489,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;turbojpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\dependencies\src\glew\vs2015-32\Release;..\dependencies\src\ogg\win32\VS2015-32\Win32\Release;..\dependencies\src\vorbis\win32\VS2015-32\Win32\Release;..\dependencies\src\lua\vs2015-32\Release;..\dependencies\src\xerces\vs2015-32\Release;..\dependencies\src\png\projects\vs2015-32\Release;..\dependencies\src\zlib\vs2015-32\Release;..\dependencies\src\sdl2\vs2015-32\Release;..\dependencies\src\openal\vs2015-32\Release;..\dependencies\src\curl\vs2015-32\Release;..\dependencies\src\irc\vs2015-32\Release;..\dependencies\src\freetype\builds\windows\vs2015-32\Win32\Release;..\dependencies\src\ftgl\msvc\vs2015-32\Release;..\dependencies\src\jpeg\vs2015-32\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\dependencies\src\glew\vs2015-32\Release;..\dependencies\src\ogg\win32\VS2015-32\Win32\Release;..\dependencies\src\vorbis\win32\VS2015-32\Win32\Release;..\dependencies\src\lua\vs2015-32\Release;..\dependencies\src\xerces\vs2015-32\Release;..\dependencies\src\png\projects\vs2015-32\Release;..\dependencies\src\zlib\vs2015-32\Release;..\dependencies\src\sdl2\vs2015-32\Release;..\dependencies\src\openal\vs2015-32\Release;..\dependencies\src\curl\vs2015-32\Release;..\..\..\source\shared_lib\sources\libircclient\vs2015-32\Release;..\dependencies\src\freetype\builds\windows\vs2015-32\Win32\Release;..\dependencies\src\ftgl\msvc\vs2015-32\Release;..\dependencies\src\jpeg\vs2015-32\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -642,7 +642,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;jpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\libglest$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libzetaglest$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -693,7 +693,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>dxguid.lib;glew.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;opengl32.lib;glu32.lib;wsock32.lib;mmc.lib;lua.lib;xerces-c.lib;Dbghelp.lib;libpng.lib;zlibstatic.lib;SDL2-static.lib;sdl2main.lib;winmm.lib;iphlpapi.lib;libcurl.lib;ws2_32.lib;libircclient.lib;freetype.lib;ftgl_static.lib;version.lib;imm32.lib;jpeg-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\libglest$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libzetaglest$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -772,7 +772,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="libglest.vcxproj">
+    <ProjectReference Include="libzetaglest.vcxproj">
       <Project>{8daa0c24-95cd-4f66-b4c5-19abdd771746}</Project>
     </ProjectReference>
   </ItemGroup>
