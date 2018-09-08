@@ -7,8 +7,8 @@ information about the game from which it was forked, please see the
 
 ## 2018-09-07
 
-Upgrade libircclient embedded library from 1.3 to 1.10
-[ChangeLog](https://github.com/ZetaGlest/zetaglest-source/commit/64cc6c3cb10c7fd6d97fa0af4a10b431100c58b0#diff-2a35002207d9e074987b668f273e598d)
+Upgrade [libircclient](https://sourceforge.net/projects/libircclient/) embedded library from 1.3 to 1.10/
+[view ChangeLog](https://github.com/ZetaGlest/zetaglest-source/commit/64cc6c3cb10c7fd6d97fa0af4a10b431100c58b0#diff-2a35002207d9e074987b668f273e598d)
 
 ## 2018-09-05
 
@@ -27,7 +27,7 @@ Buildings will now still be built even when units are in the way
 
 ## 2018-06-28
 
-*[transparency of the alpha component of textures can now be set](https://zetaglest.github.io/docs/modelling/textures.html#Transparency)/
+* [transparency of the alpha component of textures can now be set](https://zetaglest.github.io/docs/modelling/textures.html#Transparency)/
 [view patch](https://github.com/ZetaGlest/zetaglest-source/commit/b1760253fdb3e5b9b38c3bcf3d5f154044536b0c)
 
 ## 2018-06-10
