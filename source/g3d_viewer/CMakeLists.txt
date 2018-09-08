@@ -120,7 +120,7 @@ IF(BUILD_ZETAGLEST_MODEL_VIEWER)
 	ENDIF()
 
 	#########################################################################################
-	# megaglest G3D Model Viewer
+	# zetaglest G3D Model Viewer
 
 	SET(DIRS_WITH_SRC
 	    .
@@ -200,7 +200,7 @@ IF(BUILD_ZETAGLEST_MODEL_VIEWER)
 		TARGET_LINK_LIBRARIES(${TARGET_NAME} streflop)
 	ENDIF()
 
-	TARGET_LINK_LIBRARIES(${TARGET_NAME} libmegaglest)
+	TARGET_LINK_LIBRARIES(${TARGET_NAME} libzetaglest)
 	TARGET_LINK_LIBRARIES(${TARGET_NAME} ${EXTERNAL_LIBS})
 
 	IF(EXISTS ${HELP2MAN} AND NOT APPLE)
