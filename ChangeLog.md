@@ -5,20 +5,38 @@ This documents notable or significant changes to
 information about the game from which it was forked, please see the
 [MegaGlest home page](https://megaglest.org/).
 
+## 2018-09-07
+
+Upgrade [libircclient](https://sourceforge.net/projects/libircclient/) embedded library from 1.3 to 1.10/
+[view ChangeLog](https://github.com/ZetaGlest/zetaglest-source/commit/64cc6c3cb10c7fd6d97fa0af4a10b431100c58b0#diff-2a35002207d9e074987b668f273e598d)
+
+## 2018-09-05
+
+* Special effects added to fading/vanishing corpses
+
+## 2018-09-04
+
+* zoom-out restriction during network play removed
+* added support for Windows 10 SDK
+
+
 ## 2018-09-03
 
-[203](https://github.com/ZetaGlest/zetaglest-source/issues/203)
-Buildings will now still be built even units are in the way
+* [[203]](https://github.com/ZetaGlest/zetaglest-source/issues/203)
+Buildings will now still be built even when units are in the way
+
+## 2018-06-28
+
+* [transparency of the alpha component of textures can now be set](https://zetaglest.github.io/docs/modelling/textures.html#Transparency)/
+[view patch](https://github.com/ZetaGlest/zetaglest-source/commit/b1760253fdb3e5b9b38c3bcf3d5f154044536b0c)
 
 ## 2018-06-10
 
-[80](https://github.com/ZetaGlest/zetaglest-source/issues/80)
+* [[80]](https://github.com/ZetaGlest/zetaglest-source/issues/80)
 Double right-clicking now sends a move command instead of attack
-
-[#28](https://github.com/ZetaGlest/zetaglest-source/issues/28)
+* [[#28]](https://github.com/ZetaGlest/zetaglest-source/issues/28)
 Maximum unit selection removed
-
-[#75](https://github.com/ZetaGlest/zetaglest-source/issues/75)
+* [[#75]](https://github.com/ZetaGlest/zetaglest-source/issues/75)
 Size of attack and move icons increased
 
 ## 2018-05-16
