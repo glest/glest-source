@@ -775,7 +775,7 @@ namespace Glest {
 				if (ircClient != NULL && ircClient->isConnected() == true
 					&& ircClient->getHasJoinedChannel() == true) {
 					ircClient->SendIRCCmdMessage(IRC_CHANNEL,
-						"   <<   left the lobby");
+						" has left the lobby");
 					sleep(30);
 				}
 				cleanup();
