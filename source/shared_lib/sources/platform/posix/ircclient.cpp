@@ -178,6 +178,8 @@ namespace Shared {
 
 					//irc_cmd_msg (session, params[0], "ZG Bot says hello!");
 					ctx->setHasJoinedChannel(true);
+					const char *announceJoin = { "has joined" };
+					irc_cmd_msg(session, "#zetaglest-lobby", announceJoin);
 
 					if (SystemFlags::VERBOSE_MODE_ENABLED || IRCThread::debugEnabled) printf("===> IRC: Line: %d\n", __LINE__);
 
@@ -191,7 +193,6 @@ namespace Shared {
 					char realNick[128] = "";
 					get_nickname(origin, realNick, 127);
 					if (SystemFlags::VERBOSE_MODE_ENABLED || IRCThread::debugEnabled) printf("===> IRC: user joined channel realNick [%s] origin [%s]\n", realNick, origin);
-
 					bool foundNick = false;
 
 					if (SystemFlags::VERBOSE_MODE_ENABLED || IRCThread::debugEnabled) printf("===> IRC: Line: %d\n", __LINE__);
