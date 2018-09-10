@@ -76,7 +76,7 @@ static int socket_make_nonblocking (socket_t * sock)
 #if !defined (_WIN32)
 	return fcntl (*sock, F_SETFL, fcntl (*sock, F_GETFL,0 ) | O_NONBLOCK) != 0;
 #else
-	unsigned long mode = 1;
+	unsigned long mode = 0;
 	return ioctlsocket (*sock, FIONBIO, &mode) == SOCKET_ERROR;
 #endif
 }
