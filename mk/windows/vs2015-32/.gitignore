@@ -20,3 +20,6 @@
 *.obj
 *.res
 *.user
+*.suo
+*.db-shm
+*.db-wal
