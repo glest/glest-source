@@ -8,6 +8,7 @@ which includes the _MegaGlest_ commit log.
 
 ## Programming
 
+* [MathuSum Mut](https://github.com/mathusummut)
 * [Andy Alt](https://github.com/andy5995)
 * [James Sherratt](https://github.com/Jammyjamjamman)
 * [João Marcos](https://github.com/JoaoMarcosCSilva)
@@ -38,5 +39,4 @@ which includes the _MegaGlest_ commit log.
 
 ## General Help
 
-* [MathuSum Mut](https://github.com/mathusummut)
 * [Dan Kelley](https://github.com/dafky2000)
