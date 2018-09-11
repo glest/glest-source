@@ -822,7 +822,7 @@ namespace Glest {
 				if (ircClient != NULL && ircClient->isConnected() == true
 					&& ircClient->getHasJoinedChannel() == true) {
 					ircClient->SendIRCCmdMessage(IRC_CHANNEL,
-						"   <<   tries to create a game");
+						" tries to create a game");
 					sleep(30);
 				}
 				cleanup();
@@ -895,7 +895,7 @@ namespace Glest {
 								if (ircClient != NULL && ircClient->isConnected() == true
 									&& ircClient->getHasJoinedChannel() == true) {
 									ircClient->SendIRCCmdMessage(IRC_CHANNEL,
-										"   <<   is connecting to '" +
+										" is connecting to '" +
 										serverLines[i]->
 										getMasterServerInfo()->
 										getServerTitle() + "'");
