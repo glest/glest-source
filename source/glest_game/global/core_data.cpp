@@ -61,15 +61,13 @@ namespace Glest {
 
 		static const string CORE_WATER_SOUNDS_PATH = CORE_PATH + "/water_sounds/";
 
-		// Sound effects
-		// These variables are specified in the ini file
-		const string PlaySoundClip::sfxAttention = "PlaySoundAttention";
-		const string PlaySoundClip::sfxHighlight = "PlaySoundHighlight";
-		const string PlaySoundClip::sfxNewServer = "PlaySoundNewServer";
-		const string PlaySoundClip::sfxMarker = "PlaySoundMarker";
-		const string PlaySoundClip::sfxMenuClickA = "PlaySoundMenuClickA";
-		const string PlaySoundClip::sfxMenuClickB = "PlaySoundMenuClickB";
-		const string PlaySoundClip::sfxMenuClickC = "PlaySoundMenuClickC";
+		const string PlaySoundClip::sfxAttention = CORE_MENU_SOUND_PATH + "attention.wav";
+		const string PlaySoundClip::sfxHighlight = CORE_MENU_SOUND_PATH + "highlight.wav";
+		const string PlaySoundClip::sfxNewServer = CORE_MENU_SOUND_PATH + "attention.wav";
+		const string PlaySoundClip::sfxMarker = CORE_MENU_SOUND_PATH + "sonar.wav";
+		const string PlaySoundClip::sfxMenuClickA = CORE_MENU_SOUND_PATH + "click_a.wav";
+		const string PlaySoundClip::sfxMenuClickB = CORE_MENU_SOUND_PATH + "click_b.wav";
+		const string PlaySoundClip::sfxMenuClickC = CORE_MENU_SOUND_PATH + "click_c.wav";
 
 		CoreData & CoreData::getInstance() {
 			static CoreData coreData;
@@ -1784,7 +1782,7 @@ namespace Glest {
 		PlaySoundClip::~PlaySoundClip(void) {
 		};
 
-		StaticSound *PlaySoundClip::getSound(const std::string& iniPlaySoundVal) {
+		StaticSound *PlaySoundClip::getSound(const std::string& PlaySoundVal) {
 			CoreData coreData;
 			int loadAttemptLookupKey = coreData.tsyst_COUNT + 6;
 			if (coreData.itemLoadAttempted.find(loadAttemptLookupKey) ==
@@ -1793,8 +1791,8 @@ namespace Glest {
 				coreData.itemLoadAttempted[loadAttemptLookupKey] = true;
 
 				try {
-					static Config & config = Config::getInstance();
-					iniPlaySound.load(config.getString(iniPlaySoundVal, ""));
+					string data_path = coreData.getDataPath();
+					PlaySound.load(getGameCustomCoreDataPath(data_path, PlaySoundVal));
 				} catch (const megaglest_runtime_error & ex) {
 					message(ex.what(),
 						GlobalStaticFlags::getIsNonGraphicalModeEnabled(),
@@ -1802,7 +1800,7 @@ namespace Glest {
 				}
 			}
 
-			return &iniPlaySound;
+			return &PlaySound;
 		}
 
 		// ================== PRIVATE ========================
