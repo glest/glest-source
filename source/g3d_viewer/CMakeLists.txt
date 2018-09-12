@@ -188,7 +188,7 @@ IF(BUILD_ZETAGLEST_MODEL_VIEWER)
                 SET(HELP2MAN_OUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/")
         ENDIF()
 
-        MESSAGE(STATUS "***Note: The final output path for ZetaGlest G3d Viewer will be [${HELP2MAN_OUT_PATH}]")
+        MESSAGE(STATUS "\n***Note: The final output path for ZetaGlest G3d Viewer will be [${ZETAGLEST_BIN_OUTPUT_DIR}]\n")
 
 	FIND_PROGRAM(HELP2MAN "help2man")
 
@@ -227,7 +227,7 @@ IF(BUILD_ZETAGLEST_MODEL_VIEWER)
 	        # Installation of the program
 	        INSTALL(TARGETS
 		        ${TARGET_NAME}
-		        DESTINATION ${ZETAGLEST_BIN_INSTALL_PATH})
+		        DESTINATION ${ZETAGLEST_BIN_OUTPUT_DIR})
 
 	        IF(EXISTS ${HELP2MAN} AND NOT "${ZETAGLEST_MANPAGE_INSTALL_PATH}" STREQUAL "" AND NOT APPLE)
          		MESSAGE(STATUS "**NOTE: Will Install manpage [${TARGET_NAME_MANPAGE}] to [${ZETAGLEST_MANPAGE_INSTALL_PATH}]")
