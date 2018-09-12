@@ -229,11 +229,11 @@ namespace Glest {
 			}
 #endif
 
-#if defined(MG_CMAKE_INSTALL_PREFIX)
+#if defined(CMAKE_INSTALL_PREFIX)
 			if (foundPath == false) {
 				foundPath =
 					tryCustomPath(cfgType, fileName,
-						formatPath(TOSTRING(MG_CMAKE_INSTALL_PREFIX)));
+						formatPath(TOSTRING(CMAKE_INSTALL_PREFIX)));
 			}
 #endif
 
