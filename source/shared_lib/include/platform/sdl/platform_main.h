@@ -198,33 +198,42 @@ void printParameterHelp(const char *argv0, bool foundInvalidArgs) {
 	//                                     MAX WIDTH FOR MAN PAGE
 	//         "================================================================================"
 	if (foundInvalidArgs == true) {
-		printf("\n");
+		printf("\n\n");
 	}
-	printf("\n%s, usage", extractFileFromDirectoryPath(argv0).c_str());
-	printf("\n\nCommandline Parameter:  Description:");
-	printf("\n\n- - - - - - - - - - -   - - - - - - - - - - - - - - - - - - - - - - - -");
-	printf("\n\n%s  \t\tDisplays this help text.", GAME_ARGS[GAME_ARG_HELP]);
+	printf("\n\%s, usage\n\
+Commandline Parameter:  Description:\n\n\
+  %s Displays this help text.",
+extractFileFromDirectoryPath(argv0).c_str(), GAME_ARGS[GAME_ARG_HELP]);
 
-	printf("\n\n%s  \tAutomatically starts a game with the last game", GAME_ARGS[GAME_ARG_AUTOSTART_LASTGAME]);
-	printf("\n\n                     \tsettings you played.");
+	printf("\n\n\
+%s\n\
+  Automatically starts a game with the last game\n\
+  settings you played.",
+GAME_ARGS[GAME_ARG_AUTOSTART_LASTGAME]);
 
-	printf("\n\n%s=x  \tLoads the last saved game.", GAME_ARGS[GAME_ARG_AUTOSTART_LAST_SAVED_GAME]);
-	printf("\n\n                     \tWhere x is an optional name of the saved game file to load.");
-	printf("\n\n                     \tIf x is not specified we load the last game that was saved.");
+  printf("\n\n\
+%s=x\n\
+  Loads the last saved game.\n\
+    Where 'x' is an optional name of the saved game file to load.\n\
+    If 'x' is not specified we load the last game that was saved.",
+GAME_ARGS[GAME_ARG_AUTOSTART_LAST_SAVED_GAME]);
 
-	printf("\n\n%s=x,y,z  \tRun in auto test mode.", GAME_ARGS[GAME_ARG_AUTO_TEST]);
-	printf("\n\n                     \tWhere x is an optional maximum # seconds to play.");
-	printf("\n\n                     \tIf x is not specified the default is 1200 seconds (20 minutes).");
-	printf("\n\n                     \tWhere y is an optional game settings file to play.");
-	printf("\n\n                     \tIf y is not specified (or is empty) then auto test cycles");
-	printf("\n\n                     \tthrough playing scenarios.");
-	printf("\n\n                     \tWhere z is the word 'exit' indicating the game should exit");
-	printf("\n\n                     \tafter the game is finished or the time runs out. If z is");
-	printf("\n\n                     \tnot specified (or is empty) then auto test continues to cycle.");
+  printf("\n\n\
+%s=x,y,z\n\
+  Run in auto test mode\n\
+    Where 'x' is an optional maximum # seconds to play.\n\
+    If 'x' is not specified the default is 1200 seconds (20 minutes).\n\
+    Where 'y' is an optional game settings file to play.\n\
+    If 'y' is not specified (or is empty) then auto test cycles\n\
+    through playing scenarios.\n\
+    Where 'z' is the word 'exit' indicating the game should exit\n\
+    after the game is finished or the time runs out. If 'z' is\n\
+    not specified (or is empty) then auto test continues to cycle.",
+  GAME_ARGS[GAME_ARG_AUTO_TEST]);
 
 	printf("\n\n%s=x:y  \t\tAuto connect to host server at IP or hostname x using", GAME_ARGS[GAME_ARG_CONNECT]);
 	printf("\n\n                     \t    port y. Shortcut version of using %s and %s.", GAME_ARGS[GAME_ARG_CLIENT], GAME_ARGS[GAME_ARG_USE_PORTS]);
-	printf("\n\n                     \t*NOTE: to automatically connect to the first LAN host you may");
+	printf("\n                     \t*NOTE: to automatically connect to the first LAN host you may");
 	printf("\n\n                     \t    use: %s=auto-connect", GAME_ARGS[GAME_ARG_CONNECT]);
 
 	printf("\n\n%s=x  \tAuto connect to host server at IP or hostname x.", GAME_ARGS[GAME_ARG_CLIENT]);
