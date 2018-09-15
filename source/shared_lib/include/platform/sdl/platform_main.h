@@ -1,13 +1,29 @@
-// ==============================================================
-//	This file is part of Glest Shared Library (www.glest.org)
 //
-//	Copyright (C) 2005 Matthias Braun
+// This file is part of ZetaGlest Shared
+// Library<https://github.com/ZetaGlest>
 //
-//	You can redistribute this code and/or modify it under
-//	the terms of the GNU General Public License as published
-//	by the Free Software Foundation; either version 2 of the
-//	License, or (at your option) any later version
-// ==============================================================
+// platform_main.h: game setup menu as it appears to
+// to the host
+//
+// Copyright (C) 2018  The ZetaGlest team
+// Copyright (C) 2005 Matthias Braun
+//
+// ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>
+//
+
 #ifndef _SHARED_PLATFORM_MAIN_H_
 #define _SHARED_PLATFORM_MAIN_H_
 
@@ -200,54 +216,60 @@ void printParameterHelp(const char *argv0, bool foundInvalidArgs) {
 	if (foundInvalidArgs == true) {
 		printf("\n\n");
 	}
-	printf("\n\nUsage: %s [OPTION]... VALUE...\n\n\
-Options for running zetaglest from the command line\n\n\
-  %s display usage",
-extractFileFromDirectoryPath(argv0).c_str(), GAME_ARGS[GAME_ARG_HELP]);
 //
-// '--' options should be indented 2 spaces, regardless of indentation of
+// '--<option>' should be indented 2 spaces, regardless of indentation of
 // the 'printf' statement
 //
+	printf("\n\nUsage: %s [OPTION]... VALUE...\n\n\
+Options for running zetaglest from the command line\n\n\
+  %s\n\
+    display usage",
+extractFileFromDirectoryPath(argv0).c_str(),
+GAME_ARGS[GAME_ARG_HELP]);
+
 	printf("\n\n\
   %s\n\
-  Automatically starts a game with the last settings played",
+    Automatically starts a game with the last settings played",
 GAME_ARGS[GAME_ARG_AUTOSTART_LASTGAME]);
 
   printf("\n\n\
   %s=FILE\n\
-  Loads the last saved game.\n\
-    FILE - optional name of the saved game file to load.\n\
-    If FILE is not specified, the last game that was saved is loaded",
+    Loads the last saved game.\n\
+      FILE - optional name of the saved game file to load.\n\
+      If FILE is not specified, the last game that was saved is loaded",
 GAME_ARGS[GAME_ARG_AUTOSTART_LAST_SAVED_GAME]);
 
   printf("\n\n\
   %s=x,y,z\n\
-  Run in auto test mode\n\
-    Where 'x' is an optional maximum # seconds to play.\n\
-    If 'x' is not specified the default is 1200 seconds (20 minutes).\n\
-    Where 'y' is an optional game settings file to play.\n\
-    If 'y' is not specified (or is empty) then auto test cycles\n\
-    through playing scenarios.\n\
-    Where 'z' is the word 'exit' indicating the game should exit\n\
-    after the game is finished or the time runs out. If 'z' is\n\
-    not specified (or is empty) then auto test continues to cycle.",
-  GAME_ARGS[GAME_ARG_AUTO_TEST]);
+    Run in auto test mode\n\
+      x - optional maximum # seconds to play.\n\
+          If 'x' is not specified the default is 1200 seconds (20 minutes).\n\
+      y - optional game settings file to play.\n\
+          If 'y' is not specified (or is empty) then auto test cycles\n\
+          through playing scenarios.\n\
+      z - the word 'exit' indicating the game should exit after the game\n\
+          is finished or the time runs out. If 'z' is not specified\n\
+          (or is empty) then auto test continues to cycle.",
+GAME_ARGS[GAME_ARG_AUTO_TEST]);
 
 	printf("\n\n\
   %s=x:y\n\
-  Auto connect to host server at IP or hostname x using\n\
-  port y. Shortcut version of using %s and %s.\n\
-  *NOTE: to automatically connect to the first LAN host you may use:\n\
-    %s=auto-connect",
-GAME_ARGS[GAME_ARG_CONNECT], GAME_ARGS[GAME_ARG_CLIENT],
-  GAME_ARGS[GAME_ARG_USE_PORTS], GAME_ARGS[GAME_ARG_CONNECT]);
+    Auto connect to host server at IP or hostname x using port y.\n\
+    Shortcut version of using %s and %s.\n\
+    *NOTE: to automatically connect to the first LAN host you may use:\n\
+      %s=auto-connect",
+GAME_ARGS[GAME_ARG_CONNECT],
+GAME_ARGS[GAME_ARG_CLIENT],
+GAME_ARGS[GAME_ARG_USE_PORTS],
+GAME_ARGS[GAME_ARG_CONNECT]);
 
 	printf("\n\n\
   %s=x\n\
-  Auto connect to host server at IP or hostname x.\n\
-  *NOTE: to automatically connect to the first LAN host you may use\n\
-    %s=auto-connect",
-GAME_ARGS[GAME_ARG_CLIENT], GAME_ARGS[GAME_ARG_CLIENT]);
+    Auto connect to host server at IP or hostname x.\n\
+    *NOTE: to automatically connect to the first LAN host you may use\n\
+      %s=auto-connect",
+GAME_ARGS[GAME_ARG_CLIENT],
+GAME_ARGS[GAME_ARG_CLIENT]);
 
 	printf("\n\n\
   %s\n\
@@ -256,66 +278,100 @@ GAME_ARGS[GAME_ARG_SERVER]);
 
 	printf("\n\n\
   %s=x,x\n\
-  Run as a headless server.\n\
-  Where 'x' is an optional comma delimited command list of one or\n\
-  more of the following:\n\
-    exit  - the application quits after all players have disconnected\n\
-    vps   - commands from the local console are NOT read (for some vps's)\n\
-    lan   - prevents broadcasting the hosting server to the masterserver\n\
+    Run as a headless server.\n\
+    Where 'x' is an optional comma delimited command list of one or\n\
+    more of the following:\n\
+      exit  - the application quits after all players have disconnected\n\
+      vps   - commands from the local console are NOT read (for some vps's)\n\
+      lan   - prevents broadcasting the hosting server to the masterserver\n\
             (for local LAN games).",
 GAME_ARGS[GAME_ARG_MASTERSERVER_MODE]);
 
 	printf("\n\n\
   %s\n\
-  Check the current status of a headless server",
+    Check the current status of a headless server",
 GAME_ARGS[GAME_ARG_MASTERSERVER_STATUS]);
 
   printf("\n\n\
   %s=x,y,z\n\
-  Force hosted games to listen internally on port 'x', externally on\n\
-  port 'y' and for game status on port 'z'\n\n\
-  'x' - internal listening port on the local machine\n\
-  'y' - external port on the router/proxy from which to forward connections\n\
+    Force hosted games to listen internally on port 'x', externally on\n\
+    port 'y' and for game status on port 'z'\n\n\
+      'x' - internal listening port on the local machine\n\
+      'y' - external port on the router/proxy from which to forward connections\n\
         to the internal port\n\
-  'z' - game status port on the local machine from which to listen\n\
+      'z' - game status port on the local machine from which to listen\n\
         for status requests\n\
   NOTE: If enabled, the FTP Server port's will be set to x+1 to x+9.",
 GAME_ARGS[GAME_ARG_USE_PORTS]);
 
-	printf("\n\n%s=x  \tSet server title.", GAME_ARGS[GAME_ARG_SERVER_TITLE]);
+	printf("\n\n\
+  %s=x\n\
+    Set server title.",
+GAME_ARGS[GAME_ARG_SERVER_TITLE]);
 
-	printf("\n\n%s=x  \tAuto load a scenario by scenario name.", GAME_ARGS[GAME_ARG_LOADSCENARIO]);
-	printf("\n\n%s=x  \t\tAuto load a mod by mod pathname.", GAME_ARGS[GAME_ARG_MOD]);
+	printf("\n\n\
+  %s=x\n\
+    Auto load a scenario by scenario name.",
+GAME_ARGS[GAME_ARG_LOADSCENARIO]);
+
+printf("\n\n\
+  %s=x\n\
+    Auto load a mod by mod pathname.",
+GAME_ARGS[GAME_ARG_MOD]);
 
 	//         "================================================================================"
-	printf("\n\n%s=Map,Tileset  ", GAME_ARGS[GAME_ARG_PREVIEW_MAP]);
-	printf("\n\n                     \tAuto Preview a map by map name. (tileset is optional)");
-	printf("\n\n%s  \t\tDisplays the version string of this program.", GAME_ARGS[GAME_ARG_VERSION]);
-	printf("\n\n%s  \t\tDisplays your video driver's OpenGL info.", GAME_ARGS[GAME_ARG_OPENGL_INFO]);
-	printf("\n\n%s  \t\tDisplays your SDL version information.", GAME_ARGS[GAME_ARG_SDL_INFO]);
-	printf("\n\n%s  \t\tDisplays your LUA version information.", GAME_ARGS[GAME_ARG_LUA_INFO]);
-	printf("\n\n%s  \t\tDisplays LUA debug information.", GAME_ARGS[GAME_ARG_LUA_DEBUG]);
-	printf("\n\n%s  \t\tDisplays your CURL version information.", GAME_ARGS[GAME_ARG_CURL_INFO]);
-	printf("\n\n%s  \t\tDisplays your XERCES version information.", GAME_ARGS[GAME_ARG_XERCES_INFO]);
+	printf("\n\n\
+  %s=Map,Tileset\n\
+    Auto Preview a map by map name. (tileset is optional)", GAME_ARGS[GAME_ARG_PREVIEW_MAP]);
 
-	printf("\n\n%s=x=purgeunused=purgeduplicates=gitdelete=hideduplicates  ", GAME_ARGS[GAME_ARG_VALIDATE_TECHTREES]);
-	printf("\n\n                     \tDisplay a report detailing any known problems related to");
-	printf("\n\n                     \t    your selected techtrees game data.");
-	printf("\n\n                     \tWhere x is a comma-delimited list of techtrees to validate.");
-	printf("\n\n                     \tWhere 'purgeunused' is an optional parameter telling the");
-	printf("\n\n                     \t    validation to delete extra files in the techtree that");
-	printf("\n\n                     \t    are not used.");
-	printf("\n\n                     \tWhere 'purgeduplicates' is an optional parameter telling");
-	printf("\n\n                     \t    the validation to merge duplicate files in the techtree.");
-	printf("\n\n                     \tWhere 'gitdelete' is an optional parameter telling the");
-	printf("\n\n                     \t    validation to call 'git rm' on duplicate / unused files");
-	printf("\n\n                     \t    in the techtree.");
-	printf("\n\n                     \tWhere 'hideduplicates' is an optional parameter telling the");
-	printf("\n\n                     \t    validation to NOT SHOW duplicate files in the techtree.");
-	printf("\n\n                     \t*NOTE: This only applies when files are purged due to the");
-	printf("\n\n                     \t    above flags being set.");
-	printf("\n\n                     \texample:");
-	printf("\n\n                     \t%s %s=zetapack,vbros_pack_5", extractFileFromDirectoryPath(argv0).c_str(), GAME_ARGS[GAME_ARG_VALIDATE_TECHTREES]);
+	printf("\n\n\
+  %s\n\
+    Displays the version string of this program.", GAME_ARGS[GAME_ARG_VERSION]);
+
+	printf("\n\n\
+  %s\n\
+    Displays your video driver's OpenGL info.", GAME_ARGS[GAME_ARG_OPENGL_INFO]);
+
+	printf("\n\n\
+  %s\n\
+    Displays your SDL version information.", GAME_ARGS[GAME_ARG_SDL_INFO]);
+
+	printf("\n\n\
+  %s\n\
+    Displays your LUA version information.", GAME_ARGS[GAME_ARG_LUA_INFO]);
+
+	printf("\n\n\
+    %s\n\
+      Displays LUA debug information.", GAME_ARGS[GAME_ARG_LUA_DEBUG]);
+
+	printf("\n\n\
+    %s\n\
+      Displays your CURL version information.", GAME_ARGS[GAME_ARG_CURL_INFO]);
+
+	printf("\n\n\
+  %s\n\
+    Displays your XERCES version information.", GAME_ARGS[GAME_ARG_XERCES_INFO]);
+
+	printf("\n\n\
+  %s=x=purgeunused=purgeduplicates=gitdelete=hideduplicates\n\
+    Display a report detailing any known problems related to\n\
+    your selected techtrees game data.\n\
+      x               - comma-delimited list of techtrees to validate\n\
+      purgeunused     - optional parameter telling the validation to delete\n\
+                        extra files in the techtree that are not used\n\
+      purgeduplicates - optional parameter telling the validation to merge\n\
+                        duplicate files in the techtree\n\
+      gitdelete       - optional parameter telling the validation to call\n\
+                        'git rm' on duplicate and unused files in the techtree\n\
+      hideduplicates  - optional parameter telling the validation to NOT\n\
+                        SHOW duplicate files in the techtree\n\
+                        *NOTE: This only applies when files are purged due to\n\
+                        the above flags being set.\n\
+    example:\n\
+      %s %s=zetapack,vbros_pack_5",
+GAME_ARGS[GAME_ARG_VALIDATE_TECHTREES],
+extractFileFromDirectoryPath(argv0).c_str(),
+GAME_ARGS[GAME_ARG_VALIDATE_TECHTREES]);
 
 	printf("\n\n%s=x=purgeunused=purgeduplicates=hideduplicates  ", GAME_ARGS[GAME_ARG_VALIDATE_FACTIONS]);
 	printf("\n\n                     \tDisplay a report detailing any known problems related to");
