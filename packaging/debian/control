@@ -1,0 +1,54 @@
+Source: zetaglest
+Section: games
+Priority: extra
+Maintainer: ZetaGlest Team <zetaglest@gmail.com>
+Uploaders:
+ Andy Alt <andy400-dev@yahoo.com>
+Build-Depends:
+ cmake,
+ debhelper (>= 9),
+ libcppunit-dev,
+ libcurl4-gnutls-dev | libcurl4-nss-dev,
+ libfontconfig1-dev,
+ libfribidi-dev,
+ libftgl-dev,
+ libglew-dev,
+ libircclient-dev,
+ libjpeg-dev,
+ liblua5.1-0-dev,
+ libminiupnpc-dev,
+ libogg-dev,
+ libopenal-dev,
+ libpng-dev,
+ libsdl2-dev,
+ libvorbis-dev,
+ libwxgtk3.0-dev,
+ libxml2-dev,
+ libz-dev,
+ xauth,
+ xvfb
+Standards-Version: 3.9.8
+Homepage: https://github.com/ZetaGlest
+
+Package: zetaglest
+Architecture: any
+Depends:
+ famfamfam-flag-png,
+ fonts-liberation,
+ fonts-uralic,
+ zetaglest-data (>= 0.8.02),
+ p7zip-full,
+ fonts-dejavu-core,
+ fonts-wqy-zenhei,
+ ${misc:Depends},
+ ${shlibs:Depends}
+Description: 3D multi-player real time strategy game
+ ZetaGlest is a free 3D real-time customizable strategy game
+ which takes place in a context which could be compared to that of the
+ pre-renaissance Europe, with the licence that magic forces exist in the
+ environment and can be controlled.
+ .
+ The current version is fully playable and supports both single player
+ games against CPU controlled players and multiplayer matches over the
+ Internet or a LAN.
+

@@ -1,0 +1,7 @@
+?package(zetaglest): \
+ needs="X11" \
+ section="Games/Strategy" \
+ title="ZetaGlest" \
+ longtitle="A 3D real time strategy game." \
+ command="/usr/games/zetaglest" \
+ icon="/usr/share/pixmaps/zetaglest.xpm"
