@@ -200,26 +200,28 @@ void printParameterHelp(const char *argv0, bool foundInvalidArgs) {
 	if (foundInvalidArgs == true) {
 		printf("\n\n");
 	}
-	printf("\n\%s, usage\n\
-Commandline Parameter:  Description:\n\n\
-  %s Displays this help text.",
+	printf("\n\nUsage: %s [OPTION]... VALUE...\n\n\
+Options for running zetaglest from the command line\n\n\
+  %s display usage",
 extractFileFromDirectoryPath(argv0).c_str(), GAME_ARGS[GAME_ARG_HELP]);
-
+//
+// '--' options should be indented 2 spaces, regardless of indentation of
+// the 'printf' statement
+//
 	printf("\n\n\
-%s\n\
-  Automatically starts a game with the last game\n\
-  settings you played.",
+  %s\n\
+  Automatically starts a game with the last settings played",
 GAME_ARGS[GAME_ARG_AUTOSTART_LASTGAME]);
 
   printf("\n\n\
-%s=x\n\
+  %s=FILE\n\
   Loads the last saved game.\n\
-    Where 'x' is an optional name of the saved game file to load.\n\
-    If 'x' is not specified we load the last game that was saved.",
+    FILE - optional name of the saved game file to load.\n\
+    If FILE is not specified, the last game that was saved is loaded",
 GAME_ARGS[GAME_ARG_AUTOSTART_LAST_SAVED_GAME]);
 
   printf("\n\n\
-%s=x,y,z\n\
+  %s=x,y,z\n\
   Run in auto test mode\n\
     Where 'x' is an optional maximum # seconds to play.\n\
     If 'x' is not specified the default is 1200 seconds (20 minutes).\n\
@@ -231,41 +233,54 @@ GAME_ARGS[GAME_ARG_AUTOSTART_LAST_SAVED_GAME]);
     not specified (or is empty) then auto test continues to cycle.",
   GAME_ARGS[GAME_ARG_AUTO_TEST]);
 
-	printf("\n\n%s=x:y  \t\tAuto connect to host server at IP or hostname x using", GAME_ARGS[GAME_ARG_CONNECT]);
-	printf("\n\n                     \t    port y. Shortcut version of using %s and %s.", GAME_ARGS[GAME_ARG_CLIENT], GAME_ARGS[GAME_ARG_USE_PORTS]);
-	printf("\n                     \t*NOTE: to automatically connect to the first LAN host you may");
-	printf("\n\n                     \t    use: %s=auto-connect", GAME_ARGS[GAME_ARG_CONNECT]);
+	printf("\n\n\
+  %s=x:y\n\
+  Auto connect to host server at IP or hostname x using\n\
+  port y. Shortcut version of using %s and %s.\n\
+  *NOTE: to automatically connect to the first LAN host you may use:\n\
+    %s=auto-connect",
+GAME_ARGS[GAME_ARG_CONNECT], GAME_ARGS[GAME_ARG_CLIENT],
+  GAME_ARGS[GAME_ARG_USE_PORTS], GAME_ARGS[GAME_ARG_CONNECT]);
 
-	printf("\n\n%s=x  \tAuto connect to host server at IP or hostname x.", GAME_ARGS[GAME_ARG_CLIENT]);
-	printf("\n\n                     \t*NOTE: to automatically connect to the first LAN host you may");
-	printf("\n\n                     \t    use: %s=auto-connect", GAME_ARGS[GAME_ARG_CLIENT]);
+	printf("\n\n\
+  %s=x\n\
+  Auto connect to host server at IP or hostname x.\n\
+  *NOTE: to automatically connect to the first LAN host you may use\n\
+    %s=auto-connect",
+GAME_ARGS[GAME_ARG_CLIENT], GAME_ARGS[GAME_ARG_CLIENT]);
 
-	printf("\n\n%s  \t\tAuto create a host server.", GAME_ARGS[GAME_ARG_SERVER]);
+	printf("\n\n\
+  %s\n\
+   Auto create a host server.",
+GAME_ARGS[GAME_ARG_SERVER]);
 
-	printf("\n\n%s=x,x  ", GAME_ARGS[GAME_ARG_MASTERSERVER_MODE]);
-	printf("\n\n                     \tRun as a headless server.");
-	printf("\n\n                     \tWhere x is an optional comma delimited command list of one or");
-	printf("\n\n                     \t    more of the following: ");
-	printf("\n\n                     \t'exit' - which quits the application after a game has no more");
-	printf("\n\n                     \t    connected players.");
-	printf("\n\n                     \t'vps' - which does NOT read commands from the local console");
-	printf("\n\n                     \t    (for some vps's).");
-	printf("\n\n                     \t'lan' - which does not broadcast the hosting server to the");
-	printf("\n\n                     \t    masterserver (for local LAN games).");
+	printf("\n\n\
+  %s=x,x\n\
+  Run as a headless server.\n\
+  Where 'x' is an optional comma delimited command list of one or\n\
+  more of the following:\n\
+    exit  - the application quits after all players have disconnected\n\
+    vps   - commands from the local console are NOT read (for some vps's)\n\
+    lan   - prevents broadcasting the hosting server to the masterserver\n\
+            (for local LAN games).",
+GAME_ARGS[GAME_ARG_MASTERSERVER_MODE]);
 
-	printf("\n\n%s  ", GAME_ARGS[GAME_ARG_MASTERSERVER_STATUS]);
-	printf("\n\n                     \tCheck the current status of a headless server.");
+	printf("\n\n\
+  %s\n\
+  Check the current status of a headless server",
+GAME_ARGS[GAME_ARG_MASTERSERVER_STATUS]);
 
-	printf("\n\n%s=x,y,z  \tForce hosted games to listen internally on port", GAME_ARGS[GAME_ARG_USE_PORTS]);
-	printf("\n\n                     \t    x, externally on port y and for game status on port z.");
-	printf("\n\n                     \tWhere x is the internal port # on the local machine to");
-	printf("\n\n                     \t    listen for connects.");
-	printf("\n\n                     \tWhere y is the external port # on the router/proxy to");
-	printf("\n\n                     \t    forward connection from to the internal port #.");
-	printf("\n\n                     \tWhere z is the game status port # on the local machine");
-	printf("\n\n                     \t    to listen for status requests.");
-	printf("\n\n                     \t*NOTE: If enabled the FTP Server port #'s will be set");
-	printf("\n\n                     \t    to x+1 to x+9.");
+  printf("\n\n\
+  %s=x,y,z\n\
+  Force hosted games to listen internally on port 'x', externally on\n\
+  port 'y' and for game status on port 'z'\n\n\
+  'x' - internal listening port on the local machine\n\
+  'y' - external port on the router/proxy from which to forward connections\n\
+        to the internal port\n\
+  'z' - game status port on the local machine from which to listen\n\
+        for status requests\n\
+  NOTE: If enabled, the FTP Server port's will be set to x+1 to x+9.",
+GAME_ARGS[GAME_ARG_USE_PORTS]);
 
 	printf("\n\n%s=x  \tSet server title.", GAME_ARGS[GAME_ARG_SERVER_TITLE]);
 
