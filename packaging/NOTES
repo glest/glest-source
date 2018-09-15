@@ -1,0 +1,39 @@
+temp notes file (-andy5995)
+
+# common options for Cmake prior to `make install`
+
+cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/local \
+	-DZETAGLEST_DATA_INSTALL_PATH=$HOME/local/data/zetaglest \
+	-DZETAGLEST_BIN_INSTALL_PATH=games
+
+Install the project...
+-- Install configuration: "RelWithDebInfo"
+-- Up-to-date: /home/andy/local/bin/zetaglest
+-- Installing: /home/andy/local/share/man/man6/zetaglest.6
+-- Installing: /home/andy/local/data/zetaglest/start_zetaglest_gameserver
+-- Installing: /home/andy/local/data/zetaglest/glestkeys.ini
+-- Installing: /home/andy/local/data/zetaglest/servers.ini
+-- Installing: /home/andy/local/data/zetaglest/glest.ini
+-- Installing: /home/andy/local/data/zetaglest/zetaglest.ico
+-- Installing: /home/andy/local/bin/zetaglest_editor
+-- Installing: /home/andy/local/share/man/man6/zetaglest_editor.6
+-- Installing: /home/andy/local/data/zetaglest/editor.ico
+-- Installing: /home/andy/local/bin/zetaglest_g3dviewer
+-- Installing: /home/andy/local/share/man/man6/zetaglest_g3dviewer.6
+-- Installing: /home/andy/local/data/zetaglest/g3dviewer.ico
+
+FIXME: If ZETAGLEST_BIN_INSTALL_PATH is an absolute path, it tries to install
+/usr/local/bin
+
+
+# generating the man page
+
+
+
+				COMMAND ${XVFB_EXEC} --auto-servernum --server-num=770
+${HELP2MAN} --name="3D multi-player real time strategy game" --section=6 -N -o
+${HELP2MAN_OUT_PATH}${TARGET_NAME_MANPAGE} ${HELP2MAN_OUT_PATH}${TARGET_NAME}
+			DEPENDS ${TARGET_NAME})
+		ELSE()
+			add_custom_target(${TARGET_NAME_MANPAGE} ALL
+				COMMAND ${HELP2MAN} --name="${ZG_MANPAGE_DESCRIPTION}" --section=6 -N -o ${HELP2MAN_OUT_PATH}${TARGET_NAME_MANPAGE} ${HELP2MAN_OUT_PATH}${TARGET_NAME}

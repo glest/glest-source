@@ -163,14 +163,7 @@ IF(BUILD_ZETAGLEST_MAP_EDITOR)
 		SET(EXECUTABLE_OUTPUT_PATH "${ZETAGLEST_FRIENDLY_OUTPUT_PATH}")
 	ENDIF()
 
-        SET(HELP2MAN_OUT_PATH ${EXECUTABLE_OUTPUT_PATH})
-        IF("${EXECUTABLE_OUTPUT_PATH}" STREQUAL "")
-                SET(HELP2MAN_OUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/")
-        ENDIF()
-
         MESSAGE(STATUS "\n***Note: The final output path for ZetaGlest Map Editor will be [${ZETAGLEST_BIN_OUTPUT_DIR}]\n")
-
-	FIND_PROGRAM(HELP2MAN "help2man")
 
 	SET_SOURCE_FILES_PROPERTIES(${MG_INCLUDE_FILES} PROPERTIES HEADER_FILE_ONLY 1)
 
@@ -192,44 +185,20 @@ IF(BUILD_ZETAGLEST_MAP_EDITOR)
 	TARGET_LINK_LIBRARIES(${TARGET_NAME} libzetaglest)
 	TARGET_LINK_LIBRARIES(${TARGET_NAME} ${EXTERNAL_LIBS})
 
-	IF(EXISTS ${HELP2MAN} AND NOT APPLE)
-		# on mac <> --help sometimes hangs, so we need "NOT APPLE" ^ or some timeout here for now
-		MESSAGE(STATUS "***-- Found help2man: ${HELP2MAN} about to build manpage in [${HELP2MAN_OUT_PATH}${TARGET_NAME_MANPAGE}]")
+# Requires an install prefix for the items below to work
+	IF(NOT CMAKE_INSTALL_PREFIX STREQUAL "")
+		# Installation of the program
+		INSTALL(TARGETS
+			${TARGET_NAME}
+			DESTINATION ${ZETAGLEST_BIN_OUTPUT_DIR})
+			# Installation of the program manpage file
+		INSTALL(FILES
+			"${PROJECT_SOURCE_DIR}/${TARGET_NAME_MANPAGE}"
+			DESTINATION ${ZETAGLEST_MANPAGE_INSTALL_PATH})
 
-                SET(MG_MANPAGE_DESCRIPTION "Map editor for the popular 3D realtime strategy game")
-
-		IF(EXISTS ${XVFB_EXEC})
-			MESSAGE(STATUS "***-- Found xvfb-run: ${XVFB_EXEC} about to build manpage with it.")
-
-			add_custom_target(${TARGET_NAME_MANPAGE} ALL
-				COMMAND ${XVFB_EXEC} --auto-servernum --server-num=770 ${HELP2MAN} --no-discard-stderr --name="${MG_MANPAGE_DESCRIPTION}" --source="${TARGET_NAME}" --version-string="${TARGET_NAME}" --section=6 -N -o ${HELP2MAN_OUT_PATH}${TARGET_NAME_MANPAGE} ${HELP2MAN_OUT_PATH}${TARGET_NAME}
-			DEPENDS ${TARGET_NAME})
-		ELSE()
-			add_custom_target(${TARGET_NAME_MANPAGE} ALL
-				COMMAND ${HELP2MAN} --no-discard-stderr --name="${MG_MANPAGE_DESCRIPTION}" --source="${TARGET_NAME}" --version-string="${TARGET_NAME}" --section=6 -N -o ${HELP2MAN_OUT_PATH}${TARGET_NAME_MANPAGE} ${HELP2MAN_OUT_PATH}${TARGET_NAME}
-			DEPENDS ${TARGET_NAME})
-		ENDIF()
+			# Installation of the program config and image files
+		INSTALL(FILES
+			"${PROJECT_SOURCE_DIR}/mk/shared/editor.ico"
+			DESTINATION ${ZETAGLEST_INI_INSTALL_PATH})
 	ENDIF()
-
-        # Requires an install prefix for the items below to work
-        IF(NOT CMAKE_INSTALL_PREFIX STREQUAL "")
-	        # Installation of the program
-	        INSTALL(TARGETS
-		        ${TARGET_NAME}
-		        DESTINATION ${ZETAGLEST_BIN_OUTPUT_DIR})
-
-	        IF(EXISTS ${HELP2MAN} AND NOT "${ZETAGLEST_MANPAGE_INSTALL_PATH}" STREQUAL "" AND NOT APPLE)
-         		MESSAGE(STATUS "**NOTE: Will Install manpage [${TARGET_NAME_MANPAGE}] to [${ZETAGLEST_MANPAGE_INSTALL_PATH}]")
-
-		        # Installation of the program manpage file
-		        INSTALL(FILES
-		          "${HELP2MAN_OUT_PATH}${TARGET_NAME_MANPAGE}"
-		          DESTINATION ${ZETAGLEST_MANPAGE_INSTALL_PATH})
-	        ENDIF()
-
-	        # Installation of the program config and image files
-	        INSTALL(FILES
-                  "${PROJECT_SOURCE_DIR}/mk/shared/editor.ico"
-	          DESTINATION ${ZETAGLEST_INI_INSTALL_PATH})
-        ENDIF()
 ENDIF()
