@@ -1,0 +1,2 @@
+version=0.8
+https://github.com/ZetaGlest/zetaglest-source/releases .*/zetaglest-source-([\d.]+)\.(?:zip|tgz|tbz|txz|(?:tar\.(?:gz|bz2|xz)))

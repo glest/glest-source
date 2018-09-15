@@ -1,0 +1,28 @@
+#!/usr/bin/make -f
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+# Disable wxWidgets assertions
+export DEB_CPPFLAGS_MAINT_APPEND = -DNDEBUG
+
+%:
+	dh $@ --parallel
+
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		-DZETAGLEST_BIN_INSTALL_PATH=games \
+		-DZETAGLEST_DATA_INSTALL_PATH=share/games/zetaglest/ \
+		-DWANT_DEV_OUTPATH=ON
+
+override_dh_installchangelogs:
+	dh_installchangelogs docs/CHANGELOG.txt
+
+override_dh_install:
+	dh_install
+	# Remove empty directory
+	$(RM) -r debian/zetaglest/usr/share/games/zetaglest/data
+	echo \
+		"CountryTexturePath=/usr/share/flags/countries/16x11/" >> \
+		debian/zetaglest/usr/share/games/zetaglest/glest.ini
+
+get-orig-source:
+	uscan --verbose --download-current-version --force-download
