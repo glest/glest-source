@@ -99,13 +99,53 @@ lua51 miniupnpc openal sdl2 wxgtk3 xerces-c cmake ftjam git mesa`
 
 ## Compiling
 
-### Linux
+### Linux and Mac OS X
 
-    ./build-zg.sh
+#### build and run without installing
 
-### Mac OS X
+From the top of the project source directory:
 
-    ./build-zg.sh
+    mk build
+    cd build
+    cmake .. -DCMAKE_INSTALL_PREFIX=""
+    make
+    make install (copies 3 required files)
+
+The zetaglest binaries will be in the `build/` directory. Run
+'./zetaglest' to start the game.
+
+#### build and install
+
+From the top of the project source directory:
+
+    mk build
+    cd build
+
+**Note:** Using the paths specified below, you will need super-user
+privileges when you run `make install`.
+
+    cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DZETAGLEST_DATA_INSTALL_PATH=share/games/zetaglest \
+    -DZETAGLEST_BIN_INSTALL_PATH=games
+
+    make install
+
+**Note:** The majority of the game data is not installed during the
+steps above.
+
+#### Uninstalling
+
+Makefiles generated with cmake do not have an 'uninstall' option. There
+is a [discussion at this
+link](https://stackoverflow.com/questions/41471620/cmake-support-make-uninstall)
+on how to do that.
+
+Instead of using `make install`, you may wish to install from a
+specific distribution package. Later, you could uninstall using your package
+manager.
+
+**Note:** Installation is not necessary to run the game.
 
 ### Windows
 
@@ -113,8 +153,15 @@ lua51 miniupnpc openal sdl2 wxgtk3 xerces-c cmake ftjam git mesa`
 
 ### OpenBSD
 
-`cmake <-DCMAKE_CXX_COMPILER=eg++>`
+From the top of the project source directory:
 
-`make`
+    mkdir build
+    cd build
+    cmake .. -DCMAKE_CXX_COMPILER=eg++ -DCMAKE_INSTALL_PREFIX=""
+    make
+    make install (copies 3 required files)
+
+The zetaglest binaries will be in the `build/` directory. Run
+'./zetaglest' to start the game.
 
 ### Other (add sections)

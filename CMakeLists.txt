@@ -311,36 +311,28 @@ ELSE()
 	SET(ZETAGLEST_BIN_OUTPUT_DIR "${ZETAGLEST_BIN_INSTALL_PATH}")
 ENDIF()
 
-OPTION(WANT_DEV_OUTPATH "Use developer friendly output paths." OFF)
-IF(UNIX AND "${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-	SET(ZETAGLEST_FRIENDLY_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/mk/linux/")
-ELSEIF(UNIX AND APPLE)
-	SET(ZETAGLEST_FRIENDLY_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/mk/macos/")
-ELSEIF(UNIX AND NOT APPLE)
-	SET(ZETAGLEST_FRIENDLY_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/mk/other_unix/")
-ELSE()
-	SET(ZETAGLEST_FRIENDLY_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/data/glest_game/")
-ENDIF()
+# output binaries to the top level of the build directory
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
 IF(WIN32)
 	SET(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH}
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/lib
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/xerces-c-src_2_8_0/lib
-           ${PROJECT_SOURCE_DIR}/source/win32_deps/wxWidgets-2.8.10/lib)
+		${PROJECT_SOURCE_DIR}/source/win32_deps/lib
+		${PROJECT_SOURCE_DIR}/source/win32_deps/xerces-c-src_2_8_0/lib
+		${PROJECT_SOURCE_DIR}/source/win32_deps/wxWidgets-2.8.10/lib)
 
 	SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH}
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/include
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/openal-soft-1.12.854/include
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/openal-soft-1.12.854
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/xerces-c-src_2_8_0/include
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/libogg-1.2.1/include
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/lua-5.1/src
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/jpeg-8b
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/lpng141
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/zlib-1.2.5
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/curl-7.21.3/include
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/${SDL_WINDOWS_DIR_DINC}/include
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/wxWidgets-2.8.10/include)
+		${PROJECT_SOURCE_DIR}/source/win32_deps/include
+		${PROJECT_SOURCE_DIR}/source/win32_deps/openal-soft-1.12.854/include
+		${PROJECT_SOURCE_DIR}/source/win32_deps/openal-soft-1.12.854
+		${PROJECT_SOURCE_DIR}/source/win32_deps/xerces-c-src_2_8_0/include
+		${PROJECT_SOURCE_DIR}/source/win32_deps/libogg-1.2.1/include
+		${PROJECT_SOURCE_DIR}/source/win32_deps/lua-5.1/src
+		${PROJECT_SOURCE_DIR}/source/win32_deps/jpeg-8b
+		${PROJECT_SOURCE_DIR}/source/win32_deps/lpng141
+		${PROJECT_SOURCE_DIR}/source/win32_deps/zlib-1.2.5
+		${PROJECT_SOURCE_DIR}/source/win32_deps/curl-7.21.3/include
+		${PROJECT_SOURCE_DIR}/source/win32_deps/${SDL_WINDOWS_DIR_DINC}/include
+		${PROJECT_SOURCE_DIR}/source/win32_deps/wxWidgets-2.8.10/include)
 
 	link_directories(${PROJECT_SOURCE_DIR}/source/win32_deps/lib)
 	link_directories(${PROJECT_SOURCE_DIR}/source/win32_deps/xerces-c-src_2_8_0/lib)
@@ -356,8 +348,8 @@ IF(EXISTS "${PROJECT_SOURCE_DIR}/source/")
 	ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/shared_lib )
 	ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/glest_game )
 	#if(wxWidgets_FOUND)
-	  ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/glest_map_editor )
-	  ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/g3d_viewer )
+		ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/glest_map_editor )
+		ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/g3d_viewer )
 	#else()
 	#  MESSAGE(STATUS "WARNING... the following game tools will NOT be built since we cannot find wxWidgets on this machine")
 	#  MESSAGE(STATUS "map editor, g3d viewer")

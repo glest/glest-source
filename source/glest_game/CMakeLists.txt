@@ -6,7 +6,7 @@ SET(TARGET_NAME "zetaglest")
 SET(TARGET_NAME_MANPAGE "${TARGET_NAME}.6")
 
 IF(BUILD_ZETAGLEST)
-	MESSAGE(STATUS "Will try to build ZetaGlest game")
+	MESSAGE(STATUS "Building ${TARGET_NAME}")
 
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=gnu++11")
 
@@ -260,15 +260,13 @@ IF(BUILD_ZETAGLEST)
 		SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,-subsystem,console -mconsole")
 	ENDIF()
 
-	IF(WANT_DEV_OUTPATH)
-		SET(EXECUTABLE_OUTPUT_PATH "${ZETAGLEST_FRIENDLY_OUTPUT_PATH}")
-	ENDIF()
-
-  MESSAGE(STATUS "\n***Note: The final output path for the ZetaGlest engine will be [${ZETAGLEST_BIN_OUTPUT_DIR}]\n")
+  MESSAGE(STATUS "\n***Note: The final output path for the ZetaGlest engine will be [${CMAKE_RUNTIME_OUTPUT_DIRECTORY}]\n")
 
 	SET_SOURCE_FILES_PROPERTIES(${ZG_INCLUDE_FILES} PROPERTIES HEADER_FILE_ONLY 1)
 
 	ADD_EXECUTABLE(${TARGET_NAME} ${ZG_SOURCE_FILES} ${ZG_INCLUDE_FILES})
+
+
 
 	SET(ZG_STREFLOP "")
 	IF(WANT_USE_STREFLOP AND NOT STREFLOP_FOUND)
@@ -310,7 +308,7 @@ IF(BUILD_ZETAGLEST)
 		# Installation of the program
 		INSTALL(TARGETS
 		${TARGET_NAME}
-		DESTINATION "${ZETAGLEST_BIN_OUTPUT_DIR}")
+		DESTINATION "${ZETAGLEST_BIN_INSTALL_PATH}")
 
 		# Installation of the program manpage file
 		INSTALL(FILES
@@ -332,11 +330,11 @@ IF(BUILD_ZETAGLEST)
 				DESTINATION ${ZETAGLEST_INI_INSTALL_PATH})
 		ELSEIF(UNIX AND NOT APPLE)
 			INSTALL(FILES
-				"${PROJECT_SOURCE_DIR}/mk/linux/glest.ini"
+				"${PROJECT_SOURCE_DIR}/mk/shared/glest.ini"
 				DESTINATION ${ZETAGLEST_INI_INSTALL_PATH})
 		ELSEIF(UNIX AND APPLE)
 			INSTALL(FILES
-				"${PROJECT_SOURCE_DIR}/mk/macos/glest.ini"
+				"${PROJECT_SOURCE_DIR}/mk/shared/glest.ini"
 				DESTINATION ${ZETAGLEST_INI_INSTALL_PATH})
 			IF(WANT_SINGLE_INSTALL_DIRECTORY AND EXISTS "${PROJECT_SOURCE_DIR}/mk/macos/p7zip/")
 				INSTALL(DIRECTORY
@@ -358,5 +356,21 @@ IF(BUILD_ZETAGLEST)
 				"${PROJECT_SOURCE_DIR}/mk/macos/bundle_resources/MegaGlest.icns"
 				DESTINATION ${ZETAGLEST_ICON_INSTALL_PATH})
 		ENDIF()
+	ELSE()
+		# These files must be in the same directory as the zetaglest binary
+		# when "make install" isn't used
+		INSTALL (FILES	"${PROJECT_SOURCE_DIR}/mk/shared/glest.ini"
+										"${PROJECT_SOURCE_DIR}/mk/shared/glestkeys.ini"
+										"${PROJECT_SOURCE_DIR}/mk/shared/glest-dev.ini"
+			DESTINATION "${CMAKE_BINARY_DIR}")
+
+		# This is *almost* a better way to copy the 3 required files. The problem
+		# with the method below is that it won't copy them if the build target
+		# hasn't changed.
+		#
+		#add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
+		#	COMMAND cp "${PROJECT_SOURCE_DIR}/mk/shared/glest.ini" "${CMAKE_BINARY_DIR}"
+		#	COMMAND cp "${PROJECT_SOURCE_DIR}/mk/shared/glestkeys.ini" "${CMAKE_BINARY_DIR}"
+		#	COMMAND cp "${PROJECT_SOURCE_DIR}/mk/shared/glest-dev.ini" "${CMAKE_BINARY_DIR}")
 	ENDIF()
 ENDIF()

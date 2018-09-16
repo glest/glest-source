@@ -180,13 +180,7 @@ IF(BUILD_ZETAGLEST_TESTS)
 
 	SET_SOURCE_FILES_PROPERTIES(${MG_INCLUDE_FILES} PROPERTIES HEADER_FILE_ONLY 1)
 
-	IF(WANT_DEV_OUTPATH)
-		SET(EXECUTABLE_OUTPUT_PATH "${ZETAGLEST_FRIENDLY_OUTPUT_PATH}")
-	ENDIF()
-
 	MESSAGE(STATUS "EXTERNAL_LIBS = [${EXTERNAL_LIBS}]")
-
-        MESSAGE(STATUS "***Note: The final output path for the ZetaGlest engine will be [${EXECUTABLE_OUTPUT_PATH}]")
 
 	SET_SOURCE_FILES_PROPERTIES(${MG_INCLUDE_FILES} PROPERTIES HEADER_FILE_ONLY 1)
 
@@ -199,18 +193,25 @@ IF(BUILD_ZETAGLEST_TESTS)
 		TARGET_LINK_LIBRARIES(${TARGET_NAME} libzetaglest)
 	ENDIF()
 
-        TARGET_LINK_LIBRARIES(${TARGET_NAME} ${EXTERNAL_LIBS})
+	TARGET_LINK_LIBRARIES(${TARGET_NAME} ${EXTERNAL_LIBS})
+
+	set(XVFB_EXEC "")
+	find_program(XVFB_RUN NAMES "xvfb-run")
+	if (NOT ${XVFB_RUN} MATCHES "XVFB_RUN-NOTFOUND")
+		set(XVFB_EXEC ${XVFB_RUN})
+	endif()
+	mark_as_advanced(XVFB_RUN)
 	IF(NOT "${CMAKE_GENERATOR}" STREQUAL "Xcode")
 		# Run the unit tests after build
 		IF(EXISTS ${XVFB_EXEC})
 			MESSAGE("***-- Found xvfb-run: ${XVFB_EXEC} will run tests with it.")
 
 			add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
-				COMMAND ${XVFB_EXEC} --auto-servernum --server-num=770 ${EXECUTABLE_OUTPUT_PATH}${TARGET_NAME}
+				COMMAND ${XVFB_EXEC} --auto-servernum --server-num=770 "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${TARGET_NAME}"
 				COMMENT "***-- Found ZetaGlest test runner: ${TARGET_NAME} about to run unit tests via xvfb...")
 		ELSE()
 			add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
-				COMMAND ${EXECUTABLE_OUTPUT_PATH}${TARGET_NAME}
+				COMMAND "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${TARGET_NAME}"
 				COMMENT "***-- Found ZetaGlest test runner: ${TARGET_NAME} about to run unit tests...")
 		ENDIF()
 	ENDIF()
