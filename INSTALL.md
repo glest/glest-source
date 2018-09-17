@@ -17,13 +17,8 @@ the game from source and run it without installing
 
 ## Windows
 
-### Installer
-
-[https://github.com/ZetaGlest/windows-installer](ZetaGlest Windows Installer)
-
-### Build and Install from source code
-
-https://github.com/ZetaGlest/zetaglest-source/blob/develop/mk/windows/README.md
+* [Installer](ZetaGlest Windows Installer)
+* [Build and Install from source code](https://github.com/ZetaGlest/zetaglest-source/blob/develop/mk/windows/README.md)
 
 ## Linux, Mac OS, BSD
 
@@ -52,12 +47,11 @@ Make and install the program:
     make
     make install
 
-The binary will be in CMAKE_INSTALL_PREFIX/games (i.e. /usr/games)
+The binaries will be installed to CMAKE_INSTALL_PREFIX/games (i.e. /usr/games)
 
-Before you run `make`, you can confirm the installation directories of
-files that will be installed by entering `cmake .. -LH`. For example,
-These are the destination directories when
-`-DCMAKE_INSTALL_PREFIX=/home/andy/local` is used:
+Before you run `make`, you can confirm the installation directories by
+entering `cmake .. -LH`. For example, These are the destination
+directories when `-DCMAKE_INSTALL_PREFIX=/home/andy/local` is used:
 
 ```
 // The installation path for binaries
@@ -80,6 +74,9 @@ If you wish to install to a location that does not require super-user
 privileges, change '/usr' to a location to which you have write access.
 
 <!-- This needs to be duplicated in the BUILD.md and INSTALL.md doc -->
+See [running](https://github.com/ZetaGlest/zetaglest-source#running) for
+detailed information about running a server or hosting a game.
+
 The value for INSTALL_DIR_DATA is written to the game when compiled,
 therefore if you ever move your data directory, you will have to
 recompile ZetaGlest.

@@ -14,13 +14,15 @@ in one of 17 naturally looking settings, which, like the unit models,
 are crafted with great attention to detail. A lot of additional game
 data can be downloaded from within the game at no cost.
 
-* **README Contents**
- * [Stay Informed (Updates)](https://github.com/ZetaGlest/zetaglest-source#stay-informed-updates)
- * [Project Goals](https://github.com/ZetaGlest/zetaglest-source#why-this-fork-project-goals)
- * [Download executable files](https://github.com/ZetaGlest/zetaglest-source#download-executable-files)
- * [Extra Tech trees, mods, tilesets, scenarious (not yet available on the ZetaGlest server)](https://github.com/ZetaGlest/zetaglest-source#extra-tech-trees-mods-tilesets-scenarious-not-yet-available-on-the-zetaglest-server)
- * [Contributing and Testing](https://github.com/ZetaGlest/zetaglest-source#contributing-and-testing)
- * [Contact](https://github.com/ZetaGlest/zetaglest-source#contact)
+**README Contents**
+
+* [Stay Informed (Updates)](https://github.com/ZetaGlest/zetaglest-source#stay-informed-updates)
+* [Project Goals](https://github.com/ZetaGlest/zetaglest-source#why-this-fork-project-goals)
+* [Download executable files](https://github.com/ZetaGlest/zetaglest-source#download-executable-files)
+* [Running](https://github.com/ZetaGlest/zetaglest-source#running)
+* [Extra Tech trees, mods, tilesets, scenarious (not yet available on the ZetaGlest server)](https://github.com/ZetaGlest/zetaglest-source#extra-tech-trees-mods-tilesets-scenarious-not-yet-available-on-the-zetaglest-server)
+* [Contributing and Testing](https://github.com/ZetaGlest/zetaglest-source#contributing-and-testing)
+* [Contact](https://github.com/ZetaGlest/zetaglest-source#contact)
 
 **[System Requirements](https://zetaglest.github.io/docs/system_requirements.html)**
 
