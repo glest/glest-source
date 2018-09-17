@@ -1,43 +1,40 @@
 # BUILD.md
 
-The Mac build may need attention. If you are interested in helping us test
-that the build completes and the game runs, please post in this
-ticket: [Current
+The Mac build may need attention. If you are interested in helping us
+test that the build completes and the game runs, please post or
+subscribe to this ticket: [Current
 Status](https://github.com/ZetaGlest/zetaglest-source/issues/25)
 
-Getting the source:
+* **Getting the code:**
+  * [Set up the repositories locally](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#set-up-the-repositories-locally)
+  * [cloning your forks](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#procedure-for-cloning-your-forks)
 
-[Set up the repositories locally](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#set-up-the-repositories-locally)
+* **Dependencies**
+  * [Windows](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#windows)
+  * [Linux, Mac OS, *BSD](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#linux)
+  * [Arch Linux](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#arch-linux)
+  * [Mac OS](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#mac-os)
+  * [BSD](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#bsd)
 
-[cloning your forks](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#procedure-for-cloning-your-forks)
+* * [Installing](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#installing)
 
-Dependencies:
-
-[Linux, Mac OS, *BSD](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#linux)
-
-[Arch Linux](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#arch-linux)
-
-[Windows](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#windows)
-
-[Mac OS](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#mac-os)
-
-[BSD](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#bsd)
-
-Compiling:
-
-[Compiling](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#compiling)
-
-
+* **Compiling**
+  * [Windows](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#windows)
+  * [Linux, Mac OS, *BSD](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#windows-1)
 
 ## Set up the repositories locally
 
-If you would like to contribute to development, you will need to
-**fork** and then **clone your forks** of these 2 repositories:
+If you think you may be contributing to development, we suggest
+[**forking**](https://github.com/ZetaGlest/zetaglest-source#fork-destination-box)
+and then **cloning your forks** of these 2 repositories. If you only
+want to build and test out the game, and have no plans of submitting
+patches, you don't need to worry about using the fork option (You can
+fork later if you change your mind).
 
 * https://github.com/ZetaGlest/zetaglest-source
 * https://github.com/ZetaGlest/zetaglest-data
 
-### Procedure for cloning your forks
+### Procedure for cloning
 
 1. Create a new directory to clone your **zetaglest-source** and
 **zetaglest-data** into e.g. call it `ZetaGlest`.
@@ -45,7 +42,7 @@ If you would like to contribute to development, you will need to
 2. Enter (or 'cd') into the new directory (`ZetaGlest` in the example).
 
 3. clone **zetaglest-source** and **zetaglest-data** using the clone
-info provided by your fork. (Use the "Clone or Download" link, but
+info provided by your fork or the main repos. (Use the "Clone or Download" link, but
 **do** select `clone` **not** `Download Zip`.) Make sure the cloned
 repo directories are in the same directory, adjacent to each other (and
 **not** in a subdirectory).
@@ -84,6 +81,12 @@ To view all available options, use `cmake .. -LH` while in the build directory.
 
 ## Dependencies
 
+### Windows
+
+Follow the
+[instructions](https://github.com/ZetaGlest/zetaglest-source/blob/develop/mk/windows/README.md)
+listed in the `Windows` directory.
+
 ### Linux
 
 On Debian, Ubuntu, Fedora, Opensuse and even more Linux distributions,
@@ -109,10 +112,6 @@ gcc g++ cmake libsdl2-dev libalut-dev libgl1-mesa-dev libglu1-mesa-dev libvorbis
  librtmp-dev
 
 [Current Status](https://github.com/ZetaGlest/zetaglest-source/issues/25)
-
-### Windows
-
-Follow the [instructions](https://github.com/ZetaGlest/zetaglest-source/blob/develop/mk/windows/README.md) listed in the `Windows` directory.
 
 ### Mac OS
 
@@ -144,13 +143,15 @@ lua51 miniupnpc openal sdl2 wxgtk3 xerces-c cmake ftjam git mesa`
 
 (Add other specific operating systems)
 
-## Compiling
+## Installing
 
 Now that you have the source code and the dependencies, you can either
 compile ZetaGlest and run it without installing, or you can set options
 to install it. If you plan to **install**, then you can **skip the sections below**
 and read
 [INSTALL.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/INSTALL.md)
+
+## Compiling
 
 ### Windows
 
@@ -186,6 +187,8 @@ After you run `cmake` for the first time, you won't need to specify any
 options unless you want to change previously-used options. Just use
 
     cmake ..
+
+(You'll need to run `make` and `make install` to rebuild.)
 
 If you want to completely erase your previously-used options, remove
 `build/CMakeCache.txt`.
