@@ -6,6 +6,15 @@
 
 # ----------------------------------------------------------------------------
 
+echo ""
+echo "This script has been deprecated. Please see"
+echo "https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md"
+echo "For updated build instructions."
+echo ""
+
+exit 0
+
+
 #
 # Configuration section
 #

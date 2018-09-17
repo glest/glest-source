@@ -3,6 +3,8 @@
 
 OPTION(FORCE_EMBEDDED_LIBS "Force use of embedded libraries' code." OFF)
 
+SET(CXXFLAGS "${CXXFLAGS} -DDATADIR=${ZETAGLEST_DATADIR}")
+
 # IMPORTANT: should come BEFORE finding packages
 find_package(PkgConfig REQUIRED)
 IF(FORCE_STREFLOP_SOFTWRAPPER)

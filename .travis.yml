@@ -57,17 +57,29 @@ before_install:
 
 script:
 # ALL THE BUILD COMMANDS HERE
-  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ] && [ "$Tr_Compiler_Version" != "6" ]; then
+  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ]; then
         mkdir build;
         cd build;
-        cmake .. -DCMAKE_INSTALL_PREFIX=$PWD/local -DZETAGLEST_DATA_INSTALL_PATH=$PWD/local/data/zetaglest;
+        cmake ..  -DCMAKE_INSTALL_PREFIX=$PWD/local \
+                  -DBUILD_ZETAGLEST_TESTS=ON;
         make && make install;
     fi
-  # use gcc 6 to test build using embedded libs, add -z option
-  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ] && [ "$Tr_Compiler_Version" = "6" ]; then mk/linux/build-zg.sh -e; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" != "" ]; then mk/linux/build-zg.sh -w; fi
-  # ^ -w may be removed on more modern dist: than trusty, problems related with 'new wx+clang+old gcc'
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then mk/macos/build-zg.sh; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" != "" ]; then
+        mkdir build;
+        cd build;
+        cmake ..  -DCMAKE_INSTALL_PREFIX=$PWD/local \
+                  -DBUILD_ZETAGLEST_TESTS=ON \
+                  -DBUILD_ZETAGLEST_MAP_EDITOR=OFF \
+                  -DBUILD_ZETAGLEST_MODEL_VIEWER=OFF;
+        make && make install;
+    fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+        mkdir build;
+        cd build;
+        cmake ..  -DCMAKE_INSTALL_PREFIX=$PWD/local \
+                  -DBUILD_ZETAGLEST_TESTS=ON;
+        make && make install;
+    fi
 
 # https://docs.travis-ci.com/user/notifications/#IRC-notification
 notifications:

@@ -101,15 +101,14 @@ lua51 miniupnpc openal sdl2 wxgtk3 xerces-c cmake ftjam git mesa`
 
 ### Linux and Mac OS X
 
-#### build and run without installing
+#### compile without installing
 
 From the top of the project source directory:
 
     mk build
     cd build
-    cmake .. -DCMAKE_INSTALL_PREFIX=""
+    cmake .. -DZETAGLEST_DATADIR=<absolute-path-to-data>
     make
-    make install (copies 3 required files)
 
 The zetaglest binaries will be in the `build/` directory. Run
 './zetaglest' to start the game.
@@ -124,15 +123,16 @@ From the top of the project source directory:
 **Note:** Using the paths specified below, you will need super-user
 privileges when you run `make install`.
 
-    cmake .. \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DZETAGLEST_DATA_INSTALL_PATH=share/games/zetaglest \
-    -DZETAGLEST_BIN_INSTALL_PATH=games
-
+    cmake .. -DCMAKE_INSTALL_PREFIX=/usr
     make install
 
+If you wish to install to a location that does not require super-user
+privileges, change '/usr' to a location to which you have write access.
+
 **Note:** The majority of the game data is not installed during the
-steps above.
+steps above. The files from the zetaglest-data repo must be copied into
+CMAKE_INSTALL_PREFIX/share/zetaglest/
+(Packages will be created soon -andy5995 2018-09-16)
 
 #### Uninstalling
 
@@ -157,9 +157,8 @@ From the top of the project source directory:
 
     mkdir build
     cd build
-    cmake .. -DCMAKE_CXX_COMPILER=eg++ -DCMAKE_INSTALL_PREFIX=""
+    cmake .. -DZETAGLEST_DATADIR=<absolute-path-to-data>
     make
-    make install (copies 3 required files)
 
 The zetaglest binaries will be in the `build/` directory. Run
 './zetaglest' to start the game.

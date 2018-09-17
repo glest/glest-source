@@ -2,13 +2,13 @@ temp notes file (-andy5995)
 
 # common options for Cmake prior to `make install`
 
-cmake .. \
--DCMAKE_INSTALL_PREFIX=/usr \
--DZETAGLEST_DATA_INSTALL_PATH=share/games/zetaglest \
--DZETAGLEST_BIN_INSTALL_PATH=games
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+
+To see other install locations, use `cmake .. -LH`. In many cases, just
+using CMAKE_INSTALL_PREFIX will be sufficient
+
 
 # generating the man page
-
 
 
 				COMMAND ${XVFB_EXEC} --auto-servernum --server-num=770
@@ -18,3 +18,8 @@ ${HELP2MAN_OUT_PATH}${TARGET_NAME_MANPAGE} ${HELP2MAN_OUT_PATH}${TARGET_NAME}
 		ELSE()
 			add_custom_target(${TARGET_NAME_MANPAGE} ALL
 				COMMAND ${HELP2MAN} --name="${ZG_MANPAGE_DESCRIPTION}" --section=6 -N -o ${HELP2MAN_OUT_PATH}${TARGET_NAME_MANPAGE} ${HELP2MAN_OUT_PATH}${TARGET_NAME}
+
+
+# Searcn and replace using 'git grep'
+
+git grep -l 'original_text' | xargs sed -i 's/original_text/new_text/g'

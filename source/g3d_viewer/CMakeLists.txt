@@ -5,7 +5,7 @@ SET(TARGET_NAME "zetaglest_g3dviewer")
 SET(TARGET_NAME_MANPAGE "${TARGET_NAME}.6")
 
 IF(BUILD_ZETAGLEST_MODEL_VIEWER)
-	MESSAGE(STATUS "Will try to build ZetaGlest model viewer")
+	MESSAGE(STATUS "Build ${TARGET_NAME} = YES")
 
 	ADD_DEFINITIONS("-std=c++11")
 
@@ -179,8 +179,6 @@ IF(BUILD_ZETAGLEST_MODEL_VIEWER)
 			ENDIF(APPLE)
 	ENDFOREACH(DIR)
 
-	MESSAGE(STATUS "\n***Note: The final output path for ZetaGlest G3d Viewer will be [${CMAKE_RUNTIME_OUTPUT_DIRECTORY}]\n")
-
 	SET_SOURCE_FILES_PROPERTIES(${MG_INCLUDE_FILES} PROPERTIES HEADER_FILE_ONLY 1)
 
 	ADD_EXECUTABLE(${TARGET_NAME} ${MG_SOURCE_FILES} ${MG_INCLUDE_FILES})
@@ -192,21 +190,19 @@ IF(BUILD_ZETAGLEST_MODEL_VIEWER)
 	TARGET_LINK_LIBRARIES(${TARGET_NAME} libzetaglest)
 	TARGET_LINK_LIBRARIES(${TARGET_NAME} ${EXTERNAL_LIBS})
 
-	# Requires an install prefix for the items below to work
-	IF(NOT CMAKE_INSTALL_PREFIX STREQUAL "")
-		# Installation of the program
-		INSTALL(TARGETS
-		${TARGET_NAME}
-		DESTINATION "${ZETAGLEST_BIN_INSTALL_PATH}")
+	# Installation of the program
+	INSTALL(TARGETS
+	${TARGET_NAME}
+	DESTINATION "${ZETAGLEST_BIN_INSTALL_PATH}")
 
-		# Installation of the program manpage file
-		INSTALL(FILES
-		"${PROJECT_SOURCE_DIR}/${TARGET_NAME_MANPAGE}"
-		DESTINATION ${ZETAGLEST_MANPAGE_INSTALL_PATH})
+	# Installation of the program manpage file
+	INSTALL(FILES
+	"${PROJECT_SOURCE_DIR}/man/${TARGET_NAME_MANPAGE}"
+	DESTINATION ${ZETAGLEST_MANPAGE_INSTALL_PATH})
 
-		# Installation of the program config and image files
-		INSTALL(FILES
-	"${PROJECT_SOURCE_DIR}/mk/shared/g3dviewer.ico"
-		DESTINATION ${ZETAGLEST_INI_INSTALL_PATH})
-	ENDIF()
+	# Installation of the program config and image files
+	INSTALL(FILES
+"${PROJECT_SOURCE_DIR}/mk/shared/g3dviewer.ico"
+	DESTINATION ${ZETAGLEST_INI_INSTALL_PATH})
+
 ENDIF()
