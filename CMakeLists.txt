@@ -36,7 +36,6 @@ OPTION(BUILD_ZETAGLEST_MAP_EDITOR "Build map editor" ON)
 OPTION(BUILD_ZETAGLEST "Build ZetaGlest" ON)
 OPTION(BUILD_ZETAGLEST_TESTS "Build ZetaGlest Unit Tests" OFF)
 OPTION(WANT_STATIC_LIBS "Builds as many static libs as possible." OFF)
-OPTION(WANT_USE_VLC "Use libVLC to play videos." ON)
 OPTION(WANT_USE_OpenSSL "Use libOpenSSL during CURL linking." ON)
 OPTION(WANT_USE_FriBiDi "Enable libFriBIDi support." ON)
 OPTION(WANT_USE_GoogleBreakpad "Enable GoogleBreakpad support." ON)
@@ -228,12 +227,6 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 	string(TOUPPER "${CMAKE_BUILD_TYPE}" ZG_BUILD_TYPE)
 
 	SET(CMAKE_CXX_FLAGS_{ZG_BUILD_TYPE} "${CMAKE_CXX_FLAGS_${ZG_BUILD_TYPE}} -DDATADIR=${ZETAGLEST_DATADIR}")
-
-	IF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD" OR
-			${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD" OR
-			${CMAKE_SYSTEM_NAME} MATCHES "NetBSD")
-		SET (CMAKE_CXX_COMPILER "eg++" CACHE STRING "On BSD systems, the compiler to use")
-	ENDIF()
 
 	# We do some funky character escaping to get the right stuff written out to
 	# the final Makefile so we get the GIT Global Revsion #

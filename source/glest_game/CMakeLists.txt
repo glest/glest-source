@@ -98,11 +98,11 @@ IF(BUILD_ZETAGLEST)
 	INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIRS})
 	IF(UNIX)
 		IF(NOT OPENSSL_FOUND)
-		    # default
-		    SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${CURL_LIBRARIES})
+			# default
+			SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${CURL_LIBRARIES})
 		ELSE()
-		    # mageia
-		    SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${CURL_LIBRARIES} ${OPENSSL_LIBRARIES})
+		  # mageia
+			SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${CURL_LIBRARIES} ${OPENSSL_LIBRARIES})
 		ENDIF()
 	ENDIF()
 
@@ -112,73 +112,44 @@ IF(BUILD_ZETAGLEST)
 		SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${GLEW_LIBRARIES})
 	ENDIF()
 
-	IF(VLC_MIN_VERSION_ZG)
-		SET(LIBVLC_MIN_VERSION "${VLC_MIN_VERSION_ZG}")
+
+	find_package(PkgConfig REQUIRED)
+	IF(FORCE_STREFLOP_SOFTWRAPPER)
+			pkg_search_module(STREFLOP streflop-soft)
 	ELSE()
-		SET(LIBVLC_MIN_VERSION "1.1.0")
-	ENDIF()
-	IF(WANT_USE_VLC)
-		FIND_PACKAGE(LIBVLC)
-	ENDIF()
-	IF(LIBVLC_FOUND AND NOT LIBVLC_VERSION STRLESS "${LIBVLC_MIN_VERSION}")
-		MESSAGE(STATUS "**NOTE: LIBVLC found so intro videos are supported.")
-		INCLUDE_DIRECTORIES(${LIBVLC_INCLUDE_DIR})
-		IF(UNIX)
-			SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${LIBVLCCORE_LIBRARY} ${LIBVLC_LIBRARY})
-			ADD_DEFINITIONS(-DHAS_LIBVLC)
-		ENDIF()
-		IF(LIBVLC_VERSION_PRE_V2)
-			ADD_DEFINITIONS(-DLIBVLC_VERSION_PRE_2)
-		ENDIF()
-		IF(LIBVLC_VERSION_PRE_1_1_13)
-			ADD_DEFINITIONS(-DLIBVLC_VERSION_PRE_1_1_13)
-		ENDIF()
-	ELSE()
-		IF(WANT_USE_VLC)
-			MESSAGE(STATUS "**WARNING: LIBVLC NOT found so videos are NOT supported.")
+		IF(HAS_SSE_EXTENSIONS AND NOT ${FORCE_MAX_SSE_LEVEL} MATCHES "0")
+			pkg_search_module(STREFLOP streflop-sse)
 		ELSE()
-			MESSAGE(STATUS "LIBVLC disabled so videos are NOT supported.")
+			IF(HAS_X87_SUPPORT)
+				pkg_search_module(STREFLOP streflop-x87)
+			ELSE()
+				pkg_search_module(STREFLOP streflop-soft)
+			ENDIF()
 		ENDIF()
 	ENDIF()
+	IF(NOT STREFLOP_FOUND)
+			pkg_search_module(STREFLOP streflop)
+	ENDIF()
+	MESSAGE(STATUS "Search for Library STREFLOP result = ${STREFLOP_FOUND} libs: ${STREFLOP_LIBRARIES} include dirs: ${STREFLOP_INCLUDE_DIRS}")
 
-    find_package(PkgConfig REQUIRED)
-    IF(FORCE_STREFLOP_SOFTWRAPPER)
-        pkg_search_module(STREFLOP streflop-soft)
-    ELSE()
-        IF(HAS_SSE_EXTENSIONS AND NOT ${FORCE_MAX_SSE_LEVEL} MATCHES "0")
-            pkg_search_module(STREFLOP streflop-sse)
-        ELSE()
-            IF(HAS_X87_SUPPORT)
-                pkg_search_module(STREFLOP streflop-x87)
-            ELSE()
-                pkg_search_module(STREFLOP streflop-soft)
-            ENDIF()
-        ENDIF()
-    ENDIF()
-    IF(NOT STREFLOP_FOUND)
-        pkg_search_module(STREFLOP streflop)
-    ENDIF()
-    MESSAGE(STATUS "Search for Library STREFLOP result = ${STREFLOP_FOUND} libs: ${STREFLOP_LIBRARIES} include dirs: ${STREFLOP_INCLUDE_DIRS}")
+	IF(FORCE_EMBEDDED_LIBS)
+		SET(STREFLOP_FOUND OFF)
+		MESSAGE(STATUS "FORCING USE of EMBEDDED Libraries...")
+	ENDIF()
 
-    IF(FORCE_EMBEDDED_LIBS)
-        SET(STREFLOP_FOUND OFF)
-        MESSAGE(STATUS "FORCING USE of EMBEDDED Libraries...")
-    ENDIF()
-
-    IF(WANT_USE_STREFLOP)
-        IF(STREFLOP_FOUND)
-            INCLUDE_DIRECTORIES(${STREFLOP_INCLUDE_DIRS} ${STREFLOP_INCLUDE_DIRS}/streflop)
-            SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${STREFLOP_LIBRARIES})
-
-		    ADD_DEFINITIONS("-DUSE_STREFLOP_PKG")
-        ENDIF()
-    ENDIF()
+	IF(WANT_USE_STREFLOP)
+		IF(STREFLOP_FOUND)
+			INCLUDE_DIRECTORIES(${STREFLOP_INCLUDE_DIRS} ${STREFLOP_INCLUDE_DIRS}/streflop)
+			SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${STREFLOP_LIBRARIES})
+			ADD_DEFINITIONS("-DUSE_STREFLOP_PKG")
+		ENDIF()
+	ENDIF()
 
 	#########################################################################################
 	# zetaglest game
 
 	SET(DIRS_WITH_SRC
-	   	ai
+		ai
 		facilities
 		game
 		global
@@ -188,16 +159,16 @@ IF(BUILD_ZETAGLEST)
 		menu
 		network
 		sound
-        steam
-        steamshim
+		steam
+		steamshim
 		type_instances
 		types
 		world)
 
 	SET(GLEST_LIB_INCLUDE_ROOT "../shared_lib/include/")
 	SET(GLEST_LIB_INCLUDE_DIRS
-        ${GLEST_LIB_INCLUDE_ROOT}compression
-	    ${GLEST_LIB_INCLUDE_ROOT}platform/common
+		${GLEST_LIB_INCLUDE_ROOT}compression
+		${GLEST_LIB_INCLUDE_ROOT}platform/common
 		${GLEST_LIB_INCLUDE_ROOT}platform/posix
 		${GLEST_LIB_INCLUDE_ROOT}util
 		${GLEST_LIB_INCLUDE_ROOT}graphics
@@ -206,7 +177,7 @@ IF(BUILD_ZETAGLEST)
 		${GLEST_LIB_INCLUDE_ROOT}sound
 		${GLEST_LIB_INCLUDE_ROOT}sound/openal
 		${GLEST_LIB_INCLUDE_ROOT}xml
-        ${GLEST_LIB_INCLUDE_ROOT}xml/rapidxml
+		${GLEST_LIB_INCLUDE_ROOT}xml/rapidxml
 		${GLEST_LIB_INCLUDE_ROOT}glew
 		${GLEST_LIB_INCLUDE_ROOT}lua
 		${GLEST_LIB_INCLUDE_ROOT}map)

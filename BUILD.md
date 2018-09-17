@@ -53,7 +53,7 @@ gcc g++ cmake libsdl2-dev libalut-dev libgl1-mesa-dev libglu1-mesa-dev libvorbis
  libx11-dev liblua5.2-dev libjpeg-dev libpng-dev libcurl4-gnutls-dev libircclient-dev
  libglew-dev libftgl-dev libfribidi-dev libcppunit-dev libminiupnpc-dev libfreetype6-dev
 libgnutls28-dev libkrb5-dev libkrb5-dev libnghttp2-dev libopenal-dev libldap2-dev
-libwxgtk3.0-dev librtmp-dev libvlccore-dev libvlc-dev
+libwxgtk3.0-dev librtmp-dev
 
 Additionally for map editor and model viewer:
 
@@ -72,15 +72,12 @@ Follow the [instructions](https://github.com/ZetaGlest/zetaglest-source/blob/dev
 
 Below is a list of most of dependencies you will need.
 
-cmake libvorbis lua sdl2 openal wxWidgets fribidi ftgl nghttp2 gnutls glew jpeg png
-miniupnpc curl freeealut libircclient
-
-A C++11 compiler is mandatory, so base (or package) clang++, or eg++ (from 4.9.3)
+A C++11 compiler is mandatory, so base (or package) eg++ (from 4.9.3)
 
 You can install the dependencies using `pkg_add`:
 
-`pkg_add curl libvorbis openal sdl2 git miniupnpc cmake wxWidgets
-xerces-c lua icu4c freealut libircclient`
+`pkg_add cmake curl freealut ftgl glew gnutls icu4c jpeg lua libircclient libvorbis
+miniupnpc nghttp2 openal png sdl2 wxWidgets xerces-c`
 
 #### Optional
 
@@ -157,7 +154,7 @@ From the top of the project source directory:
 
     mkdir build
     cd build
-    cmake .. -DZETAGLEST_DATADIR=<absolute-path-to-data>
+    CC=`which egcc` CXX=`which eg++` cmake .. -DZETAGLEST_DATADIR=<absolute-path-to-data>
     make
 
 The zetaglest binaries will be in the `build/` directory. Run
