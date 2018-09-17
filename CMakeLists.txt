@@ -24,15 +24,17 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/mk/cmake/Modules)
 IF(CMAKE_BUILD_TYPE)
 	MESSAGE(STATUS "Build type for this compile will be: ${CMAKE_BUILD_TYPE}")
 ENDIF()
+
+# *BSD users should use eg++ and egcc. It's advised not to overwrite
+# $CMAKE_CXX_COMPILER, but instead precede `cmake` at the command line
+# using  CC=`which egcc` CXX=`which eg++`
+
 IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     SET(CMAKE_COMPILER_IS_GNUCXX "YES")
 #        ADD_DEFINITIONS("-Qunused-arguments -Wno-switch")
     ADD_DEFINITIONS("-Wno-switch")
 ENDIF()
 
-OPTION(BUILD_ZETAGLEST_MODEL_IMPORT_EXPORT_TOOLS "Build model import/export tools" ON)
-OPTION(BUILD_ZETAGLEST_MODEL_VIEWER "Build model viewer" ON)
-OPTION(BUILD_ZETAGLEST_MAP_EDITOR "Build map editor" ON)
 OPTION(BUILD_ZETAGLEST "Build ZetaGlest" ON)
 OPTION(BUILD_ZETAGLEST_TESTS "Build ZetaGlest Unit Tests" OFF)
 OPTION(WANT_STATIC_LIBS "Builds as many static libs as possible." OFF)
@@ -207,26 +209,28 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 		SET(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL "${CMAKE_EXE_LINKER_FLAGS_MINSIZEREL} -pthread")
 	ENDIF()
 
-	IF(NOT ZETAGLEST_BIN_INSTALL_PATH)
-		SET(ZETAGLEST_BIN_INSTALL_PATH "${CMAKE_INSTALL_PREFIX}/games" CACHE STRING "The installation path for binaries")
+	IF(NOT INSTALL_DIR_BIN)
+		SET(INSTALL_DIR_BIN "${CMAKE_INSTALL_PREFIX}/games" CACHE PATH "The installation path for binaries")
 	ENDIF()
-	IF(NOT ZETAGLEST_DATADIR)
-		SET(ZETAGLEST_DATADIR "${CMAKE_INSTALL_PREFIX}/share/zetaglest/" CACHE STRING "The installation path for data files")
+# The data dir will get defined as a macro at compile-time
+	IF(NOT INSTALL_DIR_DATA)
+		SET(INSTALL_DIR_DATA "${CMAKE_INSTALL_PREFIX}/share/zetaglest/" CACHE PATH "The installation path for data files")
 	ENDIF()
-	SET(ZETAGLEST_INI_INSTALL_PATH "${ZETAGLEST_DATADIR}")
-	IF(NOT ZETAGLEST_DESKTOP_INSTALL_PATH)
-		SET(ZETAGLEST_DESKTOP_INSTALL_PATH "${CMAKE_INSTALL_PREFIX}/applications/" CACHE STRING "The installation path for desktop files")
+	SET(INSTALL_DIR_INI "${INSTALL_DIR_DATA}")
+	IF(NOT INSTALL_DIR_DESKTOP)
+		SET(INSTALL_DIR_DESKTOP "${CMAKE_INSTALL_PREFIX}/applications/" CACHE PATH "The installation path for desktop files")
 	ENDIF()
-	IF(NOT ZETAGLEST_ICON_INSTALL_PATH)
-		SET(ZETAGLEST_ICON_INSTALL_PATH "${CMAKE_INSTALL_PREFIX}/share/pixmaps/" CACHE STRING "The installation path for icon files")
+	IF(NOT INSTALL_DIR_ICON)
+		SET(INSTALL_DIR_ICON "${CMAKE_INSTALL_PREFIX}/share/pixmaps/" CACHE PATH "The installation path for icon files")
 	ENDIF()
-	IF(NOT ZETAGLEST_MANPAGE_INSTALL_PATH)
-		SET(ZETAGLEST_MANPAGE_INSTALL_PATH "${CMAKE_INSTALL_PREFIX}/share/man/man6/" CACHE STRING "The installation path for manpage files")
+	IF(NOT INSTALL_DIR_MAN)
+		SET(INSTALL_DIR_MAN "${CMAKE_INSTALL_PREFIX}/share/man/man6/" CACHE PATH "The installation path for manpage files")
 	ENDIF()
 
 	string(TOUPPER "${CMAKE_BUILD_TYPE}" ZG_BUILD_TYPE)
 
-	SET(CMAKE_CXX_FLAGS_{ZG_BUILD_TYPE} "${CMAKE_CXX_FLAGS_${ZG_BUILD_TYPE}} -DDATADIR=${ZETAGLEST_DATADIR}")
+	add_definitions("-DDATADIR=${INSTALL_DIR_DATA}")
+	SET(CMAKE_CXX_FLAGS_{ZG_BUILD_TYPE} "${CMAKE_CXX_FLAGS_${ZG_BUILD_TYPE}}")
 
 	# We do some funky character escaping to get the right stuff written out to
 	# the final Makefile so we get the GIT Global Revsion #

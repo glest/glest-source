@@ -1,7 +1,9 @@
 # glexemel
 
-IF(BUILD_ZETAGLEST_MODEL_IMPORT_EXPORT_TOOLS)
-	MESSAGE(STATUS "Will try to build MegaGlest model import/export tools")
+OPTION(BUILD_MODEL_IMPORT_EXPORT_TOOLS "Build model import/export tools" OFF)
+MESSAGE(STATUS "Build Model Import/Export Tools = ${BUILD_MODEL_IMPORT_EXPORT_TOOLS}")
+
+IF(BUILD_MODEL_IMPORT_EXPORT_TOOLS)
 
 	add_executable(g2xml g2xml.c g3dv4.h)
 

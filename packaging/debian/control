@@ -25,8 +25,7 @@ Build-Depends:
  libwxgtk3.0-dev,
  libxml2-dev,
  libz-dev,
- xauth,
- xvfb
+ xauth
 Standards-Version: 3.9.8
 Homepage: https://github.com/ZetaGlest
 

@@ -5,6 +5,13 @@ This documents notable or significant changes to
 information about the game from which it was forked, please see the
 [MegaGlest home page](https://megaglest.org/).
 
+## 2018-09-17
+
+* The `mk/linux/build-zg.sh` and `mk/macos/build-zg.sh` scripts have
+    been deprecated. See the
+    [BUILD.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
+    document for updated instructions.
+
 ## 2018-09-07
 
 Upgrade [libircclient](https://sourceforge.net/projects/libircclient/) embedded library from 1.3 to 1.10/

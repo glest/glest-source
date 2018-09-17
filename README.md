@@ -36,16 +36,9 @@ Open games and [Server list and player stats](https://zetaglest.dreamhosters.com
 
 ZetaGlest forked from MegaGlest at v3.13.0-dev ([12998eb](https://github.com/ZetaGlest/zetaglest-source/commit/12998eb10f6447ac89a45d1e6d76f17946647b7a))
 
-I noticed that there were some good feature requests in the MegaGlest
-forum, as well as some mods, but it seemed that implementing and
-testing had a pace that I was uncomfortable with. After talking about
-this with another player, I decided to fork the project and see if I
-could assemble regular contributors and players who had similar
-feelings about the speed of progress, adding artwork, promoting mods
-made by contributors, and code enhancements. I would like to encourage
-contributions, no matter how small, in the hopes of improving an
-already fun game and making the experience even more fun that it has
-been for me.
+Because we love MegaGlest! We wanted to take the project into a
+slightly different direction, and therefore we forked MegaGlest into
+the ZetaGlest project.
 
 ## Download executable files
 
@@ -59,41 +52,22 @@ that once built, it would not run. Please help if you can.
 
 For other operating systems, you must [build from
 source](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md) (Later,
-we'll be providing binary packages). If you would like to play
-with other users, we recommend this **[dev
-snapshot](https://github.com/ZetaGlest/zetaglest-source/releases)**.
-You will also need to download the
-[data](https://github.com/ZetaGlest/zetaglest-data/releases).
+we'll be providing binary packages).
 
 (The ETA for the first official release can be viewed from the [development
 milestone](https://github.com/ZetaGlest/zetaglest-source/milestone/1).)
-
-See [Build instructions](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
-
-### Building the game yourself
 
 #### On Windows:
 
 [Follow the instructions in this Readme file](https://github.com/ZetaGlest/zetaglest-source/blob/develop/mk/windows/README.md).
 
-#### On Linux:
+## Running
 
-Use these commands:
+    ./zetaglest (if you didn't install)
 
-    mkdir ZetaGlest
-    cd ZetaGlest
-    git clone https://github.com/ZetaGlest/zetaglest-source.git
-    git clone https://github.com/ZetaGlest/zetaglest-data.git
+OR
 
-Afterward, to
-[build](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md),
-change to the zetaglest-source/mk/ directory, select your operating system and run
-
-    ./build-zg.sh
-
-To execute the game:
-
-    ./zetaglest
+    zetaglest (if you installed and the binary is in your PATH)
 
 To run your own headless (dedicated) server:
 

@@ -110,3 +110,7 @@ CPackConfig.cmake
 CPackSourceConfig.cmake
 /source/shared_lib/liblibmegaglest.a
 /source/shared_lib/sources/streflop/libstreflop.a
+
+# add build directories
+build
+local-build
