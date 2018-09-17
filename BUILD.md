@@ -73,14 +73,14 @@ Follow the [instructions](https://github.com/ZetaGlest/zetaglest-source/blob/dev
 Below is a list of most of dependencies you will need.
 
 cmake libvorbis lua sdl2 openal wxWidgets fribidi ftgl nghttp2 gnutls glew jpeg png
-miniupnpc curl freeealut
+miniupnpc curl freeealut libircclient
 
 A C++11 compiler is mandatory, so base (or package) clang++, or eg++ (from 4.9.3)
 
 You can install the dependencies using `pkg_add`:
 
 `pkg_add curl libvorbis openal sdl2 git miniupnpc cmake wxWidgets
-xerces-c lua icu4c freealut`
+xerces-c lua icu4c freealut libircclient`
 
 #### Optional
 
