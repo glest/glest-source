@@ -17,7 +17,7 @@ the game from source and run it without installing
 
 ## Windows
 
-* [Installer](ZetaGlest Windows Installer)
+* [ZetaGlest Windows Installer](https://github.com/ZetaGlest/windows-installer)
 * [Build and Install from source code](https://github.com/ZetaGlest/zetaglest-source/blob/develop/mk/windows/README.md)
 
 ## Linux, Mac OS, BSD
