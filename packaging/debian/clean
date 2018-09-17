@@ -1,5 +1,5 @@
-mk/linux/zetaglest_editor
-mk/linux/zetaglest
-mk/linux/zetaglest_g3dviewer
-source/tools/glexemel/g2xml
-source/tools/glexemel/xml2g
+build/zetaglest_editor
+build/zetaglest
+build/zetaglest_g3dviewer
+build/glexemel/g2xml
+build/glexemel/xml2g

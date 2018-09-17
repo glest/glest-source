@@ -9,9 +9,7 @@ export DEB_CPPFLAGS_MAINT_APPEND = -DNDEBUG
 
 override_dh_auto_configure:
 	dh_auto_configure -- \
-		-DZETAGLEST_BIN_INSTALL_PATH=games \
-		-DZETAGLEST_DATA_INSTALL_PATH=share/games/zetaglest/ \
-		-DWANT_DEV_OUTPATH=ON
+		-DCMAKE_INSTALL_PREFIX=/usr
 
 override_dh_installchangelogs:
 	dh_installchangelogs docs/CHANGELOG.txt

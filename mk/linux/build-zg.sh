@@ -6,6 +6,15 @@
 
 # ----------------------------------------------------------------------------
 
+echo ""
+echo "This script has been deprecated. Please see"
+echo "https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md"
+echo "For updated build instructions."
+echo ""
+
+exit 0
+
+
 #
 # Configuration section
 #
@@ -311,12 +320,12 @@ if [ $FORCE_32BIT_CROSS_COMPILE != 0 ]; then
 fi
 
 if [ "$COMPILATION_WITHOUT" != "0" ] && [ "$COMPILATION_WITHOUT" != "" ]; then
-	EXTRA_CMAKE_OPTIONS="${EXTRA_CMAKE_OPTIONS} -DBUILD_ZETAGLEST_MAP_EDITOR=OFF -DBUILD_ZETAGLEST_MODEL_VIEWER=OFF"
+	EXTRA_CMAKE_OPTIONS="${EXTRA_CMAKE_OPTIONS} -DBUILD_MAP_EDITOR=OFF -DBUILD_MODEL_VIEWER=OFF"
 fi
 
 if [ $MAKE_ONLY = 0 ]; then
         echo "Calling cmake with EXTRA_CMAKE_OPTIONS = ${EXTRA_CMAKE_OPTIONS} AND WANT_STATIC_LIBS = ${WANT_STATIC_LIBS}"
-        cmake -DCMAKE_INSTALL_PREFIX='' -DWANT_DEV_OUTPATH=ON $WANT_STATIC_LIBS -DBUILD_ZETAGLEST_TESTS=$BUILD_ZETAGLEST_TESTS -DBREAKPAD_ROOT=$BREAKPAD_ROOT $EXTRA_CMAKE_OPTIONS ../../..
+        cmake -DCMAKE_INSTALL_PREFIX='' $WANT_STATIC_LIBS -DBUILD_ZETAGLEST_TESTS=$BUILD_ZETAGLEST_TESTS -DBREAKPAD_ROOT=$BREAKPAD_ROOT $EXTRA_CMAKE_OPTIONS ../../..
         if [ $? -ne 0 ]; then
           echo 'ERROR: CMAKE failed.' >&2; exit 1
         fi

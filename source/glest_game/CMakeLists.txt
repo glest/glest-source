@@ -6,9 +6,10 @@ SET(TARGET_NAME "zetaglest")
 SET(TARGET_NAME_MANPAGE "${TARGET_NAME}.6")
 
 IF(BUILD_ZETAGLEST)
-	MESSAGE(STATUS "Will try to build ZetaGlest game")
+	MESSAGE(STATUS "Build ${TARGET_NAME} = YES")
 
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=gnu++11")
+	add_definitions("-DDATADIR=${INSTALL_DIR_DATA}")
 
 	IF(WIN32)
 		SET(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH}
@@ -98,11 +99,11 @@ IF(BUILD_ZETAGLEST)
 	INCLUDE_DIRECTORIES(${CURL_INCLUDE_DIRS})
 	IF(UNIX)
 		IF(NOT OPENSSL_FOUND)
-		    # default
-		    SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${CURL_LIBRARIES})
+			# default
+			SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${CURL_LIBRARIES})
 		ELSE()
-		    # mageia
-		    SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${CURL_LIBRARIES} ${OPENSSL_LIBRARIES})
+		  # mageia
+			SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${CURL_LIBRARIES} ${OPENSSL_LIBRARIES})
 		ENDIF()
 	ENDIF()
 
@@ -112,73 +113,44 @@ IF(BUILD_ZETAGLEST)
 		SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${GLEW_LIBRARIES})
 	ENDIF()
 
-	IF(VLC_MIN_VERSION_ZG)
-		SET(LIBVLC_MIN_VERSION "${VLC_MIN_VERSION_ZG}")
+
+	find_package(PkgConfig REQUIRED)
+	IF(FORCE_STREFLOP_SOFTWRAPPER)
+			pkg_search_module(STREFLOP streflop-soft)
 	ELSE()
-		SET(LIBVLC_MIN_VERSION "1.1.0")
-	ENDIF()
-	IF(WANT_USE_VLC)
-		FIND_PACKAGE(LIBVLC)
-	ENDIF()
-	IF(LIBVLC_FOUND AND NOT LIBVLC_VERSION STRLESS "${LIBVLC_MIN_VERSION}")
-		MESSAGE(STATUS "**NOTE: LIBVLC found so intro videos are supported.")
-		INCLUDE_DIRECTORIES(${LIBVLC_INCLUDE_DIR})
-		IF(UNIX)
-			SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${LIBVLCCORE_LIBRARY} ${LIBVLC_LIBRARY})
-			ADD_DEFINITIONS(-DHAS_LIBVLC)
-		ENDIF()
-		IF(LIBVLC_VERSION_PRE_V2)
-			ADD_DEFINITIONS(-DLIBVLC_VERSION_PRE_2)
-		ENDIF()
-		IF(LIBVLC_VERSION_PRE_1_1_13)
-			ADD_DEFINITIONS(-DLIBVLC_VERSION_PRE_1_1_13)
-		ENDIF()
-	ELSE()
-		IF(WANT_USE_VLC)
-			MESSAGE(STATUS "**WARNING: LIBVLC NOT found so videos are NOT supported.")
+		IF(HAS_SSE_EXTENSIONS AND NOT ${FORCE_MAX_SSE_LEVEL} MATCHES "0")
+			pkg_search_module(STREFLOP streflop-sse)
 		ELSE()
-			MESSAGE(STATUS "LIBVLC disabled so videos are NOT supported.")
+			IF(HAS_X87_SUPPORT)
+				pkg_search_module(STREFLOP streflop-x87)
+			ELSE()
+				pkg_search_module(STREFLOP streflop-soft)
+			ENDIF()
 		ENDIF()
 	ENDIF()
+	IF(NOT STREFLOP_FOUND)
+			pkg_search_module(STREFLOP streflop)
+	ENDIF()
+	MESSAGE(STATUS "Search for Library STREFLOP result = ${STREFLOP_FOUND} libs: ${STREFLOP_LIBRARIES} include dirs: ${STREFLOP_INCLUDE_DIRS}")
 
-    find_package(PkgConfig REQUIRED)
-    IF(FORCE_STREFLOP_SOFTWRAPPER)
-        pkg_search_module(STREFLOP streflop-soft)
-    ELSE()
-        IF(HAS_SSE_EXTENSIONS AND NOT ${FORCE_MAX_SSE_LEVEL} MATCHES "0")
-            pkg_search_module(STREFLOP streflop-sse)
-        ELSE()
-            IF(HAS_X87_SUPPORT)
-                pkg_search_module(STREFLOP streflop-x87)
-            ELSE()
-                pkg_search_module(STREFLOP streflop-soft)
-            ENDIF()
-        ENDIF()
-    ENDIF()
-    IF(NOT STREFLOP_FOUND)
-        pkg_search_module(STREFLOP streflop)
-    ENDIF()
-    MESSAGE(STATUS "Search for Library STREFLOP result = ${STREFLOP_FOUND} libs: ${STREFLOP_LIBRARIES} include dirs: ${STREFLOP_INCLUDE_DIRS}")
+	IF(FORCE_EMBEDDED_LIBS)
+		SET(STREFLOP_FOUND OFF)
+		MESSAGE(STATUS "FORCING USE of EMBEDDED Libraries...")
+	ENDIF()
 
-    IF(FORCE_EMBEDDED_LIBS)
-        SET(STREFLOP_FOUND OFF)
-        MESSAGE(STATUS "FORCING USE of EMBEDDED Libraries...")
-    ENDIF()
-
-    IF(WANT_USE_STREFLOP)
-        IF(STREFLOP_FOUND)
-            INCLUDE_DIRECTORIES(${STREFLOP_INCLUDE_DIRS} ${STREFLOP_INCLUDE_DIRS}/streflop)
-            SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${STREFLOP_LIBRARIES})
-
-		    ADD_DEFINITIONS("-DUSE_STREFLOP_PKG")
-        ENDIF()
-    ENDIF()
+	IF(WANT_USE_STREFLOP)
+		IF(STREFLOP_FOUND)
+			INCLUDE_DIRECTORIES(${STREFLOP_INCLUDE_DIRS} ${STREFLOP_INCLUDE_DIRS}/streflop)
+			SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${STREFLOP_LIBRARIES})
+			ADD_DEFINITIONS("-DUSE_STREFLOP_PKG")
+		ENDIF()
+	ENDIF()
 
 	#########################################################################################
 	# zetaglest game
 
 	SET(DIRS_WITH_SRC
-	   	ai
+		ai
 		facilities
 		game
 		global
@@ -188,16 +160,16 @@ IF(BUILD_ZETAGLEST)
 		menu
 		network
 		sound
-        steam
-        steamshim
+		steam
+		steamshim
 		type_instances
 		types
 		world)
 
 	SET(GLEST_LIB_INCLUDE_ROOT "../shared_lib/include/")
 	SET(GLEST_LIB_INCLUDE_DIRS
-        ${GLEST_LIB_INCLUDE_ROOT}compression
-	    ${GLEST_LIB_INCLUDE_ROOT}platform/common
+		${GLEST_LIB_INCLUDE_ROOT}compression
+		${GLEST_LIB_INCLUDE_ROOT}platform/common
 		${GLEST_LIB_INCLUDE_ROOT}platform/posix
 		${GLEST_LIB_INCLUDE_ROOT}util
 		${GLEST_LIB_INCLUDE_ROOT}graphics
@@ -206,7 +178,7 @@ IF(BUILD_ZETAGLEST)
 		${GLEST_LIB_INCLUDE_ROOT}sound
 		${GLEST_LIB_INCLUDE_ROOT}sound/openal
 		${GLEST_LIB_INCLUDE_ROOT}xml
-        ${GLEST_LIB_INCLUDE_ROOT}xml/rapidxml
+		${GLEST_LIB_INCLUDE_ROOT}xml/rapidxml
 		${GLEST_LIB_INCLUDE_ROOT}glew
 		${GLEST_LIB_INCLUDE_ROOT}lua
 		${GLEST_LIB_INCLUDE_ROOT}map)
@@ -260,12 +232,6 @@ IF(BUILD_ZETAGLEST)
 		SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,-subsystem,console -mconsole")
 	ENDIF()
 
-	IF(WANT_DEV_OUTPATH)
-		SET(EXECUTABLE_OUTPUT_PATH "${ZETAGLEST_FRIENDLY_OUTPUT_PATH}")
-	ENDIF()
-
-  MESSAGE(STATUS "\n***Note: The final output path for the ZetaGlest engine will be [${ZETAGLEST_BIN_OUTPUT_DIR}]\n")
-
 	SET_SOURCE_FILES_PROPERTIES(${ZG_INCLUDE_FILES} PROPERTIES HEADER_FILE_ONLY 1)
 
 	ADD_EXECUTABLE(${TARGET_NAME} ${ZG_SOURCE_FILES} ${ZG_INCLUDE_FILES})
@@ -284,7 +250,7 @@ IF(BUILD_ZETAGLEST)
 			SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${BREAKPAD_EXCEPTION_HANDLER_LIBRARIES})
 
 		else()
-			message(STATUS "** WARNING: Could not find GoogleBreakpad. Disabling GoogleBreakpad support.")
+			message(STATUS "** MESSAGE: Could not find GoogleBreakpad. Disabling GoogleBreakpad support.")
 		endif()
 	endif()
 
@@ -300,63 +266,54 @@ IF(BUILD_ZETAGLEST)
 	ENDIF()
 	TARGET_LINK_LIBRARIES(${TARGET_NAME} ${EXTERNAL_LIBS})
 
-	IF (NOT ZG_CMAKE_INSTALL_PREFIX STREQUAL "")
-		SET(CMAKE_INSTALL_PREFIX "${ZG_CMAKE_INSTALL_PREFIX}")
+	# Installation of the program
+	INSTALL(TARGETS
+	${TARGET_NAME}
+	DESTINATION "${INSTALL_DIR_BIN}")
+
+	# Installation of the program manpage file
+	INSTALL(FILES
+	"${PROJECT_SOURCE_DIR}/man/${TARGET_NAME_MANPAGE}"
+	DESTINATION ${INSTALL_DIR_MAN})
+
+	IF(UNIX)
+		INSTALL(PROGRAMS
+			"${PROJECT_SOURCE_DIR}/mk/linux/start_zetaglest_gameserver"
+			DESTINATION ${INSTALL_DIR_INI})
 	ENDIF()
-	# Requires an install prefix for the items below to work
-	IF(NOT CMAKE_INSTALL_PREFIX STREQUAL "")
-		MESSAGE(STATUS "**Source package INSTALL TRIGGERED [${PROJECT_SOURCE_DIR}]")
-
-		# Installation of the program
-		INSTALL(TARGETS
-		${TARGET_NAME}
-		DESTINATION "${ZETAGLEST_BIN_OUTPUT_DIR}")
-
-		# Installation of the program manpage file
+	INSTALL(FILES
+		"${PROJECT_SOURCE_DIR}/mk/shared/glestkeys.ini"
+		"${PROJECT_SOURCE_DIR}/mk/shared/servers.ini"
+		DESTINATION ${INSTALL_DIR_DATA})
+	IF(WIN32)
 		INSTALL(FILES
-		"${PROJECT_SOURCE_DIR}/${TARGET_NAME_MANPAGE}"
-		DESTINATION ${ZETAGLEST_MANPAGE_INSTALL_PATH})
-
-		IF(UNIX)
-			INSTALL(PROGRAMS
-				"${PROJECT_SOURCE_DIR}/mk/linux/start_zetaglest_gameserver"
-				DESTINATION ${ZETAGLEST_INI_INSTALL_PATH})
-		ENDIF()
+			"${PROJECT_SOURCE_DIR}/mk/windows/glest.ini"
+			DESTINATION ${INSTALL_DIR_INI})
+	ELSEIF(UNIX AND NOT APPLE)
 		INSTALL(FILES
-			"${PROJECT_SOURCE_DIR}/mk/shared/glestkeys.ini"
-			"${PROJECT_SOURCE_DIR}/mk/shared/servers.ini"
-			DESTINATION ${ZETAGLEST_DATA_INSTALL_PATH})
-		IF(WIN32)
-			INSTALL(FILES
-				"${PROJECT_SOURCE_DIR}/mk/windows/glest.ini"
-				DESTINATION ${ZETAGLEST_INI_INSTALL_PATH})
-		ELSEIF(UNIX AND NOT APPLE)
-			INSTALL(FILES
-				"${PROJECT_SOURCE_DIR}/mk/linux/glest.ini"
-				DESTINATION ${ZETAGLEST_INI_INSTALL_PATH})
-		ELSEIF(UNIX AND APPLE)
-			INSTALL(FILES
-				"${PROJECT_SOURCE_DIR}/mk/macos/glest.ini"
-				DESTINATION ${ZETAGLEST_INI_INSTALL_PATH})
-			IF(WANT_SINGLE_INSTALL_DIRECTORY AND EXISTS "${PROJECT_SOURCE_DIR}/mk/macos/p7zip/")
-				INSTALL(DIRECTORY
-					"${PROJECT_SOURCE_DIR}/mk/macos/p7zip"
-					DESTINATION ${ZETAGLEST_DATA_INSTALL_PATH})
-			ENDIF()
-			IF(WANT_SINGLE_INSTALL_DIRECTORY AND EXISTS "${PROJECT_SOURCE_DIR}/mk/macos/lib/")
-				INSTALL(DIRECTORY
-					"${PROJECT_SOURCE_DIR}/mk/macos/lib/"
-					DESTINATION "${ZETAGLEST_DATA_INSTALL_PATH}/../../Frameworks/")
-			ENDIF()
-		ENDIF()
-
+			"${PROJECT_SOURCE_DIR}/mk/shared/glest.ini"
+			DESTINATION ${INSTALL_DIR_INI})
+	ELSEIF(UNIX AND APPLE)
 		INSTALL(FILES
-			"${PROJECT_SOURCE_DIR}/mk/shared/zetaglest.ico"
-			DESTINATION ${ZETAGLEST_INI_INSTALL_PATH})
-		IF(UNIX AND APPLE AND NOT WANT_SINGLE_INSTALL_DIRECTORY)
-			INSTALL(FILES
-				"${PROJECT_SOURCE_DIR}/mk/macos/bundle_resources/MegaGlest.icns"
-				DESTINATION ${ZETAGLEST_ICON_INSTALL_PATH})
-		ENDIF()
+			"${PROJECT_SOURCE_DIR}/mk/shared/glest.ini"
+			DESTINATION ${INSTALL_DIR_INI})
 	ENDIF()
+
+	INSTALL(FILES
+		"${PROJECT_SOURCE_DIR}/mk/shared/zetaglest.ico"
+		DESTINATION ${INSTALL_DIR_INI})
+	IF(UNIX AND APPLE)
+		INSTALL(FILES
+			"${PROJECT_SOURCE_DIR}/mk/macos/bundle_resources/MegaGlest.icns"
+			DESTINATION ${INSTALL_DIR_ICON})
+	ENDIF()
+
+	# These files must be in the same directory as the zetaglest binary
+	# when "make install" isn't used
+	#
+	add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
+		COMMAND cp "${PROJECT_SOURCE_DIR}/mk/shared/glest.ini" "${CMAKE_BINARY_DIR}"
+		COMMAND cp "${PROJECT_SOURCE_DIR}/mk/shared/glestkeys.ini" "${CMAKE_BINARY_DIR}"
+		COMMAND cp "${PROJECT_SOURCE_DIR}/mk/shared/glest-dev.ini" "${CMAKE_BINARY_DIR}")
+
 ENDIF()

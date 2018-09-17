@@ -8,6 +8,14 @@
 # Default to English language output so we can understand your bug reports
 #
 # Modified by Andy Alt for ZetaGlest <https://zetaglest.github.io/>
+
+echo ""
+echo "This script has been deprecated. Please see"
+echo "https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md"
+echo "For updated build instructions."
+echo ""
+
+exit 0
 export LANG=C
 
 SCRIPTDIR="$(cd "$(dirname "$0")"; pwd)"
@@ -191,7 +199,7 @@ if [ "$FORCE_EMBEDDED_LIBS" != "0" ] && [ "$FORCE_EMBEDDED_LIBS" != "" ]; then
 fi
 
 if [ "$COMPILATION_WITHOUT" != "0" ] && [ "$COMPILATION_WITHOUT" != "" ]; then
-	EXTRA_CMAKE_OPTIONS="${EXTRA_CMAKE_OPTIONS} -DBUILD_ZETAGLEST_MAP_EDITOR=OFF -DBUILD_ZETAGLEST_MODEL_VIEWER=OFF"
+	EXTRA_CMAKE_OPTIONS="${EXTRA_CMAKE_OPTIONS} -DBUILD_MAP_EDITOR=OFF -DBUILD_MODEL_VIEWER=OFF"
 fi
 
 if [ "$MAKE_ONLY" -eq "0" ]; then

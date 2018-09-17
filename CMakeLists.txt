@@ -24,20 +24,20 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/mk/cmake/Modules)
 IF(CMAKE_BUILD_TYPE)
 	MESSAGE(STATUS "Build type for this compile will be: ${CMAKE_BUILD_TYPE}")
 ENDIF()
+
+# *BSD users should use eg++ and egcc. It's advised not to overwrite
+# $CMAKE_CXX_COMPILER, but instead precede `cmake` at the command line
+# using  CC=`which egcc` CXX=`which eg++`
+
 IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     SET(CMAKE_COMPILER_IS_GNUCXX "YES")
 #        ADD_DEFINITIONS("-Qunused-arguments -Wno-switch")
     ADD_DEFINITIONS("-Wno-switch")
 ENDIF()
 
-OPTION(BUILD_ZETAGLEST_MODEL_IMPORT_EXPORT_TOOLS "Build model import/export tools" ON)
-OPTION(BUILD_ZETAGLEST_MODEL_VIEWER "Build model viewer" ON)
-OPTION(BUILD_ZETAGLEST_MAP_EDITOR "Build map editor" ON)
 OPTION(BUILD_ZETAGLEST "Build ZetaGlest" ON)
 OPTION(BUILD_ZETAGLEST_TESTS "Build ZetaGlest Unit Tests" OFF)
-OPTION(WANT_SINGLE_INSTALL_DIRECTORY "Use single install directory for everything. It is useful for example for MacOS cpack bundles." OFF)
 OPTION(WANT_STATIC_LIBS "Builds as many static libs as possible." OFF)
-OPTION(WANT_USE_VLC "Use libVLC to play videos." ON)
 OPTION(WANT_USE_OpenSSL "Use libOpenSSL during CURL linking." ON)
 OPTION(WANT_USE_FriBiDi "Enable libFriBIDi support." ON)
 OPTION(WANT_USE_GoogleBreakpad "Enable GoogleBreakpad support." ON)
@@ -209,64 +209,28 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 		SET(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL "${CMAKE_EXE_LINKER_FLAGS_MINSIZEREL} -pthread")
 	ENDIF()
 
-	SET(COMMON_INFO_ABOUT_PATH "(if the path is relative then is appended to the CMAKE_INSTALL_PREFIX)")
-	IF(CMAKE_INSTALL_PREFIX STREQUAL "")
-		MESSAGE(STATUS "*NOTE: NOT USING a Custom Data Install Path...")
-	ELSE()
-		IF(WANT_SINGLE_INSTALL_DIRECTORY AND NOT ZETAGLEST_SINGLE_DIRECTORY_INSTALL_PATH)
-			SET(ZETAGLEST_SINGLE_DIRECTORY_INSTALL_PATH "zetaglest-game/" CACHE STRING "The single directory installation path for game ${COMMON_INFO_ABOUT_PATH}")
-		ENDIF()
-		IF(NOT ZETAGLEST_BIN_INSTALL_PATH AND NOT WANT_SINGLE_INSTALL_DIRECTORY)
-			SET(ZETAGLEST_BIN_INSTALL_PATH "bin/" CACHE STRING "The installation path for binaries ${COMMON_INFO_ABOUT_PATH}")
-		ENDIF()
-		IF(NOT ZETAGLEST_DATA_INSTALL_PATH AND NOT WANT_SINGLE_INSTALL_DIRECTORY)
-			SET(ZETAGLEST_DATA_INSTALL_PATH "share/zetaglest/" CACHE STRING "The installation path for data files ${COMMON_INFO_ABOUT_PATH}")
-		ENDIF()
-		SET(ZETAGLEST_INI_INSTALL_PATH "${ZETAGLEST_DATA_INSTALL_PATH}")
-		IF(NOT ZETAGLEST_DESKTOP_INSTALL_PATH AND NOT WANT_SINGLE_INSTALL_DIRECTORY)
-			SET(ZETAGLEST_DESKTOP_INSTALL_PATH "share/applications/" CACHE STRING "The installation path for desktop files ${COMMON_INFO_ABOUT_PATH}")
-		ENDIF()
-		IF(NOT ZETAGLEST_ICON_INSTALL_PATH AND NOT WANT_SINGLE_INSTALL_DIRECTORY)
-			SET(ZETAGLEST_ICON_INSTALL_PATH "share/pixmaps/" CACHE STRING "The installation path for icon files ${COMMON_INFO_ABOUT_PATH}")
-		ENDIF()
-		IF(NOT ZETAGLEST_MANPAGE_INSTALL_PATH AND NOT WANT_SINGLE_INSTALL_DIRECTORY)
-			SET(ZETAGLEST_MANPAGE_INSTALL_PATH "share/man/man6/" CACHE STRING "The installation path for manpage files ${COMMON_INFO_ABOUT_PATH}")
-		ENDIF()
-		IF(WANT_SINGLE_INSTALL_DIRECTORY)
-			FOREACH(ZG_PATH BIN DATA INI DESKTOP ICON)
-				IF(NOT ZETAGLEST_${ZG_PATH}_INSTALL_PATH)
-					SET(ZETAGLEST_${ZG_PATH}_INSTALL_PATH "${ZETAGLEST_SINGLE_DIRECTORY_INSTALL_PATH}")
-				ENDIF()
-			ENDFOREACH()
-		ENDIF()
-		IF(NOT WANT_SINGLE_INSTALL_DIRECTORY)
-			FOREACH(ZG_PATH DATA INI)
-				IF(IS_ABSOLUTE "${ZETAGLEST_${ZG_PATH}_INSTALL_PATH}")
-					SET(ZETAGLEST_FULL_${ZG_PATH}_INSTALL_PATH "${ZETAGLEST_${ZG_PATH}_INSTALL_PATH}/")
-				ELSE()
-					SET(ZETAGLEST_FULL_${ZG_PATH}_INSTALL_PATH "${CMAKE_INSTALL_PREFIX}/${ZETAGLEST_${ZG_PATH}_INSTALL_PATH}/")
-				ENDIF()
-				STRING(REGEX REPLACE "//+" "/" ZETAGLEST_FULL_${ZG_PATH}_INSTALL_PATH "${ZETAGLEST_FULL_${ZG_PATH}_INSTALL_PATH}")
-			ENDFOREACH()
-
-			IF(NOT CUSTOM_DATA_INSTALL_PATH)
-				SET(CUSTOM_DATA_INSTALL_PATH "${ZETAGLEST_FULL_DATA_INSTALL_PATH}")
-				# ^ someday this intermediate step may be removed
-			ENDIF()
-			SET(CUSTOM_INSTALL_PATHS_VALUES "-DCUSTOM_DATA_INSTALL_PATH=${CUSTOM_DATA_INSTALL_PATH}")
-		ENDIF()
-
-		#SET(PKG_DATADIR ${CUSTOM_DATA_INSTALL_PATH_VALUE})
-		#SET(PKG_BINDIR ${ZETAGLEST_BIN_INSTALL_PATH})
-		# ^ hard to tell for what it is needed and most likely both were set to wrong values, so let's try to not use them
-		MESSAGE(STATUS "*NOTE: Custom Data Install Path is [${CUSTOM_DATA_INSTALL_PATH}]")
+	IF(NOT INSTALL_DIR_BIN)
+		SET(INSTALL_DIR_BIN "${CMAKE_INSTALL_PREFIX}/games" CACHE PATH "The installation path for binaries")
+	ENDIF()
+# The data dir will get defined as a macro at compile-time
+	IF(NOT INSTALL_DIR_DATA)
+		SET(INSTALL_DIR_DATA "${CMAKE_INSTALL_PREFIX}/share/zetaglest/" CACHE PATH "The installation path for data files")
+	ENDIF()
+	SET(INSTALL_DIR_INI "${INSTALL_DIR_DATA}")
+	IF(NOT INSTALL_DIR_DESKTOP)
+		SET(INSTALL_DIR_DESKTOP "${CMAKE_INSTALL_PREFIX}/applications/" CACHE PATH "The installation path for desktop files")
+	ENDIF()
+	IF(NOT INSTALL_DIR_ICON)
+		SET(INSTALL_DIR_ICON "${CMAKE_INSTALL_PREFIX}/share/pixmaps/" CACHE PATH "The installation path for icon files")
+	ENDIF()
+	IF(NOT INSTALL_DIR_MAN)
+		SET(INSTALL_DIR_MAN "${CMAKE_INSTALL_PREFIX}/share/man/man6/" CACHE PATH "The installation path for manpage files")
 	ENDIF()
 
 	string(TOUPPER "${CMAKE_BUILD_TYPE}" ZG_BUILD_TYPE)
-	IF(HAS_GIT STREQUAL "TRUE")
-		SET(CMAKE_CXX_FLAGS_${ZG_BUILD_TYPE} "${CMAKE_CXX_FLAGS_${ZG_BUILD_TYPE}} ${GIT_VERSION_CMD}")
-	ENDIF()
-	SET(CMAKE_CXX_FLAGS_${ZG_BUILD_TYPE} "${CMAKE_CXX_FLAGS_${ZG_BUILD_TYPE}} ${CUSTOM_INSTALL_PATHS_VALUES}")
+
+	add_definitions("-DDATADIR=${INSTALL_DIR_DATA}")
+	SET(CMAKE_CXX_FLAGS_{ZG_BUILD_TYPE} "${CMAKE_CXX_FLAGS_${ZG_BUILD_TYPE}}")
 
 	# We do some funky character escaping to get the right stuff written out to
 	# the final Makefile so we get the GIT Global Revsion #
@@ -296,51 +260,32 @@ IF(NOT WANT_DEPRECATION_WARNINGS)
 ENDIF()
 MARK_AS_ADVANCED(WANT_DEPRECATION_WARNINGS)
 
-IF(NOT ZG_CMAKE_INSTALL_PREFIX AND NOT CMAKE_INSTALL_PREFIX STREQUAL "")
-	SET(ZG_CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
-ENDIF()
-MESSAGE(STATUS "**NOTE: ZG_CMAKE_INSTALL_PREFIX is [${ZG_CMAKE_INSTALL_PREFIX}]")
-
 SET(SDL_WINDOWS_DIR_DINC "SDL-2.0.x")
 SET(SDL_VERSION_NAME "SDL2")
 SET(SDL_VERSION_SNAME "sdl")
 
-IF (NOT ZETAGLEST_BIN_INSTALL_PATH STREQUAL "")
-	SET(ZETAGLEST_BIN_OUTPUT_DIR "${CMAKE_INSTALL_PREFIX}/bin")
-ELSE()
-	SET(ZETAGLEST_BIN_OUTPUT_DIR "${ZETAGLEST_BIN_INSTALL_PATH}")
-ENDIF()
-
-OPTION(WANT_DEV_OUTPATH "Use developer friendly output paths." OFF)
-IF(UNIX AND "${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-	SET(ZETAGLEST_FRIENDLY_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/mk/linux/")
-ELSEIF(UNIX AND APPLE)
-	SET(ZETAGLEST_FRIENDLY_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/mk/macos/")
-ELSEIF(UNIX AND NOT APPLE)
-	SET(ZETAGLEST_FRIENDLY_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/mk/other_unix/")
-ELSE()
-	SET(ZETAGLEST_FRIENDLY_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/data/glest_game/")
-ENDIF()
+# output binaries to the top level of the build directory
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
 IF(WIN32)
 	SET(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH}
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/lib
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/xerces-c-src_2_8_0/lib
-           ${PROJECT_SOURCE_DIR}/source/win32_deps/wxWidgets-2.8.10/lib)
+		${PROJECT_SOURCE_DIR}/source/win32_deps/lib
+		${PROJECT_SOURCE_DIR}/source/win32_deps/xerces-c-src_2_8_0/lib
+		${PROJECT_SOURCE_DIR}/source/win32_deps/wxWidgets-2.8.10/lib)
 
 	SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH}
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/include
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/openal-soft-1.12.854/include
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/openal-soft-1.12.854
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/xerces-c-src_2_8_0/include
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/libogg-1.2.1/include
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/lua-5.1/src
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/jpeg-8b
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/lpng141
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/zlib-1.2.5
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/curl-7.21.3/include
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/${SDL_WINDOWS_DIR_DINC}/include
-	   ${PROJECT_SOURCE_DIR}/source/win32_deps/wxWidgets-2.8.10/include)
+		${PROJECT_SOURCE_DIR}/source/win32_deps/include
+		${PROJECT_SOURCE_DIR}/source/win32_deps/openal-soft-1.12.854/include
+		${PROJECT_SOURCE_DIR}/source/win32_deps/openal-soft-1.12.854
+		${PROJECT_SOURCE_DIR}/source/win32_deps/xerces-c-src_2_8_0/include
+		${PROJECT_SOURCE_DIR}/source/win32_deps/libogg-1.2.1/include
+		${PROJECT_SOURCE_DIR}/source/win32_deps/lua-5.1/src
+		${PROJECT_SOURCE_DIR}/source/win32_deps/jpeg-8b
+		${PROJECT_SOURCE_DIR}/source/win32_deps/lpng141
+		${PROJECT_SOURCE_DIR}/source/win32_deps/zlib-1.2.5
+		${PROJECT_SOURCE_DIR}/source/win32_deps/curl-7.21.3/include
+		${PROJECT_SOURCE_DIR}/source/win32_deps/${SDL_WINDOWS_DIR_DINC}/include
+		${PROJECT_SOURCE_DIR}/source/win32_deps/wxWidgets-2.8.10/include)
 
 	link_directories(${PROJECT_SOURCE_DIR}/source/win32_deps/lib)
 	link_directories(${PROJECT_SOURCE_DIR}/source/win32_deps/xerces-c-src_2_8_0/lib)
@@ -356,8 +301,8 @@ IF(EXISTS "${PROJECT_SOURCE_DIR}/source/")
 	ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/shared_lib )
 	ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/glest_game )
 	#if(wxWidgets_FOUND)
-	  ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/glest_map_editor )
-	  ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/g3d_viewer )
+		ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/glest_map_editor )
+		ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/g3d_viewer )
 	#else()
 	#  MESSAGE(STATUS "WARNING... the following game tools will NOT be built since we cannot find wxWidgets on this machine")
 	#  MESSAGE(STATUS "map editor, g3d viewer")
@@ -379,42 +324,6 @@ ENDIF()
 IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     MESSAGE(WARNING ">> CLANG is NOT currently compatible as it does not support the following essential GCC compiler settings: -frounding-math -fsignaling-nans")
 ENDIF()
-
-IF(NOT DEFINED CPACK_GENERATOR)
-	SET(CPACK_GENERATOR "DEB")
-ENDIF()
-# CPack configuration shared accross platforms
-SET(CPACK_PACKAGE_NAME ${PKG_NAME})
-IF(EXISTS "${PROJECT_SOURCE_DIR}/../zetaglest-data/others/zetaglest-long-description.txt.in")
-	FILE(READ "${PROJECT_SOURCE_DIR}/../zetaglest-data/others/zetaglest-long-description.txt.in" ZETAGLEST_LONG_DESCRIPTION)
-	SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${ZETAGLEST_LONG_DESCRIPTION}")
-ELSE()
-	SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "ZetaGlest")
-ENDIF()
-SET(CPACK_PACKAGE_VENDOR "zetaglest.github.io")
-#SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README")
-#SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/COPYING")
-SET(CPACK_PACKAGE_INSTALL_DIRECTORY "zetaglest")
-SET(CPACK_PACKAGING_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
-SET(CPACK_PACKAGE_VERSION "${ZETAGLEST_VERSION}")
-SET(CPACK_PACKAGE_VERSION_MAJOR "${VER_MAJOR}")
-SET(CPACK_PACKAGE_VERSION_MINOR "${VER_MINOR}")
-SET(CPACK_PACKAGE_VERSION_PATCH "${VER_PATCH}")
-
-IF("${CPACK_GENERATOR}" STREQUAL "DEB")
-	SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "ZetaGlest Team") #required
-	SET(CPACK_DEBIAN_PACKAGE_SECTION "games")
-	SET(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
-	SET(CPACK_DEBIAN_PACKAGE_SUGGESTS "p7zip-full")
-ENDIF()
-IF("${CPACK_GENERATOR}" STREQUAL "NSIS")
-	SET(CPACK_NSIS_DISPLAY_NAME "ZetaGlest")
-	SET(CPACK_NSIS_MUI_ICON "${PROJECT_SOURCE_DIR}/mk/windows/zetaglest.ico")
-	SET(CPACK_PACKAGE_ICON "${PROJECT_SOURCE_DIR}/mk/windows/zetaglest.ico")
-	SET(CPACK_NSIS_URL_INFO_ABOUT "https://zetaglest.github.io")
-ENDIF()
-
-INCLUDE(CPack)
 
 get_directory_property( DirDefs DIRECTORY ${CMAKE_SOURCE_DIR} COMPILE_DEFINITIONS )
 foreach( d ${DirDefs} )
