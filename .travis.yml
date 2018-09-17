@@ -72,8 +72,13 @@ script:
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
         mkdir build;
         cd build;
-        cmake .. -DCMAKE_INSTALL_PREFIX=$PWD/local -DBUILD_ZETAGLEST_TESTS=ON;
+        cmake .. -DCMAKE_INSTALL_PREFIX=$PWD/local;
         make && make install;
+        echo 'Mini test:';
+        echo '>>> zetaglest --version';
+        ./zetaglest --version | head -3;
+        echo 'Dependencies:';
+        otool -L zetaglest;
     fi
 
 # https://docs.travis-ci.com/user/notifications/#IRC-notification
