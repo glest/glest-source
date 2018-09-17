@@ -7,7 +7,8 @@ Status](https://github.com/ZetaGlest/zetaglest-source/issues/25)
 
 * **Getting the code:**
   * [Set up the repositories locally](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#set-up-the-repositories-locally)
-  * [cloning your forks](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#procedure-for-cloning-your-forks)
+  * [cloning](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#procedure-for-cloning)
+  * [Extra options for compiling](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#extra-options-for-compiling)
 
 * **Dependencies**
   * [Windows](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#windows)
@@ -16,7 +17,7 @@ Status](https://github.com/ZetaGlest/zetaglest-source/issues/25)
   * [Mac OS](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#mac-os)
   * [BSD](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#bsd)
 
-* * [Installing](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#installing)
+* [Installing](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#installing)
 
 * **Compiling**
   * [Windows](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#windows)
@@ -49,7 +50,7 @@ repo directories are in the same directory, adjacent to each other (and
 
 ### Note
 
-If you have cloned the repositories this way, do not use the
+If you have cloned the repositories using your forks, do not use the
 `git_update.sh` provided in the source directory. See
 [syncing](https://github.com/ZetaGlest/zetaglest-source/blob/develop/CONTRIBUTING.md#syncing)
 for information on how to sync your repo with the main upstream (no,
@@ -173,12 +174,17 @@ cmake to use the correct compiler)
 
     CC=`which egcc` CXX=`which eg++` cmake .. -DINSTALL_DIR_DATA=<absolute-path-to-data>
 
+Now that the build configuration has been set, run make:
+
     make
 
 The zetaglest binaries will be in the `build/` directory. Run
 './zetaglest' to start the game.
 
 <!-- This needs to be duplicated in the BUILD.md and INSTALL.md doc -->
+See [running](https://github.com/ZetaGlest/zetaglest-source#running) for
+detailed information about running a server or hosting a game.
+
 The value for INSTALL_DIR_DATA is written to the game when compiled,
 therefore if you ever move your data directory, you will have to
 recompile ZetaGlest.
