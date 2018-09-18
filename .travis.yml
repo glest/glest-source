@@ -62,7 +62,7 @@ script:
   - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ]; then
         mkdir build;
         cd build;
-        cmake ..  -DCMAKE_INSTALL_PREFIX=$PWD/local -DBUILD_MODEL_VIEWER=ON -DBUILD_MAP_EDITOR=ON -DBUILD_IMPORT_EXPORT_TOOLS=ON -DBUILD_ZETAGLEST_TESTS=ON;
+        cmake ..  -DCMAKE_INSTALL_PREFIX=$PWD/local -DBUILD_MODEL_VIEWER=ON -DBUILD_MAP_EDITOR=ON -DBUILD_MODEL_IMPORT_EXPORT_TOOLS=ON -DBUILD_ZETAGLEST_TESTS=ON;
         make && make install;
     fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" != "" ]; then
@@ -74,8 +74,7 @@ script:
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
         mkdir build;
         cd build;
-        export CXXFLAGS="-std=c++11";
-        cmake .. -DCMAKE_INSTALL_PREFIX=$PWD/local -DBUILD_MODEL_VIEWER=ON -DBUILD_MAP_EDITOR=ON -DBUILD_IMPORT_EXPORT_TOOLS=ON -DBUILD_ZETAGLEST_TESTS=ON;
+        cmake .. -DCMAKE_INSTALL_PREFIX=$PWD/local -DBUILD_MODEL_VIEWER=ON -DBUILD_MAP_EDITOR=ON -DBUILD_MODEL_IMPORT_EXPORT_TOOLS=ON -DBUILD_ZETAGLEST_TESTS=ON;
         make && make install;
         echo 'Dependencies:';
         otool -L zetaglest;
