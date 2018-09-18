@@ -35,7 +35,7 @@ The repo is at
 
 https://github.com/ZetaGlest/zetaglest-masterserver and the
 instructions are in
-[docs/README.txt](https://github.com/ZetaGlest/zetaglest-masterserver/blob/develop/docs/README.txt)
+[docs/README.txt](https://github.com/ZetaGlest/zetaglest-masterserver/blob/develop/docs/README.md)
 
 To help with testing you can also use this:
 
