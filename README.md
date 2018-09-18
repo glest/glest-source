@@ -57,8 +57,8 @@ installer](https://github.com/ZetaGlest/windows-installer). If you want
 to contribute with the code on Windows, [please follow these
 instructions](https://github.com/ZetaGlest/zetaglest-source/blob/develop/mk/windows/README.md).
 
-For other operating systems, you must **[build and install from
-source]**(https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
+For other operating systems, you must [**build and install from
+source**](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
 (Later, we'll be providing binary packages).
 
 (The ETA for the first official release can be viewed from the [development
