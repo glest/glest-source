@@ -27,7 +27,7 @@ source](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md).
 
 From the top of the project source directory:
 
-    mk build
+    mkdir build
     cd build
 
 **Note:** Using the paths specified below, you will need super-user
