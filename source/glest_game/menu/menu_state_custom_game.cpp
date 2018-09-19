@@ -72,7 +72,9 @@ namespace Glest {
 		//      class GraphicListBoxFactions
 		// =====================================================
 
-		GraphicListBoxFactions::GraphicListBoxFactions(const std::string &containerName, const std::string &objName) : GraphicListBox::GraphicListBox(containerName, objName) {}
+		GraphicListBoxFactions::GraphicListBoxFactions(const std::string &containerName, const std::string &objName) : GraphicListBox::GraphicListBox(containerName, objName) {
+			this->menu = NULL;
+		}
 
 		void GraphicListBoxFactions::addInformation(MenuStateCustomGame *menu, int index) {
 			this->menu = menu;

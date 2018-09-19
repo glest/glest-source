@@ -843,11 +843,7 @@ namespace
 					megaglest_runtime_error(szBuf);*/
 				return result;
 			}
-			const CommandType *
-				ct =
-				(commandType !=
-					NULL ? unit->getType()->findCommandTypeById(commandType->
-						getId()) : NULL);
+			const CommandType * ct = unit->getType()->findCommandTypeById(commandType->getId());
 			if (ct == NULL) {
 				char
 					szBuf[8096] = "";

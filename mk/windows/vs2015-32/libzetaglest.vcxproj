@@ -576,6 +576,7 @@
     <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\*.cpp" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\gl\*.cpp" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\map\*.cpp" />
+	<ClCompile Include="..\..\..\source\shared_lib\sources\miniz\*.c" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\lua\*.cpp" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\util\*.cpp" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\xml\*.cpp" />
@@ -612,6 +613,7 @@
     <ClInclude Include="..\..\..\source\shared_lib\include\platform\sdl\thread.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\platform\sdl\window.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\platform\sdl\window_gl.h" />
+	<ClInclude Include="..\..\..\source\shared_lib\sources\miniz\*.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="libstreflop.vcxproj">
