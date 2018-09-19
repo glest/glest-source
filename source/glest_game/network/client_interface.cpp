@@ -1025,11 +1025,11 @@ namespace Glest {
 				case nmtQuit:
 				{
 					//time_t receiveTimeElapsed = time(NULL);
-					NetworkMessageQuit networkMessageQuit;
+					/*NetworkMessageQuit networkMessageQuit;
 					bool gotCmd = receiveMessage(&networkMessageQuit);
 					if (gotCmd == false) {
 						throw megaglest_runtime_error("error retrieving nmtQuit returned false!");
-					}
+					}*/
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance, "In [%s::%s Line: %d] took msecs: %lld\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, chrono.getMillis());
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
 
