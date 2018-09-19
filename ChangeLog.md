@@ -5,6 +5,11 @@ This documents notable or significant changes to
 information about the game from which it was forked, please see the
 [MegaGlest home page](https://megaglest.org/).
 
+## 2018-09-18
+
+* Update [miniz](https://github.com/richgel999/miniz) library. Thanks
+  to [richgel999](https://github.com/richgel999) and the miniz contributors.
+
 ## 2018-09-17
 
 * CMakeLists.txt files have had a major tune-up (doesn't affect Windows users)

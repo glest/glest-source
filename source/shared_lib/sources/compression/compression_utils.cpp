@@ -17,7 +17,7 @@
 // is not a limitation of miniz.c.
 
 #include "compression_utils.h"
-#include "miniz/miniz.c"
+#include "miniz/miniz.h"
 #include <limits.h>
 #include <string>
 #include <vector>

@@ -239,6 +239,7 @@ IF(BUILD_MODEL_VIEWER OR BUILD_MAP_EDITOR OR BUILD_ZETAGLEST)
 		graphics/gl
 		lua
 		map
+		miniz
 		platform/common
 		sound
 		sound/openal
@@ -269,16 +270,16 @@ IF(BUILD_MODEL_VIEWER OR BUILD_MAP_EDITOR OR BUILD_ZETAGLEST)
 			MESSAGE(STATUS "*** Using EMBEDDED miniupnpc because it was forced by option")
 		endif()
 
-                if (NOT WIN32)
-                   add_definitions (-DMINIUPNPC_SET_SOCKET_TIMEOUT)
-                   add_definitions (-D_BSD_SOURCE)
+		if (NOT WIN32)
+			add_definitions (-DMINIUPNPC_SET_SOCKET_TIMEOUT)
+			add_definitions (-D_BSD_SOURCE)
 
-                   if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-                      add_definitions (-DMACOSX -D_DARWIN_C_SOURCE)
-                   else()
-                      add_definitions (-D_POSIX_C_SOURCE=200809L)
-                   endif ()
-                endif()
+			if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+					add_definitions (-DMACOSX -D_DARWIN_C_SOURCE)
+			 else()
+					add_definitions (-D_POSIX_C_SOURCE=200809L)
+			endif ()
+		endif()
 
 		SET(DIRS_WITH_SRC ${DIRS_WITH_SRC} platform/miniupnpc)
 	else()
@@ -301,9 +302,9 @@ IF(BUILD_MODEL_VIEWER OR BUILD_MAP_EDITOR OR BUILD_ZETAGLEST)
                 message(STATUS "Adding macro for miniupnpc version: pre v1.7")
 	ENDIF()
 
-        IF(NOT MINIUPNPC_VERSION_PRE1_5 AND NOT MINIUPNPC_VERSION_PRE1_6 AND NOT MINIUPNPC_VERSION_PRE1_7)
-                message(STATUS "**No macros required for miniupnpc version")
-        ENDIF()
+	IF(NOT MINIUPNPC_VERSION_PRE1_5 AND NOT MINIUPNPC_VERSION_PRE1_6 AND NOT MINIUPNPC_VERSION_PRE1_7)
+		message(STATUS "**No macros required for miniupnpc version")
+	ENDIF()
 
 	IF(APPLE)
 		SET(DIRS_WITH_SRC ${DIRS_WITH_SRC} platform/${SDL_VERSION_SNAME})
@@ -318,12 +319,12 @@ IF(BUILD_MODEL_VIEWER OR BUILD_MAP_EDITOR OR BUILD_ZETAGLEST)
 		SET(DIRS_WITH_SRC ${DIRS_WITH_SRC} platform/unix)
 	ENDIF()
 
-	SET(MG_INCLUDES_ROOT "include/")
-	SET(MG_SOURCES_ROOT "sources/")
+	SET(ZG_INCLUDES_ROOT "include/")
+	SET(ZG_SOURCES_ROOT "sources/")
 	SET(ZG_INCLUDE_FILES "")
 	SET(ZG_SOURCE_FILES "")
-	INCLUDE_DIRECTORIES( ${MG_INCLUDES_ROOT}platform/${SDL_VERSION_SNAME} )
-        INCLUDE_DIRECTORIES( ${MG_INCLUDES_ROOT}xml/rapidxml )
+	INCLUDE_DIRECTORIES( ${ZG_INCLUDES_ROOT}platform/${SDL_VERSION_SNAME} )
+        INCLUDE_DIRECTORIES( ${ZG_INCLUDES_ROOT}xml/rapidxml )
         INCLUDE_DIRECTORIES("sources/")
 
 	OPTION(WANT_USE_Ircclient "Enable libircclient support" ON)
@@ -400,7 +401,7 @@ IF(BUILD_MODEL_VIEWER OR BUILD_MAP_EDITOR OR BUILD_ZETAGLEST)
 	ENDIF()
 
 	FOREACH(DIR IN LISTS DIRS_WITH_SRC)
-		set(INCLUDE_DIR_TO_GLOB ${MG_INCLUDES_ROOT}${DIR})
+		set(INCLUDE_DIR_TO_GLOB ${ZG_INCLUDES_ROOT}${DIR})
 		INCLUDE_DIRECTORIES( ${INCLUDE_DIR_TO_GLOB} )
 		IF(APPLE)
 			#MESSAGE(STATUS "INCLUDE_DIR_TO_GLOB: ${INCLUDE_DIR_TO_GLOB}")
@@ -409,13 +410,13 @@ IF(BUILD_MODEL_VIEWER OR BUILD_MAP_EDITOR OR BUILD_ZETAGLEST)
 			SET(ZG_INCLUDE_FILES ${ZG_INCLUDE_FILES} ${INC_FILES_FROM_THIS_DIR})
 		ENDIF(APPLE)
 
-		set(SRC_DIR_TO_GLOB ${MG_SOURCES_ROOT}${DIR})
+		set(SRC_DIR_TO_GLOB ${ZG_SOURCES_ROOT}${DIR})
 		#MESSAGE(STATUS "SRC_DIR_TO_GLOB: ${SRC_DIR_TO_GLOB}")
 		FILE(GLOB SRC_FILES_FROM_THIS_DIR ${SRC_DIR_TO_GLOB}/*.cpp)
 		#MESSAGE(STATUS "SRC_FILES_FROM_THIS_DIR: ${SRC_FILES_FROM_THIS_DIR}")
 		SET(ZG_SOURCE_FILES ${ZG_SOURCE_FILES} ${SRC_FILES_FROM_THIS_DIR})
 
-		set(SRC_DIR_TO_GLOB ${MG_SOURCES_ROOT}${DIR})
+		set(SRC_DIR_TO_GLOB ${ZG_SOURCES_ROOT}${DIR})
 		#MESSAGE(STATUS "SRC_DIR_TO_GLOB: ${SRC_DIR_TO_GLOB}")
 		FILE(GLOB SRC_FILES_FROM_THIS_DIR ${SRC_DIR_TO_GLOB}/*.c)
 		#MESSAGE(STATUS "SRC_FILES_FROM_THIS_DIR: ${SRC_FILES_FROM_THIS_DIR}")
