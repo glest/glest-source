@@ -162,7 +162,7 @@ and read
 
 From the top of the project source directory:
 
-    mk build
+    mkdir build
     cd build
 
 (`cmake` On Linux or Mac OS)
