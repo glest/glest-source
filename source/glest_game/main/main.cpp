@@ -7952,8 +7952,17 @@ namespace
 						}
 						//printf("looping\n");
 					}
-
-					program->loop();
+					gameloop:
+#ifndef DEBUG
+					try {
+#endif
+						program->loop();
+#ifndef DEBUG
+					} catch (...) {
+						printf("\nAn unhandled error occurred. Attempting to recover...\n");
+						goto gameloop;
+					}
+#endif
 
 					// Because OpenGL really doesn't do multi-threading well
 					//                      if(difftime(time(NULL),lastTextureLoadEvent) >= 3) {
