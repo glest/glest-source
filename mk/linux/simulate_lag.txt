@@ -1,0 +1,28 @@
+As root user, to simulate lag on a Linux system
+
+  tc qdisc add dev wlan1 root netem delay 300ms
+
+To remove
+
+  tc qdisc del dev wlan1 root
+
+
+Example output:
+
+  When the rule is added, pinging a PC on a LAN
+
+64 bytes from 192.168.254.42: icmp_seq=93 ttl=255 time=306 ms
+64 bytes from 192.168.254.42: icmp_seq=94 ttl=255 time=303 ms
+64 bytes from 192.168.254.42: icmp_seq=95 ttl=255 time=303 ms
+64 bytes from 192.168.254.42: icmp_seq=96 ttl=255 time=304 ms
+64 bytes from 192.168.254.42: icmp_seq=97 ttl=255 time=304 ms
+
+  When the rule is removed
+
+64 bytes from 192.168.254.42: icmp_seq=98 ttl=255 time=5.69 ms
+64 bytes from 192.168.254.42: icmp_seq=99 ttl=255 time=3.82 ms
+64 bytes from 192.168.254.42: icmp_seq=100 ttl=255 time=4.89 ms
+64 bytes from 192.168.254.42: icmp_seq=101 ttl=255 time=3.60 ms
+64 bytes from 192.168.254.42: icmp_seq=102 ttl=255 time=5.08 ms
+64 bytes from 192.168.254.42: icmp_seq=103 ttl=255 time=3.44 ms
+64 bytes from 192.168.254.42: icmp_seq=104 ttl=255 time=5.40 ms
