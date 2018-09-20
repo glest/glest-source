@@ -66,7 +66,13 @@ things and are unable to finish it. That lets me and other people know the
 ticket is available to be worked on by other people.
 
 ## Coding style
-Please match the existing style
+
+As we are working on code forked from another project, you may see some inconsistency; however, our goal is:
+
+[The JAVA variant of K&R](https://en.wikipedia.org/wiki/Indentation_style#Variant:_Java)
+
+Curly braces should be at the side and parameters and conditions should be next to
+each other, not under each other (unless line length exceeds 80-120 characters).
 
 Sometimes a patch will be a single line in a single file; other times a single
 patch will consist of changes to several files. Keep unrelated patches separate
