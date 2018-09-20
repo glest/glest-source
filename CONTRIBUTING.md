@@ -71,7 +71,7 @@ As we are working on code forked from another project, you may see some inconsis
 
 [The JAVA variant of K&R](https://en.wikipedia.org/wiki/Indentation_style#Variant:_Java)
 
-Use *camelCase* for variables and function names, *CapitalCase* for classes.
+Use *camelCase* for variables and function names, *CapitalCase* for classes and namespaces, and CAPS_LOCK for macros and compile-time constants.
 Use *tabs* for indenting. Curly braces should be at the side and parameters and
 conditions should be next to each other, not under each other (unless line length
 exceeds 80-120 characters).
