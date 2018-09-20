@@ -191,7 +191,7 @@ namespace Glest {
 				//sanity check new message type
 				if (messageType < 0 || messageType >= nmtCount) {
 					if (getConnectHasHandshaked() == true) {
-						throw megaglest_runtime_error("Invalid message type: " + intToStr(messageType));
+						printf("%s%d\n", "Invalid message type: ", messageType);
 					} else {
 						if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] Invalid message type = %d (no packet handshake yet so ignored)\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, messageType);
 					}

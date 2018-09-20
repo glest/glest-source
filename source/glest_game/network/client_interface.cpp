@@ -560,7 +560,8 @@ namespace Glest {
 						serverFTPPort = networkMessageIntro.getFtpPort();
 
 						if (playerIndex < 0 || playerIndex >= GameConstants::maxPlayers) {
-							throw megaglest_runtime_error("playerIndex < 0 || playerIndex >= GameConstants::maxPlayers");
+							printf("playerIndex < 0 || playerIndex >= GameConstants::maxPlayers\n");
+							return;
 						}
 
 						MutexSafeWrapper safeMutexFlags(flagAccessor, CODE_AT_LINE);
@@ -925,9 +926,8 @@ namespace Glest {
 						} else {
 							if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Lined: %d] got networkMessageLaunch.getMessageType() = %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, networkMessageLaunch.getMessageType());
 
-							char szBuf[1024] = "";
-							snprintf(szBuf, 1023, "In [%s::%s Line: %d] Invalid networkMessageLaunch.getMessageType() = %d", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, networkMessageLaunch.getMessageType());
-							throw megaglest_runtime_error(szBuf);
+							printf("In [%s::%s Line: %d] Invalid networkMessageLaunch.getMessageType() = %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, networkMessageLaunch.getMessageType());
+							//throw megaglest_runtime_error(szBuf);
 						}
 
 						networkMessageLaunch.buildGameSettings(&gameSettings);
