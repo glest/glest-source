@@ -71,8 +71,10 @@ As we are working on code forked from another project, you may see some inconsis
 
 [The JAVA variant of K&R](https://en.wikipedia.org/wiki/Indentation_style#Variant:_Java)
 
-Curly braces should be at the side and parameters and conditions should be next to
-each other, not under each other (unless line length exceeds 80-120 characters).
+Use *camelCase* for variables and function names, *CapitalCase* for classes.
+Use *tabs* for indenting. Curly braces should be at the side and parameters and
+conditions should be next to each other, not under each other (unless line length
+exceeds 80-120 characters).
 
 Sometimes a patch will be a single line in a single file; other times a single
 patch will consist of changes to several files. Keep unrelated patches separate
