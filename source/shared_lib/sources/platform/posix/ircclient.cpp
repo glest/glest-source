@@ -176,10 +176,20 @@ namespace Shared {
 
 					if (SystemFlags::VERBOSE_MODE_ENABLED || IRCThread::debugEnabled) printf("===> IRC: Line: %d\n", __LINE__);
 
-					//irc_cmd_msg (session, params[0], "ZG Bot says hello!");
+					// code to execute when someone joins the lobby can be put here.
 					ctx->setHasJoinedChannel(true);
+
+					/* The discord-irc bot<https://github.com/reactiflux/discord-irc>
+					 * already prints this message because
+					 * it's sent using NOTICE or whatever from IRC directly
+					 *
+					 * The only reason it would be useful is to provide an extra alert
+					 * to users in the channel on IRC, if they have extra notifications
+					 * enabled
+					 *
 					const char *announceJoin = { "has joined" };
 					irc_cmd_msg(session, "#zetaglest-lobby", announceJoin);
+					*/
 
 					if (SystemFlags::VERBOSE_MODE_ENABLED || IRCThread::debugEnabled) printf("===> IRC: Line: %d\n", __LINE__);
 

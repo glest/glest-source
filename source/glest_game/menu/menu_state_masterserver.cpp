@@ -772,12 +772,23 @@ namespace Glest {
 						"In [%s::%s Line: %d]\n",
 						extractFileFromDirectoryPath(__FILE__).
 						c_str(), __FUNCTION__, __LINE__);
+
+				// code to execute when someone leaves the lobby
 				if (ircClient != NULL && ircClient->isConnected() == true
 					&& ircClient->getHasJoinedChannel() == true) {
-					ircClient->SendIRCCmdMessage(IRC_CHANNEL,
-						" has left the lobby");
+					/* The discord-irc bot<https://github.com/reactiflux/discord-irc>
+					 * already prints this message because
+					 * it's sent using NOTICE or whatever from IRC directly
+					 *
+					 * The only reason it would be useful is to provide an extra alert
+					 * to users in the channel on IRC, if they have extra notifications
+					 * enabled
+					 *
+						ircClient->SendIRCCmdMessage(IRC_CHANNEL, " has left the lobby");
+						*/
 					sleep(30);
 				}
+
 				cleanup();
 
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
