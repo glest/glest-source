@@ -1010,13 +1010,14 @@ namespace Glest {
 
 					//make sure we read the message
 					//time_t receiveTimeElapsed = time(NULL);
-					/*NetworkMessageCommandList networkMessageCommandList;
+					NetworkMessageCommandList networkMessageCommandList;
 					bool gotCmd = receiveMessage(&networkMessageCommandList);
 					if (gotCmd == false) {
-						throw megaglest_runtime_error("error retrieving nmtCommandList returned false!");
+						printf("Server has interrupted network connection...\n");
+						return;
 					}
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance, "In [%s::%s Line: %d] took msecs: %lld\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, chrono.getMillis());
-					if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();*/
+					if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
 
 					this->setLastPingInfoToNow();
 				}
@@ -1025,11 +1026,12 @@ namespace Glest {
 				case nmtQuit:
 				{
 					//time_t receiveTimeElapsed = time(NULL);
-					/*NetworkMessageQuit networkMessageQuit;
+					NetworkMessageQuit networkMessageQuit;
 					bool gotCmd = receiveMessage(&networkMessageQuit);
 					if (gotCmd == false) {
-						throw megaglest_runtime_error("error retrieving nmtQuit returned false!");
-					}*/
+						printf("Server has interrupted connection...\n");
+						return;
+					}
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance, "In [%s::%s Line: %d] took msecs: %lld\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, chrono.getMillis());
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) chrono.start();
 
@@ -1126,10 +1128,10 @@ namespace Glest {
 								if (isConnected() == false) {
 									setQuit(true);
 									close();
-									return;
 								}
-
 								//throw megaglest_runtime_error("error retrieving nmtCommandList returned false!");
+								printf("Network connection has been interrupted...\n");
+								return;
 							}
 
 							//printf("Client Thread getFrameCount(): %d getCommandCount(): %d\n",networkMessageCommandList.getFrameCount(),networkMessageCommandList.getCommandCount());
@@ -1606,11 +1608,12 @@ namespace Glest {
 						}
 					} else if (networkMessageType == nmtCommandList) {
 						//make sure we read the message
-						/*NetworkMessageCommandList networkMessageCommandList;
+						NetworkMessageCommandList networkMessageCommandList;
 						bool gotCmd = receiveMessage(&networkMessageCommandList);
 						if (gotCmd == false) {
-							throw megaglest_runtime_error("error retrieving nmtCommandList returned false!");
-						}*/
+							printf("Server has interrupted network connection...\n");
+							return;
+						}
 					} else if (networkMessageType == nmtInvalid) {
 						if (chrono.getMillis() > readyWaitTimeout) {
 							if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s] Line: %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
