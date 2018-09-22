@@ -244,7 +244,7 @@ namespace Shared {
 
 			void resetHeights(int height);
 			void realRandomize(int minimumHeight, int maximumHeight, int chanceDivider, int smoothRecursions);
-			void applyNewHeight(float newHeight, int x, int y, int strenght);
+			void applyNewHeight(float newHeight, int x, int y, int strength);
 
 			bool hasFileLoaded() const {
 				return fileLoaded;

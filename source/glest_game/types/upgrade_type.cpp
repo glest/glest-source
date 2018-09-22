@@ -162,6 +162,10 @@ namespace Glest {
 			attackStrengthIsMultiplier = false;
 
 			std::vector < string > attackStrengthXMLTags;
+			/*
+			 * Best practice would be to remove the incorrect spelling
+			 * of "strength", but that would break a lot of 3rd party mods
+			 */
 			attackStrengthXMLTags.push_back("attack-strenght");
 			attackStrengthXMLTags.push_back("attack-strength");
 			if (upgradeNode->hasChildWithAliases(attackStrengthXMLTags) == true) {

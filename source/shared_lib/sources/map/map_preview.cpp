@@ -1022,8 +1022,8 @@ namespace Shared {
 			}
 		}
 
-		void MapPreview::applyNewHeight(float newHeight, int x, int y, int strenght) {
-			cells[x][y].height = static_cast<float>(((cells[x][y].height * strenght) + newHeight) / (strenght + 1));
+		void MapPreview::applyNewHeight(float newHeight, int x, int y, int strength) {
+			cells[x][y].height = static_cast<float>(((cells[x][y].height * strength) + newHeight) / (strength + 1));
 			hasChanged = true;
 		}
 
