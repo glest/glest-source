@@ -1782,7 +1782,7 @@ namespace Glest {
 		PlaySoundClip::~PlaySoundClip(void) {
 		};
 
-		StaticSound *PlaySoundClip::getSound(const std::string& PlaySoundVal) {
+		StaticSound *PlaySoundClip::getSound(const std::string& playSoundVal) {
 			CoreData coreData;
 			int loadAttemptLookupKey = coreData.tsyst_COUNT + 6;
 			if (coreData.itemLoadAttempted.find(loadAttemptLookupKey) ==
@@ -1792,7 +1792,7 @@ namespace Glest {
 
 				try {
 					string data_path = coreData.getDataPath();
-					PlaySound.load(getGameCustomCoreDataPath(data_path, PlaySoundVal));
+					playSound.load(getGameCustomCoreDataPath(data_path, playSoundVal));
 				} catch (const megaglest_runtime_error & ex) {
 					message(ex.what(),
 						GlobalStaticFlags::getIsNonGraphicalModeEnabled(),
@@ -1800,7 +1800,7 @@ namespace Glest {
 				}
 			}
 
-			return &PlaySound;
+			return &playSound;
 		}
 
 		// ================== PRIVATE ========================

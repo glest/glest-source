@@ -336,9 +336,9 @@ namespace Glest {
 
 		class PlaySoundClip {
 		private:
-			StaticSound PlaySound;
+			StaticSound playSound;
 		public:
-			StaticSound * getSound(const std::string& PlaySoundVal);
+			StaticSound * getSound(const std::string& playSoundVal);
 			static const string sfxAttention;
 			static const string sfxHighlight;
 			static const string sfxNewServer;
