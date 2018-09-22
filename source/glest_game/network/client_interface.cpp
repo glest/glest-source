@@ -1216,15 +1216,15 @@ namespace Glest {
 							NetworkMessageQuit networkMessageQuit;
 							bool gotCmd = receiveMessage(&networkMessageQuit);
 							if (gotCmd == false) {
-								SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] error retrieving nmtQuit returned false!\n", __FILE__, __FUNCTION__, __LINE__);
+								//SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] error retrieving nmtQuit returned false!\n", __FILE__, __FUNCTION__, __LINE__);
+								printf("Network connection has been interrupted...\n");
+								setQuit(true);
 								if (isConnected() == false) {
-									setQuit(true);
 									close();
 									return;
 								}
 
 								//throw megaglest_runtime_error("error retrieving nmtQuit returned false!");
-								setQuit(true);
 								done = true;
 							}
 							setQuit(true);
