@@ -556,48 +556,49 @@ namespace Glest {
 					Texture2D *
 						tex = intoTexList[i];
 					//printf("tex # %d [%s]\n",i,tex->getPath().c_str());
+					if (tex != NULL) {
+						Vec2i texPlacement;
+						if (i == 0 || i % 9 == 0) {
+							texPlacement = Vec2i(1, h - tex->getTextureHeight());
+						} else if (i == 1 || i % 9 == 1) {
+							texPlacement = Vec2i(1, 1);
+						} else if (i == 2 || i % 9 == 2) {
+							texPlacement = Vec2i(w - tex->getTextureWidth(), 1);
+						} else if (i == 3 || i % 9 == 3) {
+							texPlacement =
+								Vec2i(w - tex->getTextureWidth(),
+									h - tex->getTextureHeight());
+						} else if (i == 4 || i % 9 == 4) {
+							texPlacement =
+								Vec2i(w / 2 - tex->getTextureWidth() / 2,
+									h - tex->getTextureHeight());
+						} else if (i == 5 || i % 9 == 5) {
+							texPlacement = Vec2i(w / 2 - tex->getTextureWidth() / 2, 1);
+						} else if (i == 6 || i % 9 == 6) {
+							texPlacement =
+								Vec2i(1, (h / 2) - (tex->getTextureHeight() / 2));
+						} else if (i == 7 || i % 9 == 7) {
+							texPlacement =
+								Vec2i(w - tex->getTextureWidth(),
+								(h / 2) - (tex->getTextureHeight() / 2));
+						}
 
-					Vec2i texPlacement;
-					if (i == 0 || i % 9 == 0) {
-						texPlacement = Vec2i(1, h - tex->getTextureHeight());
-					} else if (i == 1 || i % 9 == 1) {
-						texPlacement = Vec2i(1, 1);
-					} else if (i == 2 || i % 9 == 2) {
-						texPlacement = Vec2i(w - tex->getTextureWidth(), 1);
-					} else if (i == 3 || i % 9 == 3) {
-						texPlacement =
-							Vec2i(w - tex->getTextureWidth(),
-								h - tex->getTextureHeight());
-					} else if (i == 4 || i % 9 == 4) {
-						texPlacement =
-							Vec2i(w / 2 - tex->getTextureWidth() / 2,
-								h - tex->getTextureHeight());
-					} else if (i == 5 || i % 9 == 5) {
-						texPlacement = Vec2i(w / 2 - tex->getTextureWidth() / 2, 1);
-					} else if (i == 6 || i % 9 == 6) {
-						texPlacement =
-							Vec2i(1, (h / 2) - (tex->getTextureHeight() / 2));
-					} else if (i == 7 || i % 9 == 7) {
-						texPlacement =
-							Vec2i(w - tex->getTextureWidth(),
-							(h / 2) - (tex->getTextureHeight() / 2));
+						int
+							textureStartTime = disappear * displayItemNumber;
+						if (lang.hasString("IntroTextureStartMilliseconds", "", true) ==
+							true) {
+							textureStartTime =
+								strToInt(lang.getString("IntroTextureStartMilliseconds", "",
+									true));
+						}
+
+						texts.push_back(new
+							IntroText(tex, texPlacement,
+								Vec2i(tex->getTextureWidth(),
+									tex->getTextureHeight()),
+								textureStartTime +
+								(showMiscTime * (i + 1))));
 					}
-
-					int
-						textureStartTime = disappear * displayItemNumber;
-					if (lang.hasString("IntroTextureStartMilliseconds", "", true) ==
-						true) {
-						textureStartTime =
-							strToInt(lang.getString("IntroTextureStartMilliseconds", "",
-								true));
-					}
-
-					texts.push_back(new
-						IntroText(tex, texPlacement,
-							Vec2i(tex->getTextureWidth(),
-								tex->getTextureHeight()),
-							textureStartTime +
-							(showMiscTime * (i + 1))));
 				}
 			}
 
