@@ -1964,9 +1964,7 @@ namespace Glest {
 				if (msg == nmtInvalid) {
 					if (getSocket() == NULL || (chrono.getMillis() % 250 == 0 && isConnected() == false)) {
 						if (getQuit() == false) {
-							//throw megaglest_runtime_error("Disconnected");
-							//sendTextMessage("Server has Disconnected.",-1);
-							DisplayErrorMessage("Server has Disconnected.");
+							DisplayErrorMessage("Server has disconnected.");
 							setQuit(true);
 						}
 						close();
