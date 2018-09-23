@@ -1783,12 +1783,11 @@ namespace Glest {
 		};
 
 		StaticSound *PlaySoundClip::getSound(const std::string& playSoundVal) {
-			CoreData coreData;
+			CoreData & coreData = CoreData::getInstance();
 			int loadAttemptLookupKey = coreData.tsyst_COUNT + 6;
-			if (coreData.itemLoadAttempted.find(loadAttemptLookupKey) ==
-				coreData.itemLoadAttempted.end()) {
-
-				coreData.itemLoadAttempted[loadAttemptLookupKey] = true;
+			if (coreData.getItemLoadAttempted()->find(loadAttemptLookupKey) ==
+				coreData.getItemLoadAttempted()->end()) {
+				// coreData.setItemLoadAttempted(loadAttemptLookupKey, true);
 
 				try {
 					string data_path = coreData.getDataPath();
