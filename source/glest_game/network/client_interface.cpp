@@ -1565,7 +1565,7 @@ namespace Glest {
 				if (isConnected() == false) {
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s] Line: %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
-					string sErr = "Error, Server has disconnected!";
+					string sErr = "Error, server has disconnected!";
 					DisplayErrorMessage(sErr);
 
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s] Line: %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);

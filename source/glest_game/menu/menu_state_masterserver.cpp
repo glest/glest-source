@@ -785,8 +785,7 @@ namespace Glest {
 					 * enabled
 					 *
 						ircClient->SendIRCCmdMessage(IRC_CHANNEL, " has left the lobby");
-						*/
-					sleep(30);
+					sleep(30);*/
 				}
 
 				cleanup();
