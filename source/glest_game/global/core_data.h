@@ -161,15 +161,6 @@ namespace Glest {
 			void cleanup();
 			void loadFonts();
 
-			std::map <int, bool> *getItemLoadAttempted() {
-				return &itemLoadAttempted;
-			};
-
-			void setItemLoadAttempted(const int key, bool flag) {
-				itemLoadAttempted[key] = flag;
-			};
-
-
 			string getDataPath();
 
 			// Textures
@@ -345,7 +336,8 @@ namespace Glest {
 
 		class PlaySoundClip {
 		private:
-			StaticSound playSound;
+			std::vector<StaticSound> playSound;
+			std::map <string, int> alertSoundMap;
 		public:
 			StaticSound * getSound(const std::string& playSoundVal);
 			static const string sfxAttention;
@@ -355,6 +347,7 @@ namespace Glest {
 			static const string sfxMenuClickA;
 			static const string sfxMenuClickB;
 			static const string sfxMenuClickC;
+
 			PlaySoundClip();
 			~PlaySoundClip();
 
