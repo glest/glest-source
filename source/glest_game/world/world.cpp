@@ -2686,9 +2686,7 @@ namespace Glest {
 					// compute fog of war render texture
 					if (fogOfWar == true &&
 						faction->getTeam() == thisTeamIndex &&
-						unit->isOperative() == true) {
-
-						//printf("computeFow unit->isOperative() == true\n");
+						unit->isAlive() == true) {
 
 						const FowAlphaCellsLookupItem &cellList = unit->getCachedFow();
 						for (std::map<Vec2i, float>::const_iterator iterMap = cellList.surfPosAlphaList.begin();

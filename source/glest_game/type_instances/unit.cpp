@@ -5479,7 +5479,7 @@ namespace Glest {
 		}
 
 		void Unit::exploreCells(bool forceRefresh) {
-			if (this->isOperative() == true) {
+			if (this->isAlive() == true) {
 				const Vec2i & newPos = this->getCenteredPos();
 				int sightRange =
 					this->getType()->getTotalSight(this->getTotalUpgrade());
