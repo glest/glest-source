@@ -1483,7 +1483,7 @@ namespace Glest {
 					unitParticleSystems.pop_back();
 				}
 
-				Command *cmd = getCurrrentCommandThreadSafe();
+				Command *cmd = getCurrentCommandThreadSafe();
 
 				// Set mew fog of war skill type if need be
 				if (cmd != NULL && cmd->getCommandType() != NULL &&
@@ -2031,7 +2031,7 @@ namespace Glest {
 		}
 
 		//return current command, assert that there is always one command
-		Command *Unit::getCurrrentCommandThreadSafe() {
+		Command *Unit::getCurrentCommandThreadSafe() {
 			static string mutexOwnerId =
 				string(__FILE__) + string("_") + intToStr(__LINE__);
 			MutexSafeWrapper safeMutex(mutexCommands, mutexOwnerId);

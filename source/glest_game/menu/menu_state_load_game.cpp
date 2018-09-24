@@ -253,8 +253,7 @@ namespace Glest {
 					Lang & lang = Lang::getInstance();
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096,
-						lang.getString("LoadGameDeletingFile", "",
-							true).c_str(), filename.c_str());
+						lang.getString("LoadGameDeletingFile", "").c_str(), filename.c_str());
 					console.addLineOnly(szBuf);
 
 					for (int i = 0; i < (int) slots.size(); i++) {
@@ -285,7 +284,7 @@ namespace Glest {
 					Lang & lang = Lang::getInstance();
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096,
-						lang.getString("LoadGameLoadingFile", "", true).c_str(),
+						lang.getString("LoadGameLoadingFile", "").c_str(),
 						filename.c_str());
 					console.addLineOnly(szBuf);
 

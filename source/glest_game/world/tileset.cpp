@@ -164,7 +164,7 @@ namespace Glest {
 
 			try {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, Lang::getInstance().getString("LogScreenGameLoadingTileset", "", true).c_str(), formatString(name).c_str());
+				snprintf(szBuf, 8096, Lang::getInstance().getString("LogScreenGameLoadingTileset", "").c_str(), formatString(name).c_str());
 				Logger::getInstance().add(szBuf, true);
 
 				Renderer &renderer = Renderer::getInstance();
@@ -502,7 +502,7 @@ namespace Glest {
 				surfPixmaps[i].clear();
 			}
 
-			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameUnLoadingTileset", "", true), true);
+			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameUnLoadingTileset", ""), true);
 		}
 
 		const Pixmap2D *Tileset::getSurfPixmap(int type, int var) const {

@@ -160,12 +160,7 @@ namespace
 					pushBackItem("OpenAL");
 
 				string
-					FSoundMode = config.getString("FactorySound");
-				string
-					FSoundModeT = lang.getString(config.getString("FactorySound"));
-				if (FSoundModeT != "???" + FSoundMode + "???") {
-					FSoundMode = FSoundModeT;
-				}
+					FSoundMode = lang.getString(config.getString("FactorySound"));
 				listBoxSoundFactory.
 					setSelectedItem(FSoundMode);
 				currentLine -=

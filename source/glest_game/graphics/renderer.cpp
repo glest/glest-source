@@ -1447,12 +1447,12 @@ namespace Glest {
 					bool swapRequiredY = false;
 					int const cellBuffer = 4;
 					if ((tl.x > tr.x) || (bl.x > br.x)) {
-						if (debug) printf("Swap X???\n");
+						if (debug) printf("Swap X?\n");
 
 						//std::swap(tl,bl);
 						//std::swap(tr,br);
 						if (tl.x > tr.x) {
-							if (debug) printf("Swap X1???\n");
+							if (debug) printf("Swap X1?\n");
 
 							tr.x += cellBuffer;
 							tl.x -= cellBuffer;
@@ -1464,7 +1464,7 @@ namespace Glest {
 							tr.x -= cellBuffer;
 						}
 						if (bl.x > br.x) {
-							if (debug) printf("Swap X2???\n");
+							if (debug) printf("Swap X2?\n");
 
 							bl.x += cellBuffer;
 							br.x -= cellBuffer;
@@ -1480,10 +1480,10 @@ namespace Glest {
 					if ((tl.y > bl.y) || (tr.y > br.y)) {
 						visibleQuad = this->gameCamera->computeVisibleQuad();
 
-						if (debug) printf("Swap Y???\n");
+						if (debug) printf("Swap Y?\n");
 
 						if (tl.y > bl.y) {
-							if (debug) printf("Swap Y1???\n");
+							if (debug) printf("Swap Y1?\n");
 
 							tl.y += cellBuffer;
 							bl.y -= cellBuffer;
@@ -1495,7 +1495,7 @@ namespace Glest {
 							tl.y -= cellBuffer;
 						}
 						if (tr.y > br.y) {
-							if (debug) printf("Swap Y2???\n");
+							if (debug) printf("Swap Y2?\n");
 
 							tr.y += cellBuffer;
 							br.y -= cellBuffer;
@@ -2241,7 +2241,7 @@ namespace Glest {
 				//int minutes = (world->getTimeFlow()->getTime() - hours) * 100 * 0.6; // scale 100 to 60
 				//snprintf(szBuf,200,"%s %.2d:%.2d",lang.getString("GameTime","",true).c_str(),hours,minutes);
 				// string header2 = lang.getString("GameDurationTime","",true) + ": " + getTimeString(stats.getFramesToCalculatePlaytime());
-				snprintf(szBuf, 500, "%s %s", lang.getString("GameDurationTime", "", true).c_str(), getTimeDuationString(world->getFrameCount(), GameConstants::updateFps).c_str());
+				snprintf(szBuf, 500, "%s %s", lang.getString("GameDurationTime", "").c_str(), getTimeDuationString(world->getFrameCount(), GameConstants::updateFps).c_str());
 				if (str != "") {
 					str += " ";
 				}
@@ -2257,7 +2257,7 @@ namespace Glest {
 
 				Lang &lang = Lang::getInstance();
 				char szBuf[200] = "";
-				snprintf(szBuf, 200, "%s %s", lang.getString("LocalTime", "", true).c_str(), szBuf2);
+				snprintf(szBuf, 200, "%s %s", lang.getString("LocalTime", "").c_str(), szBuf2);
 				if (str != "") {
 					str += " ";
 				}

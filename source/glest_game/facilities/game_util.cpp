@@ -90,7 +90,7 @@ namespace Glest {
 #  endif
 
 #else
-				platform = "???";
+				platform = "Unknown";
 #endif
 			}
 			return platform;
@@ -162,7 +162,7 @@ namespace Glest {
 				version += ": " + intToStr(__GNUC_VERSION__);
 
 #else
-				version = "???";
+				version = "Unknown";
 #endif
 
 #if defined(DEBUG) || defined(_DEBUG)

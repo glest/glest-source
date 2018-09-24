@@ -117,7 +117,7 @@ namespace Glest {
 		}
 
 		Minimap::~Minimap() {
-			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameUnLoadingMiniMap", "", true), true);
+			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameUnLoadingMiniMap", ""), true);
 			delete fowPixmap0;
 			fowPixmap0 = NULL;
 			delete fowPixmap0Copy;

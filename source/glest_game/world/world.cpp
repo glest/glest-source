@@ -162,7 +162,7 @@ namespace Glest {
 
 		void World::endScenario() {
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
-			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameUnLoadingWorld", "", true), true);
+			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameUnLoadingWorld", ""), true);
 
 			animatedTilesetObjectPosListLoaded = false;
 
@@ -183,7 +183,7 @@ namespace Glest {
 
 		void World::end() {
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
-			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameUnLoadingWorld", "", true), true);
+			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameUnLoadingWorld", ""), true);
 
 			animatedTilesetObjectPosListLoaded = false;
 
@@ -1949,7 +1949,7 @@ namespace Glest {
 		void World::initCells(bool fogOfWar) {
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameLoadingStateCells", "", true), true);
+			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameLoadingStateCells", ""), true);
 			for (int i = 0; i < map.getSurfaceW(); ++i) {
 				for (int j = 0; j < map.getSurfaceH(); ++j) {
 
@@ -2027,7 +2027,7 @@ namespace Glest {
 		//creates each faction looking at each faction name contained in GameSettings
 		void World::initFactionTypes(GameSettings *gs) {
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
-			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameLoadingFactionTypes", "", true), true);
+			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameLoadingFactionTypes", ""), true);
 
 			if (gs == NULL) {
 				throw megaglest_runtime_error("gs == NULL");
@@ -2173,14 +2173,14 @@ namespace Glest {
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
 			minimap.init(map.getW(), map.getH(), this, game->getGameSettings()->getFogOfWar());
-			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameLoadingMinimapSurface", "", true), true);
+			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameLoadingMinimapSurface", ""), true);
 
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 		}
 
 		void World::initUnitsForScenario() {
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
-			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameLoadingGenerateGameElements", "", true), true);
+			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameLoadingGenerateGameElements", ""), true);
 
 			//put starting units
 			for (int i = 0; i < getFactionCount(); ++i) {
@@ -2245,7 +2245,7 @@ namespace Glest {
 		//place units randomly aroud start location
 		void World::initUnits() {
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
-			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameLoadingGenerateGameElements", "", true), true);
+			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameLoadingGenerateGameElements", ""), true);
 
 			bool gotError = false;
 			bool skipStackTrace = false;

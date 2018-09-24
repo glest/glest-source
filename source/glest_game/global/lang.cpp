@@ -566,7 +566,7 @@ namespace Glest {
 			return result;
 		}
 
-		string Lang::getString(const string & s, string uselanguage, bool fallbackToDefault) {
+		string Lang::getString(const string & s, string uselanguage) {
 			string result = "";
 
 			if (uselanguage != "") {
@@ -587,7 +587,7 @@ namespace Glest {
 
 			if (uselanguage != DEFAULT_LANGUAGE
 				&& this->language != DEFAULT_LANGUAGE) {
-				return getString(s, DEFAULT_LANGUAGE, false);
+				return getString(s, DEFAULT_LANGUAGE);
 			}
 
 			return s;

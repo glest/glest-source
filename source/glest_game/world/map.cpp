@@ -366,7 +366,7 @@ namespace Glest {
 		}
 
 		Map::~Map() {
-			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameUnLoadingMapCells", "", true), true);
+			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameUnLoadingMapCells", ""), true);
 
 			delete[] cells;
 			cells = NULL;
@@ -378,7 +378,7 @@ namespace Glest {
 
 		void Map::end() {
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
-			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameUnLoadingMap", "", true), true);
+			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameUnLoadingMap", ""), true);
 			//read heightmap
 			for (int j = 0; j < surfaceH; ++j) {
 				for (int i = 0; i < surfaceW; ++i) {
@@ -574,7 +574,7 @@ namespace Glest {
 		}
 
 		void Map::init(Tileset *tileset) {
-			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameUnLoadingMap", "", true), true);
+			Logger::getInstance().add(Lang::getInstance().getString("LogScreenGameUnLoadingMap", ""), true);
 			maxMapHeight = 0.0f;
 			smoothSurface(tileset);
 			computeNormals();

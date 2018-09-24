@@ -2512,7 +2512,7 @@ namespace Glest {
 						true) == true) {
 						labelMapInfo.setText(mapInfo.desc);
 					} else {
-						labelMapInfo.setText("???");
+						labelMapInfo.setText("");
 					}
 
 					needToBroadcastServerSettings = true;
@@ -2576,7 +2576,7 @@ namespace Glest {
 						true) == true) {
 						labelMapInfo.setText(mapInfo.desc);
 					} else {
-						labelMapInfo.setText("???");
+						labelMapInfo.setText("");
 					}
 					needToBroadcastServerSettings = true;
 					broadcastServerSettingsDelayTimer = time(NULL);
@@ -2904,8 +2904,7 @@ namespace Glest {
 			factionFiles.push_back(formatString
 			(GameConstants::RANDOMFACTION_SLOTNAME));
 			translatedFactionNames.push_back("*" +
-				lang.getString("Random", "",
-					true) + "*");
+				lang.getString("Random", "") + "*");
 
 			// Add special Observer Faction
 			if (checkBoxAllowObservers.getValue() == 1) {
@@ -2913,8 +2912,7 @@ namespace Glest {
 				factionFiles.push_back(formatString
 				(GameConstants::OBSERVER_SLOTNAME));
 				translatedFactionNames.push_back("*" +
-					lang.getString("Observer", "",
-						true) + "*");
+					lang.getString("Observer", "") + "*");
 			}
 
 			for (int i = 0; i < GameConstants::maxPlayers; ++i) {
@@ -4337,7 +4335,7 @@ namespace Glest {
 								&& techCRC != displayedGamesettings.getTechCRC()
 								&& listBoxTechTree.getSelectedItemIndex() >= 0
 								&& listBoxTechTree.getSelectedItem() !=
-								Lang::getInstance().getString("DataMissing", "", true)) {
+								Lang::getInstance().getString("DataMissing", "")) {
 
 								//time_t now = time(NULL);
 								time_t
@@ -4402,7 +4400,7 @@ namespace Glest {
 								if (factionName != GameConstants::RANDOMFACTION_SLOTNAME &&
 									factionName != GameConstants::OBSERVER_SLOTNAME &&
 									factionName !=
-									Lang::getInstance().getString("DataMissing", "", true)) {
+									Lang::getInstance().getString("DataMissing", "")) {
 
 									uint32 factionCRC = 0;
 									//time_t now = time(NULL);
@@ -4549,7 +4547,7 @@ namespace Glest {
 							if (mapCRC != 0 && mapCRC != displayedGamesettings.getMapCRC()
 								&& listBoxMap.getSelectedItemIndex() >= 0
 								&& listBoxMap.getSelectedItem() !=
-								Lang::getInstance().getString("DataMissing", "", true)) {
+								Lang::getInstance().getString("DataMissing", "")) {
 								labelSynch = labelSynch + " " + lang.getString("Map");
 
 								if (updateDataSynchDetailText == true &&
@@ -4584,7 +4582,7 @@ namespace Glest {
 								&& tilesetCRC != displayedGamesettings.getTilesetCRC()
 								&& listBoxTileset.getSelectedItemIndex() >= 0
 								&& listBoxTileset.getSelectedItem() !=
-								Lang::getInstance().getString("DataMissing", "", true)) {
+								Lang::getInstance().getString("DataMissing", "")) {
 								labelSynch = labelSynch + " " + lang.getString("Tileset");
 								if (updateDataSynchDetailText == true &&
 									lastTileDataSynchError !=
@@ -4618,7 +4616,7 @@ namespace Glest {
 								&& techCRC != displayedGamesettings.getTechCRC()
 								&& listBoxTechTree.getSelectedItemIndex() >= 0
 								&& listBoxTechTree.getSelectedItem() !=
-								Lang::getInstance().getString("DataMissing", "", true)) {
+								Lang::getInstance().getString("DataMissing", "")) {
 								labelSynch = labelSynch + " " + lang.getString("TechTree");
 								if (updateDataSynchDetailText == true &&
 									lastTechtreeDataSynchError !=
@@ -5818,7 +5816,7 @@ namespace Glest {
 					}
 					results.
 						push_back(Lang::
-							getInstance().getString("DataMissing", "", true));
+							getInstance().getString("DataMissing", ""));
 					factionFiles = results;
 					vector < string > translatedFactionNames;
 					for (int i = 0; i < (int) factionFiles.size(); ++i) {
@@ -5907,8 +5905,7 @@ namespace Glest {
 					factionFiles.push_back(formatString
 					(GameConstants::RANDOMFACTION_SLOTNAME));
 					translatedFactionNames.push_back("*" +
-						lang.getString("Random", "",
-							true) + "*");
+						lang.getString("Random", "") + "*");
 
 					// Add special Observer Faction
 					if (checkBoxAllowObservers.getValue() == 1) {
@@ -5917,8 +5914,7 @@ namespace Glest {
 						factionFiles.push_back(formatString
 						(GameConstants::OBSERVER_SLOTNAME));
 						translatedFactionNames.push_back("*" +
-							lang.getString("Observer", "",
-								true) + "*");
+							lang.getString("Observer", "") + "*");
 					}
 
 
@@ -6238,7 +6234,7 @@ namespace Glest {
 				} else {
 					cleanupMapPreviewTexture();
 					mapInfo->desc =
-						Lang::getInstance().getString("DataMissing", "", true);
+						Lang::getInstance().getString("DataMissing", "");
 
 					NetworkManager & networkManager = NetworkManager::getInstance();
 					ClientInterface *
@@ -7286,7 +7282,7 @@ namespace Glest {
 
 					tilesets.
 						push_back(Lang::
-							getInstance().getString("DataMissing", "", true));
+							getInstance().getString("DataMissing", ""));
 
 					NetworkManager & networkManager = NetworkManager::getInstance();
 					ClientInterface *
@@ -7339,8 +7335,7 @@ namespace Glest {
 					listBoxTileset.setItems(tilesets);
 					listBoxTileset.
 						setSelectedItem(Lang::
-							getInstance().getString("DataMissing", "",
-								true));
+							getInstance().getString("DataMissing", ""));
 				}
 
 			}
@@ -7404,7 +7399,7 @@ namespace Glest {
 
 					techtree.
 						push_back(Lang::
-							getInstance().getString("DataMissing", "", true));
+							getInstance().getString("DataMissing", ""));
 
 					NetworkManager & networkManager = NetworkManager::getInstance();
 					ClientInterface *
@@ -7463,8 +7458,7 @@ namespace Glest {
 					listBoxTechTree.setItems(techtree, translatedTechs);
 					listBoxTechTree.
 						setSelectedItem(Lang::
-							getInstance().getString("DataMissing", "",
-								true));
+							getInstance().getString("DataMissing", ""));
 				}
 			}
 
@@ -7548,12 +7542,8 @@ namespace Glest {
 					}
 
 					formattedPlayerSortedMaps[gameSettings->
-						getMapFilter()].push_back(Lang::
-							getInstance
-							().getString
-							("DataMissing",
-								"", true));
-					mapFile = Lang::getInstance().getString("DataMissing", "", true);
+						getMapFilter()].push_back(Lang::getInstance().getString("DataMissing", ""));
+					mapFile = Lang::getInstance().getString("DataMissing", "");
 					missingMap = true;
 				}
 
@@ -7563,8 +7553,7 @@ namespace Glest {
 					if (isfirstSwitchingMapMessage) {
 						isfirstSwitchingMapMessage = false;
 					} else {
-						console.addLine(Lang::getInstance().getString
-						("HeadlessServerDoesNotHaveMap", "", true));
+						console.addLine(Lang::getInstance().getString("HeadlessServerDoesNotHaveMap", ""));
 					}
 				}
 				listBoxMap.setItems(formattedPlayerSortedMaps

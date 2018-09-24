@@ -839,7 +839,7 @@ namespace Shared {
 				}
 			}
 
-			throw megaglest_runtime_error("Node \"" + getName() + "\" doesn't have " + intToStr(childIndex + 1) + " children named  \"" + (childNameList.empty() ? "???" : childNameList[0]) + "\"\n\nTree: " + getTreeString(), true);
+			throw megaglest_runtime_error("Node \"" + getName() + "\" doesn't have " + intToStr(childIndex + 1) + " children named  \"" + (childNameList.empty() ? "?" : childNameList[0]) + "\"\n\nTree: " + getTreeString(), true);
 		}
 
 		bool XmlNode::hasChildAtIndex(const string &childName, int i) const {

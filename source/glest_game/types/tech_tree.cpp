@@ -242,8 +242,7 @@ namespace Glest {
 
 			char szBuf[8096] = "";
 			snprintf(szBuf, 8096,
-				Lang::getInstance().
-				getString("LogScreenGameLoadingTechtree", "", true).c_str(),
+				Lang::getInstance().getString("LogScreenGameLoadingTechtree", "").c_str(),
 				formatString(getName(true)).c_str());
 			Logger::getInstance().add(szBuf, true);
 
@@ -474,8 +473,7 @@ namespace Glest {
 					extractFileFromDirectoryPath(__FILE__).
 					c_str(), __FUNCTION__, __LINE__);
 			Logger::getInstance().add(Lang::getInstance().
-				getString("LogScreenGameUnLoadingTechtree",
-					"", true), true);
+				getString("LogScreenGameUnLoadingTechtree", ""), true);
 			resourceTypes.clear();
 			factionTypes.clear();
 			armorTypes.clear();

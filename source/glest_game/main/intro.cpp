@@ -344,7 +344,7 @@ namespace Glest {
 					string lineText = "";
 
 					if (lang.hasString(introTagName, "", true) == true) {
-						lineText = lang.getString(introTagName, "", true);
+						lineText = lang.getString(introTagName, "");
 					}
 
 					string showStartTime = "IntroStartMilliseconds" + intToStr(i);
@@ -352,7 +352,7 @@ namespace Glest {
 					int
 						displayTime = appear;
 					if (lang.hasString(showStartTime, "", true) == true) {
-						displayTime = strToInt(lang.getString(showStartTime, "", true));
+						displayTime = strToInt(lang.getString(showStartTime, ""));
 					} else {
 						if (i == 1) {
 							displayTime = appear;
@@ -372,7 +372,7 @@ namespace Glest {
 						string
 							introTagTextureHeightName = "IntroTextureHeight" + intToStr(i);
 
-						lineText = lang.getString(introTagTextureName, "", true);
+						lineText = lang.getString(introTagTextureName, "");
 						Texture2D *
 							logoTexture = renderer.newTexture2D(rsGlobal);
 						if (logoTexture) {
@@ -391,7 +391,7 @@ namespace Glest {
 						if (lang.hasString(introTagTextureWidthName, "", true) == true) {
 							textureWidth =
 								strToInt(lang.getString
-								(introTagTextureWidthName, "", true));
+								(introTagTextureWidthName, ""));
 						}
 
 						int
@@ -402,7 +402,7 @@ namespace Glest {
 						if (lang.hasString(introTagTextureHeightName, "", true) == true) {
 							textureHeight =
 								strToInt(lang.getString
-								(introTagTextureHeightName, "", true));
+								(introTagTextureHeightName, ""));
 						}
 
 						texts.push_back(new
@@ -422,7 +422,7 @@ namespace Glest {
 						int
 							textX = -1;
 						if (lang.hasString(introTagTextXName, "", true) == true) {
-							string value = lang.getString(introTagTextXName, "", true);
+							string value = lang.getString(introTagTextXName, "");
 							if (value.length() > 0 && (value[0] == '+' || value[0] == '-')) {
 								textX = w / 2 + strToInt(value);
 							} else {
@@ -433,7 +433,7 @@ namespace Glest {
 						int
 							textY = -1;
 						if (lang.hasString(introTagTextYName, "", true) == true) {
-							string value = lang.getString(introTagTextYName, "", true);
+							string value = lang.getString(introTagTextYName, "");
 							if (value.length() > 0 && (value[0] == '+' || value[0] == '-')) {
 								textY = h / 2 + strToInt(value);
 							} else {
@@ -448,7 +448,7 @@ namespace Glest {
 
 						if (lang.hasString(introTagTextFontTypeName, "", true) == true) {
 							string
-								value = lang.getString(introTagTextFontTypeName, "", true);
+								value = lang.getString(introTagTextFontTypeName, "");
 							if (value == "displaynormal") {
 								font = coreData.getDisplayFont();
 								font3d = coreData.getDisplayFont3D();
@@ -481,7 +481,7 @@ namespace Glest {
 			modelShowTime = disappear * (displayItemNumber);
 			if (lang.hasString("IntroModelStartMilliseconds", "", true) == true) {
 				modelShowTime =
-					strToInt(lang.getString("IntroModelStartMilliseconds", "", true));
+					strToInt(lang.getString("IntroModelStartMilliseconds", ""));
 			} else {
 				modelShowTime = disappear * (displayItemNumber);
 			}
@@ -588,8 +588,7 @@ namespace Glest {
 						if (lang.hasString("IntroTextureStartMilliseconds", "", true) ==
 							true) {
 							textureStartTime =
-								strToInt(lang.getString("IntroTextureStartMilliseconds", "",
-									true));
+								strToInt(lang.getString("IntroTextureStartMilliseconds", ""));
 						}
 
 						texts.push_back(new

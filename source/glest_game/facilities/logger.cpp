@@ -134,7 +134,7 @@ namespace Glest {
 				showNextHint();
 
 				Lang &lang = Lang::getInstance();
-				buttonNextHint.setText(lang.getString("ShowNextHint", "", true));
+				buttonNextHint.setText(lang.getString("ShowNextHint", ""));
 				buttonCancel.setText(lang.getString("Cancel"));
 
 				GraphicComponent::applyAllCustomProperties("Loading");
@@ -267,7 +267,7 @@ namespace Glest {
 
 			if (gameHintToShow != "") {
 				Lang &lang = Lang::getInstance();
-				string hintText = lang.getString("Hint", "", true);
+				string hintText = lang.getString("Hint", "");
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, hintText.c_str(), gameHintToShow.c_str());
 				hintText = szBuf;
@@ -293,7 +293,7 @@ namespace Glest {
 				//Show next Hint
 				if (buttonNextHint.getEnabled() == false) {
 					buttonNextHint.init((metrics.getVirtualW() / 2) - (175 / 2), 90 * metrics.getVirtualH() / 100 + 20, 175);
-					buttonNextHint.setText(lang.getString("ShowNextHint", "", true));
+					buttonNextHint.setText(lang.getString("ShowNextHint", ""));
 					buttonNextHint.setEnabled(true);
 					buttonNextHint.setVisible(true);
 					buttonNextHint.setEditable(true);

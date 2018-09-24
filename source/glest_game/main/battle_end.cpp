@@ -854,8 +854,7 @@ namespace Glest {
 
 				string
 					header2 =
-					lang.getString("GameDurationTime", "",
-						true) + ": " +
+					lang.getString("GameDurationTime", "") + ": " +
 					getTimeDuationString(stats.getFramesToCalculatePlaytime(),
 						GameConstants::updateFps);
 				textRenderer->render(header2, lm + 250, bm + 530);

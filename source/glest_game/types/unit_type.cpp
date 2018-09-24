@@ -217,8 +217,7 @@ namespace Glest {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096,
 					Lang::getInstance().
-					getString("LogScreenGameLoadingUnitType", "",
-						true).c_str(),
+					getString("LogScreenGameLoadingUnitType", "").c_str(),
 					formatString(this->getName(true)).c_str());
 				Logger::getInstance().add(szBuf, true);
 
@@ -1047,8 +1046,7 @@ namespace Glest {
 
 				snprintf(szBuf, 8096,
 					Lang::getInstance().
-					getString("LogScreenGameLoadingUnitTypeSkills", "",
-						true).c_str(),
+					getString("LogScreenGameLoadingUnitTypeSkills", "").c_str(),
 					formatString(this->getName(true)).c_str(),
 					skillTypes.size());
 				Logger::getInstance().add(szBuf, true);

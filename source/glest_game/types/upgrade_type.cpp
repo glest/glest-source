@@ -1043,8 +1043,7 @@ namespace Glest {
 			char szBuf[8096] = "";
 			snprintf(szBuf, 8096,
 				Lang::getInstance().
-				getString("LogScreenGameLoadingUpgradeType", "",
-					true).c_str(),
+				getString("LogScreenGameLoadingUpgradeType", "").c_str(),
 				formatString(this->getName(true)).c_str());
 			Logger::getInstance().add(szBuf, true);
 

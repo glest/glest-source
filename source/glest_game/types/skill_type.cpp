@@ -1372,7 +1372,7 @@ namespace Glest {
 			attackSkillTypeNode->addAttribute("projectile", intToStr(projectile),
 				mapTagReplacements);
 			//    ParticleSystemTypeProjectile* projectileParticleSystemType;
-			// save a skill_type ????
+			// save a skill_type?
 				  //      if(projectileParticleSystemType != NULL) {
 			//              projectileParticleSystemType->saveGame(attackSkillTypeNode);
 			//      }

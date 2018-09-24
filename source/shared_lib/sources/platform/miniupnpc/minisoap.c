@@ -99,7 +99,7 @@ int soapPostSubmit(int fd,
 		"Content-Type: text/xml\r\n"
 		"SOAPAction: \"%s\"\r\n"
 		"Connection: Close\r\n"
-		"Cache-Control: no-cache\r\n"	/* ??? */
+		"Cache-Control: no-cache\r\n"
 		"Pragma: no-cache\r\n"
 		"\r\n",
 		url, httpversion, host, portstr, bodysize, action);

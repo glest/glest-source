@@ -100,8 +100,8 @@ namespace Glest {
 				return false;
 			}
 
-			//      const Command *command= l->getCurrrentCommandThreadSafe();
-			//      const Command *commandPeer = r->getCurrrentCommandThreadSafe();
+			//      const Command *command= l->getCurrentCommandThreadSafe();
+			//      const Command *commandPeer = r->getCurrentCommandThreadSafe();
 			const Command *command = l->getCurrCommand();
 			const Command *commandPeer = r->getCurrCommand();
 
@@ -114,7 +114,7 @@ namespace Glest {
 				command->getUnitCommandGroupId() > 0) {
 				int curCommandGroupId = command->getUnitCommandGroupId();
 
-				//Command *commandPeer = j.unit->getCurrrentCommandThreadSafe();
+				//Command *commandPeer = j.unit->getCurrentCommandThreadSafe();
 				//Command *commandPeer = j.unit->getCurrCommand();
 
 				// is comparer a valid command
@@ -144,11 +144,11 @@ namespace Glest {
 			} else if (command == NULL && commandPeer != NULL) {
 				result = false;
 			}
-			//      else if(command == NULL && j.unit->getCurrrentCommandThreadSafe() == NULL) {
+			//      else if(command == NULL && j.unit->getCurrentCommandThreadSafe() == NULL) {
 			//              return this->unit->getId() < j.unit->getId();
 			//      }
 			else {
-				//Command *commandPeer = j.unit->getCurrrentCommandThreadSafe();
+				//Command *commandPeer = j.unit->getCurrentCommandThreadSafe();
 				//if( commandPeer != NULL && commandPeer->getCommandType() != NULL &&
 				//      (commandPeer->getCommandType()->getClass() != ccMove &&
 				//       commandPeer->getCommandType()->getClass() != ccAttack)) {

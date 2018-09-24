@@ -3177,7 +3177,7 @@ namespace
 						}
 						break;
 					default:
-						result = "???";
+						result = "";
 						break;
 				}
 			}

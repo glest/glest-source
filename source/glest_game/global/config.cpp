@@ -55,7 +55,7 @@ namespace Glest {
 		const char *GameConstants::folder_path_tilesets = "tilesets";
 		const char *GameConstants::folder_path_tutorials = "tutorials";
 
-		const char *GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME = "???";
+		const char *GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME = "??";
 		const char *GameConstants::NETWORK_SLOT_CLOSED_SLOTNAME = "Closed";
 
 		const char *GameConstants::folder_path_screenshots = "screens/";

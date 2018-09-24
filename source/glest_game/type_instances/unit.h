@@ -622,7 +622,7 @@ namespace Glest {
 			void calculateFogOfWarRadius(bool forceRefresh = false);
 
 			//queries
-			Command *getCurrrentCommandThreadSafe();
+			Command *getCurrentCommandThreadSafe();
 			void setIgnoreCheckCommand(bool value) {
 				ignoreCheckCommand = value;
 			}

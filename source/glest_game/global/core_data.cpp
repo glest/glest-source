@@ -1061,9 +1061,7 @@ namespace Glest {
 		void CoreData::load() {
 			string data_path = CoreData::getDataPath();
 
-			Logger::getInstance().add(Lang::getInstance().
-				getString("LogScreenCoreDataLoading", "",
-					true));
+			Logger::getInstance().add(Lang::getInstance().getString("LogScreenCoreDataLoading", ""));
 
 			// textures
 			loadTextures(data_path);

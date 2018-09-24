@@ -2774,14 +2774,14 @@ namespace Glest {
 
 						Lang & lang = Lang::getInstance();
 						string sMsg =
-							lang.getString("NetworkSlotNoHumanErrorUI", "", true);
+							lang.getString("NetworkSlotNoHumanErrorUI", "");
 						showMessageBox(sMsg, "", false);
 
 						const vector < string > languageList =
 							serverInterface->
 							getGameSettings()->getUniqueNetworkPlayerLanguages();
 						for (unsigned int j = 0; j < languageList.size(); ++j) {
-							sMsg = lang.getString("NetworkSlotNoHumanError", "", true);
+							sMsg = lang.getString("NetworkSlotNoHumanError", "");
 
 							serverInterface->sendTextMessage(sMsg, -1, true,
 								languageList[j]);
@@ -3281,9 +3281,9 @@ namespace Glest {
 											&& switchSetupRequests[i]->getSelectedFactionName()
 											!= Lang::getInstance().getString("DataMissing",
 												slot->getNetworkPlayerLanguage
-												(), true)
+												())
 											&& switchSetupRequests[i]->getSelectedFactionName()
-											!= "???DataMissing???")) {
+											!= "DataMissing")) {
 										// I don't believe we need to check to see if Observers
 										// are allowed. If it's not, there should be not button on the client
 										// side that would allow them to switch to a slot > mapInfo.hardMaxPlayers
@@ -3373,9 +3373,9 @@ namespace Glest {
 										&& switchSetupRequests[i]->getSelectedFactionName()
 										!= Lang::getInstance().getString("DataMissing",
 											slot->getNetworkPlayerLanguage
-											(), true)
+											())
 										&& switchSetupRequests[i]->getSelectedFactionName()
-										!= "???DataMissing???")) {
+										!= "DataMissing")) {
 									listBoxFactions[i].setSelectedItem(switchSetupRequests
 										[i]->getSelectedFactionName
 										());
@@ -6310,8 +6310,7 @@ namespace Glest {
 				factionFiles.push_back(formatString
 				(GameConstants::RANDOMFACTION_SLOTNAME));
 				translatedFactionNames.push_back("*" +
-					lang.getString("Random", "",
-						true) + "*");
+					lang.getString("Random", "") + "*");
 
 				// Add special Observer Faction
 				if (checkBoxAllowObservers.getValue() == 1) {
@@ -6319,8 +6318,7 @@ namespace Glest {
 					factionFiles.push_back(formatString
 					(GameConstants::OBSERVER_SLOTNAME));
 					translatedFactionNames.push_back("*" +
-						lang.getString("Observer", "",
-							true) + "*");
+						lang.getString("Observer", "") + "*");
 				}
 
 				for (int i = 0; i < GameConstants::maxPlayers; ++i) {

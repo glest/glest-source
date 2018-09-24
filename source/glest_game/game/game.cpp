@@ -423,7 +423,7 @@ namespace Glest {
 			//logger.add("Game", true);
 			logger.
 				add(Lang::
-					getInstance().getString("LogScreenGameLoading", "", true),
+					getInstance().getString("LogScreenGameLoading", ""),
 					false);
 			logger.hideProgress();
 
@@ -562,7 +562,7 @@ namespace Glest {
 			//logger.add("Game", true);
 			logger.
 				add(Lang::
-					getInstance().getString("LogScreenGameLoading", "", true),
+					getInstance().getString("LogScreenGameLoading", ""),
 					false);
 			logger.hideProgress();
 
@@ -2042,8 +2042,7 @@ namespace Glest {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096,
 							Lang::getInstance().getString
-							("LogScreenGameLoadingCreatingAIFaction", "",
-								true).c_str(), i);
+							("LogScreenGameLoadingCreatingAIFaction", "").c_str(), i);
 						logger.add(szBuf, true);
 
 						slaveThreadList.push_back(aiInterfaces[i]->getWorkerThread());
@@ -2087,16 +2086,14 @@ namespace Glest {
 					//weather particle systems
 					if (world.getTileset()->getWeather() == wRainy) {
 						logger.add(Lang::getInstance().getString
-						("LogScreenGameLoadingCreatingRainParticles",
-							"", true), true);
+						("LogScreenGameLoadingCreatingRainParticles", ""), true);
 						weatherParticleSystem = new RainParticleSystem();
 						weatherParticleSystem->setSpeed(12.f / GameConstants::updateFps);
 						weatherParticleSystem->setPos(gameCamera.getPos());
 						renderer.manageParticleSystem(weatherParticleSystem, rsGame);
 					} else if (world.getTileset()->getWeather() == wSnowy) {
 						logger.add(Lang::getInstance().getString
-						("LogScreenGameLoadingCreatingSnowParticles",
-							"", true), true);
+						("LogScreenGameLoadingCreatingSnowParticles", ""), true);
 						weatherParticleSystem = new SnowParticleSystem(1200);
 						weatherParticleSystem->setSpeed(1.5f / GameConstants::updateFps);
 						weatherParticleSystem->setPos(gameCamera.getPos());
@@ -2127,8 +2124,7 @@ namespace Glest {
 					(__FILE__).c_str(), __FUNCTION__);
 			logger.
 				add(Lang::
-					getInstance().getString("LogScreenGameLoadingInitRenderer", "",
-						true), true);
+					getInstance().getString("LogScreenGameLoadingInitRenderer", ""), true);
 
 			//printf("Before renderer.initGame\n");
 			renderer.initGame(this, this->getGameCameraPtr());
@@ -2173,8 +2169,7 @@ namespace Glest {
 						(__FILE__).c_str(), __FUNCTION__);
 				logger.
 					add(Lang::
-						getInstance().getString
-						("LogScreenGameLoadingWaitForNetworkPlayers", "", true), true);
+						getInstance().getString("LogScreenGameLoadingWaitForNetworkPlayers", ""), true);
 				networkManager.getGameNetworkInterface()->waitUntilReady(&checksum);
 
 				//std::string worldLog = world.DumpWorldToLog(true);
@@ -2188,8 +2183,7 @@ namespace Glest {
 						__LINE__);
 				logger.
 					add(Lang::
-						getInstance().getString("LogScreenGameLoadingStartingMusic",
-							"", true), true);
+						getInstance().getString("LogScreenGameLoadingStartingMusic", ""), true);
 
 				if (this->masterserverMode == false) {
 					if (world.getThisFaction() == NULL) {
@@ -2218,8 +2212,7 @@ namespace Glest {
 					&& ambientSounds->isEnabledRain()) {
 					logger.
 						add(Lang::
-							getInstance().getString
-							("LogScreenGameLoadingStartingAmbient", "", true), true);
+							getInstance().getString("LogScreenGameLoadingStartingAmbient", ""), true);
 					currentAmbientSound = ambientSounds->getRain();
 					//printf("In [%s:%s] Line: %d currentAmbientSound = [%p]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,currentAmbientSound);
 					soundRenderer.playAmbient(currentAmbientSound);
@@ -2230,8 +2223,7 @@ namespace Glest {
 					&& ambientSounds->isEnabledSnow()) {
 					logger.
 						add(Lang::
-							getInstance().getString
-							("LogScreenGameLoadingStartingAmbient", "", true), true);
+							getInstance().getString("LogScreenGameLoadingStartingAmbient", ""), true);
 					currentAmbientSound = ambientSounds->getSnow();
 					//printf("In [%s:%s] Line: %d currentAmbientSound = [%p]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,currentAmbientSound);
 					soundRenderer.playAmbient(currentAmbientSound);
@@ -2245,8 +2237,7 @@ namespace Glest {
 
 				logger.
 					add(Lang::
-						getInstance().getString("LogScreenGameLoadingLaunchGame", "",
-							true));
+						getInstance().getString("LogScreenGameLoadingLaunchGame", ""));
 			}
 
 			if (showPerfStats) {
@@ -3686,8 +3677,7 @@ namespace Glest {
 								char szBuf[8096] = "";
 								Lang & lang = Lang::getInstance();
 								snprintf(szBuf, 8096,
-									lang.getString("GameSaved", "",
-										true).c_str(), file.c_str());
+									lang.getString("GameSaved", "").c_str(), file.c_str());
 								console.addLine(szBuf);
 
 								for (int i = 0; i < world.getFactionCount(); ++i) {
@@ -4422,8 +4412,7 @@ namespace Glest {
 
 								snprintf(szBuf, 8096,
 									Lang::getInstance().getString
-									("LogScreenGameLoadingCreatingAIFaction",
-										"", true).c_str(), i);
+									("LogScreenGameLoadingCreatingAIFaction", "").c_str(), i);
 								logger.add(szBuf, true);
 
 								commander.tryNetworkPlayerDisconnected(i);
@@ -4448,8 +4437,7 @@ namespace Glest {
 									if (lang.hasString("GameSwitchPlayerToAI",
 										languageList[j], true)) {
 										msg =
-											lang.getString("GameSwitchPlayerToAI",
-												languageList[j], true);
+											lang.getString("GameSwitchPlayerToAI", languageList[j]);
 									}
 									snprintf(szBuf, 8096, msg.c_str(), i + 1,
 										this->gameSettings.getNetworkPlayerName(i).
@@ -4461,8 +4449,7 @@ namespace Glest {
 									if (lang.hasString("GameSwitchPlayerObserverToAI",
 										languageList[j], true)) {
 										msg =
-											lang.getString("GameSwitchPlayerObserverToAI",
-												languageList[j], true);
+											lang.getString("GameSwitchPlayerObserverToAI", languageList[j]);
 									}
 									snprintf(szBuf, 8096, msg.c_str(), i + 1,
 										this->gameSettings.getNetworkPlayerName(i).
@@ -8213,7 +8200,7 @@ namespace Glest {
 
 			Lang & lang = Lang::getInstance();
 
-			if (this->speed < Config::getInstance().getInt("FastSpeedLoops")) {
+			if (this->speed < Config::getInstance().getInt("FastSpeedLoops", "8")) {
 				if (this->speed == 0) {
 					this->speed = 1;
 				} else {
@@ -8655,7 +8642,7 @@ namespace Glest {
 			string file = this->saveGame(GameConstants::saveGameFilePattern);
 			char szBuf[8096] = "";
 			Lang & lang = Lang::getInstance();
-			snprintf(szBuf, 8096, lang.getString("GameSaved", "", true).c_str(),
+			snprintf(szBuf, 8096, lang.getString("GameSaved", "").c_str(),
 				file.c_str());
 			console.addLine(szBuf);
 

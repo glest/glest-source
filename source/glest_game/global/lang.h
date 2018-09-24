@@ -80,8 +80,7 @@ namespace Glest {
 			bool loadTechTreeStrings(string techTree, bool forceLoad = false);
 			void loadTilesetStrings(string tileset);
 
-			string getString(const string & s, string uselanguage =
-				"", bool fallbackToDefault = false);
+			string getString(const string & s, string uselanguage = "");
 			bool hasString(const string & s, string uselanguage =
 				"", bool fallbackToDefault = false);
 

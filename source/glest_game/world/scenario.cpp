@@ -64,9 +64,7 @@ namespace Glest {
 
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096,
-					Lang::getInstance().
-					getString("LogScreenGameLoadingScenario", "",
-						true).c_str(), formatString(name).c_str());
+					Lang::getInstance().getString("LogScreenGameLoadingScenario", "").c_str(), formatString(name).c_str());
 				Logger::getInstance().add(szBuf, true);
 
 				bool isTutorial = Scenario::isGameTutorial(path);
