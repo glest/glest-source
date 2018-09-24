@@ -55,7 +55,6 @@ namespace Glest {
 		class GameSettings;
 
 		class CoreData {
-			friend class PlaySoundClip;
 		private:
 			std::map < int, bool > itemLoadAttempted;
 
@@ -161,6 +160,8 @@ namespace Glest {
 			void load();
 			void cleanup();
 			void loadFonts();
+
+			string getDataPath();
 
 			// Textures
 			Texture2D *getTextureBySystemId(TextureSystemType type);
@@ -309,7 +310,6 @@ namespace Glest {
 			void loadMainMenuMedia(string data_path);
 			void loadBattleEndMedia(string data_path);
 
-			string getDataPath();
 			void loadTextureIfRequired(Texture2D ** tex, string data_path,
 				string uniqueFilePath, int texSystemId,
 				bool setMipMap, bool setAlpha,
@@ -336,7 +336,8 @@ namespace Glest {
 
 		class PlaySoundClip {
 		private:
-			StaticSound playSound;
+			std::vector<StaticSound> playSound;
+			std::map <string, int> alertSoundMap;
 		public:
 			StaticSound * getSound(const std::string& playSoundVal);
 			static const string sfxAttention;
@@ -346,6 +347,7 @@ namespace Glest {
 			static const string sfxMenuClickA;
 			static const string sfxMenuClickB;
 			static const string sfxMenuClickC;
+
 			PlaySoundClip();
 			~PlaySoundClip();
 
