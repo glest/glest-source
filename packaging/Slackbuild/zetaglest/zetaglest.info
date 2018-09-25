@@ -1,0 +1,12 @@
+PRGNAM="zetaglest"
+VERSION="0.8.02"
+HOMEPAGE="https://zetaglest.github.io/"
+DOWNLOAD="source-placeholder \
+          data-placeholder"
+MD5SUM="source \
+        data"
+DOWNLOAD_x86_64=""
+MD5SUM_x86_64=""
+REQUIRES="libircclient SDL2 xerces-c OpenAL lua ftgl wxPython"
+MAINTAINER="Andy Alt"
+EMAIL="andy400-dev@yahoo.com"

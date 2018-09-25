@@ -1,0 +1,9 @@
+ZetaGlest is a free open source 3D real-time strategy game where 
+you control the armies of one of seven different factions:  Tech, 
+Magic, Egyptians, Indians, Norsemen, Persian or Romans.  The game 
+is setup in one of 16 naturally looking settings, which (like the 
+unit models) are crafted with great appreciation for detail.
+
+Optional dependencies: miniupnpc, p7zip
+
+Note to parallel builders: More than 2 jobs may break the build.
