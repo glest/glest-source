@@ -36,7 +36,7 @@ namespace Shared {
 			virtual ~WindowGl();
 
 			void initGl(int colorBits, int depthBits, int stencilBits,
-				bool hardware_acceleration, bool fullscreen_anti_aliasing,
+				bool hardware_acceleration, int8 fullscreen_anti_aliasing,
 				float gammaValue);
 			void makeCurrentGl();
 			void swapBuffersGl();
@@ -55,7 +55,7 @@ namespace Shared {
 
 			virtual bool ChangeVideoMode(bool preserveContext, int resWidth, int resHeight,
 				bool fullscreenWindow, int colorBits, int depthBits, int stencilBits,
-				bool hardware_acceleration, bool fullscreen_anti_aliasing,
+				bool hardware_acceleration, int8 fullscreen_anti_aliasing,
 				float gammaValue);
 
 		protected:

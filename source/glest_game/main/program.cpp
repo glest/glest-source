@@ -1324,7 +1324,7 @@ namespace Glest {
 				config.getInt("DepthBits"),
 				config.getInt("StencilBits"),
 				config.getBool("HardwareAcceleration", "false"),
-				config.getBool("FullScreenAntiAliasing", "false"),
+				config.getBool("FullScreenAntiAliasing", "0"),
 				config.getFloat("GammaValue", "0.0"));
 			window->setText(config.getString("WindowTitle", "ZetaGlest"));
 			if (SystemFlags::

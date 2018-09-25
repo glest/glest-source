@@ -288,7 +288,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <AdditionalIncludeDirectories>../../../source/shared_lib/include;../../../source/shared_lib/include/graphics;../../../source/shared_lib/include/graphics/gl;../../../source/shared_lib/include/platform;../../../source/shared_lib/include/sound;../../../source/shared_lib/include/util;../../../source/shared_lib/include/lua;../../../source/shared_lib/include/xml;../dependencies/src/xerces/src;../dependencies/src/xerces/src/xercesc/xinclude;../dependencies/src/png;../dependencies/src/jpeg;../dependencies/src/sdl2/include;../dependencies/src/openal/include;../../../source/shared_lib/include/sound/openal;../../../source/shared_lib/include/platform/posix;../../../source/shared_lib/include/streflop;../../../source/shared_lib/include/streflop/libm_flt32_source;../../../source/shared_lib/include/platform/common;../dependencies/src/curl/include;../../../source/shared_lib/include/map;../../../source/shared_lib/include/platform/miniupnpc;../../../source/shared_lib/sources/libircclient/include;../../../source/shared_lib/include/feathery_ftp;../dependencies/src/ftgl/src;../dependencies/src/freetype/include/freetype;../dependencies/src/glew/include;../../../source/shared_lib/include/graphics/md5;../../../source/shared_lib/include/streflop/softfloat;../../../source/shared_lib/include/xml/rapidxml;../../../source/shared_lib/include/platform/sdl;../../../source/shared_lib/include/platform/win32;../dependencies/src/vlc/include;../../../source/shared_lib/include/compression;../../../source/shared_lib/sources/;../dependencies/src/fribidi/lib;../dependencies/src/fribidi/charset;..\dependencies\src\freetype\include;..\dependencies\src\vorbis\include;..\dependencies\src\ogg\include;..\dependencies\src\lua\src;..\dependencies\src\lua;../dependencies/src/fribidi/;..\dependencies\src\fribidi\vs2017-64;..\dependencies\src\fribidi\vs2017-64\lib;..\dependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;USE_STREFLOP;WIN32;AL_LIBTYPE_STATIC;_LIB;_CRT_SECURE_NO_WARNINGS;USE_PCH=1;STREFLOP_SSE;STREFLOP_RANDOM_GEN_SIZE=32;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;USE_FTGL;FTGL_LIBRARY_STATIC;TA3D_PLATFORM_MSVC;TA3D_PLATFORM_WINDOWS;STATICLIB;XERCES_STATIC_LIBRARY;GLEW_STATIC;XML_LIBRARY;ZLIB_WINAPI;HAVE_FRIBIDI;MINIUPNP_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;WIN32;AL_LIBTYPE_STATIC;_LIB;_CRT_SECURE_NO_WARNINGS;USE_PCH=1;CURL_STATICLIB;UNICODE;USE_FTGL;FTGL_LIBRARY_STATIC;STATICLIB;XERCES_STATIC_LIBRARY;GLEW_STATIC;XML_LIBRARY;ZLIB_WINAPI;HAVE_FRIBIDI;MINIUPNP_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -428,7 +428,7 @@
     <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\*.cpp" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\gl\*.cpp" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\map\*.cpp" />
-	<ClCompile Include="..\..\..\source\shared_lib\sources\miniz\*.c" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\miniz\*.c" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\lua\*.cpp" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\util\*.cpp" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\xml\*.cpp" />
@@ -465,12 +465,7 @@
     <ClInclude Include="..\..\..\source\shared_lib\include\platform\sdl\thread.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\platform\sdl\window.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\platform\sdl\window_gl.h" />
-	<ClInclude Include="..\..\..\source\shared_lib\sources\miniz\*.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="libstreflop.vcxproj">
-      <Project>{cdf4ddb9-945e-4d0d-9f0e-2bbeb5d22141}</Project>
-    </ProjectReference>
+    <ClInclude Include="..\..\..\source\shared_lib\sources\miniz\*.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

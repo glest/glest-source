@@ -160,7 +160,7 @@ namespace Shared {
 			static bool isKeyDown() {
 				return isKeyPressedDown;
 			}
-			static void setupGraphicsScreen(int depthBits = -1, int stencilBits = -1, bool hardware_acceleration = false, bool fullscreen_anti_aliasing = false);
+			static void setupGraphicsScreen(int depthBits = -1, int stencilBits = -1, bool hardware_acceleration = false, int8 fullscreen_anti_aliasing = 0);
 			static const bool getIsFullScreen() {
 				return isFullScreen;
 			}
@@ -184,7 +184,7 @@ namespace Shared {
 
 			virtual bool ChangeVideoMode(bool preserveContext, int resWidth, int resHeight,
 				bool fullscreenWindow, int colorBits, int depthBits, int stencilBits,
-				bool hardware_acceleration, bool fullscreen_anti_aliasing,
+				bool hardware_acceleration, int8 fullscreen_anti_aliasing,
 				float gammaValue) = 0;
 			//static void setMasterserverMode(bool value) { Window::masterserverMode = value;}
 			//static bool getMasterserverMode() { return Window::masterserverMode;}

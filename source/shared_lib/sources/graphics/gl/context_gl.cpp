@@ -36,7 +36,7 @@ namespace Shared {
 			void ContextGl::init() {
 
 				pcgl.init(colorBits, depthBits, stencilBits,
-					(hardware_acceleration != 0), (fullscreen_anti_aliasing != 0),
+					(hardware_acceleration != 0), fullscreen_anti_aliasing,
 					gammaValue);
 			}
 

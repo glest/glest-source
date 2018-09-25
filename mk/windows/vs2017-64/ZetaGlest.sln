@@ -7,8 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libzetaglest", "libzetagles
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zetaglest", "zetaglest.vcxproj", "{6B0C65F1-D031-46AF-AC0D-7C38892D2952}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libstreflop", "libstreflop.vcxproj", "{CDF4DDB9-945E-4D0D-9F0E-2BBEB5D22141}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "g2xml", "g2xml.vcxproj", "{407355A4-D12A-4E3B-A7EB-A835E573B376}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "g3d_viewer", "g3d_viewer.vcxproj", "{FE5C7C7C-F109-44F5-8329-25A4E24F162C}"
@@ -29,10 +27,6 @@ Global
 		{6B0C65F1-D031-46AF-AC0D-7C38892D2952}.Release|Win32.Build.0 = Release|Win32
 		{6B0C65F1-D031-46AF-AC0D-7C38892D2952}.Release|x64.ActiveCfg = Release|x64
 		{6B0C65F1-D031-46AF-AC0D-7C38892D2952}.Release|x64.Build.0 = Release|x64
-		{CDF4DDB9-945E-4D0D-9F0E-2BBEB5D22141}.Release|Win32.ActiveCfg = Release|Win32
-		{CDF4DDB9-945E-4D0D-9F0E-2BBEB5D22141}.Release|Win32.Build.0 = Release|Win32
-		{CDF4DDB9-945E-4D0D-9F0E-2BBEB5D22141}.Release|x64.ActiveCfg = Release|x64
-		{CDF4DDB9-945E-4D0D-9F0E-2BBEB5D22141}.Release|x64.Build.0 = Release|x64
 		{407355A4-D12A-4E3B-A7EB-A835E573B376}.Release|Win32.ActiveCfg = Release|Win32
 		{407355A4-D12A-4E3B-A7EB-A835E573B376}.Release|Win32.Build.0 = Release|Win32
 		{407355A4-D12A-4E3B-A7EB-A835E573B376}.Release|x64.ActiveCfg = Release|x64

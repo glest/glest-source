@@ -75,7 +75,7 @@ namespace Shared {
 		}
 
 		void WindowGl::initGl(int colorBits, int depthBits, int stencilBits,
-			bool hardware_acceleration, bool fullscreen_anti_aliasing,
+			bool hardware_acceleration, int8 fullscreen_anti_aliasing,
 			float gammaValue) {
 			context.setColorBits(colorBits);
 			context.setDepthBits(depthBits);
@@ -131,7 +131,7 @@ namespace Shared {
 		bool WindowGl::ChangeVideoMode(bool preserveContext, int resWidth, int resHeight,
 			bool fullscreenWindow,
 			int colorBits, int depthBits, int stencilBits, bool hardware_acceleration,
-			bool fullscreen_anti_aliasing, float gammaValue) {
+			int8 fullscreen_anti_aliasing, float gammaValue) {
 			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s %d] preserveContext = %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, preserveContext);
 
 #ifdef WIN32

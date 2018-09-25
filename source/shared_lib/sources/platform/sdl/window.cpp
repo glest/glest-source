@@ -574,7 +574,7 @@ namespace Shared {
 			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 		}
 
-		void Window::setupGraphicsScreen(int depthBits, int stencilBits, bool hardware_acceleration, bool fullscreen_anti_aliasing) {
+		void Window::setupGraphicsScreen(int depthBits, int stencilBits, bool hardware_acceleration, int8 fullscreen_anti_aliasing) {
 			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
 			static int newDepthBits = depthBits;
@@ -589,9 +589,9 @@ namespace Shared {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false) {
 				if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
-				if (fullscreen_anti_aliasing == true) {
+				if (fullscreen_anti_aliasing > 0) {
 					SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-					SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 2);
+					SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, fullscreen_anti_aliasing == 1 ? 2 : fullscreen_anti_aliasing);
 				}
 				if (hardware_acceleration == true) {
 					SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);

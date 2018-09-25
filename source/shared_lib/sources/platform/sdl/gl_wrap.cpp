@@ -67,7 +67,7 @@ namespace Shared {
 
 		void PlatformContextGl::init(int colorBits, int depthBits, int stencilBits,
 			bool hardware_acceleration,
-			bool fullscreen_anti_aliasing, float gammaValue) {
+			int8 fullscreen_anti_aliasing, float gammaValue) {
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
