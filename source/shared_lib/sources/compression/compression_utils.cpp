@@ -17,13 +17,18 @@
 // is not a limitation of miniz.c.
 
 #include "compression_utils.h"
-#include "miniz/miniz.h"
 #include <limits.h>
 #include <string>
 #include <vector>
 #include "conversion.h"
 #include "platform_util.h"
 #include "util.h"
+
+#ifdef HAVE_ZLIB
+	#include <zlib.h>
+#else
+	#include "miniz/miniz.h"
+#endif
 
 using namespace Shared::Util;
 
@@ -53,7 +58,13 @@ namespace Shared {
 			const char *pDst_filename = NULL;
 			long file_loc = 0;
 
-			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("miniz.c version: %s\n", MZ_VERSION);
+			if (SystemFlags::VERBOSE_MODE_ENABLED) {
+#ifdef HAVE_ZLIB
+				printf("zlib version: " ZLIB_VERSION "\n");
+#else
+				printf("miniz.c version: " MZ_VERSION "\n");
+#endif
+			}
 
 			if (argc < 4) {
 				if (SystemFlags::VERBOSE_MODE_ENABLED) {
@@ -294,8 +305,19 @@ namespace Shared {
 			}
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED) {
+#ifdef HAVE_ZLIB
+				printf("Total input bytes: %u\n", stream.total_in);
+				printf("Total output bytes: %u\n", stream.total_out);
+#else
+				/*
+				 * I don't know why this typecasting (mz_unit32) is used for
+				 * miniz, but it was there when I found the code, so leaving it
+				 * here for now.
+				 * -andy5995, 2018-09-25
+				 */
 				printf("Total input bytes: %u\n", (mz_uint32) stream.total_in);
 				printf("Total output bytes: %u\n", (mz_uint32) stream.total_out);
+#endif
 				printf("Success.\n");
 			}
 			return EXIT_SUCCESS;

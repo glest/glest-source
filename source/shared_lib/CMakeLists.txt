@@ -231,15 +231,30 @@ IF(BUILD_MODEL_VIEWER OR BUILD_MAP_EDITOR OR BUILD_ZETAGLEST)
 	#########################################################################################
 	# zetaglest lib
 
+	include(FindZLIB)
+	IF (FORCE_EMBEDDED_LIBS)
+		SET(DIRS_WITH_SRC
+			${DIRS_WITH_SRC}
+			miniz)
+	ELSE()
+		message(STATUS "Searching for zlib")
+		if (ZLIB_FOUND)
+			message(STATUS "Using external zlib")
+			SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${ZLIB_LIBRARIES})
+			INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIRS})
+			add_definitions("-DHAVE_ZLIB")
+		ENDIF()
+	ENDIF()
+
 	SET(DIRS_WITH_SRC
-        compression
+		${DIRS_WITH_SRC}
+		compression
 		feathery_ftp
 		glew
 		graphics
 		graphics/gl
 		lua
 		map
-		miniz
 		platform/common
 		sound
 		sound/openal
