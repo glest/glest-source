@@ -305,19 +305,8 @@ namespace Shared {
 			}
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED) {
-#ifdef HAVE_ZLIB
-				printf("Total input bytes: %u\n", stream.total_in);
-				printf("Total output bytes: %u\n", stream.total_out);
-#else
-				/*
-				 * I don't know why this typecasting (mz_unit32) is used for
-				 * miniz, but it was there when I found the code, so leaving it
-				 * here for now.
-				 * -andy5995, 2018-09-25
-				 */
-				printf("Total input bytes: %u\n", (mz_uint32) stream.total_in);
-				printf("Total output bytes: %u\n", (mz_uint32) stream.total_out);
-#endif
+				printf("Total input bytes: %lu\n", stream.total_in);
+				printf("Total output bytes: %lu\n", stream.total_out);
 				printf("Success.\n");
 			}
 			return EXIT_SUCCESS;
