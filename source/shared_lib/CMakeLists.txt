@@ -228,16 +228,17 @@ IF(BUILD_MODEL_VIEWER OR BUILD_MAP_EDITOR OR BUILD_ZETAGLEST)
 		endif()
 	endif()
 
-	#########################################################################################
-	# zetaglest lib
-
+	message(STATUS "Searching for zlib")
 	include(FindZLIB)
-	IF (FORCE_EMBEDDED_LIBS)
+	IF (FORCE_EMBEDDED_LIBS OR NOT ZLIB_FOUND)
 		SET(DIRS_WITH_SRC
 			${DIRS_WITH_SRC}
+			# miniz is a library included with the ZG distribution. Not as
+			# developed as zlib, but smaller, and uses the same function names
+			# so basically a replacement for miniz. We may one day replace
+			# miniz with the zlib sources
 			miniz)
 	ELSE()
-		message(STATUS "Searching for zlib")
 		if (ZLIB_FOUND)
 			message(STATUS "Using external zlib")
 			SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${ZLIB_LIBRARIES})
