@@ -485,7 +485,7 @@ namespace
 									unitId, commandType->getId(), currPos,
 									-1, targetId, -1, tryQueue, cst_None,
 									-1, unitCommandGroupId);
-							resultCur = pushNetworkCommand(&networkCommand, isMove);
+							resultCur = isMove ? giveNetworkCommand(&networkCommand) : pushNetworkCommand(&networkCommand);
 						}
 						results.push_back(resultCur);
 					} else if (!ignoreBuildings && unit->isMeetingPointSettable()) {
