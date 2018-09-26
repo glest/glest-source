@@ -860,8 +860,7 @@ namespace
 			replayCommandList.push_back(make_pair(worldFrameCount, command));
 		}
 
-		void
-			Commander::giveNetworkCommand(NetworkCommand * networkCommand) const {
+		std::pair<CommandResult, string> Commander::giveNetworkCommand(NetworkCommand * networkCommand) const {
 			Chrono
 				chrono;
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).
@@ -1549,8 +1548,7 @@ namespace
 						break;
 
 						default:
-							assert(false);
-							break;
+							return std::pair<CommandResult, string>(crFailUndefined, "");
 					}
 				} else {
 					if (SystemFlags::
@@ -1563,6 +1561,7 @@ namespace
 							networkCommand->getUnitId(),
 							networkCommand->
 							getNetworkCommandType());
+					return std::pair<CommandResult, string>(crFailUndefined, "");
 				}
 			}
 
@@ -1573,6 +1572,7 @@ namespace
 					extractFileFromDirectoryPath(__FILE__).
 					c_str(), __FUNCTION__, __LINE__,
 					chrono.getMillis());
+			return std::pair<CommandResult, string>(crSuccess, "");
 		}
 
 		// Reconstruct a network command received.

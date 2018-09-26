@@ -182,7 +182,7 @@ namespace
 				CommandResult,
 				string >
 				computeResult(const CommandResultContainer & results) const;
-			void
+			std::pair<CommandResult, string>
 				giveNetworkCommand(NetworkCommand * networkCommand) const;
 			bool
 				canSubmitCommandType(const Unit * unit,
