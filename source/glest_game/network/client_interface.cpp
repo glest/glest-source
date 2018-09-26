@@ -1564,8 +1564,7 @@ namespace Glest {
 
 				if (isConnected() == false) {
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s] Line: %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-
-					string sErr = "Error, server has disconnected!";
+					string sErr = lang.getString("ServerDisconnected");
 					DisplayErrorMessage(sErr);
 
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s] Line: %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
@@ -1964,7 +1963,8 @@ namespace Glest {
 				if (msg == nmtInvalid) {
 					if (getSocket() == NULL || (chrono.getMillis() % 250 == 0 && isConnected() == false)) {
 						if (getQuit() == false) {
-							DisplayErrorMessage("Server has disconnected.");
+							Lang &lang = Lang::getInstance();
+							DisplayErrorMessage(lang.getString("ServerDisconnected"));
 							setQuit(true);
 						}
 						close();
