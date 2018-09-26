@@ -427,8 +427,10 @@ namespace
 				const Unit * targetUnit,
 				bool tryQueue,
 				int unitCommandGroupId, bool isMove) const {
+			std::pair < CommandResult, string > result(crFailUndefined, "");
+
 			if (this->pauseNetworkCommands == true) {
-				return std::pair < CommandResult, string >(crFailUndefined, "");
+				return result;
 			}
 
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
@@ -437,8 +439,6 @@ namespace
 					"In [%s::%s Line: %d]\n",
 					extractFileFromDirectoryPath(__FILE__).
 					c_str(), __FUNCTION__, __LINE__);
-
-			std::pair < CommandResult, string > result(crFailUndefined, "");
 
 			if (selection->isEmpty() == false) {
 				Vec2i
@@ -684,7 +684,7 @@ namespace
 					}
 					/*throw
 						megaglest_runtime_error(szBuf);*/
-					return result;
+					return std::pair<CommandResult, string>(crFailUndefined, "");
 				}
 			}
 
