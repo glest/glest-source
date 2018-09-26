@@ -188,10 +188,4 @@ IF(BUILD_MAP_EDITOR)
 	INSTALL(FILES
 		"${PROJECT_SOURCE_DIR}/man/${TARGET_NAME_MANPAGE}"
 		DESTINATION ${INSTALL_DIR_MAN})
-
-		# Installation of the program config and image files
-	INSTALL(FILES
-		"${PROJECT_SOURCE_DIR}/mk/shared/map_editor.ico"
-		DESTINATION ${INSTALL_DIR_INI})
-
 ENDIF()
