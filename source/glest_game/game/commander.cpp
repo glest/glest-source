@@ -486,7 +486,7 @@ namespace
 									unitId, commandType->getId(), currPos,
 									-1, targetId, -1, tryQueue, cst_None,
 									-1, unitCommandGroupId);
-							resultCur = pushNetworkCommand(&networkCommand);
+							resultCur = pushNetworkCommand(&networkCommand, isMove);
 						}
 						results.push_back(resultCur);
 					} else if (!ignoreBuildings && unit->isMeetingPointSettable()) {
@@ -645,7 +645,7 @@ namespace
 		std::pair < CommandResult,
 			string >
 			Commander::pushNetworkCommand(const NetworkCommand *
-				networkCommand) const {
+				networkCommand, bool insertAtStart) const {
 			GameNetworkInterface *
 				gameNetworkInterface =
 				NetworkManager::getInstance().getGameNetworkInterface();
@@ -689,7 +689,7 @@ namespace
 			}
 
 			//add the command to the interface
-			gameNetworkInterface->requestCommand(networkCommand, true);
+			gameNetworkInterface->requestCommand(networkCommand, insertAtStart);
 
 			//calculate the result of the command
 			if (unit != NULL

@@ -177,7 +177,7 @@ namespace
 			std::pair <
 				CommandResult,
 				string >
-				pushNetworkCommand(const NetworkCommand * networkCommand) const;
+				pushNetworkCommand(const NetworkCommand * networkCommand, bool insertAtStart = false) const;
 			std::pair <
 				CommandResult,
 				string >
