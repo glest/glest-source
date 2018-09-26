@@ -101,16 +101,11 @@ unsuccessfulbuild
 source/masterserver
 mk/linux/tools-for-standalone-client/installer/mojosetup
 
-# These are generated when 'cmake . && make' is run from the root directory
-CMakeFiles
-CMakeCache.txt
-Makefile
-cmake_install.cmake
-CPackConfig.cmake
-CPackSourceConfig.cmake
-/source/shared_lib/liblibmegaglest.a
-/source/shared_lib/sources/streflop/libstreflop.a
-
 # add build directories
+# Makefile and cmake file are generated when the project is built and
+# should be ignored by git.
+#
+# The ZetaGlest project recommends using a separate build directory.
+#
 build
 local-build
