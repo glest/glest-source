@@ -92,6 +92,7 @@ $RECYCLE.BIN/
 *.exe
 *.msi
 *.pdb
+*.aps
 unsuccessfulbuild
 /mk/windows/dependencies/openssl
 /mk/windows/dependencies/src

@@ -345,6 +345,22 @@ namespace Glest {
 			}
 		}
 
+		void Gui::mouseDoubleClickRightGraphics(int x, int y, bool prepared) {
+			if (selectingPos || selectingMeetingPoint) {
+				resetState();
+			} else if (selection.isCommandable()) {
+				if (prepared) {
+					//Vec2i targetPos=game->getMouseCellPos();
+					givePreparedDefaultOrders(x, y, true);
+				} else {
+					Vec2i targetPos = game->getMouseCellPos();
+					if (game->isValidMouseCellPos() && world->getMap()->isInsideSurface(world->getMap()->toSurfCoords(targetPos)) == true)
+						giveDefaultOrders(x, y, true);
+				}
+			}
+			computeDisplay();
+		}
+
 		void Gui::groupKey(int groupIndex) {
 			if (isKeyDown(vkControl)) {
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d] groupIndex = %d\n", __FILE__, __FUNCTION__, __LINE__, groupIndex);
@@ -459,7 +475,7 @@ namespace Glest {
 			activeCommandClass = ccStop;
 		}
 
-		void Gui::giveDefaultOrders(int x, int y) {
+		void Gui::giveDefaultOrders(int x, int y, bool isMove) {
 			//compute target
 			//printf("In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
 
@@ -470,23 +486,23 @@ namespace Glest {
 				return;
 			}
 			//printf("In [%s::%s Line: %d] targetUnit = %p\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,targetUnit);
-			giveDefaultOrders(targetPos.x, targetPos.y, targetUnit, true);
+			giveDefaultOrders(targetPos.x, targetPos.y, targetUnit, true, isMove);
 			//printf("In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
 		}
 
-		void Gui::givePreparedDefaultOrders(int x, int y) {
+		void Gui::givePreparedDefaultOrders(int x, int y, bool isMove) {
 			//printf("In [%s::%s Line: %d]\n",__FILE__,__FUNCTION__,__LINE__);
-			giveDefaultOrders(x, y, NULL, false);
+			giveDefaultOrders(x, y, NULL, false, isMove);
 		}
 
-		void Gui::giveDefaultOrders(int x, int y, const Unit *targetUnit, bool paintMouse3d) {
+		void Gui::giveDefaultOrders(int x, int y, const Unit *targetUnit, bool paintMouse3d, bool isMove) {
 			//printf("In [%s::%s Line: %d]\n",__FILE__,__FUNCTION__,__LINE__);
 			bool queueKeyDown = isKeyDown(queueCommandKey);
 			Vec2i targetPos = Vec2i(x, y);
 
 			//give order
 			//printf("In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-			std::pair<CommandResult, string> result = commander->tryGiveCommand(&selection, targetPos, targetUnit, queueKeyDown);
+			std::pair<CommandResult, string> result = commander->tryGiveCommand(&selection, targetPos, targetUnit, queueKeyDown, -1, isMove);
 
 			//printf("In [%s::%s Line: %d] selected units = %d result.first = %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,selection.getCount(),result.first);
 

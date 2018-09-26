@@ -85,7 +85,6 @@ namespace Glest {
 			aiInterfaces.clear();
 			videoPlayer = NULL;
 			playingStaticVideo = false;
-			SendMove = false;
 			mouse2d = 0;
 			mouseX = 0;
 			mouseY = 0;
@@ -213,7 +212,6 @@ namespace Glest {
 			GameConstants::updateFps = 40;
 			GameConstants::cameraFps = 100;
 			captureAvgTestStatus = false;
-			SendMove = false;
 			updateFpsAvgTest = 0;
 			renderFpsAvgTest = 0;
 			lastRenderLog2d = 0;
@@ -360,7 +358,6 @@ namespace Glest {
 			updateFpsAvgTest = 0;
 			renderFpsAvgTest = 0;
 			cameraDragAllowed = false;
-			SendMove = false;
 
 			if (this->masterserverMode == true) {
 				printf("Starting a new game...\n");
@@ -5731,23 +5728,14 @@ namespace Glest {
 							ym * (static_cast <
 								float>(map->getH()) / metrics.getMinimapH()));
 
-					if (map->isInside(xCell, yCell)
-						&& map->
-						isInsideSurface(map->toSurfCoords(Vec2i(xCell, yCell)))) {
-						if (checkRightDoubleClick())
-							SendMove = true;
+					if (map->isInside(xCell, yCell) && map->isInsideSurface(map->toSurfCoords(Vec2i(xCell, yCell))))
 						gui.mouseDownRightGraphics(xCell, yCell, true);
-					}
 				} else {
 					Vec2i targetPos;
 					Vec2i screenPos(x, y);
 					targetPos = getMouseCellPos();
-					if (isValidMouseCellPos() == true &&
-						map->isInsideSurface(map->toSurfCoords(targetPos)) == true) {
-						if (checkRightDoubleClick())
-							SendMove = true;
+					if (isValidMouseCellPos() == true && map->isInsideSurface(map->toSurfCoords(targetPos)) == true)
 						gui.mouseDownRightGraphics(x, y, false);
-					}
 				}
 			} catch (const exception & ex) {
 				char szBuf[8096] = "";
@@ -5885,25 +5873,67 @@ namespace Glest {
 			}
 		}
 
-		bool Game::checkRightDoubleClick(void) {
-			static Uint32 LastClickTicks;
-			Uint32 CurrentClickTicks;
-			/* The first time this function is called, LastClickTicks has not been initialised yet. */
-			if (!LastClickTicks) {
-				LastClickTicks = SDL_GetTicks();
-				return false;
-			} else {
-				CurrentClickTicks = SDL_GetTicks();
-				/* If the period between the two clicks is smaller or equal to a pre-defined number, we report a DoubleClick event. */
-				if (CurrentClickTicks - LastClickTicks <= 400) {
-					/* Update LastClickTicks and signal a DoubleClick. */
-					LastClickTicks = CurrentClickTicks;
-					return true;
-				} else {
-					/* Update LastClickTicks and signal a SingleClick. */
-					LastClickTicks = CurrentClickTicks;
-					return false;
+		void Game::mouseDoubleClickRight(int x, int y) {
+			if (this->masterserverMode == true) {
+				return;
+			}
+
+			try {
+				if (gameStarted == false || totalRenderFps <= 0)
+					return;
+				if (currentUIState != NULL) {
+					currentUIState->mouseDoubleClickRight(x, y);
+					return;
 				}
+
+				Map *map = world.getMap();
+				const Metrics & metrics = Metrics::getInstance();
+
+				if (metrics.isInMinimap(x, y)) {
+					int xm = x - metrics.getMinimapX();
+					int ym = y - metrics.getMinimapY();
+					int
+						xCell =
+						static_cast <
+						int>(xm *
+						(static_cast <
+							float>(map->getW()) / metrics.getMinimapW()));
+					int
+						yCell =
+						static_cast <
+						int>(map->getH() -
+							ym * (static_cast <
+								float>(map->getH()) / metrics.getMinimapH()));
+
+					if (map->isInside(xCell, yCell) && map->isInsideSurface(map->toSurfCoords(Vec2i(xCell, yCell))))
+						gui.mouseDoubleClickRightGraphics(xCell, yCell, true);
+				} else {
+					Vec2i targetPos;
+					Vec2i screenPos(x, y);
+					targetPos = getMouseCellPos();
+					if (isValidMouseCellPos() == true && map->isInsideSurface(map->toSurfCoords(targetPos)) == true)
+						gui.mouseDoubleClickRightGraphics(x, y, false);
+				}
+			} catch (const exception & ex) {
+				char szBuf[8096] = "";
+				snprintf(szBuf, 8096, "In [%s::%s Line: %d] Error [%s]\n",
+					extractFileFromDirectoryPath(__FILE__).c_str(),
+					__FUNCTION__, __LINE__, ex.what());
+
+				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
+				if (SystemFlags::
+					getSystemSettingType(SystemFlags::debugSystem).enabled)
+					SystemFlags::OutputDebug(SystemFlags::debugSystem, szBuf);
+
+				NetworkManager & networkManager = NetworkManager::getInstance();
+				if (networkManager.getGameNetworkInterface() != NULL) {
+					GameNetworkInterface *networkInterface =
+						NetworkManager::getInstance().getGameNetworkInterface();
+					networkInterface->sendTextMessage(szBuf, -1, true, "");
+					sleep(10);
+					networkManager.getGameNetworkInterface()->quitGame(true);
+				}
+				ErrorDisplayMessage(ex.what(), true);
 			}
 		}
 

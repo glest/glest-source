@@ -9,7 +9,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zetaglest", "zetaglest.vcxp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "g2xml", "g2xml.vcxproj", "{407355A4-D12A-4E3B-A7EB-A835E573B376}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "g3dviewer", "g3dviewer.vcxproj", "{FE5C7C7C-F109-44F5-8329-25A4E24F162C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "g3d_viewer", "g3d_viewer.vcxproj", "{FE5C7C7C-F109-44F5-8329-25A4E24F162C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "map_editor", "map_editor.vcxproj", "{5D09BE33-81EC-450B-8A7B-2E7B941ADC56}"
 EndProject

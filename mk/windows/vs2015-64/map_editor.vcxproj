@@ -316,7 +316,7 @@
     <ClInclude Include="..\..\..\source\glest_map_editor\program.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\glest_editor.rc" />
+    <ResourceCompile Include="..\map_editor.rc" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\glest_game\global\config.cpp" />

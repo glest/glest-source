@@ -148,7 +148,7 @@ namespace
 				string >
 				tryGiveCommand(const Selection * selection, const Vec2i & pos,
 					const Unit * targetUnit = NULL, bool tryQueue =
-					false, int unitCommandGroupId = -1) const;
+					false, int unitCommandGroupId = -1, bool isMove = false) const;
 			CommandResult
 				tryCancelCommand(const Selection * selection) const;
 			void

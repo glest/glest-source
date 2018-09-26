@@ -752,7 +752,7 @@
     <ClInclude Include="..\..\..\source\shared_lib\include\util\*.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\glest.rc" />
+    <ResourceCompile Include="..\zetaglest.rc" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\glest.ini">

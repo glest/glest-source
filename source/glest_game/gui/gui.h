@@ -235,6 +235,7 @@ namespace Glest {
 			void mouseUpLeftGraphics(int x, int y);
 			void mouseMoveGraphics(int x, int y);
 			void mouseDoubleClickLeftGraphics(int x, int y);
+			void mouseDoubleClickRightGraphics(int x, int y, bool prepared);
 			void groupKey(int groupIndex);
 			void hotKey(SDL_KeyboardEvent key);
 
@@ -248,9 +249,9 @@ namespace Glest {
 		private:
 
 			//orders
-			void giveDefaultOrders(int x, int y);
-			void giveDefaultOrders(int x, int y, const Unit *targetUnit, bool paintMouse3d);
-			void givePreparedDefaultOrders(int x, int y);
+			void giveDefaultOrders(int x, int y, bool isMove = false);
+			void giveDefaultOrders(int x, int y, const Unit *targetUnit, bool paintMouse3d, bool isMove = false);
+			void givePreparedDefaultOrders(int x, int y, bool isMove = false);
 			void giveOneClickOrders();
 			void giveTwoClickOrders(int x, int y, bool prepared);
 

@@ -90,10 +90,10 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|Win32'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|x64'">false</LinkIncremental>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">g3dviewer</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|Win32'">g3dviewer</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">g3dviewer</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|x64'">g3dviewer</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">g3d_viewer</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|Win32'">g3d_viewer</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">g3d_viewer</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|x64'">g3d_viewer</TargetName>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</GenerateManifest>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|Win32'">false</GenerateManifest>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</GenerateManifest>

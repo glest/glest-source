@@ -426,7 +426,7 @@ namespace
 				const Vec2i & pos,
 				const Unit * targetUnit,
 				bool tryQueue,
-				int unitCommandGroupId) const {
+				int unitCommandGroupId, bool isMove) const {
 			if (this->pauseNetworkCommands == true) {
 				return std::pair < CommandResult, string >(crFailUndefined, "");
 			}
@@ -468,8 +468,6 @@ namespace
 					command[i] = commandType;
 				}
 				Game* game = world->getGame();
-				bool isMove = game->SendMove;
-				game->SendMove = false;
 				for (int i = 0; i < selection->getCount(); ++i) {
 					const Unit * unit = selection->getUnit(i);
 					const CommandType *commandType = command[i];
@@ -691,7 +689,7 @@ namespace
 			}
 
 			//add the command to the interface
-			gameNetworkInterface->requestCommand(networkCommand);
+			gameNetworkInterface->requestCommand(networkCommand, true);
 
 			//calculate the result of the command
 			if (unit != NULL

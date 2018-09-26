@@ -682,9 +682,10 @@ namespace Shared {
 				if (ticks - lastMouseDown[n] < DOUBLECLICKTIME
 					&& abs(lastMouseX[n] - event.button.x) < DOUBLECLICKDELTA
 					&& abs(lastMouseY[n] - event.button.y) < DOUBLECLICKDELTA) {
-
-					if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-					eventMouseDown(event.button.x, event.button.y, button);
+					//if (button != MouseButton::mbLeft) {
+						if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
+						eventMouseDown(event.button.x, event.button.y, button);
+					//}
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 					eventMouseDoubleClick(event.button.x, event.button.y, button);
 				} else {
