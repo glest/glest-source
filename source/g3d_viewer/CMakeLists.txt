@@ -202,6 +202,6 @@ IF(BUILD_MODEL_VIEWER)
 
 	# Installation of the program config and image files
 	INSTALL(FILES
-"${PROJECT_SOURCE_DIR}/mk/shared/g3dviewer.ico"
+"${PROJECT_SOURCE_DIR}/mk/shared/g3d_viewer.ico"
 	DESTINATION ${INSTALL_DIR_INI})
 ENDIF()
