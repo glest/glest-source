@@ -467,7 +467,6 @@ namespace
 						ignoreBuildings = true;
 					command[i] = commandType;
 				}
-				Game* game = world->getGame();
 				for (int i = 0; i < selection->getCount(); ++i) {
 					const Unit * unit = selection->getUnit(i);
 					const CommandType *commandType = command[i];

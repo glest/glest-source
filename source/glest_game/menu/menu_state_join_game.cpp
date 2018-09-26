@@ -49,8 +49,6 @@ namespace Glest {
 		const int MenuStateJoinGame::newPrevServerIndex = 1;
 		const int MenuStateJoinGame::foundServersIndex = 2;
 
-		const string MenuStateJoinGame::serverFileName = "servers.ini";
-
 		MenuStateJoinGame::MenuStateJoinGame(Program * program,
 			MainMenu * mainMenu,
 			bool *
@@ -97,8 +95,6 @@ namespace Glest {
 			networkManager.end();
 			networkManager.init(nrClient);
 
-			serversSavedFile = serverFileName;
-
 			string serverListPath = config.getString("ServerListPath", "");
 			if (serverListPath != "") {
 				endPathWithSlash(serverListPath);
@@ -107,18 +103,6 @@ namespace Glest {
 			string userData = config.getString("UserData_Root", "");
 			if (userData != "") {
 				endPathWithSlash(userData);
-			}
-			serversSavedFile = userData + serversSavedFile;
-
-			if (fileExists(serversSavedFile) == true) {
-				servers.load(serversSavedFile);
-			} else if (fileExists(serverListPath + serverFileName) == true) {
-				servers.load(serverListPath + serverFileName);
-			} else if (fileExists(Properties::getApplicationPath() + serverFileName)
-				== true) {
-				servers.load(Properties::getApplicationPath() + serverFileName);
-			} else if (fileExists(serverFileName) == true) {
-				servers.load(serverFileName);
 			}
 
 			//buttons
@@ -722,8 +706,6 @@ namespace Glest {
 								"In [%s::%s] clientInterface->getLaunchGame() - A\n",
 								__FILE__, __FUNCTION__);
 
-						servers.save(serversSavedFile);
-
 						if (SystemFlags::
 							getSystemSettingType(SystemFlags::debugSystem).enabled)
 							SystemFlags::OutputDebug(SystemFlags::debugSystem,
@@ -961,7 +943,6 @@ namespace Glest {
 					saveHost += ":" + hostPartsList[1];
 				}
 				servers.setString(clientInterface->getServerName(), saveHost);
-				servers.save(serversSavedFile);
 
 				if (SystemFlags::
 					getSystemSettingType(SystemFlags::debugSystem).enabled)

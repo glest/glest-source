@@ -44,9 +44,6 @@ namespace Glest {
 				newPrevServerIndex;
 			static const int
 				foundServersIndex;
-			static const
-				string
-				serverFileName;
 
 		private:
 			GraphicButton buttonReturn;
@@ -74,7 +71,6 @@ namespace Glest {
 			//Console console;
 			ChatManager chatManager;
 
-			string serversSavedFile;
 			bool abortAutoFind;
 			bool autoConnectToServer;
 
