@@ -1,6 +1,8 @@
 CMAKE_MINIMUM_REQUIRED( VERSION 2.8.2 )
 PROJECT( ZetaGlest )
 
+# Mathu, could you update this comment please?
+#
 #SET(CMAKE_VERBOSE_MAKEFILE ON)
 
 #
@@ -92,7 +94,7 @@ IF(APPLE)
 ENDIF(APPLE)
 
 IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
-    IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+	IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
         MESSAGE(STATUS "Detected CLANG Compiler...")
 	ELSEIF(CMAKE_COMPILER_IS_GNUCXX)
 		MESSAGE(STATUS "Detected GNUC Compiler...")
@@ -127,40 +129,41 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 #                ENDIF()
     ENDIF()
 
-	#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-    #MESSAGE(STATUS "*TEST: Checking for max SSE LEVEL [${FORCE_MAX_SSE_LEVEL}]")
-
-	OPTION(FORCE_STREFLOP_SOFTWRAPPER "Set the streflop library to be forced to use the software emulator" OFF)
-    IF(NOT FORCE_MAX_SSE_LEVEL AND NOT FORCE_STREFLOP_SOFTWRAPPER)
-        SET(FORCE_MAX_SSE_LEVEL "1" CACHE STRING "Set the max SSE level to use if supported (0-3)")
-    ENDIF()
-
-    IF(NOT FORCE_STREFLOP_SOFTWRAPPER)
-        MESSAGE(STATUS "*NOTE: Checking for max SSE LEVEL [${FORCE_MAX_SSE_LEVEL}]")
-        special_check_for_sse( ${FORCE_MAX_SSE_LEVEL} )
-    ENDIF()
-
 	IF(WANT_USE_STREFLOP)
+		OPTION(FORCE_STREFLOP_SOFTWRAPPER "Set the streflop library to be forced to use the software emulator" OFF)
+		IF(NOT FORCE_MAX_SSE_LEVEL AND NOT FORCE_STREFLOP_SOFTWRAPPER)
+			SET(FORCE_MAX_SSE_LEVEL "1" CACHE STRING "Set the max SSE level to use if supported (0-3)")
+		ENDIF()
+
+		IF(NOT FORCE_STREFLOP_SOFTWRAPPER)
+			MESSAGE(STATUS "*NOTE: Checking for max SSE LEVEL [${FORCE_MAX_SSE_LEVEL}]")
+			special_check_for_sse( ${FORCE_MAX_SSE_LEVEL} )
+		ENDIF()
+
 		ADD_DEFINITIONS("-DUSE_STREFLOP -DSTREFLOP_RANDOM_GEN_SIZE=32 -DLIBM_COMPILING_FLT32 -DN_SPECIALIZED=32")
 
-        IF(HAS_SSE_EXTENSIONS AND NOT ${FORCE_MAX_SSE_LEVEL} MATCHES "0" AND NOT FORCE_STREFLOP_SOFTWRAPPER)
-            ADD_DEFINITIONS("-DSTREFLOP_SSE")
-            MESSAGE(STATUS "*NOTE: using SSE for STREFLOP.")
-        ELSE()
-            IF(NOT FORCE_STREFLOP_SOFTWRAPPER)
-                special_check_for_x87()
-            ENDIF()
+		IF(HAS_SSE_EXTENSIONS AND NOT ${FORCE_MAX_SSE_LEVEL} MATCHES "0" AND NOT FORCE_STREFLOP_SOFTWRAPPER)
+			ADD_DEFINITIONS("-DSTREFLOP_SSE")
+			MESSAGE(STATUS "*NOTE: using SSE for STREFLOP.")
+		ELSE()
+			IF(NOT FORCE_STREFLOP_SOFTWRAPPER)
+				special_check_for_x87()
+			ENDIF()
 
-            IF(HAS_X87_SUPPORT AND NOT FORCE_STREFLOP_SOFTWRAPPER)
-                ADD_DEFINITIONS("-DSTREFLOP_X87")
-                MESSAGE(STATUS "*NOTE: using X87 for STREFLOP.")
-            ELSE()
-                ADD_DEFINITIONS("-DSTREFLOP_SOFT")
-                MESSAGE(STATUS "*NOTE: using SOFT emulation for STREFLOP.")
-            ENDIF()
-        ENDIF()
+			IF(HAS_X87_SUPPORT AND NOT FORCE_STREFLOP_SOFTWRAPPER)
+				ADD_DEFINITIONS("-DSTREFLOP_X87")
+				MESSAGE(STATUS "*NOTE: using X87 for STREFLOP.")
+			ELSE()
+				ADD_DEFINITIONS("-DSTREFLOP_SOFT")
+				MESSAGE(STATUS "*NOTE: using SOFT emulation for STREFLOP.")
+			ENDIF()
+		ENDIF()
 	ELSE()
-		MESSAGE(STATUS "*WARNING: Disabled use of STREFLOP! Out of synchs may occur")
+		# We are temporarily trying to build without streflop. If out-of-syncs
+		# become a problem, we'll probably replace streflop with libmpc or mpf4
+		#
+		# MESSAGE(STATUS "*WARNING: Disabled use of STREFLOP! Out of synchs may occur")
+		MESSAGE(STATUS "libstreflop disabled")
 	ENDIF()
 
         include(CheckCXXSourceRuns)
@@ -312,15 +315,19 @@ IF(EXISTS "${PROJECT_SOURCE_DIR}/source/")
     ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/tests )
 ENDIF()
 
-# Check if data exist
-IF(EXISTS "${PROJECT_SOURCE_DIR}/data/glest_game/CMakeLists.txt")
+#
+# Check if data exists
+# The option to actually install data is set in the data CMakeLists.txt
+# file. It defaults to OFF. The INSTALL_DIR_DATA path is always set
+# regardless (because of the rules above) and is defined as the macro DATADIR
+# at compile-time. That allows the binary to find the data no matter
+# where it is, and whether or not it has actually been installed
+#
+IF(EXISTS "${PROJECT_SOURCE_DIR}/../zetaglest-data/CMakeLists.txt")
     MESSAGE(STATUS "**Found game data.")
-	ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/data/glest_game )
+	ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/../zetaglest-data $CMAKE_BINARY_DIR/data)
 ENDIF()
 
-#get_directory_property( DirDefs COMPILE_DEFINITIONS )
-#MESSAGE(STATUS ">>>> NOTICE Compiler definitions used: ${DirDefs}")
-#MESSAGE(STATUS "END of compile defs...")
 IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     MESSAGE(WARNING ">> CLANG is NOT currently compatible as it does not support the following essential GCC compiler settings: -frounding-math -fsignaling-nans")
 ENDIF()
@@ -329,8 +336,6 @@ get_directory_property( DirDefs DIRECTORY ${CMAKE_SOURCE_DIR} COMPILE_DEFINITION
 foreach( d ${DirDefs} )
     message( STATUS "=====> Found Define: " ${d} )
 endforeach()
-#MESSAGE( STATUS "=====> DirDefs: " ${DirDefs} )
-#MESSAGE(STATUS "*** Compiler definitions are [${COMPILE_DEFINITIONS}]")
 
 MARK_AS_ADVANCED(${SDL_VERSION_NAME}MAIN_LIBRARY)
 MARK_AS_ADVANCED(${SDL_VERSION_NAME}_INCLUDE_DIR)
