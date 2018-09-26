@@ -1,14 +1,9 @@
 CMAKE_MINIMUM_REQUIRED( VERSION 2.8.2 )
 PROJECT( ZetaGlest )
 
-# Mathu, could you update this comment please?
+# The ZetaGlest CMakeLists is not supported on Windows. To compile on Windows, please use setup.bat in mk/windows
 #
 #SET(CMAKE_VERBOSE_MAKEFILE ON)
-
-#
-# *NOTE: For now we assume some variation of GCC Compiler (or MingW for Windows binaries)
-# VC++ users should not use CMake yet but rather the build-zg.bat file in mk/windows
-#
 
 # build type
 IF(NOT CMAKE_BUILD_TYPE)
