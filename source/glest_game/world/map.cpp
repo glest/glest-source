@@ -1417,7 +1417,8 @@ namespace Glest {
 						}
 
 
-						if (getCell(currPos)->getUnit(field) == NULL || getCell(currPos)->getUnit(field) == unit || (unit->getType()->hasSkillClass(scBeBuilt) && !getCell(currPos)->getUnit(field)->getType()->hasSkillClass(scBeBuilt))) {
+						if (getCell(currPos)->getUnit(field) == NULL || getCell(currPos)->getUnit(field) == unit || 
+							(unit->getType()->hasSkillClass(scBeBuilt) != getCell(currPos)->getUnit(field)->getType()->hasSkillClass(scBeBuilt))) {
 							if (isMorph) {
 								// unit is beeing morphed to another unit with maybe other field.
 								getCell(currPos)->setUnit(field, unit);
