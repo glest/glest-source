@@ -2270,8 +2270,10 @@ namespace Shared {
 			if (value == 0) //workaround
 				return;
 			map<const void *, int32>::const_iterator iterFind = vaultList.find(ptr);
-			if (iterFind != vaultList.end() && iterFind->second != value)
-				notifyValueChangedUnexpectedly(value, iterFind->second);
+			if (iterFind != vaultList.end()) {
+				if (iterFind->second != 0 && iterFind->second != value)
+					notifyValueChangedUnexpectedly(value, iterFind->second);
+			}
 #endif
 		}
 
