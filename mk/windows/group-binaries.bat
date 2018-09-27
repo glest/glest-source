@@ -15,8 +15,6 @@ copy /y glest.ini bin\vs2017\glest.ini
 copy /y ..\shared\glestkeys.ini bin\vs2015\glestkeys.ini
 copy /y ..\shared\glestkeys.ini bin\vs2017\glestkeys.ini
 
-copy /y ..\shared\servers.ini bin\vs2015\servers.ini
-copy /y ..\shared\servers.ini bin\vs2017\servers.ini
 
 copy /y vs2015-32\g3d_viewerWin32\Release\g3d_viewer.exe bin\vs2015\g3d_viewer-32.exe
 copy /y vs2017-32\g3d_viewerWin32\Release\g3d_viewer.exe bin\vs2017\g3d_viewer-32.exe
