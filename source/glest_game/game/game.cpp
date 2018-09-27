@@ -5885,8 +5885,8 @@ namespace Glest {
 					currentUIState->mouseDoubleClickRight(x, y);
 					return;
 				}
-
-				Map *map = world.getMap();
+				//disabled due to inconsistency
+				/*Map *map = world.getMap();
 				const Metrics & metrics = Metrics::getInstance();
 
 				if (metrics.isInMinimap(x, y)) {
@@ -5913,7 +5913,7 @@ namespace Glest {
 					targetPos = getMouseCellPos();
 					if (isValidMouseCellPos() == true && map->isInsideSurface(map->toSurfCoords(targetPos)) == true)
 						gui.mouseDoubleClickRightGraphics(x, y, false);
-				}
+				}*/
 			} catch (const exception & ex) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s Line: %d] Error [%s]\n",

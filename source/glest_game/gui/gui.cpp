@@ -346,7 +346,8 @@ namespace Glest {
 		}
 
 		void Gui::mouseDoubleClickRightGraphics(int x, int y, bool prepared) {
-			if (selectingPos || selectingMeetingPoint) {
+			//disabled due to inconsistency
+			/*if (selectingPos || selectingMeetingPoint) {
 				resetState();
 			} else if (selection.isCommandable()) {
 				if (prepared) {
@@ -358,7 +359,7 @@ namespace Glest {
 						giveDefaultOrders(x, y, true);
 				}
 			}
-			computeDisplay();
+			computeDisplay();*/
 		}
 
 		void Gui::groupKey(int groupIndex) {
