@@ -2262,18 +2262,17 @@ namespace Shared {
 #ifndef _DISABLE_MEMORY_VAULT_CHECKS
 			Checksum checksum;
 			vaultList[ptr] = checksum.addInt(value);
-
 #endif
 		}
 
 		void ValueCheckerVault::checkItemInVault(const void *ptr, int value) const {
 #ifndef _DISABLE_MEMORY_VAULT_CHECKS
 			map<const void *, uint32>::const_iterator iterFind = vaultList.find(ptr);
-			if (iterFind == vaultList.end())
-				notifyValueChangedUnexpectedly();
-			Checksum checksum;
-			if (iterFind->second != checksum.addInt(value))
-				notifyValueChangedUnexpectedly();
+			if (iterFind != vaultList.end()) {
+				Checksum checksum;
+				if (iterFind->second != checksum.addInt(value))
+					notifyValueChangedUnexpectedly();
+			}
 #endif
 		}
 
