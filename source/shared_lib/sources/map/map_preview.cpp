@@ -1111,12 +1111,17 @@ namespace Shared {
 				endPathWithSlash(map_path);
 
 				const string original = map_path + mapName;
+				const string zeta = map_path + mapName + ".zgm";
 				const string mega = map_path + mapName + ".mgm";
 				const string glest = map_path + mapName + ".gbm";
 
-				if ((EndsWith(original, ".mgm") == true || EndsWith(original, ".gbm") == true) &&
-					fileExists(original)) {
+				if ((	EndsWith(original, ".zgm") == true ||
+							EndsWith(original, ".mgm") == true ||
+							EndsWith(original, ".gbm") == true) &&
+							fileExists(original)) {
 					return original;
+				} else if (fileExists(zeta)) {
+					return zeta;
 				} else if (fileExists(mega)) {
 					return mega;
 				} else if (fileExists(glest)) {
@@ -1147,6 +1152,10 @@ namespace Shared {
 					copy(results2.begin(), results2.end(), std::inserter(allMaps2, allMaps2.begin()));
 
 					results2.clear();
+					findAll(path + "*.zgm", results2, cutExtension, false);
+					copy(results2.begin(), results2.end(), std::inserter(allMaps2, allMaps2.begin()));
+
+					results2.clear();
 					findAll(path + "*.mgm", results2, cutExtension, false);
 					copy(results2.begin(), results2.end(), std::inserter(allMaps2, allMaps2.begin()));
 
@@ -1158,6 +1167,10 @@ namespace Shared {
 			} else {
 				set<string> allMaps;
 				findAll(pathList, "*.gbm", results, cutExtension, false);
+				copy(results.begin(), results.end(), std::inserter(allMaps, allMaps.begin()));
+
+				results.clear();
+				findAll(pathList, "*.zgm", results, cutExtension, false);
 				copy(results.begin(), results.end(), std::inserter(allMaps, allMaps.begin()));
 
 				results.clear();

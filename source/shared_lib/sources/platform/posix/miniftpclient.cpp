@@ -287,8 +287,8 @@ namespace Shared {
 			destFile += mapFileName.first;
 
 			if (mapFileName.second == "") {
-				if (EndsWith(destFile, ".mgm") == false && EndsWith(destFile, ".gbm") == false) {
-					destFileExt = ".mgm";
+				if (EndsWith(destFile, ".zgm") == false && EndsWith(destFile, ".mgm") == false && EndsWith(destFile, ".gbm") == false) {
+					destFileExt = ".zgm";
 					destFile += destFileExt;
 				}
 			}
@@ -373,7 +373,7 @@ namespace Shared {
 				result = getMapFromServer(mapFileName, "", "");
 			} else {
 				pair<string, string> findMapFileName = mapFileName;
-				findMapFileName.first += +".mgm";
+				findMapFileName.first += +".zgm";
 
 				result = getMapFromServer(findMapFileName, FTP_MAPS_CUSTOM_USERNAME, FTP_COMMON_PASSWORD);
 				if (result.first == ftp_crt_FAIL && this->getQuitStatus() == false) {
@@ -381,13 +381,18 @@ namespace Shared {
 					findMapFileName.first += +".gbm";
 					result = getMapFromServer(findMapFileName, FTP_MAPS_CUSTOM_USERNAME, FTP_COMMON_PASSWORD);
 					if (result.first == ftp_crt_FAIL && this->getQuitStatus() == false) {
-						findMapFileName = mapFileName;
-						findMapFileName.first += +".mgm";
-						result = getMapFromServer(findMapFileName, FTP_MAPS_USERNAME, FTP_COMMON_PASSWORD);
+							findMapFileName = mapFileName;
+							findMapFileName.first += +".zgm";
+							result = getMapFromServer(findMapFileName, FTP_MAPS_USERNAME, FTP_COMMON_PASSWORD);
 						if (result.first == ftp_crt_FAIL && this->getQuitStatus() == false) {
 							findMapFileName = mapFileName;
-							findMapFileName.first += +".gbm";
+							findMapFileName.first += +".mgm";
 							result = getMapFromServer(findMapFileName, FTP_MAPS_USERNAME, FTP_COMMON_PASSWORD);
+							if (result.first == ftp_crt_FAIL && this->getQuitStatus() == false) {
+								findMapFileName = mapFileName;
+								findMapFileName.first += +".gbm";
+								result = getMapFromServer(findMapFileName, FTP_MAPS_USERNAME, FTP_COMMON_PASSWORD);
+							}
 						}
 					}
 				}

@@ -1008,12 +1008,15 @@ namespace Glest {
 				string map_path = pathList[idx];
 				endPathWithSlash(map_path);
 
+				const string zeta = map_path + mapName + ".zgm";
 				const string mega = map_path + mapName + ".mgm";
 				const string glest = map_path + mapName + ".gbm";
 				if (fileExists(mega)) {
 					return mega;
 				} else if (fileExists(glest)) {
 					return glest;
+				} else if (fileExists(zeta)) {
+					return zeta;
 				}
 			}
 

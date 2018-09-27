@@ -537,7 +537,7 @@ namespace MapEditor {
 			SetTitle(ToUnicode(winHeader + " - " + currentFile));
 		} else
 			SetTitle(ToUnicode(winHeader));
-		
+
 		setDirty(false);
 		setExtension();
 	}
@@ -576,11 +576,11 @@ namespace MapEditor {
 
 		//printf("#A currentFile [%s] extnsn [%s]\n",currentFile.c_str(),extnsn.c_str());
 
-		if (extnsn == "gbm" || extnsn == "mgm") {
+		if (extnsn == "gbm" || extnsn == "mgm" || extnsn == "zgm") {
 			currentFile = cutLastExt(currentFile);
 		}
-		SetStatusText(wxT(".mgm"), siFILE_TYPE);
-		currentFile += ".mgm";
+		SetStatusText(wxT(".zgm"), siFILE_TYPE);
+		currentFile += ".zgm";
 	}
 
 	void MainWindow::onMouseDown(wxMouseEvent &event, int x, int y) {
@@ -728,7 +728,7 @@ namespace MapEditor {
 
 		try {
 			fileDialog->SetMessage(wxT("Select Glestmap to load"));
-			fileDialog->SetWildcard(wxT("Glest&Mega Map (*.gbm *.mgm)|*.gbm;*.mgm|Glest Map (*.gbm)|*.gbm|Mega Map (*.mgm)|*.mgm"));
+			fileDialog->SetWildcard(wxT("Glest&Mega Map (*.gbm *.mgm *.zgm)|*.gbm;*.mgm;*.zgm|Glest Map (*.gbm)|*.gbm|Mega Map (*.mgm)|*.mgm|Zeta Map (*.zgm)|*.zgm"));
 			if (fileDialog->ShowModal() == wxID_OK) {
 #ifdef WIN32
 				const wxWX2MBbuf tmp_buf = wxConvCurrent->cWX2MB(wxFNCONV(fileDialog->GetPath()));
@@ -783,9 +783,9 @@ namespace MapEditor {
 		}
 
 #if wxCHECK_VERSION(2, 9, 1)
-		wxFileDialog fd(this, wxT("Select file"), wxT(""), wxT(""), wxT("*.mgm|*.gbm"), wxFD_SAVE);
+		wxFileDialog fd(this, wxT("Select file"), wxT(""), wxT(""), wxT("*.mgm|*.gbm|*.zgm"), wxFD_SAVE);
 #else
-		wxFileDialog fd(this, wxT("Select file"), wxT(""), wxT(""), wxT("*.mgm|*.gbm"), wxSAVE);
+		wxFileDialog fd(this, wxT("Select file"), wxT(""), wxT(""), wxT("*.mgm|*.gbm|*.zgm"), wxSAVE);
 #endif
 
 		if (fileDialog->GetPath() != ToUnicode("")) {
@@ -800,7 +800,7 @@ namespace MapEditor {
 			fd.SetDirectory(ToUnicode(defaultPath));
 		}
 
-		fd.SetWildcard(wxT("ZetaGlest Map (*.mgm)|*.mgm|Glest Map (*.gbm)|*.gbm"));
+		fd.SetWildcard(wxT("ZetaGlest Map (*.zgm)|MegaGlest Map (*.mgm)|*.mgm|Glest Map (*.gbm)|*.gbm"));
 		if (fd.ShowModal() == wxID_OK) {
 #ifdef WIN32
 			const wxWX2MBbuf tmp_buf = wxConvCurrent->cWX2MB(wxFNCONV(fd.GetPath()));
@@ -1651,7 +1651,7 @@ wxT("Help")).ShowModal();
 			if (argv[1][0] == '-') {   // any flag gives help and exits program.
 				std::cout << std::endl << "ZetaGlest map editor " << mapeditorVersionString << " [Using " << (const char *) wxConvCurrent->cWX2MB(wxVERSION_STRING) << "]" << std::endl << std::endl;
 				//std::cout << "\nglest_map_editor [MGM FILE]" << std::endl << std::endl;
-				std::cout << "Creates or edits zetaglest/glest maps. [.mgm/.gbm]" << std::endl << std::endl;
+				std::cout << "Creates or edits zetaglest/glest maps. [.zgm/.mgm/.gbm]" << std::endl << std::endl;
 				std::cout << "Draw with left mouse button." << std::endl;
 				std::cout << "Move map with right mouse button." << std::endl;
 				std::cout << "Zoom with middle mouse button or mousewheel." << std::endl;

@@ -444,7 +444,7 @@ namespace Glest {
 				//map listBox
 				listBoxMap.registerGraphicComponent(containerName, "listBoxMap");
 				listBoxMap.init(xoffset + 100, mapPos, 220);
-				// put them all in a set, to weed out duplicates (gbm & mgm with same name)
+				// put them all in a set, to weed out duplicates (zgm, gbm, and mgm with same name)
 				// will also ensure they are alphabetically listed (rather than how the OS provides them)
 				int initialMapSelection = setupMapList("");
 				listBoxMap.setItems(formattedPlayerSortedMaps[0]);
