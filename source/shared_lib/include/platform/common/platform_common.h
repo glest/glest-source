@@ -319,7 +319,7 @@ namespace Shared {
 		class ValueCheckerVault {
 
 		protected:
-			std::map<const void *, uint32> vaultList;
+			std::map<const void *, int32> vaultList;
 
 			void addItemToVault(const void *ptr, int value);
 			void checkItemInVault(const void *ptr, int value) const;

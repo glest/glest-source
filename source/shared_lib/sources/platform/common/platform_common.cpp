@@ -2240,7 +2240,7 @@ namespace Shared {
 			return intToStr(width) + "x" + intToStr(height) + "-" + intToStr(depth);
 		}
 
-		void notifyValueChangedUnexpectedly() {
+		void notifyValueChangedUnexpectedly(int expectedValue, int actualValue) {
 			//if(SystemFlags::VERBOSE_MODE_ENABLED) {
 			//	printf("In [%s::%s Line: %d] check vault key [%p] value [%d]\n",__FILE__,__FUNCTION__,__LINE__,ptr,value);
 			//	for(map<const void *,string>::const_iterator iterFind = vaultList.begin();
@@ -2248,8 +2248,9 @@ namespace Shared {
 			//		printf("In [%s::%s Line: %d] LIST-- check vault key [%p] value [%s]\n",__FILE__,__FUNCTION__,__LINE__,iterFind->first,iterFind->second.c_str());
 			//	}
 			//}
-
-			const char* szMsg = "A value in memory has changed unexpectedly. Game out of sync, try leaving and rejoining";
+			char szMsg[8096];
+			snprintf(szMsg, 8096, "A value in memory has changed unexpectedly (expected %d, found %d). Game out of sync, try leaving and rejoining",
+				expectedValue, actualValue);
 			printf("%s\n", szMsg);
 			SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n", szMsg);
 			SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szMsg);
@@ -2260,19 +2261,17 @@ namespace Shared {
 
 		void ValueCheckerVault::addItemToVault(const void *ptr, int value) {
 #ifndef _DISABLE_MEMORY_VAULT_CHECKS
-			Checksum checksum;
-			vaultList[ptr] = checksum.addInt(value);
+			vaultList[ptr] = value;
 #endif
 		}
 
 		void ValueCheckerVault::checkItemInVault(const void *ptr, int value) const {
 #ifndef _DISABLE_MEMORY_VAULT_CHECKS
-			map<const void *, uint32>::const_iterator iterFind = vaultList.find(ptr);
-			if (iterFind != vaultList.end()) {
-				Checksum checksum;
-				if (iterFind->second != checksum.addInt(value))
-					notifyValueChangedUnexpectedly();
-			}
+			if (value == 0) //workaround
+				return;
+			map<const void *, int32>::const_iterator iterFind = vaultList.find(ptr);
+			if (iterFind != vaultList.end() && iterFind->second != value)
+				notifyValueChangedUnexpectedly(value, iterFind->second);
 #endif
 		}
 
