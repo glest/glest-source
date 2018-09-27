@@ -90,14 +90,13 @@ using namespace Shared::Platform;
 using namespace Shared::Util;
 using namespace std;
 
-#define _DISABLE_MEMORY_VAULT_CHECKS 1
+//#define _DISABLE_MEMORY_VAULT_CHECKS 1
 
 namespace Shared {
 	namespace PlatformCommon {
-
 		const time_t REFRESH_CRC_DAY_SECONDS = 60 * 60 * 24;
 		static string crcCachePath = "";
-
+		static void(*unexpected_handler)(const char*) = NULL;
 		static string gameVersion = "";
 		static string gameGITVersion = "";
 
@@ -682,6 +681,10 @@ namespace Shared {
 
 		void setCRCCacheFilePath(const string &path) {
 			crcCachePath = path;
+		}
+
+		void setUnexpectedHandler(void(*handler)(const char*)) {
+			unexpected_handler = handler;
 		}
 
 		//string getGameVersion() {
@@ -2237,45 +2240,41 @@ namespace Shared {
 			return intToStr(width) + "x" + intToStr(height) + "-" + intToStr(depth);
 		}
 
+		void notifyValueChangedUnexpectedly() {
+			//if(SystemFlags::VERBOSE_MODE_ENABLED) {
+			//	printf("In [%s::%s Line: %d] check vault key [%p] value [%d]\n",__FILE__,__FUNCTION__,__LINE__,ptr,value);
+			//	for(map<const void *,string>::const_iterator iterFind = vaultList.begin();
+			//		iterFind != vaultList.end(); iterFind++) {
+			//		printf("In [%s::%s Line: %d] LIST-- check vault key [%p] value [%s]\n",__FILE__,__FUNCTION__,__LINE__,iterFind->first,iterFind->second.c_str());
+			//	}
+			//}
+
+			const char* szMsg = "A value in memory has changed unexpectedly. Game out of sync, try leaving and rejoining";
+			printf("%s\n", szMsg);
+			SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n", szMsg);
+			SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szMsg);
+			void(*handler)(const char*) = unexpected_handler;
+			if (handler != NULL)
+				handler(szMsg);
+		}
+
 		void ValueCheckerVault::addItemToVault(const void *ptr, int value) {
 #ifndef _DISABLE_MEMORY_VAULT_CHECKS
-
 			Checksum checksum;
 			vaultList[ptr] = checksum.addInt(value);
 
 #endif
-
-			//	if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] add vault key [%p] value [%s] [%d]\n",__FILE__,__FUNCTION__,__LINE__,ptr,intToStr(checksum.getSum()).c_str(),value);
 		}
 
 		void ValueCheckerVault::checkItemInVault(const void *ptr, int value) const {
 #ifndef _DISABLE_MEMORY_VAULT_CHECKS
-
 			map<const void *, uint32>::const_iterator iterFind = vaultList.find(ptr);
-			if (iterFind == vaultList.end()) {
-				//		if(SystemFlags::VERBOSE_MODE_ENABLED) {
-				//			printf("In [%s::%s Line: %d] check vault key [%p] value [%d]\n",__FILE__,__FUNCTION__,__LINE__,ptr,value);
-				//			for(map<const void *,string>::const_iterator iterFind = vaultList.begin();
-				//					iterFind != vaultList.end(); iterFind++) {
-				//				printf("In [%s::%s Line: %d] LIST-- check vault key [%p] value [%s]\n",__FILE__,__FUNCTION__,__LINE__,iterFind->first,iterFind->second.c_str());
-				//			}
-				//		}
-				throw std::runtime_error("memory value has been unexpectedly modified (not found)!");
-			}
+			if (iterFind == vaultList.end())
+				notifyValueChangedUnexpectedly();
 			Checksum checksum;
-			if (iterFind->second != checksum.addInt(value)) {
-				//		if(SystemFlags::VERBOSE_MODE_ENABLED) {
-				//			printf("In [%s::%s Line: %d] check vault key [%p] value [%s] [%d]\n",__FILE__,__FUNCTION__,__LINE__,ptr,intToStr(checksum.getSum()).c_str(),value);
-				//			for(map<const void *,string>::const_iterator iterFind = vaultList.begin();
-				//					iterFind != vaultList.end(); iterFind++) {
-				//				printf("In [%s::%s Line: %d] LIST-- check vault key [%p] value [%s]\n",__FILE__,__FUNCTION__,__LINE__,iterFind->first,iterFind->second.c_str());
-				//			}
-				//		}
-				throw std::runtime_error("memory value has been unexpectedly modified (changed)!");
-			}
-
+			if (iterFind->second != checksum.addInt(value))
+				notifyValueChangedUnexpectedly();
 #endif
-
 		}
 
 		string getUserHome() {

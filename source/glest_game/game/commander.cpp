@@ -664,20 +664,15 @@ namespace
 				nctDisconnectNetworkPlayer) {
 				unit = world->findUnitById(networkCommand->getUnitId());
 				if (unit == NULL) {
-					char
-						szBuf[8096] = "";
-					snprintf(szBuf, 8096,
-						"In [%s::%s - %d] Command refers to non existent unit id = %d. Game out of sync",
-						extractFileFromDirectoryPath(__FILE__).c_str(),
-						__FUNCTION__, __LINE__, networkCommand->getUnitId());
+					char szMsg[8096] = "";
+					snprintf(szMsg, 8096, "Error: Command refers to non-existent unit id %d. Game out of sync, try leaving and rejoining",
+						networkCommand->getUnitId());
+					SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szMsg);
+					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n", szMsg);
 					GameNetworkInterface *
 						gameNetworkInterface =
 						NetworkManager::getInstance().getGameNetworkInterface();
 					if (gameNetworkInterface != NULL) {
-						char
-							szMsg[8096] = "";
-						snprintf(szMsg, 8096, "Error: Command refers to non-existent unit id %d. Game out of sync, try leaving and rejoining",
-							networkCommand->getUnitId());
 						gameNetworkInterface->
 							sendTextMessage(szMsg, -1, true, "");
 					}
@@ -1612,29 +1607,16 @@ namespace
 
 			// Validate unit is in game.
 			if (unit == NULL) {
-				char
-					szBuf[8096] = "";
-				snprintf(szBuf, 8096,
-					"In [%s::%s Line: %d] Can not find unit with id: %d. Game out of synch.",
-					extractFileFromDirectoryPath(__FILE__).c_str(),
-					__FUNCTION__, __LINE__, networkCommand->getUnitId());
-				SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szBuf);
-				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
-					enabled)
-					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n",
-						szBuf);
-
+				char szMsg[8096] = "";
+				snprintf(szMsg, 8096, "Error: Cannot find unit with id %d. Game out of sync, try leaving and rejoining",
+					networkCommand->getUnitId());
+				SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szMsg);
+				SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n", szMsg);
 				GameNetworkInterface *
 					gameNetworkInterface =
 					NetworkManager::getInstance().getGameNetworkInterface();
-				if (gameNetworkInterface != NULL) {
-					char
-						szMsg[8096] = "";
-					snprintf(szMsg, 8096,
-						"Error: Cannot find unit with id %d. Game out of sync, try leaving and rejoining",
-						networkCommand->getUnitId());
+				if (gameNetworkInterface != NULL)
 					gameNetworkInterface->sendTextMessage(szMsg, -1, true, "");
-				}
 
 				/*throw
 					megaglest_runtime_error(szBuf);*/
@@ -1649,44 +1631,23 @@ namespace
 			// Check that the unit from the network command is the same faction as the unit in the local game.
 			if (unit->getFaction()->getIndex() !=
 				networkCommand->getUnitFactionIndex()) {
-
-				char
-					szBuf[8096] = "";
-				snprintf(szBuf, 8096,
-					"In [%s::%s Line: %d]\nUnit/Faction mismatch for network command = [%s]\nfor unit = %d\n[%s]\n[%s]\nactual local factionIndex = %d.\nGame out of sync",
-					__FILE__, __FUNCTION__, __LINE__,
-					networkCommand->toString().c_str(),
-					unit->getId(), unit->getFullName(false).c_str(),
-					unit->getDesc(false).c_str(),
-					unit->getFaction()->getIndex());
-
-				SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szBuf);
-				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
-					enabled)
-					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n",
-						szBuf);
-
+				char szMsg[8096] = "";
+				snprintf(szMsg, 8096,
+					"Error: Unit/Faction mismatch for unitId %d, local faction index %d, remote index %d. Game out of sync, try leaving and rejoining",
+					networkCommand->getUnitId(),
+					unit->getFaction()->getIndex(),
+					networkCommand->getUnitFactionIndex());
+				
+				SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szMsg);
+				SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n", szMsg);
 				//world->DumpWorldToLog();
 
 				// Broadcast the error if player is still connected and print locally.
 				GameNetworkInterface *
 					gameNetworkInterface =
 					NetworkManager::getInstance().getGameNetworkInterface();
-				if (gameNetworkInterface != NULL) {
-					char szMsg[8096] = "";
-					snprintf(szMsg, 8096,
-						"Error: Unit/Faction mismatch for unitId %d, local faction index %d, remote index %d. Game out of sync, try leaving and rejoining",
-						networkCommand->getUnitId(),
-						unit->getFaction()->getIndex(),
-						networkCommand->getUnitFactionIndex());
+				if (gameNetworkInterface != NULL)
 					gameNetworkInterface->sendTextMessage(szMsg, -1, true, "");
-				}
-
-				/*// Kill the game.
-				std::string sError =
-					"Error [#1]: Game is out of sync (Unit / Faction mismatch)\nplease check log files for details.";
-				throw
-					megaglest_runtime_error(sError);*/
 				return command;
 			}
 
@@ -1714,41 +1675,23 @@ namespace
 
 			// Throw an error if a valid command for the unit is still not found.
 			if (ct == NULL) {
-				char
-					szBuf[8096] = "";
-				snprintf(szBuf, 8096,
-					"In [%s::%s Line: %d]\nCannot find command type for network command = [%s]\nfor unit = %d\n[%s]\n[%s]\nactual local factionIndex = %d.\nUnit Type Info:\n[%s]\nNetwork unit type:\n[%s]\nGame out of sync",
-					extractFileFromDirectoryPath(__FILE__).c_str(),
-					__FUNCTION__, __LINE__,
-					networkCommand->toString().c_str(),
-					unit->getId(), unit->getFullName(false).c_str(),
-					unit->getDesc(false).c_str(),
-					unit->getFaction()->getIndex(),
-					unit->getType()->toString().c_str(),
+				char szMsg[8096] = "";
+				snprintf(szMsg, 8096, "Error: Cannot find command type %d for unitId %d [%s]. Game out of sync, try leaving and rejoining",
+					networkCommand->getCommandTypeId(),
+					networkCommand->getUnitId(),
 					(unitType !=
 						NULL ? unitType->getName(false).c_str() : "null"));
 
-				SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n", szBuf);
-				SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szBuf);
+				SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n", szMsg);
+				SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szMsg);
 				//world->DumpWorldToLog();
 
 				GameNetworkInterface *
 					gameNetworkInterface =
 					NetworkManager::getInstance().getGameNetworkInterface();
-				if (gameNetworkInterface != NULL) {
-					char szMsg[8096] = "";
-					snprintf(szMsg, 8096, "Error: Cannot find command type %d for unitId %d [%s]. Game out of sync, try leaving and rejoining",
-						networkCommand->getCommandTypeId(),
-						networkCommand->getUnitId(),
-						(unitType !=
-							NULL ? unitType->getName(false).c_str() : "null"));
+				if (gameNetworkInterface != NULL)
 					gameNetworkInterface->sendTextMessage(szMsg, -1, true, "");
-				}
 
-				/*std::string sError =
-					"Error [#3]: Game is out of sync, please check log files for details.";
-				throw
-					megaglest_runtime_error(sError);*/
 				return command;
 			}
 

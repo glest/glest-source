@@ -203,6 +203,8 @@ namespace Shared {
 		string getCRCCacheFilePath();
 		void setCRCCacheFilePath(const string &path);
 
+		void setUnexpectedHandler(void(*handler)(const char*));
+
 		std::pair<string, string> getFolderTreeContentsCheckSumCacheKey(vector<string> paths, const string &pathSearchString, const string &filterFileExt);
 		void clearFolderTreeContentsCheckSum(vector<string> paths, const string &pathSearchString, const string &filterFileExt);
 		uint32 getFolderTreeContentsCheckSumRecursively(vector<string> paths, string pathSearchString, const string &filterFileExt, Checksum *recursiveChecksum, bool forceNoCache = false);

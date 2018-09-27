@@ -1783,8 +1783,8 @@ namespace Glest {
 		StaticSound *PlaySoundClip::getSound(const std::string& playSoundVal) {
 			static int soundCtr = 0;
 			if (alertSoundMap.find(playSoundVal) == alertSoundMap.end()) {
-					alertSoundMap[playSoundVal] = soundCtr;
-					playSound.resize(soundCtr + 1);
+				alertSoundMap[playSoundVal] = soundCtr;
+				playSound.resize(soundCtr + 1);
 				try {
 					CoreData & coreData = CoreData::getInstance();
 					string data_path = coreData.getDataPath();

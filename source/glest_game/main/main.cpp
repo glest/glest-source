@@ -37,6 +37,7 @@
 #include "platform_util.h"
 #include "platform_main.h"
 #include "network_interface.h"
+#include "network_manager.h"
 #include "ImageReaders.h"
 #include "renderer.h"
 #include "simple_threads.h"
@@ -99,13 +100,18 @@
 #endif
 
 using namespace std;
-using namespace
-Shared::Platform;
+using namespace Shared::Platform;
 using namespace Shared::Util;
 using namespace Shared::Graphics;
 using namespace Shared::Graphics::Gl;
 using namespace Shared::Xml;
 using namespace Shared;
+
+void handleUnexpectedError(const char* message) {
+	Glest::Game::GameNetworkInterface* gameNetworkInterface = Glest::Game::NetworkManager::getInstance().getGameNetworkInterface();
+	if (gameNetworkInterface != NULL)
+		gameNetworkInterface->sendTextMessage(message, -1, true, "");
+}
 
 /**
 * @namespace Glest
@@ -1082,6 +1088,7 @@ namespace
 			this->triggerLanguageToggle = false;
 			this->triggerLanguage = "";
 			this->cancelLanguageSelection = -1;
+			setUnexpectedHandler(&handleUnexpectedError);
 		}
 
 		MainWindow::~MainWindow() {
