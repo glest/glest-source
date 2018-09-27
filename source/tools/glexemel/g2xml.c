@@ -23,7 +23,12 @@
 #define FALSE 0
 #endif
 
-
+/*
+ * Set a boundary on the indexCount
+ * to prevent
+ * CWE-606: Unchecked Input for Loop Condition
+ */
+#define INDEX_COUNT_MAX 10000
 
  /**
   * Forward function declarations.
@@ -311,6 +316,10 @@ int g3d2xml(FILE *infile, FILE *outfile) {
 
 		/* read / write face indices */
 		nBytes = sizeof(uint32)*meshHeader.indexCount;
+		if (meshHeader.indexCount > INDEX_COUNT_MAX) {
+			printf ("Index Count exceeds INDEX_COUNT_MAX (%u)\n", INDEX_COUNT_MAX);
+			return FALSE;
+		}
 		idata = malloc(nBytes);
 		if (idata == NULL) {
 			printf("Could not allocate buffer!\n");
