@@ -18,6 +18,7 @@ data can be downloaded from within the game at no cost.
 
 * [Stay Informed (Updates)](https://github.com/ZetaGlest/zetaglest-source#stay-informed-updates)
 * [Project Goals](https://github.com/ZetaGlest/zetaglest-source#why-this-fork-project-goals)
+* [FAQ](https://github.com/ZetaGlest/zetaglest-source#faq)
 * [Download executable files](https://github.com/ZetaGlest/zetaglest-source#download-executable-files)
 * [Running](https://github.com/ZetaGlest/zetaglest-source#running)
 * [Extra Tech trees, mods, tilesets, scenarious (not yet available on the ZetaGlest server)](https://github.com/ZetaGlest/zetaglest-source#extra-tech-trees-mods-tilesets-scenarious-not-yet-available-on-the-zetaglest-server)
@@ -35,6 +36,8 @@ Open games and [Server list and player stats](https://zetaglest.dreamhosters.com
 ## Stay Informed (Updates)
 
 * [ChangeLog.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/ChangeLog.md)<br >
+* [![RSS](rss_23x23.jpeg)](https://zetaglest.github.io/blog/)
+[The ZetaGlest Blog](https://zetaglest.github.io/blog/)<br >
 * [![RSS](rss_23x23.jpeg)](https://github.com/ZetaGlest/zetaglest-source/commits/develop.atom)
 [Recent Commits to zetaglest-source:develop](https://github.com/ZetaGlest/zetaglest-source/commits/develop.atom)<br >
 * [![RSS](rss_23x23.jpeg)](https://github.com/ZetaGlest/zetaglest-data/commits/develop.atom)
@@ -44,11 +47,14 @@ Open games and [Server list and player stats](https://zetaglest.dreamhosters.com
 
 ## Why this fork? (Project Goals)
 
-ZetaGlest forked from MegaGlest at v3.13.0-dev ([12998eb](https://github.com/ZetaGlest/zetaglest-source/commit/12998eb10f6447ac89a45d1e6d76f17946647b7a))
-
 Because we love MegaGlest! We wanted to take the project into a
 slightly different direction, and therefore we forked MegaGlest into
 the ZetaGlest project.
+
+## FAQ
+
+The FAQ is located at
+[https://zetaglest.github.io/docs/faq.html](https://zetaglest.github.io/docs/faq.html).
 
 ## Download executable files
 
@@ -72,22 +78,7 @@ OR
 
     zetaglest (if you installed and the binary is in your PATH)
 
-To run your own headless (dedicated) server:
-
-    Forward TCP ports 61357-61368
-    ./zetaglest --headless-server-mode
-
-To start a server and host a game:
-
-    Forward TCP ports 61357-61368
-    Enter the ZetaGlest lobby and click "Host Game"
-
-### Note
-
-When serving a running game, a headless ZG server uses almost the
-same amount of computer resources as a running game. Therefore, it is
-recommended not to try connecting your ZG client to a headless server
-running on the same computer.
+To run your own headless (dedicated) server, see [the FAQ](https://zetaglest.github.io/docs/faq.html#headlessserver).
 
 ### Extra Tech trees, mods, tilesets, scenarious (not yet available on the ZetaGlest server)
 
