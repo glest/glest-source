@@ -36,7 +36,7 @@ Open games and [Server list and player stats](https://zetaglest.dreamhosters.com
 ## Stay Informed (Updates)
 
 * [ChangeLog.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/ChangeLog.md)<br >
-* [![RSS](rss_23x23.jpeg)](https://zetaglest.github.io/blog/)
+* [![RSS](rss_23x23.jpeg)](https://zetaglest.github.io/feed.xml)
 [The ZetaGlest Blog](https://zetaglest.github.io/blog/)<br >
 * [![RSS](rss_23x23.jpeg)](https://github.com/ZetaGlest/zetaglest-source/commits/develop.atom)
 [Recent Commits to zetaglest-source:develop](https://github.com/ZetaGlest/zetaglest-source/commits/develop.atom)<br >
