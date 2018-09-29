@@ -5547,28 +5547,20 @@ namespace Glest {
 					lastFile = file;
 					lastSource = source;
 
-					char szBufDataText[8096] = "";
-					snprintf(szBufDataText, 8096,
-						"----------------------------------- START [FRAME %d UNIT: %d - %s] ------------------------------------------------\n",
-						getFrameCount(), this->id,
-						this->getType()->getName(false).c_str());
-					string logDataText = szBufDataText;
+					string logDataText = "----------------------------------- START [FRAME " + to_string(getFrameCount()) +
+						" UNIT: " + to_string(this->id) + " - " + this->getType()->getName(false) +
+						"] ------------------------------------------------\n";
 
-					snprintf(szBufDataText, 8096, "[%s::%d]\n",
-						extractFileFromDirectoryPath(file).c_str(), line);
-					logDataText += szBufDataText;
+					logDataText += "[" + extractFileFromDirectoryPath(file) + "::" + to_string(line) + "]\n";
+					if (source != "")
+						logDataText += source + " ";
+					logDataText += szBuf;
+					logDataText += "\n";
+					
+					logDataText = string("----------------------------------- END [FRAME ") + to_string(getFrameCount()) +
+						" UNIT: " + to_string(this->id) + " - " + this->getType()->getName(false) +
+						"] ------------------------------------------------\n";
 
-					if (source != "") {
-						snprintf(szBufDataText, 8096, "%s ", source.c_str());
-						logDataText += szBufDataText;
-					}
-					snprintf(szBufDataText, 8096, "%s\n", szBuf);
-					logDataText += szBufDataText;
-					snprintf(szBufDataText, 8096,
-						"------------------------------------ END [FRAME %d UNIT: %d - %s] ------------------------------------------------\n",
-						getFrameCount(), this->id,
-						this->getType()->getName(false).c_str());
-					logDataText += szBufDataText;
 					/*
 								SystemFlags::OutputDebug(SystemFlags::debugWorldSynch,"----------------------------------- START [FRAME %d UNIT: %d - %s] ------------------------------------------------\n",getFrameCount(),this->id,this->getType()->getName().c_str());
 								SystemFlags::OutputDebug(SystemFlags::debugWorldSynch,"[%s::%d]\n",extractFileFromDirectoryPath(file).c_str(),line);

@@ -2170,24 +2170,14 @@ namespace Glest {
 									needToCleanup);
 								//unit->logSynchData(szBuf);
 
-								char szBuf1[8096] = "";
-								snprintf(szBuf1, 8096,
-									"----------------------------------- START [%d] ------------------------------------------------\n",
-									getFrameCount());
-								string logDataText = szBuf1;
+								string logDataText = "----------------------------------- START [" + to_string(getFrameCount()) +
+									"] ------------------------------------------------\n";
 
-								snprintf(szBuf1, 8096, "[%s::%d]\n",
-									extractFileFromDirectoryPath(__FILE__).c_str(),
-									__LINE__);
-								logDataText += szBuf1;
+								logDataText += "[" + extractFileFromDirectoryPath(__FILE__) + "::" + to_string(__LINE__) + "]\n";
+								logDataText += szBuf;
+								logDataText += "\n";
 
-								snprintf(szBuf1, 8096, "%s\n", szBuf);
-								logDataText += szBuf1;
-
-								snprintf(szBuf1, 8096,
-									"------------------------------------ END [%d] -------------------------------------------------\n",
-									getFrameCount());
-								logDataText += szBuf1;
+								logDataText += "------------------------------------ END [" + to_string(getFrameCount()) + "] -------------------------------------------------\n";
 
 								if (frameIndex < 0) {
 									SystemFlags::OutputDebug(SystemFlags::debugWorldSynch,
