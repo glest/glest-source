@@ -31,6 +31,10 @@ which includes the _MegaGlest_ commit log.
 
 ## Music
 
+## Web Site Design
+
+* [Elliott Alexander](https://github.com/escottalexander)
+
 ## Documentation
 
 * [Shourya Jaiswal](https://github.com/shouryaj98)
