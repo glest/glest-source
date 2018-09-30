@@ -22,7 +22,6 @@ using Shared::Platform::float32;
 
 namespace Shared {
 	namespace Graphics {
-
 #pragma pack(push, 1) 
 
 		struct FileHeader {
@@ -48,17 +47,15 @@ namespace Shared {
 			mpfGlow = 8
 		};
 
-		enum MeshTexture {
-			mtDiffuse,
-			mtSpecular,
-			mtNormal,
-			mtReflection,
-			mtColorMask,
+		static const int MESH_TEXTURE_COUNT = 3;
 
-			meshTextureCount
+		enum MeshTexture {
+			mtDiffuse = 1,
+			mtSpecular = 2,
+			mtNormal = 4
 		};
 
-		const int meshTextureChannelCount[] = { -1, 1, 3, 1, 1 };
+		const int meshTextureChannelCount[] = { 4, 1, 3 };
 
 		const uint32 meshNameSize = 64;
 		const uint32 mapPathSize = 64;

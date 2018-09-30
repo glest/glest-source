@@ -46,9 +46,9 @@ namespace Shared {
 		class Mesh {
 		private:
 			//mesh data
-			Texture2D * textures[meshTextureCount];
-			bool texturesOwned[meshTextureCount];
-			string texturePaths[meshTextureCount];
+			Texture2D * textures[MESH_TEXTURE_COUNT];
+			bool texturesOwned[MESH_TEXTURE_COUNT];
+			string texturePaths[MESH_TEXTURE_COUNT];
 
 			string name;
 			//vertex data counts
@@ -61,7 +61,6 @@ namespace Shared {
 			Vec3f *vertices;
 			Vec3f *normals;
 			Vec2f *texCoords;
-			Vec3f *tangents;
 			uint32 *indices;
 
 			//material data
@@ -142,9 +141,6 @@ namespace Shared {
 			}
 			const Vec2f *getTexCoords() const {
 				return texCoords;
-			}
-			const Vec3f *getTangents() const {
-				return tangents;
 			}
 			const uint32 *getIndices() const {
 				return indices;
@@ -227,7 +223,7 @@ namespace Shared {
 
 		private:
 			string findAlternateTexture(vector<string> conversionList, string textureFile);
-			void computeTangents();
+			//void computeTangents();
 
 		};
 

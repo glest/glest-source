@@ -297,7 +297,7 @@ namespace Shared {
 					}
 					
 					//texture state
-					const Texture2DGl *texture = static_cast<const Texture2DGl*>(mesh->getTexture(mtDiffuse));
+					const Texture2DGl *texture = static_cast<const Texture2DGl*>(mesh->getTexture(0));
 					if (texture != NULL && renderTextures) {
 						if (lastTexture != texture->getHandle()) {
 							//assert(glIsTexture(texture->getHandle()));
@@ -351,7 +351,7 @@ namespace Shared {
 					assertGl();
 
 					//tex coords
-					if (renderTextures && mesh->getTexture(mtDiffuse) != NULL) {
+					if (renderTextures && mesh->getTexture(0) != NULL) {
 						if (duplicateTexCoords) {
 							glActiveTexture(GL_TEXTURE0 + secondaryTexCoordUnit);
 
@@ -392,7 +392,7 @@ namespace Shared {
 					assertGl();
 
 					//tex coords
-					if (renderTextures && mesh->getTexture(mtDiffuse) != NULL) {
+					if (renderTextures && mesh->getTexture(0) != NULL) {
 						if (duplicateTexCoords) {
 							glActiveTexture(GL_TEXTURE0 + secondaryTexCoordUnit);
 							glEnableClientState(GL_TEXTURE_COORD_ARRAY);

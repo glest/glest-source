@@ -214,11 +214,10 @@ namespace Shared {
 			vertices = NULL;
 			normals = NULL;
 			texCoords = NULL;
-			tangents = NULL;
 			indices = NULL;
 			interpolationData = NULL;
 
-			for (int i = 0; i < meshTextureCount; ++i) {
+			for (int i = 0; i < MESH_TEXTURE_COUNT; ++i) {
 				textures[i] = NULL;
 				texturesOwned[i] = false;
 			}
@@ -283,15 +282,13 @@ namespace Shared {
 			normals = NULL;
 			delete[] texCoords;
 			texCoords = NULL;
-			delete[] tangents;
-			tangents = NULL;
 			delete[] indices;
 			indices = NULL;
 
 			cleanupInterpolationData();
 
 			if (textureManager != NULL) {
-				for (int i = 0; i < meshTextureCount; ++i) {
+				for (int i = 0; i < MESH_TEXTURE_COUNT; ++i) {
 					if (texturesOwned[i] == true && textures[i] != NULL) {
 						//printf("Deleting Texture [%s] i = %d\n",textures[i]->getPath().c_str(),i);
 						textureManager->endTexture(textures[i]);
@@ -457,17 +454,17 @@ namespace Shared {
 
 			//texture
 			if (meshHeader.hasTexture && textureManager != NULL) {
-				texturePaths[mtDiffuse] = toLower(reinterpret_cast<char*>(meshHeader.texName));
+				texturePaths[0] = toLower(reinterpret_cast<char*>(meshHeader.texName));
 				string texPath = dir;
 				if (texPath != "") {
 					endPathWithSlash(texPath);
 				}
-				texPath += texturePaths[mtDiffuse];
+				texPath += texturePaths[0];
 
 				if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] v2 model texture [%s] meshIndex = %d modelFile [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, texPath.c_str(), meshIndex, modelFile.c_str());
 
-				textures[mtDiffuse] = dynamic_cast<Texture2D*>(textureManager->getTexture(texPath));
-				if (textures[mtDiffuse] == NULL) {
+				textures[0] = dynamic_cast<Texture2D*>(textureManager->getTexture(texPath));
+				if (textures[0] == NULL) {
 					if (fileExists(texPath) == false) {
 						vector<string> conversionList;
 						conversionList.push_back("png");
@@ -479,15 +476,15 @@ namespace Shared {
 					if (fileExists(texPath) == true) {
 						if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] v2 model texture [%s] meshIndex = %d modelFile [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, texPath.c_str(), meshIndex, modelFile.c_str());
 
-						textures[mtDiffuse] = textureManager->newTexture2D();
-						textures[mtDiffuse]->load(texPath);
+						textures[0] = textureManager->newTexture2D();
+						textures[0]->load(texPath);
 						if (loadedFileList) {
 							(*loadedFileList)[texPath].push_back(make_pair(sourceLoader, sourceLoader));
 						}
-						texturesOwned[mtDiffuse] = true;
-						textures[mtDiffuse]->init(textureManager->getTextureFilter(), textureManager->getMaxAnisotropy());
+						texturesOwned[0] = true;
+						textures[0]->init(textureManager->getTextureFilter(), textureManager->getMaxAnisotropy());
 						if (deletePixMapAfterLoad == true) {
-							textures[mtDiffuse]->deletePixels();
+							textures[0]->deletePixels();
 						}
 					} else {
 						SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error v2 model is missing texture [%s] meshIndex = %d modelFile [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, texPath.c_str(), meshIndex, modelFile.c_str());
@@ -512,7 +509,7 @@ namespace Shared {
 			}
 			fromEndianVecArray<Vec3f>(normals, frameCount*vertexCount);
 
-			if (textureFlags & (1 << mtDiffuse)) {
+			if ((textureFlags & mtDiffuse) == mtDiffuse) {
 				readBytes = fread(texCoords, sizeof(Vec2f)*vertexCount, 1, f);
 				if (readBytes != 1 && vertexCount != 0) {
 					char szBuf[8096] = "";
@@ -598,18 +595,18 @@ namespace Shared {
 
 			//texture
 			if ((meshHeader.properties & mp3NoTexture) != mp3NoTexture && textureManager != NULL) {
-				texturePaths[mtDiffuse] = toLower(reinterpret_cast<char*>(meshHeader.texName));
+				texturePaths[0] = toLower(reinterpret_cast<char*>(meshHeader.texName));
 
 				string texPath = dir;
 				if (texPath != "") {
 					endPathWithSlash(texPath);
 				}
-				texPath += texturePaths[mtDiffuse];
+				texPath += texturePaths[0];
 
 				if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] v3 model texture [%s] meshIndex = %d modelFile [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, texPath.c_str(), meshIndex, modelFile.c_str());
 
-				textures[mtDiffuse] = dynamic_cast<Texture2D*>(textureManager->getTexture(texPath));
-				if (textures[mtDiffuse] == NULL) {
+				textures[0] = dynamic_cast<Texture2D*>(textureManager->getTexture(texPath));
+				if (textures[0] == NULL) {
 					if (fileExists(texPath) == false) {
 						vector<string> conversionList;
 						conversionList.push_back("png");
@@ -622,16 +619,16 @@ namespace Shared {
 					if (fileExists(texPath) == true) {
 						if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] v3 model texture [%s] meshIndex = %d modelFile [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, texPath.c_str(), meshIndex, modelFile.c_str());
 
-						textures[mtDiffuse] = textureManager->newTexture2D();
-						textures[mtDiffuse]->load(texPath);
+						textures[0] = textureManager->newTexture2D();
+						textures[0]->load(texPath);
 						if (loadedFileList) {
 							(*loadedFileList)[texPath].push_back(make_pair(sourceLoader, sourceLoader));
 						}
 
-						texturesOwned[mtDiffuse] = true;
-						textures[mtDiffuse]->init(textureManager->getTextureFilter(), textureManager->getMaxAnisotropy());
+						texturesOwned[0] = true;
+						textures[0]->init(textureManager->getTextureFilter(), textureManager->getMaxAnisotropy());
 						if (deletePixMapAfterLoad == true) {
-							textures[mtDiffuse]->deletePixels();
+							textures[0]->deletePixels();
 						}
 					} else {
 						SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error v3 model is missing texture [%s] meshHeader.properties = %d meshIndex = %d modelFile [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, texPath.c_str(), meshHeader.properties, meshIndex, modelFile.c_str());
@@ -656,7 +653,7 @@ namespace Shared {
 			}
 			fromEndianVecArray<Vec3f>(normals, frameCount*vertexCount);
 
-			if (textureFlags & (1 << mtDiffuse)) {
+			if ((textureFlags & mtDiffuse) == mtDiffuse) {
 				for (unsigned int i = 0; i < meshHeader.texCoordFrameCount; ++i) {
 					readBytes = fread(texCoords, sizeof(Vec2f)*vertexCount, 1, f);
 					if (readBytes != 1 && vertexCount != 0) {
@@ -800,7 +797,7 @@ namespace Shared {
 
 			//maps
 			uint32 flag = 1;
-			for (int i = 0; i < meshTextureCount; ++i) {
+			for (int i = 0; i < MESH_TEXTURE_COUNT; ++i) {
 				if (meshHeader.textures & flag) {
 					uint8 cMapPath[mapPathSize + 1];
 					memset(&cMapPath[0], 0, mapPathSize + 1);
@@ -826,8 +823,7 @@ namespace Shared {
 					}
 					mapFullPath += mapPath;
 					if (textureManager) {
-						textures[i] = loadMeshTexture(meshIndex, i, textureManager, mapFullPath,
-							meshTextureChannelCount[i], texturesOwned[i],
+						textures[i] = loadMeshTexture(meshIndex, i, textureManager, mapFullPath, meshTextureChannelCount[i], texturesOwned[i],
 							deletePixMapAfterLoad, loadedFileList, sourceLoader, modelFile);
 					}
 				}
@@ -869,9 +865,9 @@ namespace Shared {
 			Shared::PlatformByteOrder::fromEndianTypeArray<uint32>(indices, indexCount);
 
 			//tangents
-			if (textures[mtNormal] != NULL) {
+			/*if (textures[mtNormal] != NULL) {
 				computeTangents();
-			}
+			}*/
 		}
 
 		void Mesh::save(int meshIndex, const string &dir, FILE *f, TextureManager *textureManager,
@@ -909,11 +905,11 @@ namespace Shared {
 			meshHeader.textures = textureFlags;
 			fwrite(&meshHeader, sizeof(MeshHeader), 1, f);
 
-			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("Save, this = %p, Found meshTextureCount = %d, meshHeader.textures = %d meshIndex = %d\n", this, meshTextureCount, meshHeader.textures, meshIndex);
+			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("Save, this = %p, Found meshTextureCount = %d, meshHeader.textures = %d meshIndex = %d\n", this, MESH_TEXTURE_COUNT, meshHeader.textures, meshIndex);
 
 			//maps
 			uint32 flag = 1;
-			for (int i = 0; i < meshTextureCount; ++i) {
+			for (int i = 0; i < MESH_TEXTURE_COUNT; ++i) {
 				if ((meshHeader.textures & flag)) {
 					uint8 cMapPath[mapPathSize];
 					memset(&cMapPath[0], 0, mapPathSize);
@@ -1019,7 +1015,7 @@ namespace Shared {
 			fwrite(indices, sizeof(uint32)*indexCount, 1, f);
 		}
 
-		void Mesh::computeTangents() {
+		/*void Mesh::computeTangents() {
 			delete[] tangents;
 			try {
 				tangents = new Vec3f[vertexCount];
@@ -1058,14 +1054,12 @@ namespace Shared {
 			}
 
 			for (unsigned int i = 0; i < vertexCount; ++i) {
-				/*Vec3f binormal= normals[i].cross(tangents[i]);
-				tangents[i]+= binormal.cross(normals[i]);*/
 				tangents[i].normalize();
 			}
-		}
+		}*/
 
 		void Mesh::deletePixels() {
-			for (int i = 0; i < meshTextureCount; ++i) {
+			for (int i = 0; i < MESH_TEXTURE_COUNT; ++i) {
 				if (textures[i] != NULL) {
 					textures[i]->deletePixels();
 				}
@@ -1446,7 +1440,7 @@ namespace Shared {
 		void Mesh::copyInto(Mesh *dest, bool ignoreInterpolationData,
 			bool destinationOwnsTextures) {
 
-			for (int index = 0; index < meshTextureCount; ++index) {
+			for (int index = 0; index < MESH_TEXTURE_COUNT; ++index) {
 				dest->textures[index] = this->textures[index];
 				dest->texturesOwned[index] = this->texturesOwned[index];
 				dest->texturePaths[index] = this->texturePaths[index];
@@ -1489,15 +1483,6 @@ namespace Shared {
 			if (this->texCoords != NULL) {
 				dest->texCoords = new Vec2f[this->vertexCount];
 				memcpy(&dest->texCoords[0], &this->texCoords[0], this->vertexCount * sizeof(Vec2f));
-			}
-
-			if (dest->tangents != NULL) {
-				delete[] dest->tangents;
-				dest->tangents = NULL;
-			}
-			if (this->tangents != NULL) {
-				dest->tangents = new Vec3f[this->vertexCount];
-				memcpy(&dest->tangents[0], &this->tangents[0], this->vertexCount * sizeof(Vec3f));
 			}
 
 			if (dest->indices != NULL) {

@@ -101,7 +101,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IntDir>$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)\$(TargetName)$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)\$(TargetName)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|x64'">
     <IntDir>$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>

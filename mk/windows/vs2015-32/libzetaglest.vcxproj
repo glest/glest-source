@@ -140,7 +140,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <TargetName>libzetaglest</TargetName>
-    <OutDir>$(SolutionDir)\$(TargetName)$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)\$(TargetName)\</OutDir>
     <IntDir>$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
     <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
   </PropertyGroup>

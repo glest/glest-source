@@ -75,28 +75,32 @@
 #vertexCount: number of vertices in each frame
 #indexCount: number of indices in this mesh (the number of triangles is indexCount/3)
 #diffuseColor: RGB diffuse color
-#specularColor: RGB specular color (currently unused)
-#specularPower: specular power (currently unused)
+#specularColor: RGB specular color
+#specularPower: specular power
 ##properties: property flags
 #Code:
 #enum MeshPropertyFlag{
 #		mpfCustomColor= 1,
 #		mpfTwoSided= 2,
-#		mpfNoSelect= 4
+#		mpfNoSelect= 4,
+#		mpfGlow= 8
 #};
-#mpfTwoSided: meshes in this mesh are rendered by both sides, if this flag is not present only "counter clockwise" faces are rendered
+#The last 8 bits of properties are used for teamcolor transparency, where 0 is opaque, and 255 is fully transparent team color. The value is inverted for compatibility with megaglest
+#mpfTwoSided: meshes in this mesh are rendered by both sides, if this flag is not present only "counter clockwise" faces are rendered (culling)
 #mpfCustomColor: alpha in this model is replaced by a custom color, usually the player color
+#mpfNoSelect: whether the model is selectable
+#mpfGlow: whether the model has a glow effect
 #textures: texture flags
 #Code:
 #enum MeshTexture{
-#		diffuse = 1,
-#		specular = 2,
-#		normal = 4
+#		mtDiffuse = 1,
+#		mtSpecular = 2,
+#		mtNormal = 4
 #};
 #================================
 #4. TEXTURE NAMES
 #================================
-#A list of uint8[64] texture name values. One for each texture in the mesh. If there are no textures in the mesh no texture names are present.
+#A list of (max 3) uint8[64] texture name values. One for each corresponding texture flag in the mesh. If there are no textures in the mesh, no texture names are present.
 #================================
 #5. MESH DATA
 #================================
@@ -179,7 +183,7 @@ class G3DMeshHeaderv3:										 #Read Meshheader
 		temp = fileID.read(struct.calcsize(self.binary_format))
 		data = struct.unpack(self.binary_format,temp)
 		self.framecount = data[0]				 #Framecount = Number of Animationsteps
-		self.normalframecount= data[1]		 #Number of Normal Frames actualli equal to Framecount
+		self.normalframecount= data[1]		 #Number of Normal Frames actually equal to Framecount
 		self.texturecoordframecount= data[2]#Number of Frames of Texturecoordinates seems everytime to be 1
 		self.colorframecount= data[3]		  #Number of Frames of Colors seems everytime to be 1
 		self.vertexcount= data[4]				  #Number of Vertices in each Frame
@@ -227,8 +231,8 @@ class G3DMeshHeaderv4:										 #Read Meshheader
 		self.istwosided  = bool(self.properties & 2)
 		self.noselect    = bool(self.properties & 4)
 		self.glow    = bool(self.properties & 8)
-		# Get last 8 bits for teamcolor transparency.
-		# The value is inverted for compatibility with megaglest.
+		# Get last 8 bits for teamcolor transparency
+		# The value is inverted for compatibility with megaglest
 		self.teamcoloralpha = 255 - (self.properties >> 24)
 
 
