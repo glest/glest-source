@@ -80,12 +80,12 @@
 ##properties: property flags
 #Code:
 #enum MeshPropertyFlag{
-#		mpfCustomColor= 1,
-#		mpfTwoSided= 2,
-#		mpfNoSelect= 4,
-#		mpfGlow= 8
+#		mpfCustomColor = 1,
+#		mpfTwoSided = 2,
+#		mpfNoSelect = 4,
+#		mpfGlow = 8
 #};
-#The last 8 bits of properties are used for teamcolor transparency, where 0 is opaque, and 255 is fully transparent team color. The value is inverted for compatibility with megaglest
+#The last 8 bits (little endian) of properties are used for teamcolor transparency, where 0 is opaque, and 255 is fully transparent team color. The value is inverted for compatibility with megaglest
 #mpfTwoSided: meshes in this mesh are rendered by both sides, if this flag is not present only "counter clockwise" faces are rendered (culling)
 #mpfCustomColor: alpha in this model is replaced by a custom color, usually the player color
 #mpfNoSelect: whether the model is selectable
