@@ -78,7 +78,7 @@ find -L . \
 mkdir build
 cd build
   cmake -G "Unix Makefiles" \
-    -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+    -DCMAKE_INSTALL_PREFIX=/usr \
     -DWANT_USE_XercesC:BOOL=ON \
     -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
     -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
@@ -90,11 +90,10 @@ cd -
 
 # Now install the game data
 cd $PRGNAM-$VERSION
-  cmake -G "Unix Makefiles" \
+  cmake ..                      \
+    -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_BUILD_TYPE=Release .
     -DBUILD_MODEL_VIEWER=ON \
-    -DBUILD_MODEL_IMPORT_EXPORT_TOOLS=ON \
     -DBUILD_MAP_EDITOR=ON
 
   make install DESTDIR=$PKG

@@ -98,12 +98,9 @@ unsuccessfulbuild
 /mk/windows/dependencies/src
 /mk/windows/bin
 /data
-#
-source/masterserver
-mk/linux/tools-for-standalone-client/installer/mojosetup
 
 # add build directories
-# Makefile and cmake file are generated when the project is built and
+# Makefile and cmake files are generated when the project is built and
 # should be ignored by git.
 #
 # The ZetaGlest project recommends using a separate build directory.

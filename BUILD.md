@@ -70,10 +70,6 @@ To edit maps:
 
     BUILD_MAP_EDITOR=ON (off by default)
 
-Use model import export tools:
-
-    BUILD_MODEL_IMPORT_EXPORT_TOOLS=ON (off by default)
-
 The **wxWidgets (libwxgtk3.0-dev on some systems)** and **libxml2-dev*
 dependencies (mentioned below) is only required if you enable those
 options.
