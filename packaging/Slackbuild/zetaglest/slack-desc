@@ -6,14 +6,16 @@
 # customary to leave one space after the ':' except on otherwise blank lines.
 
          |-----handy-ruler------------------------------------------------------|
-megaglest: zetaglest (3D RTS Game)
-megaglest:
-megaglest: ZetaGlest is a free and open source 3D real-time strategy (RTS) game,
-megaglest: where you control the armies of one of seven different factions: Tech,
-megaglest: Magic, Egyptians, Indians, Norsemen, Persian or Romans.  The game is
-megaglest: setup in one of 16 naturally looking settings, which (like the unit
-megaglest: models) are crafted with great appreciation for detail.
-megaglest:
-megaglest: Homepage: https://zetaglest.github.io/
-megaglest:
-megaglest:
+zetaglest: zetaglest (network multi-player real-time strategy game engine)
+zetaglest:
+zetaglest: ZetaGlest is a network multi-player real-time strategy game engine.
+zetaglest: It's shipped with the ZetaPack mod, which includes several factions,
+zetaglest: each one consisting of many 3d characters. The factions are loosely
+zetaglest: based on historical empires with added elements of fantasy, such as
+zetaglest: mummies produced by Egyptian priests, Indian shamans who summon
+zetaglest: thunderbirds for air assaults, and Norsemen who can build flying
+zetaglest: valkries and "Thors". Start the game by harvesting natural resources,
+zetaglest: then use the cash to produce an army.
+zetaglest: Homepage: https://zetaglest.github.io/
+
+

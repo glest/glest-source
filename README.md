@@ -6,13 +6,15 @@
 [ZetaGlest](https://zetaglest.github.io/docs/) is a fork of [MegaGlest](http://megaglest.org/),
 a libre software cross platform real-time strategy game.
 
-ZetaGlest is an entertaining free (freeware and free software) and open
-source cross-platform 3D real-time strategy (RTS) game, where you
-control the armies of one of eight different factions: Tech, Magic,
-Egypt, Indians, Norsemen, Persian, Elves or Romans. The game is played
-in one of 17 naturally looking settings, which, like the unit models,
-are crafted with great attention to detail. A lot of additional game
-data can be downloaded from within the game at no cost.
+ZetaGlest is a network multi-player real-time strategy game engine.
+It's shipped with the ZetaPack mod, which includes several factions,
+each one consisting of many 3d characters. The factions are loosely
+based on historical empires with added elements of fantasy, such as
+mummies produced by Egyptian priests, Indian shamans who summon
+thunderbirds for air assaults, and Norsemen who can build flying
+valkries and "Thors". Start the game by harvesting natural resources,
+then use the cash to produce an army. Single-player mode against the
+CPU is also available.
 
 **README Contents**
 
