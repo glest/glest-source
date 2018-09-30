@@ -75,8 +75,8 @@
 #vertexCount: number of vertices in each frame
 #indexCount: number of indices in this mesh (the number of triangles is indexCount/3)
 #diffuseColor: RGB diffuse color
-#specularColor: RGB specular color
-#specularPower: specular power
+#specularColor: RGB specular color (not used in ZetaGlest)
+#specularPower: specular power (not used in ZetaGlest)
 ##properties: property flags
 #Code:
 #enum MeshPropertyFlag{
@@ -94,8 +94,8 @@
 #Code:
 #enum MeshTexture{
 #		mtDiffuse = 1,
-#		mtSpecular = 2,
-#		mtNormal = 4
+#		mtSpecular = 2, (not used in ZetaGlest)
+#		mtNormal = 4 (not used in ZetaGlest)
 #};
 #================================
 #4. TEXTURE NAMES
