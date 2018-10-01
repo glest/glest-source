@@ -50,6 +50,7 @@ namespace Shared {
 		static const int MESH_TEXTURE_COUNT = 3;
 
 		enum MeshTexture {
+			mtNone = 0,
 			mtDiffuse = 1,
 			mtSpecular = 2,
 			mtNormal = 4
