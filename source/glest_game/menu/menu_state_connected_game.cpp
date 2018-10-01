@@ -2771,6 +2771,7 @@ namespace Glest {
 						languageList =
 						clientInterface->
 						getGameSettings()->getUniqueNetworkPlayerLanguages();
+					
 					for (unsigned int i = 0; i < languageList.size(); ++i) {
 						char
 							szMsg[8096] = "";

@@ -1361,7 +1361,7 @@ namespace Glest {
 											waitForLaggingClient = true;
 											if (waitedForLaggingClient == false) {
 												waitedForLaggingClient = true;
-												printf("*TESTING*: START Waiting for lagging client playerIndex = %d [%s] clientLagCount = %f [%f]\n", playerIndex, name.c_str(), clientLagCount, clientLagTime);
+												printf("START Waiting for lagging client playerIndex = %d [%s] clientLagCount = %f [%f]\n", playerIndex, name.c_str(), clientLagCount, clientLagTime);
 											}
 										}
 									}
