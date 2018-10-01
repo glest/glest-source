@@ -41,6 +41,7 @@ namespace Shared {
 		};
 
 		enum MeshPropertyFlag {
+			mpfNone = 0,
 			mpfCustomColor = 1,
 			mpfTwoSided = 2,
 			mpfNoSelect = 4,
@@ -84,6 +85,7 @@ namespace Shared {
 		};
 
 		enum MeshPropertyV3 {
+			mp3None = 0,
 			mp3NoTexture = 1,
 			mp3TwoSided = 2,
 			mp3CustomColor = 4
