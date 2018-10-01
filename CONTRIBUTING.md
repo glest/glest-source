@@ -7,6 +7,8 @@ Anyone is welcome to join our [Discord server](https://discord.gg/WaAaXS7).
 
 The Discord rooms are for players, developers, and curiosity/adventure-seekers.
 
+Please remember to "star" this project.
+
 ## Website Design
 
 Documentation for designing the websites is in [WEBSITE_DESIGN.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/WEBSITE_DESIGN.md).
