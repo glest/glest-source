@@ -1,3 +1,4 @@
+//
 //      menu_state_connected_game.cpp: game setup menu as it appears to
 //      connected clients (not the host or user setting up the game)
 //
