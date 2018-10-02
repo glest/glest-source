@@ -85,7 +85,7 @@ OR
 
 To run your own headless (dedicated) server, see [the FAQ](https://zetaglest.github.io/docs/faq.html#headlessserver).
 
-### Extra Tech trees, mods, tilesets, scenarious (not yet available on the ZetaGlest server)
+### Extra Tech trees, mods, tilesets, scenarios (not yet available on the ZetaGlest server)
 
 * [MODS.md](https://github.com/ZetaGlest/zetaglest-data/blob/develop/MODS.md)
 * [TILESETS.md](https://github.com/ZetaGlest/zetaglest-data/blob/develop/TILESETS.md)
