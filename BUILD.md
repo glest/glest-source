@@ -170,9 +170,9 @@ cmake to use the correct compiler)
 
     CC=`which egcc` CXX=`which eg++` cmake .. -DINSTALL_DIR_DATA=<absolute-path-to-data>
 
-Now that the build configuration has been set, run make:
+Now that the build configuration has been set, run make, replacing `X` with the number of CPU cores in your computer:
 
-    make
+    make -jX
 
 The zetaglest binaries will be in the `build/` directory. Run
 './zetaglest' to start the game.
