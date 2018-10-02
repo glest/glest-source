@@ -16,6 +16,7 @@ which includes the _MegaGlest_ commit log.
 ### php || mysql
 
 * [Martijn De Boer](https://github.com/sexybiggetje) | [Master Server](https://github.com/ZetaGlest/zetaglest-masterserver/graphs/contributors)
+* [Craig Potter](https://github.com/craigpotter) | [Master Server](https://github.com/ZetaGlest/zetaglest-masterserver/graphs/contributors)
 
 ## Graphics, Animation, and Artwork
 
