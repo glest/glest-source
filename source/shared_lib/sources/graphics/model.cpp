@@ -228,7 +228,7 @@ namespace Shared {
 			glow = false;
 			factionColorOpacity = 255;
 
-			textureFlags = 0;
+			textureFlags = mtNone;
 
 			hasBuiltVBOs = false;
 			// Vertex Buffer Object Names
@@ -447,10 +447,7 @@ namespace Shared {
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("Load v2, this = %p Found meshHeader.hasTexture = %d, texName [%s] mtDiffuse = %d meshIndex = %d modelFile [%s]\n", this, meshHeader.hasTexture, toLower(reinterpret_cast<char*>(meshHeader.texName)).c_str(), mtDiffuse, meshIndex, modelFile.c_str());
 
-			textureFlags = 0;
-			if (meshHeader.hasTexture) {
-				textureFlags = 1;
-			}
+			textureFlags = meshHeader.hasTexture ? mtDiffuse : mtNone;
 
 			//texture
 			if (meshHeader.hasTexture && textureManager != NULL) {
@@ -586,10 +583,7 @@ namespace Shared {
 			noSelect = false;
 			glow = false;
 
-			textureFlags = 0;
-			if ((meshHeader.properties & mp3NoTexture) != mp3NoTexture) {
-				textureFlags = 1;
-			}
+			textureFlags = ((meshHeader.properties & mp3NoTexture) == mp3NoTexture) ? mtNone : mtDiffuse;
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("Load v3, this = %p Found meshHeader.properties = %d, textureFlags = %d, texName [%s] mtDiffuse = %d meshIndex = %d modelFile [%s]\n", this, meshHeader.properties, textureFlags, toLower(reinterpret_cast<char*>(meshHeader.texName)).c_str(), mtDiffuse, meshIndex, modelFile.c_str());
 
@@ -888,9 +882,9 @@ namespace Shared {
 			meshHeader.opacity = opacity;
 
 			//properties
-			meshHeader.properties = 0;
+			meshHeader.properties = mpfNone;
 			if (customColor) {
-				meshHeader.properties |= (255 - (factionColorOpacity << 24)) | mpfCustomColor;
+				meshHeader.properties |= static_cast<MeshPropertyFlag>(255 - (factionColorOpacity << 24)) | mpfCustomColor;
 			}
 			if (twoSided) {
 				meshHeader.properties |= mpfTwoSided;

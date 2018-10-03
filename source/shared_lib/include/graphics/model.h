@@ -76,7 +76,7 @@ namespace Shared {
 			bool glow;
 			uint8 factionColorOpacity;
 
-			uint32 textureFlags;
+			MeshTexture textureFlags;
 
 			InterpolationData *interpolationData;
 			TextureManager *textureManager;

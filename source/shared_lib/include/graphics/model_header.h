@@ -40,22 +40,64 @@ namespace Shared {
 			mtMorphMesh
 		};
 
-		enum MeshPropertyFlag {
+		enum MeshPropertyFlag : uint32 {
 			mpfNone = 0,
 			mpfCustomColor = 1,
 			mpfTwoSided = 2,
 			mpfNoSelect = 4,
 			mpfGlow = 8
 		};
+		inline MeshPropertyFlag operator~ (MeshPropertyFlag a) {
+			return (MeshPropertyFlag) ~(uint32) a;
+		}
+		inline MeshPropertyFlag operator| (MeshPropertyFlag a, MeshPropertyFlag b) {
+			return (MeshPropertyFlag) ((uint32) a | (uint32) b);
+		}
+		inline MeshPropertyFlag operator& (MeshPropertyFlag a, MeshPropertyFlag b) {
+			return (MeshPropertyFlag) ((uint32) a & (uint32) b);
+		}
+		inline MeshPropertyFlag operator^ (MeshPropertyFlag a, MeshPropertyFlag b) {
+			return (MeshPropertyFlag) ((uint32) a ^ (uint32) b);
+		}
+		inline MeshPropertyFlag& operator|= (MeshPropertyFlag& a, MeshPropertyFlag b) {
+			return (MeshPropertyFlag&) ((uint32&) a |= (uint32) b);
+		}
+		inline MeshPropertyFlag& operator&= (MeshPropertyFlag& a, MeshPropertyFlag b) {
+			return (MeshPropertyFlag&) ((uint32&) a &= (uint32) b);
+		}
+		inline MeshPropertyFlag& operator^= (MeshPropertyFlag& a, MeshPropertyFlag b) {
+			return (MeshPropertyFlag&) ((uint32&) a ^= (uint32) b);
+		}
 
 		static const int MESH_TEXTURE_COUNT = 3;
 
-		enum MeshTexture {
+		enum MeshTexture : uint32 {
 			mtNone = 0,
 			mtDiffuse = 1,
 			mtSpecular = 2,
 			mtNormal = 4
 		};
+		inline MeshTexture operator~ (MeshTexture a) {
+			return (MeshTexture) ~(uint32) a;
+		}
+		inline MeshTexture operator| (MeshTexture a, MeshTexture b) {
+			return (MeshTexture) ((uint32) a | (uint32) b);
+		}
+		inline MeshTexture operator& (MeshTexture a, MeshTexture b) {
+			return (MeshTexture) ((uint32) a & (uint32) b);
+		}
+		inline MeshTexture operator^ (MeshTexture a, MeshTexture b) {
+			return (MeshTexture) ((uint32) a ^ (uint32) b);
+		}
+		inline MeshTexture& operator|= (MeshTexture& a, MeshTexture b) {
+			return (MeshTexture&) ((uint32&) a |= (uint32) b);
+		}
+		inline MeshTexture& operator&= (MeshTexture& a, MeshTexture b) {
+			return (MeshTexture&) ((uint32&) a &= (uint32) b);
+		}
+		inline MeshTexture& operator^= (MeshTexture& a, MeshTexture b) {
+			return (MeshTexture&) ((uint32&) a ^= (uint32) b);
+		}
 
 		const int meshTextureChannelCount[] = { 4, 1, 3 };
 
@@ -71,8 +113,8 @@ namespace Shared {
 			float32 specularColor[3];
 			float32 specularPower;
 			float32 opacity;
-			uint32 properties;
-			uint32 textures;
+			MeshPropertyFlag properties;
+			MeshTexture textures;
 		};
 
 #pragma pack(pop) 
@@ -84,12 +126,33 @@ namespace Shared {
 			uint32 meshCount;
 		};
 
-		enum MeshPropertyV3 {
+		enum MeshPropertyV3 : uint32 {
 			mp3None = 0,
 			mp3NoTexture = 1,
 			mp3TwoSided = 2,
 			mp3CustomColor = 4
 		};
+		inline MeshPropertyV3 operator~ (MeshPropertyV3 a) {
+			return (MeshPropertyV3) ~(uint32) a;
+		}
+		inline MeshPropertyV3 operator| (MeshPropertyV3 a, MeshPropertyV3 b) {
+			return (MeshPropertyV3) ((uint32) a | (uint32) b);
+		}
+		inline MeshPropertyV3 operator& (MeshPropertyV3 a, MeshPropertyV3 b) {
+			return (MeshPropertyV3) ((uint32) a & (uint32) b);
+		}
+		inline MeshPropertyV3 operator^ (MeshPropertyV3 a, MeshPropertyV3 b) {
+			return (MeshPropertyV3) ((uint32) a ^ (uint32) b);
+		}
+		inline MeshPropertyV3& operator|= (MeshPropertyV3& a, MeshPropertyV3 b) {
+			return (MeshPropertyV3&) ((uint32&) a |= (uint32) b);
+		}
+		inline MeshPropertyV3& operator&= (MeshPropertyV3& a, MeshPropertyV3 b) {
+			return (MeshPropertyV3&) ((uint32&) a &= (uint32) b);
+		}
+		inline MeshPropertyV3& operator^= (MeshPropertyV3& a, MeshPropertyV3 b) {
+			return (MeshPropertyV3&) ((uint32&) a ^= (uint32) b);
+		}
 
 		struct MeshHeaderV3 {
 			uint32 vertexFrameCount;
@@ -98,7 +161,7 @@ namespace Shared {
 			uint32 colorFrameCount;
 			uint32 pointCount;
 			uint32 indexCount;
-			uint32 properties;
+			MeshPropertyV3 properties;
 			uint8 texName[64];
 		};
 
