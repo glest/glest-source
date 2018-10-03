@@ -4,6 +4,7 @@
 OPTION(FORCE_EMBEDDED_LIBS "Force use of embedded libraries' code." OFF)
 
 add_definitions("-DDATADIR=${INSTALL_DIR_DATA}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 if(WANT_USE_STREFLOP)
 	# IMPORTANT: should come BEFORE finding packages
