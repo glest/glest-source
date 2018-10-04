@@ -7,10 +7,9 @@ SET(TARGET_NAME "zetaglest_tests")
 IF(BUILD_ZETAGLEST_TESTS)
 	MESSAGE(STATUS "Build ${TARGET_NAME} = YES")
 
-# The tests fail on Travis with clang on osx because of the use of "bind"
-	if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
-		SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
-	endif()
+	# On Travis, the build fails on osx and Ubuntu trusty using
+	# clang 5.0 unless the -std=c++11 if used
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 	INCLUDE (CheckIncludeFiles)
 
