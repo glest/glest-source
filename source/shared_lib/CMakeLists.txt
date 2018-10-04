@@ -5,6 +5,10 @@ OPTION(FORCE_EMBEDDED_LIBS "Force use of embedded libraries' code." OFF)
 
 add_definitions("-DDATADIR=${INSTALL_DIR_DATA}")
 
+# On Travis, the build fails on osx and Ubuntu trusty using
+# clang 5.0 unless the -std=c++11 if used
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
 if(WANT_USE_STREFLOP)
 	# IMPORTANT: should come BEFORE finding packages
 	find_package(PkgConfig REQUIRED)
