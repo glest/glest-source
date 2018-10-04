@@ -190,11 +190,11 @@ namespace Shared {
 				return reinterpret_cast<const T*>(this);
 			}
 
-			inline Vec2<T> & operator=(const Vec2<T> &v) {
+			/*inline Vec2<T> & operator=(const Vec2<T> &v) {
 				this->x = v.x;
 				this->y = v.y;
 				return *this;
-			}
+			}*/
 
 			inline bool operator ==(const Vec2<T> &v) const {
 				return x == v.x && y == v.y;
@@ -420,12 +420,12 @@ namespace Shared {
 				return reinterpret_cast<const T*>(this);
 			}
 
-			inline Vec3<T> & operator=(const Vec3<T> &v) {
+			/*inline Vec3<T> & operator=(const Vec3<T> &v) {
 				this->x = v.x;
 				this->y = v.y;
 				this->z = v.z;
 				return *this;
-			}
+			}*/
 
 			inline bool operator ==(const Vec3<T> &v) const {
 				return x == v.x && y == v.y && z == v.z;
@@ -697,13 +697,13 @@ namespace Shared {
 				return reinterpret_cast<const T*>(this);
 			}
 
-			inline Vec4<T> & operator=(const Vec4<T> &v) {
+			/*inline Vec4<T> & operator=(const Vec4<T> &v) {
 				this->x = v.x;
 				this->y = v.y;
 				this->z = v.z;
 				this->w = v.w;
 				return *this;
-			}
+			}*/
 
 			inline bool operator ==(const Vec4<T> &v) const {
 				return x == v.x && y == v.y && z == v.z && w == v.w;
