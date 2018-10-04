@@ -44,7 +44,7 @@ namespace Glest {
 		// !! Use minor versions !!  Only major and minor version control compatibility!
 		// typical version numbers look like this: v0.8.01
 		// don't forget to update file: source/version.txt
-		const string glestVersionString = ZG_VERSION;
+		const string glestVersionString = "v0.8.02";
 		const string lastCompatibleSaveGameVersionString = "v0.8.01";
 
 		string getCrashDumpFileName() {

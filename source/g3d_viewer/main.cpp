@@ -73,7 +73,7 @@ const char *folderDelimiter = "/";
 //int GameConstants::updateFps= 40;
 //int GameConstants::cameraFps= 100;
 
-const string g3dviewerVersionString = ZG_VERSION;
+const string g3dviewerVersionString = "v0.8.01";
 
 // Because g3d should always support alpha transparency
 string fileFormat = "png";

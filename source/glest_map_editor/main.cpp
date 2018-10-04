@@ -60,7 +60,7 @@ namespace Glest {
 
 namespace MapEditor {
 
-	const string mapeditorVersionString = ZG_VERSION;
+	const string mapeditorVersionString = "v0.8.01";
 	const string MainWindow::winHeader = "ZetaGlest Map Editor " + mapeditorVersionString;
 
 	// ===============================================
