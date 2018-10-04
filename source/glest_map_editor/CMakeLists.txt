@@ -1,6 +1,6 @@
 # common libraries
 
-OPTION(BUILD_MAP_EDITOR "Build map editor" OFF)
+OPTION(BUILD_MAP_EDITOR "Build map editor" ON)
 SET(TARGET_NAME "zetaglest_editor")
 MESSAGE(STATUS "Build ${TARGET_NAME} = ${BUILD_MAP_EDITOR}")
 
