@@ -319,7 +319,9 @@ ENDIF()
 #
 IF(EXISTS "${PROJECT_SOURCE_DIR}/../zetaglest-data/CMakeLists.txt")
     MESSAGE(STATUS "**Found game data.")
-	ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/../zetaglest-data $CMAKE_BINARY_DIR/data)
+	# using CMAKE_BINARY_DIR as last parameter will output cmake files into the same
+	# directory as the source build.
+	ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/../zetaglest-data ${CMAKE_BINARY_DIR}/data)
 ENDIF()
 
 IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
