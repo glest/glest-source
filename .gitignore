@@ -107,3 +107,4 @@ unsuccessfulbuild
 #
 build
 local-build
+install-build
