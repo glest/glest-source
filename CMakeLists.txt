@@ -208,7 +208,7 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 	ENDIF()
 
 	IF(NOT INSTALL_DIR_BIN)
-		SET(INSTALL_DIR_BIN "${CMAKE_INSTALL_PREFIX}/games" CACHE PATH "The installation path for binaries")
+		SET(INSTALL_DIR_BIN "${CMAKE_INSTALL_PREFIX}/games/" CACHE PATH "The installation path for binaries")
 	ENDIF()
 # The data dir will get defined as a macro at compile-time
 	IF(NOT INSTALL_DIR_DATA)

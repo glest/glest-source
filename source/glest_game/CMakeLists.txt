@@ -266,9 +266,7 @@ IF(BUILD_ZETAGLEST)
 	TARGET_LINK_LIBRARIES(${TARGET_NAME} ${EXTERNAL_LIBS})
 
 	# Installation of the program
-	INSTALL(TARGETS
-	${TARGET_NAME}
-	DESTINATION "${INSTALL_DIR_BIN}")
+	INSTALL(TARGETS ${TARGET_NAME} DESTINATION "${INSTALL_DIR_BIN}")
 
 	# Installation of the program manpage file
 	INSTALL(FILES
@@ -303,8 +301,14 @@ IF(BUILD_ZETAGLEST)
 			DESTINATION ${INSTALL_DIR_ICON})
 	ENDIF()
 
+	# Installation of icon
+	INSTALL(FILES
+		"${PROJECT_SOURCE_DIR}/mk/shared/zetaglest.ico"
+		DESTINATION ${INSTALL_DIR_INI})
+
 	# These files must be in the same directory as the zetaglest binary
-	# when "make install" isn't used
+	# when "make install" is NOT used.
+	#
 	#
 	add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
 		COMMAND cp "${PROJECT_SOURCE_DIR}/mk/shared/glest.ini" "${CMAKE_BINARY_DIR}"
