@@ -9,5 +9,3 @@ then use the cash to produce an army. Single-player mode against the
 CPU is also available.
 
 Optional dependencies: miniupnpc, p7zip
-
-Note to parallel builders: More than 2 jobs may break the build.
