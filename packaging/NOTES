@@ -34,3 +34,8 @@ make -j? (where ? is the number of CPU cores)
 make install DESTDIR=$PWD/install-test
 
 
+When packaging, binaries must be STRIPPED of debug symbols.
+This is probably done automatically simply by changing the cmake build type to release.
+
+For the slackbuild, the strip command is in the script.
+
