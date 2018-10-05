@@ -23,7 +23,6 @@ Build-Depends:
  libsdl2-dev,
  libvorbis-dev,
  libwxgtk3.0-dev,
- libxml2-dev,
  libz-dev,
  xauth
 Standards-Version: 3.9.8

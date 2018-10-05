@@ -37,6 +37,7 @@
 #include <wx/stdpaths.h>
 #include <platform_util.h>
 #include "common_scoped_ptr.h"
+#include "versions.h"
 
 #ifndef WIN32
 #include <errno.h>
@@ -72,8 +73,6 @@ const char *folderDelimiter = "/";
 
 //int GameConstants::updateFps= 40;
 //int GameConstants::cameraFps= 100;
-
-const string g3dviewerVersionString = "v0.8.01";
 
 // Because g3d should always support alpha transparency
 string fileFormat = "png";
@@ -180,7 +179,7 @@ namespace Shared {
 			}
 
 			//         "================================================================================"
-			printf("\n%s %s, [Using %s]\n", extractFileFromDirectoryPath(argv0).c_str(), g3dviewerVersionString.c_str(), (const char *) wxConvCurrent->cWX2MB(wxVERSION_STRING));
+			printf("\n%s %s, [Using %s]\n", extractFileFromDirectoryPath(argv0).c_str(), G3D_VIEWER_VERSION, (const char *) wxConvCurrent->cWX2MB(wxVERSION_STRING));
 
 			printf("\nDisplays glest 3D-models and unit/projectile/splash particle systems.\n");
 			printf("\nRotate with left mouse button. Zoom with right mouse button or mousewheel.");
@@ -293,7 +292,7 @@ namespace Shared {
 		// 	class MainWindow
 		// ===============================================
 
-		const string MainWindow::winHeader = "G3D viewer " + g3dviewerVersionString;
+		const string MainWindow::winHeader = string("ZetaGlest G3D viewer ") + G3D_VIEWER_VERSION;
 
 		const float defaultspeed = 0.025f;
 

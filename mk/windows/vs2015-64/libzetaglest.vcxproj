@@ -441,6 +441,7 @@
     <ClCompile Include="..\..\..\source\shared_lib\sources\platform\sdl\gl_wrap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\source\shared_lib\include\*.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\compression\*.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\feathery_ftp\*.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\streflop\*.h" />

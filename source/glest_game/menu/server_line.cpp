@@ -29,6 +29,7 @@
 #include "metrics.h"
 #include "auto_test.h"
 #include "masterserver_info.h"
+#include "versions.h"
 
 #include "leak_dumper.h"
 
@@ -194,7 +195,7 @@ namespace Glest {
 
 			//printf("glestVersionString [%s] masterServerInfo->getGlestVersion() [%s]\n",glestVersionString.c_str(),masterServerInfo->getGlestVersion().c_str());
 			compatible =
-				checkVersionComptability(glestVersionString,
+				checkVersionComptability(GAME_VERSION,
 					masterServerInfo.getGlestVersion());
 			selectButton.setEnabled(compatible);
 			selectButton.setEditable(compatible);

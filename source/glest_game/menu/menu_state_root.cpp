@@ -39,6 +39,7 @@
 #include "cache_manager.h"
 #include "steam.h"
 #include <stdio.h>
+#include "versions.h"
 
 #include "leak_dumper.h"
 
@@ -79,15 +80,15 @@ namespace Glest {
 			int buttonXPosition = (1000 - buttonWidth) / 2;
 
 
-			//labelVersion.registerGraphicComponent(containerName,"labelVersion");
+			/*//labelVersion.registerGraphicComponent(containerName,"labelVersion");
 			if (EndsWith(glestVersionString, "-dev") == false) {
 				labelVersion.init(525, yPos);
 				labelVersion.setText(glestVersionString);
-			} else {
+			} else {*/
 				labelVersion.init(buttonXPosition, yPos);
 				//labelVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
-				labelVersion.setText(glestVersionString);
-			}
+				labelVersion.setText(GAME_VERSION);
+			//}
 
 			labelGreeting.init(labelVersion.getX(), labelVersion.getY() - 16);
 			labelGreeting.setText("");
@@ -226,12 +227,8 @@ namespace Glest {
 
 			console.resetFonts();
 
-			if (EndsWith(glestVersionString, "-dev") == false) {
-				labelVersion.setText(glestVersionString);
-			} else {
-				//labelVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
-				labelVersion.setText(glestVersionString);
-			}
+			//labelVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
+			labelVersion.setText(GAME_VERSION);
 
 			buttonNewGame.setText(lang.getString("NewGame"));
 			buttonLoadGame.setText(lang.getString("LoadGame"));
@@ -851,18 +848,18 @@ namespace Glest {
 					props.loadFromText(updateMetaData);
 
 					int compareResult =
-						compareMajorMinorVersion(glestVersionString,
+						compareMajorMinorVersion(GAME_VERSION,
 							props.getString("LatestGameVersion",
 								""));
 					if (compareResult == 0) {
-						if (glestVersionString !=
+						if (GAME_VERSION !=
 							props.getString("LatestGameVersion", "")) {
 							compareResult = -1;
 						}
 					}
 					if (SystemFlags::VERBOSE_MODE_ENABLED)
 						printf("compareResult = %d local [%s] remote [%s]\n",
-							compareResult, glestVersionString.c_str(),
+							compareResult, GAME_VERSION,
 							props.getString("LatestGameVersion", "").c_str());
 
 					if (compareResult < 0) {

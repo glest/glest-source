@@ -34,8 +34,8 @@
 #include "cache_manager.h"
 // Need the include below for vc++ 2010 because Microsoft messed up their STL!
 #include <iterator>
+#include "versions.h"
 #include "leak_dumper.h"
-
 
 namespace Glest {
 	namespace Game {
@@ -566,7 +566,7 @@ namespace Glest {
 					SystemFlags::escapeURL(Config::getInstance().
 						getString("PlayerId", ""));
 				string gameVersion =
-					"&glestVersion=" + SystemFlags::escapeURL(glestVersionString);
+					"&glestVersion=" + SystemFlags::escapeURL(GAME_VERSION);
 
 				if (SystemFlags::VERBOSE_MODE_ENABLED)
 					printf

@@ -33,6 +33,7 @@
 #include <errno.h>
 #endif
 #include "common_scoped_ptr.h"
+#include "versions.h"
 //#include <memory>
 
 using namespace Shared::Util;
@@ -59,9 +60,7 @@ namespace Glest {
 }
 
 namespace MapEditor {
-
-	const string mapeditorVersionString = "v0.8.01";
-	const string MainWindow::winHeader = "ZetaGlest Map Editor " + mapeditorVersionString;
+	const string MainWindow::winHeader = string("ZetaGlest Map Editor ") + MAP_EDITOR_VERSION;
 
 	// ===============================================
 	//	class Global functions
@@ -1649,7 +1648,7 @@ wxT("Help")).ShowModal();
 		string fileparam;
 		if (argc == 2) {
 			if (argv[1][0] == '-') {   // any flag gives help and exits program.
-				std::cout << std::endl << "ZetaGlest map editor " << mapeditorVersionString << " [Using " << (const char *) wxConvCurrent->cWX2MB(wxVERSION_STRING) << "]" << std::endl << std::endl;
+				std::cout << std::endl << "ZetaGlest Map Editor " << MAP_EDITOR_VERSION << " [Using " << (const char *) wxConvCurrent->cWX2MB(wxVERSION_STRING) << "]" << std::endl << std::endl;
 				//std::cout << "\nglest_map_editor [MGM FILE]" << std::endl << std::endl;
 				std::cout << "Creates or edits zetaglest/glest maps. [.zgm/.mgm/.gbm]" << std::endl << std::endl;
 				std::cout << "Draw with left mouse button." << std::endl;

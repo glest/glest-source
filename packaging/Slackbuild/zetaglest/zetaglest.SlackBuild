@@ -92,9 +92,7 @@ cd -
 cd $PRGNAM-$VERSION
   cmake ..                      \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DBUILD_MODEL_VIEWER=ON \
-    -DBUILD_MAP_EDITOR=ON
+    -DCMAKE_INSTALL_PREFIX=/usr
 
   make install DESTDIR=$PKG
 cd -

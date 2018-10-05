@@ -33,11 +33,11 @@ namespace Shared {
 			mutexThreadObjectAccessor(new Mutex(CODE_AT_LINE)),
 			mutexThreadOwnerValid(new Mutex(CODE_AT_LINE)),
 			mutexExecutingTask(new Mutex(CODE_AT_LINE)),
+			ptr(NULL),
 			mutexStarted(new Mutex(CODE_AT_LINE)),
-			ptr(NULL), genericData(NULL) {
+			genericData(NULL) {
 
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
-
 			ptr = this;
 			MutexSafeWrapper safeMutexMasterList(&mutexMasterThreadList);
 			masterThreadList[ptr]++;

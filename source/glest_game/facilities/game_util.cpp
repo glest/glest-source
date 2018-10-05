@@ -32,23 +32,17 @@
 #include "cache_manager.h"
 #include "errno.h"
 #include "leak_dumper.h"
+#include "versions.h"
 
 using namespace Shared::Util;
 using namespace Shared::Platform;
 
 namespace Glest {
 	namespace Game {
-
 		const char *mailString = "https://github.com/ZetaGlest";
 
-		// !! Use minor versions !!  Only major and minor version control compatibility!
-		// typical version numbers look like this: v0.8.01
-		// don't forget to update file: source/version.txt
-		const string glestVersionString = "v0.8.02";
-		const string lastCompatibleSaveGameVersionString = "v0.8.01";
-
 		string getCrashDumpFileName() {
-			return "zetaglest" + glestVersionString + ".dmp";
+			return (string("zetaglest") + GAME_VERSION) + ".dmp";
 		}
 		string getPlatformTypeNameString() {
 			static string platform;
@@ -180,7 +174,7 @@ namespace Glest {
 			static string version = "";
 			if (version == "") {
 				version =
-					glestVersionString + "-" + getCompilerNameString() + "-" +
+					string(GAME_VERSION) + "-" + getCompilerNameString() + "-" +
 					getCompileDateTime();
 			}
 			return version;
@@ -190,7 +184,7 @@ namespace Glest {
 			static string version = "";
 			if (version == "") {
 				version =
-					glestVersionString + getCompilerNameString();
+					GAME_VERSION + getCompilerNameString();
 			}
 			return version;
 		}
@@ -204,17 +198,17 @@ namespace Glest {
 		}
 
 		string getNetworkPlatformFreeVersionString() {
-			return glestVersionString;
+			return GAME_VERSION;
 		}
 
 		string getAboutString1(int i) {
 			//case 1: return "Built: " + string(__DATE__) + " " + GIT_Rev;
 			switch (i) {
 				case 0:
-					return "ZetaGlest " + glestVersionString + " (" +
+					return string("ZetaGlest ") + GAME_VERSION + " (" +
 						"Shared Library " + sharedLibVersionString + ")";
 				case 1:
-					return glestVersionString;
+					return GAME_VERSION;
 				case 2:
 					return "Copyright 2001-2010 The Glest Team";
 				case 3:

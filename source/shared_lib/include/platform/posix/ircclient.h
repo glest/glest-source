@@ -80,7 +80,6 @@ namespace Shared {
 			string nick;
 
 			string playerName;
-			string glestVersionString;
 
 			bool hasJoinedChannel;
 
@@ -112,9 +111,6 @@ namespace Shared {
 
 			void setPlayerName(string value) {
 				playerName = value;
-			}
-			void setGlestVersionString(string value) {
-				glestVersionString = value;
 			}
 			string getPlayerName() const {
 				return playerName;

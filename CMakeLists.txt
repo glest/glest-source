@@ -208,7 +208,7 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 	ENDIF()
 
 	IF(NOT INSTALL_DIR_BIN)
-		SET(INSTALL_DIR_BIN "${CMAKE_INSTALL_PREFIX}/games" CACHE PATH "The installation path for binaries")
+		SET(INSTALL_DIR_BIN "${CMAKE_INSTALL_PREFIX}/games/" CACHE PATH "The installation path for binaries")
 	ENDIF()
 # The data dir will get defined as a macro at compile-time
 	IF(NOT INSTALL_DIR_DATA)
@@ -227,7 +227,6 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 
 	string(TOUPPER "${CMAKE_BUILD_TYPE}" ZG_BUILD_TYPE)
 
-	add_definitions("-DDATADIR=${INSTALL_DIR_DATA}")
 	SET(CMAKE_CXX_FLAGS_{ZG_BUILD_TYPE} "${CMAKE_CXX_FLAGS_${ZG_BUILD_TYPE}}")
 
 	# We do some funky character escaping to get the right stuff written out to
@@ -319,13 +318,17 @@ ENDIF()
 #
 IF(EXISTS "${PROJECT_SOURCE_DIR}/../zetaglest-data/CMakeLists.txt")
     MESSAGE(STATUS "**Found game data.")
-	ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/../zetaglest-data $CMAKE_BINARY_DIR/data)
+	# using CMAKE_BINARY_DIR as last parameter will output cmake files into the same
+	# directory as the source build.
+	ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/../zetaglest-data ${CMAKE_BINARY_DIR}/data)
 ENDIF()
 
 IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     MESSAGE(WARNING ">> CLANG is NOT currently compatible as it does not support the following essential GCC compiler settings: -frounding-math -fsignaling-nans")
 ENDIF()
 
+# FIXME: This should output all defines. For example, DATADIR is defined in
+# the glest_game source and sharedlib cmake file as well
 get_directory_property( DirDefs DIRECTORY ${CMAKE_SOURCE_DIR} COMPILE_DEFINITIONS )
 foreach( d ${DirDefs} )
     message( STATUS "=====> Found Define: " ${d} )

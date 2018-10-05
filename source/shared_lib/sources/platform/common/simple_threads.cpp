@@ -379,11 +379,11 @@ namespace Shared {
 			unsigned int millisecsBetweenExecutions,
 			bool needTaskSignal,
 			void *userdata, bool wantSetupAndShutdown) : BaseThread(),
-			simpleTaskInterface(NULL),
-			overrideShutdownTask(NULL),
 			mutexSimpleTaskInterfaceValid(new Mutex(CODE_AT_LINE)),
+			simpleTaskInterface(NULL),
 			mutexTaskSignaller(new Mutex(CODE_AT_LINE)),
-			mutexLastExecuteTimestamp(new Mutex(CODE_AT_LINE)) {
+			mutexLastExecuteTimestamp(new Mutex(CODE_AT_LINE)),
+			overrideShutdownTask(NULL) {
 
 			uniqueID = "SimpleTaskThread";
 			this->simpleTaskInterface = simpleTaskInterface;
@@ -391,7 +391,6 @@ namespace Shared {
 			this->executionCount = executionCount;
 			this->millisecsBetweenExecutions = millisecsBetweenExecutions;
 			this->needTaskSignal = needTaskSignal;
-			this->overrideShutdownTask = NULL;
 			this->userdata = userdata;
 			this->wantSetupAndShutdown = wantSetupAndShutdown;
 			//if(this->userdata != NULL) {

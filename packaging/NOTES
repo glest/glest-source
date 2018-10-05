@@ -23,3 +23,33 @@ ${HELP2MAN_OUT_PATH}${TARGET_NAME_MANPAGE} ${HELP2MAN_OUT_PATH}${TARGET_NAME}
 # Searcn and replace using 'git grep'
 
 git grep -l 'original_text' | xargs sed -i 's/original_text/new_text/g'
+
+
+# installing to a temp directory, preparation for packaging
+
+mkdir install-build
+cd install-build
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DWANT_INSTALL_DATA=ON
+make -j? (where ? is the number of CPU cores)
+make install DESTDIR=$PWD/install-test
+
+
+When packaging, binaries must be STRIPPED of debug symbols.
+This is probably done automatically simply by changing the cmake build type to release.
+
+For the slackbuild, the strip command is in the script.
+
+# SlackBuild
+
+When the "Slackbuild" is made, it's not really a build at all. The
+files in that directory are edited with the correct information, and
+then the contents of the "slackbuilds/zetaglest" directory are zipped into a single
+"zetaglest.tar.gz" file. At that point, it can be submitted for
+inclusion to Slackbuilds.org
+
+I have 2 other projects there and don't anticipate there will be any
+problem getting it included.
+
+zetaglest.info - Only shows a few dependencies. Because the other libs
+are shipped with Slackware. They will be found when the user processes
+the slackbuild script

@@ -42,6 +42,7 @@
 #include "map_preview.h"
 #include <iterator>
 #include "compression_utils.h"
+#include "versions.h"
 
 #include "leak_dumper.h"
 
@@ -1310,7 +1311,7 @@ namespace Glest {
 					config.getString("phpVersionParam", "?version=0.1");
 				string
 					gameVersion =
-					"&glestVersion=" + SystemFlags::escapeURL(glestVersionString);
+					"&glestVersion=" + SystemFlags::escapeURL(GAME_VERSION);
 				string
 					playerUUID =
 					"&uuid=" +

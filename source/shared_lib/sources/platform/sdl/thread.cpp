@@ -135,7 +135,8 @@ namespace Shared {
 		// =====================================
 		Thread::Thread() : thread(NULL),
 			mutexthreadAccessor(new Mutex(CODE_AT_LINE)),
-			deleteAfterExecute(false), currentState(thrsNew) {
+			currentState(thrsNew),
+			deleteAfterExecute(false) {
 			addThreadToList();
 		}
 

@@ -1,6 +1,6 @@
 # common libraries
 
-OPTION(BUILD_MODEL_VIEWER "Build model viewer" OFF)
+OPTION(BUILD_MODEL_VIEWER "Build model viewer" ON)
 SET(TARGET_NAME "zetaglest_g3dviewer")
 MESSAGE(STATUS "Build ${TARGET_NAME} = ${BUILD_MODEL_VIEWER}")
 

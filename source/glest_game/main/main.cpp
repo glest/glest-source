@@ -60,6 +60,7 @@
 #include "lua_script.h"
 #include "interpolation.h"
 #include "common_scoped_ptr.h"
+#include "versions.h"
 
 // To handle signal catching
 #if defined(__GNUC__) && !defined(__MINGW32__) && !defined(__FreeBSD__) && !defined(BSD)
@@ -5732,7 +5733,7 @@ namespace
 
 			Properties::setApplicationPath(executable_path(argv[0]));
 			Properties::setApplicationDataPath(executable_path(argv[0]));
-			Properties::setGameVersion(glestVersionString);
+			Properties::setGameVersion(GAME_VERSION);
 
 			ServerSocket::setMaxPlayerCount(GameConstants::maxPlayers);
 
@@ -5990,7 +5991,7 @@ namespace
 						SwitchSetupRequest().getDataSize());
 				}
 
-				printf("\nversion: [%s]", glestVersionString.c_str());
+				printf("\nversion: [%s]", GAME_VERSION);
 
 #ifdef USE_STREFLOP
 
@@ -6022,8 +6023,6 @@ namespace
 				printf("\n");
 #endif
 			}
-
-			setGameVersion(glestVersionString);
 
 #ifdef WIN32
 			CheckPacketThrottling();

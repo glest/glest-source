@@ -60,20 +60,6 @@ you can't juse use **_merge_**).
 
 Most people will never have to change the options when running `cmake`.
 
-Some options you may want to change are:
-
-To view models outside the game:
-
-    BUILD_MODEL_VIEWER=ON (off by default)
-
-To edit maps:
-
-    BUILD_MAP_EDITOR=ON (off by default)
-
-The **wxWidgets (libwxgtk3.0-dev on some systems)** and **libxml2-dev*
-dependencies (mentioned below) is only required if you enable those
-options.
-
 To view all available options, use `cmake .. -LH` while in the build directory.
 
 ## Dependencies
@@ -99,16 +85,13 @@ On Windows simply run `setup.bat` in `\mk\windows`.
 (These may vary based on your operating system or Linux distribution;
 we will attempt to document dependencies in more detail)
 
-Below is a list of most dependencies you will need. This document needs
-to indicate better which are optional and which are required.
+Below is a list of most dependencies you will need.
 
 gcc g++ cmake libsdl2-dev libalut-dev libgl1-mesa-dev libglu1-mesa-dev libvorbis-dev
  libx11-dev liblua5.2-dev libjpeg-dev libpng-dev libcurl4-gnutls-dev libircclient-dev
  libglew-dev libftgl-dev libfribidi-dev libcppunit-dev libminiupnpc-dev libfreetype6-dev
  libgnutls28-dev libkrb5-dev libkrb5-dev libnghttp2-dev libopenal-dev libldap2-dev
- librtmp-dev
-
-[Current Status](https://github.com/ZetaGlest/zetaglest-source/issues/25)
+ librtmp-dev libwxgtk3.0-dev libwxgtk3.0-dev (wxWidgets)
 
 ### Mac OS
 
