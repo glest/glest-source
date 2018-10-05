@@ -38,6 +38,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "conversion.h"
+#include "versions.h"
 
 using namespace Shared::Util;
 using namespace Shared::PlatformCommon;
@@ -552,7 +553,6 @@ namespace Shared {
 			lastNickListUpdate = time(NULL);
 			wantToLeaveChannel = false;
 			playerName = "";
-			glestVersionString = "";
 		}
 
 		void IRCThread::disconnect() {
@@ -837,7 +837,7 @@ namespace Shared {
 					if (SystemFlags::VERBOSE_MODE_ENABLED || IRCThread::debugEnabled) printf("===> IRC: Line: %d\n", __LINE__);
 
 					safeMutex.Lock();
-					if (irc_connect(ircSession, argv[0].c_str(), IRC_SERVER_PORT, 0, this->nick.c_str(), this->username.c_str(), ("ZetaGlest " + glestVersionString).c_str())) {
+					if (irc_connect(ircSession, argv[0].c_str(), IRC_SERVER_PORT, 0, this->nick.c_str(), this->username.c_str(), (string("ZetaGlest ") + GAME_VERSION).c_str())) {
 						safeMutex.ReleaseLock();
 						if (SystemFlags::VERBOSE_MODE_ENABLED || IRCThread::debugEnabled) printf("===> IRC Could not connect: %s\n", irc_strerror(irc_errno(ircSession)));
 						return;

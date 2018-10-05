@@ -41,7 +41,7 @@
 #include "cache_manager.h"
 #include "conversion.h"
 #include "steam.h"
-
+#include "versions.h"
 #include "leak_dumper.h"
 
 using namespace Shared::Graphics;
@@ -6838,7 +6838,7 @@ namespace Glest {
 #endif
 					logFile << "World CRC debug information:" << std::endl;
 					logFile << "============================" << std::endl;
-					logFile << "Software version: " << glestVersionString << "-" <<
+					logFile << "Software version: " << GAME_VERSION << "-" <<
 						getCompilerNameString() << std::endl;
 					logFile << "Maximum framecount: " << world.
 						getFaction(0)->getCRC_DetailsForWorldFrameCount() << std::endl;
@@ -8739,7 +8739,7 @@ namespace Glest {
 				char szBuf[4096] = "";
 				strftime(szBuf, 4095, "%Y-%m-%d %H:%M:%S", &loctime);
 
-				rootNodeReplay->addAttribute("version", glestVersionString,
+				rootNodeReplay->addAttribute("version", GAME_VERSION,
 					mapTagReplacements);
 				rootNodeReplay->addAttribute("timestamp", szBuf, mapTagReplacements);
 
@@ -8776,7 +8776,7 @@ namespace Glest {
 			char szBuf[4096] = "";
 			strftime(szBuf, 4095, "%Y-%m-%d %H:%M:%S", &loctime);
 
-			rootNode->addAttribute("version", glestVersionString,
+			rootNode->addAttribute("version", GAME_VERSION,
 				mapTagReplacements);
 			rootNode->addAttribute("timestamp", szBuf, mapTagReplacements);
 
@@ -9013,20 +9013,20 @@ namespace Glest {
 
 				Lang & lang = Lang::getInstance();
 				string gameVer = versionNode->getAttribute("version")->getValue();
-				if (gameVer != glestVersionString
+				if (gameVer != GAME_VERSION
 					&& checkVersionComptability(gameVer,
-						glestVersionString) == false) {
+						GAME_VERSION) == false) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096,
 						lang.getString("SavedGameBadVersion").c_str(),
-						gameVer.c_str(), glestVersionString.c_str());
+						gameVer.c_str(), GAME_VERSION);
 					throw megaglest_runtime_error(szBuf, true);
 				}
 
 				if (SystemFlags::VERBOSE_MODE_ENABLED)
 					printf
 					("Found saved game version that matches your application version: [%s] --> [%s]\n",
-						gameVer.c_str(), glestVersionString.c_str());
+						gameVer.c_str(), GAME_VERSION);
 
 				XmlNode *gameNode = rootNode->getChild("Game");
 
@@ -9101,22 +9101,22 @@ namespace Glest {
 			Lang & lang = Lang::getInstance();
 			string gameVer = versionNode->getAttribute("version")->getValue();
 			// this is the version check for loading normal save games from menu_state_load_game
-			if (gameVer != glestVersionString
+			if (gameVer != GAME_VERSION
 				&&
 				(compareMajorMinorVersion
-				(gameVer, lastCompatibleSaveGameVersionString) < 0
-					|| compareMajorMinorVersion(glestVersionString, gameVer) < 0)) {
+				(gameVer, LAST_COMPATIBLE_VERSION) < 0
+					|| compareMajorMinorVersion(GAME_VERSION, gameVer) < 0)) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096,
 					lang.getString("SavedGameBadVersion").c_str(),
-					gameVer.c_str(), glestVersionString.c_str());
+					gameVer.c_str(), GAME_VERSION);
 				throw megaglest_runtime_error(szBuf, true);
 			}
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
 				printf
 				("Found saved game version that matches your application version: [%s] --> [%s]\n",
-					gameVer.c_str(), glestVersionString.c_str());
+					gameVer.c_str(), GAME_VERSION);
 
 			XmlNode *gameNode = rootNode->getChild("Game");
 			GameSettings newGameSettings;
@@ -9129,13 +9129,13 @@ namespace Glest {
 				XmlNode *statsNode = worldNode->getChild("Stats");
 				XmlNode *minimapNode = worldNode->getChild("Minimap");
 
-				if (gameVer != glestVersionString
+				if (gameVer != GAME_VERSION
 					&& checkVersionComptability(gameVer,
-						glestVersionString) == false) {
+						GAME_VERSION) == false) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096,
 						lang.getString("SavedGameBadVersion").c_str(),
-						gameVer.c_str(), glestVersionString.c_str());
+						gameVer.c_str(), GAME_VERSION);
 					throw megaglest_runtime_error(szBuf, true);
 				}
 				// This is explored fog of war for the host player, clear it

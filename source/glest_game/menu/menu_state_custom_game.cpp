@@ -45,6 +45,7 @@
 #include <iterator>
 #include "map_preview.h"
 #include "gen_uuid.h"
+#include "versions.h"
 #include "leak_dumper.h"
 
 namespace Glest {
@@ -413,12 +414,8 @@ namespace Glest {
 					serverPort + " / " + externalPort + " )");
 				ServerSocket::setExternalPort(strToInt(externalPort));
 
-				if (EndsWith(glestVersionString, "-dev") == false) {
-					labelLocalGameVersion.setText(glestVersionString);
-				} else {
-					//labelLocalGameVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
-					labelLocalGameVersion.setText(glestVersionString);
-				}
+				//labelLocalGameVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
+				labelLocalGameVersion.setText(GAME_VERSION);
 
 				xoffset = 65;
 				// MapFilter
@@ -1067,12 +1064,8 @@ namespace Glest {
 			mainMessageBox.init(lang.getString("Ok"), 500, 300);
 
 
-			if (EndsWith(glestVersionString, "-dev") == false) {
-				labelLocalGameVersion.setText(glestVersionString);
-			} else {
-				//labelLocalGameVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
-				labelLocalGameVersion.setText(glestVersionString);
-			}
+			//labelLocalGameVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
+			labelLocalGameVersion.setText(GAME_VERSION);
 
 			//vector<string> teamItems, controlItems, results , rMultiplier;
 
@@ -3611,7 +3604,7 @@ namespace Glest {
 				Config::getInstance().getString("PlayerId", "");
 
 			//?status=waiting&system=linux&info=titus
-			publishToServerInfo["glestVersion"] = glestVersionString;
+			publishToServerInfo["glestVersion"] = GAME_VERSION;
 			publishToServerInfo["platform"] =
 				getPlatformNameString();
 			publishToServerInfo["binaryCompileDate"] = getCompileDateTime();

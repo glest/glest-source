@@ -40,6 +40,7 @@
 #include <set>
 #include <iostream>
 #include <iterator>
+#include "versions.h"
 
 #include "leak_dumper.h"
 
@@ -2826,7 +2827,7 @@ namespace Glest {
 				}
 			}
 			publishToServerInfo["uuid"] = Config::getInstance().getString("PlayerId", "");
-			publishToServerInfo["glestVersion"] = glestVersionString;
+			publishToServerInfo["glestVersion"] = GAME_VERSION;
 			publishToServerInfo["platform"] = getPlatformNameString();
 			publishToServerInfo["binaryCompileDate"] = getCompileDateTime();
 			publishToServerInfo["serverTitle"] = this->getGameSettings()->getGameName();

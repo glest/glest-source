@@ -38,11 +38,7 @@ using Shared::Util::sharedLibVersionString;
 
 namespace Glest {
 	namespace Game {
-
 		extern const char *mailString;
-		extern const string glestVersionString;
-		extern const string lastCompatibleSaveGameVersionString;
-		extern const string networkVersionString;
 
 		void initSpecialStrings();
 		string getCrashDumpFileName();

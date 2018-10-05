@@ -31,6 +31,7 @@
 #include "network_message.h"
 #include "game.h"
 #include "auto_test.h"
+#include "versions.h"
 
 #include "leak_dumper.h"
 
@@ -398,14 +399,14 @@ namespace Glest {
 									const XmlNode *versionNode = rootNode;
 									string gameVer =
 										versionNode->getAttribute("version")->getValue();
-									if (gameVer != glestVersionString
+									if (gameVer != GAME_VERSION
 										&& checkVersionComptability(gameVer,
-											glestVersionString) ==
+											GAME_VERSION) ==
 										false) {
 										char szBuf[8096] = "";
 										snprintf(szBuf, 8096,
 											lang.getString("SavedGameBadVersion").c_str(),
-											gameVer.c_str(), glestVersionString.c_str());
+											gameVer.c_str(), GAME_VERSION);
 										versionWarningLabel.setText(szBuf);
 									} else {
 										versionWarningLabel.setText("");
