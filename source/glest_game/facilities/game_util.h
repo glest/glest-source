@@ -34,7 +34,6 @@
 #  include "leak_dumper.h"
 
 using std::string;
-using Shared::Util::sharedLibVersionString;
 
 namespace Glest {
 	namespace Game {

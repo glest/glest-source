@@ -205,8 +205,7 @@ namespace Glest {
 			//case 1: return "Built: " + string(__DATE__) + " " + GIT_Rev;
 			switch (i) {
 				case 0:
-					return string("ZetaGlest ") + GAME_VERSION + " (" +
-						"Shared Library " + sharedLibVersionString + ")";
+					return string("ZetaGlest ") + GAME_VERSION;
 				case 1:
 					return GAME_VERSION;
 				case 2:

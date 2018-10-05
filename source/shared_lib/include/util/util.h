@@ -226,8 +226,6 @@ namespace Shared {
 			static void Close();
 		};
 
-		const string sharedLibVersionString = "v0.4.1";
-
 		//string fcs
 		string lastDir(const string &s);
 		string lastFile(const string &s);
