@@ -32,7 +32,7 @@
 #include "cache_manager.h"
 #include "errno.h"
 #include "leak_dumper.h"
-#include "shared_definitions.h"
+#include "shared_const.h"
 
 using namespace Shared;
 using namespace Shared::Util;

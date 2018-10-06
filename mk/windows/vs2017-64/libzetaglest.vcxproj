@@ -454,7 +454,7 @@
     <ClInclude Include="..\..\..\source\shared_lib\include\lua\*.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\sound\*.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\xml\*.h" />
-    <ClInclude Include="..\..\..\source\shared_lib\include\platform\common\*.h" />
+    <ClInclude Include="..\..\..\source\shared_lib\include\platform\common\shared_const.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\platform\posix\*.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\platform\miniupnpc\*.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\platform\win32\*.h" />

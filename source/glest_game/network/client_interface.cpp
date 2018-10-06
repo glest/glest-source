@@ -33,7 +33,7 @@
 #include "config.h"
 #include <stdexcept>
 #include <cassert>
-#include "shared_definitions.h"
+#include "shared_const.h"
 #include "leak_dumper.h"
 
 using namespace std;

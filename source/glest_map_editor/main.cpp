@@ -33,7 +33,7 @@
 #include <errno.h>
 #endif
 #include "common_scoped_ptr.h"
-#include "shared_definitions.h"
+#include "shared_const.h"
 //#include <memory>
 
 using namespace Shared;

@@ -71,7 +71,7 @@
 #include "platform_util.h"
 #include "utf8.h"
 #include "byte_order.h"
-#include "shared_definitions.h"
+#include "shared_const.h"
 
 #if _BSD_SOURCE || _SVID_SOURCE || _XOPEN_SOURCE >= 500 || _XOPEN_SOURCE && _XOPEN_SOURCE_EXTENDED
 #include <unistd.h>

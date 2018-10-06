@@ -31,7 +31,7 @@
 #include "network_message.h"
 #include "game.h"
 #include "auto_test.h"
-#include "shared_definitions.h"
+#include "shared_const.h"
 
 #include "leak_dumper.h"
 

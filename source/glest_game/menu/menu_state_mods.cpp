@@ -34,7 +34,7 @@
 #include "cache_manager.h"
 // Need the include below for vc++ 2010 because Microsoft messed up their STL!
 #include <iterator>
-#include "shared_definitions.h"
+#include "shared_const.h"
 #include "leak_dumper.h"
 
 using namespace Shared;

@@ -60,7 +60,7 @@
 #include "lua_script.h"
 #include "interpolation.h"
 #include "common_scoped_ptr.h"
-#include "shared_definitions.h"
+#include "shared_const.h"
 
 // To handle signal catching
 #if defined(__GNUC__) && !defined(__MINGW32__) && !defined(__FreeBSD__) && !defined(BSD)

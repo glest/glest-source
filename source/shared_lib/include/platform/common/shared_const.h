@@ -9,11 +9,11 @@
 //	License, or (at your option) any later version
 // ==============================================================
 
-#ifndef _SHARED_PLATFORM_DEFINITIONS_H_
-#define _SHARED_PLATFORM_DEFINITIONS_H_
+#ifndef _SHARED_CONST_H_
+#define _SHARED_CONST_H_
 
 #include <string>
-#include "versions.h"
+#include <versions.h>
 #include "leak_dumper.h"
 
 namespace Shared {

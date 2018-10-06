@@ -41,7 +41,7 @@
 #include "cache_manager.h"
 #include "conversion.h"
 #include "steam.h"
-#include "shared_definitions.h"
+#include "shared_const.h"
 #include "leak_dumper.h"
 
 using namespace Shared;

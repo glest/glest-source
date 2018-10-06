@@ -37,7 +37,7 @@
 #include <wx/stdpaths.h>
 #include <platform_util.h>
 #include "common_scoped_ptr.h"
-#include "shared_definitions.h"
+#include "shared_const.h"
 
 #ifndef WIN32
 #include <errno.h>

@@ -42,7 +42,7 @@
 #include "map_preview.h"
 #include <iterator>
 #include "compression_utils.h"
-#include "shared_definitions.h"
+#include "shared_const.h"
 
 #include "leak_dumper.h"
 

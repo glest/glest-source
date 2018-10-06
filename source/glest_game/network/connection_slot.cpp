@@ -27,7 +27,7 @@
 #include "network_message.h"
 #include "platform_util.h"
 #include <stdexcept>
-#include "shared_definitions.h"
+#include "shared_const.h"
 
 #include "leak_dumper.h"
 

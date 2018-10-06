@@ -40,7 +40,7 @@
 #include <set>
 #include <iostream>
 #include <iterator>
-#include "shared_definitions.h"
+#include "shared_const.h"
 
 #include "leak_dumper.h"
 

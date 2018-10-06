@@ -38,7 +38,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "conversion.h"
-#include "shared_definitions.h"
+#include "shared_const.h"
 
 using namespace Shared::Util;
 using namespace Shared::PlatformCommon;

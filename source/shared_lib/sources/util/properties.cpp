@@ -33,7 +33,7 @@
 #include "utf8.h"
 #include "font.h"
 #include "string_utils.h"
-#include "shared_definitions.h"
+#include "shared_const.h"
 #include "leak_dumper.h"
 
 using namespace std;

@@ -39,7 +39,7 @@
 #include "masterserver_info.h"
 #include <curl/curl.h>
 #include "cache_manager.h"
-#include "shared_definitions.h"
+#include "shared_const.h"
 #include "leak_dumper.h"
 
 using namespace Shared;
