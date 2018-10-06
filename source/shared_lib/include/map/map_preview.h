@@ -138,7 +138,6 @@ namespace Shared {
 			string author;
 			string desc;
 			string recScn;
-			int type;
 			int h;
 			int w;
 			int heightFactor;
