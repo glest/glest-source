@@ -5905,8 +5905,8 @@ namespace
 			if (haveSpecialOutputCommandLineOption == false ||
 				hasCommandArgument(argc, argv,
 					GAME_ARGS[GAME_ARG_VERSION]) == true) {
-				//              printf("\nCompiled using: %s on: %s platform: %s endianness: %s",getCompilerNameString().c_str(),getCompileDateTime().c_str(),getPlatformNameString().c_str(),(::Shared::PlatformByteOrder::isBigEndian() == true ? "big" : "little"));
-				printf("\nCompiled using: %s platform: %s endianness: %s",
+				//              printf("Compiled using: %s on: %s platform: %s endianness: %s",getCompilerNameString().c_str(),getCompileDateTime().c_str(),getPlatformNameString().c_str(),(::Shared::PlatformByteOrder::isBigEndian() == true ? "big" : "little"));
+				printf("Compiled using: %s platform: %s endianness: %s",
 					getCompilerNameString().c_str(),
 					getPlatformNameString().c_str(),
 					(::Shared::PlatformByteOrder::isBigEndian() ==
