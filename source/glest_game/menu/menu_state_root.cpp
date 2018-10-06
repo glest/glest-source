@@ -861,7 +861,7 @@ namespace Glest {
 					}
 					if (SystemFlags::VERBOSE_MODE_ENABLED)
 						printf("compareResult = %d local [%s] remote [%s]\n",
-							compareResult, GameVersionString,
+							compareResult, GameVersionString.c_str(),
 							props.getString("LatestGameVersion", "").c_str());
 
 					if (compareResult < 0) {
