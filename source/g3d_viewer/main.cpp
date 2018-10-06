@@ -179,7 +179,7 @@ namespace Shared {
 			}
 
 			//         "================================================================================"
-			printf("\n%s %s, [Using %s]\n", extractFileFromDirectoryPath(argv0).c_str(), G3DViewerVersionString, (const char *) wxConvCurrent->cWX2MB(wxVERSION_STRING));
+			printf("\n%s %s, [Using %s]\n", extractFileFromDirectoryPath(argv0).c_str(), G3DViewerVersionString.c_str(), (const char *) wxConvCurrent->cWX2MB(wxVERSION_STRING));
 
 			printf("\nDisplays glest 3D-models and unit/projectile/splash particle systems.\n");
 			printf("\nRotate with left mouse button. Zoom with right mouse button or mousewheel.");
