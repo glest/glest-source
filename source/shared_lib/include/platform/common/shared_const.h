@@ -13,7 +13,7 @@
 #define _SHARED_CONST_H_
 
 #include <string>
-#include "..\..\versions.h"
+#include "../../versions.h"
 #include "leak_dumper.h"
 
 namespace Shared {
