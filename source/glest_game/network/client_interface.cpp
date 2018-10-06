@@ -33,10 +33,11 @@
 #include "config.h"
 #include <stdexcept>
 #include <cassert>
-
+#include "shared_definitions.h"
 #include "leak_dumper.h"
 
 using namespace std;
+using namespace Shared;
 using namespace Shared::Platform;
 using namespace Shared::Util;
 
@@ -582,10 +583,9 @@ namespace Glest {
 							if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
 							bool versionMatched = false;
-							string platformFreeVersion = getNetworkPlatformFreeVersionString();
 							string sErr = "";
 
-							if (strncmp(platformFreeVersion.c_str(), networkMessageIntro.getVersionString().c_str(), strlen(platformFreeVersion.c_str())) != 0) {
+							if (strncmp(GameVersionString.c_str(), networkMessageIntro.getVersionString().c_str(), GameVersionString.length()) != 0) {
 								string playerNameStr = getHumanPlayerName();
 								sErr = "Server and client binary mismatch!\nYou have to use the exactly same binaries!\n\nServer: " + networkMessageIntro.getVersionString() +
 									"\nClient: " + getNetworkVersionGITString() + " player [" + playerNameStr + "]";

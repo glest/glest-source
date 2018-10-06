@@ -45,14 +45,14 @@
 #include <iterator>
 #include "map_preview.h"
 #include "gen_uuid.h"
-#include "versions.h"
+#include "shared_definitions.h"
 #include "leak_dumper.h"
+
+using namespace Shared;
+using namespace Shared::Util;
 
 namespace Glest {
 	namespace Game {
-
-		using namespace::Shared::Util;
-
 		const int MASTERSERVER_BROADCAST_MAX_WAIT_RESPONSE_SECONDS = 15;
 		static const char *SAVED_GAME_FILENAME = "lastCustomGameSettings.mgg";
 		static const char *DEFAULT_GAME_FILENAME = "data/defaultGameSetup.mgg";
@@ -415,7 +415,7 @@ namespace Glest {
 				ServerSocket::setExternalPort(strToInt(externalPort));
 
 				//labelLocalGameVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
-				labelLocalGameVersion.setText(GAME_VERSION);
+				labelLocalGameVersion.setText(GameVersionString);
 
 				xoffset = 65;
 				// MapFilter
@@ -1065,7 +1065,7 @@ namespace Glest {
 
 
 			//labelLocalGameVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
-			labelLocalGameVersion.setText(GAME_VERSION);
+			labelLocalGameVersion.setText(GameVersionString);
 
 			//vector<string> teamItems, controlItems, results , rMultiplier;
 
@@ -3604,7 +3604,7 @@ namespace Glest {
 				Config::getInstance().getString("PlayerId", "");
 
 			//?status=waiting&system=linux&info=titus
-			publishToServerInfo["glestVersion"] = GAME_VERSION;
+			publishToServerInfo["glestVersion"] = GameVersionString;
 			publishToServerInfo["platform"] =
 				getPlatformNameString();
 			publishToServerInfo["binaryCompileDate"] = getCompileDateTime();

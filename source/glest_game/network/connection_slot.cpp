@@ -27,10 +27,12 @@
 #include "network_message.h"
 #include "platform_util.h"
 #include <stdexcept>
+#include "shared_definitions.h"
 
 #include "leak_dumper.h"
 
 using namespace std;
+using namespace Shared;
 using namespace Shared::Util;
 
 namespace Glest {
@@ -881,16 +883,15 @@ namespace Glest {
 												if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
 												bool versionMatched = false;
-												string platformFreeVersion = getNetworkPlatformFreeVersionString();
 												string sErr = "";
 
-												if (strncmp(platformFreeVersion.c_str(), networkMessageIntro.getVersionString().c_str(), strlen(platformFreeVersion.c_str())) != 0) {
+												if (strncmp(GameVersionString.c_str(), networkMessageIntro.getVersionString().c_str(), GameVersionString.length()) != 0) {
 													string playerNameStr = name;
-													sErr = "Server and client binary mismatch!\nYou have to use the exactly same binaries!\n\nServer: " + getNetworkVersionGITString() +
+													sErr = "Server and client version mismatch!\nYou have to use the exactly same versions!\n\nServer: " + getNetworkVersionGITString() +
 														"\nClient: " + networkMessageIntro.getVersionString() + " player [" + playerNameStr + "]";
 													printf("%s\n", sErr.c_str());
 
-													serverInterface->sendTextMessage("Server and client binary mismatch!!", -1, true, "", lockedSlotIndex);
+													serverInterface->sendTextMessage("Server and client version mismatch!", -1, true, "", lockedSlotIndex);
 													serverInterface->sendTextMessage(" Server:" + getNetworkVersionGITString(), -1, true, "", lockedSlotIndex);
 													serverInterface->sendTextMessage(" Client: " + networkMessageIntro.getVersionString(), -1, true, "", lockedSlotIndex);
 													serverInterface->sendTextMessage(" Client player [" + playerNameStr + "]", -1, true, "", lockedSlotIndex);

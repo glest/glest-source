@@ -33,6 +33,7 @@
 #include "utf8.h"
 #include "font.h"
 #include "string_utils.h"
+#include "shared_definitions.h"
 #include "leak_dumper.h"
 
 using namespace std;
@@ -45,7 +46,6 @@ namespace Shared {
 
 		string Properties::applicationPath = "";
 		string Properties::applicationDataPath = "";
-		string Properties::gameVersion = "";
 
 		string Properties::techtreePath = "";
 		string Properties::scenarioPath = "";
@@ -270,7 +270,7 @@ namespace Shared {
 			mapTagReplacementValues["{SCENARIOPATH}"] = Properties::scenarioPath;
 			mapTagReplacementValues["{TUTORIALPATH}"] = Properties::tutorialPath;
 
-			mapTagReplacementValues["$GAMEVERSION"] = Properties::gameVersion;
+			mapTagReplacementValues["$GAMEVERSION"] = GameVersionString;
 
 			//
 			// #2
@@ -407,7 +407,7 @@ namespace Shared {
 				//	}
 				replaceAll(value, "{TUTORIALPATH}", Properties::tutorialPath);
 
-				replaceAll(value, "$GAMEVERSION", Properties::gameVersion);
+				replaceAll(value, "$GAMEVERSION", GameVersionString);
 			}
 
 			//if(originalValue != value || originalValue.find("$APPLICATIONDATAPATH") != string::npos) {

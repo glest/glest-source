@@ -495,7 +495,7 @@ namespace Glest {
 			texts.push_back(new Text(lineText, Vec2i(-1, -1), disappear *(++displayItemNumber), coreData.getMenuFontVeryBig(),coreData.getMenuFontVeryBig3D()));
 
 			texts.push_back(new Text(coreData.getLogoTexture(), Vec2i(w/2-128, h/2-64), Vec2i(256, 128), disappear *(++displayItemNumber)));
-			texts.push_back(new Text(GAME_VERSION, Vec2i(w/2+45, h/2-45), disappear *(displayItemNumber++), coreData.getMenuFontNormal(),coreData.getMenuFontNormal3D()));
+			texts.push_back(new Text(GameVersionString, Vec2i(w/2+45, h/2-45), disappear *(displayItemNumber++), coreData.getMenuFontNormal(),coreData.getMenuFontNormal3D()));
 			lineText = "www.megaglest.org";
 			//texts.push_back(new Text(lineText, Vec2i(-1, -1), disappear *(displayItemNumber++), coreData.getMenuFontVeryBig(),coreData.getMenuFontVeryBig3D()));
 			texts.push_back(new Text(lineText, Vec2i(-1, h/2-45-18), disappear *(displayItemNumber-1), coreData.getMenuFontVeryBig(),coreData.getMenuFontVeryBig3D()));

@@ -32,8 +32,9 @@
 #include "cache_manager.h"
 #include "errno.h"
 #include "leak_dumper.h"
-#include "versions.h"
+#include "shared_definitions.h"
 
+using namespace Shared;
 using namespace Shared::Util;
 using namespace Shared::Platform;
 
@@ -42,7 +43,7 @@ namespace Glest {
 		const char *mailString = "https://github.com/ZetaGlest";
 
 		string getCrashDumpFileName() {
-			return (string("zetaglest") + GAME_VERSION) + ".dmp";
+			return (string("zetaglest") + GameVersionString) + ".dmp";
 		}
 		string getPlatformTypeNameString() {
 			static string platform;
@@ -174,7 +175,7 @@ namespace Glest {
 			static string version = "";
 			if (version == "") {
 				version =
-					string(GAME_VERSION) + "-" + getCompilerNameString() + "-" +
+					GameVersionString + "-" + getCompilerNameString() + "-" +
 					getCompileDateTime();
 			}
 			return version;
@@ -184,7 +185,7 @@ namespace Glest {
 			static string version = "";
 			if (version == "") {
 				version =
-					GAME_VERSION + getCompilerNameString();
+					GameVersionString + getCompilerNameString();
 			}
 			return version;
 		}
@@ -197,17 +198,13 @@ namespace Glest {
 			return result;
 		}
 
-		string getNetworkPlatformFreeVersionString() {
-			return GAME_VERSION;
-		}
-
 		string getAboutString1(int i) {
 			//case 1: return "Built: " + string(__DATE__) + " " + GIT_Rev;
 			switch (i) {
 				case 0:
-					return string("ZetaGlest ") + GAME_VERSION;
+					return string("ZetaGlest ") + GameVersionString;
 				case 1:
-					return GAME_VERSION;
+					return GameVersionString;
 				case 2:
 					return "Copyright 2001-2010 The Glest Team";
 				case 3:
@@ -394,7 +391,6 @@ namespace Glest {
 			getCompilerNameString();
 			getNetworkVersionString();
 			getNetworkVersionGITString();
-			getNetworkPlatformFreeVersionString();
 			getCompileDateTime();
 		}
 

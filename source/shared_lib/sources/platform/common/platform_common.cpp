@@ -71,6 +71,7 @@
 #include "platform_util.h"
 #include "utf8.h"
 #include "byte_order.h"
+#include "shared_definitions.h"
 
 #if _BSD_SOURCE || _SVID_SOURCE || _XOPEN_SOURCE >= 500 || _XOPEN_SOURCE && _XOPEN_SOURCE_EXTENDED
 #include <unistd.h>
@@ -97,8 +98,6 @@ namespace Shared {
 		const time_t REFRESH_CRC_DAY_SECONDS = 60 * 60 * 24;
 		static string crcCachePath = "";
 		static void(*unexpected_handler)(const char*) = NULL;
-		static string gameVersion = "";
-		static string gameGITVersion = "";
 
 		namespace Private {
 
@@ -687,19 +686,6 @@ namespace Shared {
 			unexpected_handler = handler;
 		}
 
-		//string getGameVersion() {
-		//	return gameVersion;
-		//}
-		//string getGameGITVersion() {
-		//	return gameGITVersion;
-		//}
-		void setGameVersion(const string &version) {
-			gameVersion = version;
-		}
-		void setGameGITVersion(const string &git) {
-			gameGITVersion = git;
-		}
-
 		string getCRCCacheFileName(std::pair<string, string> cacheKeys) {
 			string crcCacheFile = cacheKeys.first + cacheKeys.second;
 			return crcCacheFile;
@@ -859,8 +845,7 @@ namespace Shared {
 				char szBuf1[100] = "";
 				strftime(szBuf1, 100, "%Y-%m-%d %H:%M:%S", &loctime);
 
-				string writeGameVer = Shared::PlatformByteOrder::toCommonEndian(gameVersion);
-				string writeGameGITVersion = Shared::PlatformByteOrder::toCommonEndian(gameGITVersion);
+				string writeGameVer = Shared::PlatformByteOrder::toCommonEndian(GameVersionString);
 				string writeActualFileName = Shared::PlatformByteOrder::toCommonEndian(actualFileName);
 
 				fprintf(fp, "%20ld,%20u,%20ld",
@@ -868,9 +853,8 @@ namespace Shared {
 					Shared::PlatformByteOrder::toCommonEndian(crcValue),
 					(long) Shared::PlatformByteOrder::toCommonEndian(now));
 
-				fprintf(fp, "\n%s\n%s\n%s",
+				fprintf(fp, "\n%s\n%s",
 					writeGameVer.c_str(),
-					writeGameGITVersion.c_str(),
 					writeActualFileName.c_str());
 
 				fclose(fp);

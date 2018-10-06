@@ -40,11 +40,12 @@
 #include <set>
 #include <iostream>
 #include <iterator>
-#include "versions.h"
+#include "shared_definitions.h"
 
 #include "leak_dumper.h"
 
 using namespace std;
+using namespace Shared;
 using namespace Shared::Platform;
 using namespace Shared::Util;
 using namespace Shared::Map;
@@ -2827,7 +2828,7 @@ namespace Glest {
 				}
 			}
 			publishToServerInfo["uuid"] = Config::getInstance().getString("PlayerId", "");
-			publishToServerInfo["glestVersion"] = GAME_VERSION;
+			publishToServerInfo["glestVersion"] = GameVersionString;
 			publishToServerInfo["platform"] = getPlatformNameString();
 			publishToServerInfo["binaryCompileDate"] = getCompileDateTime();
 			publishToServerInfo["serverTitle"] = this->getGameSettings()->getGameName();

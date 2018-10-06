@@ -42,14 +42,13 @@
 #include "map_preview.h"
 #include <iterator>
 #include "compression_utils.h"
-#include "versions.h"
+#include "shared_definitions.h"
 
 #include "leak_dumper.h"
 
-using namespace
-Shared::Util;
-using namespace
-Shared::CompressionUtil;
+using namespace Shared;
+using namespace Shared::Util;
+using namespace Shared::CompressionUtil;
 
 namespace Glest {
 	namespace Game {
@@ -1311,7 +1310,7 @@ namespace Glest {
 					config.getString("phpVersionParam", "?version=0.1");
 				string
 					gameVersion =
-					"&glestVersion=" + SystemFlags::escapeURL(GAME_VERSION);
+					"&glestVersion=" + SystemFlags::escapeURL(GameVersionString);
 				string
 					playerUUID =
 					"&uuid=" +

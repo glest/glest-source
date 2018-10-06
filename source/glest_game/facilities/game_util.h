@@ -47,7 +47,6 @@ namespace Glest {
 		string getCompilerNameString();
 		string getNetworkVersionString();
 		string getNetworkVersionGITString();
-		string getNetworkPlatformFreeVersionString();
 		string getAboutString1(int i);
 		string getAboutString2(int i);
 		string getTeammateName(int i);

@@ -39,9 +39,11 @@
 #include "cache_manager.h"
 #include "steam.h"
 #include <stdio.h>
-#include "versions.h"
+#include "shared_definitions.h"
 
 #include "leak_dumper.h"
+
+using namespace Shared;
 
 namespace Glest {
 	namespace Game {
@@ -87,7 +89,7 @@ namespace Glest {
 			} else {*/
 				labelVersion.init(buttonXPosition, yPos);
 				//labelVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
-				labelVersion.setText(GAME_VERSION);
+				labelVersion.setText(GameVersionString);
 			//}
 
 			labelGreeting.init(labelVersion.getX(), labelVersion.getY() - 16);
@@ -228,7 +230,7 @@ namespace Glest {
 			console.resetFonts();
 
 			//labelVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
-			labelVersion.setText(GAME_VERSION);
+			labelVersion.setText(GameVersionString);
 
 			buttonNewGame.setText(lang.getString("NewGame"));
 			buttonLoadGame.setText(lang.getString("LoadGame"));
@@ -848,18 +850,18 @@ namespace Glest {
 					props.loadFromText(updateMetaData);
 
 					int compareResult =
-						compareMajorMinorVersion(GAME_VERSION,
+						compareMajorMinorVersion(GameVersionString,
 							props.getString("LatestGameVersion",
 								""));
 					if (compareResult == 0) {
-						if (GAME_VERSION !=
+						if (GameVersionString !=
 							props.getString("LatestGameVersion", "")) {
 							compareResult = -1;
 						}
 					}
 					if (SystemFlags::VERBOSE_MODE_ENABLED)
 						printf("compareResult = %d local [%s] remote [%s]\n",
-							compareResult, GAME_VERSION,
+							compareResult, GameVersionString,
 							props.getString("LatestGameVersion", "").c_str());
 
 					if (compareResult < 0) {

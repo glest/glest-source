@@ -60,7 +60,7 @@
 #include "lua_script.h"
 #include "interpolation.h"
 #include "common_scoped_ptr.h"
-#include "versions.h"
+#include "shared_definitions.h"
 
 // To handle signal catching
 #if defined(__GNUC__) && !defined(__MINGW32__) && !defined(__FreeBSD__) && !defined(BSD)
@@ -5733,7 +5733,6 @@ namespace
 
 			Properties::setApplicationPath(executable_path(argv[0]));
 			Properties::setApplicationDataPath(executable_path(argv[0]));
-			Properties::setGameVersion(GAME_VERSION);
 
 			ServerSocket::setMaxPlayerCount(GameConstants::maxPlayers);
 
@@ -5906,8 +5905,6 @@ namespace
 			if (haveSpecialOutputCommandLineOption == false ||
 				hasCommandArgument(argc, argv,
 					GAME_ARGS[GAME_ARG_VERSION]) == true) {
-				printf("%s %s", extractFileFromDirectoryPath(argv[0]).c_str(),
-					getNetworkPlatformFreeVersionString().c_str());
 				//              printf("\nCompiled using: %s on: %s platform: %s endianness: %s",getCompilerNameString().c_str(),getCompileDateTime().c_str(),getPlatformNameString().c_str(),(::Shared::PlatformByteOrder::isBigEndian() == true ? "big" : "little"));
 				printf("\nCompiled using: %s platform: %s endianness: %s",
 					getCompilerNameString().c_str(),
@@ -5991,7 +5988,7 @@ namespace
 						SwitchSetupRequest().getDataSize());
 				}
 
-				printf("\nversion: [%s]", GAME_VERSION);
+				printf("\nversion: [%s]", GameVersionString.c_str());
 
 #ifdef USE_STREFLOP
 

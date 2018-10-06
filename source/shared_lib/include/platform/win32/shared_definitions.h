@@ -12,14 +12,15 @@
 #ifndef _SHARED_PLATFORM_DEFINITIONS_H_
 #define _SHARED_PLATFORM_DEFINITIONS_H_
 
+#include <string>
+#include "versions.h"
 #include "leak_dumper.h"
 
 namespace Shared {
-	namespace Platform {
-
-
-
-	}
+	const std::string GameVersionString = GAME_VERSION;
+	const std::string LastCompatibleVersionString = LAST_COMPATIBLE_VERSION;
+	const std::string G3DViewerVersionString = G3D_VIEWER_VERSION;
+	const std::string MapEditorVersionString = MAP_EDITOR_VERSION;
 }//end namespace
 
 #endif

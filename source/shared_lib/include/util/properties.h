@@ -50,7 +50,6 @@ namespace Shared {
 			string path;
 			static string applicationPath;
 			static string applicationDataPath;
-			static string gameVersion;
 
 			static string techtreePath;
 			static string scenarioPath;
@@ -74,14 +73,6 @@ namespace Shared {
 			}
 			static string getApplicationDataPath() {
 				return applicationDataPath;
-			}
-
-			static void setGameVersion(string value) {
-				Shared::PlatformCommon::replaceAll(value, "\\", "/");
-				gameVersion = value;
-			}
-			static string getGameVersion() {
-				return gameVersion;
 			}
 
 			static void setTechtreePath(string value) {

@@ -34,14 +34,14 @@
 #include "cache_manager.h"
 // Need the include below for vc++ 2010 because Microsoft messed up their STL!
 #include <iterator>
-#include "versions.h"
+#include "shared_definitions.h"
 #include "leak_dumper.h"
+
+using namespace Shared;
+using namespace Shared::Util;
 
 namespace Glest {
 	namespace Game {
-
-		using namespace::Shared::Util;
-
 		struct FormatString {
 			void operator () (string & s) {
 				s = formatString(s);
@@ -566,7 +566,7 @@ namespace Glest {
 					SystemFlags::escapeURL(Config::getInstance().
 						getString("PlayerId", ""));
 				string gameVersion =
-					"&glestVersion=" + SystemFlags::escapeURL(GAME_VERSION);
+					"&glestVersion=" + SystemFlags::escapeURL(GameVersionString);
 
 				if (SystemFlags::VERBOSE_MODE_ENABLED)
 					printf

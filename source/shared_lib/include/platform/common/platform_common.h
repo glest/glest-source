@@ -195,11 +195,6 @@ namespace Shared {
 		void findAll(const string &path, vector<string> &results, bool cutExtension = false, bool errorOnNotFound = true);
 		vector<string> getFolderTreeContentsListRecursively(const string &path, const string &filterFileExt, bool includeFolders = false, vector<string> *recursiveMap = NULL);
 
-		//string getGameVersion();
-		//string getGameGITVersion();
-		void setGameVersion(const string &version);
-		void setGameGITVersion(const string &git);
-
 		string getCRCCacheFilePath();
 		void setCRCCacheFilePath(const string &path);
 

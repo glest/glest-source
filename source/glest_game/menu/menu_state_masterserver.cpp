@@ -39,8 +39,10 @@
 #include "masterserver_info.h"
 #include <curl/curl.h>
 #include "cache_manager.h"
-#include "versions.h"
+#include "shared_definitions.h"
 #include "leak_dumper.h"
+
+using namespace Shared;
 
 namespace Glest {
 	namespace Game {
@@ -1305,7 +1307,7 @@ namespace Glest {
 						string versionURL =
 							Config::getInstance().getString("VersionURL",
 								"http://zetaglest.dreamhosters.com/files/versions/")
-							+ GAME_VERSION + ".txt";
+							+ GameVersionString + ".txt";
 						//printf("\nversionURL=%s\n",versionURL.c_str());
 						if (versionURL != "") {
 							safeMutex.ReleaseLock(true);

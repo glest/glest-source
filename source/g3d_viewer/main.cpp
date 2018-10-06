@@ -37,7 +37,7 @@
 #include <wx/stdpaths.h>
 #include <platform_util.h>
 #include "common_scoped_ptr.h"
-#include "versions.h"
+#include "shared_definitions.h"
 
 #ifndef WIN32
 #include <errno.h>
@@ -179,7 +179,7 @@ namespace Shared {
 			}
 
 			//         "================================================================================"
-			printf("\n%s %s, [Using %s]\n", extractFileFromDirectoryPath(argv0).c_str(), G3D_VIEWER_VERSION, (const char *) wxConvCurrent->cWX2MB(wxVERSION_STRING));
+			printf("\n%s %s, [Using %s]\n", extractFileFromDirectoryPath(argv0).c_str(), G3DViewerVersionString, (const char *) wxConvCurrent->cWX2MB(wxVERSION_STRING));
 
 			printf("\nDisplays glest 3D-models and unit/projectile/splash particle systems.\n");
 			printf("\nRotate with left mouse button. Zoom with right mouse button or mousewheel.");
@@ -292,7 +292,7 @@ namespace Shared {
 		// 	class MainWindow
 		// ===============================================
 
-		const string MainWindow::winHeader = string("ZetaGlest G3D viewer ") + G3D_VIEWER_VERSION;
+		const string MainWindow::winHeader = string("ZetaGlest G3D viewer ") + G3DViewerVersionString;
 
 		const float defaultspeed = 0.025f;
 
