@@ -46,12 +46,6 @@ include(${CMAKE_SOURCE_DIR}/mk/cmake/Modules/ReqVersAndStaticConf.cmake)
 MESSAGE(STATUS "=====================================================================")
 
 SET(PKG_NAME "zetaglest")
-# read version
-FILE(READ ${PROJECT_SOURCE_DIR}/source/shared_lib/include/version.h ZG_VERSION_CONTENT)
-string(REGEX MATCH "#define GAME_VERSION /"(?:[^"\\]|\\.)*"/" _ ${ZG_VERSION})
-set(ZG_VERSION ${CMAKE_MATCH_1})
-MESSAGE(STATUS "Detected ZetaGlest Version is [v${ZG_VERSION}] ")
-add_definitions(-DZG_VERSION=\"${ZG_VERSION}\")
 
 SET(PIC_FLAG "${PIC_FLAG} -fPIC")
 IF(WANT_STATIC_LIBS AND "${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
