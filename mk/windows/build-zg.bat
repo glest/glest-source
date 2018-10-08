@@ -152,9 +152,9 @@ cd ..\..\..
 cd ..\..
 
 Echo Building libircclient...
-cd ..\..\source\shared_lib\sources\libircclient\%FOLDER_NAME%\
+cd ..\..\external\libircclient\%FOLDER_NAME%\
 msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% libircclient.sln
-cd ..\..\..\..\..\mk\windows
+cd ..\..\..\mk\windows
 
 GOTO COMPILEZG
 

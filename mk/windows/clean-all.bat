@@ -45,10 +45,10 @@ IF EXIST .\bin (
 	cd ..\
 )
 
-IF EXIST ..\..\source\shared_lib\sources\libircclient (
-	cd ..\..\source\shared_lib\sources\libircclient
+IF EXIST ..\..\external\libircclient (
+	cd ..\..\external\libircclient
 	CALL :DELETE
-	cd ..\..\..\..\..\mk\windows
+	cd ..\..\..\mk\windows
 )
 
 ROBOCOPY . . /S /MOVE
