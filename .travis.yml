@@ -60,7 +60,7 @@ before_install:
 script:
 # ALL THE BUILD COMMANDS HERE
 # version 6 skipped here. Below, it's used to test use of FORCE_EMBEDDED_LIBS option
-  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ] && [ $Tr_Compiler_Version != "6" ] ]; then
+  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ] && [ $Tr_Compiler_Version != "6" ]; then
         mkdir build;
         cd build;
         cmake ..  -DCMAKE_INSTALL_PREFIX=$PWD/local -DBUILD_ZETAGLEST_TESTS=ON;
@@ -80,7 +80,7 @@ script:
         echo 'Dependencies:';
         otool -L zetaglest;
     fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ] && [ $Tr_Compiler_Version = "6" ] ]; then
+  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ] && [ $Tr_Compiler_Version = "6" ]; then
         mkdir build;
         cd build;
         cmake ..  -DFORCE_EMBEDDED_LIBS -DCMAKE_INSTALL_PREFIX=$PWD/local -DBUILD_ZETAGLEST_TESTS=ON;
