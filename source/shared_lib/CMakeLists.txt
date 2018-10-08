@@ -329,70 +329,8 @@ IF(BUILD_MODEL_VIEWER OR BUILD_MAP_EDITOR OR BUILD_ZETAGLEST)
         INCLUDE_DIRECTORIES( ${ZG_INCLUDES_ROOT}xml/rapidxml )
         INCLUDE_DIRECTORIES("sources/")
 
-	OPTION(WANT_USE_Ircclient "Enable libircclient support" ON)
-	IF(FORCE_EMBEDDED_LIBS)
-		SET(FORCE_USE_EMBEDDED_Ircclient ON)
-	ELSE()
-		OPTION(FORCE_USE_EMBEDDED_Ircclient "Use embedded to source code version of ircclient" OFF)
-	ENDIF()
-
-        IF(WANT_USE_Ircclient)
-	        #IF(NOT WANT_STATIC_LIBS)
-		IF(NOT FORCE_USE_EMBEDDED_Ircclient)
-				MESSAGE(STATUS "*** Searching for libircclient since WANT_STATIC_LIBS is: ${WANT_STATIC_LIBS} ...")
-				FIND_PACKAGE(Ircclient)
-	        ENDIF()
-
-	        if(NOT IRCCLIENT_FOUND OR FORCE_USE_EMBEDDED_Ircclient)
-				if(NOT FORCE_USE_EMBEDDED_Ircclient)
-					MESSAGE(STATUS "*** Using EMBEDDED libircclient since this system does not have it... IRCCLIENT_FOUND [${IRCCLIENT_FOUND}]")
-				else()
-					MESSAGE(STATUS "*** Using EMBEDDED libircclient because it was forced by option")
-				endif()
-		        SET(ZG_SOURCE_FILES ${ZG_SOURCE_FILES} ${PROJECT_SOURCE_DIR}/source/shared_lib/sources/libircclient/src/libircclient.c)
-		        INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/source/shared_lib/sources/libircclient/include)
-	        else()
-		        MESSAGE(STATUS "*** Using libircclient found in [${IRCCLIENT_INCLUDE_DIR}] IRCCLIENT_FOUND [${IRCCLIENT_FOUND}] IRCCLIENT_LIBRARY [${IRCCLIENT_LIBRARY}]")
-
-		        INCLUDE_DIRECTORIES(${IRCCLIENT_INCLUDE_DIR})
-		        SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${IRCCLIENT_LIBRARY})
-	        endif()
-
-                set(CMAKE_REQUIRED_INCLUDES "${IRCCLIENT_INCLUDE_DIR}")
-                set(CMAKE_REQUIRED_LIBRARIES "${IRCCLIENT_LIBRARY}")
-                include(CheckCXXSourceRuns)
-
-                check_cxx_source_runs("
-                #include <stdio.h>
-                #include <stdlib.h>
-                #include <libircclient.h>
-                int main()
-                {
-                unsigned int high = 0;
-                unsigned int low = 0;
-                irc_get_version(&high,&low);
-                if( (high == 1 && low >= 6) || (high > 1)) {
-                  throw 1;
-                }
-                else {
-                  return 0;
-                }
-                }"
-                LIBIRCCLIENT_VERSION_PRE_1_6)
-                # ^ This test doesn't work, some general problem with irc_get_version
-
-                IF(LIBIRCCLIENT_VERSION_PRE_1_6)
-			message(STATUS "Found LIBIRCCLIENT_VERSION_PRE_1_6: ${LIBIRCCLIENT_VERSION_PRE_1_6}")
-			ADD_DEFINITIONS(-DLIBIRCCLIENT_PRE1_6)
-                ENDIF()
-        else()
-                message(STATUS "****MESSAGE Disabling libircclient!!")
-                ADD_DEFINITIONS(-DDISABLE_IRCCLIENT)
-        endif()
-
 	IF(WIN32)
 		SET(ZG_SOURCE_FILES ${ZG_SOURCE_FILES} ${PROJECT_SOURCE_DIR}/source/shared_lib/sources/platform/posix/socket.cpp)
-		SET(ZG_SOURCE_FILES ${ZG_SOURCE_FILES} ${PROJECT_SOURCE_DIR}/source/shared_lib/sources/platform/posix/ircclient.cpp)
 		SET(ZG_SOURCE_FILES ${ZG_SOURCE_FILES} ${PROJECT_SOURCE_DIR}/source/shared_lib/sources/platform/posix/miniftpserver.cpp)
 		SET(ZG_SOURCE_FILES ${ZG_SOURCE_FILES} ${PROJECT_SOURCE_DIR}/source/shared_lib/sources/platform/posix/miniftpclient.cpp)
 		SET(ZG_SOURCE_FILES ${ZG_SOURCE_FILES} ${PROJECT_SOURCE_DIR}/source/shared_lib/sources/platform/${SDL_VERSION_SNAME}/gl_wrap.cpp)
