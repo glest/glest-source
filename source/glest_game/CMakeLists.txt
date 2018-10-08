@@ -147,6 +147,28 @@ IF(BUILD_ZETAGLEST)
 
 	#########################################################################################
 	# zetaglest game
+	SET(ZG_SOURCE_FILES "")
+	# libircclient
+	IF(FORCE_EMBEDDED_LIBS)
+		SET(FORCE_USE_EMBEDDED_Ircclient ON)
+	ELSE()
+		OPTION(FORCE_USE_EMBEDDED_Ircclient "Use embedded to source code version of ircclient" OFF)
+	ENDIF()
+
+	IF(NOT FORCE_USE_EMBEDDED_Ircclient)
+		MESSAGE(STATUS "*** Searching for libircclient since WANT_STATIC_LIBS is: ${WANT_STATIC_LIBS} ...")
+		FIND_PACKAGE(Ircclient)
+	ENDIF()
+
+	if(NOT IRCCLIENT_FOUND OR FORCE_USE_EMBEDDED_Ircclient)
+		message(STATUS "Using included libbircclient sources")
+		SET(ZG_SOURCE_FILES ${ZG_SOURCE_FILES} ${PROJECT_SOURCE_DIR}/external/libircclient/src/libircclient.c)
+		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/external/libircclient/include)
+	else()
+		MESSAGE(STATUS "*** Using libircclient found in [${IRCCLIENT_INCLUDE_DIR}] IRCCLIENT_FOUND [${IRCCLIENT_FOUND}] IRCCLIENT_LIBRARY [${IRCCLIENT_LIBRARY}]")
+		INCLUDE_DIRECTORIES(${IRCCLIENT_INCLUDE_DIR})
+		SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${IRCCLIENT_LIBRARY})
+	endif()
 
 	SET(DIRS_WITH_SRC
 		ai
@@ -203,8 +225,6 @@ IF(BUILD_ZETAGLEST)
 		SET(GLEST_LIB_INCLUDE_DIRS ${GLEST_LIB_INCLUDE_DIRS} ${GLEST_LIB_INCLUDE_ROOT}platform/${SDL_VERSION_SNAME})
 		SET(GLEST_LIB_INCLUDE_DIRS ${GLEST_LIB_INCLUDE_DIRS} ${GLEST_LIB_INCLUDE_ROOT}platform/unix)
 	ENDIF()
-
-	SET(ZG_SOURCE_FILES "")
 
 	FOREACH(DIR IN LISTS DIRS_WITH_SRC)
 		INCLUDE_DIRECTORIES( ${DIR} )
