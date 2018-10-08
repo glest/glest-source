@@ -83,7 +83,7 @@ script:
   - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ] && [ $Tr_Compiler_Version = "6" ]; then
         mkdir build;
         cd build;
-        cmake ..  -DFORCE_EMBEDDED_LIBS -DCMAKE_INSTALL_PREFIX=$PWD/local -DBUILD_ZETAGLEST_TESTS=ON;
+        cmake ..  -DFORCE_EMBEDDED_LIBS=ON -DCMAKE_INSTALL_PREFIX=$PWD/local -DBUILD_ZETAGLEST_TESTS=ON;
         make && make install;
     fi
 
