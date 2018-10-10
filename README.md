@@ -16,7 +16,7 @@ valkries and "Thors". Start the game by harvesting natural resources,
 then use the cash to produce an army. Single-player mode against the
 CPU is also available.
 
-![ZetaGlest ScreenShot](https://zetaglest.github.io/docs/assets/screenshots/screen147.jpg)
+![ZetaGlest ScreenShot](https://zetaglest.github.io/docs/assets/screenshots/screen147.jpg)//gud job
 
 **README Contents**
 
