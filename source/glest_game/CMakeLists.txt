@@ -170,27 +170,6 @@ IF(BUILD_ZETAGLEST)
 		SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${IRCCLIENT_LIBRARY})
 	endif()
 
-	message(STATUS "Searching for zlib")
-	include(FindZLIB)
-	IF (FORCE_EMBEDDED_LIBS OR NOT ZLIB_FOUND)
-		# miniz is a library included with the ZG distribution. Not as
-			# developed as zlib, but smaller, and uses the same function names
-			# so basically a replacement for miniz. We may one day replace
-			# miniz with the zlib sources
-		SET(ZG_SOURCE_FILES ${ZG_SOURCE_FILES}
-			${PROJECT_SOURCE_DIR}/external/miniz/miniz.c
-			${PROJECT_SOURCE_DIR}/external/miniz/miniz_tdef.c
-			${PROJECT_SOURCE_DIR}/external/miniz/miniz_tinfl.c)
-		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/external/miniz)
-	ELSE()
-		if (ZLIB_FOUND)
-			message(STATUS "Using external zlib")
-			SET(EXTERNAL_LIBS ${EXTERNAL_LIBS} ${ZLIB_LIBRARIES})
-			INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIRS})
-			add_definitions("-DHAVE_ZLIB")
-		ENDIF()
-	ENDIF()
-
 	SET(DIRS_WITH_SRC
 		ai
 		facilities

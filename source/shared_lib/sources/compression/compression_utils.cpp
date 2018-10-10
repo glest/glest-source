@@ -27,7 +27,7 @@
 #ifdef HAVE_ZLIB
 	#include <zlib.h>
 #else
-	#include "miniz.h"
+	#include "miniz/miniz.h"
 #endif
 
 using namespace Shared::Util;
