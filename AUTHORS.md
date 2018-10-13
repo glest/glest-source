@@ -20,6 +20,7 @@ which includes the _MegaGlest_ commit log.
 ## Graphics, Animation, and Artwork
 
 * [virtushda](https://github.com/virtushda)
+* [jasperdanan](https://github.com/jasperdanan)
 
 ## Scenarios
 
