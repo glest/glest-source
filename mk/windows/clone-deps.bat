@@ -36,8 +36,6 @@ git clone https://github.com/ZetaGlest/vorbis.git dependencies/src/vorbis
 Echo.
 git clone https://github.com/ZetaGlest/wxWidgets-2.9.git dependencies/src/wxwidgets
 Echo.
-git clone https://github.com/ZetaGlest/xerces-c.git dependencies/src/xerces
-Echo.
 git clone https://github.com/ZetaGlest/zlib.git dependencies/src/zlib
 Echo.
 git clone https://github.com/ZetaGlest/zetaglest-data.git ..\..\data

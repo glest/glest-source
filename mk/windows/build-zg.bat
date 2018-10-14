@@ -134,11 +134,6 @@ cd .\vorbis\win32\%FOLDER_NAME%\
 msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% vorbis_static.sln
 cd ..\..\..
 
-Echo Building xerces...
-cd .\xerces\%FOLDER_NAME%\
-msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% xerces-c.sln
-cd ..\..
-
 Echo Building curl...
 cd .\curl\%FOLDER_NAME%\
 msbuild.exe /p:Configuration=%MSBUILD_CONFIG%;Platform=%PLATFORM%;PlatformToolset=%TOOLSET%;WindowsTargetPlatformVersion=%WINDOWS_SDK% Curl.sln
