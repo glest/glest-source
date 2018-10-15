@@ -1,8 +1,0 @@
-Coverity builds won't need to be submitted very often.
-
-The instructions are at https://scan.coverity.com/download?tab=cxx
-
-The main commands to run after the prerequisites are met are:
-
-        cov-build --dir cov-int make
-        tar czf zetaglest.tgz cov-build
