@@ -97,7 +97,7 @@ gcc g++ cmake libsdl2-dev libalut-dev libgl1-mesa-dev libglu1-mesa-dev libvorbis
 
 You can install the dependencies with [brew](https://brew.sh/)
 
-    brew install sdl2 lua freetype ftgl libogg glew libvorbis cppunit glib fribidi miniupnpc wxmac
+    brew install sdl2 lua fontconfig freetype ftgl libogg glew libvorbis cppunit glib fribidi miniupnpc wxmac
     brew outdated cmake || brew upgrade cmake; brew outdated pkgconfig || brew upgrade pkgconfig
     brew install Caskroom/cask/xquartz
 
