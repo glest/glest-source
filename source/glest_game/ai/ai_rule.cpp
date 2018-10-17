@@ -107,6 +107,14 @@ namespace
 
 		int
 			AiRuleRepair::getMinUnitsToRepairCastle() {
+			/*
+			* Gets the minimum units needed to repair a castle
+			*
+			* Attributes:
+			*	none
+			*
+			* Documentation Author: Bennett Dixon
+			*/
 			int
 				minUnitsRepairingCastle = 7;
 			if (ai->getCountOfClass(ucWorker) <= 6) {
@@ -460,9 +468,17 @@ namespace
 			return !ai->anyTask() || ai->getCountOfClass(ucWorker) < 4;
 		}
 
-		// This function is what triggers the AI to create new units.
 		void
 			AiRuleAddTasks::execute() {
+			/*
+			* triggers AI to create new units, differs based on Control Type of AIInterface
+			* if ai->outputAIBehaviourToConsole() it will print debug lines to console
+			*
+			* Attributes:
+			*	none
+			*
+			* Documentation Author: Bennett Dixon
+			*/
 			int
 				buildingCount = ai->getCountOfClass(ucBuilding);
 			UnitClass
