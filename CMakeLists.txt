@@ -54,9 +54,9 @@ IF(WANT_STATIC_LIBS AND "${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
 ENDIF()
 
 ## Compiler flags, CPACK configuration and other Apple specific code.
-IF(APPLE)
-	include(${PROJECT_SOURCE_DIR}/mk/macos/CMakeLists.txt)
-ENDIF(APPLE)
+# IF(APPLE)
+#	 include(${PROJECT_SOURCE_DIR}/mk/macos/CMakeLists.txt)
+# ENDIF(APPLE)
 
 IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 	IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")

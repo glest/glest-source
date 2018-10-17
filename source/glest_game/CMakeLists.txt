@@ -86,6 +86,7 @@ IF(BUILD_ZETAGLEST)
 	ENDIF()
 
 	IF(WANT_USE_OpenSSL)
+		INCLUDE_DIRECTORIES(/usr/local/opt/openssl)
 		set(OPENSSL_ROOT_DIR /usr/local/opt/openssl)
 		include(FindOpenSSL)
 		IF(OPENSSL_FOUND)
