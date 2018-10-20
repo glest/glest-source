@@ -648,6 +648,17 @@ namespace
 
 		int
 			Ai::getCountOfType(const UnitType * ut) {
+			/*
+			* Count all units of input type and return this value
+			*
+			* Parameters:
+  			* 	  UnitType * ut: unit type.
+			*
+			* Returns:
+			* 	  int: count of all units with same input type.
+			*
+			* Documentation Author: DGKmaster
+			*/
 			int
 				count = 0;
 			for (int i = 0; i < aiInterface->getMyUnitCount(); ++i) {
@@ -773,6 +784,20 @@ namespace
 
 		bool
 			Ai::beingAttacked(Vec2i & pos, Field & field, int radius) {
+			/*
+			* Find enemy in certain conditions and determine its
+			* possibility to attack
+			*
+			* Parameters:
+  			* 	  Vec2i & pos: AI unit position.
+			* 	  Field & field: Land or Air.
+			* 	  int radius: search radius.
+			*
+			* Returns:
+			* 	  bool: enemy is presented or not.
+			*
+			* Documentation Author: DGKmaster
+			*/
 			const Unit *
 				enemy = aiInterface->getFirstOnSightEnemyUnit(pos, field, radius);
 			return (enemy != NULL);
@@ -1002,6 +1027,15 @@ namespace
 
 		void
 			Ai::addTask(const Task * task) {
+			/*
+			* Add new task to the task queue end
+			* and print to log added task
+			*
+			* Parameters:
+  			* 	  Task * task: The height to set the rectangle.
+			*
+			* Documentation Author: DGKmaster
+			*/
 			tasks.push_back(task);
 			aiInterface->printLog(2, "Task added: " + task->toString());
 		}
@@ -1017,11 +1051,28 @@ namespace
 
 		bool
 			Ai::anyTask() {
+			/*
+			* Return true if tasks list
+			* is not empty, false - otherwise
+			*
+			* Documentation Author: DGKmaster
+			*/
+
+			// Return flag
 			return !tasks.empty();
 		}
 
 		const Task *
 			Ai::getTask() const {
+			/*
+			* Return reference  to the first task 
+			* or if task list is empty - NULL value
+			*
+			* Returns:
+       		*    Task *: first task int the list
+			*
+			* Documentation Author: DGKmaster
+			*/
 			if (tasks.empty()) {
 				return NULL;
 			} else {
@@ -1031,6 +1082,14 @@ namespace
 
 		void
 			Ai::removeTask(const Task * task) {
+			/*
+			* All tasks in list which are equal to input one are removed
+			*
+			* Parameters:
+  			* 	  Task * task: The height to set the rectangle.
+			*
+			* Documentation Author: DGKmaster
+			*/
 			aiInterface->printLog(2, "Task removed: " + task->toString());
 			tasks.remove(task);
 			delete
@@ -1039,6 +1098,15 @@ namespace
 
 		void
 			Ai::retryTask(const Task * task) {
+			/*
+			* Remove all tasks in queue which are equal to input one
+			* and pushed a new one to the end of queue
+			* 
+			* Parameters:
+  			* 	  Task * task: task needed to be retried
+			* 
+			* Documentation Author: DGKmaster
+			*/
 			tasks.remove(task);
 			tasks.push_back(task);
 		}
