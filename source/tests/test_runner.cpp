@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
   // Get the top level suite from the registry
   CppUnit::Test *suite = CppUnit::TestFactoryRegistry::getRegistry().makeTest();
 
-  // Adds the test to the list of test to run
+  // This line adds the test to the list of test to run
   CppUnit::TextUi::TestRunner runner;
   runner.addTest( suite );
 
