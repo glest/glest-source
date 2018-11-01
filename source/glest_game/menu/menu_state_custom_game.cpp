@@ -1,25 +1,21 @@
+// This file is part of ZetaGlest <https://github.com/ZetaGlest>
 //
-//      menu_state_custom_game.cpp: game setup menu as it appears to
-//      to the host
+// Copyright (C) 2018  The ZetaGlest team
 //
-//      This file is part of ZetaGlest <https://github.com/ZetaGlest>
+// ZetaGlest is a fork of MegaGlest <https://megaglest.org>
 //
-//      Copyright (C) 2018  The ZetaGlest team
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//      ZetaGlest is a fork of MegaGlest <https://megaglest.org>
-//
-//      This program is free software: you can redistribute it and/or modify
-//      it under the terms of the GNU General Public License as published by
-//      the Free Software Foundation, either version 3 of the License, or
-//      (at your option) any later version.
-//
-//      This program is distributed in the hope that it will be useful,
-//      but WITHOUT ANY WARRANTY; without even the implied warranty of
-//      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//      GNU General Public License for more details.
-//
-//      You should have received a copy of the GNU General Public License
-//      along with this program.  If not, see <https://www.gnu.org/licenses/>
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <https://www.gnu.org/licenses/>
 
 #include "menu_state_custom_game.h"
 

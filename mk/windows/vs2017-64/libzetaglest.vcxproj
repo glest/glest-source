@@ -409,10 +409,6 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\shared_lib\sources\feathery_ftp\ftpServer.c">
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
-    </ClCompile>
     <ClCompile Include="..\..\..\source\shared_lib\sources\feathery_ftp\ftpSession.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
@@ -425,7 +421,29 @@
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
     </ClCompile>
-    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\*.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\BMPReader.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\buffer.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\camera.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\context.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\font.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\font_manager.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\font_text.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\graphics_interface.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\ImageReaders.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\interpolation.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\JPGReader.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\model.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\model_manager.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\particle.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\pixmap.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\PNGReader.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\quaternion.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\shader.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\shader_manager.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\texture.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\texture_manager.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\TGAReader.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\video_player.cpp" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\gl\*.cpp" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\map\*.cpp" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\miniz\*.c" />
@@ -434,7 +452,10 @@
     <ClCompile Include="..\..\..\source\shared_lib\sources\xml\*.cpp" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\sound\*.cpp" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\sound\openal\*.cpp" />
-    <ClCompile Include="..\..\..\source\shared_lib\sources\platform\common\*.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\platform\common\base_thread.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\platform\common\cache_manager.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\platform\common\platform_common.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\platform\common\simple_threads.cpp" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\platform\miniupnpc\*.c" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\platform\posix\*.cpp" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\platform\win32\*.cpp" />

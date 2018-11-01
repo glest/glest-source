@@ -18,4 +18,3 @@ void freeUPNPDevlist(struct UPNPDev * devlist) {
 		devlist = next;
 	}
 }
-

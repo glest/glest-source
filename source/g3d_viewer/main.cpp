@@ -1,24 +1,21 @@
+// This file is part of ZetaGlest <https://github.com/ZetaGlest>
 //
-//	g3d_viewer:main.cpp:
+// Copyright (C) 2018  The ZetaGlest team
 //
-//	This file is part of ZetaGlest <https://github.com/ZetaGlest>
+// ZetaGlest is a fork of MegaGlest <https://megaglest.org>
 //
-//	Copyright (C) 2018  The ZetaGlest team
-//
-//	ZetaGlest is a fork of MegaGlest <https://megaglest.org>
-//
-//	This program is free software: you can redistribute it and/or modify
-//	it under the terms of the GNU General Public License as published by
-//	the Free Software Foundation, either version 3 of the License, or
-//	(at your option) any later version.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 
-//	This program is distributed in the hope that it will be useful,
-//	but WITHOUT ANY WARRANTY; without even the implied warranty of
-//	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//	GNU General Public License for more details.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//	You should have received a copy of the GNU General Public License
-//	along with this program.  If not, see <https://www.gnu.org/licenses/>
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <https://www.gnu.org/licenses/>
 
 #include "main.h"
 
@@ -370,7 +367,7 @@ namespace Shared {
 
 			//menu
 			menuFile = new wxMenu();
-			menuFile->Append(miFileLoad, wxT("&Load G3d model\tCtrl+L"), wxT("Load 3D model"));
+			menuFile->Append(miFileLoad, wxT("&Load G3D model\tCtrl+L"), wxT("Load 3D model"));
 			menuFile->Append(miFileLoadParticleXML, wxT("Load &Particle XML\tCtrl+P"), wxT("Press ctrl before menu for keeping current particles"));
 			menuFile->Append(miFileLoadProjectileParticleXML, wxT("Load Pro&jectile Particle XML\tCtrl+J"), wxT("Press ctrl before menu for keeping current projectile particles"));
 			menuFile->Append(miFileLoadSplashParticleXML, wxT("Load &Splash Particle XML\tCtrl+S"), wxT("Press ctrl before menu for keeping current splash particles"));
