@@ -18,4 +18,3 @@
 #endif
 
 #endif /* MINIUPNPC_DECLSPEC_H_INCLUDED */
-

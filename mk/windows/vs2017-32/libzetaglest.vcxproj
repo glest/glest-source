@@ -533,51 +533,10 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\source\shared_lib\sources\compression\compression_utils.cpp" />
-    <ClCompile Include="..\..\..\source\shared_lib\sources\feathery_ftp\ftpAccount.c">
+    <ClCompile Include="..\..\..\source\shared_lib\sources\compression\*.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\feathery_ftp\*.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\shared_lib\sources\feathery_ftp\ftpCmds.c">
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\shared_lib\sources\feathery_ftp\ftpLib.c">
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\shared_lib\sources\feathery_ftp\ftpMessages.c">
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\shared_lib\sources\feathery_ftp\ftpRuntime.c">
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\shared_lib\sources\feathery_ftp\ftpServer.c">
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\shared_lib\sources\feathery_ftp\ftpSession.c">
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\shared_lib\sources\feathery_ftp\ftpTargetPosix.c">
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\shared_lib\sources\feathery_ftp\ftpTargetWin32.c">
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
     </ClCompile>
     <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\*.cpp" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\graphics\gl\*.cpp" />
@@ -591,35 +550,28 @@
     <ClCompile Include="..\..\..\source\shared_lib\sources\platform\common\*.cpp" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\platform\miniupnpc\*.c" />
     <ClCompile Include="..\..\..\source\shared_lib\sources\platform\posix\*.cpp" />
-    <ClCompile Include="..\..\..\source\shared_lib\sources\platform\win32\*.cpp" />
-    <ClCompile Include="..\..\..\source\shared_lib\sources\platform\sdl\window.cpp" />
-    <ClCompile Include="..\..\..\source\shared_lib\sources\platform\sdl\window_gl.cpp" />
-    <ClCompile Include="..\..\..\source\shared_lib\sources\platform\sdl\thread.cpp" />
-    <ClCompile Include="..\..\..\source\shared_lib\sources\platform\sdl\gl_wrap.cpp" />
+    <ClCompile Include="..\..\..\source\shared_lib\sources\platform\sdl\*.cpp" />
+	<ClCompile Include="..\..\..\source\shared_lib\sources\platform\win32\*.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\source\shared_lib\include\*.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\compression\*.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\feathery_ftp\*.h" />
-    <ClInclude Include="..\..\..\source\shared_lib\include\streflop\*.h" />
-    <ClInclude Include="..\..\..\source\shared_lib\include\map\*.h" />
-    <ClInclude Include="..\..\..\source\shared_lib\include\graphics\gl\*.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\graphics\*.h" />
+    <ClInclude Include="..\..\..\source\shared_lib\include\graphics\gl\*.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\lua\*.h" />
-    <ClInclude Include="..\..\..\source\shared_lib\include\sound\*.h" />
-    <ClInclude Include="..\..\..\source\shared_lib\include\xml\*.h" />
+    <ClInclude Include="..\..\..\source\shared_lib\include\map\*.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\platform\common\*.h" />
-    <ClInclude Include="..\..\..\source\shared_lib\include\platform\posix\*.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\platform\miniupnpc\*.h" />
+    <ClInclude Include="..\..\..\source\shared_lib\include\platform\posix\*.h" />
+    <ClInclude Include="..\..\..\source\shared_lib\include\platform\sdl\*.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\platform\win32\*.h" />
+    <ClInclude Include="..\..\..\source\shared_lib\include\sound\*.h" />
+    <ClInclude Include="..\..\..\source\shared_lib\include\sound\openal\*.h" />
     <ClInclude Include="..\..\..\source\shared_lib\include\util\*.h" />
-    <ClInclude Include="..\..\..\source\shared_lib\include\platform\sdl\gl_wrap.h" />
-    <ClInclude Include="..\..\..\source\shared_lib\include\platform\sdl\noimpl.h" />
-    <ClInclude Include="..\..\..\source\shared_lib\include\platform\sdl\platform_main.h" />
-    <ClInclude Include="..\..\..\source\shared_lib\include\platform\sdl\sdl_private.h" />
-    <ClInclude Include="..\..\..\source\shared_lib\include\platform\sdl\thread.h" />
-    <ClInclude Include="..\..\..\source\shared_lib\include\platform\sdl\window.h" />
-    <ClInclude Include="..\..\..\source\shared_lib\include\platform\sdl\window_gl.h" />
+    <ClInclude Include="..\..\..\source\shared_lib\include\util\utf8\*.h" />
+    <ClInclude Include="..\..\..\source\shared_lib\include\xml\*.h" />
+    <ClInclude Include="..\..\..\source\shared_lib\include\xml\rapidxml\*.h" />
     <ClInclude Include="..\..\..\source\shared_lib\sources\miniz\*.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

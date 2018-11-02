@@ -34,4 +34,3 @@ struct xmlparser {
 void parsexml(struct xmlparser *);
 
 #endif
-

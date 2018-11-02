@@ -571,4 +571,3 @@ miniwget_getaddr(const char * url, int * size,
 #endif
 	return miniwget2(hostname, port, path, size, addr, addrlen, scope_id);
 }
-
