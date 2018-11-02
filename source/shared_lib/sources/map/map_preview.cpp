@@ -519,26 +519,26 @@ namespace Shared {
 			if (w < MIN_MAP_CELL_DIMENSION || h < MIN_MAP_CELL_DIMENSION) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Size of map must be at least %dx%d", MIN_MAP_CELL_DIMENSION, MIN_MAP_CELL_DIMENSION);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 				//return;
 			}
 
 			if (w > MAX_MAP_CELL_DIMENSION || h > MAX_MAP_CELL_DIMENSION) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Size of map can be at most %dx%d", MAX_MAP_CELL_DIMENSION, MAX_MAP_CELL_DIMENSION);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (alt < MIN_MAP_CELL_HEIGHT || alt > MAX_MAP_CELL_HEIGHT) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Height must be in the range %d-%d", MIN_MAP_CELL_HEIGHT, MAX_MAP_CELL_HEIGHT);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (surf < st_Grass || surf > st_Ground) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Surface must be in the range %d-%d", st_Grass, st_Ground);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			//if (cells != NULL) {
@@ -572,26 +572,26 @@ namespace Shared {
 			if (w < MIN_MAP_CELL_DIMENSION || h < MIN_MAP_CELL_DIMENSION) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Size of map must be at least %dx%d", MIN_MAP_CELL_DIMENSION, MIN_MAP_CELL_DIMENSION);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 				//return;
 			}
 
 			if (w > MAX_MAP_CELL_DIMENSION || h > MAX_MAP_CELL_DIMENSION) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Size of map can be at most %dx%d", MAX_MAP_CELL_DIMENSION, MAX_MAP_CELL_DIMENSION);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (alt < MIN_MAP_CELL_HEIGHT || alt > MAX_MAP_CELL_HEIGHT) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Height must be in the range %d-%d", MIN_MAP_CELL_HEIGHT, MAX_MAP_CELL_HEIGHT);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (surf < st_Grass || surf > st_Ground) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Surface must be in the range %d-%d", st_Grass, st_Ground);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			int oldW = this->w;
@@ -649,7 +649,7 @@ namespace Shared {
 			if (maxPlayers < MIN_MAP_FACTIONCOUNT || maxPlayers > MAX_MAP_FACTIONCOUNT) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Max Players must be in the range %d-%d", MIN_MAP_FACTIONCOUNT, MAX_MAP_FACTIONCOUNT);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			//if (startLocations != NULL) {
@@ -762,7 +762,7 @@ namespace Shared {
 					}
 				}
 			} else {
-				throw megaglest_runtime_error("Incorrect surfaces");
+				throw game_runtime_error("Incorrect surfaces");
 			}
 		}
 
@@ -815,7 +815,7 @@ namespace Shared {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", bytes, __LINE__);
 					fclose(f1);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 				fromEndianMapFileHeader(header);
 
@@ -839,7 +839,7 @@ namespace Shared {
 					if (bytes != 1) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", bytes, __LINE__);
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 					startLocations[i].x = Shared::PlatformByteOrder::fromCommonEndian(startLocations[i].x);
 
@@ -847,7 +847,7 @@ namespace Shared {
 					if (bytes != 1) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", bytes, __LINE__);
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 					startLocations[i].y = Shared::PlatformByteOrder::fromCommonEndian(startLocations[i].y);
 				}
@@ -860,7 +860,7 @@ namespace Shared {
 						if (bytes != 1) {
 							char szBuf[8096] = "";
 							snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", bytes, __LINE__);
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 						cells[i][j].height = Shared::PlatformByteOrder::fromCommonEndian(cells[i][j].height);
 					}
@@ -873,7 +873,7 @@ namespace Shared {
 						if (bytes != 1) {
 							char szBuf[8096] = "";
 							snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", bytes, __LINE__);
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 						cells[i][j].surface = Shared::PlatformByteOrder::fromCommonEndian(cells[i][j].surface);
 					}
@@ -887,7 +887,7 @@ namespace Shared {
 						if (bytes != 1) {
 							char szBuf[8096] = "";
 							snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", bytes, __LINE__);
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 						obj = Shared::PlatformByteOrder::fromCommonEndian(obj);
 
@@ -910,7 +910,7 @@ namespace Shared {
 				string strError = "[#5] Could not open file, result: " + intToStr(error) + " - " + intToStr(fileErrno) + " " + strerror(fileErrno) + " [" + path + "]";
 				throw strError;
 #else
-				throw megaglest_runtime_error("[#5] error opening map file: " + path);
+				throw game_runtime_error("[#5] error opening map file: " + path);
 #endif
 			}
 		}
@@ -983,7 +983,7 @@ namespace Shared {
 
 				hasChanged = false;
 			} else {
-				throw megaglest_runtime_error("Error opening map file: " + path);
+				throw game_runtime_error("Error opening map file: " + path);
 			}
 
 			//void randomHeight(int x, int y, int height);
@@ -1044,7 +1044,7 @@ namespace Shared {
 				f = fopen(file.c_str(), "rb");
 #endif
 				if (f == NULL) {
-					throw megaglest_runtime_error("Can't open file");
+					throw game_runtime_error("Can't open file");
 				}
 
 				MapFileHeader header;
@@ -1057,7 +1057,7 @@ namespace Shared {
 						snprintf(szBuf, 8096, "In [%s::%s Line: %d]\nfile [%s]\nreadBytes != sizeof(MapFileHeader) [" MG_SIZE_T_SPECIFIER "] [" MG_SIZE_T_SPECIFIER "]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, file.c_str(), readBytes, sizeof(MapFileHeader));
 						SystemFlags::OutputDebug(SystemFlags::debugError, "%s", szBuf);
 
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 				} else {
 					fromEndianMapFileHeader(header);
@@ -1070,7 +1070,7 @@ namespace Shared {
 							printf("In [%s::%s Line: %d]\file [%s]\nheader.version < mapver_1 || header.version >= mapver_MAX [%d] [%d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, file.c_str(), header.version, mapver_MAX);
 							SystemFlags::OutputDebug(SystemFlags::debugError, "%s", szBuf);
 
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 					} else if (header.maxFactions <= 0 || header.maxFactions > MAX_MAP_FACTIONCOUNT) {
 						validMap = false;
@@ -1080,7 +1080,7 @@ namespace Shared {
 							printf("In [%s::%s Line: %d]\file [%s]\nheader.maxFactions <= 0 || header.maxFactions > MAX_MAP_FACTIONCOUNT [%d] [%d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, file.c_str(), header.maxFactions, MAX_MAP_FACTIONCOUNT);
 							SystemFlags::OutputDebug(SystemFlags::debugError, "%s", szBuf);
 
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 					} else {
 						mapInfo->size.x = header.width;
@@ -1104,7 +1104,7 @@ namespace Shared {
 
 				//assert(0);
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s] loading map [%s]\n", __FILE__, __FUNCTION__, __LINE__, e.what(), file.c_str());
-				throw megaglest_runtime_error("Error loading map file: [" + file + "] msg: " + e.what() + " errno [" + intToStr(errno) + "] [" + strerror(errno) + "]");
+				throw game_runtime_error("Error loading map file: [" + file + "] msg: " + e.what() + " errno [" + intToStr(errno) + "] [" + strerror(errno) + "]");
 			}
 
 			return validMap;
@@ -1137,7 +1137,7 @@ namespace Shared {
 			}
 
 			if (errorOnNotFound == true) {
-				throw megaglest_runtime_error("Map [" + mapName + "] not found, scenarioDir [" + scenarioDir + "]");
+				throw game_runtime_error("Map [" + mapName + "] not found, scenarioDir [" + scenarioDir + "]");
 			}
 
 			return "";

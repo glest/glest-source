@@ -125,7 +125,7 @@ namespace Shared {
 				file = fopen(path.c_str(), "rb");
 #endif
 				if (file == NULL) {
-					throw megaglest_runtime_error("Can't open TGA file: " + path, true);
+					throw game_runtime_error("Can't open TGA file: " + path, true);
 				}
 
 				//read header
@@ -134,7 +134,7 @@ namespace Shared {
 				if (readBytes != 1) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 				static bool bigEndianSystem = Shared::PlatformByteOrder::isBigEndian();
 				if (bigEndianSystem == true) {
@@ -151,29 +151,29 @@ namespace Shared {
 				}
 				//check that we can load this tga file
 				if (fileHeader.idLength != 0) {
-					throw megaglest_runtime_error(path + ": id field is not 0", true);
+					throw game_runtime_error(path + ": id field is not 0", true);
 				}
 
 				if (fileHeader.dataTypeCode != tgaUncompressedRgb && fileHeader.dataTypeCode != tgaUncompressedBw) {
-					throw megaglest_runtime_error(path + ": only uncompressed BW and RGB targa images are supported", true);
+					throw game_runtime_error(path + ": only uncompressed BW and RGB targa images are supported", true);
 				}
 
 				//check bits per pixel
 				if (fileHeader.bitsPerPixel != 8 && fileHeader.bitsPerPixel != 24 && fileHeader.bitsPerPixel != 32) {
-					throw megaglest_runtime_error(path + ": only 8, 24 and 32 bit targa images are supported", true);
+					throw game_runtime_error(path + ": only 8, 24 and 32 bit targa images are supported", true);
 				}
 
 				h = fileHeader.height;
 				w = fileHeader.width;
 				components = fileHeader.bitsPerPixel / 8;
-			} catch (megaglest_runtime_error& ex) {
+			} catch (game_runtime_error& ex) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Error in [%s] on line: %d msg: %s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __LINE__, ex.what());
-				throw megaglest_runtime_error(szBuf, !ex.wantStackTrace());
+				throw game_runtime_error(szBuf, !ex.wantStackTrace());
 			} catch (exception& ex) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Error in [%s] on line: %d msg: %s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __LINE__, ex.what());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 
@@ -193,7 +193,7 @@ namespace Shared {
 						if (readBytes != 1) {
 							char szBuf[8096] = "";
 							snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 						if (bigEndianSystem == true) {
 							l = Shared::PlatformByteOrder::fromCommonEndian(l);
@@ -207,7 +207,7 @@ namespace Shared {
 						if (readBytes != 1) {
 							char szBuf[8096] = "";
 							snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 						if (bigEndianSystem == true) {
 							b = Shared::PlatformByteOrder::fromCommonEndian(b);
@@ -217,7 +217,7 @@ namespace Shared {
 						if (readBytes != 1) {
 							char szBuf[8096] = "";
 							snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 						if (bigEndianSystem == true) {
 							g = Shared::PlatformByteOrder::fromCommonEndian(g);
@@ -227,7 +227,7 @@ namespace Shared {
 						if (readBytes != 1) {
 							char szBuf[8096] = "";
 							snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 						if (bigEndianSystem == true) {
 							r = Shared::PlatformByteOrder::fromCommonEndian(r);
@@ -238,7 +238,7 @@ namespace Shared {
 							if (readBytes != 1) {
 								char szBuf[8096] = "";
 								snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-								throw megaglest_runtime_error(szBuf);
+								throw game_runtime_error(szBuf);
 							}
 							if (bigEndianSystem == true) {
 								a = Shared::PlatformByteOrder::fromCommonEndian(a);
@@ -267,14 +267,14 @@ namespace Shared {
 							break;
 					}
 				}
-			} catch (megaglest_runtime_error& ex) {
+			} catch (game_runtime_error& ex) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Error in [%s] on line: %d msg: %s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __LINE__, ex.what());
-				throw megaglest_runtime_error(szBuf, !ex.wantStackTrace());
+				throw game_runtime_error(szBuf, !ex.wantStackTrace());
 			} catch (exception& ex) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Error in [%s] on line: %d msg: %s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __LINE__, ex.what());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 
@@ -289,7 +289,7 @@ namespace Shared {
 			file = fopen(path.c_str(), "wb");
 #endif
 			if (file == NULL) {
-				throw megaglest_runtime_error("Can't open TGA file: " + path, true);
+				throw game_runtime_error("Can't open TGA file: " + path, true);
 			}
 
 			TargaFileHeader fileHeader;
@@ -365,7 +365,7 @@ namespace Shared {
 			file = fopen(path.c_str(), "rb");
 #endif
 			if (file == NULL) {
-				throw megaglest_runtime_error("Can't open BMP file: " + path, true);
+				throw game_runtime_error("Can't open BMP file: " + path, true);
 			}
 
 			//read file header
@@ -374,7 +374,7 @@ namespace Shared {
 			if (readBytes != 1) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			static bool bigEndianSystem = Shared::PlatformByteOrder::isBigEndian();
 			if (bigEndianSystem == true) {
@@ -387,7 +387,7 @@ namespace Shared {
 			}
 
 			if (fileHeader.type1 != 'B' || fileHeader.type2 != 'M') {
-				throw megaglest_runtime_error(path + " is not a bitmap", true);
+				throw game_runtime_error(path + " is not a bitmap", true);
 			}
 
 			//read info header
@@ -396,7 +396,7 @@ namespace Shared {
 			if (readBytes != 1) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			if (bigEndianSystem == true) {
 				infoHeader.bitCount = Shared::PlatformByteOrder::fromCommonEndian(infoHeader.bitCount);
@@ -412,7 +412,7 @@ namespace Shared {
 				infoHeader.yPelsPerMeter = Shared::PlatformByteOrder::fromCommonEndian(infoHeader.yPelsPerMeter);
 			}
 			if (infoHeader.bitCount != 24) {
-				throw megaglest_runtime_error(path + " is not a 24 bit bitmap", true);
+				throw game_runtime_error(path + " is not a 24 bit bitmap", true);
 			}
 
 			h = infoHeader.height;
@@ -433,7 +433,7 @@ namespace Shared {
 				if (readBytes != 1) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 				if (bigEndianSystem == true) {
 					b = Shared::PlatformByteOrder::fromCommonEndian(b);
@@ -442,7 +442,7 @@ namespace Shared {
 				if (readBytes != 1) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 				if (bigEndianSystem == true) {
 					g = Shared::PlatformByteOrder::fromCommonEndian(g);
@@ -452,7 +452,7 @@ namespace Shared {
 				if (readBytes != 1) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 				if (bigEndianSystem == true) {
 					r = Shared::PlatformByteOrder::fromCommonEndian(r);
@@ -489,7 +489,7 @@ namespace Shared {
 			file = fopen(path.c_str(), "wb");
 #endif
 			if (file == NULL) {
-				throw megaglest_runtime_error("Can't open BMP file for writing: " + path);
+				throw game_runtime_error("Can't open BMP file for writing: " + path);
 			}
 
 			BitmapFileHeader fileHeader;
@@ -572,16 +572,16 @@ namespace Shared {
 		}
 
 		void PixmapIoPng::openRead(const string &path) {
-			throw megaglest_runtime_error("PixmapIoPng::openRead not implemented!");
+			throw game_runtime_error("PixmapIoPng::openRead not implemented!");
 		}
 
 		void PixmapIoPng::read(uint8 *pixels) {
-			throw megaglest_runtime_error("PixmapIoPng::read not implemented!");
+			throw game_runtime_error("PixmapIoPng::read not implemented!");
 		}
 
 		void PixmapIoPng::read(uint8 *pixels, int components) {
 
-			throw megaglest_runtime_error("PixmapIoPng::read #2 not implemented!");
+			throw game_runtime_error("PixmapIoPng::read #2 not implemented!");
 		}
 
 		void PixmapIoPng::openWrite(const string &path, int w, int h, int components) {
@@ -596,7 +596,7 @@ namespace Shared {
 			file = fopen(path.c_str(), "wb");
 #endif
 			if (file == NULL) {
-				throw megaglest_runtime_error("Can't open PNG file for writing: " + path);
+				throw game_runtime_error("Can't open PNG file for writing: " + path);
 			}
 		}
 
@@ -644,16 +644,16 @@ namespace Shared {
 		}
 
 		void PixmapIoJpg::openRead(const string &path) {
-			throw megaglest_runtime_error("PixmapIoJpg::openRead not implemented!");
+			throw game_runtime_error("PixmapIoJpg::openRead not implemented!");
 		}
 
 		void PixmapIoJpg::read(uint8 *pixels) {
-			throw megaglest_runtime_error("PixmapIoJpg::read not implemented!");
+			throw game_runtime_error("PixmapIoJpg::read not implemented!");
 		}
 
 		void PixmapIoJpg::read(uint8 *pixels, int components) {
 
-			throw megaglest_runtime_error("PixmapIoJpg::read #2 not implemented!");
+			throw game_runtime_error("PixmapIoJpg::read #2 not implemented!");
 		}
 
 		void PixmapIoJpg::openWrite(const string &path, int w, int h, int components) {
@@ -668,7 +668,7 @@ namespace Shared {
 			file = fopen(path.c_str(), "wb");
 #endif
 			if (file == NULL) {
-				throw megaglest_runtime_error("Can't open JPG file for writing: " + path);
+				throw game_runtime_error("Can't open JPG file for writing: " + path);
 			}
 		}
 
@@ -762,7 +762,7 @@ namespace Shared {
 
 		Pixmap1D::Pixmap1D() {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 
@@ -773,7 +773,7 @@ namespace Shared {
 
 		Pixmap1D::Pixmap1D(int components) {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 
@@ -782,7 +782,7 @@ namespace Shared {
 
 		Pixmap1D::Pixmap1D(int w, int components) {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 
@@ -823,7 +823,7 @@ namespace Shared {
 			} else if (toLower(extension) == "tga") {
 				loadTga(path);
 			} else {
-				throw megaglest_runtime_error("Unknown pixmap extension [" + extension + "] file [" + path + "]");
+				throw game_runtime_error("Unknown pixmap extension [" + extension + "] file [" + path + "]");
 			}
 			this->path = path;
 			CalculatePixelsCRC(pixels, getPixelByteCount(), crc);
@@ -841,7 +841,7 @@ namespace Shared {
 			} else if (plb.getW() == 1) {
 				w = plb.getH();
 			} else {
-				throw megaglest_runtime_error("One of the texture dimensions must be 1");
+				throw game_runtime_error("One of the texture dimensions must be 1");
 			}
 
 			if (components == -1) {
@@ -867,7 +867,7 @@ namespace Shared {
 			} else if (plt.getW() == 1) {
 				w = plt.getH();
 			} else {
-				throw megaglest_runtime_error("One of the texture dimensions must be 1");
+				throw game_runtime_error("One of the texture dimensions must be 1");
 			}
 
 			int fileComponents = plt.getComponents();
@@ -891,7 +891,7 @@ namespace Shared {
 
 		Pixmap2D::Pixmap2D() {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 			h = -1;
@@ -902,7 +902,7 @@ namespace Shared {
 
 		Pixmap2D::Pixmap2D(int components) {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 			h = -1;
@@ -915,7 +915,7 @@ namespace Shared {
 
 		Pixmap2D::Pixmap2D(int w, int h, int components) {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 			this->h = 0;
@@ -944,7 +944,7 @@ namespace Shared {
 			if (getPixelByteCount() <= 0 || (h <= 0 || w <= 0 || components <= 0)) {
 				char szBuf[8096];
 				snprintf(szBuf, 8096, "Invalid pixmap dimensions for [%s], h = %d, w = %d, components = %d\n", path.c_str(), h, w, components);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			pixels = new uint8[getPixelByteCount()];
 			CalculatePixelsCRC(pixels, 0, crc);
@@ -1022,7 +1022,7 @@ namespace Shared {
 			} else if (toLower(extension) == "png") {
 				savePng(path);
 			} else {
-				throw megaglest_runtime_error("Unknown pixmap extension [" + extension + "] file [" + path + "]");
+				throw game_runtime_error("Unknown pixmap extension [" + extension + "] file [" + path + "]");
 			}
 		}
 
@@ -1056,7 +1056,7 @@ namespace Shared {
 				if (index >= getPixelByteCount()) {
 					char szBuf[8096];
 					snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 
 				value[i] = pixels[index];
@@ -1069,7 +1069,7 @@ namespace Shared {
 				if (index >= getPixelByteCount()) {
 					char szBuf[8096];
 					snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 
 				value[i] = pixels[index] / 255.f;
@@ -1081,7 +1081,7 @@ namespace Shared {
 			if (index >= getPixelByteCount()) {
 				char szBuf[8096];
 				snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			value = pixels[index];
@@ -1092,7 +1092,7 @@ namespace Shared {
 			if (index >= getPixelByteCount()) {
 				char szBuf[8096];
 				snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			value = pixels[index] / 255.f;
@@ -1106,7 +1106,7 @@ namespace Shared {
 				if (index >= getPixelByteCount()) {
 					char szBuf[8096];
 					snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 
 				v.ptr()[i] = pixels[index] / 255.f;
@@ -1121,7 +1121,7 @@ namespace Shared {
 				if (index >= getPixelByteCount()) {
 					char szBuf[8096];
 					snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 
 				v.ptr()[i] = pixels[index] / 255.f;
@@ -1134,7 +1134,7 @@ namespace Shared {
 			if (index >= getPixelByteCount()) {
 				char szBuf[8096];
 				snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			float result = pixels[index] / 255.f;
 			return truncateDecimal<float>(result, 6);
@@ -1150,14 +1150,14 @@ namespace Shared {
 			if (arraySize > components) {
 				char szBuf[8096];
 				snprintf(szBuf, 8096, "Invalid pixmap arraySize: %d for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", arraySize, path.c_str(), h, w, components, x, y);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			for (int i = 0; i < components; ++i) {
 				std::size_t index = (w * y + x) * components + i;
 				if (index >= getPixelByteCount()) {
 					char szBuf[8096];
 					snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 
 				pixels[index] = value[i];
@@ -1169,7 +1169,7 @@ namespace Shared {
 			if (arraySize > components) {
 				char szBuf[8096];
 				snprintf(szBuf, 8096, "Invalid pixmap arraySize: %d for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", arraySize, path.c_str(), h, w, components, x, y);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			for (int i = 0; i < components; ++i) {
@@ -1177,7 +1177,7 @@ namespace Shared {
 				if (index >= getPixelByteCount()) {
 					char szBuf[8096];
 					snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 				pixels[index] = static_cast<uint8>(value[i] * 255.f);
 			}
@@ -1189,7 +1189,7 @@ namespace Shared {
 			if (index >= getPixelByteCount()) {
 				char szBuf[8096];
 				snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			pixels[index] = value;
@@ -1201,7 +1201,7 @@ namespace Shared {
 			if (index >= getPixelByteCount()) {
 				char szBuf[8096];
 				snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			pixels[index] = static_cast<uint8>(value * 255.f);
@@ -1215,7 +1215,7 @@ namespace Shared {
 				if (index >= getPixelByteCount()) {
 					char szBuf[8096];
 					snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 				pixels[index] = static_cast<uint8>(p.ptr()[i] * 255.f);
 			}
@@ -1228,7 +1228,7 @@ namespace Shared {
 				if (index >= getPixelByteCount()) {
 					char szBuf[8096];
 					snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 				pixels[index] = static_cast<uint8>(p.ptr()[i] * 255.f);
 			}
@@ -1240,7 +1240,7 @@ namespace Shared {
 			if (index >= getPixelByteCount()) {
 				char szBuf[8096];
 				snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			pixels[index] = static_cast<uint8>(p * 255.f);
@@ -1300,7 +1300,7 @@ namespace Shared {
 				!doDimensionsAgree(rightUp) ||
 				!doDimensionsAgree(leftDown) ||
 				!doDimensionsAgree(rightDown)) {
-				throw megaglest_runtime_error("Pixmap2D::splat: pixmap dimensions don't agree");
+				throw game_runtime_error("Pixmap2D::splat: pixmap dimensions don't agree");
 			}
 
 			for (int i = 0; i < w; ++i) {
@@ -1342,7 +1342,7 @@ namespace Shared {
 			if (
 				!doDimensionsAgree(pixmap1) ||
 				!doDimensionsAgree(pixmap2)) {
-				throw megaglest_runtime_error("Pixmap2D::lerp: pixmap dimensions don't agree");
+				throw game_runtime_error("Pixmap2D::lerp: pixmap dimensions don't agree");
 			}
 
 			for (int i = 0; i < w; ++i) {
@@ -1357,7 +1357,7 @@ namespace Shared {
 			assert(components == sourcePixmap->getComponents());
 
 			if (w != sourcePixmap->getW() || h != sourcePixmap->getH()) {
-				throw megaglest_runtime_error("Pixmap2D::copy() dimensions must agree");
+				throw game_runtime_error("Pixmap2D::copy() dimensions must agree");
 			}
 			memcpy(pixels, sourcePixmap->getPixels(), w*h*sourcePixmap->getComponents());
 			this->path = sourcePixmap->path;
@@ -1368,7 +1368,7 @@ namespace Shared {
 			assert(components == sourcePixmap->getComponents());
 
 			if (w < sourcePixmap->getW() && h < sourcePixmap->getH()) {
-				throw megaglest_runtime_error("Pixmap2D::subCopy(), bad dimensions");
+				throw game_runtime_error("Pixmap2D::subCopy(), bad dimensions");
 			}
 
 			uint8 *pixel = new uint8[components];
@@ -1389,7 +1389,7 @@ namespace Shared {
 			assert(components == sourcePixmap->getComponents());
 
 			if (x + w > sourcePixmap->getW() && y + h > sourcePixmap->getH()) {
-				throw megaglest_runtime_error("Pixmap2D::copyImagePart(), bad dimensions");
+				throw game_runtime_error("Pixmap2D::copyImagePart(), bad dimensions");
 			}
 
 			uint8 *pixel = new uint8[components];
@@ -1415,7 +1415,7 @@ namespace Shared {
 
 		Pixmap3D::Pixmap3D() {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 
@@ -1429,7 +1429,7 @@ namespace Shared {
 
 		Pixmap3D::Pixmap3D(int w, int h, int d, int components) {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 			pixels = NULL;
@@ -1439,7 +1439,7 @@ namespace Shared {
 
 		Pixmap3D::Pixmap3D(int d, int components) {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 			pixels = NULL;
@@ -1497,7 +1497,7 @@ namespace Shared {
 			} else if (toLower(extension) == "tga") {
 				loadSliceTga(path, slice);
 			} else {
-				throw megaglest_runtime_error("Unknown pixmap extension [" + extension + "] file [" + path + "]");
+				throw game_runtime_error("Unknown pixmap extension [" + extension + "] file [" + path + "]");
 			}
 			this->path = path;
 			CalculatePixelsCRC(pixels, getPixelByteCount(), crc);
@@ -1545,7 +1545,7 @@ namespace Shared {
 		// =====================================================
 		PixmapCube::PixmapCube() {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 		}

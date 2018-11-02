@@ -81,7 +81,7 @@ namespace Shared {
 			if (min > max) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s Line: %d] min > max, min = %d, max = %d", __FILE__, __FUNCTION__, __LINE__, min, max);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			int diff = max - min;
@@ -90,7 +90,7 @@ namespace Shared {
 			if (res < min || res > max) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s Line: %d] res < min || res > max, min = %d, max = %d, res = %d", __FILE__, __FUNCTION__, __LINE__, min, max, res);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			return res;
 		}
@@ -99,7 +99,7 @@ namespace Shared {
 			if (min > max) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s Line: %d] min > max, min = %f, max = %f", __FILE__, __FUNCTION__, __LINE__, min, max);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			float rand01 = static_cast<float>(this->rand(lastCaller)) / (m - 1);
@@ -109,7 +109,7 @@ namespace Shared {
 			if (res < min || res > max) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s Line: %d] res < min || res > max, min = %f, max = %f, res = %f", __FILE__, __FUNCTION__, __LINE__, min, max, res);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			return res;
 		}

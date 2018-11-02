@@ -39,7 +39,7 @@ namespace Shared {
 			//open file
 			ifstream ifs(path.c_str());
 			if (ifs.fail()) {
-				throw megaglest_runtime_error("Can't open shader file: " + path);
+				throw game_runtime_error("Can't open shader file: " + path);
 			}
 
 			//read source

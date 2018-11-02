@@ -139,7 +139,7 @@ namespace Glest {
 						"Error canceling upgrade, iterFind->second >= upgrades.size() - [%d] : [%d]",
 						iterFind->second, (int) upgrades.size());
 					throw
-						megaglest_runtime_error
+						game_runtime_error
 						("Error canceling upgrade, upgrade not found in upgrade manager");
 				}
 				int eraseIndex = iterFind->second;
@@ -158,7 +158,7 @@ namespace Glest {
 				}
 			} else {
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("Error canceling upgrade, upgrade not found in upgrade manager");
 			}
 
@@ -175,7 +175,7 @@ namespace Glest {
 					upgrades.erase(it);
 				}
 				else{
-					throw megaglest_runtime_error("Error canceling upgrade, upgrade not found in upgrade manager");
+					throw game_runtime_error("Error canceling upgrade, upgrade not found in upgrade manager");
 				}
 			*/
 		}
@@ -187,7 +187,7 @@ namespace Glest {
 				upgrades[iterFind->second]->setState(usUpgraded);
 			} else {
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("Error finishing upgrade, upgrade not found in upgrade manager");
 			}
 
@@ -205,7 +205,7 @@ namespace Glest {
 					(*it)->setState(usUpgraded);
 				}
 				else{
-					throw megaglest_runtime_error("Error finishing upgrade, upgrade not found in upgrade manager");
+					throw game_runtime_error("Error finishing upgrade, upgrade not found in upgrade manager");
 				}
 			*/
 		}

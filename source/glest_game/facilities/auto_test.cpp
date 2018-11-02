@@ -73,7 +73,7 @@ namespace Glest {
 					loadGameSettingsFile, &gameSettings);
 
 				if (fileFound == false) {
-					throw megaglest_runtime_error("Specified game settings file [" + loadGameSettingsFile + "] was NOT found!");
+					throw game_runtime_error("Specified game settings file [" + loadGameSettingsFile + "] was NOT found!");
 				}
 				//printf("Got settings:\n%s",gameSettings.toString().c_str());
 				mainMenu->setState(new MenuStateCustomGame(program, mainMenu, false, pNewGame, true, &gameSettings));

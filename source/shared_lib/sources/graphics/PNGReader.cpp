@@ -74,7 +74,7 @@ namespace Shared {
 
 		Pixmap2D* PNGReader::read(ifstream& is, const string& path, Pixmap2D* ret) const {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 			//Read file
@@ -91,25 +91,25 @@ namespace Shared {
 			if (png_sig_cmp(buffer, 0, 8) != 0) {
 				delete[] buffer;
 				//This is not a PNG file - could be used for fast checking whether file is supported or not
-				throw megaglest_runtime_error(path + " is not a png", true);
+				throw game_runtime_error(path + " is not a png", true);
 			}
 
 			png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 			if (!png_ptr) {
 				delete[] buffer;
-				throw megaglest_runtime_error(path + " is a corrupt(1) png", true);
+				throw game_runtime_error(path + " is a corrupt(1) png", true);
 			}
 			png_infop info_ptr = png_create_info_struct(png_ptr);
 			if (!info_ptr) {
 				png_destroy_read_struct(&png_ptr, (png_infopp) NULL, (png_infopp) NULL);
 				delete[] buffer;
-				throw megaglest_runtime_error(path + " is a corrupt(2) png", true);
+				throw game_runtime_error(path + " is a corrupt(2) png", true);
 			}
 			if (setjmp(png_jmpbuf(png_ptr))) {
 				png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp) NULL);
 				delete[] buffer;
 				//Error during init_io
-				throw megaglest_runtime_error(path + " is a corrupt(3) png", true);
+				throw game_runtime_error(path + " is a corrupt(3) png", true);
 			}
 			png_set_read_fn(png_ptr, &is, user_read_data);
 			png_set_sig_bytes(png_ptr, 8);
@@ -141,7 +141,7 @@ namespace Shared {
 				delete[] row_pointers;
 				delete[] buffer;
 				//error during read_image
-				throw megaglest_runtime_error(path + " is a corrupt(4) png", true);
+				throw game_runtime_error(path + " is a corrupt(4) png", true);
 			}
 			for (int y = 0; y < height; ++y) {
 				row_pointers[y] = new png_byte[png_get_rowbytes(png_ptr, info_ptr)];
@@ -240,25 +240,25 @@ namespace Shared {
 			if (png_sig_cmp(buffer, 0, 8) != 0) {
 				delete[] buffer;
 				//This is not a PNG file - could be used for fast checking whether file is supported or not
-				throw megaglest_runtime_error(path + " is not a png(2)", true);
+				throw game_runtime_error(path + " is not a png(2)", true);
 			}
 
 			png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 			if (!png_ptr) {
 				delete[] buffer;
-				throw megaglest_runtime_error(path + " is a corrupt(5) png", true);
+				throw game_runtime_error(path + " is a corrupt(5) png", true);
 			}
 			png_infop info_ptr = png_create_info_struct(png_ptr);
 			if (!info_ptr) {
 				png_destroy_read_struct(&png_ptr, (png_infopp) NULL, (png_infopp) NULL);
 				delete[] buffer;
-				throw megaglest_runtime_error(path + " is a corrupt(6) png", true);
+				throw game_runtime_error(path + " is a corrupt(6) png", true);
 			}
 			if (setjmp(png_jmpbuf(png_ptr))) {
 				png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp) NULL);
 				delete[] buffer;
 				//Error during init_io
-				throw megaglest_runtime_error(path + " is a corrupt(7) png", true);
+				throw game_runtime_error(path + " is a corrupt(7) png", true);
 			}
 			png_set_read_fn(png_ptr, &is, user_read_data);
 			png_set_sig_bytes(png_ptr, 8);
@@ -289,7 +289,7 @@ namespace Shared {
 				delete[] row_pointers;
 				delete[] buffer;
 				//error during read_image
-				throw megaglest_runtime_error(path + " is a corrupt(8) png", true);
+				throw game_runtime_error(path + " is a corrupt(8) png", true);
 			}
 			for (int y = 0; y < height; ++y) {
 				row_pointers[y] = new png_byte[png_get_rowbytes(png_ptr, info_ptr)];

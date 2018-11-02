@@ -194,7 +194,7 @@ namespace Glest {
 						"In [%s::%s Line: %d]\n", __FILE__,
 						__FUNCTION__, __LINE__);
 
-				//throw megaglest_runtime_error("Test!");
+				//throw game_runtime_error("Test!");
 
 				for (int i = 0; i < (int) mergedProperties.size(); ++i) {
 

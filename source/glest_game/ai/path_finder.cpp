@@ -191,7 +191,7 @@ namespace
 
 				if (map == NULL) {
 					throw
-						megaglest_runtime_error("map == NULL");
+						game_runtime_error("map == NULL");
 				}
 
 				unit->setCurrentPathFinderDesiredFinalPos(finalPos);
@@ -346,7 +346,7 @@ namespace
 						}
 					} else {
 						throw
-							megaglest_runtime_error
+							game_runtime_error
 							("unsupported or missing path finder detected!");
 					}
 				}
@@ -489,7 +489,7 @@ namespace
 									factions.getFactionState(factionIndex);
 
 								//if(Thread::isCurrentThreadMainThread() == false) {
-								//      throw megaglest_runtime_error("#2 Invalid access to FactionState random from outside main thread current id = " +
+								//      throw game_runtime_error("#2 Invalid access to FactionState random from outside main thread current id = " +
 								//                      intToStr(Thread::getCurrentThreadId()) + " main = " + intToStr(Thread::getMainThreadId()));
 								//}
 
@@ -667,7 +667,7 @@ namespace
 
 								if (faction.precachedPath[unit->getId()].size() <= 0) {
 									throw
-										megaglest_runtime_error
+										game_runtime_error
 										("factions[unit->getFactionIndex()].precachedPath[unit->getId()].size() <= 0!");
 								}
 
@@ -741,7 +741,7 @@ namespace
 							}
 						} else {
 							throw
-								megaglest_runtime_error
+								game_runtime_error
 								("unsupported or missing path finder detected!");
 						}
 					}
@@ -770,7 +770,7 @@ namespace
 						__FUNCTION__, __LINE__);
 
 				throw
-					megaglest_runtime_error(ex.what());
+					game_runtime_error(ex.what());
 			} catch (...) {
 				char
 					szBuf[8096] = "";
@@ -778,7 +778,7 @@ namespace
 					__FUNCTION__, __LINE__);
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
 				throw
-					megaglest_runtime_error(szBuf);
+					game_runtime_error(szBuf);
 			}
 
 			return ts;
@@ -818,7 +818,7 @@ namespace
 
 				if (map == NULL) {
 					throw
-						megaglest_runtime_error("map == NULL");
+						game_runtime_error("map == NULL");
 				}
 
 
@@ -883,7 +883,7 @@ namespace
 										toSurfCoords(nodePos))
 									== false) {
 									throw
-										megaglest_runtime_error
+										game_runtime_error
 										("Pathfinder invalid node path position = " +
 											nodePos.getString() + " i = " + intToStr(i));
 								}
@@ -924,7 +924,7 @@ namespace
 											toSurfCoords
 											(nodePos)) == false) {
 										throw
-											megaglest_runtime_error
+											game_runtime_error
 											("Pathfinder invalid node path position = "
 												+ nodePos.getString() + " i = " +
 												intToStr(i));
@@ -1019,7 +1019,7 @@ namespace
 					firstNode = newNode(faction, maxNodeCount);
 				if (firstNode == NULL) {
 					throw
-						megaglest_runtime_error("firstNode == NULL");
+						game_runtime_error("firstNode == NULL");
 				}
 
 				firstNode->next = NULL;
@@ -1398,7 +1398,7 @@ namespace
 							|| map->isInsideSurface(map->toSurfCoords(nodePos)) ==
 							false) {
 							throw
-								megaglest_runtime_error
+								game_runtime_error
 								("Pathfinder invalid node path position = " +
 									nodePos.getString() + " i = " + intToStr(i));
 						}
@@ -1555,7 +1555,7 @@ namespace
 						__FUNCTION__, __LINE__);
 
 				throw
-					megaglest_runtime_error(ex.what());
+					game_runtime_error(ex.what());
 			} catch (...) {
 				char
 					szBuf[8096] = "";
@@ -1563,7 +1563,7 @@ namespace
 					__FUNCTION__, __LINE__);
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
 				throw
-					megaglest_runtime_error(szBuf);
+					game_runtime_error(szBuf);
 			}
 
 			return ts;
@@ -1608,7 +1608,7 @@ namespace
 						__FUNCTION__, __LINE__);
 
 				throw
-					megaglest_runtime_error(ex.what());
+					game_runtime_error(ex.what());
 			} catch (...) {
 				char
 					szBuf[8096] = "";
@@ -1616,7 +1616,7 @@ namespace
 					__FUNCTION__, __LINE__);
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
 				throw
-					megaglest_runtime_error(szBuf);
+					game_runtime_error(szBuf);
 			}
 
 		}
@@ -1631,7 +1631,7 @@ namespace
 
 				if (map == NULL) {
 					throw
-						megaglest_runtime_error("map == NULL");
+						game_runtime_error("map == NULL");
 				}
 
 				//unit data
@@ -1675,7 +1675,7 @@ namespace
 						__FUNCTION__, __LINE__);
 
 				throw
-					megaglest_runtime_error(ex.what());
+					game_runtime_error(ex.what());
 			} catch (...) {
 				char
 					szBuf[8096] = "";
@@ -1683,7 +1683,7 @@ namespace
 					__FUNCTION__, __LINE__);
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
 				throw
-					megaglest_runtime_error(szBuf);
+					game_runtime_error(szBuf);
 			}
 
 			return nearestPos;
@@ -1752,13 +1752,13 @@ namespace
 		//              SystemFlags::OutputDebug(SystemFlags::debugError,"In [%s::%s Line: %d] Error [%s]\n",__FILE__,__FUNCTION__,__LINE__,ex.what());
 		//              if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d]\n",__FILE__,__FUNCTION__,__LINE__);
 		//
-		//              throw megaglest_runtime_error(ex.what());
+		//              throw game_runtime_error(ex.what());
 		//      }
 		//      catch(...) {
 		//              char szBuf[8096]="";
 		//              snprintf(szBuf,8096,"In [%s::%s %d] UNKNOWN error\n",__FILE__,__FUNCTION__,__LINE__);
 		//              SystemFlags::OutputDebug(SystemFlags::debugError,szBuf);
-		//              throw megaglest_runtime_error(szBuf);
+		//              throw game_runtime_error(szBuf);
 		//      }
 		//
 		//      return unitImmediatelyBlocked;

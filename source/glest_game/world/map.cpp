@@ -182,7 +182,7 @@ namespace Glest {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Invalid value for teamIndex [%d]", teamIndex);
 				printf("%s\n", szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			this->explored[teamIndex] = explored;
@@ -194,7 +194,7 @@ namespace Glest {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Invalid value for teamIndex [%d]", teamIndex);
 				printf("%s\n", szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			this->visible[teamIndex] = visible;
@@ -397,7 +397,7 @@ namespace Glest {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "locationIndex >= maxPlayers [%d] [%d]", locationIndex, maxPlayers);
 				printf("%s\n", szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 				assert(locationIndex < GameConstants::maxPlayers);
 			}
 		}
@@ -419,16 +419,16 @@ namespace Glest {
 					MapFileHeader header;
 					size_t readBytes = fread(&header, sizeof(MapFileHeader), 1, f);
 					if (readBytes != 1) {
-						throw megaglest_runtime_error("Invalid map header detected for file: " + path);
+						throw game_runtime_error("Invalid map header detected for file: " + path);
 					}
 					fromEndianMapFileHeader(header);
 
 					if (next2Power(header.width) != header.width) {
-						throw megaglest_runtime_error("Map width is not a power of 2");
+						throw game_runtime_error("Map width is not a power of 2");
 					}
 
 					if (next2Power(header.height) != header.height) {
-						throw megaglest_runtime_error("Map height is not a power of 2");
+						throw game_runtime_error("Map height is not a power of 2");
 					}
 
 					heightFactor = header.heightFactor;
@@ -473,7 +473,7 @@ namespace Glest {
 						if (readBytes != 1) {
 							char szBuf[8096] = "";
 							snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 						x = ::Shared::PlatformByteOrder::fromCommonEndian(x);
 
@@ -481,7 +481,7 @@ namespace Glest {
 						if (readBytes != 1) {
 							char szBuf[8096] = "";
 							snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 						y = ::Shared::PlatformByteOrder::fromCommonEndian(y);
 
@@ -500,7 +500,7 @@ namespace Glest {
 							if (readBytes != 1) {
 								char szBuf[8096] = "";
 								snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-								throw megaglest_runtime_error(szBuf);
+								throw game_runtime_error(szBuf);
 							}
 							alt = ::Shared::PlatformByteOrder::fromCommonEndian(alt);
 
@@ -517,7 +517,7 @@ namespace Glest {
 							if (readBytes != 1) {
 								char szBuf[8096] = "";
 								snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-								throw megaglest_runtime_error(szBuf);
+								throw game_runtime_error(szBuf);
 							}
 							surf = ::Shared::PlatformByteOrder::fromCommonEndian(surf);
 
@@ -534,7 +534,7 @@ namespace Glest {
 							if (readBytes != 1) {
 								char szBuf[8096] = "";
 								snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-								throw megaglest_runtime_error(szBuf);
+								throw game_runtime_error(szBuf);
 							}
 							objNumber = ::Shared::PlatformByteOrder::fromCommonEndian(objNumber);
 
@@ -560,11 +560,11 @@ namespace Glest {
 					}
 					if (f) fclose(f);
 				} else {
-					throw megaglest_runtime_error("Can't open file");
+					throw game_runtime_error("Can't open file");
 				}
 			} catch (const exception &e) {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, e.what());
-				throw megaglest_runtime_error("Error loading map: " + path + "\n" + e.what());
+				throw game_runtime_error("Error loading map: " + path + "\n" + e.what());
 			}
 
 			return mapChecksum;
@@ -1011,7 +1011,7 @@ namespace Glest {
 			}
 
 			if (unit == NULL) {
-				throw megaglest_runtime_error("unit == NULL");
+				throw game_runtime_error("unit == NULL");
 			}
 			int size = unit->getType()->getSize();
 			int teamIndex = unit->getTeam();
@@ -1158,12 +1158,12 @@ namespace Glest {
 			Vec2i total = Vec2i(0);
 
 			if (selection == NULL) {
-				throw megaglest_runtime_error("selection == NULL");
+				throw game_runtime_error("selection == NULL");
 			}
 
 			for (int i = 0; i < selection->getCount(); ++i) {
 				if (selection->getUnit(i) == NULL) {
-					throw megaglest_runtime_error("selection == NULL || selection->getUnit(i) == NULL");
+					throw game_runtime_error("selection == NULL || selection->getUnit(i) == NULL");
 				}
 				total = total + selection->getUnit(i)->getPosNotThreadSafe();
 			}
@@ -1192,7 +1192,7 @@ namespace Glest {
 
 		//std::pair<float,Vec2i> Map::getUnitDistanceToPos(const Unit *unit,Vec2i pos,const UnitType *ut) {
 		//	if(unit == NULL) {
-		//		throw megaglest_runtime_error("unit == NULL");
+		//		throw game_runtime_error("unit == NULL");
 		//	}
 		//
 		//	std::pair<float,Vec2i> result(-1,Vec2i(0));
@@ -1264,10 +1264,10 @@ namespace Glest {
 
 		Vec2i Map::findBestBuildApproach(const Unit *unit, Vec2i originalBuildPos, const UnitType *ut) const {
 			if (unit == NULL) {
-				throw megaglest_runtime_error("unit == NULL");
+				throw game_runtime_error("unit == NULL");
 			}
 			if (ut == NULL) {
-				throw megaglest_runtime_error("ut == NULL");
+				throw game_runtime_error("ut == NULL");
 			}
 
 			Vec2i unitBuilderPos = unit->getPosNotThreadSafe();
@@ -1324,7 +1324,7 @@ namespace Glest {
 			const Vec2i &testPos) const {
 			assert(ut != NULL);
 			if (ut == NULL) {
-				throw megaglest_runtime_error("ut == NULL");
+				throw game_runtime_error("ut == NULL");
 			}
 
 			if (isInside(testPos) && isInsideSurface(toSurfCoords(testPos))) {
@@ -1348,7 +1348,7 @@ namespace Glest {
 		void Map::putUnitCells(Unit *unit, const Vec2i &pos, bool ignoreSkill, bool threaded) {
 			assert(unit != NULL);
 			if (unit == NULL) {
-				throw megaglest_runtime_error("ut == NULL");
+				throw game_runtime_error("ut == NULL");
 			}
 			putUnitCellsPrivate(unit, pos, unit->getType(), false, threaded);
 
@@ -1368,7 +1368,7 @@ namespace Glest {
 		void Map::putUnitCellsPrivate(Unit *unit, const Vec2i &pos, const UnitType *ut, bool isMorph, bool threaded) {
 			assert(unit != NULL);
 			if (unit == NULL) {
-				throw megaglest_runtime_error("ut == NULL");
+				throw game_runtime_error("ut == NULL");
 			}
 
 			bool canPutInCell = true;
@@ -1378,7 +1378,7 @@ namespace Glest {
 					Vec2i currPos = pos + Vec2i(i, j);
 					assert(isInside(currPos));
 					if (isInside(currPos) == false) {
-						throw megaglest_runtime_error("isInside(currPos) == false");
+						throw game_runtime_error("isInside(currPos) == false");
 					}
 
 					if (ut->hasCellMap() == false || ut->getCellMapCell(i, j, unit->getModelFacing())) {
@@ -1404,7 +1404,7 @@ namespace Glest {
 							//                        // If the unit trying to move into the cell is not in the moving state
 							//                        // it is likely being created or morphed so we will will log the error
 							//                        canPutInCell = false;
-							//				        // throw megaglest_runtime_error("getCell(currPos)->getUnit(unit->getCurrField()) != NULL");
+							//				        // throw game_runtime_error("getCell(currPos)->getUnit(unit->getCurrField()) != NULL");
 							//                        SystemFlags::OutputDebug(SystemFlags::debugError,"In [%s::%s Line: %d] ERROR [getCell(currPos)->getUnit(unit->getCurrField()) != NULL] currPos [%s] unit [%s] cell unit [%s]\n",
 							//                              __FILE__,__FUNCTION__,__LINE__,
 							//                              currPos.getString().c_str(),
@@ -1427,7 +1427,7 @@ namespace Glest {
 						} else if (canPutInCell == true) {
 							char szBuf[8096] = "";
 							snprintf(szBuf, 8096, "Trying to move unit [%d - %s] into occupied cell [%s] and field = %d, unit already in cell [%d - %s] ", unit->getId(), unit->getType()->getName(false).c_str(), pos.getString().c_str(), field, getCell(currPos)->getUnit(field)->getId(), getCell(currPos)->getUnit(field)->getType()->getName(false).c_str());
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 					} else if (ut->hasCellMap() == true &&
 						ut->getAllowEmptyCellMap() == true &&
@@ -1450,7 +1450,7 @@ namespace Glest {
 		void Map::clearUnitCells(Unit *unit, const Vec2i &pos, bool ignoreSkill) {
 			assert(unit != NULL);
 			if (unit == NULL) {
-				throw megaglest_runtime_error("unit == NULL");
+				throw game_runtime_error("unit == NULL");
 			}
 
 			const UnitType *ut = unit->getType();
@@ -1475,7 +1475,7 @@ namespace Glest {
 					Vec2i currPos = pos + Vec2i(i, j);
 					assert(isInside(currPos));
 					if (isInside(currPos) == false) {
-						throw megaglest_runtime_error("isInside(currPos) == false");
+						throw game_runtime_error("isInside(currPos) == false");
 					}
 
 					if (ut->hasCellMap() == false || ut->getCellMapCell(i, j, unit->getModelFacing())) {
@@ -1484,7 +1484,7 @@ namespace Glest {
 
 						//assert(getCell(currPos)->getUnit(unit->getCurrField()) == unit || getCell(currPos)->getUnit(unit->getCurrField()) == NULL);
 						//if(getCell(currPos)->getUnit(unit->getCurrField()) != unit && getCell(currPos)->getUnit(unit->getCurrField()) != NULL) {
-						//	throw megaglest_runtime_error("getCell(currPos)->getUnit(unit->getCurrField()) != unit");
+						//	throw game_runtime_error("getCell(currPos)->getUnit(unit->getCurrField()) != unit");
 							//SystemFlags::OutputDebug(SystemFlags::debugError,"In [%s::%s Line: %d] ERROR [getCell(currPos)->getUnit(unit->getCurrField()) != unit] currPos [%s] unit [%s] cell unit [%s]\n",
 							//          __FILE__,__FUNCTION__,__LINE__,
 							//          currPos.getString().c_str(),
@@ -1919,7 +1919,7 @@ namespace Glest {
 					//					string value = tokensExploredValue[k];
 					//					printf("k = %d [%s]\n",k,value.c_str());
 					//				}
-					//				throw megaglest_runtime_error("tokensExploredValue.size() [" + intToStr(tokensExploredValue.size()) + "] != GameConstants::maxPlayers");
+					//				throw game_runtime_error("tokensExploredValue.size() [" + intToStr(tokensExploredValue.size()) + "] != GameConstants::maxPlayers");
 					//			}
 					for (unsigned int k = 0; k < tokensExploredValue.size(); ++k) {
 						string value = tokensExploredValue[k];
@@ -1945,7 +1945,7 @@ namespace Glest {
 					Tokenize(valueList, tokensVisibleValue, "|");
 
 					//			if(tokensVisibleValue.size() != GameConstants::maxPlayers) {
-					//				throw megaglest_runtime_error("tokensVisibleValue.size() [" + intToStr(tokensVisibleValue.size()) + "] != GameConstants::maxPlayers");
+					//				throw game_runtime_error("tokensVisibleValue.size() [" + intToStr(tokensVisibleValue.size()) + "] != GameConstants::maxPlayers");
 					//			}
 
 					for (unsigned int k = 0; k < tokensVisibleValue.size(); ++k) {

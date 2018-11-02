@@ -1725,7 +1725,7 @@ wxT("Help")).ShowModal();
 
 	int App::MainLoop() {
 		try {
-			//throw megaglest_runtime_error("test");
+			//throw game_runtime_error("test");
 			return wxApp::MainLoop();
 		} catch (const exception &e) {
 			MsgDialog(NULL, ToUnicode(e.what()), wxT("Exception")).ShowModal();

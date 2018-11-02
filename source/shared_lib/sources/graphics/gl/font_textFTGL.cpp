@@ -46,7 +46,7 @@ namespace Shared {
 			//====================================================================
 			TextFTGL::TextFTGL(FontTextHandlerType type) : Text(type) {
 
-				//throw megaglest_runtime_error("FTGL!");
+				//throw game_runtime_error("FTGL!");
 				//setenv("MEGAGLEST_FONT","/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc",0);
 				//setenv("MEGAGLEST_FONT","/usr/share/fonts/truetype/arphic/uming.ttc",0); // Chinese
 				//setenv("MEGAGLEST_FONT","/usr/share/fonts/truetype/arphic/ukai.ttc",0); // Chinese
@@ -74,7 +74,7 @@ namespace Shared {
 					ftFont = new FTGLTextureFont(fontFile);
 					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("3D font [%s]\n", fontFile);
 				} else {
-					throw megaglest_runtime_error("font render type not set to a known value!");
+					throw game_runtime_error("font render type not set to a known value!");
 				}
 
 				if (ftFont->Error()) {
@@ -83,7 +83,7 @@ namespace Shared {
 					delete ftFont; ftFont = NULL;
 					if (fontFile != NULL) free((void*) fontFile);
 					fontFile = NULL;
-					throw megaglest_runtime_error(string("FTGL: error loading font: ") + fontFileName);
+					throw game_runtime_error(string("FTGL: error loading font: ") + fontFileName);
 				}
 				free((void*) fontFile);
 				fontFile = NULL;
@@ -100,19 +100,19 @@ namespace Shared {
 				if (ftFont->Error()) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "FTGL: error setting face size, #%d", ftFont->Error());
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 				//ftFont->UseDisplayList(false);
 				//ftFont->CharMap(ft_encoding_gb2312);
 				//ftFont->CharMap(ft_encoding_big5);
 				if (ftFont->CharMap(ft_encoding_unicode) == false) {
-					throw megaglest_runtime_error("FTGL: error setting encoding");
+					throw game_runtime_error("FTGL: error setting encoding");
 				}
 
 				if (ftFont->Error()) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "FTGL: error setting encoding, #%d", ftFont->Error());
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 			}
 
@@ -152,7 +152,7 @@ namespace Shared {
 
 					//printf("3D font [%s]\n",fontFile);
 				} else {
-					throw megaglest_runtime_error("font render type not set to a known value!");
+					throw game_runtime_error("font render type not set to a known value!");
 				}
 
 				if (ftFont->Error()) {
@@ -162,7 +162,7 @@ namespace Shared {
 						free((void*) fontFile);
 					}
 					fontFile = NULL;
-					throw megaglest_runtime_error("FTGL: error loading font");
+					throw game_runtime_error("FTGL: error loading font");
 				}
 				free((void*) fontFile);
 				fontFile = NULL;
@@ -181,19 +181,19 @@ namespace Shared {
 				if (ftFont->Error()) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "FTGL: error setting face size, #%d", ftFont->Error());
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 
 				//ftFont->UseDisplayList(false);
 				//ftFont->CharMap(ft_encoding_gb2312);
 				//ftFont->CharMap(ft_encoding_big5);
 				if (ftFont->CharMap(ft_encoding_unicode) == false) {
-					throw megaglest_runtime_error("FTGL: error setting encoding");
+					throw game_runtime_error("FTGL: error setting encoding");
 				}
 				if (ftFont->Error()) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "FTGL: error setting encoding, #%d", ftFont->Error());
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 
 				// Create a string containing common characters
@@ -210,7 +210,7 @@ namespace Shared {
 				if (ftFont->Error()) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "FTGL: error advancing(a), #%d", ftFont->Error());
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 			}
 
@@ -226,7 +226,7 @@ namespace Shared {
 				if (ftFont->Error()) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "FTGL: error setting face size, #%d", ftFont->Error());
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 			}
 
@@ -256,7 +256,7 @@ namespace Shared {
 					if (ftFont->Error()) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "FTGL: error trying to render, #%d", ftFont->Error());
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 				}
 			}
@@ -273,7 +273,7 @@ namespace Shared {
 				if (ftFont->Error()) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "FTGL: error trying to advance(b), #%d", ftFont->Error());
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 				return result;
 
@@ -358,7 +358,7 @@ namespace Shared {
 				if (ftFont->Error()) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "FTGL: error trying to get lineheight, #%d", ftFont->Error());
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 
 				return result;
@@ -403,7 +403,7 @@ namespace Shared {
 				if (ftFont->Error()) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "FTGL: error trying to get lineheight, #%d", ftFont->Error());
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 
 				return result;
@@ -420,7 +420,7 @@ namespace Shared {
 					if (ftFont->Error()) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "FTGL: error trying to render, #%d", ftFont->Error());
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 				}
 			}
@@ -430,7 +430,7 @@ namespace Shared {
 				if (ftFont->Error()) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "FTGL: error trying to advance(c), #%d", ftFont->Error());
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 
 				return result;

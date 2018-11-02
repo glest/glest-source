@@ -106,7 +106,7 @@ namespace Glest {
 			FILE *f = fopen(fileName.c_str(), "wt+");
 #endif
 			if (f == NULL) {
-				throw megaglest_runtime_error("Error opening log file" + fileName);
+				throw game_runtime_error("Error opening log file" + fileName);
 			}
 
 			fprintf(f, "%s", s.c_str());

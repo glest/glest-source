@@ -144,7 +144,7 @@ namespace Glest {
 				}
 			}
 			if (found == false) {
-				throw megaglest_runtime_error("Error could not find tileset [" + tilesetName + "]\n", true);
+				throw game_runtime_error("Error could not find tileset [" + tilesetName + "]\n", true);
 
 			}
 			return tilesetChecksum;
@@ -255,9 +255,9 @@ namespace Glest {
 
 							width = pixmap->getW();
 							height = pixmap->getW();
-						} catch (megaglest_runtime_error& ex) {
+						} catch (game_runtime_error& ex) {
 							SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, ex.what());
-							throw megaglest_runtime_error("Error loading tileset: " + path + "\nMessage: " + ex.what(), !ex.wantStackTrace());
+							throw game_runtime_error("Error loading tileset: " + path + "\nMessage: " + ex.what(), !ex.wantStackTrace());
 						} catch (const exception &ex) {
 							SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
 
@@ -272,17 +272,17 @@ namespace Glest {
 						}
 
 						if (exceptionError != "") {
-							throw megaglest_runtime_error(exceptionError.c_str());
+							throw game_runtime_error(exceptionError.c_str());
 						}
 
 						if (width != height) {
-							throw megaglest_runtime_error("width != height");
+							throw game_runtime_error("width != height");
 						}
 						if (width % 64 != 0) {
-							throw megaglest_runtime_error("width % 64 != 0");
+							throw game_runtime_error("width % 64 != 0");
 						}
 						if (width % partsize != 0) {
-							throw megaglest_runtime_error("width % partsize != 0");
+							throw game_runtime_error("width % partsize != 0");
 						}
 
 						int parts = width / partsize;
@@ -492,12 +492,12 @@ namespace Glest {
 
 			}
 			//Exception handling (conversions and so on);
-			catch (megaglest_runtime_error& ex) {
+			catch (game_runtime_error& ex) {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, ex.what());
-				throw megaglest_runtime_error("Error loading tileset: " + path + "\nMessage: " + ex.what(), !ex.wantStackTrace());
+				throw game_runtime_error("Error loading tileset: " + path + "\nMessage: " + ex.what(), !ex.wantStackTrace());
 			} catch (const exception &e) {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, e.what());
-				throw megaglest_runtime_error("Error: " + path + "\n" + e.what());
+				throw game_runtime_error("Error: " + path + "\n" + e.what());
 			}
 
 			Lang &lang = Lang::getInstance();

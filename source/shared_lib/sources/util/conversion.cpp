@@ -44,7 +44,7 @@ namespace Shared {
 			if (s == "1" || s == "true") {
 				return true;
 			}
-			throw megaglest_runtime_error("Error converting string to bool, expected 0 or 1, found: [" + s + "]");
+			throw game_runtime_error("Error converting string to bool, expected 0 or 1, found: [" + s + "]");
 		}
 
 		int strToInt(const string &s) {
@@ -53,7 +53,7 @@ namespace Shared {
 			int intValue = strtol(s.c_str(), &endChar, 10);
 
 			if (*endChar != '\0') {
-				throw megaglest_runtime_error("Error converting from string to int, found: [" + s + "]");
+				throw game_runtime_error("Error converting from string to int, found: [" + s + "]");
 			}
 
 			return intValue;
@@ -65,7 +65,7 @@ namespace Shared {
 			uint32 intValue = strtoul(s.c_str(), &endChar, 10);
 
 			if (*endChar != '\0') {
-				throw megaglest_runtime_error("Error converting from string to uint, found: [" + s + "]");
+				throw game_runtime_error("Error converting from string to uint, found: [" + s + "]");
 			}
 
 			return intValue;
@@ -79,7 +79,7 @@ namespace Shared {
 			float floatValue = static_cast<float>(strtod(s.c_str(), &endChar));
 
 			if (*endChar != '\0') {
-				throw megaglest_runtime_error("Error converting from string to float, found: [" + s + "]");
+				throw game_runtime_error("Error converting from string to float, found: [" + s + "]");
 			}
 
 			return floatValue;

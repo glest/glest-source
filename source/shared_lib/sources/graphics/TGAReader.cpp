@@ -79,7 +79,7 @@ namespace Shared {
 			//printf("In [%s] line: %d\n",__FILE__,__LINE__);
 		//	try {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 			//read header
@@ -100,21 +100,21 @@ namespace Shared {
 			}
 
 			if (!in.good()) {
-				throw megaglest_runtime_error(path + " could not be read", true);
+				throw game_runtime_error(path + " could not be read", true);
 			}
 
 			//check that we can load this tga file
 			if (fileHeader.idLength != 0) {
-				throw megaglest_runtime_error(path + ": id field is not 0", true);
+				throw game_runtime_error(path + ": id field is not 0", true);
 			}
 
 			if (fileHeader.dataTypeCode != tgaUncompressedRgb && fileHeader.dataTypeCode != tgaUncompressedBw) {
-				throw megaglest_runtime_error(path + ": only uncompressed BW and RGB targa images are supported", true);
+				throw game_runtime_error(path + ": only uncompressed BW and RGB targa images are supported", true);
 			}
 
 			//check bits per pixel
 			if (fileHeader.bitsPerPixel != 8 && fileHeader.bitsPerPixel != 24 && fileHeader.bitsPerPixel != 32) {
-				throw megaglest_runtime_error(path + ": only 8, 24 and 32 bit targa images are supported", true);
+				throw game_runtime_error(path + ": only 8, 24 and 32 bit targa images are supported", true);
 			}
 
 			const int h = fileHeader.height;
@@ -212,7 +212,7 @@ namespace Shared {
 			//	catch(exception& ex) {
 			//		char szBuf[8096]="";
 			//		snprintf(szBuf,8096,"Error in [%s] on line: %d msg: %s\n",extractFileFromDirectoryPath(__FILE__).c_str(),__LINE__,ex.what());
-			//		throw megaglest_runtime_error(szBuf);
+			//		throw game_runtime_error(szBuf);
 			//	}
 
 			return ret;
@@ -243,21 +243,21 @@ namespace Shared {
 			}
 
 			if (!in.good()) {
-				throw megaglest_runtime_error(path + " could not be read", true);
+				throw game_runtime_error(path + " could not be read", true);
 			}
 
 			//check that we can load this tga file
 			if (fileHeader.idLength != 0) {
-				throw megaglest_runtime_error(path + ": id field is not 0", true);
+				throw game_runtime_error(path + ": id field is not 0", true);
 			}
 
 			if (fileHeader.dataTypeCode != tgaUncompressedRgb && fileHeader.dataTypeCode != tgaUncompressedBw) {
-				throw megaglest_runtime_error(path + ": only uncompressed BW and RGB targa images are supported", true);
+				throw game_runtime_error(path + ": only uncompressed BW and RGB targa images are supported", true);
 			}
 
 			//check bits per pixel
 			if (fileHeader.bitsPerPixel != 8 && fileHeader.bitsPerPixel != 24 && fileHeader.bitsPerPixel != 32) {
-				throw megaglest_runtime_error(path + ": only 8, 24 and 32 bit targa images are supported", true);
+				throw game_runtime_error(path + ": only 8, 24 and 32 bit targa images are supported", true);
 			}
 
 			const int h = fileHeader.height;
@@ -372,7 +372,7 @@ namespace Shared {
 			//		//abort();
 			//		char szBuf[8096]="";
 			//		snprintf(szBuf,8096,"Error in [%s] on line: %d msg: %s\n",extractFileFromDirectoryPath(__FILE__).c_str(),__LINE__,ex.what());
-			//		throw megaglest_runtime_error(szBuf);
+			//		throw game_runtime_error(szBuf);
 			//	}
 
 				//printf("In [%s] line: %d\n",__FILE__,__LINE__);

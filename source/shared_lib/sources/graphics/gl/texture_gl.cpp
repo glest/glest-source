@@ -495,7 +495,7 @@ namespace Shared {
 
 			void TextureGl::setup_FBO_RBO() {
 				if (getTextureWidth() < 0 || getTextureHeight() < 0) {
-					throw megaglest_runtime_error("getTextureWidth() < 0 || getTextureHeight() < 0");
+					throw game_runtime_error("getTextureWidth() < 0 || getTextureHeight() < 0");
 				}
 
 				// Need some work to get extensions properly working in Windows (use Glew lib)
@@ -698,11 +698,11 @@ namespace Shared {
 						//
 
 						if (error != 0) {
-							//throw megaglest_runtime_error("Error building texture 1D mipmaps");
+							//throw game_runtime_error("Error building texture 1D mipmaps");
 							const char *errorString = reinterpret_cast<const char*>(gluErrorString(error));
 							char szBuf[8096] = "";
 							snprintf(szBuf, 8096, "Error building texture 1D mipmaps, returned: %d [%s] for [%s] w = %d, glCompressionFormat = %d", error, errorString, pixmap.getPath().c_str(), pixmap.getW(), glCompressionFormat);
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 					} else {
 						//build single texture
@@ -730,11 +730,11 @@ namespace Shared {
 						//
 
 						if (error != GL_NO_ERROR) {
-							//throw megaglest_runtime_error("Error creating texture 1D");
+							//throw game_runtime_error("Error creating texture 1D");
 							const char *errorString = reinterpret_cast<const char*>(gluErrorString(error));
 							char szBuf[8096] = "";
 							snprintf(szBuf, 8096, "Error creating texture 1D, returned: %d [%s] (%X) [%s] w = %d, glCompressionFormat = %d", error, errorString, error, pixmap.getPath().c_str(), pixmap.getW(), glCompressionFormat);
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 					}
 					inited = true;
@@ -869,11 +869,11 @@ namespace Shared {
 						//
 
 						if (error != GL_NO_ERROR) {
-							//throw megaglest_runtime_error("Error building texture 2D mipmaps");
+							//throw game_runtime_error("Error building texture 2D mipmaps");
 							const char *errorString = reinterpret_cast<const char*>(gluErrorString(error));
 							char szBuf[8096] = "";
 							snprintf(szBuf, 8096, "Error building texture 2D mipmaps [%s], returned: %d [%s] for [%s] w = %d, h = %d, glCompressionFormat = %d", this->path.c_str(), error, errorString, (pixmap.getPath() != "" ? pixmap.getPath().c_str() : this->path.c_str()), pixmap.getW(), pixmap.getH(), glCompressionFormat);
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 					} else {
 						//build single texture
@@ -933,13 +933,13 @@ namespace Shared {
 
 						//
 
-						//throw megaglest_runtime_error("TEST!");
+						//throw game_runtime_error("TEST!");
 
 						if (error != GL_NO_ERROR) {
 							const char *errorString = reinterpret_cast<const char*>(gluErrorString(error));
 							char szBuf[8096] = "";
 							snprintf(szBuf, 8096, "Error creating texture 2D path [%s], returned: %d [%s] (%X) [%s] w = %d, h = %d, glInternalFormat = %d, glFormat = %d, glCompressionFormat = %d", this->path.c_str(), error, errorString, error, pixmap.getPath().c_str(), pixmap.getW(), pixmap.getH(), glInternalFormat, glFormat, glCompressionFormat);
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 					}
 					inited = true;
@@ -1045,11 +1045,11 @@ namespace Shared {
 					//
 
 					if (error != GL_NO_ERROR) {
-						//throw megaglest_runtime_error("Error creating texture 3D");
+						//throw game_runtime_error("Error creating texture 3D");
 						const char *errorString = reinterpret_cast<const char*>(gluErrorString(error));
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "Error creating texture 3D, returned: %d [%s] (%X) [%s] w = %d, h = %d, d = %d, glCompressionFormat = %d", error, errorString, error, pixmap.getPath().c_str(), pixmap.getW(), pixmap.getH(), pixmap.getD(), glCompressionFormat);
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 					inited = true;
 
@@ -1186,11 +1186,11 @@ namespace Shared {
 							//
 
 							if (error != GL_NO_ERROR) {
-								//throw megaglest_runtime_error("Error building texture cube mipmaps");
+								//throw game_runtime_error("Error building texture cube mipmaps");
 								const char *errorString = reinterpret_cast<const char*>(gluErrorString(error));
 								char szBuf[8096] = "";
 								snprintf(szBuf, 8096, "Error building texture cube mipmaps, returned: %d [%s] for [%s] w = %d, h = %d, glCompressionFormat = %d", error, errorString, currentPixmap->getPath().c_str(), currentPixmap->getW(), currentPixmap->getH(), glCompressionFormat);
-								throw megaglest_runtime_error(szBuf);
+								throw game_runtime_error(szBuf);
 							}
 						} else {
 
@@ -1237,11 +1237,11 @@ namespace Shared {
 							//
 
 							if (error != GL_NO_ERROR) {
-								//throw megaglest_runtime_error("Error creating texture cube");
+								//throw game_runtime_error("Error creating texture cube");
 								const char *errorString = reinterpret_cast<const char*>(gluErrorString(error));
 								char szBuf[8096] = "";
 								snprintf(szBuf, 8096, "Error creating texture cube, returned: %d [%s] (%X) [%s] w = %d, h = %d, glCompressionFormat = %d", error, errorString, error, currentPixmap->getPath().c_str(), currentPixmap->getW(), currentPixmap->getH(), glCompressionFormat);
-								throw megaglest_runtime_error(szBuf);
+								throw game_runtime_error(szBuf);
 							}
 						}
 

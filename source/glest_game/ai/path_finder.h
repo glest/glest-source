@@ -278,12 +278,12 @@ namespace
 			PathFinder(const PathFinder & obj) {
 				init();
 				throw
-					megaglest_runtime_error("class PathFinder is NOT safe to copy!");
+					game_runtime_error("class PathFinder is NOT safe to copy!");
 			}
 			PathFinder & operator= (const PathFinder & obj) {
 				init();
 				throw
-					megaglest_runtime_error("class PathFinder is NOT safe to assign!");
+					game_runtime_error("class PathFinder is NOT safe to assign!");
 			}
 
 			void
@@ -351,7 +351,7 @@ namespace
 				minHeuristicFastLookup(FactionState & faction) {
 				if (faction.openNodesList.empty() == true) {
 					throw
-						megaglest_runtime_error("openNodesList.empty() == true");
+						game_runtime_error("openNodesList.empty() == true");
 				}
 
 				Node *
@@ -567,7 +567,7 @@ namespace
 						cellCount = 0;
 
 					//                      if(Thread::isCurrentThreadMainThread() == false) {
-					//                              throw megaglest_runtime_error("#1 Invalid access to FactionState random from outside main thread current id = " +
+					//                              throw game_runtime_error("#1 Invalid access to FactionState random from outside main thread current id = " +
 					//                                              intToStr(Thread::getCurrentThreadId()) + " main = " + intToStr(Thread::getMainThreadId()));
 					//                      }
 

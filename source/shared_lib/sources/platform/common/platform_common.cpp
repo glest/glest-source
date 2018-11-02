@@ -388,7 +388,7 @@ namespace Shared {
 				if (errorOnNotFound) {
 					std::stringstream msg;
 					msg << "#1 Couldn't scan directory '" << mypath << "': " << strerror(errno);
-					throw megaglest_runtime_error(msg.str());
+					throw game_runtime_error(msg.str());
 				}
 			} else {
 				for (int i = 0; i < (int) globbuf.gl_pathc; ++i) {
@@ -409,7 +409,7 @@ namespace Shared {
 				globfree(&globbuf);
 
 				if (results.empty() == true && errorOnNotFound == true) {
-					throw megaglest_runtime_error("No files found in: " + mypath);
+					throw game_runtime_error("No files found in: " + mypath);
 				}
 
 				if (cutExtension) {
@@ -1062,7 +1062,7 @@ namespace Shared {
 			if (res < 0) {
 				std::stringstream msg;
 				msg << "#2 Couldn't scan directory '" << mypath << "': " << strerror(errno);
-				throw megaglest_runtime_error(msg.str());
+				throw game_runtime_error(msg.str());
 			}
 #endif
 
@@ -1101,7 +1101,7 @@ namespace Shared {
 			if (res < 0) {
 				std::stringstream msg;
 				msg << "#3 Couldn't scan directory '" << mypath << "': " << strerror(errno);
-				throw megaglest_runtime_error(msg.str());
+				throw game_runtime_error(msg.str());
 			}
 #endif
 
@@ -1239,7 +1239,7 @@ namespace Shared {
 			if (res < 0) {
 				std::stringstream msg;
 				msg << "#4 Couldn't scan directory '" << mypath << "': " << strerror(errno);
-				throw megaglest_runtime_error(msg.str());
+				throw game_runtime_error(msg.str());
 			}
 #endif
 			for (int i = 0; i < (int) globbuf.gl_pathc; ++i) {
@@ -1278,7 +1278,7 @@ namespace Shared {
 			if (res < 0) {
 				std::stringstream msg;
 				msg << "#5 Couldn't scan directory '" << mypath << "': " << strerror(errno);
-				throw megaglest_runtime_error(msg.str());
+				throw game_runtime_error(msg.str());
 			}
 #endif
 
@@ -1377,7 +1377,7 @@ namespace Shared {
 			if (res < 0) {
 				std::stringstream msg;
 				msg << "#6 Couldn't scan directory '" << mypath << "': " << strerror(errno);
-				throw megaglest_runtime_error(msg.str());
+				throw game_runtime_error(msg.str());
 			}
 #endif
 
@@ -1414,7 +1414,7 @@ namespace Shared {
 			if (res < 0) {
 				std::stringstream msg;
 				msg << "#7 Couldn't scan directory '" << mypath << "': " << strerror(errno);
-				throw megaglest_runtime_error(msg.str());
+				throw game_runtime_error(msg.str());
 			}
 #endif
 
@@ -2066,12 +2066,12 @@ namespace Shared {
 			if (fp1 == NULL) {
 				if (fp2) fclose(fp2);
 
-				throw megaglest_runtime_error("cannot open input file [" + fileName + "]");
+				throw game_runtime_error("cannot open input file [" + fileName + "]");
 			}
 			if (fp2 == NULL) {
 				if (fp1) fclose(fp1);
 
-				throw megaglest_runtime_error("cannot open output file [" + tempfileName + "]");
+				throw game_runtime_error("cannot open output file [" + tempfileName + "]");
 			}
 
 			while (fgets(buffer, MAX_LEN_SINGLE_LINE + 2, fp1)) {
@@ -2117,7 +2117,7 @@ namespace Shared {
 			if (out.is_open()) {
 				out << data;
 			} else if (out.is_open() == false) {
-				throw megaglest_runtime_error("cannot open input file [" + filename + "]");
+				throw game_runtime_error("cannot open input file [" + filename + "]");
 			}
 
 			//Close file
@@ -2147,9 +2147,9 @@ namespace Shared {
 					out.put(in.get());
 				}
 			} else if (in.is_open() == false) {
-				throw megaglest_runtime_error("cannot open input file [" + fromFileName + "]");
+				throw game_runtime_error("cannot open input file [" + fromFileName + "]");
 			} else if (out.is_open() == false) {
-				throw megaglest_runtime_error("cannot open input file [" + toFileName + "]");
+				throw game_runtime_error("cannot open input file [" + toFileName + "]");
 			}
 
 			//Close both files
@@ -2201,7 +2201,7 @@ namespace Shared {
 		//	ifstream xmlFile(path.c_str(),ios::binary);
 		//#endif
 		//	if(xmlFile.is_open() == false) {
-		//		throw megaglest_runtime_error("Can not open file: [" + path + "]");
+		//		throw game_runtime_error("Can not open file: [" + path + "]");
 		//	}
 		//
 		//	xmlFile.unsetf(ios::skipws);

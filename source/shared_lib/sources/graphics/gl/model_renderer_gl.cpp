@@ -309,7 +309,7 @@ namespace Shared {
 					if (texture != NULL && renderTextures) {
 						if (lastTexture != texture->getHandle()) {
 							//assert(glIsTexture(texture->getHandle()));
-							//throw megaglest_runtime_error("glIsTexture(texture->getHandle()) == false for texture: " + texture->getPath());
+							//throw game_runtime_error("glIsTexture(texture->getHandle()) == false for texture: " + texture->getPath());
 							if (glIsTexture(texture->getHandle()) == GL_TRUE) {
 								glBindTexture(GL_TEXTURE_2D, texture->getHandle());
 								lastTexture = texture->getHandle();

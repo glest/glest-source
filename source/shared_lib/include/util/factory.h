@@ -86,7 +86,7 @@ namespace Shared {
 			T *newInstance(string classId) {
 				Factories::iterator it = factories.find(classId);
 				if (it == factories.end()) {
-					throw megaglest_runtime_error("Unknown class identifier: " + classId);
+					throw game_runtime_error("Unknown class identifier: " + classId);
 				}
 				return static_cast<T*>(it->second->newInstance());
 			}

@@ -81,7 +81,7 @@ namespace Shared {
 
 		Pixmap2D* JPGReader::read(ifstream& is, const string& path, Pixmap2D* ret) const {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 			//Read file
@@ -98,7 +98,7 @@ namespace Shared {
 				Shared::PlatformByteOrder::fromEndianTypeArray<uint8>(buffer, (size_t) length);
 			}
 			if (length < 2) {
-				throw megaglest_runtime_error("length < 2", true);
+				throw game_runtime_error("length < 2", true);
 			}
 			//Check buffer (weak jpeg check)
 			//if (buffer[0] != 0x46 || buffer[1] != 0xA0) {
@@ -106,7 +106,7 @@ namespace Shared {
 			if (buffer[0] != 0xFF || buffer[1] != 0xD8) {
 				std::cout << "0 = [" << std::hex << (int) buffer[0] << "] 1 = [" << std::hex << (int) buffer[1] << "]" << std::endl;
 				delete[] buffer;
-				throw megaglest_runtime_error(path + " is not a jpeg", true);
+				throw game_runtime_error(path + " is not a jpeg", true);
 			}
 
 			struct jpeg_decompress_struct cinfo;
@@ -130,7 +130,7 @@ namespace Shared {
 				if (row_pointer[0] != NULL) {
 					delete[] row_pointer[0];
 				}
-				throw megaglest_runtime_error(path + " is a corrupt(1) jpeg", true);
+				throw game_runtime_error(path + " is a corrupt(1) jpeg", true);
 			}
 
 			source.init_source = init_source;
@@ -143,7 +143,7 @@ namespace Shared {
 			if (jpeg_read_header(&cinfo, TRUE) != JPEG_HEADER_OK) {
 				delete[] buffer;
 				jpeg_destroy_decompress(&cinfo);
-				throw megaglest_runtime_error(path + " is a corrupt(1) jpeg", true);
+				throw game_runtime_error(path + " is a corrupt(1) jpeg", true);
 			}
 
 

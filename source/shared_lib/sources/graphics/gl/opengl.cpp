@@ -179,7 +179,7 @@ namespace Shared {
 
 			//void checkGlExtension(const char *extensionName) {
 			//	if(!isGlExtensionSupported(extensionName)){
-			//		throw megaglest_runtime_error("OpenGL extension not supported: " + string(extensionName));
+			//		throw game_runtime_error("OpenGL extension not supported: " + string(extensionName));
 			//	}
 			//}
 

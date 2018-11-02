@@ -86,7 +86,7 @@ namespace Glest {
 					pathFinder->init(map);
 					break;
 				default:
-					throw megaglest_runtime_error("detected unsupported pathfinder type!");
+					throw game_runtime_error("detected unsupported pathfinder type!");
 			}
 		}
 
@@ -422,7 +422,7 @@ namespace Glest {
 					newpath = new UnitPathBasic();
 					break;
 				default:
-					throw megaglest_runtime_error("detected unsupported pathfinder type!");
+					throw game_runtime_error("detected unsupported pathfinder type!");
 			}
 
 			Unit *spawned = new Unit(world->getNextUnitId(unit->getFaction()), newpath,
@@ -510,12 +510,12 @@ namespace Glest {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-				throw megaglest_runtime_error(ex.what());
+				throw game_runtime_error(ex.what());
 			} catch (...) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error\n", __FILE__, __FUNCTION__, __LINE__);
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 		}
@@ -535,7 +535,7 @@ namespace Glest {
 
 				Command *command = unit->getCurrCommand();
 				if (command == NULL) {
-					throw megaglest_runtime_error("command == NULL");
+					throw game_runtime_error("command == NULL");
 				}
 				const StopCommandType *sct = static_cast<const StopCommandType*>(command->getCommandType());
 				Unit *sighted = NULL;
@@ -597,12 +597,12 @@ namespace Glest {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-				throw megaglest_runtime_error(ex.what());
+				throw game_runtime_error(ex.what());
 			} catch (...) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error\n", __FILE__, __FUNCTION__, __LINE__);
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 		}
@@ -615,7 +615,7 @@ namespace Glest {
 
 				Command *command = unit->getCurrCommand();
 				if (command == NULL) {
-					throw megaglest_runtime_error("command == NULL");
+					throw game_runtime_error("command == NULL");
 				}
 				const MoveCommandType *mct = static_cast<const MoveCommandType*>(command->getCommandType());
 
@@ -637,7 +637,7 @@ namespace Glest {
 						tsValue = pathFinder->findPath(unit, pos, NULL, frameIndex);
 						break;
 					default:
-						throw megaglest_runtime_error("detected unsupported pathfinder type!");
+						throw game_runtime_error("detected unsupported pathfinder type!");
 				}
 
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance, "In [%s::%s Line: %d] took msecs: %lld\n", __FILE__, __FUNCTION__, __LINE__, chrono.getMillis());
@@ -677,12 +677,12 @@ namespace Glest {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-				throw megaglest_runtime_error(ex.what());
+				throw game_runtime_error(ex.what());
 			} catch (...) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error\n", __FILE__, __FUNCTION__, __LINE__);
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 		}
@@ -790,7 +790,7 @@ namespace Glest {
 									tsValue = pathFinder->findPath(unit, pos, NULL, frameIndex);
 									break;
 								default:
-									throw megaglest_runtime_error("detected unsupported pathfinder type!");
+									throw game_runtime_error("detected unsupported pathfinder type!");
 							}
 							//printf("In [%s::%s Line: %d] END pathfind for attacker [%d - %s]\n",__FILE__,__FUNCTION__,__LINE__,unit->getId(), unit->getType()->getName().c_str());
 							//fflush(stdout);
@@ -893,12 +893,12 @@ namespace Glest {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Loc [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-				throw megaglest_runtime_error(ex.what());
+				throw game_runtime_error(ex.what());
 			} catch (...) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error\n", __FILE__, __FUNCTION__, __LINE__);
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 		}
@@ -925,7 +925,7 @@ namespace Glest {
 
 				Command *command = unit->getCurrCommand();
 				if (command == NULL) {
-					throw megaglest_runtime_error("command == NULL");
+					throw game_runtime_error("command == NULL");
 				}
 
 				const AttackStoppedCommandType *asct = static_cast<const AttackStoppedCommandType*>(command->getCommandType());
@@ -985,12 +985,12 @@ namespace Glest {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-				throw megaglest_runtime_error(ex.what());
+				throw game_runtime_error(ex.what());
 			} catch (...) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error\n", __FILE__, __FUNCTION__, __LINE__);
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 		}
@@ -1064,7 +1064,7 @@ namespace Glest {
 
 				Command *command = unit->getCurrCommand();
 				if (command == NULL) {
-					throw megaglest_runtime_error("command == NULL");
+					throw game_runtime_error("command == NULL");
 				}
 
 				const BuildCommandType *bct = static_cast<const BuildCommandType*>(command->getCommandType());
@@ -1101,7 +1101,7 @@ namespace Glest {
 						}
 						break;
 						default:
-							throw megaglest_runtime_error("detected unsupported pathfinder type!");
+							throw game_runtime_error("detected unsupported pathfinder type!");
 					}
 
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d] tsValue = %d\n", __FILE__, __FUNCTION__, __LINE__, tsValue);
@@ -1121,7 +1121,7 @@ namespace Glest {
 								//if arrived destination
 								assert(ut);
 								if (ut == NULL) {
-									throw megaglest_runtime_error("ut == NULL");
+									throw game_runtime_error("ut == NULL");
 								}
 
 								bool canOccupyCell = false;
@@ -1131,7 +1131,7 @@ namespace Glest {
 										canOccupyCell = map->isFreeCells(command->getPos(), ut->getSize(), fLand, true);
 										break;
 									default:
-										throw megaglest_runtime_error("detected unsupported pathfinder type!");
+										throw game_runtime_error("detected unsupported pathfinder type!");
 								}
 
 								if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d] canOccupyCell = %d\n", __FILE__, __FUNCTION__, __LINE__, canOccupyCell);
@@ -1146,7 +1146,7 @@ namespace Glest {
 											newpath = new UnitPathBasic();
 											break;
 										default:
-											throw megaglest_runtime_error("detected unsupported pathfinder type!");
+											throw game_runtime_error("detected unsupported pathfinder type!");
 									}
 
 									Vec2i buildPos = command->getPos();
@@ -1158,7 +1158,7 @@ namespace Glest {
 
 									if (builtUnitType->hasSkillClass(scBeBuilt) == false) {
 										printf("%s", (string("Unit [") + builtUnitType->getName(false) + "] has no be_built skill, producer was [" + intToStr(unit->getId()) + " - " + unit->getType()->getName(false) + "].").c_str());
-										//throw megaglest_runtime_error("Unit [" + builtUnitType->getName(false) + "] has no be_built skill, producer was [" + intToStr(unit->getId()) + " - " + unit->getType()->getName(false) + "].");
+										//throw game_runtime_error("Unit [" + builtUnitType->getName(false) + "] has no be_built skill, producer was [" + intToStr(unit->getId()) + " - " + unit->getType()->getName(false) + "].");
 										return;
 									}
 
@@ -1176,7 +1176,7 @@ namespace Glest {
 										case pfBasic:
 											break;
 										default:
-											throw megaglest_runtime_error("detected unsupported pathfinder type!");
+											throw game_runtime_error("detected unsupported pathfinder type!");
 									}
 
 									command->setUnit(builtUnit);
@@ -1294,12 +1294,12 @@ namespace Glest {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-				throw megaglest_runtime_error(ex.what());
+				throw game_runtime_error(ex.what());
 			} catch (...) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error\n", __FILE__, __FUNCTION__, __LINE__);
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 		}
@@ -1385,12 +1385,12 @@ namespace Glest {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-				throw megaglest_runtime_error(ex.what());
+				throw game_runtime_error(ex.what());
 			} catch (...) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error\n", __FILE__, __FUNCTION__, __LINE__);
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 		}
@@ -1409,12 +1409,12 @@ namespace Glest {
 
 				Command *command = unit->getCurrCommand();
 				if (command == NULL) {
-					throw megaglest_runtime_error("command == NULL");
+					throw game_runtime_error("command == NULL");
 				}
 
 				const HarvestCommandType *hct = dynamic_cast<const HarvestCommandType*>(command->getCommandType());
 				if (hct == NULL) {
-					throw megaglest_runtime_error("hct == NULL");
+					throw game_runtime_error("hct == NULL");
 				}
 				Vec2i targetPos(-1);
 
@@ -1482,7 +1482,7 @@ namespace Glest {
 									}
 									break;
 									default:
-										throw megaglest_runtime_error("detected unsupported pathfinder type!");
+										throw game_runtime_error("detected unsupported pathfinder type!");
 								}
 
 								if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance, "In [%s::%s Line: %d] took msecs: %lld\n", __FILE__, __FUNCTION__, __LINE__, chrono.getMillis());
@@ -1519,7 +1519,7 @@ namespace Glest {
 													unit->setLoadType(r->getType());
 													break;
 												default:
-													throw megaglest_runtime_error("detected unsupported pathfinder type!");
+													throw game_runtime_error("detected unsupported pathfinder type!");
 											}
 
 											if (SystemFlags::getSystemSettingType(SystemFlags::debugWorldSynch).enabled == true && frameIndex < 0) {
@@ -1562,7 +1562,7 @@ namespace Glest {
 											}
 											break;
 										default:
-											throw megaglest_runtime_error("detected unsupported pathfinder type!");
+											throw game_runtime_error("detected unsupported pathfinder type!");
 									}
 
 									if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance, "In [%s::%s Line: %d] took msecs: %lld\n", __FILE__, __FUNCTION__, __LINE__, chrono.getMillis());
@@ -1582,7 +1582,7 @@ namespace Glest {
 											}
 											break;
 											default:
-												throw megaglest_runtime_error("detected unsupported pathfinder type!");
+												throw game_runtime_error("detected unsupported pathfinder type!");
 										}
 
 										if (canHarvestDestPos == true) {
@@ -1609,7 +1609,7 @@ namespace Glest {
 															unit->setLoadType(r->getType());
 															break;
 														default:
-															throw megaglest_runtime_error("detected unsupported pathfinder type!");
+															throw game_runtime_error("detected unsupported pathfinder type!");
 													}
 												}
 											}
@@ -1643,7 +1643,7 @@ namespace Glest {
 														}
 														break;
 													default:
-														throw megaglest_runtime_error("detected unsupported pathfinder type!");
+														throw game_runtime_error("detected unsupported pathfinder type!");
 												}
 											}
 
@@ -1691,7 +1691,7 @@ namespace Glest {
 									tsValue = pathFinder->findPath(unit, store->getCenteredPos(), NULL, frameIndex);
 									break;
 								default:
-									throw megaglest_runtime_error("detected unsupported pathfinder type!");
+									throw game_runtime_error("detected unsupported pathfinder type!");
 							}
 
 							if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance, "In [%s::%s Line: %d] took msecs: %lld\n", __FILE__, __FUNCTION__, __LINE__, chrono.getMillis());
@@ -1808,7 +1808,7 @@ namespace Glest {
 												case pfBasic:
 													break;
 												default:
-													throw megaglest_runtime_error("detected unsupported pathfinder type!");
+													throw game_runtime_error("detected unsupported pathfinder type!");
 											}
 
 											//printf("\n\n#6\n\n");
@@ -1841,12 +1841,12 @@ namespace Glest {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-				throw megaglest_runtime_error(ex.what());
+				throw game_runtime_error(ex.what());
 			} catch (...) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error\n", __FILE__, __FUNCTION__, __LINE__);
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 		}
@@ -1991,7 +1991,7 @@ namespace Glest {
 				//}
 				Command *command = unit->getCurrCommand();
 				if (command == NULL) {
-					throw megaglest_runtime_error("command == NULL");
+					throw game_runtime_error("command == NULL");
 				}
 
 				const RepairCommandType *rct = static_cast<const RepairCommandType*>(command->getCommandType());
@@ -2110,7 +2110,7 @@ namespace Glest {
 					(nextToRepaired == false && peerUnitBuilder == NULL)) {
 
 					if (command == NULL) {
-						throw megaglest_runtime_error("command == NULL");
+						throw game_runtime_error("command == NULL");
 					}
 					Vec2i repairPos = command->getPos();
 					bool startRepairing = (repaired != NULL && rct->isRepairableUnitType(repaired->getType()) && repaired->isDamaged());
@@ -2176,7 +2176,7 @@ namespace Glest {
 										ts = pathFinder->findPath(unit, repairPos, NULL, frameIndex);
 										break;
 									default:
-										throw megaglest_runtime_error("detected unsupported pathfinder type!");
+										throw game_runtime_error("detected unsupported pathfinder type!");
 								}
 
 								if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d] ts = %d\n", __FILE__, __FUNCTION__, __LINE__, ts);
@@ -2265,12 +2265,12 @@ namespace Glest {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-				throw megaglest_runtime_error(ex.what());
+				throw game_runtime_error(ex.what());
 			} catch (...) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error\n", __FILE__, __FUNCTION__, __LINE__);
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 		}
@@ -2296,7 +2296,7 @@ namespace Glest {
 
 				Command *command = unit->getCurrCommand();
 				if (command == NULL) {
-					throw megaglest_runtime_error("command == NULL");
+					throw game_runtime_error("command == NULL");
 				}
 
 				const ProduceCommandType *pct = static_cast<const ProduceCommandType*>(command->getCommandType());
@@ -2324,7 +2324,7 @@ namespace Glest {
 								newpath = new UnitPathBasic();
 								break;
 							default:
-								throw megaglest_runtime_error("detected unsupported pathfinder type!");
+								throw game_runtime_error("detected unsupported pathfinder type!");
 						}
 
 						produced = new Unit(world->getNextUnitId(unit->getFaction()), newpath, Vec2i(0), pct->getProducedUnit(), unit->getFaction(), world->getMap(), CardinalDir(CardinalDir::NORTH));
@@ -2362,12 +2362,12 @@ namespace Glest {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-				throw megaglest_runtime_error(ex.what());
+				throw game_runtime_error(ex.what());
 			} catch (...) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN\n", __FILE__, __FUNCTION__, __LINE__);
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 		}
@@ -2394,7 +2394,7 @@ namespace Glest {
 
 				Command *command = unit->getCurrCommand();
 				if (command == NULL) {
-					throw megaglest_runtime_error("command == NULL");
+					throw game_runtime_error("command == NULL");
 				}
 
 				const UpgradeCommandType *uct = static_cast<const UpgradeCommandType*>(command->getCommandType());
@@ -2420,12 +2420,12 @@ namespace Glest {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-				throw megaglest_runtime_error(ex.what());
+				throw game_runtime_error(ex.what());
 			} catch (...) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error\n", __FILE__, __FUNCTION__, __LINE__);
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 		}
@@ -2451,7 +2451,7 @@ namespace Glest {
 
 				Command *command = unit->getCurrCommand();
 				if (command == NULL) {
-					throw megaglest_runtime_error("command == NULL");
+					throw game_runtime_error("command == NULL");
 				}
 
 				const MorphCommandType *mct = static_cast<const MorphCommandType*>(command->getCommandType());
@@ -2478,7 +2478,7 @@ namespace Glest {
 							case pfBasic:
 								break;
 							default:
-								throw megaglest_runtime_error("detected unsupported pathfinder type!");
+								throw game_runtime_error("detected unsupported pathfinder type!");
 						}
 
 						//finish the command
@@ -2491,7 +2491,7 @@ namespace Glest {
 								case pfBasic:
 									break;
 								default:
-									throw megaglest_runtime_error("detected unsupported pathfinder type!");
+									throw game_runtime_error("detected unsupported pathfinder type!");
 							}
 
 							scriptManager->onUnitCreated(unit);
@@ -2514,12 +2514,12 @@ namespace Glest {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-				throw megaglest_runtime_error(ex.what());
+				throw game_runtime_error(ex.what());
 			} catch (...) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error\n", __FILE__, __FUNCTION__, __LINE__);
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 		}
@@ -2578,13 +2578,13 @@ namespace Glest {
 
 		void UnitUpdater::damage(Unit *attacker, const AttackSkillType* ast, Unit *attacked, float distance, int damagePercent) {
 			if (attacker == NULL) {
-				throw megaglest_runtime_error("attacker == NULL");
+				throw game_runtime_error("attacker == NULL");
 			}
 			if (ast == NULL) {
-				throw megaglest_runtime_error("ast == NULL");
+				throw game_runtime_error("ast == NULL");
 			}
 			if (attacked == NULL) {
-				throw megaglest_runtime_error("attacked == NULL");
+				throw game_runtime_error("attacked == NULL");
 			}
 
 			//get vars
@@ -2656,7 +2656,7 @@ namespace Glest {
 					case pfBasic:
 						break;
 					default:
-						throw megaglest_runtime_error("detected unsupported pathfinder type!");
+						throw game_runtime_error("detected unsupported pathfinder type!");
 				}
 
 				attacked->setCauseOfDeath(ucodAttacked);
@@ -2678,7 +2678,7 @@ namespace Glest {
 			const AttackSkillType *ast = static_cast<const AttackSkillType*>(unit->getCurrSkill());
 
 			if (ast == NULL) {
-				throw megaglest_runtime_error("Start attack particle ast == NULL!");
+				throw game_runtime_error("Start attack particle ast == NULL!");
 			}
 
 			ParticleSystemTypeSplash *pstSplash = ast->getSplashParticleType();
@@ -3082,12 +3082,12 @@ namespace Glest {
 					SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-					throw megaglest_runtime_error(ex.what());
+					throw game_runtime_error(ex.what());
 				} catch (...) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error\n", __FILE__, __FUNCTION__, __LINE__);
 					SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 
 				return result;
@@ -3158,12 +3158,12 @@ namespace Glest {
 					SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-					throw megaglest_runtime_error(ex.what());
+					throw game_runtime_error(ex.what());
 				} catch (...) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error\n", __FILE__, __FUNCTION__, __LINE__);
 					SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 
 				return enemies;

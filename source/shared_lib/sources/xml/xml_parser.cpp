@@ -79,7 +79,7 @@ namespace Shared {
 					XMLString::transcode(domError.getMessage(), msgStr, strSize - 1);
 					XMLString::transcode(domError.getLocation()->getURI(), fileStr, strSize - 1);
 					Shared::Platform::uint64 lineNumber = domError.getLocation()->getLineNumber();
-					throw megaglest_runtime_error("Error parsing XML, file: " + string(fileStr) + ", line: " + intToStr(lineNumber) + ": " + string(msgStr));
+					throw game_runtime_error("Error parsing XML, file: " + string(fileStr) + ", line: " + intToStr(lineNumber) + ": " + string(msgStr));
 				}
 				return true;
 			}
@@ -105,7 +105,7 @@ namespace Shared {
 				XmlIo::initialized = true;
 			} catch (const XMLException &e) {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error initializing XML system, msg %s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, e.getMessage());
-				throw megaglest_runtime_error("Error initializing XML system");
+				throw game_runtime_error("Error initializing XML system");
 			}
 
 			try {
@@ -115,7 +115,7 @@ namespace Shared {
 				implementation = DOMImplementationRegistry::getDOMImplementation(str);
 			} catch (const DOMException &ex) {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Exception while creating XML parser, msg: %s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, ex.getMessage());
-				throw megaglest_runtime_error("Exception while creating XML parser");
+				throw game_runtime_error("Exception while creating XML parser");
 			}
 		}
 
@@ -209,7 +209,7 @@ namespace Shared {
 				}
 #endif
 				if (document == NULL) {
-					throw megaglest_runtime_error("Can not parse URL: " + path);
+					throw game_runtime_error("Can not parse URL: " + path);
 				}
 
 				DOMNode *rootNode = document->getDocumentElement();
@@ -219,7 +219,7 @@ namespace Shared {
 				snprintf(szBuf, 8096, "In [%s::%s Line: %d] Exception while loading: [%s], msg:\n%s", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, path.c_str(), XMLString::transcode(ex.msg));
 				SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szBuf);
 
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			return NULL;
 		}
@@ -244,7 +244,7 @@ namespace Shared {
 				}
 				SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szBuf);
 
-				throw megaglest_runtime_error(szBuf, skipStackTrace);
+				throw game_runtime_error(szBuf, skipStackTrace);
 			}
 			return NULL;
 		}
@@ -254,7 +254,7 @@ namespace Shared {
 
 			try {
 				if (node == NULL) {
-					throw megaglest_runtime_error("node == NULL during save!");
+					throw game_runtime_error("node == NULL during save!");
 				}
 				XMLCh str[strSize];
 				XMLString::transcode(node->getName().c_str(), str, strSize - 1);
@@ -294,7 +294,7 @@ namespace Shared {
 				document->release();
 			} catch (const DOMException &e) {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Exception while saving: [%s], %s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, path.c_str(), XMLString::transcode(e.msg));
-				throw megaglest_runtime_error("Exception while saving: " + path + ": " + XMLString::transcode(e.msg));
+				throw game_runtime_error("Exception while saving: " + path + ": " + XMLString::transcode(e.msg));
 			}
 		}
 
@@ -312,7 +312,7 @@ namespace Shared {
 				XmlIoRapid::initialized = true;
 			} catch (const exception &e) {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error initializing XML system, msg %s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, e.what());
-				throw megaglest_runtime_error("Error initializing XML system");
+				throw game_runtime_error("Error initializing XML system");
 			}
 		}
 
@@ -351,7 +351,7 @@ namespace Shared {
 			try {
 
 				if (folderExists(path) == true) {
-					throw megaglest_runtime_error("Can not open file: [" + path + "] as it is a folder!", true);
+					throw game_runtime_error("Can not open file: [" + path + "] as it is a folder!", true);
 				}
 
 #if defined(WIN32) && !defined(__MINGW32__)
@@ -361,7 +361,7 @@ namespace Shared {
 				ifstream xmlFile(path.c_str(), ios::binary);
 #endif
 				if (xmlFile.is_open() == false) {
-					throw megaglest_runtime_error("Can not open file: [" + path + "]", true);
+					throw game_runtime_error("Can not open file: [" + path + "]", true);
 				}
 
 				if (showPerfStats) printf("In [%s::%s Line: %d] took msecs: " MG_I64_SPECIFIER "\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, chrono.getMillis());
@@ -383,7 +383,7 @@ namespace Shared {
 				if (showPerfStats) printf("In [%s::%s Line: %d] took msecs: " MG_I64_SPECIFIER "\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, chrono.getMillis());
 
 				if (file_size <= 0) {
-					throw megaglest_runtime_error("Invalid file size for file: [" + path + "] size = " + intToStr(file_size));
+					throw game_runtime_error("Invalid file size for file: [" + path + "] size = " + intToStr(file_size));
 				}
 				//printf("File size is: " MG_I64_SPECIFIER " for [%s]\n",file_size,path.c_str());
 
@@ -418,9 +418,9 @@ namespace Shared {
 			} catch (parse_error& ex) {
 				//		char szBuf[8096]="";
 				//		snprintf(szBuf,8096,"%s",ex.where<char>());
-				throw megaglest_runtime_error("Error loading XML: " + path + "\nMessage: " + ex.what(), true);
-			} catch (megaglest_runtime_error& ex) {
-				throw megaglest_runtime_error("Error loading XML: " + path + "\nMessage: " + ex.what(), !ex.wantStackTrace());
+				throw game_runtime_error("Error loading XML: " + path + "\nMessage: " + ex.what(), true);
+			} catch (game_runtime_error& ex) {
+				throw game_runtime_error("Error loading XML: " + path + "\nMessage: " + ex.what(), !ex.wantStackTrace());
 			} catch (const exception &ex) {
 				char szBuf[8096] = "";
 
@@ -431,7 +431,7 @@ namespace Shared {
 				}
 				SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szBuf);
 
-				throw megaglest_runtime_error(szBuf, skipStackTrace);
+				throw game_runtime_error(szBuf, skipStackTrace);
 			}
 
 			//if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] took msecs: %ld for file [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,chrono.getMillis(),path.c_str());
@@ -443,7 +443,7 @@ namespace Shared {
 		void XmlIoRapid::save(const string &path, const XmlNode *node) {
 			try {
 				if (node == NULL) {
-					throw megaglest_runtime_error("node == NULL during save!");
+					throw game_runtime_error("node == NULL during save!");
 				}
 
 				xml_document<> doc;
@@ -488,7 +488,7 @@ namespace Shared {
 				ofstream xmlFile(path.c_str(), ios::binary);
 #endif
 				if (xmlFile.is_open() == false) {
-					throw megaglest_runtime_error("Can not open file: [" + path + "]");
+					throw game_runtime_error("Can not open file: [" + path + "]");
 				}
 
 				//xmlFile << xml_no_indent;
@@ -502,7 +502,7 @@ namespace Shared {
 #endif
 			} catch (const exception &e) {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Exception while saving: [%s], %s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, path.c_str(), e.what());
-				throw megaglest_runtime_error("Exception while saving [" + path + "] msg: " + e.what());
+				throw game_runtime_error("Exception while saving [" + path + "] msg: " + e.what());
 			}
 		}
 
@@ -521,7 +521,7 @@ namespace Shared {
 					break;
 
 				default:
-					throw megaglest_runtime_error("Invalid XML parser engine: " + intToStr((int) engine_type));
+					throw game_runtime_error("Invalid XML parser engine: " + intToStr((int) engine_type));
 			}
 
 			this->engine_type = engine_type;
@@ -558,7 +558,7 @@ namespace Shared {
 
 				for (LoadStack::iterator it = loadStack.begin(); it != loadStack.end(); ++it) {
 					if ((*it)->loadPath == path) {
-						throw megaglest_runtime_error(path + " recursively included");
+						throw game_runtime_error(path + " recursively included");
 					}
 				}
 				loadStack.push_back(this);
@@ -621,7 +621,7 @@ namespace Shared {
 
 		XmlNode::XmlNode(DOMNode *node, const std::map<string, string> &mapTagReplacementValues) : superNode(NULL) {
 			if (node == NULL || node->getNodeName() == NULL) {
-				throw megaglest_runtime_error("XML structure seems to be corrupt!", true);
+				throw game_runtime_error("XML structure seems to be corrupt!", true);
 			}
 
 			//get name
@@ -671,7 +671,7 @@ namespace Shared {
 		XmlNode::XmlNode(xml_node<> *node, const std::map<string, string> &mapTagReplacementValues,
 			bool skipUpdatePathClimbingParts) : superNode(NULL) {
 			if (node == NULL || node->name() == NULL) {
-				throw megaglest_runtime_error("XML structure seems to be corrupt!", true);
+				throw game_runtime_error("XML structure seems to be corrupt!", true);
 			}
 
 			//get name
@@ -736,7 +736,7 @@ namespace Shared {
 
 		XmlAttribute *XmlNode::getAttribute(unsigned int i) const {
 			if (i >= attributes.size()) {
-				throw megaglest_runtime_error(getName() + " node doesn't have " + uIntToStr(i) + " attributes", true);
+				throw game_runtime_error(getName() + " node doesn't have " + uIntToStr(i) + " attributes", true);
 			}
 			return attributes[i];
 		}
@@ -748,7 +748,7 @@ namespace Shared {
 				}
 			}
 			if (mustExist == true) {
-				throw megaglest_runtime_error("\"" + getName() + "\" node doesn't have a attribute named \"" + name + "\"", true);
+				throw game_runtime_error("\"" + getName() + "\" node doesn't have a attribute named \"" + name + "\"", true);
 			}
 
 			return NULL;
@@ -780,7 +780,7 @@ namespace Shared {
 		XmlNode *XmlNode::getChild(unsigned int i) const {
 			assert(!superNode);
 			if (i >= children.size()) {
-				throw megaglest_runtime_error("\"" + getName() + "\" node doesn't have " + uIntToStr(i + 1) + " children", true);
+				throw game_runtime_error("\"" + getName() + "\" node doesn't have " + uIntToStr(i + 1) + " children", true);
 			}
 			return children[i];
 		}
@@ -801,7 +801,7 @@ namespace Shared {
 				return superNode->getChild(childName, i);
 			}
 			if (i >= children.size()) {
-				throw megaglest_runtime_error("\"" + name + "\" node doesn't have " + uIntToStr(i + 1) + " children named \"" + childName + "\"\n\nTree: " + getTreeString(), true);
+				throw game_runtime_error("\"" + name + "\" node doesn't have " + uIntToStr(i + 1) + " children named \"" + childName + "\"\n\nTree: " + getTreeString(), true);
 			}
 
 			unsigned int count = 0;
@@ -814,7 +814,7 @@ namespace Shared {
 				}
 			}
 
-			throw megaglest_runtime_error("Node \"" + getName() + "\" doesn't have " + uIntToStr(i + 1) + " children named  \"" + childName + "\"\n\nTree: " + getTreeString(), true);
+			throw game_runtime_error("Node \"" + getName() + "\" doesn't have " + uIntToStr(i + 1) + " children named  \"" + childName + "\"\n\nTree: " + getTreeString(), true);
 		}
 
 		bool XmlNode::hasChildNoSuper(const string &childName) const {
@@ -833,7 +833,7 @@ namespace Shared {
 					return superNode->getChild(childName, childIndex);
 				}
 				if (childIndex >= children.size()) {
-					throw megaglest_runtime_error("\"" + name + "\" node doesn't have " + intToStr(childIndex + 1) + " children named \"" + childName + "\"\n\nTree: " + getTreeString(), true);
+					throw game_runtime_error("\"" + name + "\" node doesn't have " + intToStr(childIndex + 1) + " children named \"" + childName + "\"\n\nTree: " + getTreeString(), true);
 				}
 
 				unsigned int count = 0;
@@ -847,7 +847,7 @@ namespace Shared {
 				}
 			}
 
-			throw megaglest_runtime_error("Node \"" + getName() + "\" doesn't have " + intToStr(childIndex + 1) + " children named  \"" + (childNameList.empty() ? "?" : childNameList[0]) + "\"\n\nTree: " + getTreeString(), true);
+			throw game_runtime_error("Node \"" + getName() + "\" doesn't have " + intToStr(childIndex + 1) + " children named  \"" + (childNameList.empty() ? "?" : childNameList[0]) + "\"\n\nTree: " + getTreeString(), true);
 		}
 
 		bool XmlNode::hasChildAtIndex(const string &childName, int i) const {
@@ -966,7 +966,7 @@ namespace Shared {
 
 		XmlAttribute::XmlAttribute(DOMNode *attribute, const std::map<string, string> &mapTagReplacementValues) {
 			if (attribute == NULL || attribute->getNodeName() == NULL) {
-				throw megaglest_runtime_error("XML attribute seems to be corrupt!");
+				throw game_runtime_error("XML attribute seems to be corrupt!");
 			}
 
 			skipRestrictionCheck = false;
@@ -987,7 +987,7 @@ namespace Shared {
 
 		XmlAttribute::XmlAttribute(xml_attribute<> *attribute, const std::map<string, string> &mapTagReplacementValues) {
 			if (attribute == NULL || attribute->name() == NULL) {
-				throw megaglest_runtime_error("XML attribute seems to be corrupt!");
+				throw game_runtime_error("XML attribute seems to be corrupt!");
 			}
 
 			skipRestrictionCheck = false;
@@ -1025,7 +1025,7 @@ namespace Shared {
 			} else if (value == "false") {
 				return false;
 			} else {
-				throw megaglest_runtime_error("Not a valid bool value (true or false): " + getName() + ": " + value, true);
+				throw game_runtime_error("Not a valid bool value (true or false): " + getName() + ": " + value, true);
 			}
 		}
 
@@ -1040,7 +1040,7 @@ namespace Shared {
 		int XmlAttribute::getIntValue(int min, int max) const {
 			int i = strToInt(value);
 			if (i<min || i>max) {
-				throw megaglest_runtime_error("Xml Attribute int out of range: " + getName() + ": " + value, true);
+				throw game_runtime_error("Xml Attribute int out of range: " + getName() + ": " + value, true);
 			}
 			return i;
 		}
@@ -1053,7 +1053,7 @@ namespace Shared {
 			float f = strToFloat(value);
 			//printf("getFloatValue f = %.10f [%s]\n",f,value.c_str());
 			if (f<min || f>max) {
-				throw megaglest_runtime_error("Xml attribute float out of range: " + getName() + ": " + value, true);
+				throw game_runtime_error("Xml attribute float out of range: " + getName() + ": " + value, true);
 			}
 			return f;
 		}
@@ -1075,7 +1075,7 @@ namespace Shared {
 
 				for (unsigned int i = 0; i < value.size(); ++i) {
 					if (allowedCharacters.find(value[i]) == string::npos) {
-						throw megaglest_runtime_error(
+						throw game_runtime_error(
 							string("The string \"" + value + "\" contains a character that is not allowed: \"") + value[i] +
 							"\"\nFor portability reasons the only allowed characters in this field are: " + allowedCharacters, true);
 					}

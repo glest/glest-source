@@ -120,7 +120,7 @@ namespace
 					__FUNCTION__, __LINE__, ex.what());
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
 				throw
-					megaglest_runtime_error(szBuf);
+					game_runtime_error(szBuf);
 			}
 			SystemFlags::OutputDebug(SystemFlags::debugSystem,
 				"In [%s::%s Line: %d]\n", __FILE__,
@@ -497,7 +497,7 @@ namespace
 					__FUNCTION__, __LINE__, ex.what());
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
 				throw
-					megaglest_runtime_error(szBuf);
+					game_runtime_error(szBuf);
 			}
 
 			SystemFlags::OutputDebug(SystemFlags::debugSystem,
@@ -706,7 +706,7 @@ namespace
 					__FUNCTION__, __LINE__, ex.what());
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
 				throw
-					megaglest_runtime_error(szBuf);
+					game_runtime_error(szBuf);
 			}
 		}
 

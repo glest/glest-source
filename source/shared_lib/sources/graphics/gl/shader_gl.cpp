@@ -175,7 +175,7 @@ namespace Shared {
 			GLint ShaderProgramGl::getLocation(const string &name) {
 				GLint location = glGetUniformLocationARB(handle, name.c_str());
 				if (location == -1) {
-					throw megaglest_runtime_error("Can't locate uniform: " + name);
+					throw game_runtime_error("Can't locate uniform: " + name);
 				}
 				return location;
 			}

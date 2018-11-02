@@ -208,7 +208,7 @@ namespace Shared {
 		//updates all living particles and creates new ones
 		void ParticleSystem::update() {
 			if (aliveParticleCount > (int) particles.size()) {
-				throw megaglest_runtime_error("aliveParticleCount >= particles.size()");
+				throw game_runtime_error("aliveParticleCount >= particles.size()");
 			}
 			if (particleSystemStartDelay > 0) {
 				particleSystemStartDelay--;
@@ -253,7 +253,7 @@ namespace Shared {
 			} else if (str == "black") {
 				return bmOneMinusAlpha;
 			} else {
-				throw megaglest_runtime_error("Unknown particle mode: " + str);
+				throw game_runtime_error("Unknown particle mode: " + str);
 			}
 		}
 
@@ -560,7 +560,7 @@ namespace Shared {
 				if (state != sPlay) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "state != sPlay, state = [%d]\n", state);
-					//throw megaglest_runtime_error(szBuf);
+					//throw game_runtime_error(szBuf);
 					//printf(szBuf);
 					SystemFlags::OutputDebug(SystemFlags::debugError, "%s", szBuf);
 				}
@@ -810,7 +810,7 @@ namespace Shared {
 			} else if (str == "line") {
 				return pLine;
 			} else {
-				throw megaglest_runtime_error("Unknown particle primitive: " + str);
+				throw game_runtime_error("Unknown particle primitive: " + str);
 			}
 		}
 
@@ -1100,7 +1100,7 @@ namespace Shared {
 			} else if (str == "linear") {
 				return sLinear;
 			} else {
-				throw megaglest_runtime_error("Unknown particle shape: " + str);
+				throw game_runtime_error("Unknown particle shape: " + str);
 			}
 		}
 
@@ -1226,7 +1226,7 @@ namespace Shared {
 						p->speed.z = truncateDecimal<float>(p->speed.z, 6);
 					}
 				} break;
-				default: throw megaglest_runtime_error("bad shape");
+				default: throw game_runtime_error("bad shape");
 			}
 			//need to do that down here because we need p->speed for it.
 			p->speedUpConstant = Vec3f(speedUpConstant)*p->speed;
@@ -2054,7 +2054,7 @@ namespace Shared {
 			} else if (str == "spiral") {
 				return tSpiral;
 			} else {
-				throw megaglest_runtime_error("Unknown particle system trajectory: " + str);
+				throw game_runtime_error("Unknown particle system trajectory: " + str);
 			}
 		}
 

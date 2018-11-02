@@ -37,7 +37,7 @@ namespace Shared {
 		// =====================================================
 		FontManager::FontManager() {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 			fonts.clear();
 		}

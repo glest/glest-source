@@ -223,7 +223,7 @@ namespace Glest {
 									(double) unitTypes.size()) *
 									100.0 / techTree->getTypeCount()));
 							SDL_PumpEvents();
-						} catch (megaglest_runtime_error & ex) {
+						} catch (game_runtime_error & ex) {
 							if (validationMode == false) {
 								throw;
 							} else {
@@ -235,13 +235,13 @@ namespace Glest {
 							}
 						}
 					}
-				} catch (megaglest_runtime_error & ex) {
+				} catch (game_runtime_error & ex) {
 					SystemFlags::OutputDebug(SystemFlags::debugError,
 						"In [%s::%s Line: %d] Error [%s]\n",
 						extractFileFromDirectoryPath(__FILE__).
 						c_str(), __FUNCTION__, __LINE__,
 						ex.what());
-					throw megaglest_runtime_error("Error loading units: " +
+					throw game_runtime_error("Error loading units: " +
 						currentPath + "\nMessage: " +
 						ex.what(), !ex.wantStackTrace());
 				} catch (const exception & e) {
@@ -250,7 +250,7 @@ namespace Glest {
 						extractFileFromDirectoryPath(__FILE__).
 						c_str(), __FUNCTION__, __LINE__,
 						e.what());
-					throw megaglest_runtime_error("Error loading units: " +
+					throw game_runtime_error("Error loading units: " +
 						currentPath + "\nMessage: " +
 						e.what());
 				}
@@ -265,7 +265,7 @@ namespace Glest {
 							upgradeTypes[i].load(str, techTree, this, checksum,
 								techtreeChecksum, loadedFileList,
 								validationMode);
-						} catch (megaglest_runtime_error & ex) {
+						} catch (game_runtime_error & ex) {
 							if (validationMode == false) {
 								throw;
 							} else {
@@ -285,7 +285,7 @@ namespace Glest {
 						extractFileFromDirectoryPath(__FILE__).
 						c_str(), __FUNCTION__, __LINE__,
 						e.what());
-					throw megaglest_runtime_error("Error loading upgrades: " +
+					throw game_runtime_error("Error loading upgrades: " +
 						currentPath + "\n" + e.what());
 				}
 
@@ -324,7 +324,7 @@ namespace Glest {
 					try {
 						startingResources[i].init(techTree->getResourceType(name),
 							amount);
-					} catch (megaglest_runtime_error & ex) {
+					} catch (game_runtime_error & ex) {
 						if (validationMode == false) {
 							throw;
 						} else {
@@ -406,7 +406,7 @@ namespace Glest {
 								healthbarVisible = healthbarVisible | hbvOff;
 							} else {
 								throw
-									megaglest_runtime_error
+									game_runtime_error
 									("Unknown Healthbar Visible Option: " + current, true);
 							}
 						}
@@ -734,7 +734,7 @@ namespace Glest {
 							const BuildCommandType *build =
 								dynamic_cast <const BuildCommandType *>(cmdType);
 							if (build == NULL) {
-								throw megaglest_runtime_error("build == NULL");
+								throw game_runtime_error("build == NULL");
 							}
 							for (int k = 0; k < build->getBuildingCount(); ++k) {
 								const UnitType *buildUnit = build->getBuilding(k);
@@ -782,7 +782,7 @@ namespace Glest {
 							const RepairCommandType *repair =
 								dynamic_cast <const RepairCommandType *>(cmdType);
 							if (repair == NULL) {
-								throw megaglest_runtime_error("repair == NULL");
+								throw game_runtime_error("repair == NULL");
 							}
 							for (int k = 0; k < repair->getRepairCount(); ++k) {
 								const UnitType *repairUnit = repair->getRepair(k);
@@ -916,7 +916,7 @@ namespace Glest {
 								const BuildCommandType *build =
 									dynamic_cast <const BuildCommandType *>(cmdType);
 								if (build == NULL) {
-									throw megaglest_runtime_error("build == NULL");
+									throw game_runtime_error("build == NULL");
 								}
 								for (int k = 0;
 									k < build->getBuildingCount() && foundUnit == false;
@@ -939,7 +939,7 @@ namespace Glest {
 								const MorphCommandType *morph =
 									dynamic_cast <const MorphCommandType *>(cmdType);
 								if (morph == NULL) {
-									throw megaglest_runtime_error("morph == NULL");
+									throw game_runtime_error("morph == NULL");
 								}
 								const UnitType *morphUnit = morph->getMorphUnit();
 
@@ -1105,7 +1105,7 @@ namespace Glest {
 							const HarvestCommandType *harvest =
 								dynamic_cast <const HarvestCommandType *>(cmdType);
 							if (harvest == NULL) {
-								throw megaglest_runtime_error("harvest == NULL");
+								throw game_runtime_error("harvest == NULL");
 							}
 							for (int k = 0; k < harvest->getHarvestedResourceCount(); ++k) {
 								const ResourceType *harvestResource =
@@ -1229,7 +1229,7 @@ namespace Glest {
 						unitTypes[i].getName(false).c_str());
 			}
 
-			throw megaglest_runtime_error("Unit type not found: [" + name +
+			throw game_runtime_error("Unit type not found: [" + name +
 				"] in faction type [" + this->name + "]",
 				true);
 		}
@@ -1251,7 +1251,7 @@ namespace Glest {
 		//      if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] scanning [%s] idx = %d [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,name.c_str(),i,unitTypes[i].getName(false).c_str());
 		//    }
 		//
-		//      throw megaglest_runtime_error("Unit type not found: [" + intToStr(id) + "] in faction type [" + this->name + "]",true);
+		//      throw game_runtime_error("Unit type not found: [" + intToStr(id) + "] in faction type [" + this->name + "]",true);
 		//}
 
 		const UpgradeType *FactionType::getUpgradeType(const string & name) const {
@@ -1289,7 +1289,7 @@ namespace Glest {
 						upgradeTypes[i].getName().c_str());
 			}
 
-			throw megaglest_runtime_error("Upgrade type not found: [" + name +
+			throw game_runtime_error("Upgrade type not found: [" + name +
 				"] in faction type [" + this->name + "]",
 				true);
 		}

@@ -198,7 +198,7 @@ namespace Glest {
 				snprintf(szBuf, 8096, "In [%s::%s %d] error [%s]\n", __FILE__,
 					__FUNCTION__, __LINE__, ex.what());
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 
@@ -235,7 +235,7 @@ namespace Glest {
 				snprintf(szBuf, 8096, "In [%s::%s %d] error [%s]\n", __FILE__,
 					__FUNCTION__, __LINE__, ex.what());
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 
@@ -261,25 +261,25 @@ namespace Glest {
 
 		//string Console::getLine(int i) const {
 		//      if(i < 0 || i >= (int)lines.size())
-		//              throw megaglest_runtime_error("i >= Lines.size()");
+		//              throw game_runtime_error("i >= Lines.size()");
 		//      return lines[i].text;
 		//}
 
 		//string Console::getStoredLine(int i) const {
 		//      if(i < 0 || i >= (int)storedLines.size())
-		//              throw megaglest_runtime_error("i >= storedLines.size()");
+		//              throw game_runtime_error("i >= storedLines.size()");
 		//      return storedLines[i].text;
 		//}
 
 		ConsoleLineInfo Console::getLineItem(int i) const {
 			if (i < 0 || i >= (int) lines.size())
-				throw megaglest_runtime_error("i >= Lines.size()");
+				throw game_runtime_error("i >= Lines.size()");
 			return lines[i];
 		}
 
 		ConsoleLineInfo Console::getStoredLineItem(int i) const {
 			if (i < 0 || i >= (int) storedLines.size())
-				throw megaglest_runtime_error("i >= storedLines.size()");
+				throw game_runtime_error("i >= storedLines.size()");
 			return storedLines[i];
 		}
 

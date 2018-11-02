@@ -65,7 +65,7 @@ namespace Glest {
 
 		Vec4f Display::getColor() const {
 			if (currentColor < 0 || currentColor >= colorCount) {
-				throw megaglest_runtime_error("currentColor >= colorCount");
+				throw game_runtime_error("currentColor >= colorCount");
 			}
 			return colors[currentColor];
 		}

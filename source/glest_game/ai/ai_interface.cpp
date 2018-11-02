@@ -270,7 +270,7 @@ namespace
 						__FUNCTION__, __LINE__);
 
 				throw
-					megaglest_runtime_error(ex.what());
+					game_runtime_error(ex.what());
 			}
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
 				enabled)
@@ -332,7 +332,7 @@ namespace
 #endif
 				if (fp == NULL) {
 					throw
-						megaglest_runtime_error("Can't open file: [" + aiLogFile +
+						game_runtime_error("Can't open file: [" + aiLogFile +
 							"]");
 				}
 				fprintf(fp,
@@ -553,7 +553,7 @@ namespace
 				printf("In [%s::%s Line: %d] Can not find AI unit in AI factionIndex = %d. Game out of sync.\n",
 					__FILE__, __FUNCTION__, __LINE__, factionIndex);
 				/*throw
-					megaglest_runtime_error(szBuf);*/
+					game_runtime_error(szBuf);*/
 				return result;
 			}
 			Command* currentCommand = unit->getCurrCommand();
@@ -565,7 +565,7 @@ namespace
 				printf("In [%s::%s Line: %d] Can not find AI unittype with unit id: %d, AI factionIndex = %d. Game out of sync.\n",
 					__FILE__, __FUNCTION__, __LINE__, unit->getId(), factionIndex);
 				/*throw
-					megaglest_runtime_error(szBuf);*/
+					game_runtime_error(szBuf);*/
 				return result;
 			}
 			if (commandType == NULL) {
@@ -573,7 +573,7 @@ namespace
 					__FILE__, __FUNCTION__, __LINE__, unit->getId(),
 					factionIndex);
 				/*throw
-					megaglest_runtime_error(szBuf);*/
+					game_runtime_error(szBuf);*/
 				return result;
 			}
 			const CommandType *
@@ -597,7 +597,7 @@ namespace
 				std::string sError =
 					"worldLog = " + worldLog + " " + string(szBuf);
 				throw
-					megaglest_runtime_error(sError);*/
+					game_runtime_error(sError);*/
 				return result;
 			}
 
@@ -648,7 +648,7 @@ namespace
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					factionIndex);
 				/*throw
-					megaglest_runtime_error(szBuf);*/
+					game_runtime_error(szBuf);*/
 				return result;
 			}
 			Command* currentCommand = unit->getCurrCommand();
@@ -661,7 +661,7 @@ namespace
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					factionIndex);
 				/*throw
-					megaglest_runtime_error(szBuf);*/
+					game_runtime_error(szBuf);*/
 				return result;
 			}
 			const CommandType *
@@ -685,7 +685,7 @@ namespace
 				std::string sError =
 					"worldLog = " + worldLog + " " + string(szBuf);
 				throw
-					megaglest_runtime_error(sError);*/
+					game_runtime_error(sError);*/
 				return result;
 			}
 
@@ -735,7 +735,7 @@ namespace
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					factionIndex);
 				/*throw
-					megaglest_runtime_error(szBuf);*/
+					game_runtime_error(szBuf);*/
 				return result;
 			}
 			Command* currentCommand = unit->getCurrCommand();
@@ -748,7 +748,7 @@ namespace
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					factionIndex);
 				/*throw
-					megaglest_runtime_error(szBuf);*/
+					game_runtime_error(szBuf);*/
 				return result;
 			}
 			const CommandType *
@@ -772,7 +772,7 @@ namespace
 				std::string sError =
 					"worldLog = " + worldLog + " " + string(szBuf);
 				throw
-					megaglest_runtime_error(sError);*/
+					game_runtime_error(sError);*/
 				return result;
 			}
 
@@ -824,7 +824,7 @@ namespace
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					factionIndex);
 				/*throw
-					megaglest_runtime_error(szBuf);*/
+					game_runtime_error(szBuf);*/
 				return result;
 			}
 			Command* currentCommand = unit->getCurrCommand();
@@ -837,7 +837,7 @@ namespace
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					factionIndex);
 				/*throw
-					megaglest_runtime_error(szBuf);*/
+					game_runtime_error(szBuf);*/
 				return result;
 			}
 			const CommandType * ct = unit->getType()->findCommandTypeById(commandType->getId());
@@ -860,7 +860,7 @@ namespace
 				std::string sError =
 					"worldLog = " + worldLog + " " + string(szBuf);
 				throw
-					megaglest_runtime_error(sError);*/
+					game_runtime_error(sError);*/
 				return result;
 			}
 
@@ -973,7 +973,7 @@ namespace
 					__FILE__, __FUNCTION__, __LINE__, unitIndex,
 					world->getFaction(factionIndex)->getUnitCount());
 				throw
-					megaglest_runtime_error(szBuf);
+					game_runtime_error(szBuf);
 			}
 
 			return world->getFaction(factionIndex)->getUnit(unitIndex);

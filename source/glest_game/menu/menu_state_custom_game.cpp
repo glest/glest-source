@@ -596,7 +596,7 @@ namespace Glest {
 								getSystemSettingType(SystemFlags::debugSystem).enabled)
 								SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
 							showMessageBox(szBuf, "Error", false);
-							//throw megaglest_runtime_error(szBuf);
+							//throw game_runtime_error(szBuf);
 						}
 				}
 				resultsScenarios.clear();
@@ -918,7 +918,7 @@ namespace Glest {
 					ServerInterface *serverInterface =
 						NetworkManager::getInstance().getServerInterface();
 					if (serverInterface == NULL) {
-						throw megaglest_runtime_error("serverInterface == NULL");
+						throw game_runtime_error("serverInterface == NULL");
 					}
 					if (this->headlessServerMode == true) {
 						listBoxControls[0].setSelectedItemIndex(ctNetwork);
@@ -1025,7 +1025,7 @@ namespace Glest {
 					getSystemSettingType(SystemFlags::debugSystem).enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
 
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 
@@ -3002,7 +3002,7 @@ namespace Glest {
 							fontMetrics = labelPlayers[i].getFont3D()->getMetrics();
 						}
 						if (fontMetrics == NULL) {
-							throw megaglest_runtime_error("fontMetrics == NULL");
+							throw game_runtime_error("fontMetrics == NULL");
 						}
 						int curWidth =
 							(fontMetrics->getTextWidth(labelPlayers[i].getText()));
@@ -3196,7 +3196,7 @@ namespace Glest {
 				snprintf(szBuf, 8096, "In [%s::%s %d]\nError detected:\n%s\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, ex.what());
-				//throw megaglest_runtime_error(szBuf);
+				//throw game_runtime_error(szBuf);
 
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
 				if (SystemFlags::
@@ -3887,7 +3887,7 @@ namespace Glest {
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
 
 				if (callingThread->getQuitStatus() == false) {
-					//throw megaglest_runtime_error(szBuf);
+					//throw game_runtime_error(szBuf);
 					showGeneralError = true;
 					generalErrorToShow = ex.what();
 				}
@@ -4076,7 +4076,7 @@ namespace Glest {
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
 
 				if (callingThread->getQuitStatus() == false) {
-					//throw megaglest_runtime_error(szBuf);
+					//throw game_runtime_error(szBuf);
 					showGeneralError = true;
 					generalErrorToShow = ex.what();
 				}
@@ -5333,7 +5333,7 @@ namespace Glest {
 					extractFileFromDirectoryPath
 					(__FILE__).c_str(), __FUNCTION__, __LINE__,
 					e.what(), file.c_str());
-				throw megaglest_runtime_error("Error loading map file: [" + file +
+				throw game_runtime_error("Error loading map file: [" + file +
 					"] msg: " + e.what());
 			}
 		}
@@ -5369,7 +5369,7 @@ namespace Glest {
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, ex.what());
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 
@@ -6055,7 +6055,7 @@ namespace Glest {
 					getSystemSettingType(SystemFlags::debugSystem).enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
 
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 		}
@@ -6084,7 +6084,7 @@ namespace Glest {
 				std::sort(allMaps.begin(), allMaps.end(), compareNonCaseSensitive);
 
 				if (allMaps.empty()) {
-					throw megaglest_runtime_error("No maps were found!");
+					throw game_runtime_error("No maps were found!");
 				}
 				vector < string > results;
 				copy(allMaps.begin(), allMaps.end(), std::back_inserter(results));
@@ -6117,7 +6117,7 @@ namespace Glest {
 							Config::getMapPath(mapFiles.at(i), "",
 								false).c_str(),
 							mapInfo.desc.c_str());
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 					playerSortedMaps[mapInfo.hardMaxPlayers].push_back(mapFiles.at(i));
 					formattedPlayerSortedMaps[mapInfo.hardMaxPlayers].push_back(formatString
@@ -6156,7 +6156,7 @@ namespace Glest {
 					getSystemSettingType(SystemFlags::debugSystem).enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
 
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 				//abort();
 			}
 
@@ -6175,7 +6175,7 @@ namespace Glest {
 				findDirs(techPaths, results);
 
 				if (results.empty()) {
-					//throw megaglest_runtime_error("No tech-trees were found!");
+					//throw game_runtime_error("No tech-trees were found!");
 					printf("No tech-trees were found (custom)!\n");
 				}
 
@@ -6208,7 +6208,7 @@ namespace Glest {
 					getSystemSettingType(SystemFlags::debugSystem).enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
 
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			return initialTechSelection;
@@ -6246,7 +6246,7 @@ namespace Glest {
 				}
 
 				if (results.empty() == true) {
-					//throw megaglest_runtime_error("(2)There are no factions for the tech tree [" + techTreeFiles[listBoxTechTree.getSelectedItemIndex()] + "]");
+					//throw game_runtime_error("(2)There are no factions for the tech tree [" + techTreeFiles[listBoxTechTree.getSelectedItemIndex()] + "]");
 					showGeneralError = true;
 					if (listBoxTechTree.getItemCount() > 0) {
 						generalErrorToShow =
@@ -6346,7 +6346,7 @@ namespace Glest {
 					getSystemSettingType(SystemFlags::debugSystem).enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
 
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 
@@ -6374,7 +6374,7 @@ namespace Glest {
 				findDirs(config.getPathListForType(ptTilesets, scenarioDir),
 					results);
 				if (results.empty()) {
-					throw megaglest_runtime_error("No tile-sets were found!");
+					throw game_runtime_error("No tile-sets were found!");
 				}
 				tilesetFiles = results;
 				std::for_each(results.begin(), results.end(), FormatString());
@@ -6390,7 +6390,7 @@ namespace Glest {
 					getSystemSettingType(SystemFlags::debugSystem).enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
 
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 		}

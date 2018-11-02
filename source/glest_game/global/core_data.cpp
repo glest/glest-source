@@ -263,7 +263,7 @@ namespace Glest {
 							(*tex)->setTextureSystemId(texSystemId);
 
 							renderer.initTexture(rsGlobal, *tex);
-						} catch (const megaglest_runtime_error & ex) {
+						} catch (const game_runtime_error & ex) {
 							message(ex.what(),
 								GlobalStaticFlags::getIsNonGraphicalModeEnabled(),
 								tempDataLocation);
@@ -629,7 +629,7 @@ namespace Glest {
 								intToStr
 								(index) +
 								".wav"));
-						} catch (const megaglest_runtime_error & ex) {
+						} catch (const game_runtime_error & ex) {
 							message(ex.what(),
 								GlobalStaticFlags::getIsNonGraphicalModeEnabled(),
 								tempDataLocation);
@@ -666,7 +666,7 @@ namespace Glest {
 	  //                              getGameCustomCoreDataPath(data_path,
 	  //                                              CORE_MENU_SOUND_PATH + "sonar.wav"));
 	  //      }
-	  //      catch (const megaglest_runtime_error& ex) {
+	  //      catch (const game_runtime_error& ex) {
 	  //              message(ex.what(), GlobalStaticFlags::getIsNonGraphicalModeEnabled(),
 	  //                              tempDataLocation);
 	  //      }
@@ -682,7 +682,7 @@ namespace Glest {
 	  //                                              getGameCustomCoreDataPath(data_path,
 	  //                                                              CORE_WATER_SOUNDS_PATH + "water" + intToStr(i)
 	  //                                                                              + ".wav"));
-	  //                      } catch (const megaglest_runtime_error& ex) {
+	  //                      } catch (const game_runtime_error& ex) {
 	  //                              message(ex.what(),
 	  //                                              GlobalStaticFlags::getIsNonGraphicalModeEnabled(),
 	  //                                              tempDataLocation);
@@ -736,7 +736,7 @@ namespace Glest {
 						menuMusicPath +
 						menuMusicFile));
 					menuMusic.setNext(&menuMusic);
-				} catch (const megaglest_runtime_error & ex) {
+				} catch (const game_runtime_error & ex) {
 					message(ex.what(),
 						GlobalStaticFlags::getIsNonGraphicalModeEnabled(),
 						tempDataLocation);
@@ -1112,7 +1112,7 @@ namespace Glest {
 			if (entityName == "") {
 				printf("Register Font Callback detected a blank entityName!\n");
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("Register Font Callback detected a blank entityName!");
 			}
 			if (entityName != "") {
@@ -1123,7 +1123,7 @@ namespace Glest {
 			if (entityName == "") {
 				printf("UnRegister Font Callback detected a blank entityName!\n");
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("UnRegister Font Callback detected a blank entityName!");
 			}
 			if (entityName != "") {
@@ -1789,7 +1789,7 @@ namespace Glest {
 					string data_path = coreData.getDataPath();
 					playSound[soundCtr].load(getGameCustomCoreDataPath(data_path, playSoundVal));
 					soundCtr++;
-				} catch (const megaglest_runtime_error & ex) {
+				} catch (const game_runtime_error & ex) {
 					message(ex.what(),
 						GlobalStaticFlags::getIsNonGraphicalModeEnabled(),
 						tempDataLocation);

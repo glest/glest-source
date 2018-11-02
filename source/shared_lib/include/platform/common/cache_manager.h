@@ -80,7 +80,7 @@ namespace Shared {
 							}
 							safeMutex.ReleaseLock();
 						} catch (const std::exception &ex) {
-							throw megaglest_runtime_error(ex.what());
+							throw game_runtime_error(ex.what());
 						}
 
 					}
@@ -91,7 +91,7 @@ namespace Shared {
 							itemCache[cacheKey] = *value;
 							safeMutex.ReleaseLock();
 						} catch (const std::exception &ex) {
-							throw megaglest_runtime_error(ex.what());
+							throw game_runtime_error(ex.what());
 						}
 					}
 				}

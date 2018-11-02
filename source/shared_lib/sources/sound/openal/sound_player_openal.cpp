@@ -601,7 +601,7 @@ namespace Shared {
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugSound).enabled) SystemFlags::OutputDebug(SystemFlags::debugSound, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
 					SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
 					printOpenALInfo();
-					throw megaglest_runtime_error(ex.what());
+					throw game_runtime_error(ex.what());
 				} catch (...) {
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugSound).enabled) SystemFlags::OutputDebug(SystemFlags::debugSound, "In [%s::%s Line: %d] UNKNOWN Error\n", __FILE__, __FUNCTION__, __LINE__);
 					SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] UNKNOWN Error\n", __FILE__, __FUNCTION__, __LINE__);

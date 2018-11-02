@@ -274,13 +274,13 @@ namespace Glest {
 				for (int i = 0; i < (int) filenames.size(); ++i) {
 					resourceTypes[i].deletePixels();
 				}
-			} catch (megaglest_runtime_error & ex) {
+			} catch (game_runtime_error & ex) {
 				SystemFlags::OutputDebug(SystemFlags::debugError,
 					"In [%s::%s Line: %d] Error [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).
 					c_str(), __FUNCTION__, __LINE__,
 					ex.what());
-				throw megaglest_runtime_error("Error loading Resource Types in: " +
+				throw game_runtime_error("Error loading Resource Types in: " +
 					currentPath + "\nMessage: " +
 					ex.what(), !ex.wantStackTrace()
 					|| isValidationModeEnabled);
@@ -290,7 +290,7 @@ namespace Glest {
 					extractFileFromDirectoryPath(__FILE__).
 					c_str(), __FUNCTION__, __LINE__,
 					e.what());
-				throw megaglest_runtime_error("Error loading Resource Types in: " +
+				throw game_runtime_error("Error loading Resource Types in: " +
 					currentPath + "\nMessage: " +
 					e.what(), isValidationModeEnabled);
 			}
@@ -382,13 +382,13 @@ namespace Glest {
 					Window::handleEvent();
 					SDL_PumpEvents();
 				}
-			} catch (megaglest_runtime_error & ex) {
+			} catch (game_runtime_error & ex) {
 				SystemFlags::OutputDebug(SystemFlags::debugError,
 					"In [%s::%s Line: %d] Error [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).
 					c_str(), __FUNCTION__, __LINE__,
 					ex.what());
-				throw megaglest_runtime_error("Error loading Tech Tree: " +
+				throw game_runtime_error("Error loading Tech Tree: " +
 					currentPath + "\nMessage: " +
 					ex.what(), !ex.wantStackTrace()
 					|| isValidationModeEnabled);
@@ -398,7 +398,7 @@ namespace Glest {
 					extractFileFromDirectoryPath(__FILE__).
 					c_str(), __FUNCTION__, __LINE__,
 					e.what());
-				throw megaglest_runtime_error("Error loading Tech Tree: " +
+				throw game_runtime_error("Error loading Tech Tree: " +
 					currentPath + "\nMessage: " +
 					e.what(), isValidationModeEnabled);
 			}
@@ -440,13 +440,13 @@ namespace Glest {
 					Window::handleEvent();
 					SDL_PumpEvents();
 				}
-			} catch (megaglest_runtime_error & ex) {
+			} catch (game_runtime_error & ex) {
 				SystemFlags::OutputDebug(SystemFlags::debugError,
 					"In [%s::%s Line: %d] Error [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).
 					c_str(), __FUNCTION__, __LINE__,
 					ex.what());
-				throw megaglest_runtime_error("Error loading Faction Types: " +
+				throw game_runtime_error("Error loading Faction Types: " +
 					currentPath + "\nMessage: " +
 					ex.what(), !ex.wantStackTrace()
 					|| isValidationModeEnabled);
@@ -456,7 +456,7 @@ namespace Glest {
 					extractFileFromDirectoryPath(__FILE__).
 					c_str(), __FUNCTION__, __LINE__,
 					e.what());
-				throw megaglest_runtime_error("Error loading Faction Types: " +
+				throw game_runtime_error("Error loading Faction Types: " +
 					currentPath + "\nMessage: " +
 					e.what(), isValidationModeEnabled);
 			}
@@ -567,7 +567,7 @@ namespace Glest {
 					"In [%s::%s Line: %d]\n",
 					extractFileFromDirectoryPath(__FILE__).
 					c_str(), __FUNCTION__, __LINE__);
-			throw megaglest_runtime_error("Faction not found: " + name, true);
+			throw game_runtime_error("Faction not found: " + name, true);
 		}
 
 		const FactionType *TechTree::getType(const string & name) const {
@@ -582,7 +582,7 @@ namespace Glest {
 					"In [%s::%s Line: %d]\n",
 					extractFileFromDirectoryPath(__FILE__).
 					c_str(), __FUNCTION__, __LINE__);
-			throw megaglest_runtime_error("Faction not found: " + name, true);
+			throw game_runtime_error("Faction not found: " + name, true);
 		}
 
 		const ResourceType *TechTree::getTechResourceType(int i) const {
@@ -590,7 +590,7 @@ namespace Glest {
 				const ResourceType *rt = getResourceType(j);
 				assert(rt != NULL);
 				if (rt == NULL) {
-					throw megaglest_runtime_error("rt == NULL");
+					throw game_runtime_error("rt == NULL");
 				}
 				if (rt->getResourceNumber() == i && rt->getClass() == rcTech)
 					return getResourceType(j);
@@ -611,7 +611,7 @@ namespace Glest {
 			snprintf(szBuf, 8096,
 				"The referenced tech tree [%s] is either missing or has no resources defined but at least one resource is required.",
 				this->name.c_str());
-			throw megaglest_runtime_error(szBuf, true);
+			throw game_runtime_error(szBuf, true);
 		}
 
 		const ResourceType *TechTree::getResourceType(const string & name) const {
@@ -622,7 +622,7 @@ namespace Glest {
 				}
 			}
 
-			throw megaglest_runtime_error("Resource Type not found: " + name,
+			throw game_runtime_error("Resource Type not found: " + name,
 				true);
 		}
 
@@ -633,7 +633,7 @@ namespace Glest {
 				}
 			}
 
-			throw megaglest_runtime_error("Armor Type not found: " + name, true);
+			throw game_runtime_error("Armor Type not found: " + name, true);
 		}
 
 		const AttackType *TechTree::getAttackType(const string & name) const {
@@ -643,7 +643,7 @@ namespace Glest {
 				}
 			}
 
-			throw megaglest_runtime_error("Attack Type not found: " + name, true);
+			throw game_runtime_error("Attack Type not found: " + name, true);
 		}
 
 		double TechTree::getDamageMultiplier(const AttackType * att,

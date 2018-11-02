@@ -234,7 +234,7 @@ namespace Glest {
 
 		bool Selection::assignGroup(int groupIndex, bool clearGroup, const UnitContainer *pUnits) {
 			if (groupIndex < 0 || groupIndex >= maxGroups) {
-				throw megaglest_runtime_error("Invalid value for groupIndex = " + intToStr(groupIndex));
+				throw game_runtime_error("Invalid value for groupIndex = " + intToStr(groupIndex));
 			}
 
 			//clear group
@@ -262,7 +262,7 @@ namespace Glest {
 		 */
 		bool Selection::addUnitToGroup(int groupIndex, Unit *unit) {
 			if (groupIndex < 0 || groupIndex >= maxGroups) {
-				throw megaglest_runtime_error("Invalid value for groupIndex = " + intToStr(groupIndex));
+				throw game_runtime_error("Invalid value for groupIndex = " + intToStr(groupIndex));
 			}
 			bool alreadyExists = false;
 			for (int i = 0; i < (int) groups[groupIndex].size(); ++i) {
@@ -314,7 +314,7 @@ namespace Glest {
 
 		void Selection::removeUnitFromGroup(int groupIndex, int unitId) {
 			if (groupIndex < 0 || groupIndex >= maxGroups) {
-				throw megaglest_runtime_error("Invalid value for groupIndex = " + intToStr(groupIndex));
+				throw game_runtime_error("Invalid value for groupIndex = " + intToStr(groupIndex));
 			}
 
 			for (unsigned int i = 0; i < groups[groupIndex].size(); ++i) {
@@ -328,14 +328,14 @@ namespace Glest {
 
 		//vector<Unit*> Selection::getUnitsForGroup(int groupIndex) {
 		//	if(groupIndex < 0 || groupIndex >= maxGroups) {
-		//		throw megaglest_runtime_error("Invalid value for groupIndex = " + intToStr(groupIndex));
+		//		throw game_runtime_error("Invalid value for groupIndex = " + intToStr(groupIndex));
 		//	}
 		//	return groups[groupIndex];
 		//}
 
 		void Selection::recallGroup(int groupIndex, bool clearSelection) {
 			if (groupIndex < 0 || groupIndex >= maxGroups) {
-				throw megaglest_runtime_error("Invalid value for groupIndex = " + intToStr(groupIndex));
+				throw game_runtime_error("Invalid value for groupIndex = " + intToStr(groupIndex));
 			}
 
 			if (clearSelection == true) {

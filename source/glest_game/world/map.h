@@ -79,12 +79,12 @@ namespace Glest {
 			//get
 			inline Unit *getUnit(int field) const {
 				if (field >= fieldCount) {
-					throw megaglest_runtime_error("Invalid field value" + intToStr(field));
+					throw game_runtime_error("Invalid field value" + intToStr(field));
 				} return units[field];
 			}
 			inline Unit *getUnitWithEmptyCellMap(int field) const {
 				if (field >= fieldCount) {
-					throw megaglest_runtime_error("Invalid field value" + intToStr(field));
+					throw game_runtime_error("Invalid field value" + intToStr(field));
 				} return unitsWithEmptyCellMap[field];
 			}
 			inline float getHeight() const {
@@ -93,12 +93,12 @@ namespace Glest {
 
 			inline void setUnit(int field, Unit *unit) {
 				if (field >= fieldCount) {
-					throw megaglest_runtime_error("Invalid field value" + intToStr(field));
+					throw game_runtime_error("Invalid field value" + intToStr(field));
 				} units[field] = unit;
 			}
 			inline void setUnitWithEmptyCellMap(int field, Unit *unit) {
 				if (field >= fieldCount) {
-					throw megaglest_runtime_error("Invalid field value" + intToStr(field));
+					throw game_runtime_error("Invalid field value" + intToStr(field));
 				} unitsWithEmptyCellMap[field] = unit;
 			}
 			inline void setHeight(float height) {
@@ -332,13 +332,13 @@ namespace Glest {
 						return NULL;
 					}
 					//abort();
-					throw megaglest_runtime_error("arrayIndex >= getCellArraySize(), arrayIndex = " + intToStr(arrayIndex) + " w = " + intToStr(w) + " h = " + intToStr(h));
+					throw game_runtime_error("arrayIndex >= getCellArraySize(), arrayIndex = " + intToStr(arrayIndex) + " w = " + intToStr(w) + " h = " + intToStr(h));
 				} else if (cells == NULL) {
 					if (errorOnInvalid == false) {
 						return NULL;
 					}
 
-					throw megaglest_runtime_error("cells == NULL");
+					throw game_runtime_error("cells == NULL");
 				}
 
 				return &cells[arrayIndex];
@@ -357,11 +357,11 @@ namespace Glest {
 			inline SurfaceCell *getSurfaceCell(int sx, int sy) const {
 				int arrayIndex = sy * surfaceW + sx;
 				if (arrayIndex < 0 || arrayIndex >= getSurfaceCellArraySize()) {
-					throw megaglest_runtime_error("arrayIndex >= getSurfaceCellArraySize(), arrayIndex = " + intToStr(arrayIndex) +
+					throw game_runtime_error("arrayIndex >= getSurfaceCellArraySize(), arrayIndex = " + intToStr(arrayIndex) +
 						" surfaceW = " + intToStr(surfaceW) + " surfaceH = " + intToStr(surfaceH) +
 						" sx: " + intToStr(sx) + " sy: " + intToStr(sy));
 				} else if (surfaceCells == NULL) {
-					throw megaglest_runtime_error("surfaceCells == NULL");
+					throw game_runtime_error("surfaceCells == NULL");
 				}
 				return &surfaceCells[arrayIndex];
 			}
@@ -520,7 +520,7 @@ namespace Glest {
 				}
 
 				if (unit == NULL) {
-					throw megaglest_runtime_error("unit == NULL");
+					throw game_runtime_error("unit == NULL");
 				}
 
 				int size = unit->getType()->getSize();

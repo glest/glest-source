@@ -1683,7 +1683,7 @@ namespace Glest {
 						"Line ref: %d, ERROR: Cannot find techtree: [%s]",
 						__LINE__, techName.c_str());
 
-					throw megaglest_runtime_error(szBuf, true);
+					throw game_runtime_error(szBuf, true);
 				}
 			}
 
@@ -1836,7 +1836,7 @@ namespace Glest {
 				"*" + lang.getString("AI") + "* ";
 
 			if (map == NULL) {
-				throw megaglest_runtime_error("map == NULL");
+				throw game_runtime_error("map == NULL");
 			}
 
 			if (SystemFlags::
@@ -1871,7 +1871,7 @@ namespace Glest {
 
 			try {
 				world.init(this, gameSettings.getDefaultUnits());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				string sErrBuf = "";
 				if (ex.wantStackTrace() == true) {
 					char szErrBuf[8096] = "";
@@ -2182,15 +2182,15 @@ namespace Glest {
 
 				if (this->masterserverMode == false) {
 					if (world.getThisFaction() == NULL) {
-						throw megaglest_runtime_error("world.getThisFaction() == NULL");
+						throw game_runtime_error("world.getThisFaction() == NULL");
 					}
 					if (world.getThisFaction()->getType() == NULL) {
 						throw
-							megaglest_runtime_error
+							game_runtime_error
 							("world.getThisFaction()->getType() == NULL");
 					}
 					//if(world.getThisFaction()->getType()->getMusic() == NULL) {
-					//      throw megaglest_runtime_error("world.getThisFaction()->getType()->getMusic() == NULL");
+					//      throw game_runtime_error("world.getThisFaction()->getType()->getMusic() == NULL");
 					//}
 				}
 
@@ -2994,7 +2994,7 @@ namespace Glest {
 											for (int j = 0; j < world.getFactionCount(); ++j) {
 												Faction *faction = world.getFaction(j);
 												if (faction == NULL) {
-													throw megaglest_runtime_error("faction == NULL");
+													throw game_runtime_error("faction == NULL");
 												}
 												if (faction->getCpuControl
 												(enableServerControlledAI,
@@ -4257,7 +4257,7 @@ namespace Glest {
 				snprintf(szBuf, 8096, "In [%s::%s %d] error [%s]\n", __FILE__,
 					__FUNCTION__, __LINE__, ex.what());
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 
@@ -4289,7 +4289,7 @@ namespace Glest {
 				snprintf(szBuf, 8096, "In [%s::%s %d] error [%s]\n", __FILE__,
 					__FUNCTION__, __LINE__, ex.what());
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 
@@ -4327,7 +4327,7 @@ namespace Glest {
 				snprintf(szBuf, 8096, "In [%s::%s %d] error [%s]\n", __FILE__,
 					__FUNCTION__, __LINE__, ex.what());
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 
@@ -4351,7 +4351,7 @@ namespace Glest {
 				const Faction *faction = mc.getFaction();
 				if (getWorld()->getThisFaction() == NULL) {
 					throw
-						megaglest_runtime_error("getWorld()->getThisFaction() == NULL");
+						game_runtime_error("getWorld()->getThisFaction() == NULL");
 				}
 				//printf("faction [%p][%s]\n",faction,(faction != NULL ? faction->getType()->getName().c_str() : ""));
 				if ((faction == NULL) ||
@@ -9018,7 +9018,7 @@ namespace Glest {
 					snprintf(szBuf, 8096,
 						lang.getString("SavedGameBadVersion").c_str(),
 						gameVer.c_str(), GameVersionString.c_str());
-					throw megaglest_runtime_error(szBuf, true);
+					throw game_runtime_error(szBuf, true);
 				}
 
 				if (SystemFlags::VERBOSE_MODE_ENABLED)
@@ -9108,7 +9108,7 @@ namespace Glest {
 				snprintf(szBuf, 8096,
 					lang.getString("SavedGameBadVersion").c_str(),
 					gameVer.c_str(), GameVersionString.c_str());
-				throw megaglest_runtime_error(szBuf, true);
+				throw game_runtime_error(szBuf, true);
 			}
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
@@ -9134,7 +9134,7 @@ namespace Glest {
 					snprintf(szBuf, 8096,
 						lang.getString("SavedGameBadVersion").c_str(),
 						gameVer.c_str(), GameVersionString.c_str());
-					throw megaglest_runtime_error(szBuf, true);
+					throw game_runtime_error(szBuf, true);
 				}
 				// This is explored fog of war for the host player, clear it
 				minimapNode->clearChild("fowPixmap1");

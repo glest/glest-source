@@ -182,7 +182,7 @@ namespace Glest {
 	  //      //      printf("i = %d [%p]\n",i,&units[i]);
 	  //              if(Unit::isUnitDeleted(units[i]) == true) {
 	  //                      printf("i = %d [%p]\n",i,&units[i]);
-	  //                      throw megaglest_runtime_error("unit already deleted!");
+	  //                      throw game_runtime_error("unit already deleted!");
 	  //              }
 			//}
 			//printf("\nSorting\n");
@@ -393,11 +393,11 @@ namespace Glest {
 						ExecutingTaskSafeWrapper safeExecutingTaskMutex(this);
 
 						if (this->faction == NULL) {
-							throw megaglest_runtime_error("this->faction == NULL");
+							throw game_runtime_error("this->faction == NULL");
 						}
 						World *world = this->faction->getWorld();
 						if (world == NULL) {
-							throw megaglest_runtime_error("world == NULL");
+							throw game_runtime_error("world == NULL");
 						}
 
 						codeLocation = "7";
@@ -429,7 +429,7 @@ namespace Glest {
 							codeLocation = "10";
 							Unit *unit = this->faction->getUnit(j);
 							if (unit == NULL) {
-								throw megaglest_runtime_error("unit == NULL");
+								throw game_runtime_error("unit == NULL");
 							}
 
 							codeLocation = "11";
@@ -479,7 +479,7 @@ namespace Glest {
 
 								if (world->getUnitUpdater() == NULL) {
 									throw
-										megaglest_runtime_error
+										game_runtime_error
 										("world->getUnitUpdater() == NULL");
 								}
 
@@ -577,13 +577,13 @@ namespace Glest {
 						"In [%s::%s Line: %d]\n", __FILE__,
 						__FUNCTION__, __LINE__);
 
-				throw megaglest_runtime_error(ex.what());
+				throw game_runtime_error(ex.what());
 			} catch (...) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error Loc [%s]\n",
 					__FILE__, __FUNCTION__, __LINE__, codeLocation.c_str());
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
@@ -1185,7 +1185,7 @@ namespace Glest {
 		bool Faction::reqsOk(const CommandType * ct) const {
 			assert(ct != NULL);
 			if (ct == NULL) {
-				throw megaglest_runtime_error("In [Faction::reqsOk] ct == NULL");
+				throw game_runtime_error("In [Faction::reqsOk] ct == NULL");
 			}
 
 			if (ct->getProduced() != NULL && reqsOk(ct->getProduced()) == false) {
@@ -1241,7 +1241,7 @@ namespace Glest {
 						snprintf(szBuf, 8096,
 							"cannot apply costs for p [%s] %d of %d costs resource is null",
 							p->getName(false).c_str(), i, p->getCostCount());
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 
 					const ResourceType *rt = r->getType();
@@ -1251,7 +1251,7 @@ namespace Glest {
 							"cannot apply costs for p [%s] %d of %d costs resourcetype [%s] is null",
 							p->getName(false).c_str(), i, p->getCostCount(),
 							r->getDescription(false).c_str());
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 					int cost = r->getAmount();
 					if ((cost > 0 || (rt->getClass() != rcStatic))
@@ -1298,7 +1298,7 @@ namespace Glest {
 					const ResourceType *rt = p->getCost(i)->getType();
 					//assert(rt != NULL);
 					if (rt == NULL) {
-						throw megaglest_runtime_error(string(__FUNCTION__) +
+						throw game_runtime_error(string(__FUNCTION__) +
 							" rt == NULL for ProducibleType ["
 							+ p->getName(false) +
 							"] index: " + intToStr(i));
@@ -1638,7 +1638,7 @@ namespace Glest {
 				}
 			}
 
-			throw megaglest_runtime_error("Could not remove unit from faction!");
+			throw game_runtime_error("Could not remove unit from faction!");
 			//assert(false);
 		}
 
@@ -1873,7 +1873,7 @@ namespace Glest {
 
 					// 0 means start looking leftbottom to top right
 		  //                      if(Thread::isCurrentThreadMainThread() == false) {
-		  //                              throw megaglest_runtime_error("#1 Invalid access to Faction random from outside main thread current id = " +
+		  //                              throw game_runtime_error("#1 Invalid access to Faction random from outside main thread current id = " +
 		  //                                              intToStr(Thread::getCurrentThreadId()) + " main = " + intToStr(Thread::getMainThreadId()));
 		  //                      }
 					int tryRadius = random.randRange(0, 1);
@@ -2026,7 +2026,7 @@ namespace Glest {
 
 					// 0 means start looking leftbottom to top right
 		  //                      if(Thread::isCurrentThreadMainThread() == false) {
-		  //                              throw megaglest_runtime_error("#2 Invalid access to Faction random from outside main thread current id = " +
+		  //                              throw game_runtime_error("#2 Invalid access to Faction random from outside main thread current id = " +
 		  //                                              intToStr(Thread::getCurrentThreadId()) + " main = " + intToStr(Thread::getMainThreadId()));
 		  //                      }
 					int tryRadius = random.randRange(0, 1);

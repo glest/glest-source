@@ -1232,7 +1232,7 @@ namespace Glest {
 				if (pCB_DisplayMessage != NULL) {
 					pCB_DisplayMessage(sError.c_str(), false);
 				} else {
-					throw megaglest_runtime_error(sError.c_str());
+					throw game_runtime_error(sError.c_str());
 				}
 			}
 		}

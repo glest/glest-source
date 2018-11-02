@@ -422,7 +422,7 @@ namespace Glest {
 				snprintf(szBuf, 8096,
 					"Unsupported target [%s] specified for attack boost for skill [%s] in [%s]",
 					targetType.c_str(), name.c_str(), parentLoader.c_str());
-				throw megaglest_runtime_error(szBuf, true);
+				throw game_runtime_error(szBuf, true);
 			}
 
 			// Load the regular targets
@@ -577,14 +577,14 @@ namespace Glest {
 							"In [%s::%s Line %d] ERROR CANNOT LOAD MODEL [%s] for parentLoader [%s]\n",
 							__FILE__, __FUNCTION__, __LINE__,
 							path.c_str(), parentLoader.c_str());
-						throw megaglest_runtime_error("Error: cannot load model [" +
+						throw game_runtime_error("Error: cannot load model [" +
 							path + "] for skill [" + name +
 							"]  ", true);
 					}
 				}
 				if (animations.empty() == true) {
 					throw
-						megaglest_runtime_error("Error no animations found for skill [" +
+						game_runtime_error("Error no animations found for skill [" +
 							name + "] for parentLoader [" +
 							parentLoader + "]", true);
 				}
@@ -1097,7 +1097,7 @@ namespace Glest {
 				snprintf(szBuf, 8096,
 					"The attack skill has an INVALID attack var value which is < 0 [%d] in file [%s]!",
 					attackVar, dir.c_str());
-				throw megaglest_runtime_error(szBuf, true);
+				throw game_runtime_error(szBuf, true);
 			}
 
 			attackRange =
@@ -1138,7 +1138,7 @@ namespace Glest {
 				} else if (fieldName == "air") {
 					attackFields[fAir] = true;
 				} else {
-					throw megaglest_runtime_error("Not a valid field: " + fieldName +
+					throw game_runtime_error("Not a valid field: " + fieldName +
 						": " + dir, true);
 				}
 			}
@@ -1229,7 +1229,7 @@ namespace Glest {
 
 				if (totalDamagePercentage != 100) {
 					throw
-						megaglest_runtime_error
+						game_runtime_error
 						("Damages percentages of projectiles don't sum up to 100 %",
 							true);
 				}

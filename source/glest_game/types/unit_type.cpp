@@ -339,7 +339,7 @@ namespace Glest {
 				if (parametersNode->getChild("max-hp")->hasAttribute("start-value")
 					&& parametersNode->getChild("max-hp")->
 					hasAttribute("start-percentage")) {
-					throw megaglest_runtime_error("Unit " + name +
+					throw game_runtime_error("Unit " + name +
 						" has both start-value and start-percentage for HP",
 						true);
 				}
@@ -379,7 +379,7 @@ namespace Glest {
 				if (parametersNode->getChild("max-ep")->hasAttribute("start-value")
 					&& parametersNode->getChild("max-ep")->
 					hasAttribute("start-percentage")) {
-					throw megaglest_runtime_error("Unit " + name +
+					throw game_runtime_error("Unit " + name +
 						" has both start-value and start-percentage for EP",
 						true);
 				}
@@ -474,7 +474,7 @@ namespace Glest {
 							rowNode->getAttribute("value")->getRestrictedValue();
 						if ((int) row.size() != size) {
 							throw
-								megaglest_runtime_error
+								game_runtime_error
 								("Cellmap row has not the same length as unit size", true);
 						}
 						for (int j = 0; j < (int) row.size(); ++j) {
@@ -505,7 +505,7 @@ namespace Glest {
 					} else if (fieldName == "air") {
 						fields[fAir] = true;
 					} else {
-						throw megaglest_runtime_error("Not a valid field: " + fieldName +
+						throw game_runtime_error("Not a valid field: " + fieldName +
 							": " + path, true);
 					}
 				}
@@ -515,7 +515,7 @@ namespace Glest {
 				} else if (fields[fAir]) {
 					field = fAir;
 				} else {
-					throw megaglest_runtime_error("Unit has no field: " + path, true);
+					throw game_runtime_error("Unit has no field: " + path, true);
 				}
 
 				//properties
@@ -535,7 +535,7 @@ namespace Glest {
 						}
 					}
 					if (!found) {
-						throw megaglest_runtime_error("Unknown property: " +
+						throw game_runtime_error("Unknown property: " +
 							propertyName, true);
 					}
 				}
@@ -625,7 +625,7 @@ namespace Glest {
 								healthbarVisible = healthbarVisible | hbvOff;
 							} else {
 								throw
-									megaglest_runtime_error
+									game_runtime_error
 									("Unknown Healthbar Visible Option: " + current, true);
 							}
 						}
@@ -750,7 +750,7 @@ namespace Glest {
 						costs[index].init(techTree->getResourceType(iterMap->first),
 							iterMap->second);
 						index++;
-					} catch (megaglest_runtime_error & ex) {
+					} catch (game_runtime_error & ex) {
 						if (validationMode == false) {
 							throw;
 						} else {
@@ -802,7 +802,7 @@ namespace Glest {
 							getResourceType(iterMap->first),
 							iterMap->second);
 						index++;
-					} catch (megaglest_runtime_error & ex) {
+					} catch (game_runtime_error & ex) {
 						if (validationMode == false) {
 							throw;
 						} else {
@@ -1072,7 +1072,7 @@ namespace Glest {
 						skillType->load(sn, attackBoostsNode, dir, techTree, factionType,
 							loadedFileList, sourceXMLFile);
 						skillTypes[i] = skillType;
-					} catch (megaglest_runtime_error & ex) {
+					} catch (game_runtime_error & ex) {
 						if (validationMode == false) {
 							throw;
 						} else {
@@ -1102,7 +1102,7 @@ namespace Glest {
 						commandType->load(i, commandNode, dir, techTree, factionType,
 							*this, loadedFileList, sourceXMLFile);
 						commandTypes[i] = commandType;
-					} catch (megaglest_runtime_error & ex) {
+					} catch (game_runtime_error & ex) {
 						if (validationMode == false) {
 							throw;
 						} else {
@@ -1121,24 +1121,24 @@ namespace Glest {
 
 				if (getFirstStOfClass(scStop) == NULL) {
 					throw
-						megaglest_runtime_error
+						game_runtime_error
 						("Every unit must have at least one stop skill: " + path, true);
 				}
 				if (getFirstStOfClass(scDie) == NULL) {
 					throw
-						megaglest_runtime_error
+						game_runtime_error
 						("Every unit must have at least one die skill: " + path, true);
 				}
 
 			}
 			//Exception handling (conversions and so on);
-			catch (megaglest_runtime_error & ex) {
+			catch (game_runtime_error & ex) {
 				SystemFlags::OutputDebug(SystemFlags::debugError,
 					"In [%s::%s Line: %d] Error [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).
 					c_str(), __FUNCTION__, __LINE__,
 					ex.what());
-				throw megaglest_runtime_error("Error loading UnitType: " + path +
+				throw game_runtime_error("Error loading UnitType: " + path +
 					"\nMessage: " + ex.what(),
 					!ex.wantStackTrace());
 			} catch (const exception & e) {
@@ -1147,7 +1147,7 @@ namespace Glest {
 					extractFileFromDirectoryPath(__FILE__).
 					c_str(), __FUNCTION__, __LINE__,
 					e.what());
-				throw megaglest_runtime_error("Error loading UnitType: " + path +
+				throw game_runtime_error("Error loading UnitType: " + path +
 					"\nMessage: " + e.what());
 			}
 
@@ -1247,7 +1247,7 @@ namespace Glest {
 
 			for (int i = 0; i < (int) commandTypes.size(); ++i) {
 				if (commandTypes[i] == NULL) {
-					throw megaglest_runtime_error("commandTypes[i] == NULL");
+					throw game_runtime_error("commandTypes[i] == NULL");
 				}
 
 				//printf("$$$ Unit [%s] i = %d, commandTypes[i] [%s]\n",this->getName().c_str(),(int)i, commandTypes[i]->toString().c_str());
@@ -1271,7 +1271,7 @@ namespace Glest {
 
 			for (int i = 0; i < (int) commandTypes.size(); ++i) {
 				if (commandTypes[i] == NULL) {
-					throw megaglest_runtime_error("commandTypes[i] == NULL");
+					throw game_runtime_error("commandTypes[i] == NULL");
 				}
 
 				//printf("$$$ Unit [%s] i = %d, commandTypes[i] [%s]\n",this->getName().c_str(),(int)i, commandTypes[i]->toString().c_str());
@@ -1342,7 +1342,7 @@ namespace Glest {
 		bool UnitType::getCellMapCell(int x, int y, CardinalDir facing) const {
 			assert(cellMap);
 			if (cellMap == NULL) {
-				throw megaglest_runtime_error("cellMap == NULL");
+				throw game_runtime_error("cellMap == NULL");
 			}
 
 			//checkItemInVault(&(this->size),this->size);
@@ -1384,14 +1384,14 @@ namespace Glest {
 					if (skillTypes[i]->getClass() == skillClass) {
 						return skillTypes[i];
 					} else {
-						throw megaglest_runtime_error("Skill \"" + skillName +
+						throw game_runtime_error("Skill \"" + skillName +
 							"\" is not of class \"" +
 							SkillType::
 							skillClassToStr(skillClass));
 					}
 				}
 			}
-			throw megaglest_runtime_error("No skill named \"" + skillName + "\"");
+			throw game_runtime_error("No skill named \"" + skillName + "\"");
 		}
 
 		// ==================== totals ====================
@@ -1542,7 +1542,7 @@ namespace Glest {
 					MG_SIZE_T_SPECIFIER "",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, i, commandTypes.size());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			return commandTypes[i];
 		}

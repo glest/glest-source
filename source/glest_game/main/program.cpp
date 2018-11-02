@@ -1067,7 +1067,7 @@ namespace Glest {
 				this->programState = programStateNew;
 				assert(programStateNew != NULL);
 				if (programStateNew == NULL) {
-					throw megaglest_runtime_error("programStateNew == NULL");
+					throw game_runtime_error("programStateNew == NULL");
 				}
 				programStateNew->load();
 
@@ -1109,7 +1109,7 @@ namespace Glest {
 						extractFileFromDirectoryPath
 						(__FILE__).c_str(), __FUNCTION__,
 						__LINE__);
-			} catch (megaglest_runtime_error & e) {
+			} catch (game_runtime_error & e) {
 				//printf("3333333 ex.wantStackTrace() = %d\n",e.wantStackTrace());
 				char
 					szBuf[8096] = "";
@@ -1134,7 +1134,7 @@ namespace Glest {
 							Renderer & renderer = Renderer::getInstance();
 							game->setQuitPendingIndicator(); // by this the world is no more updated
 							renderer.initGame(game, game->getGameCameraPtr());
-						} catch (megaglest_runtime_error & ex2) {
+						} catch (game_runtime_error & ex2) {
 							errorMsg += "\n" + string(ex2.what());
 						}
 					}

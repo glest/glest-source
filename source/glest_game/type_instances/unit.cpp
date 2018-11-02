@@ -126,7 +126,7 @@ namespace Glest {
 		void UnitPathBasic::add(const Vec2i & path) {
 			if (this->map != NULL) {
 				if (this->map->isInside(path) == false) {
-					throw megaglest_runtime_error("Invalid map path position = " +
+					throw game_runtime_error("Invalid map path position = " +
 						path.getString() + " map w x h = " +
 						intToStr(map->getW()) + " " +
 						intToStr(map->getH()));
@@ -134,7 +134,7 @@ namespace Glest {
 					map->isInsideSurface(this->map->toSurfCoords(path)) ==
 					false) {
 					throw
-						megaglest_runtime_error("Invalid map surface path position = " +
+						game_runtime_error("Invalid map surface path position = " +
 							path.getString() +
 							" map surface w x h = " +
 							intToStr(map->getSurfaceW()) + " " +
@@ -144,7 +144,7 @@ namespace Glest {
 
 			if (Thread::isCurrentThreadMainThread() == false) {
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("Invalid access to UnitPathBasic add from outside main thread current id = "
 						+ intToStr(Thread::getCurrentThreadId()) + " main = " +
 						intToStr(Thread::getMainThreadId()));
@@ -155,14 +155,14 @@ namespace Glest {
 
 		Vec2i UnitPathBasic::pop(bool removeFrontPos) {
 			if (pathQueue.empty() == true) {
-				throw megaglest_runtime_error("pathQueue.size() = " +
+				throw game_runtime_error("pathQueue.size() = " +
 					intToStr(pathQueue.size()));
 			}
 			Vec2i p = pathQueue.front();
 			if (removeFrontPos == true) {
 				if (Thread::isCurrentThreadMainThread() == false) {
 					throw
-						megaglest_runtime_error
+						game_runtime_error
 						("Invalid access to UnitPathBasic delete from outside main thread current id = "
 							+ intToStr(Thread::getCurrentThreadId()) + " main = " +
 							intToStr(Thread::getMainThreadId()));
@@ -312,7 +312,7 @@ namespace Glest {
 					snprintf(szBuf, 8096,
 						"factionIndex >= world->getFactionCount() [%d] : [%d]",
 						factionIndex, world->getFactionCount());
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 				faction = world->getFaction(factionIndex);
 			}
@@ -694,7 +694,7 @@ namespace Glest {
 
 			if (map->isInside(pos) == false
 				|| map->isInsideSurface(map->toSurfCoords(pos)) == false) {
-				throw megaglest_runtime_error("#2 Invalid path position = " +
+				throw game_runtime_error("#2 Invalid path position = " +
 					pos.getString());
 			}
 
@@ -1044,7 +1044,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: type == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			return pos + Vec2i(type->getSize() / 2, type->getSize() / 2);
@@ -1061,7 +1061,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: type == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			return Vec2f(truncateDecimal <
@@ -1077,7 +1077,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: type == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (type->hasCellMap()) {
@@ -1221,7 +1221,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: type == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			float maxHpAllowed = type->getTotalMaxHp(&totalUpgrade);
@@ -1238,7 +1238,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: type == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (type->getTotalMaxHp(&totalUpgrade) == 0) {
@@ -1259,7 +1259,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: type == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (level == NULL && type->getLevelCount() > 0) {
@@ -1281,7 +1281,7 @@ namespace Glest {
 			}
 			if (type == NULL) {
 				throw
-					megaglest_runtime_error("type == NULL in Unit::getFullName()!");
+					game_runtime_error("type == NULL in Unit::getFullName()!");
 			}
 			str += type->getName(translatedValue);
 			return str;
@@ -1300,7 +1300,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: currSkill == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			bool result = false;
@@ -1339,7 +1339,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: currSkill == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			return (currSkill->getClass() == scBeBuilt);
@@ -1393,7 +1393,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: unit == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			return faction->isAlly(unit->getFaction());
@@ -1406,7 +1406,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: type == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			return hp < type->getTotalMaxHp(&totalUpgrade);
@@ -1419,7 +1419,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: type == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			switch (iut) {
@@ -1456,7 +1456,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: currSkill == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			if (this->currSkill == NULL) {
 				char szBuf[8096] = "";
@@ -1464,7 +1464,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: this->currSkill == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (this->currSkill->getClass() == scMove &&
@@ -1570,7 +1570,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: getType() == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			setCurrSkill(getType()->getFirstStOfClass(sc));
@@ -1584,7 +1584,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: unit == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			//find a free pos in cellmap
@@ -1600,7 +1600,7 @@ namespace Glest {
 			if (threadAccessAllowed == false
 				&& Thread::isCurrentThreadMainThread() == false) {
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("Invalid access to unit random from outside main thread current id = "
 						+ intToStr(Thread::getCurrentThreadId()) + " main = " +
 						intToStr(Thread::getMainThreadId()));
@@ -1611,7 +1611,7 @@ namespace Glest {
 		void Unit::setPos(const Vec2i & pos, bool clearPathFinder, bool threaded) {
 			if (map->isInside(pos) == false
 				|| map->isInsideSurface(map->toSurfCoords(pos)) == false) {
-				throw megaglest_runtime_error("#3 Invalid path position = " +
+				throw game_runtime_error("#3 Invalid path position = " +
 					pos.getString());
 			}
 
@@ -1715,7 +1715,7 @@ namespace Glest {
 
 			if (map->isInside(targetPos) == false
 				|| map->isInsideSurface(map->toSurfCoords(targetPos)) == false) {
-				throw megaglest_runtime_error("#4 Invalid path position = " +
+				throw game_runtime_error("#4 Invalid path position = " +
 					targetPos.getString());
 			}
 
@@ -1840,7 +1840,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: currSkill == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			int currentModelIndexForCurrSkillType = lastModelIndexForCurrSkillType;
@@ -1862,7 +1862,7 @@ namespace Glest {
 		//      if(currSkill == NULL) {
 		//              char szBuf[8096]="";
 		//              snprintf(szBuf,8096,"In [%s::%s Line: %d] ERROR: currSkill == NULL, Unit = [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,this->toString().c_str());
-		//              throw megaglest_runtime_error(szBuf);
+		//              throw game_runtime_error(szBuf);
 		//      }
 		//
 		//      int currentModelIndexForCurrSkillType = lastModelIndexForCurrSkillType;
@@ -1917,7 +1917,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: type == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			Vec3f result =
@@ -1936,7 +1936,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: type == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			Vec3f result =
@@ -1956,7 +1956,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: type == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			Vec3f result =
@@ -2096,7 +2096,7 @@ namespace Glest {
 			bool tryQueue) {
 			std::pair < CommandResult, string > result(crFailUndefined, "");
 			if (command == NULL) {
-				/*throw megaglest_runtime_error("command == NULL");*/
+				/*throw game_runtime_error("command == NULL");*/
 				return result;
 			}
 			if (SystemFlags::
@@ -2114,7 +2114,7 @@ namespace Glest {
 				chrono.start();
 
 			if (command->getCommandType() == NULL) {
-				throw megaglest_runtime_error("command->getCommandType() == NULL");
+				throw game_runtime_error("command->getCommandType() == NULL");
 			}
 
 			const int command_priority = command->getPriority();
@@ -2445,7 +2445,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: type == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			faction->addStore(type);
@@ -2594,7 +2594,7 @@ namespace Glest {
 						__LINE__);
 
 				faction->removeUnit(this);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				string sErrBuf = "";
 				if (ex.wantStackTrace() == true) {
 					char szErrBuf[8096] = "";
@@ -2654,7 +2654,7 @@ namespace Glest {
 
 			if (map->isInside(pos) == false
 				|| map->isInsideSurface(map->toSurfCoords(pos)) == false) {
-				throw megaglest_runtime_error("#6 Invalid path position = " +
+				throw game_runtime_error("#6 Invalid path position = " +
 					pos.getString());
 			}
 
@@ -2666,7 +2666,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: type == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			//printf("Line: %d Unit::computeCommandType pos [%s] targetUnit [%s]\n",__LINE__,pos.getString().c_str(),(targetUnit != NULL ? targetUnit->getType()->getName().c_str() : "(null)"));
@@ -2759,7 +2759,7 @@ namespace Glest {
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, PROGRESS_SPEED_MULTIPLIER,
 					progress);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (currSkill == NULL) {
@@ -2768,7 +2768,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: currSkill == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			int64 newProgress = progress;
@@ -2792,10 +2792,10 @@ namespace Glest {
 				//update progresses
 		//              const Game *game = Renderer::getInstance().getGame();
 		//              if(game == NULL) {
-		//                      throw megaglest_runtime_error("game == NULL");
+		//                      throw game_runtime_error("game == NULL");
 		//              }
 		//              if(game->getWorld() == NULL) {
-		//                      throw megaglest_runtime_error("game->getWorld() == NULL");
+		//                      throw game_runtime_error("game->getWorld() == NULL");
 		//              }
 
 				newProgress = getUpdatedProgress(progress, GameConstants::updateFps,
@@ -2837,12 +2837,12 @@ namespace Glest {
 				//if moving to an higher cell move slower else move faster
 				Cell *unitCell = map->getCell(pos);
 				if (unitCell == NULL) {
-					throw megaglest_runtime_error("unitCell == NULL");
+					throw game_runtime_error("unitCell == NULL");
 				}
 
 				Cell *targetCell = map->getCell(targetPos);
 				if (targetCell == NULL) {
-					throw megaglest_runtime_error("targetCell == NULL");
+					throw game_runtime_error("targetCell == NULL");
 				}
 
 				int64 heightDiff = ((truncateDecimal < float >(unitCell->getHeight(),
@@ -3296,7 +3296,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: currSkill == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			//speed
@@ -3642,7 +3642,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: boost == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			//printf("APPLYING ATTACK BOOST to unit [%s - %d] from unit [%s - %d]\n",this->getType()->getName().c_str(),this->getId(),source->getType()->getName().c_str(),source->getId());
@@ -3813,7 +3813,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: boost == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
@@ -3952,7 +3952,7 @@ namespace Glest {
 						"In [%s::%s Line: %d] ERROR: type == NULL, Unit = [%s]\n",
 						extractFileFromDirectoryPath(__FILE__).c_str(),
 						__FUNCTION__, __LINE__, this->toString().c_str());
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 
 				//if(this->getType()->getName() == "spearman") printf("Unit [%d - %s] start tick hp = %d\n",this->getId(),this->getType()->getName().c_str(),hp);
@@ -4105,7 +4105,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: currSkill == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			//if not enough ep
@@ -4130,7 +4130,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: getType() == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (this->ep > getType()->getTotalMaxEp(&totalUpgrade)) {
@@ -4156,7 +4156,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: type == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			//increase hp
@@ -4164,7 +4164,7 @@ namespace Glest {
 			int original_hp = this->hp;
 			if (type->getProductionTime() + 1 == 0) {
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("Detected divide by 0 condition: type->getProductionTime() + 1 == 0");
 			}
 			this->hp += getType()->getMaxHp() / type->getProductionTime() + 1;
@@ -4223,7 +4223,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: type == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			//startDamageParticles
@@ -4400,7 +4400,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: upgradeType == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (upgradeType->isAffected(type)) {
@@ -4501,7 +4501,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: mct == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			const UnitType *morphUnitType = mct->getMorphUnit();
@@ -4512,7 +4512,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: morphUnitType == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			Field morphUnitField = fLand;
@@ -4537,7 +4537,7 @@ namespace Glest {
 							game->getWorld()->findUnitById(effect->
 								getSource()->getId());
 						if (sourceUnit == NULL) {
-							throw megaglest_runtime_error("sourceUnit == NULL");
+							throw game_runtime_error("sourceUnit == NULL");
 						}
 						sourceUnit->morphAttackBoosts(this);
 					}
@@ -4603,7 +4603,7 @@ namespace Glest {
 				|| map->isInsideSurface(map->toSurfCoords(pos)) == false) {
 				//printf("CRASHING FOR UNIT: %d [%s] alive = %d\n",this->getId(),this->getType()->getName().c_str(),this->isAlive());
 				//abort();
-				throw megaglest_runtime_error("#7 Invalid path position = " +
+				throw game_runtime_error("#7 Invalid path position = " +
 					pos.getString());
 			}
 
@@ -4702,7 +4702,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: command == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				/*throw megaglest_runtime_error(szBuf);*/
+				/*throw game_runtime_error(szBuf);*/
 				return result;
 			}
 
@@ -4761,7 +4761,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: command->getCommandType() == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			const ProducibleType *produced =
@@ -4807,7 +4807,7 @@ namespace Glest {
 						"In [%s::%s Line: %d] ERROR: builtUnit == NULL, Unit = [%s]\n",
 						extractFileFromDirectoryPath(__FILE__).c_str(),
 						__FUNCTION__, __LINE__, this->toString().c_str());
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 
 				if (faction->reqsOk(builtUnit) == false) {
@@ -4846,7 +4846,7 @@ namespace Glest {
 						"In [%s::%s Line: %d] ERROR: uct == NULL, Unit = [%s]\n",
 						extractFileFromDirectoryPath(__FILE__).c_str(),
 						__FUNCTION__, __LINE__, this->toString().c_str());
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 
 				if (faction->
@@ -4876,14 +4876,14 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: command == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			} else if (command->getCommandType() == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096,
 					"In [%s::%s Line: %d] ERROR: command->getCommandType() == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			//check produced
@@ -4910,7 +4910,7 @@ namespace Glest {
 						"In [%s::%s Line: %d] ERROR: uct == NULL, Unit = [%s]\n",
 						extractFileFromDirectoryPath(__FILE__).c_str(),
 						__FUNCTION__, __LINE__, this->toString().c_str());
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 
 				faction->startUpgrade(uct->getProducedUpgrade());
@@ -4925,14 +4925,14 @@ namespace Glest {
 					"In [%s::%s Line: %d] ERROR: command == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			} else if (command->getCommandType() == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096,
 					"In [%s::%s Line: %d] ERROR: command->getCommandType() == NULL, Unit = [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, this->toString().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (getCurrCommand() == command
@@ -4969,7 +4969,7 @@ namespace Glest {
 						"In [%s::%s Line: %d] ERROR: uct == NULL, Unit = [%s]\n",
 						extractFileFromDirectoryPath(__FILE__).c_str(),
 						__FUNCTION__, __LINE__, this->toString().c_str());
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 
 				faction->cancelUpgrade(uct->getProducedUpgrade());
@@ -5236,7 +5236,7 @@ namespace Glest {
 						"Warning: Particle system is trying to find mesh '" + meshName +
 						"', but just found:\n'" + meshesFound + "' in file:\n'" +
 						model->getFileName() + "'\n";
-					//throw megaglest_runtime_error(errorString);
+					//throw game_runtime_error(errorString);
 					printf("%s", errorString.c_str());
 				}
 			}
@@ -5461,7 +5461,7 @@ namespace Glest {
 			if (map->isInside(this->meetingPos) == false
 				|| map->isInsideSurface(map->toSurfCoords(this->meetingPos)) ==
 				false) {
-				throw megaglest_runtime_error("#8 Invalid path position = " +
+				throw game_runtime_error("#8 Invalid path position = " +
 					this->meetingPos.getString());
 			}
 
@@ -5494,9 +5494,9 @@ namespace Glest {
 				int teamIndex = this->getTeam();
 
 				if (game == NULL) {
-					throw megaglest_runtime_error("game == NULL");
+					throw game_runtime_error("game == NULL");
 				} else if (game->getWorld() == NULL) {
-					throw megaglest_runtime_error("game->getWorld() == NULL");
+					throw game_runtime_error("game->getWorld() == NULL");
 				}
 
 				// Try the local unit exploration cache
@@ -6398,7 +6398,7 @@ namespace Glest {
 					break;
 				default:
 					throw
-						megaglest_runtime_error("detected unsupported pathfinder type!");
+						game_runtime_error("detected unsupported pathfinder type!");
 			}
 
 			newpath->loadGame(unitNode);

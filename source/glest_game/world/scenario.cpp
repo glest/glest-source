@@ -112,7 +112,7 @@ namespace Glest {
 					getSystemSettingType(SystemFlags::debugSystem).enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
 
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			return scenarioChecksum;

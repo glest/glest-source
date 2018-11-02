@@ -785,7 +785,7 @@ namespace
 			// -----------------------------------------------------------------------
 
 			static void
-				error(LuaHandle * luaHandle, const megaglest_runtime_error * mgErr,
+				error(LuaHandle * luaHandle, const game_runtime_error * mgErr,
 					const char *file, const char *function, int line);
 
 			//callbacks, commands

@@ -685,7 +685,7 @@ namespace
 							sendTextMessage(szMsg, -1, true, "");
 					}
 					/*throw
-						megaglest_runtime_error(szBuf);*/
+						game_runtime_error(szBuf);*/
 					return std::pair<CommandResult, string>(crFailUndefined, "");
 				}
 			}
@@ -1046,7 +1046,7 @@ namespace
 						vote = faction->getSwitchTeamVote(factionIndex);
 					if (vote == NULL) {
 						throw
-							megaglest_runtime_error("vote == NULL");
+							game_runtime_error("vote == NULL");
 					}
 					vote->voted = true;
 					vote->allowSwitchTeam = allowSwitchTeam;
@@ -1600,7 +1600,7 @@ namespace
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, networkCommand->getUnitId());
 				throw
-					megaglest_runtime_error(szBuf);
+					game_runtime_error(szBuf);
 			}
 			// Create the command.
 			Command *
@@ -1627,7 +1627,7 @@ namespace
 					gameNetworkInterface->sendTextMessage(szMsg, -1, true, "");
 
 				/*throw
-					megaglest_runtime_error(szBuf);*/
+					game_runtime_error(szBuf);*/
 				return command;
 			}
 
@@ -1715,7 +1715,7 @@ namespace
 						|| networkCommand->getTargetId() >= 4) {
 						printf("networkCommand->getTargetId() >= 0 && networkCommand->getTargetId() < 4, [%s]", networkCommand->toString().c_str());
 						/*throw
-							megaglest_runtime_error(szBuf);*/
+							game_runtime_error(szBuf);*/
 						return command;
 					}
 					facing = CardinalDir(networkCommand->getTargetId());

@@ -252,11 +252,11 @@ namespace Glest {
 
 			NetworkInterface(const NetworkInterface& obj) {
 				init();
-				throw megaglest_runtime_error("class NetworkInterface is NOT safe to copy!");
+				throw game_runtime_error("class NetworkInterface is NOT safe to copy!");
 			}
 			NetworkInterface & operator=(const NetworkInterface& obj) {
 				init();
-				throw megaglest_runtime_error("class NetworkInterface is NOT safe to assign!");
+				throw game_runtime_error("class NetworkInterface is NOT safe to assign!");
 			}
 
 			uint32 getNetworkPlayerFactionCRC(int index);

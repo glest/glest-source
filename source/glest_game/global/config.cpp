@@ -617,7 +617,7 @@ namespace Glest {
 					result = SDLK_PAUSE;
 				} else {
 					string sError = "Unsupported key translation [" + value + "]";
-					throw megaglest_runtime_error(sError.c_str());
+					throw game_runtime_error(sError.c_str());
 				}
 			} else if (value.length() >= 1) {
 				if (value.length() == 3 && value[0] == '\'' && value[2] == '\'') {
@@ -638,7 +638,7 @@ namespace Glest {
 				}
 			} else {
 				string sError = "Unsupported key translation" + value;
-				throw megaglest_runtime_error(sError.c_str());
+				throw game_runtime_error(sError.c_str());
 			}
 
 			// Because SDL is based on lower Ascii
@@ -1019,7 +1019,7 @@ namespace Glest {
 
 			if (errorOnNotFound == true) {
 				//abort();
-				throw megaglest_runtime_error("Map not found [" + mapName +
+				throw game_runtime_error("Map not found [" + mapName +
 					"]\nScenario [" + scenarioDir + "]");
 			}
 

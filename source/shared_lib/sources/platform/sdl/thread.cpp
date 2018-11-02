@@ -127,7 +127,7 @@ namespace Shared {
 
 							char szBuf[8096] = "";
 							snprintf(szBuf, 8095, "In [%s::%s Line: %d] cannot delete active thread: getRunningStatus(): %d getExecutingTask: %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, base_thread->getRunningStatus(), base_thread->getExecutingTask());
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 					}
 
@@ -174,7 +174,7 @@ namespace Shared {
 					/*if (this != cleanupThread.get()) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8095, "In [%s::%s Line: %d] iterFind == Thread::threadList.end() Thread::threadList.size() = %ld", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, Thread::threadList.size());
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}*/
 				} else {
 					Thread::threadList.erase(iterFind);
@@ -296,7 +296,7 @@ namespace Shared {
 
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8095, "In [%s::%s Line: %d] thread == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (Thread::getEnableVerboseMode()) printf("In Thread::execute Line: %d\n", __LINE__);
@@ -319,7 +319,7 @@ namespace Shared {
 				snprintf(szBuf, 8095, "In [%s::%s Line: %d] thread == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 				printf("%s", szBuf);
 
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			MutexSafeWrapper safeMutex(thread->mutexthreadAccessor);
@@ -499,7 +499,7 @@ namespace Shared {
 			if (this->mutex == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8095, "In [%s::%s Line: %d] mutex == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			this->deleteownerId = "";
 
@@ -523,7 +523,7 @@ namespace Shared {
 				std::vector<Mutex *>::iterator iterFind = std::find(Mutex::mutexList.begin(), Mutex::mutexList.end(), this);
 				if (iterFind == Mutex::mutexList.end()) {
 					printf("In [%s::%s Line: %d] iterFind == Mutex::mutexList.end()", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-					//throw megaglest_runtime_error(szBuf);
+					//throw game_runtime_error(szBuf);
 				}
 				Mutex::mutexList.erase(iterFind);
 				safeMutexX.ReleaseLock();
@@ -532,11 +532,11 @@ namespace Shared {
 			SDLMutexSafeWrapper safeMutex(&mutexAccessor, true);
 			if (mutex == NULL) {
 				printf("In [%s::%s Line: %d] mutex == NULL refCount = %d owner [%s] deleteownerId [%s]", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, refCount, ownerId.c_str(), deleteownerId.c_str());
-				//throw megaglest_runtime_error(szBuf);
+				//throw game_runtime_error(szBuf);
 				//printf("%s\n",szBuf);
 			} else if (refCount >= 1) {
 				printf("In [%s::%s Line: %d] about to destroy mutex refCount = %d owner [%s] deleteownerId [%s]", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, refCount, ownerId.c_str(), deleteownerId.c_str());
-				//throw megaglest_runtime_error(szBuf);
+				//throw game_runtime_error(szBuf);
 			}
 
 			if (debugMutexLock == true) {
@@ -561,7 +561,7 @@ namespace Shared {
 		//		string stack = PlatformExceptionHandler::getStackTrace();
 		//		char szBuf[8096]="";
 		//		snprintf(szBuf,8095,"In [%s::%s Line: %d] mutex == NULL refCount = %d owner [%s] deleteownerId [%s] stack: %s",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,refCount,ownerId.c_str(),deleteownerId.c_str(),stack.c_str());
-		//		throw megaglest_runtime_error(szBuf);
+		//		throw game_runtime_error(szBuf);
 		//	}
 		//	std::auto_ptr<Chrono> chronoLockPerf;
 		//	if(debugMutexLock == true) {
@@ -585,7 +585,7 @@ namespace Shared {
 		//	if(mutex == NULL) {
 		//		char szBuf[8096]="";
 		//		snprintf(szBuf,8095,"In [%s::%s Line: %d] mutex == NULL refCount = %d owner [%s] deleteownerId [%s]",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,refCount,ownerId.c_str(),deleteownerId.c_str());
-		//		throw megaglest_runtime_error(szBuf);
+		//		throw game_runtime_error(szBuf);
 		//	}
 			refCount--;
 
@@ -612,14 +612,14 @@ namespace Shared {
 			if (semaphore == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8095, "In [%s::%s Line: %d] semaphore == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 
 		Semaphore::~Semaphore() {
 			if (semaphore == NULL) {
 				printf("In [%s::%s Line: %d] semaphore == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				//throw megaglest_runtime_error(szBuf);
+				//throw game_runtime_error(szBuf);
 			}
 			SDL_DestroySemaphore(semaphore);
 			semaphore = NULL;
@@ -629,7 +629,7 @@ namespace Shared {
 			if (semaphore == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8095, "In [%s::%s Line: %d] semaphore == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			SDL_SemPost(semaphore);
 		}
@@ -638,7 +638,7 @@ namespace Shared {
 			if (semaphore == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8095, "In [%s::%s Line: %d] semaphore == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			int semValue = 0;
 			if (waitMilliseconds >= 0) {
@@ -653,7 +653,7 @@ namespace Shared {
 			if (semaphore == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8095, "In [%s::%s Line: %d] semaphore == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			int semValue = SDL_SemTryWait(semaphore);
 			return (semValue == 0);
@@ -663,7 +663,7 @@ namespace Shared {
 			if (semaphore == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8095, "In [%s::%s Line: %d] semaphore == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			return SDL_SemValue(semaphore);
@@ -673,7 +673,7 @@ namespace Shared {
 			if (semaphore == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8095, "In [%s::%s Line: %d] semaphore == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			uint32 currentValue = SDL_SemValue(semaphore);
@@ -726,7 +726,7 @@ namespace Shared {
 			if (this->trigger == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8095, "In [%s::%s Line: %d] trigger == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (debugMasterSlaveThreadController) printf("In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
@@ -737,7 +737,7 @@ namespace Shared {
 
 			if (trigger == NULL) {
 				printf("In [%s::%s Line: %d] trigger == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				//throw megaglest_runtime_error(szBuf);
+				//throw game_runtime_error(szBuf);
 			}
 			if (debugMasterSlaveThreadController) printf("In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
@@ -757,7 +757,7 @@ namespace Shared {
 			if (trigger == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8095, "In [%s::%s Line: %d] trigger == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			//MutexSafeWrapper safeMutex(mutex);
@@ -789,12 +789,12 @@ namespace Shared {
 			if (trigger == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8095, "In [%s::%s Line: %d] trigger == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			if (mutex == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8095, "In [%s::%s Line: %d] mutex == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (debugMasterSlaveThreadController) printf("In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);

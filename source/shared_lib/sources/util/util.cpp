@@ -235,7 +235,7 @@ namespace Shared {
 			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
 			if (threadLogger == NULL && SystemFlags::SHUTDOWN_PROGRAM_MODE == true) {
-				//throw megaglest_runtime_error("threadLogger == NULL && SystemFlags::SHUTDOWN_PROGRAM_MODE == true");
+				//throw game_runtime_error("threadLogger == NULL && SystemFlags::SHUTDOWN_PROGRAM_MODE == true");
 				if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] ERROR threadLogger == NULL && SystemFlags::SHUTDOWN_PROGRAM_MODE == true\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 				//static SystemFlagsType *result = new SystemFlagsType();
 				static SystemFlags::SystemFlagsType result;
@@ -253,7 +253,7 @@ namespace Shared {
 				if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
 				if (threadLogger == NULL && SystemFlags::SHUTDOWN_PROGRAM_MODE == true) {
-					//throw megaglest_runtime_error("threadLogger == NULL && SystemFlags::SHUTDOWN_PROGRAM_MODE == true");
+					//throw game_runtime_error("threadLogger == NULL && SystemFlags::SHUTDOWN_PROGRAM_MODE == true");
 					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] ERROR threadLogger == NULL && SystemFlags::SHUTDOWN_PROGRAM_MODE == true\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 					return;
 				}
@@ -411,7 +411,7 @@ namespace Shared {
 				if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
 				if (threadLogger == NULL && SystemFlags::SHUTDOWN_PROGRAM_MODE == true) {
-					//throw megaglest_runtime_error("threadLogger == NULL && SystemFlags::SHUTDOWN_PROGRAM_MODE == true");
+					//throw game_runtime_error("threadLogger == NULL && SystemFlags::SHUTDOWN_PROGRAM_MODE == true");
 					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] ERROR threadLogger == NULL && SystemFlags::SHUTDOWN_PROGRAM_MODE == true\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 					//return;
 				}
@@ -630,7 +630,7 @@ namespace Shared {
 			}
 
 			if (pos == string::npos) {
-				throw megaglest_runtime_error(string(extractFileFromDirectoryPath(__FILE__).c_str()) + " line: " + intToStr(__LINE__) + " pos == string::npos for [" + s + "]");
+				throw game_runtime_error(string(extractFileFromDirectoryPath(__FILE__).c_str()) + " line: " + intToStr(__LINE__) + " pos == string::npos for [" + s + "]");
 			}
 
 			if (pos + 1 == s.length() && s.length() > 0 &&
@@ -665,7 +665,7 @@ namespace Shared {
 			}
 
 			if (pos != string::npos) {
-				//throw megaglest_runtime_error(string(extractFileFromDirectoryPath(__FILE__).c_str()) + " line: " + intToStr(__LINE__) + " pos == string::npos for [" + s + "]");
+				//throw game_runtime_error(string(extractFileFromDirectoryPath(__FILE__).c_str()) + " line: " + intToStr(__LINE__) + " pos == string::npos for [" + s + "]");
 			//}
 
 				return (s.substr(0, pos));
@@ -676,7 +676,7 @@ namespace Shared {
 		string cutLastExt(const string &s) {
 			size_t i = s.find_last_of('.');
 			if (i != string::npos) {
-				//throw megaglest_runtime_error(string(extractFileFromDirectoryPath(__FILE__).c_str()) + " line: " + intToStr(__LINE__) + " i==string::npos for [" + s + "]");
+				//throw game_runtime_error(string(extractFileFromDirectoryPath(__FILE__).c_str()) + " line: " + intToStr(__LINE__) + " i==string::npos for [" + s + "]");
 		   //}
 
 				return (s.substr(0, i));
@@ -690,7 +690,7 @@ namespace Shared {
 			i = s.find_last_of('.') + 1;
 
 			if (i != string::npos) {
-				//throw megaglest_runtime_error(string(extractFileFromDirectoryPath(__FILE__).c_str()) + " line: " + intToStr(__LINE__) + " i==string::npos for [" + s + "]");
+				//throw game_runtime_error(string(extractFileFromDirectoryPath(__FILE__).c_str()) + " line: " + intToStr(__LINE__) + " i==string::npos for [" + s + "]");
 		   //}
 				return (s.substr(i, s.size() - i));
 			}

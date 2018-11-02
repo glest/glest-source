@@ -152,14 +152,14 @@ namespace Glest {
 			/**
 		 * Cancels an upgrade before it is finished. The upgrade is removed from the UpgradeManager.
 		 * @param upgradeType The type of the upgrade to remove.
-		 * @throws megaglest_runtime_error If there is no upgrade of the desired type in the UpgradeManager.
+		 * @throws game_runtime_error If there is no upgrade of the desired type in the UpgradeManager.
 		 */
 			void cancelUpgrade(const UpgradeType * upgradeType);
 
 			/**
 		 * Sets an Upgrade in the UpgradeManager as finished (ie, the state is UpgradeState::usUpgraded).
 		 * @param upgradeType The type of the upgrade to complete.
-		 * @throws megaglest_runtime_error If there is no upgrade of the desired type in the UpgradeManager.
+		 * @throws game_runtime_error If there is no upgrade of the desired type in the UpgradeManager.
 		 */
 			void finishUpgrade(const UpgradeType * upgradeType);
 

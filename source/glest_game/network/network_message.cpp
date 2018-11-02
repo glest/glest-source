@@ -62,7 +62,7 @@ namespace Glest {
 					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("\nIn [%s::%s Line: %d] WARNING, dataReceived = %d dataSize = %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, dataReceived, dataSize);
 
 					if (socket != NULL && socket->isSocketValid() == true) {
-						throw megaglest_runtime_error("Error receiving NetworkMessage, dataReceived = " + intToStr(dataReceived) + ", dataSize = " + intToStr(dataSize));
+						throw game_runtime_error("Error receiving NetworkMessage, dataReceived = " + intToStr(dataReceived) + ", dataSize = " + intToStr(dataSize));
 					} else {
 						if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] socket has been disconnected\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 					}
@@ -87,7 +87,7 @@ namespace Glest {
 					if (socket != NULL && socket->isSocketValid() == true) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "Error sending NetworkMessage, sendResult = %d, dataSize = %d", sendResult, dataSize);
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					} else {
 						if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s] Line: %d socket has been disconnected\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 					}
@@ -113,7 +113,7 @@ namespace Glest {
 					if (socket != NULL && socket->isSocketValid() == true) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "Error sending NetworkMessage, sendResult = %d, dataSize = %d", sendResult, fullMsgSize);
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					} else {
 						if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s] Line: %d socket has been disconnected\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 					}
@@ -143,7 +143,7 @@ namespace Glest {
 					if (socket != NULL && socket->isSocketValid() == true) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "Error sending NetworkMessage, sendResult = %d, dataSize = %d", sendResult, fullMsgSize);
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					} else {
 						if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s] Line: %d socket has been disconnected\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 					}

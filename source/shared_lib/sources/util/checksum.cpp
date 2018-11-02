@@ -201,7 +201,7 @@ namespace Shared {
 				}
 				else
 				{
-					throw megaglest_runtime_error("Can not open file: " + path);
+					throw game_runtime_error("Can not open file: " + path);
 				}
 				fclose(file);
 			*/
@@ -216,15 +216,15 @@ namespace Shared {
 			   const char *infile = path.c_str();
 
 			   if ((fd = open(infile,O_RDONLY)) < 0)
-				   throw megaglest_runtime_error("Can not open file: " + path);
+				   throw game_runtime_error("Can not open file: " + path);
 
 			   if ((data = (int8 *)malloc(bytes_expected)) == NULL)
-				   throw megaglest_runtime_error("malloc failed, Can not open file: " + path);
+				   throw game_runtime_error("malloc failed, Can not open file: " + path);
 
 			   bytes_read = read(fd, data, bytes_expected);
 
 			   //if (bytes_read != bytes_expected)
-			   //   throw megaglest_runtime_error("read failed, Can not open file: " + path);
+			   //   throw game_runtime_error("read failed, Can not open file: " + path);
 
 			   for(int i = 0; i < bytes_read; i++) {
 					addByte(data[i]);
@@ -286,7 +286,7 @@ namespace Shared {
 					}
 				}
 				else {
-					throw megaglest_runtime_error("Can not open file: " + path);
+					throw game_runtime_error("Can not open file: " + path);
 				}
 				fclose(file);
 			*/

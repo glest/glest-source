@@ -111,7 +111,7 @@ namespace Shared {
 				message += "ZetaGlest needs a version that supports\n";
 				message += "glActiveTexture (OpenGL 1.3) or the ARB_multitexture extension.";
 
-				throw megaglest_runtime_error(message.c_str());
+				throw game_runtime_error(message.c_str());
 			}
 
 			//opengl 1.3
@@ -124,7 +124,7 @@ namespace Shared {
 				message += "ZetaGlest needs at least version 1.3 to work\n";
 				message += "You may solve this problem by installing your latest video card drivers";
 
-				throw megaglest_runtime_error(message.c_str());
+				throw game_runtime_error(message.c_str());
 			}
 
 			//opengl 1.4 or extension
@@ -137,7 +137,7 @@ namespace Shared {
 		void Renderer::checkExtension(const string &extension, const string &msg) {
 			if (isGlExtensionSupported(extension.c_str()) == false) {
 				string str = "OpenGL extension not supported: " + extension + ", required for " + msg;
-				throw megaglest_runtime_error(str);
+				throw game_runtime_error(str);
 			}
 		}
 
@@ -174,7 +174,7 @@ namespace Shared {
 			if (glActiveTexture == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Error: glActiveTexture == NULL\nglActiveTexture is only supported if the GL version is 1.3 or greater,\nor if the ARB_multitexture extension is supported!");
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			modelRenderer = gf->newModelRenderer();
@@ -434,7 +434,7 @@ namespace Shared {
 					customTexture = customTextureMagenta;
 					break;
 				default:
-					throw megaglest_runtime_error("Unknown playercolor: " + intToStr(playerColor));
+					throw game_runtime_error("Unknown playercolor: " + intToStr(playerColor));
 					break;
 			}
 

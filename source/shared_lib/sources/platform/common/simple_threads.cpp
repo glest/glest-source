@@ -439,7 +439,7 @@ namespace Shared {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, ex.what());
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d] uniqueID [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, this->getUniqueID().c_str());
 
-				//throw megaglest_runtime_error(ex.what());
+				//throw game_runtime_error(ex.what());
 				//abort();
 			}
 			//printf("~SimpleTaskThread LINE: %d this = %p\n",__LINE__,this);
@@ -587,7 +587,7 @@ namespace Shared {
 						if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d] uniqueID [%s] END\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, this->getUniqueID().c_str());
 						mustDeleteSelf = getDeleteSelfOnExecutionDone();
 
-						throw megaglest_runtime_error(ex.what());
+						throw game_runtime_error(ex.what());
 					}
 				}
 			}
@@ -766,7 +766,7 @@ namespace Shared {
 						if (logList.size() < logCount) {
 							char szBuf[8096] = "";
 							snprintf(szBuf, 8096, "logList.size() <= logCount [%lld][%lld]", (long long int)logList.size(), (long long int)logCount);
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 						logList.erase(logList.begin(), logList.begin() + logCount);
 					}

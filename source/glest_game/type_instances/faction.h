@@ -209,12 +209,12 @@ namespace Glest {
 
 			Faction(const Faction & obj) {
 				init();
-				throw megaglest_runtime_error("class Faction is NOT safe to copy!");
+				throw game_runtime_error("class Faction is NOT safe to copy!");
 			}
 			Faction & operator= (const Faction & obj) {
 				init();
 				throw
-					megaglest_runtime_error("class Faction is NOT safe to assign!");
+					game_runtime_error("class Faction is NOT safe to assign!");
 			}
 
 			void notifyUnitAliveStatusChange(const Unit * unit);

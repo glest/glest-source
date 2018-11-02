@@ -298,7 +298,7 @@ namespace Glest {
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, szBuf);
 
-				//throw megaglest_runtime_error(szBuf);
+				//throw game_runtime_error(szBuf);
 			}
 		}
 
@@ -376,7 +376,7 @@ namespace Glest {
 			if (glActiveTexture == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Error: glActiveTexture == NULL\nglActiveTexture is only supported if the GL version is 1.3 or greater,\nor if the ARB_multitexture extension is supported!");
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
@@ -1688,15 +1688,15 @@ namespace Glest {
 			if (game == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s] Line: %d game == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			} else if (game->getGui() == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s] Line: %d game->getGui() == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			} else if (game->getGui()->getMouse3d() == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s] Line: %d game->getGui()->getMouse3d() == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			const Gui *gui = game->getGui();
@@ -1705,7 +1705,7 @@ namespace Glest {
 			if (map == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s] Line: %d map == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			assertGl();
@@ -1859,7 +1859,7 @@ namespace Glest {
 					headerLine += ": ";
 
 					if (fontMetrics == NULL) {
-						throw megaglest_runtime_error("fontMetrics == NULL");
+						throw game_runtime_error("fontMetrics == NULL");
 					}
 
 					renderTextShadow3D(
@@ -1885,7 +1885,7 @@ namespace Glest {
 				headerLine += ": ";
 
 				if (fontMetrics == NULL) {
-					throw megaglest_runtime_error("fontMetrics == NULL");
+					throw game_runtime_error("fontMetrics == NULL");
 				}
 
 				renderTextShadow3D(
@@ -1958,7 +1958,7 @@ namespace Glest {
 					headerLine += ": ";
 
 					if (fontMetrics == NULL) {
-						throw megaglest_runtime_error("fontMetrics == NULL");
+						throw game_runtime_error("fontMetrics == NULL");
 					}
 
 					renderTextShadow(
@@ -1982,7 +1982,7 @@ namespace Glest {
 				headerLine += ": ";
 
 				if (fontMetrics == NULL) {
-					throw megaglest_runtime_error("fontMetrics == NULL");
+					throw game_runtime_error("fontMetrics == NULL");
 				}
 
 				renderTextShadow(
@@ -2015,7 +2015,7 @@ namespace Glest {
 			}
 
 			if (console == NULL) {
-				throw megaglest_runtime_error("console == NULL");
+				throw game_runtime_error("console == NULL");
 			}
 
 			glPushAttrib(GL_ENABLE_BIT);
@@ -2615,13 +2615,13 @@ namespace Glest {
 		Vec2i computeCenteredPos(const string &text, Font2D *font, int x, int y) {
 			if (font == NULL) {
 				//abort();
-				throw megaglest_runtime_error("font == NULL (1) text = " + text);
+				throw game_runtime_error("font == NULL (1) text = " + text);
 			}
 			const Metrics &metrics = Metrics::getInstance();
 			FontMetrics *fontMetrics = font->getMetrics();
 
 			if (fontMetrics == NULL) {
-				throw megaglest_runtime_error("fontMetrics == NULL (1) text = " + text);
+				throw game_runtime_error("fontMetrics == NULL (1) text = " + text);
 			}
 
 			int virtualX = (fontMetrics->getTextWidth(text) > 0 ? static_cast<int>(fontMetrics->getTextWidth(text) / 2.f) : 5);
@@ -2638,13 +2638,13 @@ namespace Glest {
 
 		Vec2i computeCenteredPos(const string &text, Font3D *font, int x, int y) {
 			if (font == NULL) {
-				throw megaglest_runtime_error("font == NULL (2) text = " + text);
+				throw game_runtime_error("font == NULL (2) text = " + text);
 			}
 			const Metrics &metrics = Metrics::getInstance();
 			FontMetrics *fontMetrics = font->getMetrics();
 
 			if (fontMetrics == NULL) {
-				throw megaglest_runtime_error("fontMetrics == NULL (2) text = " + text);
+				throw game_runtime_error("fontMetrics == NULL (2) text = " + text);
 			}
 
 			int virtualX = (fontMetrics->getTextWidth(text) > 0 ? static_cast<int>(fontMetrics->getTextWidth(text) / 2.f) : 5);
@@ -2769,11 +2769,11 @@ namespace Glest {
 			if (centeredW == true) {
 				if (font == NULL) {
 					//abort();
-					throw megaglest_runtime_error("font == NULL (5) text = " + text);
+					throw game_runtime_error("font == NULL (5) text = " + text);
 				} else if (font->getTextHandler() == NULL) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "font->getTextHandler() == NULL(5) text = [%s] FontPtr = [%p]\n", text.c_str(), font);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 
 				float lineWidth = (font->getTextHandler()->Advance(text.c_str()) * ::Shared::Graphics::Font::scaleFontValue);
@@ -2784,9 +2784,9 @@ namespace Glest {
 
 			if (centeredH) {
 				if (font == NULL) {
-					throw megaglest_runtime_error("font == NULL (6) text = " + text);
+					throw game_runtime_error("font == NULL (6) text = " + text);
 				} else if (font->getTextHandler() == NULL) {
-					throw megaglest_runtime_error("font->getTextHandler() == NULL (6) text = " + text);
+					throw game_runtime_error("font->getTextHandler() == NULL (6) text = " + text);
 				}
 
 				//const Metrics &metrics= Metrics::getInstance();
@@ -2987,7 +2987,7 @@ namespace Glest {
 			}
 
 			if (font == NULL) {
-				throw megaglest_runtime_error("font == NULL (3) text = " + text);
+				throw game_runtime_error("font == NULL (3) text = " + text);
 			}
 
 			glPushAttrib(GL_CURRENT_BIT);
@@ -3015,7 +3015,7 @@ namespace Glest {
 			}
 
 			if (font == NULL) {
-				throw megaglest_runtime_error("font == NULL (4) text = " + text);
+				throw game_runtime_error("font == NULL (4) text = " + text);
 			}
 
 			glPushAttrib(GL_CURRENT_BIT);
@@ -3209,7 +3209,7 @@ namespace Glest {
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, szBuf);
 
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 		}
@@ -3356,7 +3356,7 @@ namespace Glest {
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, szBuf);
 
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 
@@ -3861,7 +3861,7 @@ namespace Glest {
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, szBuf);
 
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 
@@ -4434,16 +4434,16 @@ namespace Glest {
 							SurfaceCell *tc11 = map->getSurfaceCell(pos.x + 1, pos.y + 1);
 
 							if (tc00 == NULL) {
-								throw megaglest_runtime_error("tc00 == NULL");
+								throw game_runtime_error("tc00 == NULL");
 							}
 							if (tc10 == NULL) {
-								throw megaglest_runtime_error("tc10 == NULL");
+								throw game_runtime_error("tc10 == NULL");
 							}
 							if (tc01 == NULL) {
-								throw megaglest_runtime_error("tc01 == NULL");
+								throw game_runtime_error("tc01 == NULL");
 							}
 							if (tc11 == NULL) {
-								throw megaglest_runtime_error("tc11 == NULL");
+								throw game_runtime_error("tc11 == NULL");
 							}
 
 							triangleCount += 2;
@@ -4451,7 +4451,7 @@ namespace Glest {
 
 							//set texture
 							if (tc00->getSurfaceTexture() == NULL) {
-								throw megaglest_runtime_error("tc00->getSurfaceTexture() == NULL");
+								throw game_runtime_error("tc00->getSurfaceTexture() == NULL");
 							}
 							int currTex = static_cast<const Texture2DGl*>(tc00->getSurfaceTexture())->getHandle();
 							if (currTex != lastTex) {
@@ -4582,16 +4582,16 @@ namespace Glest {
 						//					SurfaceCell *tc11= map->getSurfaceCell(pos.x+1, pos.y+1);
 						//
 						//					if(tc00 == NULL) {
-						//						throw megaglest_runtime_error("tc00 == NULL");
+						//						throw game_runtime_error("tc00 == NULL");
 						//					}
 						//					if(tc10 == NULL) {
-						//						throw megaglest_runtime_error("tc10 == NULL");
+						//						throw game_runtime_error("tc10 == NULL");
 						//					}
 						//					if(tc01 == NULL) {
-						//						throw megaglest_runtime_error("tc01 == NULL");
+						//						throw game_runtime_error("tc01 == NULL");
 						//					}
 						//					if(tc11 == NULL) {
-						//						throw megaglest_runtime_error("tc11 == NULL");
+						//						throw game_runtime_error("tc11 == NULL");
 						//					}
 						//
 						//					triangleCount+= 2;
@@ -4599,7 +4599,7 @@ namespace Glest {
 						//
 						//					//set texture
 						//					if(tc00->getSurfaceTexture() == NULL) {
-						//						throw megaglest_runtime_error("tc00->getSurfaceTexture() == NULL");
+						//						throw game_runtime_error("tc00->getSurfaceTexture() == NULL");
 						//					}
 						//
 						//					int surfaceDataIndex = -1;
@@ -4890,7 +4890,7 @@ namespace Glest {
 			if (textures3D) {
 				Texture3D *waterTex = world->getTileset()->getWaterTex();
 				if (waterTex == NULL) {
-					throw megaglest_runtime_error("waterTex == NULL");
+					throw game_runtime_error("waterTex == NULL");
 				}
 				glEnable(GL_TEXTURE_3D);
 				glBindTexture(GL_TEXTURE_3D, static_cast<Texture3DGl*>(waterTex)->getHandle());
@@ -4927,10 +4927,10 @@ namespace Glest {
 					SurfaceCell *tc0 = map->getSurfaceCell(i, j);
 					SurfaceCell *tc1 = map->getSurfaceCell(i, j + 1);
 					if (tc0 == NULL) {
-						throw megaglest_runtime_error("tc0 == NULL");
+						throw game_runtime_error("tc0 == NULL");
 					}
 					if (tc1 == NULL) {
-						throw megaglest_runtime_error("tc1 == NULL");
+						throw game_runtime_error("tc1 == NULL");
 					}
 
 					if (cellExplored == false) {
@@ -5121,7 +5121,7 @@ namespace Glest {
 			if (map == NULL) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s] Line: %d map == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			glPushMatrix();
@@ -7494,7 +7494,7 @@ namespace Glest {
 			textures3D = config.getBool("Textures3D");
 			float gammaValue = config.getFloat("GammaValue", "0.0");
 			if (this->program == NULL) {
-				throw megaglest_runtime_error("this->program == NULL");
+				throw game_runtime_error("this->program == NULL");
 			}
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false) {
 				//if(this->program != NULL) {
@@ -7872,7 +7872,7 @@ namespace Glest {
 				message += "ZetaGlest needs a version that supports\n";
 				message += "glActiveTexture (OpenGL 1.3) or the ARB_multitexture extension.";
 
-				throw megaglest_runtime_error(message.c_str(), true);
+				throw game_runtime_error(message.c_str(), true);
 			}
 
 			//opengl 2.1
@@ -7884,7 +7884,7 @@ namespace Glest {
 				message += "ZetaGlest needs at least version 2.1 to work\n";
 				message += "You may solve this problem by installing your latest video card drivers";
 
-				throw megaglest_runtime_error(message.c_str(), true);
+				throw game_runtime_error(message.c_str(), true);
 			}
 
 			//opengl 1.4 or extension
@@ -7903,7 +7903,7 @@ namespace Glest {
 			//shadows
 			if (shadows == sProjected || shadows == sShadowMapping) {
 				if (getGlMaxTextureUnits() < 3) {
-					throw megaglest_runtime_error("Your system doesn't support 3 texture units, required for shadows");
+					throw game_runtime_error("Your system doesn't support 3 texture units, required for shadows");
 				}
 			}
 
@@ -7926,7 +7926,7 @@ namespace Glest {
 			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 			if (!isGlExtensionSupported(extension.c_str())) {
 				string str = "OpenGL extension not supported: " + extension + ", required for " + msg;
-				throw megaglest_runtime_error(str);
+				throw game_runtime_error(str);
 			}
 			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 		}
@@ -8116,7 +8116,7 @@ namespace Glest {
 			} else {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s] Line: %d\nglActiveTexture == NULL\nglActiveTexture is only supported if the GL version is 1.3 or greater,\nor if the ARB_multitexture extension is supported!", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			//if(SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
@@ -8825,7 +8825,7 @@ namespace Glest {
 				return Texture2D::fTrilinear;
 			}
 
-			throw megaglest_runtime_error("Error converting from string to FilterType, found: " + s);
+			throw game_runtime_error("Error converting from string to FilterType, found: " + s);
 		}
 
 		void Renderer::setAllowRenderUnitTitles(bool value) {

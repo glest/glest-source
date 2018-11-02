@@ -85,7 +85,7 @@ namespace Shared {
 		  *@return <code>NULL</code> if the Pixmap2D could not be read, else the pixmap*/
 		Pixmap2D* BMPReader::read(ifstream& in, const string& path, Pixmap2D* ret) const {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 			//read file header
@@ -102,7 +102,7 @@ namespace Shared {
 			}
 
 			if (fileHeader.type1 != 'B' || fileHeader.type2 != 'M') {
-				throw megaglest_runtime_error(path + " is not a bitmap", true);
+				throw game_runtime_error(path + " is not a bitmap", true);
 			}
 
 			//read info header
@@ -123,7 +123,7 @@ namespace Shared {
 			}
 
 			if (infoHeader.bitCount != 24) {
-				throw megaglest_runtime_error(path + " is not a 24 bit bitmap", true);
+				throw game_runtime_error(path + " is not a 24 bit bitmap", true);
 			}
 
 			int h = infoHeader.height;

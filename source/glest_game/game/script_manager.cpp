@@ -641,7 +641,7 @@ namespace
 					luaScript.beginCall("onLoad");
 					luaScript.endCall();
 				}
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				//string sErrBuf = "";
 				//if(ex.wantStackTrace() == true) {
 				char
@@ -1733,7 +1733,7 @@ namespace
 					lock);
 			} else {
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("Invalid faction index in setLockedUnitForFaction: " +
 						intToStr(factionIndex), true);
 			}
@@ -1754,7 +1754,7 @@ namespace
 					unit_dead = unit->decHp(unit->getHp() * unit->getHp());
 				if (unit_dead == false) {
 					throw
-						megaglest_runtime_error("unit_dead == false", true);
+						game_runtime_error("unit_dead == false", true);
 				}
 				unit->kill();
 				// If called from an existing die event we get a stack overflow
@@ -2418,7 +2418,7 @@ namespace
 
 			if (world->getGame() == NULL) {
 				throw
-					megaglest_runtime_error("#1 world->getGame() == NULL", true);
+					game_runtime_error("#1 world->getGame() == NULL", true);
 			}
 			world->getGame()->startPerformanceTimer();
 
@@ -2429,7 +2429,7 @@ namespace
 
 			if (world->getGame() == NULL) {
 				throw
-					megaglest_runtime_error("#2 world->getGame() == NULL", true);
+					game_runtime_error("#2 world->getGame() == NULL", true);
 			}
 			world->getGame()->endPerformanceTimer();
 
@@ -2440,7 +2440,7 @@ namespace
 
 			if (world->getGame() == NULL) {
 				throw
-					megaglest_runtime_error("#3 world->getGame() == NULL", true);
+					game_runtime_error("#3 world->getGame() == NULL", true);
 			}
 			return world->getGame()->getPerformanceTimerResults();
 		}
@@ -2882,7 +2882,7 @@ namespace
 				unit = world->findUnitById(unitId);
 			if (unit == NULL) {
 				throw
-					megaglest_runtime_error("unit == NULL", true);
+					game_runtime_error("unit == NULL", true);
 			}
 			int
 				result =
@@ -3270,7 +3270,7 @@ namespace
 				tf = world->getTimeFlow();
 			if (tf == NULL) {
 				throw
-					megaglest_runtime_error("#1 tf == NULL", true);
+					game_runtime_error("#1 tf == NULL", true);
 			}
 			return tf->isDay();
 		}
@@ -3287,7 +3287,7 @@ namespace
 				tf = world->getTimeFlow();
 			if (tf == NULL) {
 				throw
-					megaglest_runtime_error("#2 tf == NULL", true);
+					game_runtime_error("#2 tf == NULL", true);
 			}
 			return tf->isNight();
 		}
@@ -3306,7 +3306,7 @@ namespace
 				tf = world->getTimeFlow();
 			if (tf == NULL) {
 				throw
-					megaglest_runtime_error("#3 tf == NULL", true);
+					game_runtime_error("#3 tf == NULL", true);
 			}
 			//printf("File: %s line: %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__LINE__);
 			return tf->getTime();
@@ -3316,7 +3316,7 @@ namespace
 			ScriptManager::disableSpeedChange() {
 			if (world->getGame() == NULL) {
 				throw
-					megaglest_runtime_error("#4 world->getGame() == NULL");
+					game_runtime_error("#4 world->getGame() == NULL");
 			}
 			world->getGame()->setDisableSpeedChange(true);
 		}
@@ -3324,7 +3324,7 @@ namespace
 			ScriptManager::enableSpeedChange() {
 			if (world->getGame() == NULL) {
 				throw
-					megaglest_runtime_error("#5 world->getGame() == NULL");
+					game_runtime_error("#5 world->getGame() == NULL");
 			}
 			world->getGame()->setDisableSpeedChange(false);
 		}
@@ -3333,7 +3333,7 @@ namespace
 			ScriptManager::getSpeedChangeEnabled() {
 			if (world->getGame() == NULL) {
 				throw
-					megaglest_runtime_error("#6 world->getGame() == NULL");
+					game_runtime_error("#6 world->getGame() == NULL");
 			}
 			return world->getGame()->getDisableSpeedChange();
 		}
@@ -3397,7 +3397,7 @@ namespace
 					getString(-2),
 					luaArguments.
 					getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3416,7 +3416,7 @@ namespace
 					getString(-2),
 					luaArguments.
 					getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3433,7 +3433,7 @@ namespace
 					getInt(-2),
 					luaArguments.
 					getVec2i(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3450,7 +3450,7 @@ namespace
 					getInt(-2),
 					luaArguments.
 					getVec2i(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3465,7 +3465,7 @@ namespace
 
 			try {
 				thisScriptManager->setDisplayText(luaArguments.getString(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3479,7 +3479,7 @@ namespace
 
 			try {
 				thisScriptManager->addConsoleText(luaArguments.getString(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3493,7 +3493,7 @@ namespace
 
 			try {
 				luaArguments.returnString(thisScriptManager->translate(luaArguments.getString(-1)));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3507,7 +3507,7 @@ namespace
 
 			try {
 				thisScriptManager->clearDisplayText();
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3522,7 +3522,7 @@ namespace
 			try {
 				thisScriptManager->
 					setCameraPosition(Vec2i(luaArguments.getVec2i(-1)));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3537,7 +3537,7 @@ namespace
 			try {
 				thisScriptManager->shakeCamera(luaArguments.getInt(-2),
 					luaArguments.getInt(-1), false, 0);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3553,7 +3553,7 @@ namespace
 				thisScriptManager->shakeCamera(luaArguments.getInt(-3),
 					luaArguments.getInt(-2), true,
 					luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3577,7 +3577,7 @@ namespace
 				thisScriptManager->createUnit(luaArguments.getString(-3),
 					luaArguments.getInt(-2),
 					luaArguments.getVec2i(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3586,7 +3586,7 @@ namespace
 
 		void
 			ScriptManager::error(LuaHandle * luaHandle,
-				const megaglest_runtime_error * mgErr,
+				const game_runtime_error * mgErr,
 				const char *file, const char *function, int line) {
 			char
 				szErrBuf[8096] = "";
@@ -3649,7 +3649,7 @@ namespace
 				thisScriptManager->createUnitNoSpacing(luaArguments.getString(-3),
 					luaArguments.getInt(-2),
 					luaArguments.getVec2i(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3670,7 +3670,7 @@ namespace
 
 			try {
 				thisScriptManager->destroyUnit(luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3697,7 +3697,7 @@ namespace
 					(luaArguments.
 						getInt(-1) ==
 						0 ? false : true));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3719,7 +3719,7 @@ namespace
 			try {
 				thisScriptManager->giveKills(luaArguments.getInt(-2),
 					luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3744,7 +3744,7 @@ namespace
 				thisScriptManager->morphToUnit(luaArguments.getInt(-3),
 					luaArguments.getString(-2),
 					luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3767,7 +3767,7 @@ namespace
 			try {
 				thisScriptManager->moveToUnit(luaArguments.getInt(-2),
 					luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3787,7 +3787,7 @@ namespace
 
 			try {
 				thisScriptManager->playStaticSound(luaArguments.getString(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3807,7 +3807,7 @@ namespace
 
 			try {
 				thisScriptManager->playStreamingSound(luaArguments.getString(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3827,7 +3827,7 @@ namespace
 
 			try {
 				thisScriptManager->stopStreamingSound(luaArguments.getString(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3846,7 +3846,7 @@ namespace
 
 			try {
 				thisScriptManager->stopAllSound();
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3866,7 +3866,7 @@ namespace
 
 			try {
 				thisScriptManager->playStaticVideo(luaArguments.getString(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3886,7 +3886,7 @@ namespace
 
 			try {
 				thisScriptManager->playStreamingVideo(luaArguments.getString(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3906,7 +3906,7 @@ namespace
 
 			try {
 				thisScriptManager->stopStreamingVideo(luaArguments.getString(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3926,7 +3926,7 @@ namespace
 
 			try {
 				thisScriptManager->stopAllVideo();
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3946,7 +3946,7 @@ namespace
 
 			try {
 				thisScriptManager->togglePauseGame(luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3960,7 +3960,7 @@ namespace
 				thisScriptManager->giveResource(luaArguments.getString(-3),
 					luaArguments.getInt(-2),
 					luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3975,7 +3975,7 @@ namespace
 				thisScriptManager->givePositionCommand(luaArguments.getInt(-3),
 					luaArguments.getString(-2),
 					luaArguments.getVec2i(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -3989,7 +3989,7 @@ namespace
 			try {
 				thisScriptManager->giveAttackCommand(luaArguments.getInt(-2),
 					luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4004,7 +4004,7 @@ namespace
 				thisScriptManager->giveProductionCommand(luaArguments.getInt(-2),
 					luaArguments.
 					getString(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4018,7 +4018,7 @@ namespace
 			try {
 				thisScriptManager->giveUpgradeCommand(luaArguments.getInt(-2),
 					luaArguments.getString(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4035,7 +4035,7 @@ namespace
 					getString(-2),
 					luaArguments.
 					getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4048,7 +4048,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				thisScriptManager->disableAi(luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4061,7 +4061,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				thisScriptManager->enableAi(luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4076,7 +4076,7 @@ namespace
 				bool
 					result = thisScriptManager->getAiEnabled(luaArguments.getInt(-1));
 				luaArguments.returnInt(result);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4089,7 +4089,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				thisScriptManager->disableConsume(luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4102,7 +4102,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				thisScriptManager->enableConsume(luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4118,7 +4118,7 @@ namespace
 					result =
 					thisScriptManager->getConsumeEnabled(luaArguments.getInt(-1));
 				luaArguments.returnInt(result);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4137,7 +4137,7 @@ namespace
 					registerCellTriggerEventForUnitToUnit(luaArguments.getInt(-2),
 						luaArguments.getInt(-1));
 				luaArguments.returnInt(result);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4157,7 +4157,7 @@ namespace
 						luaArguments.
 						getVec2i(-1));
 				luaArguments.returnInt(result);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4178,7 +4178,7 @@ namespace
 						luaArguments.
 						getVec4i(-1));
 				luaArguments.returnInt(result);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4197,7 +4197,7 @@ namespace
 					registerCellTriggerEventForFactionToUnit(luaArguments.getInt(-2),
 						luaArguments.getInt(-1));
 				luaArguments.returnInt(result);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4218,7 +4218,7 @@ namespace
 						luaArguments.
 						getVec2i(-1));
 				luaArguments.returnInt(result);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4239,7 +4239,7 @@ namespace
 						luaArguments.
 						getVec4i(-1));
 				luaArguments.returnInt(result);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4256,7 +4256,7 @@ namespace
 					thisScriptManager->registerCellAreaTriggerEvent(luaArguments.
 						getVec4i(-1));
 				luaArguments.returnInt(result);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4273,7 +4273,7 @@ namespace
 					thisScriptManager->getCellTriggerEventCount(luaArguments.
 						getInt(-1));
 				luaArguments.returnInt(result);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4287,7 +4287,7 @@ namespace
 			try {
 				thisScriptManager->unregisterCellTriggerEvent(luaArguments.
 					getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4302,7 +4302,7 @@ namespace
 				int
 					result = thisScriptManager->startTimerEvent();
 				luaArguments.returnInt(result);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4319,7 +4319,7 @@ namespace
 					thisScriptManager->startEfficientTimerEvent(luaArguments.
 						getInt(-1));
 				luaArguments.returnInt(result);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4335,7 +4335,7 @@ namespace
 					result =
 					thisScriptManager->stopTimerEvent(luaArguments.getInt(-1));
 				luaArguments.returnInt(result);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4351,7 +4351,7 @@ namespace
 					result =
 					thisScriptManager->resetTimerEvent(luaArguments.getInt(-1));
 				luaArguments.returnInt(result);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4368,7 +4368,7 @@ namespace
 					thisScriptManager->getTimerEventSecondsElapsed(luaArguments.
 						getInt(-1));
 				luaArguments.returnInt(result);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4381,7 +4381,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				thisScriptManager->setPlayerAsWinner(luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4394,7 +4394,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				thisScriptManager->endGame();
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4407,7 +4407,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				thisScriptManager->startPerformanceTimer();
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4420,7 +4420,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				thisScriptManager->endPerformanceTimer();
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4435,7 +4435,7 @@ namespace
 				Vec2i
 					results = thisScriptManager->getPerformanceTimerResults();
 				luaArguments.returnVec2i(results);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4451,7 +4451,7 @@ namespace
 					pos =
 					thisScriptManager->getStartLocation(luaArguments.getInt(-1));
 				luaArguments.returnVec2i(pos);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4466,7 +4466,7 @@ namespace
 				Vec2i
 					pos = thisScriptManager->getUnitPosition(luaArguments.getInt(-1));
 				luaArguments.returnVec2i(pos);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4480,7 +4480,7 @@ namespace
 			try {
 				thisScriptManager->setUnitPosition(luaArguments.getInt(-2),
 					luaArguments.getVec2i(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4516,7 +4516,7 @@ namespace
 				//printf("LUA addCellMarker --> faction [%d] pos [%s] note [%s] texture [%s]\n",factionIndex,pos.getString().c_str(),note.c_str(),texture.c_str());
 
 				thisScriptManager->addCellMarker(pos, factionIndex, note, texture);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4535,7 +4535,7 @@ namespace
 					pos = luaArguments.getVec2i(-1);
 
 				thisScriptManager->removeCellMarker(pos, factionIndex);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4574,7 +4574,7 @@ namespace
 
 				thisScriptManager->showMarker(pos, factionIndex, note, texture,
 					flashCount);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4590,7 +4590,7 @@ namespace
 					factionIndex =
 					thisScriptManager->getUnitFaction(luaArguments.getInt(-1));
 				luaArguments.returnInt(factionIndex);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4606,7 +4606,7 @@ namespace
 					unitname =
 					thisScriptManager->getUnitName(luaArguments.getInt(-1));
 				luaArguments.returnString(unitname);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4622,7 +4622,7 @@ namespace
 					unitname =
 					thisScriptManager->getUnitDisplayName(luaArguments.getInt(-1));
 				luaArguments.returnString(unitname);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4639,7 +4639,7 @@ namespace
 					getResourceAmount(luaArguments.
 						getString(-2),
 						luaArguments.getInt(-1)));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4653,7 +4653,7 @@ namespace
 			try {
 				luaArguments.returnString(thisScriptManager->
 					getLastCreatedUnitName());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4666,7 +4666,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				luaArguments.returnInt(thisScriptManager->getLastCreatedUnitId());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4680,7 +4680,7 @@ namespace
 			try {
 				luaArguments.returnInt(thisScriptManager->
 					getCellTriggeredEventId());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4694,7 +4694,7 @@ namespace
 			try {
 				luaArguments.returnInt(thisScriptManager->
 					getTimerTriggeredEventId());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4709,7 +4709,7 @@ namespace
 			try {
 				luaArguments.returnInt(thisScriptManager->
 					getCellTriggeredEventAreaEntryUnitId());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4723,7 +4723,7 @@ namespace
 			try {
 				luaArguments.returnInt(thisScriptManager->
 					getCellTriggeredEventAreaExitUnitId());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4737,7 +4737,7 @@ namespace
 			try {
 				luaArguments.returnInt(thisScriptManager->
 					getCellTriggeredEventUnitId());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4750,7 +4750,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				thisScriptManager->setRandomGenInit(luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4765,7 +4765,7 @@ namespace
 				luaArguments.returnInt(thisScriptManager->
 					getRandomGen(luaArguments.getInt(-2),
 						luaArguments.getInt(-1)));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4778,7 +4778,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				luaArguments.returnInt(thisScriptManager->getWorldFrameCount());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4791,7 +4791,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				luaArguments.returnString(thisScriptManager->getLastDeadUnitName());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4804,7 +4804,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				luaArguments.returnInt(thisScriptManager->getLastDeadUnitId());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4818,7 +4818,7 @@ namespace
 			try {
 				luaArguments.returnInt(thisScriptManager->
 					getLastDeadUnitCauseOfDeath());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4832,7 +4832,7 @@ namespace
 			try {
 				luaArguments.returnString(thisScriptManager->
 					getLastDeadUnitKillerName());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4846,7 +4846,7 @@ namespace
 			try {
 				luaArguments.returnInt(thisScriptManager->
 					getLastDeadUnitKillerId());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4860,7 +4860,7 @@ namespace
 			try {
 				luaArguments.returnString(thisScriptManager->
 					getLastAttackedUnitName());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4873,7 +4873,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				luaArguments.returnInt(thisScriptManager->getLastAttackedUnitId());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4887,7 +4887,7 @@ namespace
 			try {
 				luaArguments.returnString(thisScriptManager->
 					getLastAttackingUnitName());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4900,7 +4900,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				luaArguments.returnInt(thisScriptManager->getLastAttackingUnitId());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4915,7 +4915,7 @@ namespace
 				luaArguments.returnString(thisScriptManager->
 					getSystemMacroValue(luaArguments.
 						getString(-1)));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4929,7 +4929,7 @@ namespace
 			try {
 				luaArguments.returnString(thisScriptManager->
 					getSystemMacroValue("$SCENARIO_PATH"));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4943,7 +4943,7 @@ namespace
 			try {
 				luaArguments.returnString(thisScriptManager->
 					getPlayerName(luaArguments.getInt(-1)));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4957,7 +4957,7 @@ namespace
 			try {
 				luaArguments.returnString(thisScriptManager->
 					getFactionName(luaArguments.getInt(-1)));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4971,7 +4971,7 @@ namespace
 			try {
 				luaArguments.returnInt(thisScriptManager->
 					getUnitCount(luaArguments.getInt(-1)));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -4987,7 +4987,7 @@ namespace
 					getUnitCountOfType(luaArguments.getInt(-2),
 						luaArguments.
 						getString(-1)));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5139,13 +5139,13 @@ namespace
 							"Invalid parameter count in method [%s] args = %d [argument count must be between 1 and %d]",
 							__FUNCTION__, args, max_args_allowed);
 						throw
-							megaglest_runtime_error(szBuf);
+							game_runtime_error(szBuf);
 					}
 
 					//va_end(argList);
 				}
 				//lua_unlock(luaHandle);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5334,13 +5334,13 @@ namespace
 							"Invalid parameter count in method [%s] args = %d [argument count must be between 1 and %d]",
 							__FUNCTION__, args, max_args_allowed);
 						throw
-							megaglest_runtime_error(szBuf);
+							game_runtime_error(szBuf);
 					}
 
 					//va_end(argList);
 				}
 				//lua_unlock(luaHandle);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5473,14 +5473,14 @@ namespace
 							"Invalid parameter count in method [%s] args = %d [argument count must be between 1 and %d]",
 							__FUNCTION__, args, max_args_allowed);
 						throw
-							megaglest_runtime_error(szBuf);
+							game_runtime_error(szBuf);
 					}
 
 					//va_end(argList);
 				}
 				//lua_unlock(luaHandle);
 
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5493,7 +5493,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				luaArguments.returnInt(thisScriptManager->getGameWon());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5506,7 +5506,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				luaArguments.returnInt(thisScriptManager->getIsGameOver());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5520,7 +5520,7 @@ namespace
 			try {
 				thisScriptManager->loadScenario(luaArguments.getString(-2),
 					luaArguments.getInt(-1) != 0);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5538,7 +5538,7 @@ namespace
 						luaArguments.getString(-2),
 						luaArguments.getInt(-1));
 				luaArguments.returnVectorInt(units);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5554,7 +5554,7 @@ namespace
 				luaArguments.returnInt(thisScriptManager->
 					getUnitCurrentField(luaArguments.
 						getInt(-1)));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5568,7 +5568,7 @@ namespace
 			try {
 				luaArguments.returnInt(thisScriptManager->
 					getIsUnitAlive(luaArguments.getInt(-1)));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5589,7 +5589,7 @@ namespace
 						getVec2i(-1));
 
 				luaArguments.returnInt(result);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5609,7 +5609,7 @@ namespace
 						getVec2i(-1));
 
 				luaArguments.returnInt(result);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5627,7 +5627,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				luaArguments.returnInt(thisScriptManager->getHumanFactionId());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5643,7 +5643,7 @@ namespace
 					luaArguments.getFloat(-3),
 					luaArguments.getFloat(-2),
 					luaArguments.getVec4f(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5656,7 +5656,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				thisScriptManager->unhighlightUnit(luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5669,7 +5669,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				thisScriptManager->giveStopCommand(luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5683,7 +5683,7 @@ namespace
 			try {
 				luaArguments.returnInt(thisScriptManager->
 					isBuilding(luaArguments.getInt(-1)));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5697,7 +5697,7 @@ namespace
 			try {
 				luaArguments.returnInt(thisScriptManager->
 					selectUnit(luaArguments.getInt(-1)));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5710,7 +5710,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				thisScriptManager->unselectUnit(luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5724,7 +5724,7 @@ namespace
 			try {
 				thisScriptManager->addUnitToGroupSelection(luaArguments.getInt(-2),
 					luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5737,7 +5737,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				thisScriptManager->recallGroupSelection(luaArguments.getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5753,7 +5753,7 @@ namespace
 					getInt(-2),
 					luaArguments.
 					getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5768,7 +5768,7 @@ namespace
 				thisScriptManager->
 					setAttackWarningsEnabled((luaArguments.getInt(-1) ==
 						0 ? false : true));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5781,7 +5781,7 @@ namespace
 			try {
 				luaArguments.returnInt(thisScriptManager->
 					getAttackWarningsEnabled());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5794,7 +5794,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				luaArguments.returnInt(thisScriptManager->getIsDayTime());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5806,7 +5806,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				luaArguments.returnInt(thisScriptManager->getIsNightTime());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5818,7 +5818,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				luaArguments.returnFloat(thisScriptManager->getTimeOfDay());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5831,7 +5831,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				thisScriptManager->registerDayNightEvent();
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5843,7 +5843,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				thisScriptManager->unregisterDayNightEvent();
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5857,7 +5857,7 @@ namespace
 			try {
 				thisScriptManager->registerUnitTriggerEvent(luaArguments.
 					getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5870,7 +5870,7 @@ namespace
 			try {
 				thisScriptManager->unregisterUnitTriggerEvent(luaArguments.
 					getInt(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5883,7 +5883,7 @@ namespace
 			try {
 				luaArguments.returnInt(thisScriptManager->
 					getLastUnitTriggerEventUnitId());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5897,7 +5897,7 @@ namespace
 				luaArguments.returnInt(static_cast <
 					int>(thisScriptManager->
 						getLastUnitTriggerEventType()));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5916,7 +5916,7 @@ namespace
 						UnitTriggerEventType>
 						(luaArguments.getInt(-1)));
 				luaArguments.returnInt(value);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5935,7 +5935,7 @@ namespace
 						UnitTriggerEventType>
 						(luaArguments.getInt(-2)), luaArguments.getInt(-1));
 				luaArguments.returnInt(value);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5954,7 +5954,7 @@ namespace
 						UnitTriggerEventType>
 						(luaArguments.getInt(-1)));
 				luaArguments.returnString(unitname);
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5967,7 +5967,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				thisScriptManager->disableSpeedChange();
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5979,7 +5979,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				thisScriptManager->enableSpeedChange();
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -5991,7 +5991,7 @@ namespace
 				luaArguments(luaHandle);
 			try {
 				luaArguments.returnInt(thisScriptManager->getSpeedChangeEnabled());
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -6005,7 +6005,7 @@ namespace
 			try {
 				thisScriptManager->storeSaveGameData(luaArguments.getString(-2),
 					luaArguments.getString(-1));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -6020,7 +6020,7 @@ namespace
 				luaArguments.returnString(thisScriptManager->
 					loadSaveGameData(luaArguments.
 						getString(-1)));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 
@@ -6035,7 +6035,7 @@ namespace
 				luaArguments.returnInt(thisScriptManager->
 					getFactionPlayerType(luaArguments.
 						getInt(-1)));
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 			}
 

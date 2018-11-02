@@ -132,7 +132,7 @@ namespace Glest {
 			//printf("scenarioFiles[0] [%s]\n",scenarioFiles[0].c_str());
 
 			if (results.empty() == true) {
-				//throw megaglest_runtime_error("There are no scenarios found to load");
+				//throw game_runtime_error("There are no scenarios found to load");
 				mainMessageBoxState = 1;
 				if (this->isTutorialMode == true) {
 					showMessageBox("Error: There are no tutorials found to load",
@@ -579,7 +579,7 @@ namespace Glest {
 				snprintf(szBuf, 8096,
 					"listBoxScenario.getSelectedItemIndex() < 0, = %d",
 					listBoxScenario.getSelectedItemIndex());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			} else if (listBoxScenario.getSelectedItemIndex() >=
 				(int) scenarioFiles.size()) {
 				char szBuf[8096] = "";
@@ -587,7 +587,7 @@ namespace Glest {
 					"listBoxScenario.getSelectedItemIndex() >= scenarioFiles.size(), = [%d][%d]",
 					listBoxScenario.getSelectedItemIndex(),
 					(int) scenarioFiles.size());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			Scenario::loadGameSettings(dirList, scenarioInfo, gameSettings,

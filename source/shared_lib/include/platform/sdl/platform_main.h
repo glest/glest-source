@@ -579,7 +579,7 @@ int mainSetup(int argc, char **argv) {
 	if (knownArgCount != GAME_ARG_END) {
 		char szBuf[8096] = "";
 		snprintf(szBuf, 8096, "Internal arg count mismatch knownArgCount = %d, GAME_ARG_END = %d", knownArgCount, GAME_ARG_END);
-		throw megaglest_runtime_error(szBuf);
+		throw game_runtime_error(szBuf);
 	}
 
 	SystemFlags::VERBOSE_MODE_ENABLED = false;
@@ -649,7 +649,7 @@ int mainSetup(int argc, char **argv) {
 			has_SSE4a == false) {
 			char szBuf[8096] = "";
 			snprintf(szBuf, 8096, "Error detected, your CPU does not seem to support SSE: [%d]\n", has_SSE);
-			throw megaglest_runtime_error(szBuf);
+			throw game_runtime_error(szBuf);
 		}
 #elif defined (__GNUC__) && !defined(__APPLE__)
 
@@ -670,7 +670,7 @@ int mainSetup(int argc, char **argv) {
 		if (!CHECK_BIT(dx, 25) && !CHECK_BIT(dx, 26) && !CHECK_BIT(cx, 0)) {
 			char szBuf[8096] = "";
 			snprintf(szBuf, 8096, "Error detected, your CPU does not seem to support SSE: [%d]\n", CHECK_BIT(dx, 25));
-			throw megaglest_runtime_error(szBuf);
+			throw game_runtime_error(szBuf);
 		}
 
 #endif

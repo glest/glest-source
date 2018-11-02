@@ -53,7 +53,7 @@ namespace Glest {
 			if (containerName == "" || objName == "") {
 				//char szBuf[8096]="";
 				//snprintf(szBuf,8096,"Control not properly registered Container [%s] Control [%s]\n",containerName.c_str(),objName.c_str());
-				//throw megaglest_runtime_error(szBuf);
+				//throw game_runtime_error(szBuf);
 			}
 			if (objName != "" && registerControl) {
 				registerGraphicComponent(containerName, objName);
@@ -119,7 +119,7 @@ namespace Glest {
 			if (containerName == "" || objName == "") {
 				//char szBuf[8096]="";
 				//snprintf(szBuf,8096,"Control not properly registered Container [%s] Control [%s]\n",this->containerName.c_str(),objName.c_str());
-				//throw megaglest_runtime_error(szBuf);
+				//throw game_runtime_error(szBuf);
 			}
 
 			this->containerName = containerName;
@@ -139,7 +139,7 @@ namespace Glest {
 			if (containerName == "" || objName == "") {
 				//char szBuf[8096]="";
 				//snprintf(szBuf,8096,"Control not properly registered Container [%s] Control [%s]\n",this->containerName.c_str(),objName.c_str());
-				//throw megaglest_runtime_error(szBuf);
+				//throw game_runtime_error(szBuf);
 			}
 
 			this->containerName = containerName;
@@ -519,7 +519,7 @@ namespace Glest {
 			if (errorOnMissing == true && (index < 0 || index >= (int) items.size())) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Index not found in listbox name: [%s] value index: %d size: %lu", this->instanceName.c_str(), index, (unsigned long) items.size());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			selectedItemIndex = index;
 			setText(getSelectedItem());
@@ -594,7 +594,7 @@ namespace Glest {
 
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "Value not found in listbox name: [%s] value: %s", this->instanceName.c_str(), item.c_str());
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}*/
 			} else {
 				setSelectedItemIndex(iter - items.begin());

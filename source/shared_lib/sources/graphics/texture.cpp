@@ -51,7 +51,7 @@ namespace Shared {
 
 		Texture::Texture() {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 
@@ -122,7 +122,7 @@ namespace Shared {
 							//int w = powerOfTwo(surface->w);
 							//int h = powerOfTwo(surface->h);
 				if (result.first == NULL) {
-					throw megaglest_runtime_error("result.first == NULL");
+					throw game_runtime_error("result.first == NULL");
 				}
 
 				int w = result.first->w;

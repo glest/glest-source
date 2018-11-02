@@ -148,13 +148,13 @@ namespace
 			AiInterface(const AiInterface & obj) {
 				init();
 				throw
-					megaglest_runtime_error("class AiInterface is NOT safe to copy!");
+					game_runtime_error("class AiInterface is NOT safe to copy!");
 			}
 			AiInterface &
 				operator= (const AiInterface & obj) {
 				init();
 				throw
-					megaglest_runtime_error("class AiInterface is NOT safe to assign!");
+					game_runtime_error("class AiInterface is NOT safe to assign!");
 			}
 
 			//main

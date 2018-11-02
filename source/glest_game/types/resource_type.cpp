@@ -241,13 +241,13 @@ namespace Glest {
 				} else {
 					displayInHud = true;
 				}
-			} catch (megaglest_runtime_error & ex) {
+			} catch (game_runtime_error & ex) {
 				SystemFlags::OutputDebug(SystemFlags::debugError,
 					"In [%s::%s Line: %d] Error [%s]\n",
 					extractFileFromDirectoryPath(__FILE__).
 					c_str(), __FUNCTION__, __LINE__,
 					ex.what());
-				throw megaglest_runtime_error("Error loading resource type: " +
+				throw game_runtime_error("Error loading resource type: " +
 					path + "\nMessage: " + ex.what(),
 					!ex.wantStackTrace());
 			} catch (const exception & e) {
@@ -255,7 +255,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] Error [%s]\n",
 					__FILE__, __FUNCTION__, __LINE__,
 					e.what());
-				throw megaglest_runtime_error("Error loading resource type: " +
+				throw game_runtime_error("Error loading resource type: " +
 					path + "\n" + e.what());
 			}
 		}
@@ -276,7 +276,7 @@ namespace Glest {
 				return rcConsumable;
 			}
 			throw
-				megaglest_runtime_error
+				game_runtime_error
 				("Error converting from string ro resourceClass, found: " + s);
 		}
 

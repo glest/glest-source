@@ -210,7 +210,7 @@ namespace
 			static void
 				logError(const char *msg, bool confirmToConsole);
 			static void
-				handleRuntimeError(const megaglest_runtime_error & ex);
+				handleRuntimeError(const game_runtime_error & ex);
 			static void
 				handleRuntimeError(const char *msg, bool getStackTraceString);
 			static int
@@ -820,7 +820,7 @@ namespace
 		}
 
 		void
-			ExceptionHandler::handleRuntimeError(const megaglest_runtime_error & ex) {
+			ExceptionHandler::handleRuntimeError(const game_runtime_error & ex) {
 			const char *
 				msg = ex.what();
 			handleRuntimeError(msg, false);
@@ -1151,7 +1151,7 @@ namespace
 
 			if (program == NULL) {
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("In [MainWindow::eventMouseDown] ERROR, program == NULL!");
 			}
 
@@ -1247,7 +1247,7 @@ namespace
 
 			if (program == NULL) {
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("In [MainWindow::eventMouseUp] ERROR, program == NULL!");
 			}
 
@@ -1305,7 +1305,7 @@ namespace
 
 			if (program == NULL) {
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("In [MainWindow::eventMouseDoubleClick] ERROR, program == NULL!");
 			}
 
@@ -1361,7 +1361,7 @@ namespace
 
 			if (program == NULL) {
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("In [MainWindow::eventMouseMove] ERROR, program == NULL!");
 			}
 
@@ -1391,7 +1391,7 @@ namespace
 
 			if (program == NULL) {
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("In [MainWindow::eventMouseMove] ERROR, program == NULL!");
 			}
 
@@ -1465,7 +1465,7 @@ namespace
 				findAll(data_path + "data/lang/*.lng", langResults2, true);
 				if (langResults2.empty() && langResults.empty()) {
 					throw
-						megaglest_runtime_error("There are no lang files");
+						game_runtime_error("There are no lang files");
 				}
 				for (unsigned int i = 0; i < langResults2.size(); ++i) {
 					string
@@ -1505,7 +1505,7 @@ namespace
 
 			if (program == NULL) {
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("In [MainWindow::eventKeyDown] ERROR, program == NULL!");
 			}
 
@@ -1523,7 +1523,7 @@ namespace
 			MainWindow::eventSdlKeyDown(SDL_KeyboardEvent key) {
 			if (program == NULL) {
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("In [MainWindow::eventKeyDown] ERROR, program == NULL!");
 			}
 			return program->sdlKeyDown(key);
@@ -1546,7 +1546,7 @@ namespace
 
 			if (program == NULL) {
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("In [MainWindow::eventKeyDown] ERROR, program == NULL!");
 			}
 
@@ -1735,7 +1735,7 @@ namespace
 				__FUNCTION__, __LINE__, key);
 			if (program == NULL) {
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("In [MainWindow::eventKeyUp] ERROR, program == NULL!");
 			}
 
@@ -1752,7 +1752,7 @@ namespace
 				__FUNCTION__, __LINE__, c);
 			if (program == NULL) {
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("In [MainWindow::eventKeyPress] ERROR, program == NULL!");
 			}
 
@@ -1803,7 +1803,7 @@ namespace
 				__FUNCTION__, __LINE__, event.event);
 			if (program == NULL) {
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("In [MainWindow::eventKeyPress] ERROR, program == NULL!");
 			}
 
@@ -1896,7 +1896,7 @@ namespace
 			MainWindow::eventResize(SizeState sizeState) {
 			if (program == NULL) {
 				throw
-					megaglest_runtime_error
+					game_runtime_error
 					("In [MainWindow::eventResize] ERROR, program == NULL!");
 			}
 
@@ -2539,7 +2539,7 @@ namespace
 								gitOk = executeShellCommand(szBuf, 0);
 							if (gitOk == false) {
 								throw
-									megaglest_runtime_error("Call to command failed [" +
+									game_runtime_error("Call to command failed [" +
 										string(szBuf) + "]");
 							}
 						} else {
@@ -2675,7 +2675,7 @@ namespace
 												gitOk = executeShellCommand(szBuf, 0);
 											if (gitOk == false) {
 												throw
-													megaglest_runtime_error("Call to command failed ["
+													game_runtime_error("Call to command failed ["
 														+ string(szBuf) + "]");
 											}
 											printf
@@ -2697,7 +2697,7 @@ namespace
 													errmsg, duplicateFile.c_str(),
 													expandedNewCommonFileName.c_str());
 												throw
-													megaglest_runtime_error(szBuf);
+													game_runtime_error(szBuf);
 											} else {
 												printf
 												("*** Duplicate file:\n[%s]\nwas renamed to:\n[%s]\n",
@@ -2715,7 +2715,7 @@ namespace
 												gitOk = executeShellCommand(szBuf, 0);
 											if (gitOk == false) {
 												throw
-													megaglest_runtime_error("Call to command failed ["
+													game_runtime_error("Call to command failed ["
 														+ string(szBuf) + "]");
 											}
 											printf("*** Duplicate file:\n[%s]\nwas git rm\n",
@@ -2774,7 +2774,7 @@ namespace
 														__LINE__, searchText.c_str(),
 														parentFile.c_str());
 													throw
-														megaglest_runtime_error(szBuf);
+														game_runtime_error(szBuf);
 												}
 												mapUniqueParentList[parentFile]++;
 											}
@@ -2836,7 +2836,7 @@ namespace
 													szBuf);
 
 												throw
-													megaglest_runtime_error(szBuf);
+													game_runtime_error(szBuf);
 											}
 										}
 									}
@@ -3128,7 +3128,7 @@ namespace
 											gitOk = executeShellCommand(szBuf, 0);
 										if (gitOk == false) {
 											throw
-												megaglest_runtime_error("Call to command failed [" +
+												game_runtime_error("Call to command failed [" +
 													string(szBuf) + "]");
 										}
 									} else {
@@ -3167,7 +3167,7 @@ namespace
 										"Error calculating CRC for file [%s]",
 										fileName.c_str());
 									throw
-										megaglest_runtime_error(szBuf);
+										game_runtime_error(szBuf);
 								}
 								mapDuplicateFiles[crcValue].push_back(fileName);
 							}
@@ -3321,7 +3321,7 @@ namespace
 															gitOk = executeShellCommand(szBuf, 0);
 														if (gitOk == false) {
 															throw
-																megaglest_runtime_error
+																game_runtime_error
 																("Call to command failed [" + string(szBuf) +
 																	"]");
 														}
@@ -3350,7 +3350,7 @@ namespace
 																errmsg, duplicateFile.c_str(),
 																expandedNewCommonFileName.c_str());
 															throw
-																megaglest_runtime_error(szBuf);
+																game_runtime_error(szBuf);
 														} else {
 															printf
 															("*** Duplicate file:\n[%s]\nwas renamed to:\n[%s]\n",
@@ -3368,7 +3368,7 @@ namespace
 															gitOk = executeShellCommand(szBuf, 0);
 														if (gitOk == false) {
 															throw
-																megaglest_runtime_error
+																game_runtime_error
 																("Call to command failed [" + string(szBuf) +
 																	"]");
 														}
@@ -3471,7 +3471,7 @@ namespace
 																		szBuf);
 
 																	throw
-																		megaglest_runtime_error(szBuf);
+																		game_runtime_error(szBuf);
 																}
 															}
 															mapUniqueParentList[parentFile]++;
@@ -3562,7 +3562,7 @@ namespace
 																		szBuf);
 
 																	throw
-																		megaglest_runtime_error(szBuf);
+																		game_runtime_error(szBuf);
 																}
 															}
 														}
@@ -3587,7 +3587,7 @@ namespace
 								printf("\nWarning, duplicate files were detected - END:\n");
 							}
 						}
-					} catch (const megaglest_runtime_error & ex) {
+					} catch (const game_runtime_error & ex) {
 						techtree_errors = true;
 						printf
 						("\n\n****ERROR**** detected while validating the techName: %s\nMESSAGE: %s\n",
@@ -3824,7 +3824,7 @@ namespace
 								translationFile.c_str(), techPath.c_str(),
 								techName.c_str());
 						}
-					} catch (const megaglest_runtime_error & ex) {
+					} catch (const game_runtime_error & ex) {
 						printf
 						("\n\n****ERROR**** detected while loading the techName: %s\nMESSAGE: %s\n",
 							techName.c_str(), ex.what());
@@ -4573,7 +4573,7 @@ namespace
 
 					if (maps.empty() == true) {
 						throw
-							megaglest_runtime_error("No maps were found!", true);
+							game_runtime_error("No maps were found!", true);
 					} else if (invalidMapList.empty() == false) {
 						string
 							errorMsg =
@@ -4638,7 +4638,7 @@ namespace
 									"Error [%s]\nCould not rename [%s] to [%s]!",
 									errmsg, oldFile.c_str(), newFile.c_str());
 								throw
-									megaglest_runtime_error(szBuf, true);
+									game_runtime_error(szBuf, true);
 							} else {
 								snprintf(szBuf, 8096,
 									"map [%s] in [%s]\nwas renamed to [%s]",
@@ -4660,7 +4660,7 @@ namespace
 
 					if (tileSets.empty()) {
 						throw
-							megaglest_runtime_error("No tilesets were found!", true);
+							game_runtime_error("No tilesets were found!", true);
 					}
 
 					vector < string > duplicateTilesetsToRename;
@@ -4709,7 +4709,7 @@ namespace
 									"Error [%s]\nCould not rename [%s] to [%s]!",
 									errmsg, oldFile.c_str(), newFile.c_str());
 								throw
-									megaglest_runtime_error(szBuf, true);
+									game_runtime_error(szBuf, true);
 							} else {
 								snprintf(szBuf, 8096,
 									"tileset [%s] in [%s]\nwas renamed to [%s]",
@@ -4730,7 +4730,7 @@ namespace
 										"Error [%s]\nCould not rename [%s] to [%s]!",
 										errmsg, oldFile.c_str(), newFile.c_str());
 									throw
-										megaglest_runtime_error(szBuf, true);
+										game_runtime_error(szBuf, true);
 								}
 
 							}
@@ -4746,7 +4746,7 @@ namespace
 					findDirs(techPaths, techTrees, false, true);
 					if (techTrees.empty()) {
 						throw
-							megaglest_runtime_error("No tech-trees were found (dup)!",
+							game_runtime_error("No tech-trees were found (dup)!",
 								true);
 					}
 
@@ -4796,7 +4796,7 @@ namespace
 									"Error [%s]\nCould not rename [%s] to [%s]!",
 									errmsg, oldFile.c_str(), newFile.c_str());
 								throw
-									megaglest_runtime_error(szBuf, true);
+									game_runtime_error(szBuf, true);
 							} else {
 								snprintf(szBuf, 8096,
 									"techtree [%s] in [%s]\nwas renamed to [%s]",
@@ -4821,7 +4821,7 @@ namespace
 					}
 				}
 
-			} catch (const megaglest_runtime_error & ex) {
+			} catch (const game_runtime_error & ex) {
 				if (mainProgram) {
 					mainProgram->getState()->setForceMouseRender(true);
 				}
@@ -5411,7 +5411,7 @@ namespace
 							showfactions = true;
 						} else {
 							throw
-								megaglest_runtime_error("unknown command for techtreelist [" +
+								game_runtime_error("unknown command for techtreelist [" +
 									cmd + "]");
 						}
 						printf("Using special command for techtree list [%s]\n",
@@ -6079,7 +6079,7 @@ namespace
 				VideoPlayer::setDisabled(true);
 			}
 
-			//throw megaglest_runtime_error("Test!");
+			//throw game_runtime_error("Test!");
 
 			if (hasCommandArgument(argc, argv, GAME_ARGS[GAME_ARG_SDL_INFO]) ==
 				true) {
@@ -6356,7 +6356,7 @@ namespace
 					("****WARNING**** your game data path and user data path are the same.\nThis will likely create problems: %s\n",
 						data_path_check.c_str());
 					throw
-						megaglest_runtime_error
+						game_runtime_error
 						("Regular and User data paths cannot have the same value [" +
 							userDataPath_check + "]");
 				}
@@ -7323,7 +7323,7 @@ namespace
 									szBuf);
 
 								throw
-									megaglest_runtime_error(szBuf);
+									game_runtime_error(szBuf);
 							}
 						}
 					}
@@ -7824,7 +7824,7 @@ namespace
 
 				// test
 				//Shared::Platform::MessageBox(NULL,"Mark's test.","Test",0);
-				//throw megaglest_runtime_error("test!");
+				//throw game_runtime_error("test!");
 				//ExceptionHandler::DisplayMessage("test!", false);
 
 				// Check for commands being input from stdin
@@ -7859,7 +7859,7 @@ namespace
 					printf("All commands require you to press ENTER\n");
 				}
 
-				//throw megaglest_runtime_error("Test!");
+				//throw game_runtime_error("Test!");
 				//printf("About to throw an exception...\n");
 				//throw 123;
 
@@ -8021,7 +8021,7 @@ namespace
 					__FUNCTION__, __LINE__);
 				if (SystemFlags::VERBOSE_MODE_ENABLED)
 					printf("In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
-			} catch (const megaglest_runtime_error & e) {
+			} catch (const game_runtime_error & e) {
 
 				if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false) {
 					soundThreadManager =

@@ -356,7 +356,7 @@ namespace Shared {
 			int result = compress2(compressed_buffer, &compressed_buffer_len, decompressed_buffer, input_len, compressionLevel);
 			if (result != Z_OK) {
 				string msg = string("Invalid compress2 return value: ") + intToStr(result);
-				throw megaglest_runtime_error(msg.c_str());
+				throw game_runtime_error(msg.c_str());
 			}
 
 			//printf("compress2 returned: %d start size: %lu end size: %lu\n",result,input_len,compressed_buffer_len);
@@ -380,7 +380,7 @@ namespace Shared {
 			int result = uncompress(decompressed_buffer, &decompressed_buffer_len, compressed_buffer, input_len);
 			if (result != Z_OK) {
 				string msg = string("Invalid uncompress return value: ") + intToStr(result);
-				throw megaglest_runtime_error(msg.c_str());
+				throw game_runtime_error(msg.c_str());
 			}
 			//printf("uncompress returned: %d start size: %lu end size: %lu\n",result,input_len,decompressed_buffer_len);
 			delete[] compressed_buffer;

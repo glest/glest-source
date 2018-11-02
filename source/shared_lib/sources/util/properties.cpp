@@ -83,7 +83,7 @@ namespace Shared {
 
 			if (fileStream.is_open() == false) {
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d] path = [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, path.c_str());
-				throw megaglest_runtime_error("File NOT FOUND, can't open file: [" + path + "]");
+				throw game_runtime_error("File NOT FOUND, can't open file: [" + path + "]");
 			}
 
 			if (clearCurrentProperties == true) {
@@ -471,7 +471,7 @@ namespace Shared {
 				return strToBool(getString(key, defaultValueIfNotFound));
 			} catch (exception &e) {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, e.what());
-				//throw megaglest_runtime_error("Error accessing value: " + key + " in: " + path+"\n[" + e.what() + "]");
+				//throw game_runtime_error("Error accessing value: " + key + " in: " + path+"\n[" + e.what() + "]");
 				throw runtime_error("Error accessing value: " + key + " in: " + path + "\n[" + e.what() + "]");
 			}
 			return false;
@@ -482,7 +482,7 @@ namespace Shared {
 				return strToInt(getString(key, defaultValueIfNotFound));
 			} catch (exception &e) {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, e.what());
-				//throw megaglest_runtime_error("Error accessing value: " + key + " in: " + path + "\n[" + e.what() + "]");
+				//throw game_runtime_error("Error accessing value: " + key + " in: " + path + "\n[" + e.what() + "]");
 				throw runtime_error("Error accessing value: " + key + " in: " + path + "\n[" + e.what() + "]");
 			}
 			return 0;
@@ -491,7 +491,7 @@ namespace Shared {
 		int Properties::getInt(const string &key, int min, int max, const char *defaultValueIfNotFound) const {
 			int i = getInt(key, defaultValueIfNotFound);
 			if (i<min || i>max) {
-				throw megaglest_runtime_error("Value out of range: " + key + ", min: " + intToStr(min) + ", max: " + intToStr(max));
+				throw game_runtime_error("Value out of range: " + key + ", min: " + intToStr(min) + ", max: " + intToStr(max));
 			}
 			return i;
 		}
@@ -502,7 +502,7 @@ namespace Shared {
 				result = strToFloat(getString(key, defaultValueIfNotFound));
 			} catch (exception &e) {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, e.what());
-				//throw megaglest_runtime_error("Error accessing value: " + key + " in: " + path + "\n[" + e.what() + "]");
+				//throw game_runtime_error("Error accessing value: " + key + " in: " + path + "\n[" + e.what() + "]");
 				throw runtime_error("Error accessing value: " + key + " in: " + path + "\n[" + e.what() + "]");
 			}
 			return result;
@@ -511,7 +511,7 @@ namespace Shared {
 		float Properties::getFloat(const string &key, float min, float max, const char *defaultValueIfNotFound) const {
 			float f = getFloat(key, defaultValueIfNotFound);
 			if (f<min || f>max) {
-				throw megaglest_runtime_error("Value out of range: " + key + ", min: " + floatToStr(min, 16) + ", max: " + floatToStr(max, 16));
+				throw game_runtime_error("Value out of range: " + key + ", min: " + floatToStr(min, 16) + ", max: " + floatToStr(max, 16));
 			}
 			return f;
 		}
@@ -591,7 +591,7 @@ namespace Shared {
 				return strToBool(getString(key, defaultValueIfNotFound));
 			} catch (exception &e) {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, e.what());
-				//throw megaglest_runtime_error("Error accessing value: " + string(key) + " in: " + path+"\n[" + e.what() + "]");
+				//throw game_runtime_error("Error accessing value: " + string(key) + " in: " + path+"\n[" + e.what() + "]");
 				throw runtime_error("Error accessing value: " + string(key) + " in: " + path + "\n[" + e.what() + "]");
 			}
 			return false;
@@ -602,7 +602,7 @@ namespace Shared {
 				return strToInt(getString(key, defaultValueIfNotFound));
 			} catch (exception &e) {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, e.what());
-				//throw megaglest_runtime_error("Error accessing value: " + string(key) + " in: " + path + "\n[" + e.what() + "]");
+				//throw game_runtime_error("Error accessing value: " + string(key) + " in: " + path + "\n[" + e.what() + "]");
 				throw runtime_error("Error accessing value: " + string(key) + " in: " + path + "\n[" + e.what() + "]");
 			}
 			return 0;
@@ -614,7 +614,7 @@ namespace Shared {
 				result = strToFloat(getString(key, defaultValueIfNotFound));
 			} catch (exception &e) {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, e.what());
-				//throw megaglest_runtime_error("Error accessing value: " + string(key) + " in: " + path + "\n[" + e.what() + "]");
+				//throw game_runtime_error("Error accessing value: " + string(key) + " in: " + path + "\n[" + e.what() + "]");
 				throw runtime_error("Error accessing value: " + string(key) + " in: " + path + "\n[" + e.what() + "]");
 			}
 			return result;

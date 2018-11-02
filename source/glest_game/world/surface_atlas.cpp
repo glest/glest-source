@@ -77,7 +77,7 @@ namespace Glest {
 
 		void SurfaceAtlas::addSurface(SurfaceInfo *si) {
 			if (si == NULL) {
-				throw megaglest_runtime_error("Bad surface info (NULL)");
+				throw game_runtime_error("Bad surface info (NULL)");
 			}
 
 			//check dimensions
@@ -97,7 +97,7 @@ namespace Glest {
 				Texture2D *t = Renderer::getInstance().newTexture2D(rsGame);
 				if (t) {
 					//if(t == NULL) {
-					//	throw megaglest_runtime_error("Could not create new texture (NULL)");
+					//	throw game_runtime_error("Could not create new texture (NULL)");
 					//}
 					t->setWrapMode(Texture::wmClampToEdge);
 					t->getPixmap()->init(surfaceSize, surfaceSize, 4);
@@ -133,14 +133,14 @@ namespace Glest {
 			}
 
 			if (p == NULL) {
-				throw megaglest_runtime_error("Bad surface texture pixmap (NULL)");
+				throw game_runtime_error("Bad surface texture pixmap (NULL)");
 			} else if (surfaceSize == -1) {
 				surfaceSize = p->getW();
 				//printf("Setting surfaceSize = %d for pixmap [%s]\n",surfaceSize,p->getPath().c_str());
 			} else if (p->getW() != surfaceSize || p->getH() != surfaceSize) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Bad surface texture dimensions, expected surfaceSize = %d, texture w = %d, h = %d", surfaceSize, p->getW(), p->getH());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 

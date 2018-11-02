@@ -275,7 +275,7 @@ namespace Shared {
 			return result;
 		}
 
-		megaglest_runtime_error::megaglest_runtime_error(const string& __arg, bool noStackTrace)
+		game_runtime_error::game_runtime_error(const string& __arg, bool noStackTrace)
 			: std::runtime_error(noStackTrace == false ? __arg + PlatformExceptionHandler::getStackTrace() : __arg), noStackTrace(noStackTrace) {
 		}
 

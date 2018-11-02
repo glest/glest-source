@@ -81,21 +81,21 @@ namespace Glest {
 
 		float Metrics::getAspectRatio() const {
 			if (screenH == 0) {
-				throw megaglest_runtime_error("div by 0 screenH == 0");
+				throw game_runtime_error("div by 0 screenH == 0");
 			}
 			return static_cast <float>(screenW) / screenH;
 		}
 
 		int Metrics::toVirtualX(int w) const {
 			if (screenW == 0) {
-				throw megaglest_runtime_error("div by 0 screenW == 0");
+				throw game_runtime_error("div by 0 screenW == 0");
 			}
 			return w * virtualW / screenW;
 		}
 
 		int Metrics::toVirtualY(int h) const {
 			if (screenH == 0) {
-				throw megaglest_runtime_error("div by 0 screenH == 0");
+				throw game_runtime_error("div by 0 screenH == 0");
 			}
 
 			//printf("h [%d] virtualH [%d] screenH [%d] result = %d\n",h,virtualH,screenH,(h*virtualH/screenH));

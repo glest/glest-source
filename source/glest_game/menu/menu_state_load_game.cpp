@@ -301,7 +301,7 @@ namespace Glest {
 
 					try {
 						Game::loadGame(filename, program, false);
-					} catch (const megaglest_runtime_error & ex) {
+					} catch (const game_runtime_error & ex) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "In [%s::%s Line: %d]\nError [%s]\n",
 							extractFileFromDirectoryPath(__FILE__).c_str(),
@@ -337,7 +337,7 @@ namespace Glest {
 										previewTexture->load(screenShotFilename);
 										previewTexture->init();
 									}
-								} catch (const megaglest_runtime_error & ex) {
+								} catch (const game_runtime_error & ex) {
 									char szBuf[8096] = "";
 									snprintf(szBuf, 8096, "In [%s::%s Line: %d]\nError [%s]\n",
 										extractFileFromDirectoryPath(__FILE__).c_str(),
@@ -430,7 +430,7 @@ namespace Glest {
 												getThisFactionIndex()).
 											c_str() : ""));
 									infoTextLabel.setText(szBuf);
-								} catch (const megaglest_runtime_error & ex) {
+								} catch (const game_runtime_error & ex) {
 									char szBuf[8096] = "";
 									snprintf(szBuf, 8096, "In [%s::%s Line: %d]\nError [%s]\n",
 										extractFileFromDirectoryPath(__FILE__).c_str(),

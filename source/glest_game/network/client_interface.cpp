@@ -172,13 +172,13 @@ namespace Glest {
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
 				if (clientInterface == NULL || clientInterface->getSocket(true) == NULL || clientInterface->getSocket(true)->isConnected() == true) {
-					throw megaglest_runtime_error(ex.what());
+					throw game_runtime_error(ex.what());
 				}
 			} catch (...) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error\n", __FILE__, __FUNCTION__, __LINE__);
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s] Line: %d\n", __FILE__, __FUNCTION__, __LINE__);
@@ -498,7 +498,7 @@ namespace Glest {
 					sendTextMessage(sMsg, -1, true, "");
 					sleep(0);
 				}
-			} catch (const megaglest_runtime_error &ex) {
+			} catch (const game_runtime_error &ex) {
 				SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, ex.what());
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, ex.what());
 
@@ -510,7 +510,7 @@ namespace Glest {
 
 					setQuit(true);
 				} else {
-					throw megaglest_runtime_error(ex.what());
+					throw game_runtime_error(ex.what());
 				}
 			}
 		}
@@ -924,7 +924,7 @@ namespace Glest {
 							if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Lined: %d] got networkMessageLaunch.getMessageType() = %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, networkMessageLaunch.getMessageType());
 
 							printf("In [%s::%s Line: %d] Invalid networkMessageLaunch.getMessageType() = %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, networkMessageLaunch.getMessageType());
-							//throw megaglest_runtime_error(szBuf);
+							//throw game_runtime_error(szBuf);
 						}
 
 						networkMessageLaunch.buildGameSettings(&gameSettings);
@@ -1054,7 +1054,7 @@ namespace Glest {
 				default:
 				{
 					string sErr = string(extractFileFromDirectoryPath(__FILE__).c_str()) + "::" + string(__FUNCTION__) + " Unexpected network message: " + intToStr(networkMessageType);
-					//throw megaglest_runtime_error(string(extractFileFromDirectoryPath(__FILE__).c_str()) + "::" + string(__FUNCTION__) + " Unexpected network message: " + intToStr(networkMessageType));
+					//throw game_runtime_error(string(extractFileFromDirectoryPath(__FILE__).c_str()) + "::" + string(__FUNCTION__) + " Unexpected network message: " + intToStr(networkMessageType));
 					sendTextMessage("Unexpected network message: " + intToStr(networkMessageType), -1, true, "");
 					DisplayErrorMessage(sErr);
 					sleep(1);
@@ -1126,7 +1126,7 @@ namespace Glest {
 									setQuit(true);
 									close();
 								}
-								//throw megaglest_runtime_error("error retrieving nmtCommandList returned false!");
+								//throw game_runtime_error("error retrieving nmtCommandList returned false!");
 								printf("Network connection has been interrupted...\n");
 								return;
 							}
@@ -1221,7 +1221,7 @@ namespace Glest {
 									return;
 								}
 
-								//throw megaglest_runtime_error("error retrieving nmtQuit returned false!");
+								//throw game_runtime_error("error retrieving nmtQuit returned false!");
 								done = true;
 							}
 							setQuit(true);
@@ -1243,7 +1243,7 @@ namespace Glest {
 									return;
 								}
 
-								throw megaglest_runtime_error("error retrieving nmtText returned false!");
+								throw game_runtime_error("error retrieving nmtText returned false!");
 							}
 
 							ChatMsgInfo msg(networkMessageText.getText().c_str(), networkMessageText.getTeamIndex(), networkMessageText.getPlayerIndex(), networkMessageText.getTargetLanguage());
@@ -1310,7 +1310,7 @@ namespace Glest {
 
 									char szBuf[1024] = "";
 									snprintf(szBuf, 1023, "In [%s::%s Line: %d] Invalid networkMessageLaunch.getMessageType() = %d", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, networkMessageLaunch.getMessageType());
-									throw megaglest_runtime_error(szBuf);
+									throw game_runtime_error(szBuf);
 								}
 
 								networkMessageLaunch.buildGameSettings(&gameSettings);

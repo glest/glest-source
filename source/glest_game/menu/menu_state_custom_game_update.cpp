@@ -221,7 +221,7 @@ namespace Glest {
 					chrono.start();
 
 				if (this->headlessServerMode == true && serverInterface == NULL) {
-					throw megaglest_runtime_error("serverInterface == NULL");
+					throw game_runtime_error("serverInterface == NULL");
 				}
 				if (this->headlessServerMode == true
 					&& serverInterface->getGameSettingsUpdateCount() >
@@ -874,7 +874,7 @@ namespace Glest {
 					PlayNow((autoStartSettings == NULL));
 					return;
 				}
-			} catch (megaglest_runtime_error & ex) {
+			} catch (game_runtime_error & ex) {
 				//abort();
 				//printf("1111111bbbb ex.wantStackTrace() = %d\n",ex.wantStackTrace());
 				char szBuf[8096] = "";
@@ -973,7 +973,7 @@ namespace Glest {
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, ex.what());
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 
@@ -1065,7 +1065,7 @@ namespace Glest {
 				if (SystemFlags::
 					getSystemSettingType(SystemFlags::debugSystem).enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
-				//throw megaglest_runtime_error(szBuf);
+				//throw game_runtime_error(szBuf);
 				showGeneralError = true;
 				generalErrorToShow = szBuf;
 

@@ -139,7 +139,7 @@ namespace Glest {
 			vector<string> invalidMapList;
 			vector<string> allMaps = MapPreview::findAllValidMaps(pathList, scenarioDir, false, true, &invalidMapList);
 			if (allMaps.empty()) {
-				//throw megaglest_runtime_error("No maps were found!");
+				//throw game_runtime_error("No maps were found!");
 				printf("No maps were found (srv)!\n");
 			}
 			std::sort(allMaps.begin(), allMaps.end(), compareNonCaseSensitive);
@@ -168,7 +168,7 @@ namespace Glest {
 			results.clear();
 			findDirs(config.getPathListForType(ptTilesets), results);
 			if (results.empty()) {
-				//throw megaglest_runtime_error("No tile-sets were found!");
+				//throw game_runtime_error("No tile-sets were found!");
 				printf("No tile-sets were found (srv)!");
 			}
 			tilesetFiles = results;
@@ -176,7 +176,7 @@ namespace Glest {
 			results.clear();
 			findDirs(config.getPathListForType(ptTechs), results);
 			if (results.empty()) {
-				//throw megaglest_runtime_error("No tech-trees were found!");
+				//throw game_runtime_error("No tech-trees were found!");
 				printf("No tech-trees were found (srv)!\n");
 			}
 			techTreeFiles = results;
@@ -442,7 +442,7 @@ namespace Glest {
 			if (playerIndex < 0 || playerIndex >= GameConstants::maxPlayers) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] playerIndex is invalid = %d", extractFileFromDirectoryPath(extractFileFromDirectoryPath(__FILE__).c_str()).c_str(), __FUNCTION__, __LINE__, playerIndex);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			MutexSafeWrapper safeMutex(serverSynchAccessor, CODE_AT_LINE);
 			if (serverSocketAdmin != NULL && serverSocketAdmin->isSocketValid() == false) {
@@ -487,7 +487,7 @@ namespace Glest {
 			if (playerIndex < 0 || playerIndex >= GameConstants::maxPlayers) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] playerIndex is invalid = %d", extractFileFromDirectoryPath(extractFileFromDirectoryPath(__FILE__).c_str()).c_str(), __FUNCTION__, __LINE__, playerIndex);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			Lang &lang = Lang::getInstance();
@@ -565,13 +565,13 @@ namespace Glest {
 			if (fromPlayerIndex < 0 || fromPlayerIndex >= GameConstants::maxPlayers) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] fromPlayerIndex is invalid = %d", extractFileFromDirectoryPath(extractFileFromDirectoryPath(__FILE__).c_str()).c_str(), __FUNCTION__, __LINE__, fromPlayerIndex);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (toPlayerIndex < 0 || toPlayerIndex >= GameConstants::maxPlayers) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] toPlayerIndex is invalid = %d", extractFileFromDirectoryPath(extractFileFromDirectoryPath(__FILE__).c_str()).c_str(), __FUNCTION__, __LINE__, toPlayerIndex);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			if (fromPlayerIndex == toPlayerIndex) {
@@ -628,7 +628,7 @@ namespace Glest {
 			if (playerIndex < 0 || playerIndex >= GameConstants::maxPlayers) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] playerIndex is invalid = %d", extractFileFromDirectoryPath(extractFileFromDirectoryPath(__FILE__).c_str()).c_str(), __FUNCTION__, __LINE__, playerIndex);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			MutexSafeWrapper safeMutexSlot((lockMutex == true ? slotAccessorMutexes[playerIndex] : NULL), CODE_AT_LINE_X(playerIndex));
@@ -640,7 +640,7 @@ namespace Glest {
 			if (playerIndex < 0 || playerIndex >= GameConstants::maxPlayers) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "In [%s::%s %d] playerIndex is invalid = %d", extractFileFromDirectoryPath(extractFileFromDirectoryPath(__FILE__).c_str()).c_str(), __FUNCTION__, __LINE__, playerIndex);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			bool result = false;
@@ -846,7 +846,7 @@ namespace Glest {
 
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, ex.what());
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] ERROR [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, ex.what());
-				throw megaglest_runtime_error(ex.what());
+				throw game_runtime_error(ex.what());
 			}
 
 			alreadyInLagCheck = false;
@@ -2470,7 +2470,7 @@ namespace Glest {
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s] Line: %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
 			if (gameSettingsBuffer == NULL) {
-				throw megaglest_runtime_error("gameSettingsBuffer == NULL");
+				throw game_runtime_error("gameSettingsBuffer == NULL");
 			}
 			for (unsigned int factionIndex = 0; factionIndex < (unsigned int) gameSettingsBuffer->getFactionCount(); ++factionIndex) {
 

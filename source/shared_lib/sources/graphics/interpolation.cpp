@@ -43,7 +43,7 @@ namespace Shared {
 
 		InterpolationData::InterpolationData(const Mesh *mesh) {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 			vertices = NULL;
@@ -81,7 +81,7 @@ namespace Shared {
 			}
 			//assert(t>=0.0f && t<=1.0f);
 			if (t < 0.0f || t > 1.0f) {
-				throw megaglest_runtime_error("t < 0.0f || t > 1.0f t = [" + floatToStr(t, 16) + "]");
+				throw game_runtime_error("t < 0.0f || t > 1.0f t = [" + floatToStr(t, 16) + "]");
 
 				assert(t >= 0.f && t <= 1.f);
 			}

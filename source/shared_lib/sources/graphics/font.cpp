@@ -156,7 +156,7 @@ namespace Shared {
 				for (unsigned int i = 0; i < longestLine.size() && (int) i < Font::charCount; ++i) {
 					if (longestLine[i] >= Font::charCount) {
 						string sError = "str[i] >= Font::charCount, [" + longestLine + "] i = " + uIntToStr(i);
-						throw megaglest_runtime_error(sError);
+						throw game_runtime_error(sError);
 					}
 					//Treat 2 byte characters as spaces
 					if (longestLine[i] < 0) {
@@ -213,7 +213,7 @@ namespace Shared {
 
 		Font::Font(FontTextHandlerType type) {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 			inited = false;

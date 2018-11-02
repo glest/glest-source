@@ -1505,7 +1505,7 @@ namespace Shared {
 				if (additionalBytes > 0) {
 					bytesReceived += additionalBytes;
 				} else {
-					//throw megaglest_runtime_error("additionalBytes == " + intToStr(additionalBytes));
+					//throw game_runtime_error("additionalBytes == " + intToStr(additionalBytes));
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] additionalBytes == %d\n", __FILE__, __FUNCTION__, __LINE__, additionalBytes);
 					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("\nIn [%s::%s Line: %d] additionalBytes == %d\n", __FILE__, __FUNCTION__, __LINE__, additionalBytes);
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugError).enabled) SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] additionalBytes == %d\n", __FILE__, __FUNCTION__, __LINE__, additionalBytes);
@@ -1901,13 +1901,13 @@ namespace Shared {
 			unsigned char* address;
 
 			if (info == NULL) {
-				throw megaglest_runtime_error("Error getting host by name");
+				throw game_runtime_error("Error getting host by name");
 			}
 
 			address = reinterpret_cast<unsigned char*>(info->h_addr_list[0]);
 
 			if (address == NULL) {
-				throw megaglest_runtime_error("Error getting host ip");
+				throw game_runtime_error("Error getting host ip");
 			}
 
 			return
@@ -1919,7 +1919,7 @@ namespace Shared {
 
 		void Socket::throwException(string str) {
 			string msg = str + " " + getLastSocketErrorFormattedText();
-			throw megaglest_runtime_error(msg);
+			throw game_runtime_error(msg);
 		}
 
 		// ===============================================
@@ -2374,7 +2374,7 @@ namespace Shared {
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "%s", szBuf);
 
 				snprintf(szBuf, 8096, "Error binding socket sock = " PLATFORM_SOCKET_FORMAT_TYPE ", address [%s] port = %d err = %d, error = %s\n", sock, this->bindSpecificAddress.c_str(), port, err, getLastSocketErrorFormattedText().c_str());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			portBound = true;
 
@@ -2847,7 +2847,7 @@ namespace Shared {
 
 			if (UPNPPortForwardList.size() % 2 != 0) {
 				// We need groups of 2 ports.. one external and one internal for opening ports on UPNP router
-				throw megaglest_runtime_error("UPNPPortForwardList.size() MUST BE divisable by 2");
+				throw game_runtime_error("UPNPPortForwardList.size() MUST BE divisable by 2");
 			}
 
 			for (unsigned int clientIndex = 0; clientIndex < UPNPPortForwardList.size(); clientIndex += 2) {

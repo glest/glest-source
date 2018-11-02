@@ -485,7 +485,7 @@ namespace
 					__FILE__, __FUNCTION__, __LINE__,
 					e.what());
 				throw
-					megaglest_runtime_error(string("Error loading options msg: ") +
+					game_runtime_error(string("Error loading options msg: ") +
 						e.what());
 			}
 		}
@@ -740,7 +740,7 @@ namespace
 					}
 					if (selectedMode == NULL) {
 						throw
-							megaglest_runtime_error("selectedMode == NULL");
+							game_runtime_error("selectedMode == NULL");
 					}
 
 #if defined(__APPLE__)

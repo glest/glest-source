@@ -321,7 +321,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 				return factionTypeNames[factionIndex];
 			}
@@ -333,7 +333,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				string
@@ -351,7 +351,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				string
@@ -367,7 +367,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				return
@@ -381,7 +381,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				return
@@ -396,7 +396,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				return
@@ -460,7 +460,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				return
@@ -474,7 +474,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				return
@@ -490,7 +490,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 				return
 					networkPlayerUUID[factionIndex];
@@ -529,7 +529,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				return
@@ -544,7 +544,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				return
@@ -558,7 +558,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid startIndex = %d\n",
 						__FUNCTION__, startIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				for (int i = 0; i < GameConstants::maxPlayers; ++i) {
@@ -701,7 +701,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				this->factionTypeNames[factionIndex] = factionTypeName;
@@ -714,7 +714,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				this->networkPlayerNames[factionIndex] = playername;
@@ -727,7 +727,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				this->networkPlayerPlatform[factionIndex] = platform;
@@ -741,7 +741,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				this->networkPlayerStatuses[factionIndex] = status;
@@ -755,7 +755,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				this->networkPlayerGameStatus[factionIndex] = status;
@@ -768,7 +768,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				this->networkPlayerLanguages[factionIndex] = language;
@@ -782,7 +782,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				this->factionControls[factionIndex] = controller;
@@ -795,7 +795,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				//if(multiplierIndex >= 45) {
@@ -813,7 +813,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				this->networkPlayerUUID[factionIndex] = uuid;
@@ -835,7 +835,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				this->teams[factionIndex] = team;
@@ -848,7 +848,7 @@ namespace
 					snprintf(szBuf, 8096, "In [%s] Invalid factionIndex = %d\n",
 						__FUNCTION__, factionIndex);
 					throw
-						megaglest_runtime_error(szBuf);
+						game_runtime_error(szBuf);
 				}
 
 				this->startLocationIndex[factionIndex] = startLocationIndex;

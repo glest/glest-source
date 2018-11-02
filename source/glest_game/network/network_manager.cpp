@@ -107,7 +107,7 @@ namespace Glest {
 				//assert(gameNetworkInterface!=NULL);
 
 				if (gameNetworkInterface == NULL) {
-					throw megaglest_runtime_error("gameNetworkInterface==NULL");
+					throw game_runtime_error("gameNetworkInterface==NULL");
 				}
 			}
 			return gameNetworkInterface;
@@ -117,12 +117,12 @@ namespace Glest {
 			if (throwErrorOnNull) {
 				//assert(gameNetworkInterface!=NULL);
 				if (gameNetworkInterface == NULL) {
-					throw megaglest_runtime_error("gameNetworkInterface==NULL");
+					throw game_runtime_error("gameNetworkInterface==NULL");
 				}
 
 				assert(networkRole == nrServer);
 				if (networkRole != nrServer) {
-					throw megaglest_runtime_error("networkRole!=nrServer");
+					throw game_runtime_error("networkRole!=nrServer");
 				}
 			}
 			return dynamic_cast<ServerInterface*>(gameNetworkInterface);
@@ -134,12 +134,12 @@ namespace Glest {
 			if (throwErrorOnNull) {
 				//assert(gameNetworkInterface!=NULL);
 				if (gameNetworkInterface == NULL) {
-					throw megaglest_runtime_error("gameNetworkInterface==NULL");
+					throw game_runtime_error("gameNetworkInterface==NULL");
 				}
 
 				assert(networkRole == nrClient);
 				if (networkRole != nrClient) {
-					throw megaglest_runtime_error("networkRole!=nrClient");
+					throw game_runtime_error("networkRole!=nrClient");
 				}
 			}
 			return dynamic_cast<ClientInterface*>(gameNetworkInterface);

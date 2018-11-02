@@ -1631,7 +1631,7 @@ namespace
 												MorphCommandType *>(ct);
 											if (mct == NULL) {
 												throw
-													megaglest_runtime_error
+													game_runtime_error
 													("mct == NULL");
 											}
 											if (mct->
@@ -1770,7 +1770,7 @@ namespace
 								aiInterface->getMyUnitCount(), i,
 								producers.size());
 							throw
-								megaglest_runtime_error(szBuf);
+								game_runtime_error(szBuf);
 						}
 
 						const Unit *
@@ -1825,7 +1825,7 @@ namespace
 									aiInterface->getMyUnitCount(), i,
 									producers.size());
 								throw
-									megaglest_runtime_error(szBuf);
+									game_runtime_error(szBuf);
 							}
 							if (prIndex >= (int) producers.size()) {
 								char
@@ -1842,7 +1842,7 @@ namespace
 									currentProducerIndex, i,
 									producers.size());
 								throw
-									megaglest_runtime_error(szBuf);
+									game_runtime_error(szBuf);
 							}
 
 							currentCommandCount =
@@ -1954,7 +1954,7 @@ namespace
 												getMyUnitCount(), i,
 												backupProducers.size());
 											throw
-												megaglest_runtime_error(szBuf);
+												game_runtime_error(szBuf);
 										}
 										if (prIndex >=
 											(int) backupProducers.size()) {
@@ -1973,7 +1973,7 @@ namespace
 												currentProducerIndex, i,
 												backupProducers.size());
 											throw
-												megaglest_runtime_error(szBuf);
+												game_runtime_error(szBuf);
 										}
 
 										int

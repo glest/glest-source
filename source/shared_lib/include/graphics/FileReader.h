@@ -161,7 +161,7 @@ namespace Shared {
 		ifstream file(filepath.c_str(), ios::in | ios::binary);
 #endif
 		if (!file.is_open()) {
-			throw megaglest_runtime_error("[#1] Could not open file " + filepath);
+			throw game_runtime_error("[#1] Could not open file " + filepath);
 		}
 		for (typename vector<FileReader<T> const *>::const_iterator i = readers->begin(); i != readers->end(); ++i) {
 			T* ret = NULL;
@@ -171,9 +171,9 @@ namespace Shared {
 				ret = reader->read(file, filepath); //It is guaranteed that at least the filepath matches ...
 			}
 #if defined(WIN32)
-			catch (megaglest_runtime_error) {
+			catch (game_runtime_error) {
 #else
-			catch (megaglest_runtime_error &ex) {
+			catch (game_runtime_error &ex) {
 #endif
 				throw;
 			} catch (...) {
@@ -209,9 +209,9 @@ namespace Shared {
 		if (!file.is_open()) {
 #if defined(WIN32) && !defined(__MINGW32__)
 			DWORD error = GetLastError();
-			throw megaglest_runtime_error("[#2] Could not open file, result: " + intToStr(error) + " - " + intToStr(fileErrno) + " [" + filepath + "]");
+			throw game_runtime_error("[#2] Could not open file, result: " + intToStr(error) + " - " + intToStr(fileErrno) + " [" + filepath + "]");
 #else
-			throw megaglest_runtime_error("[#2] Could not open file [" + filepath + "]");
+			throw game_runtime_error("[#2] Could not open file [" + filepath + "]");
 #endif
 		}
 		for (typename vector<FileReader<T> const *>::const_iterator i = readers->begin(); i != readers->end(); ++i) {
@@ -222,9 +222,9 @@ namespace Shared {
 				ret = reader->read(file, filepath, object); //It is guaranteed that at least the filepath matches ...
 			}
 #if defined(WIN32)
-			catch (megaglest_runtime_error) {
+			catch (game_runtime_error) {
 #else
-			catch (megaglest_runtime_error &ex) {
+			catch (game_runtime_error &ex) {
 #endif
 				throw;
 			} catch (...) {
@@ -263,7 +263,7 @@ namespace Shared {
 		T* ret = readFromFileReaders(&(getFileReaders()), filepath); //Try all other
 		if (ret == NULL) {
 			std::cerr << "ERROR #1 - Could not parse filepath: " << filepath << std::endl;
-			throw megaglest_runtime_error(string("Could not parse ") + filepath + " as object of type " + typeid(T).name());
+			throw game_runtime_error(string("Could not parse ") + filepath + " as object of type " + typeid(T).name());
 		}
 		return ret;
 	}
@@ -288,7 +288,7 @@ namespace Shared {
 			std::cerr << "ERROR #2 - Could not parse filepath: " << filepath << std::endl;
 			ret = readFromFileReaders(&(getLowPriorityFileReaders()), filepath); //Try to get dummy file
 			if (ret == NULL) {
-				throw megaglest_runtime_error(string("Could not parse ") + filepath + " as object of type " + typeid(T).name());
+				throw game_runtime_error(string("Could not parse ") + filepath + " as object of type " + typeid(T).name());
 			}
 		}
 		return ret;
@@ -348,9 +348,9 @@ namespace Shared {
 			return ret;
 		}
 #if defined(WIN32)
-		catch (megaglest_runtime_error) {
+		catch (game_runtime_error) {
 #else
-		catch (megaglest_runtime_error &ex) {
+		catch (game_runtime_error &ex) {
 #endif
 			throw;
 		} catch (...) {
@@ -372,7 +372,7 @@ namespace Shared {
 		ifstream file(filepath.c_str(), ios::in | ios::binary);
 #endif
 		if (!file.is_open()) {
-			throw megaglest_runtime_error("[#3] Could not open file " + filepath);
+			throw game_runtime_error("[#3] Could not open file " + filepath);
 		}
 		T* ret = read(file, filepath);
 		file.close();
@@ -397,7 +397,7 @@ namespace Shared {
 		ifstream file(filepath.c_str(), ios::in | ios::binary);
 #endif
 		if (!file.is_open()) {
-			throw megaglest_runtime_error("[#4] Could not open file " + filepath);
+			throw game_runtime_error("[#4] Could not open file " + filepath);
 		}
 		T* ret = read(file, filepath, object);
 		file.close();

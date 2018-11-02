@@ -36,7 +36,7 @@ namespace Shared {
 
 		ShaderManager::ShaderManager() {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 		}
@@ -48,13 +48,13 @@ namespace Shared {
 			for (unsigned int i = 0; i < shaders.size(); ++i) {
 				shaders[i]->init();
 				if (!shaders[i]->compile(logString)) {
-					throw megaglest_runtime_error("Can't compile shader\n");
+					throw game_runtime_error("Can't compile shader\n");
 				}
 			}
 			for (unsigned int i = 0; i < shaderPrograms.size(); ++i) {
 				shaderPrograms[i]->init();
 				if (!shaderPrograms[i]->link(logString)) {
-					throw megaglest_runtime_error("Can't link shader\n");
+					throw game_runtime_error("Can't link shader\n");
 				}
 			}
 		}

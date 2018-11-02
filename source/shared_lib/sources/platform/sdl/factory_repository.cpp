@@ -37,7 +37,7 @@ GraphicsFactory *FactoryRepository::getGraphicsFactory(const string &name) {
 		return &graphicsFactoryGl;
 	}
 
-	throw megaglest_runtime_error("Unknown graphics factory: " + name);
+	throw game_runtime_error("Unknown graphics factory: " + name);
 }
 
 SoundFactory *FactoryRepository::getSoundFactory(const string &name) {
@@ -48,7 +48,7 @@ SoundFactory *FactoryRepository::getSoundFactory(const string &name) {
 		return &soundFactoryNone;
 	}
 
-	throw megaglest_runtime_error("Unknown sound factory: " + name);
+	throw game_runtime_error("Unknown sound factory: " + name);
 }
 
 }}//end namespace

@@ -256,28 +256,28 @@ namespace Shared {
 			} catch (bad_alloc& ba) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Error on line: %d size: %d msg: %s\n", __LINE__, (frameCount*vertexCount), ba.what());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			try {
 				normals = new Vec3f[frameCount*vertexCount];
 			} catch (bad_alloc& ba) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Error on line: %d size: %d msg: %s\n", __LINE__, (frameCount*vertexCount), ba.what());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			try {
 				texCoords = new Vec2f[vertexCount];
 			} catch (bad_alloc& ba) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Error on line: %d size: %d msg: %s\n", __LINE__, vertexCount, ba.what());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			try {
 				indices = new uint32[indexCount];
 			} catch (bad_alloc& ba) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Error on line: %d size: %d msg: %s\n", __LINE__, indexCount, ba.what());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 
@@ -422,20 +422,20 @@ namespace Shared {
 			if (readBytes != 1) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			fromEndianMeshHeaderV2(meshHeader);
 
 			if (meshHeader.normalFrameCount != meshHeader.vertexFrameCount) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Old v2 model: vertex frame count different from normal frame count [v = %d, n = %d] meshIndex = %d modelFile [%s]", meshHeader.vertexFrameCount, meshHeader.normalFrameCount, meshIndex, modelFile.c_str());
-				throw megaglest_runtime_error(szBuf, true);
+				throw game_runtime_error(szBuf, true);
 			}
 
 			if (meshHeader.texCoordFrameCount != 1) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Old v2 model: texture coord frame count is not 1 [t = %d] meshIndex = %d modelFile [%s]", meshHeader.texCoordFrameCount, meshIndex, modelFile.c_str());
-				throw megaglest_runtime_error(szBuf, true);
+				throw game_runtime_error(szBuf, true);
 			}
 
 			//init
@@ -502,7 +502,7 @@ namespace Shared {
 			if (readBytes != 1 && (frameCount * vertexCount) != 0) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			fromEndianVecArray<Vec3f>(vertices, frameCount*vertexCount);
 
@@ -510,7 +510,7 @@ namespace Shared {
 			if (readBytes != 1 && (frameCount * vertexCount) != 0) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			fromEndianVecArray<Vec3f>(normals, frameCount*vertexCount);
 
@@ -519,7 +519,7 @@ namespace Shared {
 				if (readBytes != 1 && vertexCount != 0) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 				fromEndianVecArray<Vec2f>(texCoords, vertexCount);
 			}
@@ -527,7 +527,7 @@ namespace Shared {
 			if (readBytes != 1) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			fromEndianVecArray<Vec3f>(&diffuseColor, 1);
 
@@ -535,7 +535,7 @@ namespace Shared {
 			if (readBytes != 1) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			opacity = Shared::PlatformByteOrder::fromCommonEndian(opacity);
 
@@ -543,13 +543,13 @@ namespace Shared {
 			if (seek_result != 0) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fseek returned failure = %d [%u] on line: %d.", seek_result, indexCount, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			readBytes = fread(indices, sizeof(uint32)*indexCount, 1, f);
 			if (readBytes != 1 && indexCount != 0) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u] on line: %d.", readBytes, indexCount, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			Shared::PlatformByteOrder::fromEndianTypeArray<uint32>(indices, indexCount);
 		}
@@ -566,14 +566,14 @@ namespace Shared {
 			if (readBytes != 1) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			fromEndianMeshHeaderV3(meshHeader);
 
 			if (meshHeader.normalFrameCount != meshHeader.vertexFrameCount) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Old v3 model: vertex frame count different from normal frame count [v = %d, n = %d] meshIndex = %d modelFile [%s]", meshHeader.vertexFrameCount, meshHeader.normalFrameCount, meshIndex, modelFile.c_str());
-				throw megaglest_runtime_error(szBuf, true);
+				throw game_runtime_error(szBuf, true);
 			}
 
 			//init
@@ -643,7 +643,7 @@ namespace Shared {
 			if (readBytes != 1 && (frameCount * vertexCount) != 0) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			fromEndianVecArray<Vec3f>(vertices, frameCount*vertexCount);
 
@@ -651,7 +651,7 @@ namespace Shared {
 			if (readBytes != 1 && (frameCount * vertexCount) != 0) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			fromEndianVecArray<Vec3f>(normals, frameCount*vertexCount);
 
@@ -661,7 +661,7 @@ namespace Shared {
 					if (readBytes != 1 && vertexCount != 0) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 					fromEndianVecArray<Vec2f>(texCoords, vertexCount);
 				}
@@ -670,7 +670,7 @@ namespace Shared {
 			if (readBytes != 1) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			fromEndianVecArray<Vec3f>(&diffuseColor, 1);
 
@@ -678,7 +678,7 @@ namespace Shared {
 			if (readBytes != 1) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			opacity = Shared::PlatformByteOrder::fromCommonEndian(opacity);
 
@@ -686,14 +686,14 @@ namespace Shared {
 			if (seek_result != 0) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fseek returned failure = %d [%u] on line: %d.", seek_result, indexCount, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			readBytes = fread(indices, sizeof(uint32)*indexCount, 1, f);
 			if (readBytes != 1 && indexCount != 0) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u] on line: %d.", readBytes, indexCount, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			Shared::PlatformByteOrder::fromEndianTypeArray<uint32>(indices, indexCount);
 		}
@@ -761,7 +761,7 @@ namespace Shared {
 			if (readBytes != 1) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			fromEndianMeshHeader(meshHeader);
 
@@ -808,7 +808,7 @@ namespace Shared {
 					if (readBytes != 1 && mapPathSize != 0) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u] on line: %d.", readBytes, mapPathSize, __LINE__);
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 					Shared::PlatformByteOrder::fromEndianTypeArray<uint8>(cMapPath, mapPathSize);
 
@@ -837,7 +837,7 @@ namespace Shared {
 			if (readBytes != 1 && (frameCount * vertexCount) != 0) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			fromEndianVecArray<Vec3f>(vertices, frameCount*vertexCount);
 
@@ -845,7 +845,7 @@ namespace Shared {
 			if (readBytes != 1 && (frameCount * vertexCount) != 0) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			fromEndianVecArray<Vec3f>(normals, frameCount*vertexCount);
 
@@ -854,7 +854,7 @@ namespace Shared {
 				if (readBytes != 1 && vertexCount != 0) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 				fromEndianVecArray<Vec2f>(texCoords, vertexCount);
 			}
@@ -862,7 +862,7 @@ namespace Shared {
 			if (readBytes != 1 && indexCount != 0) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u] on line: %d.", readBytes, indexCount, __LINE__);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 			Shared::PlatformByteOrder::fromEndianTypeArray<uint32>(indices, indexCount);
 
@@ -972,7 +972,7 @@ namespace Shared {
 									textureDeleteList[file] = textureDeleteList[file] + 1;
 								}
 							} else {
-								throw megaglest_runtime_error("Unsupported texture format: [" + convertTextureToFormat + "]");
+								throw game_runtime_error("Unsupported texture format: [" + convertTextureToFormat + "]");
 							}
 
 							//textureManager->endTexture(texture);
@@ -992,9 +992,9 @@ namespace Shared {
 						file = extractFileFromDirectoryPath(texture->getPath());
 
 						if (file.length() > mapPathSize) {
-							throw megaglest_runtime_error("file.length() > mapPathSize, file.length() = " + intToStr(file.length()));
+							throw game_runtime_error("file.length() > mapPathSize, file.length() = " + intToStr(file.length()));
 						} else if (file.length() == 0) {
-							throw megaglest_runtime_error("file.length() == 0");
+							throw game_runtime_error("file.length() == 0");
 						}
 
 						if (SystemFlags::VERBOSE_MODE_ENABLED) printf("Save, new texture file [%s]\n", file.c_str());
@@ -1024,7 +1024,7 @@ namespace Shared {
 			} catch (bad_alloc& ba) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096, "Error on line: %d size: %d msg: %s\n", __LINE__, vertexCount, ba.what());
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			for (unsigned int i = 0; i < vertexCount; ++i) {
@@ -1076,7 +1076,7 @@ namespace Shared {
 
 		Model::Model() {
 			if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
-				throw megaglest_runtime_error("Loading graphics in headless server mode not allowed!");
+				throw game_runtime_error("Loading graphics in headless server mode not allowed!");
 			}
 
 			meshCount = 0;
@@ -1156,7 +1156,7 @@ namespace Shared {
 			if (extension == "g3d") {
 				loadG3d(path, deletePixMapAfterLoad, loadedFileList, this->sourceLoader);
 			} else {
-				throw megaglest_runtime_error("#1 Unknown model format [" + extension + "] file [" + path + "]");
+				throw game_runtime_error("#1 Unknown model format [" + extension + "] file [" + path + "]");
 			}
 		}
 
@@ -1166,7 +1166,7 @@ namespace Shared {
 			if (toLower(extension) == "g3d") {
 				saveG3d(path, convertTextureToFormat, keepsmallest);
 			} else {
-				throw megaglest_runtime_error("#2 Unknown model format [" + extension + "] file [" + path + "]");
+				throw game_runtime_error("#2 Unknown model format [" + extension + "] file [" + path + "]");
 			}
 		}
 
@@ -1183,7 +1183,7 @@ namespace Shared {
 #endif
 				if (f == NULL) {
 					printf("In [%s::%s] cannot load file = [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, path.c_str());
-					throw megaglest_runtime_error("Error opening g3d model file [" + path + "]", true);
+					throw game_runtime_error("Error opening g3d model file [" + path + "]", true);
 				}
 
 				if (loadedFileList) {
@@ -1199,7 +1199,7 @@ namespace Shared {
 					fclose(f);
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-					throw megaglest_runtime_error(szBuf);
+					throw game_runtime_error(szBuf);
 				}
 				fromEndianFileHeader(fileHeader);
 
@@ -1211,7 +1211,7 @@ namespace Shared {
 					fclose(f);
 					f = NULL;
 					printf("In [%s::%s] file = [%s] fileheader.id = [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, path.c_str(), fileId);
-					throw megaglest_runtime_error("Not a valid G3D model", true);
+					throw game_runtime_error("Not a valid G3D model", true);
 				}
 				fileVersion = fileHeader.version;
 
@@ -1225,7 +1225,7 @@ namespace Shared {
 					if (readBytes != 1) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 					fromEndianModelHeader(modelHeader);
 
@@ -1234,7 +1234,7 @@ namespace Shared {
 					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("meshCount = %d\n", meshCount);
 
 					if (modelHeader.type != mtMorphMesh) {
-						throw megaglest_runtime_error("Invalid model type");
+						throw game_runtime_error("Invalid model type");
 					}
 
 					//load meshes
@@ -1243,7 +1243,7 @@ namespace Shared {
 					} catch (bad_alloc& ba) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "Error on line: %d size: %d msg: %s\n", __LINE__, meshCount, ba.what());
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 
 					for (uint32 i = 0; i < meshCount; ++i) {
@@ -1258,7 +1258,7 @@ namespace Shared {
 					if (readBytes != 1 && meshCount != 0) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u] on line: %d.", readBytes, meshCount, __LINE__);
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 					meshCount = Shared::PlatformByteOrder::fromCommonEndian(meshCount);
 
@@ -1269,7 +1269,7 @@ namespace Shared {
 					} catch (bad_alloc& ba) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "Error on line: %d size: %d msg: %s\n", __LINE__, meshCount, ba.what());
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 
 					for (uint32 i = 0; i < meshCount; ++i) {
@@ -1284,7 +1284,7 @@ namespace Shared {
 					if (readBytes != 1 && meshCount != 0) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u] on line: %d.", readBytes, meshCount, __LINE__);
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 					meshCount = Shared::PlatformByteOrder::fromCommonEndian(meshCount);
 
@@ -1296,7 +1296,7 @@ namespace Shared {
 					} catch (bad_alloc& ba) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "Error on line: %d size: %d msg: %s\n", __LINE__, meshCount, ba.what());
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 
 					for (uint32 i = 0; i < meshCount; ++i) {
@@ -1305,21 +1305,21 @@ namespace Shared {
 						meshes[i].buildInterpolationData();
 					}
 				} else {
-					throw megaglest_runtime_error("Invalid model version: " + intToStr(fileHeader.version));
+					throw game_runtime_error("Invalid model version: " + intToStr(fileHeader.version));
 				}
 
 				fclose(f);
 
 				autoJoinMeshFrames();
-			} catch (megaglest_runtime_error& ex) {
+			} catch (game_runtime_error& ex) {
 				//printf("1111111 ex.wantStackTrace() = %d\n",ex.wantStackTrace());
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, ex.what());
 				//printf("2222222\n");
-				throw megaglest_runtime_error("Exception caught loading 3d file: " + path + "\n" + ex.what(), !ex.wantStackTrace());
+				throw game_runtime_error("Exception caught loading 3d file: " + path + "\n" + ex.what(), !ex.wantStackTrace());
 			} catch (exception &e) {
 				//abort();
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, e.what());
-				throw megaglest_runtime_error("Exception caught loading 3d file: " + path + "\n" + e.what());
+				throw game_runtime_error("Exception caught loading 3d file: " + path + "\n" + e.what());
 			}
 		}
 
@@ -1334,7 +1334,7 @@ namespace Shared {
 			FILE *f = fopen(tempModelFilename.c_str(), "wb");
 #endif
 			if (f == NULL) {
-				throw megaglest_runtime_error("Cant open file for writing: [" + tempModelFilename + "]");
+				throw game_runtime_error("Cant open file for writing: [" + tempModelFilename + "]");
 			}
 
 			convertTextureToFormat = toLower(convertTextureToFormat);
@@ -1373,7 +1373,7 @@ namespace Shared {
 					}
 				}
 			} else {
-				throw megaglest_runtime_error("Invalid model version: " + intToStr(fileHeader.version));
+				throw game_runtime_error("Invalid model version: " + intToStr(fileHeader.version));
 			}
 
 			fclose(f);
@@ -1788,7 +1788,7 @@ namespace Shared {
 					if (index >= (int) pboIds.size()) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "Error / Warning in [%s::%s] on line: %d pixel buffer out of range, index: %d size: %d, attempting to expand buffer...\n", __FILE__, __FUNCTION__, __LINE__, index, (int) pboIds.size());
-						//throw megaglest_runtime_error(szBuf);
+						//throw game_runtime_error(szBuf);
 						SystemFlags::OutputDebug(SystemFlags::debugError, "%s", szBuf);
 						if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] szBuf: %s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, szBuf);
 
@@ -1852,15 +1852,15 @@ namespace Shared {
 					glBindBufferARB(GL_PIXEL_PACK_BUFFER_ARB, 0);
 
 					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-				} catch (megaglest_runtime_error& ex) {
+				} catch (game_runtime_error& ex) {
 					SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] codeSection [%s] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, codeSection.c_str(), ex.what());
-					throw megaglest_runtime_error("Exception caught in getPixelBufferFor codeSection: " + codeSection + "\n" + ex.what(), !ex.wantStackTrace());
+					throw game_runtime_error("Exception caught in getPixelBufferFor codeSection: " + codeSection + "\n" + ex.what(), !ex.wantStackTrace());
 				} catch (exception &e) {
 					SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] codeSection [%s] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, codeSection.c_str(), e.what());
-					throw megaglest_runtime_error("Exception caught in getPixelBufferFor codeSection: " + codeSection + "\n" + e.what());
+					throw game_runtime_error("Exception caught in getPixelBufferFor codeSection: " + codeSection + "\n" + e.what());
 				} catch (...) {
 					SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] codeSection [%s] UNKNOWN Error!", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, codeSection.c_str());
-					throw megaglest_runtime_error("UNKNOWN Exception caught in getPixelBufferFor codeSection: " + codeSection + "\n");
+					throw game_runtime_error("UNKNOWN Exception caught in getPixelBufferFor codeSection: " + codeSection + "\n");
 				}
 				if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 			}
@@ -1931,7 +1931,7 @@ namespace Shared {
 		bool BaseColorPickEntity::get_next_assign_color(unsigned char *assign_to) {
 
 			if (assign_to == NULL) {
-				throw megaglest_runtime_error("assign_to == NULL");
+				throw game_runtime_error("assign_to == NULL");
 			}
 
 			if (BaseColorPickEntity::using_loop_method == true) {

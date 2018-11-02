@@ -187,7 +187,7 @@ namespace Glest {
 					if (modelNode->hasChild("cycles")) {
 						modelCycle = modelNode->getChild("cycles")->getAttribute("value")->getFloatValue();
 						if (modelCycle < 0.0)
-							throw megaglest_runtime_error("negative model cycle value is bad");
+							throw game_runtime_error("negative model cycle value is bad");
 					}
 				}
 			} else {
@@ -502,7 +502,7 @@ namespace Glest {
 				}
 			} catch (const exception &e) {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, e.what());
-				throw megaglest_runtime_error("Error loading ParticleSystem: " + path + "\n" + e.what());
+				throw game_runtime_error("Error loading ParticleSystem: " + path + "\n" + e.what());
 			}
 		}
 
@@ -587,7 +587,7 @@ namespace Glest {
 				horizontalSpreadB = horizontalSpreadNode->getAttribute("b")->getFloatValue(-1.0f, 1.0f);
 			} catch (const exception &e) {
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, e.what());
-				throw megaglest_runtime_error("Error loading ParticleSystem: " + path + "\n" + e.what());
+				throw game_runtime_error("Error loading ParticleSystem: " + path + "\n" + e.what());
 			}
 		}
 

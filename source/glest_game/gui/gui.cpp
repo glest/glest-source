@@ -172,13 +172,13 @@ namespace Glest {
 				return NULL;
 			} else {
 				if (world == NULL) {
-					throw megaglest_runtime_error("world == NULL");
+					throw game_runtime_error("world == NULL");
 				}
 				if (world->getMap() == NULL) {
-					throw megaglest_runtime_error("world->getMap() == NULL");
+					throw game_runtime_error("world->getMap() == NULL");
 				}
 				if (world->getMap()->getSurfaceCell(highlightedResourceObjectPos) == NULL) {
-					throw megaglest_runtime_error("world->getMap()->getSurfaceCell(highlightedResourceObjectPos) == NULL");
+					throw game_runtime_error("world->getMap()->getSurfaceCell(highlightedResourceObjectPos) == NULL");
 				}
 				return world->getMap()->getSurfaceCell(highlightedResourceObjectPos)->getObject();
 			}
@@ -886,20 +886,20 @@ namespace Glest {
 					try {
 						const Unit *unit = selection.getUnit(unitIndex);
 						if (unit == NULL) {
-							throw megaglest_runtime_error("unit == NULL");
+							throw game_runtime_error("unit == NULL");
 						}
 						if (unit->getType() == NULL) {
-							throw megaglest_runtime_error("unit->getType() == NULL");
+							throw game_runtime_error("unit->getType() == NULL");
 						}
 						if (unit->getType()->getImage() == NULL) {
-							throw megaglest_runtime_error("unit->getType()->getImage()");
+							throw game_runtime_error("unit->getType()->getImage()");
 						}
 
 						display.setUpImage(unitIndex, unit->getType()->getImage());
 					} catch (exception &ex) {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096, "Error in unit selection for index: %d error [%s]", unitIndex, ex.what());
-						throw megaglest_runtime_error(szBuf, true);
+						throw game_runtime_error(szBuf, true);
 					}
 				}
 

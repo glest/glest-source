@@ -489,11 +489,11 @@ namespace Shared {
 				} catch (const char *e) {
 					SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] (a1) Couldn't process event: [%s] codeLocation = %s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, e, codeLocation.c_str());
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d] (a1) Couldn't process event: [%s] codeLocation = %s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, e, codeLocation.c_str());
-					throw megaglest_runtime_error(e);
+					throw game_runtime_error(e);
 				} catch (const std::runtime_error& e) {
 					SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] (a2) Couldn't process event: [%s] codeLocation = %s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, e.what(), codeLocation.c_str());
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d] (a2) Couldn't process event: [%s] codeLocation = %s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, e.what(), codeLocation.c_str());
-					throw megaglest_runtime_error(e.what());
+					throw game_runtime_error(e.what());
 				} catch (const std::exception& e) {
 					SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] (b) Couldn't process event: [%s] codeLocation = %s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, e.what(), codeLocation.c_str());
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d] (b) Couldn't process event: [%s] codeLocation = %s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, e.what(), codeLocation.c_str());
@@ -755,7 +755,7 @@ namespace Shared {
 				}
 			} else {
 				string sError = "Unsupported key name: [" + value + "]";
-				throw megaglest_runtime_error(sError.c_str());
+				throw game_runtime_error(sError.c_str());
 			}
 
 			// Because SDL is based on lower Ascii

@@ -692,7 +692,7 @@ namespace Glest {
 						getSystemSettingType(SystemFlags::debugSystem).enabled)
 						SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
 					showMessageBox(szBuf, "Error", false);
-					//throw megaglest_runtime_error(szBuf);
+					//throw game_runtime_error(szBuf);
 				}
 			}
 			for (int i = 0; i < (int) scenarioFiles.size(); ++i)
@@ -1933,7 +1933,7 @@ namespace Glest {
 					ClientInterface *
 						clientInterface = networkManager.getClientInterface();
 					if (clientInterface == NULL) {
-						throw megaglest_runtime_error("clientInterface == NULL");
+						throw game_runtime_error("clientInterface == NULL");
 					}
 					if (getInProgressSavedGameFromFTPServerInProgress == true) {
 						if (clientInterface != NULL) {
@@ -2867,7 +2867,7 @@ namespace Glest {
 			}
 
 			if (results.empty() == true) {
-				//throw megaglest_runtime_error("(2)There are no factions for the tech tree [" + techTreeFiles[listBoxTechTree.getSelectedItemIndex()] + "]");
+				//throw game_runtime_error("(2)There are no factions for the tech tree [" + techTreeFiles[listBoxTechTree.getSelectedItemIndex()] + "]");
 				//showGeneralError=true;
 				//generalErrorToShow = "[#2] There are no factions for the tech tree [" + techTreeFiles[listBoxTechTree.getSelectedItemIndex()] + "]";
 			}
@@ -3649,7 +3649,7 @@ namespace Glest {
 					}
 
 					if (fontMetrics == NULL) {
-						throw megaglest_runtime_error("fontMetrics == NULL");
+						throw game_runtime_error("fontMetrics == NULL");
 					}
 					int
 						curWidth =
@@ -3947,7 +3947,7 @@ namespace Glest {
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, ex.what());
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 
@@ -5801,7 +5801,7 @@ namespace Glest {
 					if (clientInterface->getAllowGameDataSynchCheck() == false) {
 						if (errorOnNoFactions == true) {
 							throw
-								megaglest_runtime_error
+								game_runtime_error
 								("(2)There are no factions for the tech tree [" +
 									gameSettings->getTech() + "]");
 						}
@@ -7166,7 +7166,7 @@ namespace Glest {
 			vector < string > tilesets, techtree;
 
 			if (gameSettings == NULL) {
-				throw megaglest_runtime_error("gameSettings == NULL");
+				throw game_runtime_error("gameSettings == NULL");
 			}
 
 
@@ -7959,7 +7959,7 @@ namespace Glest {
 				}
 
 				if (allMaps.empty()) {
-					throw megaglest_runtime_error("No maps were found!");
+					throw game_runtime_error("No maps were found!");
 				}
 				vector < string > results;
 				copy(allMaps.begin(), allMaps.end(), std::back_inserter(results));
@@ -7992,7 +7992,7 @@ namespace Glest {
 							Config::getMapPath(mapFiles.at(i), "",
 								false).c_str(),
 							mapInfo.desc.c_str());
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 					playerSortedMaps[mapInfo.hardMaxPlayers].push_back(mapFiles.at(i));
 					formattedPlayerSortedMaps[mapInfo.hardMaxPlayers].push_back(formatString
@@ -8037,7 +8037,7 @@ namespace Glest {
 					getSystemSettingType(SystemFlags::debugSystem).enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
 
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 				//abort();
 			}
 
@@ -8058,7 +8058,7 @@ namespace Glest {
 				findDirs(techPaths, results);
 
 				if (results.empty()) {
-					throw megaglest_runtime_error("No tech-trees were found!");
+					throw game_runtime_error("No tech-trees were found!");
 				}
 
 				techTreeFiles = results;
@@ -8092,7 +8092,7 @@ namespace Glest {
 					getSystemSettingType(SystemFlags::debugSystem).enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
 
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 
 			return initialTechSelection;
@@ -8109,7 +8109,7 @@ namespace Glest {
 				findDirs(config.getPathListForType(ptTilesets, scenarioDir),
 					results);
 				if (results.empty()) {
-					//throw megaglest_runtime_error("No tile-sets were found!");
+					//throw game_runtime_error("No tile-sets were found!");
 					showMessageBox("No tile-sets were found!", "Error", false);
 				} else {
 					tilesetFiles = results;
@@ -8128,7 +8128,7 @@ namespace Glest {
 					getSystemSettingType(SystemFlags::debugSystem).enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
 
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 

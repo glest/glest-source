@@ -91,7 +91,7 @@ namespace Shared {
 			soundFileLoader = SoundFileLoaderFactory::getInstance()->newInstance(ext);
 
 			if (soundFileLoader == NULL) {
-				throw megaglest_runtime_error("soundFileLoader == NULL");
+				throw game_runtime_error("soundFileLoader == NULL");
 			}
 			soundFileLoader->open(path, &info);
 			samples = new int8[info.getSize()];

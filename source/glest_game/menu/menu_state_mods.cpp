@@ -1098,7 +1098,7 @@ namespace Glest {
 					"In [%s::%s Line: %d] Error [%s] loading map [%s]\n",
 					__FILE__, __FUNCTION__, __LINE__, e.what(),
 					file.c_str());
-				throw megaglest_runtime_error("Error loading map file: [" + file +
+				throw game_runtime_error("Error loading map file: [" + file +
 					"] msg: " + e.what());
 			}
 
@@ -1293,7 +1293,7 @@ namespace Glest {
 				MapPreview::findAllValidMaps(pathList, scenarioDir, false, false,
 					&invalidMapList);
 			if (allMaps.empty()) {
-				throw megaglest_runtime_error("No maps were found!");
+				throw game_runtime_error("No maps were found!");
 			}
 			vector < string > results;
 			copy(allMaps.begin(), allMaps.end(), std::back_inserter(results));
@@ -3009,7 +3009,7 @@ namespace Glest {
 							snprintf(szBuf, 8096,
 								"i >= keyScenarioButtons.size(), i = %d keyScenarioButtons.size() = %d",
 								i, (int) keyScenarioButtons.size());
-							throw megaglest_runtime_error(szBuf);
+							throw game_runtime_error(szBuf);
 						}
 						bool alreadyHasScenario =
 							(std::
@@ -3156,7 +3156,7 @@ namespace Glest {
 				snprintf(szBuf, 8096, "In [%s::%s %d] error [%s]\n", __FILE__,
 					__FUNCTION__, __LINE__, ex.what());
 				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw megaglest_runtime_error(szBuf);
+				throw game_runtime_error(szBuf);
 			}
 		}
 
@@ -3175,7 +3175,7 @@ namespace Glest {
 						snprintf(szBuf, 8096,
 							"i >= keyTechButtons.size(), i = %d, keyTechButtons.size() = %d",
 							i, (int) keyTechButtons.size());
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 
 					keyTechButtons[i]->setY(keyButtonsYBase - keyButtonsLineHeight * (i
@@ -3199,7 +3199,7 @@ namespace Glest {
 						snprintf(szBuf, 8096,
 							"i >= keyTilesetButtons.size(), i = %d, keyTilesetButtons.size() = %d",
 							i, (int) keyTilesetButtons.size());
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 
 					int yPos = keyButtonsYBase - keyButtonsLineHeight *
@@ -3217,7 +3217,7 @@ namespace Glest {
 						snprintf(szBuf, 8096,
 							"i >= keyMapButtons.size(), i = %d, keyMapButtons.size() = %d",
 							i, (int) keyMapButtons.size());
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 
 					keyMapButtons[i]->setY(keyButtonsYBase - keyButtonsLineHeight * (i
@@ -3241,7 +3241,7 @@ namespace Glest {
 						snprintf(szBuf, 8096,
 							"i >= keyScenarioButtons.size(), i = %d, keyScenarioButtons.size() = %d",
 							i, (int) keyScenarioButtons.size());
-						throw megaglest_runtime_error(szBuf);
+						throw game_runtime_error(szBuf);
 					}
 
 					int yPos = keyButtonsYBase - keyButtonsLineHeight *
