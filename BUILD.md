@@ -158,7 +158,7 @@ Now that the build configuration has been set, run make, replacing `X` with the 
     make -jX
 
 The zetaglest binaries will be in the `build/` directory. Run
-'./zetaglest' to start the game.
+`./zetaglest` to start the game.
 
 <!-- This needs to be duplicated in the BUILD.md and INSTALL.md doc -->
 See [running](https://github.com/ZetaGlest/zetaglest-source#running) for
