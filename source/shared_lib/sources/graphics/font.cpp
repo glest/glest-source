@@ -92,13 +92,13 @@ namespace Shared {
 			Font::langHeightText = "yW";
 
 #if defined(WIN32)
-			string newEnvValue = "MEGAGLEST_FONT=";
+			string newEnvValue = "ZETAGLEST_FONT=";
 			_putenv(newEnvValue.c_str());
-			newEnvValue = "MEGAGLEST_FONT_FAMILY=";
+			newEnvValue = "ZETAGLEST_FONT_FAMILY=";
 			_putenv(newEnvValue.c_str());
 #else
-			unsetenv("MEGAGLEST_FONT");
-			unsetenv("MEGAGLEST_FONT_FAMILY");
+			unsetenv("ZETAGLEST_FONT");
+			unsetenv("ZETAGLEST_FONT_FAMILY");
 #endif
 		}
 
@@ -609,11 +609,11 @@ namespace Shared {
 			}
 
 			// Get user-specified font path
-			string megaglest_font = safeCharPtrCopy(getenv("MEGAGLEST_FONT"), 8095);
-			string megaglest_font_family = safeCharPtrCopy(getenv("MEGAGLEST_FONT_FAMILY"), 8095);
-			if (megaglest_font != "" || megaglest_font_family != "") {
-				if (megaglest_font != "") {
-					tryFont = megaglest_font;
+			string zetaglest_font = safeCharPtrCopy(getenv("ZETAGLEST_FONT"), 8095);
+			string zetaglest_font_family = safeCharPtrCopy(getenv("ZETAGLEST_FONT_FAMILY"), 8095);
+			if (zetaglest_font != "" || zetaglest_font_family != "") {
+				if (zetaglest_font != "") {
+					tryFont = zetaglest_font;
 
 					if (Text::DEFAULT_FONT_PATH_ABSOLUTE != "") {
 						tryFont = Text::DEFAULT_FONT_PATH_ABSOLUTE + "/" + extractFileFromDirectoryPath(tryFont);
@@ -622,9 +622,9 @@ namespace Shared {
 					replaceAll(tryFont, "/", "\\");
 #endif
 
-					CHECK_FONT_PATH(tryFont.c_str(), megaglest_font_family.c_str(), &font, &path);
+					CHECK_FONT_PATH(tryFont.c_str(), zetaglest_font_family.c_str(), &font, &path);
 				} else {
-					CHECK_FONT_PATH(NULL, megaglest_font_family.c_str(), &font, &path);
+					CHECK_FONT_PATH(NULL, zetaglest_font_family.c_str(), &font, &path);
 				}
 			}
 

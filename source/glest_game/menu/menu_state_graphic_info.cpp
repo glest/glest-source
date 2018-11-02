@@ -75,9 +75,9 @@ namespace Glest {
 
 			string strInternalInfo = "";
 			strInternalInfo += "VBOSupported: " + boolToStr(getVBOSupported());
-			if (getenv("MEGAGLEST_FONT") != NULL) {
-				char *tryFont = getenv("MEGAGLEST_FONT");
-				strInternalInfo += "\nMEGAGLEST_FONT: " + string(tryFont);
+			if (getenv("ZETAGLEST_FONT") != NULL) {
+				char *tryFont = getenv("ZETAGLEST_FONT");
+				strInternalInfo += "\nZETAGLEST_FONT: " + string(tryFont);
 			}
 			strInternalInfo +=
 				"\nforceLegacyFonts: " + boolToStr(Font::forceLegacyFonts);
@@ -129,9 +129,9 @@ namespace Glest {
 
 			string strInternalInfo = "";
 			strInternalInfo += "VBOSupported: " + boolToStr(getVBOSupported());
-			if (getenv("MEGAGLEST_FONT") != NULL) {
-				char *tryFont = getenv("MEGAGLEST_FONT");
-				strInternalInfo += "\nMEGAGLEST_FONT: " + string(tryFont);
+			if (getenv("ZETAGLEST_FONT") != NULL) {
+				char *tryFont = getenv("ZETAGLEST_FONT");
+				strInternalInfo += "\nZETAGLEST_FONT: " + string(tryFont);
 			}
 			strInternalInfo +=
 				"\nforceLegacyFonts: " + boolToStr(Font::forceLegacyFonts);

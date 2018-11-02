@@ -987,19 +987,6 @@ namespace
 							std::string fileDataDetails =
 								SystemFlags::getHTTP(fileURLDetails, handle);
 
-							//               "available_languages": [
-							//                      {
-							//                          "code_aliases": " ",
-							//                          "code": "ca",
-							//                          "name": "Catalan"
-							//                      },
-							//                      {
-							//                          "code_aliases": " ",
-							//                          "code": "zh",
-							//                          "name": "Chinese"
-							//                      },
-							// curl -i -L --user softcoder -X GET https://www.transifex.com/api/2/project/megaglest/resource/main-language-file/?details
-
 							string
 								search_detail_key = "\"code\": \"" + txnURLLang + "\"";
 							size_t

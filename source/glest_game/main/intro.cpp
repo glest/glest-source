@@ -495,23 +495,6 @@ namespace Glest {
 				modelShowTime = disappear * (displayItemNumber);
 			}
 
-			/*
-			string lineText = "Based on award-winning classic Glest";
-			texts.push_back(new Text(lineText, Vec2i(-1, -1), appear, coreData.getMenuFontVeryBig(),coreData.getMenuFontVeryBig3D()));
-			lineText = "the MegaGlest Team presents";
-			texts.push_back(new Text(lineText, Vec2i(-1, -1), disappear, coreData.getMenuFontVeryBig(),coreData.getMenuFontVeryBig3D()));
-			lineText = "a libre software real-time strategy game";
-			texts.push_back(new Text(lineText, Vec2i(-1, -1), disappear *(++displayItemNumber), coreData.getMenuFontVeryBig(),coreData.getMenuFontVeryBig3D()));
-
-			texts.push_back(new Text(coreData.getLogoTexture(), Vec2i(w/2-128, h/2-64), Vec2i(256, 128), disappear *(++displayItemNumber)));
-			texts.push_back(new Text(GameVersionString, Vec2i(w/2+45, h/2-45), disappear *(displayItemNumber++), coreData.getMenuFontNormal(),coreData.getMenuFontNormal3D()));
-			lineText = "www.megaglest.org";
-			//texts.push_back(new Text(lineText, Vec2i(-1, -1), disappear *(displayItemNumber++), coreData.getMenuFontVeryBig(),coreData.getMenuFontVeryBig3D()));
-			texts.push_back(new Text(lineText, Vec2i(-1, h/2-45-18), disappear *(displayItemNumber-1), coreData.getMenuFontVeryBig(),coreData.getMenuFontVeryBig3D()));
-			*/
-
-
-
 			if (showIntroPics > 0 && coreData.getMiscTextureList().size() > 0) {
 				const int
 					showMiscTime = showIntroPicsTime;

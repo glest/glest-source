@@ -796,9 +796,6 @@ namespace Shared {
 		}
 
 		void MapPreview::loadFromFile(const string &path) {
-
-			// "Could not open file, result: 3 - 2 No such file or directory [C:\Documents and Settings\人間五\Application Data\megaglest\maps\clearings_in_the_woods.gbm]
-
 #ifdef WIN32
 			wstring wstr = utf8_decode(path);
 			FILE* f1 = _wfopen(wstr.c_str(), L"rb");

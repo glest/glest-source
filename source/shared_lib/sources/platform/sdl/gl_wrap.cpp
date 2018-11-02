@@ -229,22 +229,22 @@ namespace Shared {
 #ifndef WIN32
 				string mg_icon_file = "";
 #if defined(DATADIR)
-				if (fileExists(formatPath(TOSTRING(DATADIR)) + "megaglest.png")) {
-					mg_icon_file = formatPath(TOSTRING(DATADIR)) + "megaglest.png";
-				} else if (fileExists(formatPath(TOSTRING(DATADIR)) + "megaglest.bmp")) {
-					mg_icon_file = formatPath(TOSTRING(DATADIR)) + "megaglest.bmp";
+				if (fileExists(formatPath(TOSTRING(DATADIR)) + "zetaglest.png")) {
+					mg_icon_file = formatPath(TOSTRING(DATADIR)) + "zetaglest.png";
+				} else if (fileExists(formatPath(TOSTRING(DATADIR)) + "zetaglest.bmp")) {
+					mg_icon_file = formatPath(TOSTRING(DATADIR)) + "zetaglest.bmp";
 				}
 
 #endif
 
-				if (mg_icon_file == "" && fileExists("megaglest.png")) {
-					mg_icon_file = "megaglest.png";
-				} else if (mg_icon_file == "" && fileExists("megaglest.bmp")) {
-					mg_icon_file = "megaglest.bmp";
-				} else if (mg_icon_file == "" && fileExists("/usr/share/pixmaps/megaglest.png")) {
-					mg_icon_file = "/usr/share/pixmaps/megaglest.png";
-				} else if (mg_icon_file == "" && fileExists("/usr/share/pixmaps/megaglest.bmp")) {
-					mg_icon_file = "/usr/share/pixmaps/megaglest.bmp";
+				if (mg_icon_file == "" && fileExists("zetaglest.png")) {
+					mg_icon_file = "zetaglest.png";
+				} else if (mg_icon_file == "" && fileExists("zetaglest.bmp")) {
+					mg_icon_file = "zetaglest.bmp";
+				} else if (mg_icon_file == "" && fileExists("/usr/share/pixmaps/zetaglest.png")) {
+					mg_icon_file = "/usr/share/pixmaps/zetaglest.png";
+				} else if (mg_icon_file == "" && fileExists("/usr/share/pixmaps/zetaglest.bmp")) {
+					mg_icon_file = "/usr/share/pixmaps/zetaglest.bmp";
 				}
 
 				if (mg_icon_file != "") {

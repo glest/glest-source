@@ -585,13 +585,13 @@ namespace
 	  //      string sandboxScriptFilename = data_path + "data/core/scripts/sandbox.lua";
 	  //      string sandboxLuaCode = getFileTextContents(sandboxScriptFilename);
 	  //
-	  //      //luaScript.loadCode(sandboxLuaCode + "\n", "megaglest_lua_sandbox");
+	  //      //luaScript.loadCode(sandboxLuaCode + "\n", "zetaglest_lua_sandbox");
 	  //      luaScript.setSandboxWrapperFunctionName("runsandboxed");
 	  //      luaScript.setSandboxCode(sandboxLuaCode);
 	  //      luaScript.runCode(sandboxLuaCode);
 
 	  //      // Setup the lua security sandbox here
-	  //      luaScript.beginCall("megaglest_lua_sandbox");
+	  //      luaScript.beginCall("zetaglest_lua_sandbox");
 	  //      luaScript.endCall();
 
 			//setup message box

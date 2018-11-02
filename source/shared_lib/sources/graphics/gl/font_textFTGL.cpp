@@ -47,17 +47,17 @@ namespace Shared {
 			TextFTGL::TextFTGL(FontTextHandlerType type) : Text(type) {
 
 				//throw game_runtime_error("FTGL!");
-				//setenv("MEGAGLEST_FONT","/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc",0);
-				//setenv("MEGAGLEST_FONT","/usr/share/fonts/truetype/arphic/uming.ttc",0); // Chinese
-				//setenv("MEGAGLEST_FONT","/usr/share/fonts/truetype/arphic/ukai.ttc",0); // Chinese
-				//setenv("MEGAGLEST_FONT","/usr/share/fonts/truetype/ttf-sil-doulos/DoulosSILR.ttf",0); // Russian / Cyrillic
-				//setenv("MEGAGLEST_FONT","/usr/share/fonts/truetype/ttf-sil-charis/CharisSILR.ttf",0); // Russian / Cyrillic
-				//setenv("MEGAGLEST_FONT","/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-R.ttf",0); // Russian / Cyrillic
-				//setenv("MEGAGLEST_FONT","/usr/share/fonts/truetype/takao/TakaoPGothic.ttf",0); // Japanese
-				//setenv("MEGAGLEST_FONT","/usr/share/fonts/truetype/ttf-sil-scheherazade/ScheherazadeRegOT.ttf",0); // Arabic
-				//setenv("MEGAGLEST_FONT","/usr/share/fonts/truetype/linux-libertine/LinLibertine_Re.ttf",0); // Hebrew
-				//setenv("MEGAGLEST_FONT","/usr/share/fonts/truetype/unifont/unifont.ttf",0); // Czech?
-				//setenv("MEGAGLEST_FONT","/usr/share/fonts/truetype/ttf-liberation/LiberationSans-Regular.ttf",0); // Czech?
+				//setenv("ZETAGLEST_FONT","/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc",0);
+				//setenv("ZETAGLEST_FONT","/usr/share/fonts/truetype/arphic/uming.ttc",0); // Chinese
+				//setenv("ZETAGLEST_FONT","/usr/share/fonts/truetype/arphic/ukai.ttc",0); // Chinese
+				//setenv("ZETAGLEST_FONT","/usr/share/fonts/truetype/ttf-sil-doulos/DoulosSILR.ttf",0); // Russian / Cyrillic
+				//setenv("ZETAGLEST_FONT","/usr/share/fonts/truetype/ttf-sil-charis/CharisSILR.ttf",0); // Russian / Cyrillic
+				//setenv("ZETAGLEST_FONT","/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-R.ttf",0); // Russian / Cyrillic
+				//setenv("ZETAGLEST_FONT","/usr/share/fonts/truetype/takao/TakaoPGothic.ttf",0); // Japanese
+				//setenv("ZETAGLEST_FONT","/usr/share/fonts/truetype/ttf-sil-scheherazade/ScheherazadeRegOT.ttf",0); // Arabic
+				//setenv("ZETAGLEST_FONT","/usr/share/fonts/truetype/linux-libertine/LinLibertine_Re.ttf",0); // Hebrew
+				//setenv("ZETAGLEST_FONT","/usr/share/fonts/truetype/unifont/unifont.ttf",0); // Czech?
+				//setenv("ZETAGLEST_FONT","/usr/share/fonts/truetype/ttf-liberation/LiberationSans-Regular.ttf",0); // Czech?
 
 
 				fontFile = findFont();

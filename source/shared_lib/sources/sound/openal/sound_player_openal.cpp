@@ -387,8 +387,8 @@ namespace Shared {
 					}
 
 					// Allows platforms to specify which sound device to use
-					// using the environment variable: MEGAGLEST_SOUND_DEVICE
-					char *deviceName = getenv("MEGAGLEST_SOUND_DEVICE");
+					// using the environment variable: ZETAGLEST_SOUND_DEVICE
+					char *deviceName = getenv("ZETAGLEST_SOUND_DEVICE");
 					device = alcOpenDevice(deviceName);
 
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugSound).enabled) {

@@ -7149,10 +7149,10 @@ namespace
 
 #if defined(WIN32)
 						string
-							newEnvValue = "MEGAGLEST_FONT=" + newfont;
+							newEnvValue = "ZETAGLEST_FONT=" + newfont;
 						_putenv(newEnvValue.c_str());
 #else
-						setenv("MEGAGLEST_FONT", newfont.c_str(), 1);
+						setenv("ZETAGLEST_FONT", newfont.c_str(), 1);
 #endif
 					} else {
 						printf
