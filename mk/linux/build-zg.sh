@@ -5,16 +5,6 @@
 # Copyright (c) 2011-2013 Mark Vejvoda under GNU GPL v3.0+
 
 # ----------------------------------------------------------------------------
-
-echo ""
-echo "This script has been deprecated. Please see"
-echo "https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md"
-echo "For updated build instructions."
-echo ""
-
-exit 0
-
-
 #
 # Configuration section
 #
@@ -34,7 +24,6 @@ GCC_FORCED_VERSION=0
 LUA_FORCED_VERSION=0
 FORCE_32BIT_CROSS_COMPILE=0
 COMPILATION_WITHOUT=0
-BUILD_ZETAGLEST_TESTS="ON"
 
 while getopts "c:defg:hl:mnswx" option; do
    case "${option}" in
@@ -124,15 +113,6 @@ CLANGPP_BIN_PATH=$( which clang++ 2>/dev/null )
 
 cd ${SCRIPTDIR}
 
-# Google breakpad integration (cross platform memory dumps) - OPTIONAL
-# Set this to the root path of your Google breakpad subversion working copy.
-# By default, this script looks for a "google-breakpad" sub-directory within
-# the directory this script resides in. If this directory is not found, Cmake
-# will warn about it later.
-# Instead of editing this variable, consider creating a symbolic link:
-#   ln -s ../../google-breakpad google-breakpad
-BREAKPAD_ROOT="$SCRIPTDIR/../../google-breakpad/"
-
 # CMake options
 # The default configuration works fine for regular developers and is also used
 # by our installers.
@@ -198,14 +178,12 @@ case $distribution in
 					echo 'Turning ON dynamic FTGL, LUA, JPEG, PNG ... and forcing use the embedded IRCCLIENT'
 					EXTRA_CMAKE_OPTIONS="${EXTRA_CMAKE_OPTIONS} -DSTATIC_FTGL=OFF -DSTATIC_LUA=OFF -DSTATIC_JPEG=OFF -DSTATIC_PNG=OFF -DSTATIC_OGG=OFF -DFORCE_USE_EMBEDDED_Ircclient=ON"
 				fi
-				if [ $CLANG_FORCED = 1 ]; then BUILD_ZETAGLEST_TESTS="OFF"; fi
 				;;
 			*)
 				if [ "$WANT_STATIC_LIBS" = "-DWANT_STATIC_LIBS=ON" ]; then
 					echo 'Turning ON dynamic OGG ... and forcing use the embedded IRCCLIENT'
 					EXTRA_CMAKE_OPTIONS="${EXTRA_CMAKE_OPTIONS} -DSTATIC_OGG=OFF -DFORCE_USE_EMBEDDED_Ircclient=ON"
 				fi
-				if [ $CLANG_FORCED = 1 ]; then BUILD_ZETAGLEST_TESTS="OFF"; fi
 				# ^ may be removed ~ when default clang's version will be 3.9+
 				;;
 		esac
@@ -325,7 +303,7 @@ fi
 
 if [ $MAKE_ONLY = 0 ]; then
         echo "Calling cmake with EXTRA_CMAKE_OPTIONS = ${EXTRA_CMAKE_OPTIONS} AND WANT_STATIC_LIBS = ${WANT_STATIC_LIBS}"
-        cmake -DCMAKE_INSTALL_PREFIX='' $WANT_STATIC_LIBS -DBUILD_ZETAGLEST_TESTS=$BUILD_ZETAGLEST_TESTS -DBREAKPAD_ROOT=$BREAKPAD_ROOT $EXTRA_CMAKE_OPTIONS ../../..
+        cmake -DCMAKE_INSTALL_PREFIX='' $WANT_STATIC_LIBS $EXTRA_CMAKE_OPTIONS ../../..
         if [ $? -ne 0 ]; then
           echo 'ERROR: CMAKE failed.' >&2; exit 1
         fi
