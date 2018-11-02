@@ -5,12 +5,10 @@
 *.nsi eol=crlf
 *.sln eol=crlf
 *.vbs eol=crlf
-
 *.txt eol=crlf
 CMake*.txt eol=lf
-version.txt eol=lf
-VERSION.txt eol=lf
 robots.txt eol=lf
+*.sh eol=lf
 
 *.ttc -text -diff
 *.ttf -text -diff
