@@ -1259,85 +1259,8 @@ namespace Glest {
 					needUpdateFromServer = false;
 
 					if (announcementLoaded == false) {
-						string announcementURL =
-							Config::getInstance().getString("AnnouncementURL",
-								"http://zetaglest.dreamhosters.com/files/announcement.txt");
-						if (announcementURL != "") {
-
-							safeMutex.ReleaseLock(true);
-							CURL *handle = SystemFlags::initHTTP();
-							std::string announcementTxt =
-								SystemFlags::getHTTP(announcementURL, handle);
-							SystemFlags::cleanupHTTP(&handle);
-							if (callingThread->getQuitStatus() == true) {
-								return;
-							}
-							safeMutex.Lock();
-
-							if (StartsWith
-							(announcementTxt,
-								"Announcement from Masterserver:") == true) {
-								int newlineCount = 0;
-								size_t lastIndex = 0;
-
-								//announcementLabel.setText(announcementTxt);
-								consoleIRC.addLine(announcementTxt, true,
-									Vec4f(1.0f, 1.0f, 0.0f, 1.0f));
-
-								while (true) {
-									lastIndex = announcementTxt.find("\n", lastIndex + 1);
-									if (lastIndex == string::npos) {
-										break;
-									} else {
-										newlineCount++;
-									}
-								}
-								newlineCount--; // remove my own line
-								for (int i = 0; i < newlineCount; ++i) {
-									consoleIRC.addLine("");
-								}
-							}
-						}
 						consoleIRC.
 							addLine("---------------------------------------------");
-						string versionURL =
-							Config::getInstance().getString("VersionURL",
-								"http://zetaglest.dreamhosters.com/files/versions/")
-							+ GameVersionString + ".txt";
-						//printf("\nversionURL=%s\n",versionURL.c_str());
-						if (versionURL != "") {
-							safeMutex.ReleaseLock(true);
-							CURL *handle = SystemFlags::initHTTP();
-							std::string versionTxt =
-								SystemFlags::getHTTP(versionURL, handle);
-							SystemFlags::cleanupHTTP(&handle);
-							if (callingThread->getQuitStatus() == true) {
-								return;
-							}
-							safeMutex.Lock();
-
-							if (StartsWith(versionTxt, "Version info:") == true) {
-								int newlineCount = 0;
-								size_t lastIndex = 0;
-
-								//versionInfoLabel.setText(versionTxt);
-								consoleIRC.addLine(versionTxt, true,
-									Vec4f(1.0f, 0.0f, 0.0f, 1.0f));
-
-								while (true) {
-									lastIndex = versionTxt.find("\n", lastIndex + 1);
-									if (lastIndex == string::npos) {
-										break;
-									} else {
-										newlineCount++;
-									}
-								}
-								newlineCount--; // remove my own line
-								for (int i = 0; i < newlineCount; ++i) {
-									consoleIRC.addLine("");
-								}
-							}
-						}
 						consoleIRC.
 							addLine("---------------------------------------------");
 						// write hint to console:
