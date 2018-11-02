@@ -10,9 +10,9 @@ if [ -d "$SCRIPTDIR/lib" ]; then
     binary_dir_path="$SCRIPTDIR"
 else
     export DYLD_LIBRARY_PATH="$SCRIPTDIR/../Frameworks"
-    binary_dir_path="$SCRIPTDIR/../Resources/megaglest-game"
+    binary_dir_path="$SCRIPTDIR/../Resources/zetaglest-game"
 fi
 export PATH="$binary_dir_path:$PATH"
 
-exec "$binary_dir_path/megaglest" "$@"
+exec "$binary_dir_path/zetaglest" "$@"
 exit "$?"

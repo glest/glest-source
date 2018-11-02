@@ -17,7 +17,7 @@ SCRIPTDIR="$(dirname "$(readlink -f "$0")")"
 # './setupBuildDeps.sh --manually "Debian" "stable"' is for you.
 
 # Load shared functions
-. $SCRIPTDIR/mg_shared.sh
+. $SCRIPTDIR/zg_shared.sh
 
 # Got root?
 if [ `id -u`'x' != '0x' ] && [ "$1" != "--manually" ]; then
@@ -56,7 +56,7 @@ fi
 common_info() {
 	echo
 	if [ "$1" != "no_install" ]; then
-		echo 'Please report a bug at http://bugs.megaglest.org providing the following information:'
+		echo 'Please report a bug at https://github.com/ZetaGlest/zetaglest-source providing the following information:'
 	fi
 	echo '--- snip ---'
 	echo 'Git revision: '"$gitcommit"
@@ -68,8 +68,8 @@ common_info() {
 	echo '--- snip ---'
 	echo
 	if [ "$1" = "+wiki" ]; then
-		echo 'For now, you may want to take a look at the build hints on the MegaGlest wiki at:'
-		echo '  https://docs.megaglest.org/MG/Linux_Compiling'
+		echo 'For now, you may want to take a look at the build hints on the ZetaGlest readme at:'
+		echo '  https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md'
 		echo 'If you can come up with something which works for you, please report back to us, too. Thanks!'
 		exit 1
 	fi

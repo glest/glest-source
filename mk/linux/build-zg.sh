@@ -1,5 +1,5 @@
 #!/bin/bash
-# Use this script to build MegaGlest using cmake
+# Use this script to build ZetaGlest using cmake
 # ----------------------------------------------------------------------------
 # Written by Mark Vejvoda <mark_vejvoda@hotmail.com>
 # Copyright (c) 2011-2013 Mark Vejvoda under GNU GPL v3.0+
@@ -137,7 +137,7 @@ BREAKPAD_ROOT="$SCRIPTDIR/../../google-breakpad/"
 # The default configuration works fine for regular developers and is also used
 # by our installers.
 # For more cmake/build options refer to
-#   http://wiki.megaglest.org/Linux_Compiling#Building_using_CMake_by_Hand
+#   https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md
 EXTRA_CMAKE_OPTIONS=
 
 # Build threads
@@ -152,7 +152,7 @@ echo "CPU cores to be used: $NUMCORES"
 
 # Load shared functions
 
-. $SCRIPTDIR/mg_shared.sh
+. $SCRIPTDIR/zg_shared.sh
 
 # ----------------------------------------------------------------------------
 
@@ -347,5 +347,5 @@ else
         echo 'To launch ZetaGlest from the current directory, use:'
         echo '  ./zetaglest'
         #echo 'Or change into mk/linux and run it from there:'
-        #echo '  ./megaglest --ini-path=./ --data-path=./'
+        #echo '  ./zetaglest --ini-path=./ --data-path=./'
 fi
