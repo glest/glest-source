@@ -33,7 +33,6 @@ IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 ENDIF()
 
 OPTION(BUILD_ZETAGLEST "Build ZetaGlest" ON)
-OPTION(BUILD_ZETAGLEST_TESTS "Build ZetaGlest Unit Tests" OFF)
 OPTION(WANT_STATIC_LIBS "Builds as many static libs as possible." OFF)
 OPTION(WANT_USE_OpenSSL "Use libOpenSSL during CURL linking." ON)
 OPTION(WANT_USE_FriBiDi "Enable libFriBIDi support." ON)
@@ -274,8 +273,6 @@ IF(EXISTS "${PROJECT_SOURCE_DIR}/source/")
 	#  MESSAGE(STATUS "WARNING... the following game tools will NOT be built since we cannot find wxWidgets on this machine")
 	#  MESSAGE(STATUS "map editor, g3d viewer")
 	#endif()
-
-    ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/tests )
 ENDIF()
 
 #
