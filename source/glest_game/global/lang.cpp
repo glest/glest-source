@@ -40,7 +40,7 @@ using namespace std;
 using namespace Shared::Util;
 using namespace Shared::Platform;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		const char *DEFAULT_LANGUAGE = "english";

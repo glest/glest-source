@@ -47,7 +47,7 @@ using namespace Shared::Util;
 using namespace Shared::Platform;
 using namespace Shared::CompressionUtil;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 		string GameSettings::playerDisconnectedText = "";
 		Game *thisGamePtr = NULL;

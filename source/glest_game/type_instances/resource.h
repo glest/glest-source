@@ -35,7 +35,7 @@ using std::string;
 using std::map;
 using Shared::Xml::XmlNode;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		using Shared::Graphics::Vec2i;

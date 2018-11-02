@@ -38,7 +38,7 @@ using Shared::Graphics::Texture2D;
 using Shared::Graphics::Vec4f;
 using Shared::Util::replaceBy;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		// =====================================================

@@ -42,7 +42,7 @@ using std::vector;
 using std::map;
 using Shared::Xml::XmlNode;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		class Unit;

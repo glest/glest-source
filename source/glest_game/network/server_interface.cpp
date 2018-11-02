@@ -47,7 +47,7 @@ using namespace Shared::Platform;
 using namespace Shared::Util;
 using namespace Shared::Map;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 		double maxFrameCountLagAllowed = 30;
 		double maxClientLagTimeAllowed = 25;

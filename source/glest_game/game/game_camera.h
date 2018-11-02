@@ -37,7 +37,7 @@ namespace Shared {
 	}
 }
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		using::Shared::Graphics::Quad2i;

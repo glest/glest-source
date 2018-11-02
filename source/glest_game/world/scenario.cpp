@@ -39,7 +39,7 @@ using namespace Shared::Util;
 using namespace Shared::PlatformCommon;
 using namespace std;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		// =====================================================

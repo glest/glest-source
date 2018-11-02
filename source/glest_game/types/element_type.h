@@ -36,7 +36,7 @@ using std::string;
 
 using Shared::Graphics::Texture2D;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		class UpgradeType;

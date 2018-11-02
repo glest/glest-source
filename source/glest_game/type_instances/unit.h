@@ -37,7 +37,7 @@
 
 //#define LEAK_CHECK_UNITS
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		using Shared::Graphics::ParticleSystem;

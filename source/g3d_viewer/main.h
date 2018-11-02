@@ -38,7 +38,7 @@
 #include "unit_particle_type.h"
 
 using std::string;
-using namespace Glest::Game;
+using namespace ZetaGlest::Game;
 
 namespace Shared {
 	namespace G3dViewer {

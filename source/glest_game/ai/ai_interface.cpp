@@ -40,10 +40,8 @@ Shared::Graphics;
 //      class AiInterface
 // =====================================================
 
-namespace
-	Glest {
-	namespace
-		Game {
+namespace ZetaGlest {
+	namespace Game {
 
 		// =====================================================
 		//      class FactionThread

@@ -39,8 +39,7 @@ Shared::Platform;
 using
 Shared::Xml::XmlNode;
 
-namespace
-	Glest {
+namespace ZetaGlest {
 	namespace
 		Game {
 

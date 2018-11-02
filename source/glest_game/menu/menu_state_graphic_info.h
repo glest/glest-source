@@ -26,8 +26,7 @@
 using namespace
 Shared::Graphics::Gl;
 
-namespace
-	Glest {
+namespace ZetaGlest {
 	namespace
 		Game {
 

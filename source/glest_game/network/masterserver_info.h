@@ -26,7 +26,7 @@
 
 using std::string;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		// ===========================================================

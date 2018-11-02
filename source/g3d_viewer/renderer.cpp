@@ -27,7 +27,7 @@
 
 using namespace Shared::Graphics;
 using namespace Shared::Graphics::Gl;
-using namespace Glest::Game;
+using namespace ZetaGlest::Game;
 using namespace Shared::Util;
 
 namespace Shared {

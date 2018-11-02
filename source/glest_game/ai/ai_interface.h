@@ -32,8 +32,7 @@
 using
 Shared::Util::intToStr;
 
-namespace
-	Glest {
+namespace ZetaGlest {
 	namespace
 		Game {
 

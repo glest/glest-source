@@ -29,7 +29,7 @@
 
 using namespace std;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		// =====================================================
@@ -62,7 +62,6 @@ namespace Glest {
 
 		bool Selection::select(Unit *unit, bool addToSelection) {
 			bool result = false;
-			// Fix Bug reported on sourceforge.net: Glest::Game::Selection::select crash with NULL pointer - ID: 3608835
 			if (unit != NULL) {
 				//check if already selected
 				for (int index = 0; index < (int) selectedUnits.size(); ++index) {

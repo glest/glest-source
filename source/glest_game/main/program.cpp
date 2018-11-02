@@ -51,7 +51,7 @@ namespace
 //      class Program
 // =====================================================
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		const int

@@ -34,7 +34,7 @@ using namespace Shared::Platform;
 using namespace Shared::Util;
 using namespace std;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		int GameConstants::networkFramePeriod = 20;
@@ -256,7 +256,6 @@ namespace Glest {
 			}
 
 #if defined(WIN32)
-			//string test = "C:\\Code\\zetaglest\\mk\\windows\\.\\..\\..\\data\\glest_game\\glest.ini";
 			//updatePathClimbingParts(test);
 
 			updatePathClimbingParts(fileName.first);

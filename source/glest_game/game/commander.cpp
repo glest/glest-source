@@ -41,8 +41,7 @@ Shared::Util;
 using namespace
 Shared::Platform;
 
-namespace
-	Glest {
+namespace ZetaGlest {
 	namespace
 		Game {
 

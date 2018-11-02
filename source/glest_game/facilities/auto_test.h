@@ -34,7 +34,7 @@
 using namespace std;
 using Shared::Util::RandomGen;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		class Program;

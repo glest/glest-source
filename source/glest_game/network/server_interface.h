@@ -41,7 +41,7 @@ namespace Shared {
 	}
 }
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 		extern double maxFrameCountLagAllowed;
 		extern double maxClientLagTimeAllowed;

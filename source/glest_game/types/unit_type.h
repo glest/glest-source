@@ -35,7 +35,7 @@
 #   include "common_scoped_ptr.h"
 #   include "leak_dumper.h"
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		using Shared::Sound::StaticSound;

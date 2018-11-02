@@ -38,7 +38,7 @@ using std::deque;
 using Shared::Graphics::Texture2D;
 using Shared::Util::Properties;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		// =====================================================

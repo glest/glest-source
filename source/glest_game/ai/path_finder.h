@@ -40,8 +40,7 @@ std::vector;
 using
 Shared::Graphics::Vec2i;
 
-namespace
-	Glest {
+namespace ZetaGlest {
 	namespace
 		Game {
 

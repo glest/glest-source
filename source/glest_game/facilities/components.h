@@ -43,7 +43,7 @@ using Shared::Graphics::Font3D;
 using namespace Shared::Graphics;
 using Shared::Graphics::Vec3f;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		class GraphicComponent;

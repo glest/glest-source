@@ -118,21 +118,12 @@ using namespace Shared::Xml;
 using namespace Shared;
 
 void handleUnexpectedError(const char* message) {
-	Glest::Game::GameNetworkInterface* gameNetworkInterface = Glest::Game::NetworkManager::getInstance().getGameNetworkInterface();
+	ZetaGlest::Game::GameNetworkInterface* gameNetworkInterface = ZetaGlest::Game::NetworkManager::getInstance().getGameNetworkInterface();
 	if (gameNetworkInterface != NULL)
 		gameNetworkInterface->sendTextMessage(message, -1, true, "");
 }
 
-/**
-* @namespace Glest
-* Namespace used for all %Glest related code.
-*/
-/**
-* @namespace Game
-* Namespace used for game related code.
-*/
-namespace
-	Glest {
+namespace ZetaGlest {
 	namespace
 		Game {
 
@@ -8440,4 +8431,4 @@ namespace
 	}
 }                               //end namespace
 
-MAIN_FUNCTION(Glest::Game::glestMainWrapper)
+MAIN_FUNCTION(ZetaGlest::Game::glestMainWrapper)

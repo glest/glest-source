@@ -30,7 +30,7 @@ using namespace Shared::Util;
 using namespace Shared::Graphics;
 using namespace Shared::Sound;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		const int SoundRenderer::ambientFade = 6000;

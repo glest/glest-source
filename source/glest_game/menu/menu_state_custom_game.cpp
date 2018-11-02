@@ -47,7 +47,7 @@
 using namespace Shared;
 using namespace Shared::Util;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 		const int MASTERSERVER_BROADCAST_MAX_WAIT_RESPONSE_SECONDS = 15;
 		static const char *SAVED_GAME_FILENAME = "lastCustomGameSettings.mgg";

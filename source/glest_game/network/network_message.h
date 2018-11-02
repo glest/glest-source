@@ -33,7 +33,7 @@ using Shared::Platform::int8;
 using Shared::Platform::uint8;
 using Shared::Platform::int16;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		class GameSettings;

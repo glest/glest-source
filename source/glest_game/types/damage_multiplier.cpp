@@ -24,7 +24,7 @@
 
 using namespace Shared::Util;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		void AttackType::saveGame(XmlNode * rootNode) {

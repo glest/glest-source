@@ -20,7 +20,7 @@
 #ifndef NETWORK_PROTOCOL_H_
 #define NETWORK_PROTOCOL_H_
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		unsigned int pack(unsigned char *buf, const char *format, ...);

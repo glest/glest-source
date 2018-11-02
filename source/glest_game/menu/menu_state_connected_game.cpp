@@ -48,7 +48,7 @@ using namespace Shared;
 using namespace Shared::Util;
 using namespace Shared::CompressionUtil;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		static const int

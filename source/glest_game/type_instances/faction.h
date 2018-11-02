@@ -44,7 +44,7 @@ using std::set;
 using Shared::Graphics::Texture2D;
 using namespace Shared::PlatformCommon;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		class Unit;

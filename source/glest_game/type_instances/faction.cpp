@@ -36,7 +36,7 @@
 using namespace Shared::Util;
 using Shared::Util::RandomGen;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		bool CommandGroupUnitSorterId::operator () (const int l, const int r) {

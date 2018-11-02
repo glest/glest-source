@@ -33,7 +33,7 @@
 #include "platform_common.h"
 #include "leak_dumper.h"
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		using ::Shared::Sound::StrSound;

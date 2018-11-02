@@ -36,10 +36,10 @@
 using namespace Shared;
 using namespace Shared::Util;
 using namespace Shared::PlatformCommon;
-using namespace Glest::Game;
+using namespace ZetaGlest::Game;
 using namespace std;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 		string getGameReadWritePath(const string &lookupKey) {
 			string path = "";
@@ -253,7 +253,7 @@ namespace MapEditor {
 		}
 		menuBar->Append(menuBrushGradient, wxT("&Gradient"));
 
-		// Glest height brush
+		// height brush
 		menuBrushHeight = new wxMenu();
 		for (int i = 0; i < heightCount; ++i) {
 			menuBrushHeight->AppendCheckItem(miBrushHeight + i + 1, ToUnicode((i > 4 ? "&" : "") + intToStr(i - heightCount / 2)));

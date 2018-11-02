@@ -34,7 +34,7 @@
 using namespace std;
 using namespace Shared::Util;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		// =====================================================

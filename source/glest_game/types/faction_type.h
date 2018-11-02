@@ -36,7 +36,7 @@
 
 using Shared::Sound::StrSound;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 		// =====================================================
 		//      class FactionType

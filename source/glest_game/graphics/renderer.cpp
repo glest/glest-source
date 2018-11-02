@@ -45,7 +45,7 @@ using namespace Shared::Graphics::Gl;
 using namespace Shared::Util;
 using namespace Shared::Graphics;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		uint32 Renderer::SurfaceData::nextUniqueId = 1;

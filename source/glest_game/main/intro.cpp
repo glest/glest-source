@@ -47,7 +47,7 @@ using
 namespace
 	Shared::Xml;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		//struct Timer {

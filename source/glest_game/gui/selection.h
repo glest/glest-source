@@ -31,7 +31,7 @@
 
 using std::vector;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		class Gui;

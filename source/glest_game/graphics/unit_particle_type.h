@@ -40,7 +40,7 @@
 using std::string;
 using namespace Shared::Graphics;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		using Shared::Graphics::ParticleManager;

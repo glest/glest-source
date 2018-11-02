@@ -40,7 +40,7 @@ using std::pair;
 using Shared::Xml::XmlNode;
 using namespace Shared::Util;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		enum Difficulty {

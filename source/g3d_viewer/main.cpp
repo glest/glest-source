@@ -60,7 +60,6 @@ using namespace Shared::Util;
 using namespace Shared::Xml;
 
 using namespace std;
-using namespace Glest::Game;
 
 #ifdef _WIN32
 const char *folderDelimiter = "\\";
@@ -74,7 +73,7 @@ const char *folderDelimiter = "/";
 // Because g3d should always support alpha transparency
 string fileFormat = "png";
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		string getGameReadWritePath(const string &lookupKey) {
@@ -1403,7 +1402,7 @@ namespace Shared {
 				}
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
-				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a Mega-Glest particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
+				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a valid particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
 			}
 			if (timer) timer->Start(100);
 		}

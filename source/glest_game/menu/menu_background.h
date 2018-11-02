@@ -50,8 +50,7 @@ Shared::Graphics::Model;
 using
 Shared::Util::RandomGen;
 
-namespace
-	Glest {
+namespace ZetaGlest {
 	namespace
 		Game {
 

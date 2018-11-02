@@ -50,7 +50,7 @@ using
 namespace
 	Shared::PlatformCommon;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		class Program;

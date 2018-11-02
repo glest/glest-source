@@ -62,7 +62,7 @@ enum DebugUILevelType {
 	debugui_unit_titles = 0x02
 };
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		using namespace ::Shared::Graphics;

@@ -50,7 +50,7 @@ using Shared::Util::RandomGen;
 //class Md5Object;
 //}}}
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		// =====================================================

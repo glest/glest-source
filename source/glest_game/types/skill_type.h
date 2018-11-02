@@ -45,7 +45,7 @@ using Shared::Xml::XmlNode;
 using Shared::Graphics::Vec3f;
 using Shared::Graphics::Model;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		using Shared::Util::MultiFactory;

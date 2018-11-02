@@ -24,7 +24,7 @@
 #include <map>
 #include "game_constants.h"
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		struct SteamPrivate;

@@ -32,7 +32,7 @@ using Shared::Platform::ServerSocket;
 using Shared::Platform::Socket;
 using std::vector;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		class ServerInterface;

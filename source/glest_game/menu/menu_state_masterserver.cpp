@@ -40,7 +40,7 @@
 
 using namespace Shared;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		DisplayMessageFunction MenuStateMasterserver::pCB_DisplayMessage = NULL;

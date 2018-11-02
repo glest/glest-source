@@ -32,7 +32,7 @@
 using std::string;
 using Shared::Xml::XmlNode;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		// ===============================

@@ -2529,15 +2529,15 @@ namespace Shared {
 				//int ports[4] = { this->getExternalPort(), this->getBindPort(), this->getFTPServerPort(), this->getFTPServerPort() };
 				std::vector<int> UPNPPortForwardList;
 
-				// Glest Game Server port
+				// Game Server port
 				UPNPPortForwardList.push_back(this->getExternalPort());
 				UPNPPortForwardList.push_back(this->getBindPort());
 
-				// Glest mini FTP Server Listen Port
+				// mini FTP Server Listen Port
 				UPNPPortForwardList.push_back(this->getFTPServerPort());
 				UPNPPortForwardList.push_back(this->getFTPServerPort());
 
-				// GLest mini FTP Server Passive file TRansfer ports (1 per game player)
+				// mini FTP Server Passive file TRansfer ports (1 per game player)
 				for (int clientIndex = 1; clientIndex <= ServerSocket::maxPlayerCount; ++clientIndex) {
 					UPNPPortForwardList.push_back(this->getFTPServerPort() + clientIndex);
 					UPNPPortForwardList.push_back(this->getFTPServerPort() + clientIndex);

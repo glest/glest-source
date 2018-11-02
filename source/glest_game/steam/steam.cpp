@@ -24,7 +24,7 @@
 #include "steamshim_child.h"
 #include "platform_common.h"
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		std::map<std::string, SteamStatType> Steam::SteamStatNameTypes = Steam::create_map();

@@ -24,7 +24,7 @@
 #   include "server_line.h"
 #   include "leak_dumper.h"
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		// ===============================

@@ -43,7 +43,7 @@ using namespace Shared::Xml;
 using namespace Shared::Graphics;
 using namespace Shared::Util;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		auto_ptr < CommandType >

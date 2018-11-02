@@ -31,7 +31,7 @@
 #   include "game_constants.h"
 #   include "leak_dumper.h"
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		using Shared::Graphics::Vec2i;

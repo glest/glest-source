@@ -41,8 +41,7 @@ Shared::PlatformCommon;
 using
 Shared::Util::RandomGen;
 
-namespace
-	Glest {
+namespace ZetaGlest {
 	namespace
 		Game {
 

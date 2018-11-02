@@ -34,7 +34,7 @@ using Shared::Platform::Ip;
 using Shared::Platform::ClientSocket;
 using std::vector;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		class ClientInterface;

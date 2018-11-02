@@ -33,7 +33,7 @@
 
 using namespace std;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		// =====================================================

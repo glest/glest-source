@@ -29,7 +29,7 @@
 
 using Shared::Util::Checksum;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		// =====================================================

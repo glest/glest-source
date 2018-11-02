@@ -28,7 +28,7 @@
 using Shared::Platform::MouseButton;
 using Shared::Platform::MouseState;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		// =====================================================

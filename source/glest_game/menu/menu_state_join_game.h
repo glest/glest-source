@@ -34,7 +34,7 @@
 
 using Shared::Util::Properties;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		class NetworkMessageIntro;

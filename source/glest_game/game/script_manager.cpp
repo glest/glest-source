@@ -34,8 +34,7 @@ Shared::Lua;
 using namespace
 Shared::Util;
 
-namespace
-	Glest {
+namespace ZetaGlest {
 	namespace
 		Game {
 
@@ -3141,7 +3140,7 @@ namespace
 						result = true;
 						break;
 					case utet_FieldChanged:
-						unit->setCurrField(value == 1 ? Glest::Game::Field::fAir : Glest::Game::Field::fLand);
+						unit->setCurrField(value == 1 ? fAir : fLand);
 						result = true;
 						break;
 					default:

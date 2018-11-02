@@ -36,8 +36,7 @@
 using
 std::vector;
 
-namespace
-	Glest {
+namespace ZetaGlest {
 	namespace
 		Game {
 

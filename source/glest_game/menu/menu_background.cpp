@@ -37,8 +37,7 @@ Shared::Xml;
 using namespace
 Shared::Graphics;
 
-namespace
-	Glest {
+namespace ZetaGlest {
 	namespace
 		Game {
 

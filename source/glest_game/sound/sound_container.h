@@ -34,7 +34,7 @@ using std::vector;
 using Shared::Util::RandomGen;
 using Shared::Sound::StaticSound;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		// =====================================================

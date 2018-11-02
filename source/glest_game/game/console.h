@@ -42,8 +42,7 @@ std::pair;
 using namespace
 std;
 
-namespace
-	Glest {
+namespace ZetaGlest {
 	namespace
 		Game {
 

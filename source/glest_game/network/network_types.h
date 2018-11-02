@@ -40,7 +40,7 @@ using Shared::Platform::uint16;
 using Shared::Platform::int32;
 using Shared::Graphics::Vec2i;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		class World;

@@ -32,7 +32,7 @@
 #   include "unit_particle_type.h"
 #   include "object_type.h"
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		using Shared::Graphics::Model;

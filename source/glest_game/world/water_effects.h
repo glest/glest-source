@@ -33,7 +33,7 @@ using std::vector;
 
 using Shared::Graphics::Vec2f;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		class Map;

@@ -23,7 +23,7 @@
 #include "server_interface.h"
 #include "network_manager.h"
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 		const int MASTERSERVER_BROADCAST_PUBLISH_SECONDS = 6;
 		const int BROADCAST_SETTINGS_SECONDS = 4;

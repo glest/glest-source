@@ -35,7 +35,7 @@ using namespace Shared::Util;
 using namespace Shared::Xml;
 using namespace Shared::Graphics;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 		const float Tileset::standardAirHeight = 5.0f;
 		const float Tileset::standardShadowIntensity = 0.2f;

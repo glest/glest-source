@@ -36,7 +36,7 @@
 using namespace Shared::Util;
 using namespace Shared::Graphics;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		int SkillType::nextAttackBoostId = 0;

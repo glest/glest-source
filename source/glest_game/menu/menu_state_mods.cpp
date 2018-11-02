@@ -37,7 +37,7 @@
 using namespace Shared;
 using namespace Shared::Util;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 		struct FormatString {
 			void operator () (string & s) {

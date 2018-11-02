@@ -39,7 +39,7 @@
 #include "leak_dumper.h"
 
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		using Shared::Graphics::Vec4f;

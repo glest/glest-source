@@ -38,7 +38,7 @@
 using std::vector;
 using std::string;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 		// =====================================================
 		//      class ProjectileType

@@ -34,7 +34,7 @@
 
 using std::vector;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		using Shared::Graphics::Model;

@@ -44,7 +44,7 @@ using namespace Shared::Util;
 
 #endif
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		const bool debugClientInterfacePerf = false;

@@ -33,7 +33,7 @@
 using namespace Shared::Util;
 using namespace Shared::Xml;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		// ======================================================

@@ -32,7 +32,7 @@
 #   include "object_type.h"
 #   include "tileset_model_type.h"
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		class ObjectType;

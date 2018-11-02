@@ -39,7 +39,7 @@ using namespace Shared::Util;
 using namespace std;
 using std::min;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		bool NetworkMessage::useOldProtocol = true;

@@ -29,7 +29,7 @@
 using namespace Shared::Platform;
 using namespace Shared::Util;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 #pragma pack(push, 1)

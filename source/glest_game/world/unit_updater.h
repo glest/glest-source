@@ -34,7 +34,7 @@
 using Shared::Graphics::ParticleObserver;
 using Shared::Util::RandomGen;
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		class Unit;

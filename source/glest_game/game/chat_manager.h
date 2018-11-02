@@ -40,8 +40,7 @@ Shared::Graphics::Font2D;
 using
 Shared::Graphics::Font3D;
 
-namespace
-	Glest {
+namespace ZetaGlest {
 	namespace
 		Game {
 

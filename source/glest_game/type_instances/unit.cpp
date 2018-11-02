@@ -41,7 +41,7 @@ using namespace Shared::Graphics;
 using namespace Shared::Util;
 
 
-namespace Glest {
+namespace ZetaGlest {
 	namespace Game {
 
 		const int CHANGE_COMMAND_SPEED = 325;
