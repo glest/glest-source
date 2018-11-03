@@ -17,8 +17,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_NETWORKTYPES_H_
-#define _GLEST_GAME_NETWORKTYPES_H_
+#ifndef _NETWORKTYPES_H_
+#define _NETWORKTYPES_H_
 
 #ifdef WIN32
 #include <winsock2.h>
@@ -40,169 +40,166 @@ using Shared::Platform::uint16;
 using Shared::Platform::int32;
 using Shared::Graphics::Vec2i;
 
-namespace ZetaGlest {
-	namespace Game {
-
-		class World;
-		// =====================================================
-		//	class NetworkString
-		// =====================================================
+namespace Game {
+	class World;
+	// =====================================================
+	//	class NetworkString
+	// =====================================================
 
 #pragma pack(push, 1)
-		template<int S>
-		class NetworkString {
-		private:
-			char buffer[S];
+	template<int S>
+	class NetworkString {
+	private:
+		char buffer[S];
 
-		public:
-			NetworkString() {
-				memset(buffer, 0, S);
-			}
-			NetworkString & operator=(const string& str) {
-				// ensure we don't have a buffer overflow
-				int maxBufferSize = sizeof(buffer) / sizeof(buffer[0]);
-				strncpy(buffer, str.c_str(), min(S - 1, maxBufferSize - 1));
+	public:
+		NetworkString() {
+			memset(buffer, 0, S);
+		}
+		NetworkString & operator=(const string& str) {
+			// ensure we don't have a buffer overflow
+			int maxBufferSize = sizeof(buffer) / sizeof(buffer[0]);
+			strncpy(buffer, str.c_str(), min(S - 1, maxBufferSize - 1));
 
-				return *this;
-			}
-			void nullTerminate() {
-				int maxBufferSize = sizeof(buffer) / sizeof(buffer[0]);
-				buffer[maxBufferSize - 1] = '\0';
-			}
+			return *this;
+		}
+		void nullTerminate() {
+			int maxBufferSize = sizeof(buffer) / sizeof(buffer[0]);
+			buffer[maxBufferSize - 1] = '\0';
+		}
 
-			char *getBuffer() {
-				return &buffer[0];
-			}
-			string getString() const {
-				return (buffer[0] != '\0' ? buffer : "");
-			}
-		};
+		char *getBuffer() {
+			return &buffer[0];
+		}
+		string getString() const {
+			return (buffer[0] != '\0' ? buffer : "");
+		}
+	};
 #pragma pack(pop)
 
-		// =====================================================
-		//	class NetworkCommand
-		// =====================================================
+	// =====================================================
+	//	class NetworkCommand
+	// =====================================================
 
-		enum NetworkCommandType {
-			nctGiveCommand,
-			nctCancelCommand,
-			nctSetMeetingPoint,
-			nctSwitchTeam,
-			nctSwitchTeamVote,
-			nctPauseResume,
-			nctPlayerStatusChange,
-			nctDisconnectNetworkPlayer
-			//nctNetworkCommand
-		};
+	enum NetworkCommandType {
+		nctGiveCommand,
+		nctCancelCommand,
+		nctSetMeetingPoint,
+		nctSwitchTeam,
+		nctSwitchTeamVote,
+		nctPauseResume,
+		nctPlayerStatusChange,
+		nctDisconnectNetworkPlayer
+		//nctNetworkCommand
+	};
 
-		//enum NetworkCommandSubType {
-		//	ncstRotateUnit
-		//};
+	//enum NetworkCommandSubType {
+	//	ncstRotateUnit
+	//};
 
 #pragma pack(push, 1)
-		class NetworkCommand {
+	class NetworkCommand {
 
-		public:
-			NetworkCommand() {
-				networkCommandType = 0;
-				unitId = 0;
-				unitTypeId = 0;
-				commandTypeId = 0;
-				positionX = 0;
-				positionY = 0;
-				targetId = 0;
-				wantQueue = 0;
-				fromFactionIndex = 0;
-				unitFactionUnitCount = 0;
-				unitFactionIndex = 0;
-				commandStateType = 0;
-				commandStateValue = 0;
-				unitCommandGroupId = 0;
-			}
+	public:
+		NetworkCommand() {
+			networkCommandType = 0;
+			unitId = 0;
+			unitTypeId = 0;
+			commandTypeId = 0;
+			positionX = 0;
+			positionY = 0;
+			targetId = 0;
+			wantQueue = 0;
+			fromFactionIndex = 0;
+			unitFactionUnitCount = 0;
+			unitFactionIndex = 0;
+			commandStateType = 0;
+			commandStateValue = 0;
+			unitCommandGroupId = 0;
+		}
 
-			NetworkCommand(
-				World *world,
-				int networkCommandType,
-				int unitId,
-				int commandTypeId = -1,
-				const Vec2i &pos = Vec2i(0),
-				int unitTypeId = -1,
-				int targetId = -1,
-				int facing = -1,
-				bool wantQueue = false,
-				CommandStateType commandStateType = cst_None,
-				int commandTypeStateValue = -1,
-				int unitCommandGroupId = -1);
+		NetworkCommand(
+			World *world,
+			int networkCommandType,
+			int unitId,
+			int commandTypeId = -1,
+			const Vec2i &pos = Vec2i(0),
+			int unitTypeId = -1,
+			int targetId = -1,
+			int facing = -1,
+			bool wantQueue = false,
+			CommandStateType commandStateType = cst_None,
+			int commandTypeStateValue = -1,
+			int unitCommandGroupId = -1);
 
-			int16 networkCommandType;
-			int32 unitId;
-			int16 unitTypeId;
-			int16 commandTypeId;
-			int16 positionX;
-			int16 positionY;
-			int32 targetId;
-			int8 wantQueue;
-			int8 fromFactionIndex;
-			uint16 unitFactionUnitCount;
-			int8 unitFactionIndex;
-			int8 commandStateType;
-			int32 commandStateValue;
-			int32 unitCommandGroupId;
+		int16 networkCommandType;
+		int32 unitId;
+		int16 unitTypeId;
+		int16 commandTypeId;
+		int16 positionX;
+		int16 positionY;
+		int32 targetId;
+		int8 wantQueue;
+		int8 fromFactionIndex;
+		uint16 unitFactionUnitCount;
+		int8 unitFactionIndex;
+		int8 commandStateType;
+		int32 commandStateValue;
+		int32 unitCommandGroupId;
 
-			NetworkCommandType getNetworkCommandType() const {
-				return static_cast<NetworkCommandType>(networkCommandType);
-			}
-			int getUnitId() const {
-				return unitId;
-			}
-			int getCommandTypeId() const {
-				return commandTypeId;
-			}
-			Vec2i getPosition() const {
-				return Vec2i(positionX, positionY);
-			}
-			int getUnitTypeId() const {
-				return unitTypeId;
-			}
-			int getTargetId() const {
-				return targetId;
-			}
-			int getWantQueue() const {
-				return wantQueue;
-			}
-			int getFromFactionIndex() const {
-				return fromFactionIndex;
-			}
-			int getUnitFactionUnitCount() const {
-				return unitFactionUnitCount;
-			}
-			int getUnitFactionIndex() const {
-				return unitFactionIndex;
-			}
+		NetworkCommandType getNetworkCommandType() const {
+			return static_cast<NetworkCommandType>(networkCommandType);
+		}
+		int getUnitId() const {
+			return unitId;
+		}
+		int getCommandTypeId() const {
+			return commandTypeId;
+		}
+		Vec2i getPosition() const {
+			return Vec2i(positionX, positionY);
+		}
+		int getUnitTypeId() const {
+			return unitTypeId;
+		}
+		int getTargetId() const {
+			return targetId;
+		}
+		int getWantQueue() const {
+			return wantQueue;
+		}
+		int getFromFactionIndex() const {
+			return fromFactionIndex;
+		}
+		int getUnitFactionUnitCount() const {
+			return unitFactionUnitCount;
+		}
+		int getUnitFactionIndex() const {
+			return unitFactionIndex;
+		}
 
-			CommandStateType getCommandStateType() const {
-				return static_cast<CommandStateType>(commandStateType);
-			}
-			int getCommandStateValue() const {
-				return commandStateValue;
-			}
+		CommandStateType getCommandStateType() const {
+			return static_cast<CommandStateType>(commandStateType);
+		}
+		int getCommandStateValue() const {
+			return commandStateValue;
+		}
 
-			int getUnitCommandGroupId() const {
-				return unitCommandGroupId;
-			}
+		int getUnitCommandGroupId() const {
+			return unitCommandGroupId;
+		}
 
-			void preprocessNetworkCommand(World *world);
-			string toString() const;
+		void preprocessNetworkCommand(World *world);
+		string toString() const;
 
-			void toEndian();
-			void fromEndian();
+		void toEndian();
+		void fromEndian();
 
-			XmlNode * saveGame(XmlNode *rootNode);
-			void loadGame(const XmlNode *rootNode);
-		};
+		XmlNode * saveGame(XmlNode *rootNode);
+		void loadGame(const XmlNode *rootNode);
+	};
 #pragma pack(pop)
 
-	}
-}//end namespace
+} //end namespace
 
 #endif

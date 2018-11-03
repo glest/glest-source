@@ -17,69 +17,65 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_MENUSTATEOPTIONS_SOUND_H_
-#   define _GLEST_GAME_MENUSTATEOPTIONS_SOUND_H_
+#ifndef _MENUSTATEOPTIONS_SOUND_H_
+#define _MENUSTATEOPTIONS_SOUND_H_
 
-#   include "main_menu.h"
-#   include "leak_dumper.h"
+#include "main_menu.h"
+#include "leak_dumper.h"
 
-namespace ZetaGlest {
-	namespace Game {
+namespace Game {
+	// ===============================
+	//      class MenuStateOptionsSound
+	// ===============================
+	class MenuStateOptionsSound :public MenuState {
+	private:
 
-		// ===============================
-		//      class MenuStateOptionsSound
-		// ===============================
+		GraphicButton buttonOk;
+		GraphicButton buttonReturn;
 
-		class MenuStateOptionsSound :public MenuState {
-		private:
+		GraphicButton buttonKeyboardSetup;        // configure the keyboard
+		GraphicButton buttonVideoSection;
+		GraphicButton buttonAudioSection;
+		GraphicButton buttonMiscSection;
+		GraphicButton buttonNetworkSettings;
 
-			GraphicButton buttonOk;
-			GraphicButton buttonReturn;
+		GraphicLabel labelSoundFactory;
+		GraphicListBox listBoxSoundFactory;
 
-			GraphicButton buttonKeyboardSetup;        // configure the keyboard
-			GraphicButton buttonVideoSection;
-			GraphicButton buttonAudioSection;
-			GraphicButton buttonMiscSection;
-			GraphicButton buttonNetworkSettings;
+		GraphicLabel labelVolumeFx;
+		GraphicListBox listBoxVolumeFx;
 
-			GraphicLabel labelSoundFactory;
-			GraphicListBox listBoxSoundFactory;
+		GraphicLabel labelVolumeAmbient;
+		GraphicListBox listBoxVolumeAmbient;
 
-			GraphicLabel labelVolumeFx;
-			GraphicListBox listBoxVolumeFx;
+		GraphicLabel labelVolumeMusic;
+		GraphicListBox listBoxVolumeMusic;
 
-			GraphicLabel labelVolumeAmbient;
-			GraphicListBox listBoxVolumeAmbient;
+		GraphicMessageBox mainMessageBox;
+		int mainMessageBoxState;
 
-			GraphicLabel labelVolumeMusic;
-			GraphicListBox listBoxVolumeMusic;
+		ProgramState **parentUI;
 
-			GraphicMessageBox mainMessageBox;
-			int mainMessageBoxState;
+	public:
+		MenuStateOptionsSound(Program * program, MainMenu * mainMenu,
+			ProgramState ** parentUI = NULL);
 
-			ProgramState **parentUI;
+		void mouseClick(int x, int y, MouseButton mouseButton);
+		void mouseMove(int x, int y, const MouseState * mouseState);
+		void render();
+		//virtual void keyDown(SDL_KeyboardEvent key);
+		virtual void keyPress(SDL_KeyboardEvent c);
+		//virtual bool isInSpecialKeyCaptureEvent();
 
-		public:
-			MenuStateOptionsSound(Program * program, MainMenu * mainMenu,
-				ProgramState ** parentUI = NULL);
-
-			void mouseClick(int x, int y, MouseButton mouseButton);
-			void mouseMove(int x, int y, const MouseState * mouseState);
-			void render();
-			//virtual void keyDown(SDL_KeyboardEvent key);
-			virtual void keyPress(SDL_KeyboardEvent c);
-			//virtual bool isInSpecialKeyCaptureEvent();
-
-			virtual void reloadUI();
+		virtual void reloadUI();
 
 
-		private:
-			void saveConfig();
-			void setActiveInputLable(GraphicLabel * newLable);
-			//void showMessageBox(const string &text, const string &header, bool toggle);
-		};
+	private:
+		void saveConfig();
+		void setActiveInputLable(GraphicLabel * newLable);
+		//void showMessageBox(const string &text, const string &header, bool toggle);
+	};
 
-	}
-}                              //end namespace
+} //end namespace
 
 #endif

@@ -17,92 +17,89 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_OBJECTTYPE_H_
-#   define _GLEST_GAME_OBJECTTYPE_H_
+#ifndef _OBJECTTYPE_H_
+#define _OBJECTTYPE_H_
 
-#   ifdef WIN32
-#      include <winsock2.h>
-#      include <winsock.h>
-#   endif
+#ifdef WIN32
+#   include <winsock2.h>
+#   include <winsock.h>
+#endif
 
-#   include <vector>
-#   include "model.h"
-#   include "vec.h"
-#   include "leak_dumper.h"
-#   include "unit_particle_type.h"
-#   include "tileset_model_type.h"
+#include <vector>
+#include "model.h"
+#include "vec.h"
+#include "leak_dumper.h"
+#include "unit_particle_type.h"
+#include "tileset_model_type.h"
 
 using std::vector;
 
-namespace ZetaGlest {
-	namespace Game {
+namespace Game {
+	using Shared::Graphics::Model;
+	using Shared::Graphics::Vec4f;
 
-		using Shared::Graphics::Model;
-		using Shared::Graphics::Vec4f;
+	// =====================================================
+	//      class ObjectType  
+	//
+	///     Each of the possible objects of the map: trees, stones ...
+	// =====================================================
 
-		// =====================================================
-		//      class ObjectType  
-		//
-		///     Each of the possible objects of the map: trees, stones ...
-		// =====================================================
+	typedef vector < ObjectParticleSystemType * >ObjectParticleSystemTypes;
+	typedef vector < ObjectParticleSystemTypes > ObjectParticleVector;
 
-		typedef vector < ObjectParticleSystemType * >ObjectParticleSystemTypes;
-		typedef vector < ObjectParticleSystemTypes > ObjectParticleVector;
+	class ObjectType {
+	private:
+		typedef vector < TilesetModelType * >ModelTypes;
+	private:
+		static const int tree1 = 0;
+		static const int tree2 = 1;
+		static const int choppedTree = 2;
 
-		class ObjectType {
-		private:
-			typedef vector < TilesetModelType * >ModelTypes;
-		private:
-			static const int tree1 = 0;
-			static const int tree2 = 1;
-			static const int choppedTree = 2;
+	private:
+		ModelTypes modeltypes;
+		Vec4f color;
+		int objectClass;
+		bool walkable;
+		int height;
 
-		private:
-			ModelTypes modeltypes;
-			Vec4f color;
-			int objectClass;
-			bool walkable;
-			int height;
+	public:
+		ObjectType() {
+			objectClass = -1;
+			walkable = false;
+			height = 0;
+		}
+		~ObjectType();
+		void init(int modelCount, int objectClass, bool walkable, int height);
 
-		public:
-			ObjectType() {
-				objectClass = -1;
-				walkable = false;
-				height = 0;
-			}
-			~ObjectType();
-			void init(int modelCount, int objectClass, bool walkable, int height);
+		TilesetModelType *loadModel(const string & path, std::map < string,
+			vector < pair < string,
+			string > > >*loadedFileList =
+			NULL, string parentLoader = "");
 
-			TilesetModelType *loadModel(const string & path, std::map < string,
-				vector < pair < string,
-				string > > >*loadedFileList =
-				NULL, string parentLoader = "");
+		inline TilesetModelType *getTilesetModelType(int i) {
+			return modeltypes[i];
+		}
+		inline int getModelCount() const {
+			return (int) modeltypes.size();
+		}
+		inline const Vec4f & getColor() const {
+			return color;
+		}
+		inline int getClass() const {
+			return objectClass;
+		}
+		inline bool getWalkable() const {
+			return walkable;
+		}
+		inline int getHeight() const {
+			return height;
+		}
+		inline bool isATree() const {
+			return objectClass == tree1 || objectClass == tree2;
+		}
+		void deletePixels();
+	};
 
-			inline TilesetModelType *getTilesetModelType(int i) {
-				return modeltypes[i];
-			}
-			inline int getModelCount() const {
-				return (int) modeltypes.size();
-			}
-			inline const Vec4f & getColor() const {
-				return color;
-			}
-			inline int getClass() const {
-				return objectClass;
-			}
-			inline bool getWalkable() const {
-				return walkable;
-			}
-			inline int getHeight() const {
-				return height;
-			}
-			inline bool isATree() const {
-				return objectClass == tree1 || objectClass == tree2;
-			}
-			void deletePixels();
-		};
-
-	}
-}                              //end namespace
+} //end namespace
 
 #endif

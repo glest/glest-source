@@ -73,9 +73,7 @@ namespace Shared {
 				return textures;
 			}
 		};
-
-
 	}
-}//end namespace
+} //end namespace
 
 #endif

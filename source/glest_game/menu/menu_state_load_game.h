@@ -17,75 +17,70 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_MENUSTATELOADGAME_H_
-#   define _GLEST_GAME_MENUSTATELOADGAME_H_
+#ifndef _MENUSTATELOADGAME_H_
+#define _MENUSTATELOADGAME_H_
 
-#   include "main_menu.h"
-#   include "leak_dumper.h"
+#include "main_menu.h"
+#include "leak_dumper.h"
 
-namespace ZetaGlest {
-	namespace Game {
+namespace Game {
+	// ===============================
+	//      class MenuStateLoadGame
+	// ===============================
+	//typedef vector<GraphicButton*> SaveSlotButtons;
+	class MenuStateLoadGame :public MenuState {
+	private:
+		GraphicButton loadButton;
+		GraphicButton deleteButton;
+		GraphicButton abortButton;
+		vector < GraphicButton * >slots;
+		vector < GraphicComponent * >slotsGB;
+		vector < string > filenames;
+		GraphicScrollBar slotsScrollBar;
+		GraphicButton *selectedButton;
 
-		// ===============================
-		//      class MenuStateLoadGame
-		// ===============================
-		//typedef vector<GraphicButton*> SaveSlotButtons;
-		class MenuStateLoadGame :public MenuState {
-		private:
-			GraphicButton loadButton;
-			GraphicButton deleteButton;
-			GraphicButton abortButton;
-			vector < GraphicButton * >slots;
-			vector < GraphicComponent * >slotsGB;
-			vector < string > filenames;
-			GraphicScrollBar slotsScrollBar;
-			GraphicButton *selectedButton;
+		GraphicButton *buttonToDelete;
 
-			GraphicButton *buttonToDelete;
+		Texture2D *previewTexture;
 
-			Texture2D *previewTexture;
+		GraphicLabel headerLabel;
+		GraphicLabel noSavedGamesLabel;
+		GraphicLabel savedGamesLabel;
+		GraphicLabel infoHeaderLabel;
+		GraphicLabel infoTextLabel;
+		GraphicLabel versionWarningLabel;
 
-			GraphicLabel headerLabel;
-			GraphicLabel noSavedGamesLabel;
-			GraphicLabel savedGamesLabel;
-			GraphicLabel infoHeaderLabel;
-			GraphicLabel infoTextLabel;
-			GraphicLabel versionWarningLabel;
+		GraphicLine lines[2];
 
-			GraphicLine lines[2];
+		GraphicMessageBox mainMessageBox;
 
-			GraphicMessageBox mainMessageBox;
+		string saveGameDir;
+		int slotLinesYBase;
+		int slotsLineHeight;
 
-			string saveGameDir;
-			int slotLinesYBase;
-			int slotsLineHeight;
+	public:
+		MenuStateLoadGame(Program * program, MainMenu * mainMenu);
+		~MenuStateLoadGame();
 
-		public:
-			MenuStateLoadGame(Program * program, MainMenu * mainMenu);
-			~MenuStateLoadGame();
+		void mouseClick(int x, int y, MouseButton mouseButton);
+		void mouseUp(int x, int y, const MouseButton mouseButton);
+		void mouseMove(int x, int y, const MouseState * mouseState);
+		void update();
+		void render();
+		virtual void keyDown(SDL_KeyboardEvent key);
 
-			void mouseClick(int x, int y, MouseButton mouseButton);
-			void mouseUp(int x, int y, const MouseButton mouseButton);
-			void mouseMove(int x, int y, const MouseState * mouseState);
-			void update();
-			void render();
-			virtual void keyDown(SDL_KeyboardEvent key);
+		void reloadUI();
 
-			void reloadUI();
+	private:
 
-		private:
+		void clearSlots();
+		void listFiles();
 
-			void clearSlots();
-			void listFiles();
+		void showMessageBox(const string & text, const string & header,
+			bool toggle);
 
-			void showMessageBox(const string & text, const string & header,
-				bool toggle);
-
-			void cleanupTexture(Texture2D ** texture);
-		};
-
-
-	}
-}                              //end namespace
+		void cleanupTexture(Texture2D ** texture);
+	};
+} //end namespace
 
 #endif

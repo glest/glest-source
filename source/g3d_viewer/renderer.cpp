@@ -27,7 +27,7 @@
 
 using namespace Shared::Graphics;
 using namespace Shared::Graphics::Gl;
-using namespace ZetaGlest::Game;
+using namespace Game;
 using namespace Shared::Util;
 
 namespace Shared {
@@ -502,4 +502,4 @@ namespace Shared {
 		}
 
 	}
-}//end namespace
+} //end namespace

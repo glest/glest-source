@@ -17,8 +17,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_SURFACEATLAS_H_
-#define _GLEST_GAME_SURFACEATLAS_H_
+#ifndef _SURFACEATLAS_H_
+#define _SURFACEATLAS_H_
 
 #ifdef WIN32
 #include <winsock2.h>
@@ -38,83 +38,80 @@ using Shared::Graphics::Texture2D;
 using Shared::Graphics::Vec2i;
 using Shared::Graphics::Vec2f;
 
-namespace ZetaGlest {
-	namespace Game {
+namespace Game {
+	// =====================================================
+	//	class SurfaceInfo
+	// =====================================================
 
-		// =====================================================
-		//	class SurfaceInfo
-		// =====================================================
+	class SurfaceInfo {
+	private:
+		const Pixmap2D *center;
+		const Pixmap2D *leftUp;
+		const Pixmap2D *rightUp;
+		const Pixmap2D *leftDown;
+		const Pixmap2D *rightDown;
+		Vec2f coord;
+		const Texture2D *texture;
 
-		class SurfaceInfo {
-		private:
-			const Pixmap2D *center;
-			const Pixmap2D *leftUp;
-			const Pixmap2D *rightUp;
-			const Pixmap2D *leftDown;
-			const Pixmap2D *rightDown;
-			Vec2f coord;
-			const Texture2D *texture;
+	public:
+		explicit SurfaceInfo(const Pixmap2D *center);
+		SurfaceInfo(const Pixmap2D *lu, const Pixmap2D *ru, const Pixmap2D *ld, const Pixmap2D *rd);
+		bool operator==(const SurfaceInfo &si) const;
 
-		public:
-			explicit SurfaceInfo(const Pixmap2D *center);
-			SurfaceInfo(const Pixmap2D *lu, const Pixmap2D *ru, const Pixmap2D *ld, const Pixmap2D *rd);
-			bool operator==(const SurfaceInfo &si) const;
+		inline const Pixmap2D *getCenter() const {
+			return center;
+		}
+		inline const Pixmap2D *getLeftUp() const {
+			return leftUp;
+		}
+		inline const Pixmap2D *getRightUp() const {
+			return rightUp;
+		}
+		inline const Pixmap2D *getLeftDown() const {
+			return leftDown;
+		}
+		inline const Pixmap2D *getRightDown() const {
+			return rightDown;
+		}
+		inline const Vec2f &getCoord() const {
+			return coord;
+		}
+		inline const Texture2D *getTexture() const {
+			return texture;
+		}
 
-			inline const Pixmap2D *getCenter() const {
-				return center;
-			}
-			inline const Pixmap2D *getLeftUp() const {
-				return leftUp;
-			}
-			inline const Pixmap2D *getRightUp() const {
-				return rightUp;
-			}
-			inline const Pixmap2D *getLeftDown() const {
-				return leftDown;
-			}
-			inline const Pixmap2D *getRightDown() const {
-				return rightDown;
-			}
-			inline const Vec2f &getCoord() const {
-				return coord;
-			}
-			inline const Texture2D *getTexture() const {
-				return texture;
-			}
+		inline void setCoord(const Vec2f &coord) {
+			this->coord = coord;
+		}
+		inline void setTexture(const Texture2D *texture) {
+			this->texture = texture;
+		}
+	};
 
-			inline void setCoord(const Vec2f &coord) {
-				this->coord = coord;
-			}
-			inline void setTexture(const Texture2D *texture) {
-				this->texture = texture;
-			}
-		};
+	// =====================================================
+	// 	class SurfaceAtlas
+	//
+	/// Holds all surface textures for a given Tileset
+	// =====================================================
 
-		// =====================================================
-		// 	class SurfaceAtlas
-		//
-		/// Holds all surface textures for a given Tileset
-		// =====================================================
+	class SurfaceAtlas {
+	private:
+		typedef vector<SurfaceInfo> SurfaceInfos;
 
-		class SurfaceAtlas {
-		private:
-			typedef vector<SurfaceInfo> SurfaceInfos;
+	private:
+		SurfaceInfos surfaceInfos;
+		int surfaceSize;
 
-		private:
-			SurfaceInfos surfaceInfos;
-			int surfaceSize;
+	public:
+		SurfaceAtlas();
 
-		public:
-			SurfaceAtlas();
+		void addSurface(SurfaceInfo *si);
+		float getCoordStep() const;
 
-			void addSurface(SurfaceInfo *si);
-			float getCoordStep() const;
+	private:
+		void checkDimensions(const Pixmap2D *p);
+	};
 
-		private:
-			void checkDimensions(const Pixmap2D *p);
-		};
-
-	}
-}//end namespace
+} //end namespace
 
 #endif

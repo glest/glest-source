@@ -709,7 +709,5 @@ namespace Shared {
 
 				return font;
 		}
-
-
 	}
-}//end namespace
+} //end namespace

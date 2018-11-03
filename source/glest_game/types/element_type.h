@@ -17,141 +17,138 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_ELEMENTTYPE_H_
-#   define _GLEST_GAME_ELEMENTTYPE_H_
+#ifndef _ELEMENTTYPE_H_
+#define _ELEMENTTYPE_H_
 
-#   ifdef WIN32
-#      include <winsock2.h>
-#      include <winsock.h>
-#   endif
+#ifdef WIN32
+#   include <winsock2.h>
+#   include <winsock.h>
+#endif
 
-#   include <vector>
-#   include <string>
-#   include "texture.h"
-#   include "resource.h"
-#   include "leak_dumper.h"
+#include <vector>
+#include <string>
+#include "texture.h"
+#include "resource.h"
+#include "leak_dumper.h"
 
 using std::vector;
 using std::string;
 
 using Shared::Graphics::Texture2D;
 
-namespace ZetaGlest {
-	namespace Game {
+namespace Game {
+	class UpgradeType;
+	class TechTree;
+	class UnitType;
+	class UpgradeType;
+	class DisplayableType;
+	class ResourceType;
 
-		class UpgradeType;
-		class TechTree;
-		class UnitType;
-		class UpgradeType;
-		class DisplayableType;
-		class ResourceType;
+	// =====================================================
+	//      class DisplayableType
+	//
+	///     Base class for anything that has a name and a portrait
+	// =====================================================
 
-		// =====================================================
-		//      class DisplayableType
-		//
-		///     Base class for anything that has a name and a portrait
-		// =====================================================
+	class DisplayableType {
+	protected:
+		string name;              //name
+		Texture2D *image;         //portrait  
 
-		class DisplayableType {
-		protected:
-			string name;              //name
-			Texture2D *image;         //portrait  
-
-		public:
-			DisplayableType();
-			virtual ~DisplayableType() {
-			};
-
-			//get
-			virtual string getName(bool translatedValue = false) const;
-			virtual const Texture2D *getImage() const {
-				return image;
-			}
-
-			//virtual void saveGame(XmlNode *rootNode) const;
+	public:
+		DisplayableType();
+		virtual ~DisplayableType() {
 		};
 
+		//get
+		virtual string getName(bool translatedValue = false) const;
+		virtual const Texture2D *getImage() const {
+			return image;
+		}
 
-		// =====================================================
-		//      class RequirableType  
-		//
-		///     Base class for anything that has requirements
-		// =====================================================
-
-		class RequirableType :public DisplayableType {
-		private:
-			typedef vector < const UnitType *>UnitReqs;
-			typedef vector < const UpgradeType *>UpgradeReqs;
-			typedef vector < Resource > Costs;
-
-		protected:
-			UnitReqs unitReqs;        //needed units
-			UpgradeReqs upgradeReqs;  //needed upgrades
-			Costs costs;              //needed costs
-
-		public:
-			//get
-			int getUpgradeReqCount() const {
-				return (int) upgradeReqs.size();
-			}
-			int getUnitReqCount() const {
-				return (int) unitReqs.size();
-			}
-			const UpgradeType *getUpgradeReq(int i) const {
-				return upgradeReqs[i];
-			}
-			const UnitType *getUnitReq(int i) const {
-				return unitReqs[i];
-			}
-			//get
-			int getCostCount() const {
-				return (int) costs.size();
-			}
-			const Resource *getCost(int i) const {
-				return &costs[i];
-			}
-			const Resource *getCost(const ResourceType * rt) const;
-
-			//other
-			virtual string getReqDesc(bool translatedValue) const;
-
-			string getResourceReqDesc(bool lineBreaks, bool translatedValue) const;
-			string getUnitAndUpgradeReqDesc(bool lineBreaks,
-				bool translatedValue) const;
-			string getReqDesc(bool ignoreResourceRequirements,
-				bool translatedValue) const;
-
-			//virtual void saveGame(XmlNode *rootNode) const;
-		};
+		//virtual void saveGame(XmlNode *rootNode) const;
+	};
 
 
-		// =====================================================
-		//      class ProducibleType  
-		//
-		///     Base class for anything that can be produced
-		// =====================================================
+	// =====================================================
+	//      class RequirableType  
+	//
+	///     Base class for anything that has requirements
+	// =====================================================
 
-		class ProducibleType :public RequirableType {
-		protected:
-			Texture2D *cancelImage;
-			int productionTime;
+	class RequirableType :public DisplayableType {
+	private:
+		typedef vector < const UnitType *>UnitReqs;
+		typedef vector < const UpgradeType *>UpgradeReqs;
+		typedef vector < Resource > Costs;
 
-		public:
-			ProducibleType();
-			virtual ~ProducibleType();
+	protected:
+		UnitReqs unitReqs;        //needed units
+		UpgradeReqs upgradeReqs;  //needed upgrades
+		Costs costs;              //needed costs
 
-			int getProductionTime() const {
-				return productionTime;
-			}
-			const Texture2D *getCancelImage() const {
-				return cancelImage;
-			}
+	public:
+		//get
+		int getUpgradeReqCount() const {
+			return (int) upgradeReqs.size();
+		}
+		int getUnitReqCount() const {
+			return (int) unitReqs.size();
+		}
+		const UpgradeType *getUpgradeReq(int i) const {
+			return upgradeReqs[i];
+		}
+		const UnitType *getUnitReq(int i) const {
+			return unitReqs[i];
+		}
+		//get
+		int getCostCount() const {
+			return (int) costs.size();
+		}
+		const Resource *getCost(int i) const {
+			return &costs[i];
+		}
+		const Resource *getCost(const ResourceType * rt) const;
 
-			//      virtual void saveGame(XmlNode *rootNode) const;
-			//      void loadGame(const XmlNode *rootNode);
-		};
+		//other
+		virtual string getReqDesc(bool translatedValue) const;
 
-	}
-}                              //end namespace
+		string getResourceReqDesc(bool lineBreaks, bool translatedValue) const;
+		string getUnitAndUpgradeReqDesc(bool lineBreaks,
+			bool translatedValue) const;
+		string getReqDesc(bool ignoreResourceRequirements,
+			bool translatedValue) const;
+
+		//virtual void saveGame(XmlNode *rootNode) const;
+	};
+
+
+	// =====================================================
+	//      class ProducibleType  
+	//
+	///     Base class for anything that can be produced
+	// =====================================================
+
+	class ProducibleType :public RequirableType {
+	protected:
+		Texture2D *cancelImage;
+		int productionTime;
+
+	public:
+		ProducibleType();
+		virtual ~ProducibleType();
+
+		int getProductionTime() const {
+			return productionTime;
+		}
+		const Texture2D *getCancelImage() const {
+			return cancelImage;
+		}
+
+		//      virtual void saveGame(XmlNode *rootNode) const;
+		//      void loadGame(const XmlNode *rootNode);
+	};
+
+} //end namespace
 
 #endif

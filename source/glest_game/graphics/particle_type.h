@@ -17,8 +17,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_PARTICLETYPE_H_
-#define _GLEST_GAME_PARTICLETYPE_H_
+#ifndef _PARTICLETYPE_H_
+#define _PARTICLETYPE_H_
 
 #ifdef WIN32
 #include <winsock2.h>
@@ -38,163 +38,160 @@
 using std::string;
 using namespace Shared::Graphics;
 
-namespace ZetaGlest {
-	namespace Game {
+namespace Game {
+	using Shared::Graphics::ParticleSystem;
+	using Shared::Graphics::UnitParticleSystem;
+	using Shared::Graphics::AttackParticleSystem;
+	using Shared::Graphics::ProjectileParticleSystem;
+	using Shared::Graphics::SplashParticleSystem;
+	using Shared::Graphics::Texture2D;
+	using Shared::Graphics::Vec3f;
+	using Shared::Graphics::Vec4f;
+	using Shared::Graphics::Model;
+	using Shared::Util::MultiFactory;
+	using Shared::Xml::XmlNode;
 
-		using Shared::Graphics::ParticleSystem;
-		using Shared::Graphics::UnitParticleSystem;
-		using Shared::Graphics::AttackParticleSystem;
-		using Shared::Graphics::ProjectileParticleSystem;
-		using Shared::Graphics::SplashParticleSystem;
-		using Shared::Graphics::Texture2D;
-		using Shared::Graphics::Vec3f;
-		using Shared::Graphics::Vec4f;
-		using Shared::Graphics::Model;
-		using Shared::Util::MultiFactory;
-		using Shared::Xml::XmlNode;
+	class UnitParticleSystemType;
 
-		class UnitParticleSystemType;
+	// ===========================================================
+	//	class ParticleSystemType 
+	//
+	///	A type of particle system
+	// ===========================================================
 
-		// ===========================================================
-		//	class ParticleSystemType 
-		//
-		///	A type of particle system
-		// ===========================================================
+	class ParticleSystemType : public ParticleSystemTypeInterface {
+	protected:
+		string type;
+		Texture2D *texture;
+		Model *model;
+		float modelCycle;
+		string primitive;
+		Vec3f offset;
+		Vec4f color;
+		Vec4f colorNoEnergy;
+		float size;
+		float sizeNoEnergy;
+		float speed;
+		float speedUpRelative;
+		float speedUpConstant;
+		float gravity;
+		float emissionRate;
+		int energyMax;
+		int energyVar;
+		string mode;
+		bool teamcolorNoEnergy;
+		bool teamcolorEnergy;
+		int alternations;
+		int particleSystemStartDelay;
+		typedef std::list<UnitParticleSystemType*> Children;
+		Children children;
 
-		class ParticleSystemType : public ParticleSystemTypeInterface {
-		protected:
-			string type;
-			Texture2D *texture;
-			Model *model;
-			float modelCycle;
-			string primitive;
-			Vec3f offset;
-			Vec4f color;
-			Vec4f colorNoEnergy;
-			float size;
-			float sizeNoEnergy;
-			float speed;
-			float speedUpRelative;
-			float speedUpConstant;
-			float gravity;
-			float emissionRate;
-			int energyMax;
-			int energyVar;
-			string mode;
-			bool teamcolorNoEnergy;
-			bool teamcolorEnergy;
-			int alternations;
-			int particleSystemStartDelay;
-			typedef std::list<UnitParticleSystemType*> Children;
-			Children children;
+		bool minmaxEnabled;
+		int minHp;
+		int maxHp;
+		bool minmaxIsPercent;
 
-			bool minmaxEnabled;
-			int minHp;
-			int maxHp;
-			bool minmaxIsPercent;
+		void copyAll(const ParticleSystemType &src);
+	public:
 
-			void copyAll(const ParticleSystemType &src);
-		public:
+		ParticleSystemType();
+		virtual ~ParticleSystemType();
 
-			ParticleSystemType();
-			virtual ~ParticleSystemType();
+		ParticleSystemType & operator=(const ParticleSystemType &src);
+		ParticleSystemType(const ParticleSystemType &src);
 
-			ParticleSystemType & operator=(const ParticleSystemType &src);
-			ParticleSystemType(const ParticleSystemType &src);
+		void load(const XmlNode *particleSystemNode, const string &dir,
+			RendererInterface *renderer, std::map<string, vector<pair<string, string> > > &loadedFileList,
+			string parentLoader, string techtreePath);
+		void setValues(AttackParticleSystem *ats);
+		bool hasTexture() const {
+			return(texture != NULL);
+		}
+		bool hasModel() const {
+			return(model != NULL);
+		}
 
-			void load(const XmlNode *particleSystemNode, const string &dir,
-				RendererInterface *renderer, std::map<string, vector<pair<string, string> > > &loadedFileList,
-				string parentLoader, string techtreePath);
-			void setValues(AttackParticleSystem *ats);
-			bool hasTexture() const {
-				return(texture != NULL);
-			}
-			bool hasModel() const {
-				return(model != NULL);
-			}
+		bool getMinmaxEnabled() const {
+			return minmaxEnabled;
+		}
+		int getMinHp() const {
+			return minHp;
+		}
+		int getMaxHp() const {
+			return maxHp;
+		}
+		bool getMinmaxIsPercent() const {
+			return minmaxIsPercent;
+		}
 
-			bool getMinmaxEnabled() const {
-				return minmaxEnabled;
-			}
-			int getMinHp() const {
-				return minHp;
-			}
-			int getMaxHp() const {
-				return maxHp;
-			}
-			bool getMinmaxIsPercent() const {
-				return minmaxIsPercent;
-			}
+		void setMinmaxEnabled(bool value) {
+			minmaxEnabled = value;
+		}
+		void setMinHp(int value) {
+			minHp = value;
+		}
+		void setMaxHp(int value) {
+			maxHp = value;
+		}
+		void setMinmaxIsPercent(bool value) {
+			minmaxIsPercent = value;
+		}
 
-			void setMinmaxEnabled(bool value) {
-				minmaxEnabled = value;
-			}
-			void setMinHp(int value) {
-				minHp = value;
-			}
-			void setMaxHp(int value) {
-				maxHp = value;
-			}
-			void setMinmaxIsPercent(bool value) {
-				minmaxIsPercent = value;
-			}
-
-			string getType() const {
-				return type;
-			};
-
-			virtual void saveGame(XmlNode *rootNode);
-			virtual void loadGame(const XmlNode *rootNode);
-
-		protected:
-
+		string getType() const {
+			return type;
 		};
 
-		// ===========================================================
-		//	class ParticleSystemTypeProjectile
-		// ===========================================================
+		virtual void saveGame(XmlNode *rootNode);
+		virtual void loadGame(const XmlNode *rootNode);
 
-		class ParticleSystemTypeProjectile : public ParticleSystemType {
-		private:
-			string trajectory;
-			float trajectorySpeed;
-			float trajectoryScale;
-			float trajectoryFrequency;
+	protected:
 
-		public:
-			ParticleSystemTypeProjectile();
-			void load(const XmlNode *particleFileNode, const string &dir, const string &path,
-				RendererInterface *renderer, std::map<string, vector<pair<string, string> > > &loadedFileList,
-				string parentLoader, string techtreePath);
-			ProjectileParticleSystem *create(ParticleOwner *owner);
+	};
 
-			virtual void saveGame(XmlNode *rootNode);
-		};
+	// ===========================================================
+	//	class ParticleSystemTypeProjectile
+	// ===========================================================
 
-		// ===========================================================
-		//	class ParticleSystemTypeSplash
-		// ===========================================================
+	class ParticleSystemTypeProjectile : public ParticleSystemType {
+	private:
+		string trajectory;
+		float trajectorySpeed;
+		float trajectoryScale;
+		float trajectoryFrequency;
 
-		class ParticleSystemTypeSplash : public ParticleSystemType {
-		public:
+	public:
+		ParticleSystemTypeProjectile();
+		void load(const XmlNode *particleFileNode, const string &dir, const string &path,
+			RendererInterface *renderer, std::map<string, vector<pair<string, string> > > &loadedFileList,
+			string parentLoader, string techtreePath);
+		ProjectileParticleSystem *create(ParticleOwner *owner);
 
-			ParticleSystemTypeSplash();
-			void load(const XmlNode *particleFileNode, const string &dir, const string &path,
-				RendererInterface *renderer, std::map<string, vector<pair<string, string> > > &loadedFileList,
-				string parentLoader, string techtreePath);
-			SplashParticleSystem *create(ParticleOwner *owner);
+		virtual void saveGame(XmlNode *rootNode);
+	};
 
-			virtual void saveGame(XmlNode *rootNode);
+	// ===========================================================
+	//	class ParticleSystemTypeSplash
+	// ===========================================================
 
-		private:
-			float emissionRateFade;
-			float verticalSpreadA;
-			float verticalSpreadB;
-			float horizontalSpreadA;
-			float horizontalSpreadB;
-		};
+	class ParticleSystemTypeSplash : public ParticleSystemType {
+	public:
 
-	}
-}//end namespace
+		ParticleSystemTypeSplash();
+		void load(const XmlNode *particleFileNode, const string &dir, const string &path,
+			RendererInterface *renderer, std::map<string, vector<pair<string, string> > > &loadedFileList,
+			string parentLoader, string techtreePath);
+		SplashParticleSystem *create(ParticleOwner *owner);
+
+		virtual void saveGame(XmlNode *rootNode);
+
+	private:
+		float emissionRateFade;
+		float verticalSpreadA;
+		float verticalSpreadB;
+		float horizontalSpreadA;
+		float horizontalSpreadB;
+	};
+
+} //end namespace
 
 #endif

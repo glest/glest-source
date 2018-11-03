@@ -29,6 +29,6 @@ namespace Shared {
 	const std::string LastCompatibleVersionString = LAST_COMPATIBLE_VERSION;
 	const std::string G3DViewerVersionString = G3D_VIEWER_VERSION;
 	const std::string MapEditorVersionString = MAP_EDITOR_VERSION;
-}//end namespace
+} //end namespace
 
 #endif

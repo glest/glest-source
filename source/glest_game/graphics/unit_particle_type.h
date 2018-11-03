@@ -17,8 +17,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_UNITPARTICLETYPE_H_
-#define _GLEST_GAME_UNITPARTICLETYPE_H_
+#ifndef _UNITPARTICLETYPE_H_
+#define _UNITPARTICLETYPE_H_
 
 #ifdef WIN32
 #include <winsock2.h>
@@ -40,87 +40,84 @@
 using std::string;
 using namespace Shared::Graphics;
 
-namespace ZetaGlest {
-	namespace Game {
+namespace Game {
+	using Shared::Graphics::ParticleManager;
+	using Shared::Graphics::ParticleSystem;
+	using Shared::Graphics::UnitParticleSystem;
+	using Shared::Graphics::Texture2D;
+	using Shared::Graphics::Vec3f;
+	using Shared::Graphics::Vec4f;
+	using Shared::Util::MultiFactory;
+	using Shared::Xml::XmlNode;
 
-		using Shared::Graphics::ParticleManager;
-		using Shared::Graphics::ParticleSystem;
-		using Shared::Graphics::UnitParticleSystem;
-		using Shared::Graphics::Texture2D;
-		using Shared::Graphics::Vec3f;
-		using Shared::Graphics::Vec4f;
-		using Shared::Util::MultiFactory;
-		using Shared::Xml::XmlNode;
+	// ===========================================================
+	//	class ParticleSystemType 
+	//
+	///	A type of particle system
+	// ===========================================================
 
-		// ===========================================================
-		//	class ParticleSystemType 
-		//
-		///	A type of particle system
-		// ===========================================================
-
-		class UnitParticleSystemType : public ParticleSystemType {
-		protected:
-			UnitParticleSystem::Shape shape;
-			float angle;
-			float radius;
-			float minRadius;
-			float emissionRateFade;
-			Vec3f direction;
-			bool relative;
-			string meshName;
-			bool relativeDirection;
-			bool fixed;
-			int staticParticleCount;
-			bool isVisibleAtNight;
-			bool isVisibleAtDay;
-			bool isDaylightAffected;
-			bool radiusBasedStartenergy;
-			int delay;
-			int lifetime;
-			float startTime;
-			float endTime;
+	class UnitParticleSystemType : public ParticleSystemType {
+	protected:
+		UnitParticleSystem::Shape shape;
+		float angle;
+		float radius;
+		float minRadius;
+		float emissionRateFade;
+		Vec3f direction;
+		bool relative;
+		string meshName;
+		bool relativeDirection;
+		bool fixed;
+		int staticParticleCount;
+		bool isVisibleAtNight;
+		bool isVisibleAtDay;
+		bool isDaylightAffected;
+		bool radiusBasedStartenergy;
+		int delay;
+		int lifetime;
+		float startTime;
+		float endTime;
 
 
-		public:
-			UnitParticleSystemType();
-			virtual ~UnitParticleSystemType() {
-			};
-
-			void load(const XmlNode *particleSystemNode, const string &dir,
-				RendererInterface *newTexture, std::map<string, vector<pair<string, string> > > &loadedFileList,
-				string parentLoader, string techtreePath);
-			void load(const XmlNode *particleFileNode, const string &dir, const string &path, RendererInterface *newTexture,
-				std::map<string, vector<pair<string, string> > > &loadedFileList, string parentLoader,
-				string techtreePath);
-
-			void setStartTime(float startTime) {
-				this->startTime = startTime;
-			}
-			float getStartTime() const {
-				return this->startTime;
-			}
-			void setEndTime(float endTime) {
-				this->endTime = endTime;
-			}
-			float getEndTime() const {
-				return this->endTime;
-			}
-
-			const void setValues(UnitParticleSystem *uts);
-			bool hasTexture() const {
-				return(texture != NULL);
-			}
-			virtual void saveGame(XmlNode *rootNode);
-			virtual void loadGame(const XmlNode *rootNode);
+	public:
+		UnitParticleSystemType();
+		virtual ~UnitParticleSystemType() {
 		};
 
-		class ObjectParticleSystemType : public UnitParticleSystemType {
-		public:
-			ObjectParticleSystemType();
-			virtual ~ObjectParticleSystemType();
-		};
+		void load(const XmlNode *particleSystemNode, const string &dir,
+			RendererInterface *newTexture, std::map<string, vector<pair<string, string> > > &loadedFileList,
+			string parentLoader, string techtreePath);
+		void load(const XmlNode *particleFileNode, const string &dir, const string &path, RendererInterface *newTexture,
+			std::map<string, vector<pair<string, string> > > &loadedFileList, string parentLoader,
+			string techtreePath);
 
-	}
-}//end namespace
+		void setStartTime(float startTime) {
+			this->startTime = startTime;
+		}
+		float getStartTime() const {
+			return this->startTime;
+		}
+		void setEndTime(float endTime) {
+			this->endTime = endTime;
+		}
+		float getEndTime() const {
+			return this->endTime;
+		}
+
+		const void setValues(UnitParticleSystem *uts);
+		bool hasTexture() const {
+			return(texture != NULL);
+		}
+		virtual void saveGame(XmlNode *rootNode);
+		virtual void loadGame(const XmlNode *rootNode);
+	};
+
+	class ObjectParticleSystemType : public UnitParticleSystemType {
+	public:
+		ObjectParticleSystemType();
+		virtual ~ObjectParticleSystemType();
+	};
+
+} //end namespace
 
 #endif

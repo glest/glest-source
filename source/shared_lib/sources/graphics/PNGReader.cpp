@@ -378,6 +378,5 @@ namespace Shared {
 			return ret;
 		}
 
-
 	}
 } //end namespace

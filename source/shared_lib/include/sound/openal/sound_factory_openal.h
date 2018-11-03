@@ -24,17 +24,20 @@
 #include "sound_player_openal.h"
 #include "leak_dumper.h"
 
-namespace Shared{ namespace Sound{ namespace OpenAL{
-
-// ===============================
-//	class SoundFactoryOpenAL
-// ===============================
-
-class SoundFactoryOpenAL : public SoundFactory{
-public:
-	virtual SoundPlayer* newSoundPlayer()	{return new SoundPlayerOpenAL();}	
-};
-
-}}}//end namespace
+namespace Shared {
+	namespace Sound {
+		namespace OpenAL {
+			// ===============================
+			//	class SoundFactoryOpenAL
+			// ===============================
+			class SoundFactoryOpenAL : public SoundFactory {
+			public:
+				virtual SoundPlayer* newSoundPlayer() {
+					return new SoundPlayerOpenAL();
+				}	
+			};
+		}
+	}
+} //end namespace
 
 #endif

@@ -737,12 +737,4 @@ int mainSetup(int argc, char **argv) {
 	return 0;
 }
 
-#define MAIN_FUNCTION(X) int main(int argc, char **argv) {	\
-	int result = mainSetup(argc,argv);			\
-	if(result == 0) {					\
-		result = X(argc, argv);				\
-	}							\
-    return result;						\
-}
-
 #endif

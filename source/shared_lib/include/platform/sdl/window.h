@@ -324,6 +324,6 @@ namespace Shared {
 		bool isAllowedInputTextKey(wchar_t &key);
 
 	}
-}//end namespace
+} //end namespace
 
 #endif

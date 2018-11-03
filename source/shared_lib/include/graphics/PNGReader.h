@@ -45,7 +45,6 @@ namespace Shared {
 			Pixmap3D* read(ifstream& in, const string& path, Pixmap3D* ret) const;
 		};
 
-
 	}
 } //end namespace
 

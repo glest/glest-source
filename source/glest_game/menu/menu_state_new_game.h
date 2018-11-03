@@ -17,42 +17,38 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_MENUSTATENEWGAME_H_
-#   define _GLEST_GAME_MENUSTATENEWGAME_H_
+#ifndef _MENUSTATENEWGAME_H_
+#define _MENUSTATENEWGAME_H_
 
-#   include "main_menu.h"
-#   include "leak_dumper.h"
+#include "main_menu.h"
+#include "leak_dumper.h"
 
-namespace ZetaGlest {
-	namespace Game {
+namespace Game {
+	// ===============================
+	//      class MenuStateNewGame  
+	// ===============================
 
-		// ===============================
-		//      class MenuStateNewGame  
-		// ===============================
+	class MenuStateNewGame :public MenuState {
+	private:
+		GraphicButton buttonCustomGame;
+		GraphicButton buttonScenario;
+		GraphicButton buttonJoinGame;
+		GraphicButton buttonMasterserverGame;
+		GraphicButton buttonTutorial;
+		GraphicButton buttonReturn;
 
-		class MenuStateNewGame :public MenuState {
-		private:
-			GraphicButton buttonCustomGame;
-			GraphicButton buttonScenario;
-			GraphicButton buttonJoinGame;
-			GraphicButton buttonMasterserverGame;
-			GraphicButton buttonTutorial;
-			GraphicButton buttonReturn;
+	public:
+		MenuStateNewGame(Program * program, MainMenu * mainMenu);
 
-		public:
-			MenuStateNewGame(Program * program, MainMenu * mainMenu);
+		void mouseClick(int x, int y, MouseButton mouseButton);
+		void mouseMove(int x, int y, const MouseState * mouseState);
+		void update();
+		void render();
+		virtual void keyDown(SDL_KeyboardEvent key);
 
-			void mouseClick(int x, int y, MouseButton mouseButton);
-			void mouseMove(int x, int y, const MouseState * mouseState);
-			void update();
-			void render();
-			virtual void keyDown(SDL_KeyboardEvent key);
+		void reloadUI();
+	};
 
-			void reloadUI();
-		};
-
-
-	}
-}                              //end namespace
+} //end namespace
 
 #endif

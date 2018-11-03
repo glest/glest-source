@@ -17,95 +17,92 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_METRICS_H_
-#   define _GLEST_GAME_METRICS_H_
+#ifndef _METRICS_H_
+#define _METRICS_H_
 
-#   ifdef WIN32
-#      include <winsock2.h>
-#      include <winsock.h>
-#   endif
+#ifdef WIN32
+#   include <winsock2.h>
+#   include <winsock.h>
+#endif
 
-#   include "config.h"
-#   include "leak_dumper.h"
+#include "config.h"
+#include "leak_dumper.h"
 
-namespace ZetaGlest {
-	namespace Game {
+namespace Game {
+	// =====================================================
+	//      class Metrics
+	// =====================================================
 
-		// =====================================================
-		//      class Metrics
-		// =====================================================
+	class Metrics {
+	private:
+		int virtualW;
+		int virtualH;
+		int screenW;
+		int screenH;
+		int minimapX;
+		int minimapY;
+		int minimapW;
+		int minimapH;
+		int displayX;
+		int displayY;
+		int displayH;
+		int displayW;
 
-		class Metrics {
-		private:
-			int virtualW;
-			int virtualH;
-			int screenW;
-			int screenH;
-			int minimapX;
-			int minimapY;
-			int minimapW;
-			int minimapH;
-			int displayX;
-			int displayY;
-			int displayH;
-			int displayW;
+	private:
+		Metrics();
+		static Metrics *getInstancePtr();
+		void reloadData(int resWidth = -1, int resHeight = -1);
 
-		private:
-			Metrics();
-			static Metrics *getInstancePtr();
-			void reloadData(int resWidth = -1, int resHeight = -1);
+	public:
+		static const Metrics & getInstance();
 
-		public:
-			static const Metrics & getInstance();
+		int getVirtualW() const {
+			return virtualW;
+		}
+		int getVirtualH() const {
+			return virtualH;
+		}
+		int getScreenW() const {
+			return screenW;
+		}
+		int getScreenH() const {
+			return screenH;
+		}
+		int getMinimapX() const {
+			return minimapX;
+		}
+		int getMinimapY() const {
+			return minimapY;
+		}
+		int getMinimapW() const {
+			return minimapW;
+		}
+		int getMinimapH() const {
+			return minimapH;
+		}
+		int getDisplayX() const {
+			return displayX;
+		}
+		int getDisplayY() const {
+			return displayY;
+		}
+		int getDisplayH() const {
+			return displayH;
+		}
+		int getDisplayW() const {
+			return displayW;
+		}
+		float getAspectRatio() const;
 
-			int getVirtualW() const {
-				return virtualW;
-			}
-			int getVirtualH() const {
-				return virtualH;
-			}
-			int getScreenW() const {
-				return screenW;
-			}
-			int getScreenH() const {
-				return screenH;
-			}
-			int getMinimapX() const {
-				return minimapX;
-			}
-			int getMinimapY() const {
-				return minimapY;
-			}
-			int getMinimapW() const {
-				return minimapW;
-			}
-			int getMinimapH() const {
-				return minimapH;
-			}
-			int getDisplayX() const {
-				return displayX;
-			}
-			int getDisplayY() const {
-				return displayY;
-			}
-			int getDisplayH() const {
-				return displayH;
-			}
-			int getDisplayW() const {
-				return displayW;
-			}
-			float getAspectRatio() const;
+		int toVirtualX(int w) const;
+		int toVirtualY(int h) const;
 
-			int toVirtualX(int w) const;
-			int toVirtualY(int h) const;
+		bool isInDisplay(int x, int y) const;
+		bool isInMinimap(int x, int y) const;
 
-			bool isInDisplay(int x, int y) const;
-			bool isInMinimap(int x, int y) const;
+		static void reload(int resWidth = -1, int resHeight = -1);
+	};
 
-			static void reload(int resWidth = -1, int resHeight = -1);
-		};
-
-	}
-}                              //end namespace
+} //end namespace
 
 #endif

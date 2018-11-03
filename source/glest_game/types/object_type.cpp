@@ -22,58 +22,55 @@
 #include "renderer.h"
 #include "leak_dumper.h"
 
-namespace ZetaGlest {
-	namespace Game {
+namespace Game {
+	// =====================================================
+	//      class ObjectType
+	// =====================================================
 
-		// =====================================================
-		//      class ObjectType
-		// =====================================================
-
-		void ObjectType::init(int modelCount, int objectClass, bool walkable,
-			int height) {
-			//      modeltypes.reserve(modelCount);
-			this->objectClass = objectClass;
-			this->walkable = walkable;
-			this->height = height;
-		}
-
-		ObjectType::~ObjectType() {
-			while (!(modeltypes.empty())) {
-				delete modeltypes.back();
-				modeltypes.pop_back();
-				//Logger::getInstance().add("ObjectType", true);
-			}
-		}
-
-		TilesetModelType *ObjectType::loadModel(const string & path,
-			std::map < string,
-			vector < pair < string,
-			string > > >*loadedFileList,
-			string parentLoader) {
-			Model *model =
-				Renderer::getInstance().newModel(rsGame, path, false,
-					loadedFileList, &parentLoader);
-			color = Vec4f(0.f);
-			if (model && model->getMeshCount() > 0
-				&& model->getMesh(0)->getTexture(0) != NULL) {
-				const Pixmap2D *p =
-					model->getMesh(0)->getTexture(0)->getPixmapConst();
-				color = p->getPixel4f(p->getW() / 2, p->getH() / 2);
-			}
-			TilesetModelType *modelType = new TilesetModelType();
-			modelType->setModel(model);
-			modeltypes.push_back(modelType);
-			return modelType;
-		}
-
-		void ObjectType::deletePixels() {
-			for (int i = 0; i < (int) modeltypes.size(); ++i) {
-				TilesetModelType *model = modeltypes[i];
-				if (model->getModel() != NULL) {
-					model->getModel()->deletePixels();
-				}
-			}
-		}
-
+	void ObjectType::init(int modelCount, int objectClass, bool walkable,
+		int height) {
+		//      modeltypes.reserve(modelCount);
+		this->objectClass = objectClass;
+		this->walkable = walkable;
+		this->height = height;
 	}
-}                               //end namespace
+
+	ObjectType::~ObjectType() {
+		while (!(modeltypes.empty())) {
+			delete modeltypes.back();
+			modeltypes.pop_back();
+			//Logger::getInstance().add("ObjectType", true);
+		}
+	}
+
+	TilesetModelType *ObjectType::loadModel(const string & path,
+		std::map < string,
+		vector < pair < string,
+		string > > >*loadedFileList,
+		string parentLoader) {
+		Model *model =
+			Renderer::getInstance().newModel(rsGame, path, false,
+				loadedFileList, &parentLoader);
+		color = Vec4f(0.f);
+		if (model && model->getMeshCount() > 0
+			&& model->getMesh(0)->getTexture(0) != NULL) {
+			const Pixmap2D *p =
+				model->getMesh(0)->getTexture(0)->getPixmapConst();
+			color = p->getPixel4f(p->getW() / 2, p->getH() / 2);
+		}
+		TilesetModelType *modelType = new TilesetModelType();
+		modelType->setModel(model);
+		modeltypes.push_back(modelType);
+		return modelType;
+	}
+
+	void ObjectType::deletePixels() {
+		for (int i = 0; i < (int) modeltypes.size(); ++i) {
+			TilesetModelType *model = modeltypes[i];
+			if (model->getModel() != NULL) {
+				model->getModel()->deletePixels();
+			}
+		}
+	}
+
+} //end namespace

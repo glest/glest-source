@@ -17,105 +17,102 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_LANG_H_
-#   define _GLEST_GAME_LANG_H_
+#ifndef _LANG_H_
+#define _LANG_H_
 
-#   ifdef WIN32
-#      include <winsock2.h>
-#      include <winsock.h>
-#   endif
+#ifdef WIN32
+#   include <winsock2.h>
+#   include <winsock.h>
+#endif
 
-#   include "properties.h"
-#   include "leak_dumper.h"
+#include "properties.h"
+#include "leak_dumper.h"
 
-namespace ZetaGlest {
-	namespace Game {
+namespace Game {
+	using Shared::Util::Properties;
 
-		using Shared::Util::Properties;
+	// =====================================================
+	//      class Lang
+	//
+	//      String table
+	// =====================================================
 
-		// =====================================================
-		//      class Lang
-		//
-		//      String table
-		// =====================================================
+	class Lang {
+	private:
 
-		class Lang {
-		private:
+		bool is_utf8_language;
+		string language;
+		std::map < string, Properties > gameStringsAllLanguages;
 
-			bool is_utf8_language;
-			string language;
-			std::map < string, Properties > gameStringsAllLanguages;
+		Properties scenarioStrings;
 
-			Properties scenarioStrings;
+		Properties tilesetStrings;
+		Properties tilesetStringsDefault;
 
-			Properties tilesetStrings;
-			Properties tilesetStringsDefault;
+		std::map < string, std::map < string,
+			Properties > >techTreeStringsAllLanguages;
+		string techNameLoaded;
+		bool allowNativeLanguageTechtree;
 
-			std::map < string, std::map < string,
-				Properties > >techTreeStringsAllLanguages;
-			string techNameLoaded;
-			bool allowNativeLanguageTechtree;
+	private:
+		Lang();
+		void loadGameStringProperties(string language, Properties & properties,
+			bool fileMustExist,
+			bool fallbackToDefault = false);
+		bool fileMatchesISO630Code(string uselanguage,
+			string testLanguageFile);
+		string getNativeLanguageName(string uselanguage,
+			string testLanguageFile);
 
-		private:
-			Lang();
-			void loadGameStringProperties(string language, Properties & properties,
-				bool fileMustExist,
-				bool fallbackToDefault = false);
-			bool fileMatchesISO630Code(string uselanguage,
-				string testLanguageFile);
-			string getNativeLanguageName(string uselanguage,
-				string testLanguageFile);
+		string parseResult(const string & key, const string & value);
 
-			string parseResult(const string & key, const string & value);
+	public:
+		static Lang & getInstance();
 
-		public:
-			static Lang & getInstance();
+		string getTechNameLoaded() const {
+			return techNameLoaded;
+		}
+		bool getAllowNativeLanguageTechtree() const {
+			return allowNativeLanguageTechtree;
+		}
+		void setAllowNativeLanguageTechtree(bool value) {
+			allowNativeLanguageTechtree = value;
+		}
 
-			string getTechNameLoaded() const {
-				return techNameLoaded;
-			}
-			bool getAllowNativeLanguageTechtree() const {
-				return allowNativeLanguageTechtree;
-			}
-			void setAllowNativeLanguageTechtree(bool value) {
-				allowNativeLanguageTechtree = value;
-			}
+		void loadGameStrings(string uselanguage, bool loadFonts =
+			true, bool fallbackToDefault = false);
+		void loadScenarioStrings(string scenarioDir, string scenarioName,
+			bool isTutorial);
+		bool loadTechTreeStrings(string techTree, bool forceLoad = false);
+		void loadTilesetStrings(string tileset);
 
-			void loadGameStrings(string uselanguage, bool loadFonts =
-				true, bool fallbackToDefault = false);
-			void loadScenarioStrings(string scenarioDir, string scenarioName,
-				bool isTutorial);
-			bool loadTechTreeStrings(string techTree, bool forceLoad = false);
-			void loadTilesetStrings(string tileset);
+		string getString(const string & s, string uselanguage = "");
+		bool hasString(const string & s, string uselanguage =
+			"", bool fallbackToDefault = false);
 
-			string getString(const string & s, string uselanguage = "");
-			bool hasString(const string & s, string uselanguage =
-				"", bool fallbackToDefault = false);
+		string getScenarioString(const string & s);
+		bool hasScenarioString(const string & s);
 
-			string getScenarioString(const string & s);
-			bool hasScenarioString(const string & s);
+		string getTechTreeString(const string & s, const char *defaultValue =
+			NULL);
+		string getTilesetString(const string & s, const char *defaultValue =
+			NULL);
 
-			string getTechTreeString(const string & s, const char *defaultValue =
-				NULL);
-			string getTilesetString(const string & s, const char *defaultValue =
-				NULL);
+		string getLanguage() const {
+			return language;
+		}
+		bool isLanguageLocal(string compareLanguage) const;
+		//bool isUTF8Language() const;
+		string getDefaultLanguage() const;
 
-			string getLanguage() const {
-				return language;
-			}
-			bool isLanguageLocal(string compareLanguage) const;
-			//bool isUTF8Language() const;
-			string getDefaultLanguage() const;
+		map < string,
+			string > getDiscoveredLanguageList(bool searchKeyIsLangName = false);
+		pair < string,
+			string > getNavtiveNameFromLanguageName(string langName);
 
-			map < string,
-				string > getDiscoveredLanguageList(bool searchKeyIsLangName = false);
-			pair < string,
-				string > getNavtiveNameFromLanguageName(string langName);
+		string getLanguageFile(string uselanguage);
+	};
 
-			string getLanguageFile(string uselanguage);
-		};
-
-	}
-}                              //end namespace
+} //end namespace
 
 #endif

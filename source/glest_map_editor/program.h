@@ -194,6 +194,6 @@ namespace MapEditor {
 		}
 	};
 
-}// end namespace
+} //end namespace
 
 #endif

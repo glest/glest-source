@@ -31,4 +31,4 @@ namespace Shared {
 		const char *CacheManager::getFolderTreeContentsCheckSumListRecursivelyCacheLookupKey2 = "CRC_Cache_FileTreeList2";
 
 	}
-}//end namespace
+} //end namespace

@@ -17,146 +17,143 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_OBJECT_H_
-#   define _GLEST_GAME_OBJECT_H_
+#ifndef _OBJECT_H_
+#define _OBJECT_H_
 
-#   ifdef WIN32
-#      include <winsock2.h>
-#      include <winsock.h>
-#   endif
+#ifdef WIN32
+#   include <winsock2.h>
+#   include <winsock.h>
+#endif
 
-#   include "model.h"
-#   include "vec.h"
-#   include "leak_dumper.h"
-#   include "particle.h"
-#   include "object_type.h"
-#   include "tileset_model_type.h"
+#include "model.h"
+#include "vec.h"
+#include "leak_dumper.h"
+#include "particle.h"
+#include "object_type.h"
+#include "tileset_model_type.h"
 
-namespace ZetaGlest {
-	namespace Game {
+namespace Game {
+	class ObjectType;
+	class ResourceType;
+	class Resource;
+	class TechTree;
 
-		class ObjectType;
-		class ResourceType;
-		class Resource;
-		class TechTree;
+	using Shared::Graphics::Model;
+	using Shared::Graphics::Vec2i;
+	using Shared::Graphics::Vec3f;
+	using Shared::Graphics::UnitParticleSystem;
 
-		using Shared::Graphics::Model;
-		using Shared::Graphics::Vec2i;
-		using Shared::Graphics::Vec3f;
-		using Shared::Graphics::UnitParticleSystem;
+	// =====================================================
+	//      class Object
+	//
+	///     A map object: tree, stone...
+	// =====================================================
 
-		// =====================================================
-		//      class Object
-		//
-		///     A map object: tree, stone...
-		// =====================================================
+	class Object;
 
-		class Object;
+	class ObjectStateInterface {
+	public:
+		virtual void removingObjectEvent(Object * object) = 0;
+		virtual ~ObjectStateInterface() {
+		}
+	};
 
-		class ObjectStateInterface {
-		public:
-			virtual void removingObjectEvent(Object * object) = 0;
-			virtual ~ObjectStateInterface() {
-			}
+	class Object :public BaseColorPickEntity, public ParticleOwner {
+	private:
+		typedef vector < UnitParticleSystem * >UnitParticleSystems;
+
+	private:
+		ObjectType * objectType;
+		vector < UnitParticleSystem * >unitParticleSystems;
+		Resource *resource;
+		Vec3f pos;
+		float rotation;
+		int variation;
+		int lastRenderFrame;
+		Vec2i mapPos;
+		bool visible;
+		bool animated;
+		float animProgress;
+		float highlight;
+
+		static ObjectStateInterface *stateCallback;
+
+	public:
+		Object(ObjectType * objectType, const Vec3f & pos,
+			const Vec2i & mapPos);
+		virtual ~Object();
+
+		virtual void end();      //to kill particles
+		virtual void logParticleInfo(string info) {
 		};
+		void initParticles();
+		void initParticlesFromTypes(const ModelParticleSystemTypes *
+			particleTypes);
+		static void setStateCallback(ObjectStateInterface * value) {
+			stateCallback = value;
+		}
 
-		class Object :public BaseColorPickEntity, public ParticleOwner {
-		private:
-			typedef vector < UnitParticleSystem * >UnitParticleSystems;
+		const ObjectType *getType() const {
+			return objectType;
+		}
+		Resource *getResource() const {
+			return resource;
+		}
+		Vec3f getPos() const {
+			return pos;
+		}
+		bool isVisible() const {
+			return visible;
+		}
+		const Vec3f & getConstPos() const {
+			return pos;
+		}
+		float getRotation() const {
+			return rotation;
+		}
+		const Model *getModel() const;
+		Model *getModelPtr() const;
+		bool getWalkable() const;
+		bool isAnimated() const {
+			return animated;
+		}
 
-		private:
-			ObjectType * objectType;
-			vector < UnitParticleSystem * >unitParticleSystems;
-			Resource *resource;
-			Vec3f pos;
-			float rotation;
-			int variation;
-			int lastRenderFrame;
-			Vec2i mapPos;
-			bool visible;
-			bool animated;
-			float animProgress;
-			float highlight;
+		float getHightlight() const {
+			return highlight;
+		}
+		bool isHighlighted() const {
+			return highlight > 0.f;
+		}
+		void resetHighlight();
 
-			static ObjectStateInterface *stateCallback;
+		void setResource(const ResourceType * resourceType, const Vec2i & pos);
+		void setHeight(float height);
+		void setVisible(bool visible);
 
-		public:
-			Object(ObjectType * objectType, const Vec3f & pos,
-				const Vec2i & mapPos);
-			virtual ~Object();
+		int getLastRenderFrame() const {
+			return lastRenderFrame;
+		}
+		void setLastRenderFrame(int value) {
+			lastRenderFrame = value;
+		}
 
-			virtual void end();      //to kill particles
-			virtual void logParticleInfo(string info) {
-			};
-			void initParticles();
-			void initParticlesFromTypes(const ModelParticleSystemTypes *
-				particleTypes);
-			static void setStateCallback(ObjectStateInterface * value) {
-				stateCallback = value;
-			}
+		const Vec2i & getMapPos() const {
+			return mapPos;
+		}
 
-			const ObjectType *getType() const {
-				return objectType;
-			}
-			Resource *getResource() const {
-				return resource;
-			}
-			Vec3f getPos() const {
-				return pos;
-			}
-			bool isVisible() const {
-				return visible;
-			}
-			const Vec3f & getConstPos() const {
-				return pos;
-			}
-			float getRotation() const {
-				return rotation;
-			}
-			const Model *getModel() const;
-			Model *getModelPtr() const;
-			bool getWalkable() const;
-			bool isAnimated() const {
-				return animated;
-			}
+		void updateHighlight();
+		void update();
+		float getAnimProgress() const {
+			return animProgress;
+		}
 
-			float getHightlight() const {
-				return highlight;
-			}
-			bool isHighlighted() const {
-				return highlight > 0.f;
-			}
-			void resetHighlight();
+		virtual string getUniquePickName() const;
+		void saveGame(XmlNode * rootNode);
+		void loadGame(const XmlNode * rootNode, const TechTree * techTree);
 
-			void setResource(const ResourceType * resourceType, const Vec2i & pos);
-			void setHeight(float height);
-			void setVisible(bool visible);
+		virtual void end(ParticleSystem * particleSystem);
+	};
 
-			int getLastRenderFrame() const {
-				return lastRenderFrame;
-			}
-			void setLastRenderFrame(int value) {
-				lastRenderFrame = value;
-			}
-
-			const Vec2i & getMapPos() const {
-				return mapPos;
-			}
-
-			void updateHighlight();
-			void update();
-			float getAnimProgress() const {
-				return animProgress;
-			}
-
-			virtual string getUniquePickName() const;
-			void saveGame(XmlNode * rootNode);
-			void loadGame(const XmlNode * rootNode, const TechTree * techTree);
-
-			virtual void end(ParticleSystem * particleSystem);
-		};
-
-	}
-}                              //end namespace
+} //end namespace
 
 #endif

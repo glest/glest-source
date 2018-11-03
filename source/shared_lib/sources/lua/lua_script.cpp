@@ -1137,6 +1137,5 @@ namespace Shared {
 			string stackString = getStackText();
 			throw game_runtime_error("Lua error: " + message + "\n\nLua Stack:\n" + stackString, true);
 		}
-
-		}
-		}//end namespace
+	}
+} //end namespace

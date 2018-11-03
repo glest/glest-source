@@ -17,121 +17,119 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_PROJEKTILETYPE_H_
-#   define _GLEST_GAME_PROJEKTILETYPE_H_
+#ifndef _PROJECTILETYPE_H_
+#define _PROJECTILETYPE_H_
 
-#   ifdef WIN32
-#      include <winsock2.h>
-#      include <winsock.h>
-#   endif
+#ifdef WIN32
+#   include <winsock2.h>
+#   include <winsock.h>
+#endif
 
-#   include "sound.h"
-#   include "vec.h"
+#include "sound.h"
+#include "vec.h"
 //#include "xml_parser.h"
-#   include "util.h"
+#include "util.h"
 //#include "element_type.h"
-#   include "factory.h"
-#   include "sound_container.h"
-#   include "particle_type.h"
-#   include "leak_dumper.h"
+#include "factory.h"
+#include "sound_container.h"
+#include "particle_type.h"
+#include "leak_dumper.h"
 
 using std::vector;
 using std::string;
 
-namespace ZetaGlest {
-	namespace Game {
-		// =====================================================
-		//      class ProjectileType
-		// =====================================================
+namespace Game {
+	// =====================================================
+	//      class ProjectileType
+	// =====================================================
 
-		class ProjectileType {
-		protected:
-			ParticleSystemTypeProjectile * projectileParticleSystemType;
-			SoundContainer hitSounds;
-			float attackStartTime;
+	class ProjectileType {
+	protected:
+		ParticleSystemTypeProjectile * projectileParticleSystemType;
+		SoundContainer hitSounds;
+		float attackStartTime;
 
-			string spawnUnit;
-			int spawnUnitcount;
-			bool spawnUnitAtTarget;
+		string spawnUnit;
+		int spawnUnitcount;
+		bool spawnUnitAtTarget;
 
-			bool shake;
-			int shakeIntensity;
-			int shakeDuration;
+		bool shake;
+		int shakeIntensity;
+		int shakeDuration;
 
-			bool shakeVisible;
-			bool shakeInCameraView;
-			bool shakeCameraDistanceAffected;
-			int damagePercentage;
+		bool shakeVisible;
+		bool shakeInCameraView;
+		bool shakeCameraDistanceAffected;
+		int damagePercentage;
 
-		public:
-			ProjectileType();
-			virtual ~ProjectileType();
+	public:
+		ProjectileType();
+		virtual ~ProjectileType();
 
 
-			void load(const XmlNode * projectileNode, const string & dir,
-				const string & techtreepath, std::map < string,
-				vector < pair < string, string > > >&loadedFileList,
-				string parentLoader);
+		void load(const XmlNode * projectileNode, const string & dir,
+			const string & techtreepath, std::map < string,
+			vector < pair < string, string > > >&loadedFileList,
+			string parentLoader);
 
-			//get/set
-			inline StaticSound *getHitSound() const {
-				return hitSounds.getRandSound();
-			}
-			ParticleSystemTypeProjectile *getProjectileParticleSystemType() const {
-				return projectileParticleSystemType;
-			}
-			float getAttackStartTime() const {
-				return attackStartTime;
-			}
-			void setAttackStartTime(float value) {
-				attackStartTime = value;
-			}
+		//get/set
+		inline StaticSound *getHitSound() const {
+			return hitSounds.getRandSound();
+		}
+		ParticleSystemTypeProjectile *getProjectileParticleSystemType() const {
+			return projectileParticleSystemType;
+		}
+		float getAttackStartTime() const {
+			return attackStartTime;
+		}
+		void setAttackStartTime(float value) {
+			attackStartTime = value;
+		}
 
-			string getSpawnUnit() const {
-				return spawnUnit;
-			}
-			int getSpawnUnitcount() const {
-				return spawnUnitcount;
-			}
-			bool getSpawnUnitAtTarget() const {
-				return spawnUnitAtTarget;
-			}
+		string getSpawnUnit() const {
+			return spawnUnit;
+		}
+		int getSpawnUnitcount() const {
+			return spawnUnitcount;
+		}
+		bool getSpawnUnitAtTarget() const {
+			return spawnUnitAtTarget;
+		}
 
-			bool isShake() const {
-				return shake;
-			}
-			bool isShakeCameraDistanceAffected() const {
-				return shakeCameraDistanceAffected;
-			}
-			int getShakeDuration() const {
-				return shakeDuration;
-			}
-			bool isShakeInCameraView() const {
-				return shakeInCameraView;
-			}
-			int getShakeIntensity() const {
-				return shakeIntensity;
-			}
-			bool isShakeVisible() const {
-				return shakeVisible;
-			}
-			int getDamagePercentage() const {
-				return damagePercentage;
-			}
-			void setDamagePercentage(int value) {
-				damagePercentage = value;
-			}
+		bool isShake() const {
+			return shake;
+		}
+		bool isShakeCameraDistanceAffected() const {
+			return shakeCameraDistanceAffected;
+		}
+		int getShakeDuration() const {
+			return shakeDuration;
+		}
+		bool isShakeInCameraView() const {
+			return shakeInCameraView;
+		}
+		int getShakeIntensity() const {
+			return shakeIntensity;
+		}
+		bool isShakeVisible() const {
+			return shakeVisible;
+		}
+		int getDamagePercentage() const {
+			return damagePercentage;
+		}
+		void setDamagePercentage(int value) {
+			damagePercentage = value;
+		}
 
-			void setProjectileParticleSystemType(ParticleSystemTypeProjectile *
-				pointer) {
-				projectileParticleSystemType = pointer;
-			}
-			ParticleSystemTypeProjectile *getProjectileParticleSystemType() {
-				return projectileParticleSystemType;
-			}
-		};
+		void setProjectileParticleSystemType(ParticleSystemTypeProjectile *
+			pointer) {
+			projectileParticleSystemType = pointer;
+		}
+		ParticleSystemTypeProjectile *getProjectileParticleSystemType() {
+			return projectileParticleSystemType;
+		}
+	};
 
-	}
-}                               //end namespace
+} //end namespace
 
 #endif

@@ -50,6 +50,6 @@ namespace Shared {
 		};
 
 	}
-}//end namespace
+} //end namespace
 
 #endif

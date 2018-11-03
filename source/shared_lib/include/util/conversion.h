@@ -56,6 +56,6 @@ namespace Shared {
 		string getTimeDuationString(int frames, int updateFps);
 
 	}
-}//end namespace
+} //end namespace
 
 #endif

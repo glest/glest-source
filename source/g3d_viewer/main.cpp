@@ -73,22 +73,19 @@ const char *folderDelimiter = "/";
 // Because g3d should always support alpha transparency
 string fileFormat = "png";
 
-namespace ZetaGlest {
-	namespace Game {
-
-		string getGameReadWritePath(const string &lookupKey) {
-			string path = "";
-			if (path == "" && getenv("GLESTHOME") != NULL) {
-				path = safeCharPtrCopy(getenv("GLESTHOME"), 8096);
-				if (path != "" && EndsWith(path, "/") == false && EndsWith(path, "\\") == false) {
-					path += "/";
-				}
-
-				//SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] path to be used for read/write files [%s]\n",__FILE__,__FUNCTION__,__LINE__,path.c_str());
+namespace Game {
+	string getGameReadWritePath(const string &lookupKey) {
+		string path = "";
+		if (path == "" && getenv("GLESTHOME") != NULL) {
+			path = safeCharPtrCopy(getenv("GLESTHOME"), 8096);
+			if (path != "" && EndsWith(path, "/") == false && EndsWith(path, "\\") == false) {
+				path += "/";
 			}
 
-			return path;
+			//SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] path to be used for read/write files [%s]\n",__FILE__,__FUNCTION__,__LINE__,path.c_str());
 		}
+
+		return path;
 	}
 }
 
@@ -2555,7 +2552,7 @@ namespace Shared {
 			return 0;
 		}
 
-		}
-	}//end namespace
+	}
+} //end namespace
 
 IMPLEMENT_APP_CONSOLE(Shared::G3dViewer::App)

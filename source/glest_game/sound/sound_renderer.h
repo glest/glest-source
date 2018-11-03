@@ -17,8 +17,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_SOUNDRENDERER_H_
-#define _GLEST_GAME_SOUNDRENDERER_H_
+#ifndef _SOUNDRENDERER_H_
+#define _SOUNDRENDERER_H_
 
 #ifdef WIN32
 #include <winsock2.h>
@@ -33,81 +33,78 @@
 #include "platform_common.h"
 #include "leak_dumper.h"
 
-namespace ZetaGlest {
-	namespace Game {
+namespace Game {
+	using ::Shared::Sound::StrSound;
+	using ::Shared::Sound::StaticSound;
+	using ::Shared::Sound::SoundPlayer;
+	using ::Shared::Graphics::Vec3f;
+	using namespace ::Shared::PlatformCommon;
 
-		using ::Shared::Sound::StrSound;
-		using ::Shared::Sound::StaticSound;
-		using ::Shared::Sound::SoundPlayer;
-		using ::Shared::Graphics::Vec3f;
-		using namespace ::Shared::PlatformCommon;
+	// =====================================================
+	// 	class SoundRenderer
+	//
+	///	Wrapper to acces the shared library sound engine
+	// =====================================================
 
-		// =====================================================
-		// 	class SoundRenderer
-		//
-		///	Wrapper to acces the shared library sound engine
-		// =====================================================
+	class SoundRenderer : public SimpleTaskCallbackInterface {
+	public:
+		static const int ambientFade;
+		static const float audibleDist;
+	private:
+		SoundPlayer * soundPlayer;
 
-		class SoundRenderer : public SimpleTaskCallbackInterface {
-		public:
-			static const int ambientFade;
-			static const float audibleDist;
-		private:
-			SoundPlayer * soundPlayer;
+		//volume
+		float fxVolume;
+		float musicVolume;
+		float ambientVolume;
 
-			//volume
-			float fxVolume;
-			float musicVolume;
-			float ambientVolume;
+		Mutex *mutex;
+		bool runThreadSafe;
 
-			Mutex *mutex;
-			bool runThreadSafe;
+	private:
+		SoundRenderer();
 
-		private:
-			SoundRenderer();
+		void cleanup();
 
-			void cleanup();
+	public:
+		//misc
+		virtual ~SoundRenderer();
+		static SoundRenderer &getInstance();
+		bool init(Window *window);
+		void update();
+		virtual void simpleTask(BaseThread *callingThread, void *userdata) {
+			update();
+		}
+		SoundPlayer *getSoundPlayer() const {
+			return soundPlayer;
+		}
 
-		public:
-			//misc
-			virtual ~SoundRenderer();
-			static SoundRenderer &getInstance();
-			bool init(Window *window);
-			void update();
-			virtual void simpleTask(BaseThread *callingThread, void *userdata) {
-				update();
-			}
-			SoundPlayer *getSoundPlayer() const {
-				return soundPlayer;
-			}
+		//music
+		void playMusic(StrSound *strSound);
+		void setMusicVolume(StrSound *strSound);
+		void stopMusic(StrSound *strSound);
 
-			//music
-			void playMusic(StrSound *strSound);
-			void setMusicVolume(StrSound *strSound);
-			void stopMusic(StrSound *strSound);
+		//fx
+		void playFx(StaticSound *staticSound, Vec3f soundPos, Vec3f camPos);
+		void playFx(StaticSound *staticSound, bool force = false);
 
-			//fx
-			void playFx(StaticSound *staticSound, Vec3f soundPos, Vec3f camPos);
-			void playFx(StaticSound *staticSound, bool force = false);
+		//ambient
+		void playAmbient(StrSound *strSound);
+		void stopAmbient(StrSound *strSound);
 
-			//ambient
-			void playAmbient(StrSound *strSound);
-			void stopAmbient(StrSound *strSound);
+		//misc
+		void stopAllSounds(int64 fadeOff = 0);
+		void loadConfig();
 
-			//misc
-			void stopAllSounds(int64 fadeOff = 0);
-			void loadConfig();
+		bool wasInitOk() const;
 
-			bool wasInitOk() const;
+		bool runningThreaded() const {
+			return runThreadSafe;
+		}
 
-			bool runningThreaded() const {
-				return runThreadSafe;
-			}
+		bool isVolumeTurnedOff() const;
+	};
 
-			bool isVolumeTurnedOff() const;
-		};
-
-	}
-}//end namespace
+} //end namespace
 
 #endif

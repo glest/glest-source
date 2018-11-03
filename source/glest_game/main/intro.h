@@ -17,20 +17,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_INTRO_H_
-#   define _GLEST_GAME_INTRO_H_
+#ifndef _INTRO_H_
+#define _INTRO_H_
 
-#   include <vector>
+#include <vector>
 
-#   include "program.h"
-#   include "font.h"
-#   include "vec.h"
-#   include "texture.h"
-#   include "camera.h"
-#   include "model.h"
-#   include "randomgen.h"
+#include "program.h"
+#include "font.h"
+#include "vec.h"
+#include "texture.h"
+#include "camera.h"
+#include "model.h"
+#include "randomgen.h"
 
-#   include "leak_dumper.h"
+#include "leak_dumper.h"
 
 using std::vector;
 
@@ -50,146 +50,143 @@ using Shared::Util::RandomGen;
 //class Md5Object;
 //}}}
 
-namespace ZetaGlest {
-	namespace Game {
+namespace Game {
+	// =====================================================
+	//      class Text
+	// =====================================================
 
-		// =====================================================
-		//      class Text
-		// =====================================================
+	class IntroText {
+	private:
+		string text;
+		Vec2i pos;
+		Vec2i size;
+		int
+			time;
+		Font2D *
+			font;
+		Font3D *
+			font3D;
+		const Texture2D *
+			texture;
 
-		class IntroText {
-		private:
-			string text;
-			Vec2i pos;
-			Vec2i size;
-			int
+	public:
+		IntroText(const string & text, const Vec2i & pos, int time,
+			Font2D * font, Font3D * font3D);
+		IntroText(const Texture2D * texture, const Vec2i & pos,
+			const Vec2i & size, int time);
+
+		const
+			string &
+			getText() const {
+			return
+				text;
+		}
+		Font2D *
+			getFont() {
+			return font;
+		}
+		Font3D *
+			getFont3D() {
+			return font3D;
+		}
+		const
+			Vec2i &
+			getPos() const {
+			return
+				pos;
+		}
+		const
+			Vec2i &
+			getSize() const {
+			return
+				size;
+		}
+		int
+			getTime() const {
+			return
 				time;
-			Font2D *
-				font;
-			Font3D *
-				font3D;
-			const Texture2D *
+		}
+		const Texture2D *
+			getTexture() const {
+			return
 				texture;
+		}
+	};
 
-		public:
-			IntroText(const string & text, const Vec2i & pos, int time,
-				Font2D * font, Font3D * font3D);
-			IntroText(const Texture2D * texture, const Vec2i & pos,
-				const Vec2i & size, int time);
+	// =====================================================
+	//      class Intro
+	//
+	///     ProgramState representing the intro
+	// =====================================================
 
-			const
-				string &
-				getText() const {
-				return
-					text;
-			}
-			Font2D *
-				getFont() {
-				return font;
-			}
-			Font3D *
-				getFont3D() {
-				return font3D;
-			}
-			const
-				Vec2i &
-				getPos() const {
-				return
-					pos;
-			}
-			const
-				Vec2i &
-				getSize() const {
-				return
-					size;
-			}
-			int
-				getTime() const {
-				return
-					time;
-			}
-			const Texture2D *
-				getTexture() const {
-				return
-					texture;
-			}
-		};
+	class Intro :
+		public ProgramState {
+	private:
+		static int
+			introTime;
+		static int
+			appearTime;
+		static int
+			showTime;
+		static int
+			disapearTime;
 
-		// =====================================================
-		//      class Intro
-		//
-		///     ProgramState representing the intro
-		// =====================================================
+	private:
+		vector < IntroText * >texts;
+		int
+			timer;
+		int
+			mouse2d;
 
-		class Intro :
-			public ProgramState {
-		private:
-			static int
-				introTime;
-			static int
-				appearTime;
-			static int
-				showTime;
-			static int
-				disapearTime;
+		//Model *mainModel;
+		int
+			modelIndex;
+		float
+			modelMinAnimSpeed;
+		float
+			modelMaxAnimSpeed;
+		vector < Model * >models;
+		Camera nextCamera;
+		Camera camera;
+		Camera lastCamera;
+		const Camera *
+			targetCamera;
+		float
+			t;
+		RandomGen random;
+		float
+			anim;
+		float
+			fade;
+		Vec3f startPosition;
+		int
+			modelShowTime;
 
-		private:
-			vector < IntroText * >texts;
-			int
-				timer;
-			int
-				mouse2d;
+		//GLMmodel* test;
+		//Shared::Graphics::md5::Md5Object *md5Test;
 
-			//Model *mainModel;
-			int
-				modelIndex;
-			float
-				modelMinAnimSpeed;
-			float
-				modelMaxAnimSpeed;
-			vector < Model * >models;
-			Camera nextCamera;
-			Camera camera;
-			Camera lastCamera;
-			const Camera *
-				targetCamera;
-			float
-				t;
-			RandomGen random;
-			float
-				anim;
-			float
-				fade;
-			Vec3f startPosition;
-			int
-				modelShowTime;
+		bool exitAfterIntroVideo;
+		void
+			cleanup();
+		void
+			renderModelBackground();
 
-			//GLMmodel* test;
-			//Shared::Graphics::md5::Md5Object *md5Test;
+	public:
+		explicit Intro(Program * program);
+		virtual ~Intro();
 
-			bool exitAfterIntroVideo;
-			void
-				cleanup();
-			void
-				renderModelBackground();
+		virtual void
+			update();
+		virtual void
+			render();
+		virtual void
+			keyDown(SDL_KeyboardEvent key);
+		virtual void
+			mouseUpLeft(int x, int y);
+		void
+			mouseMove(int x, int y, const MouseState * ms);
+	};
 
-		public:
-			explicit Intro(Program * program);
-			virtual ~Intro();
-
-			virtual void
-				update();
-			virtual void
-				render();
-			virtual void
-				keyDown(SDL_KeyboardEvent key);
-			virtual void
-				mouseUpLeft(int x, int y);
-			void
-				mouseMove(int x, int y, const MouseState * ms);
-		};
-
-	}
-}                              //end namespace
+} //end namespace
 
 #endif

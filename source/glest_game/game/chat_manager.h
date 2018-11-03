@@ -17,217 +17,208 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_CHATMANAGER_H_
-#   define _GLEST_GAME_CHATMANAGER_H_
+#ifndef _CHATMANAGER_H_
+#define _CHATMANAGER_H_
 
-#   ifdef WIN32
-#      include <winsock2.h>
-#      include <winsock.h>
-#   endif
+#ifdef WIN32
+#   include <winsock2.h>
+#   include <winsock.h>
+#endif
 
-#   include <string>
-#   include "font.h"
-#   include <SDL.h>
-#   include <vector>
-#   include "leak_dumper.h"
+#include <string>
+#include "font.h"
+#include <SDL.h>
+#include <vector>
+#include "leak_dumper.h"
 
-using
-std::string;
-using
-std::vector;
-using
-Shared::Graphics::Font2D;
-using
-Shared::Graphics::Font3D;
+using std::string;
+using std::vector;
+using Shared::Graphics::Font2D;
+using Shared::Graphics::Font3D;
 
-namespace ZetaGlest {
-	namespace
-		Game {
+namespace Game {
+	class Console;
 
-		class
-			Console;
+	//
+	// This interface describes the methods a callback object must implement
+	//
+	class
+		CustomInputCallbackInterface {
+	public:
+		virtual void
+			processInputText(string text, bool cancelled) = 0;
+		virtual ~
+			CustomInputCallbackInterface() {
+		}
+	};
 
-		//
-		// This interface describes the methods a callback object must implement
-		//
-		class
-			CustomInputCallbackInterface {
-		public:
-			virtual void
-				processInputText(string text, bool cancelled) = 0;
-			virtual ~
-				CustomInputCallbackInterface() {
-			}
-		};
+	// =====================================================
+	//      class ChatManager
+	// =====================================================
 
-		// =====================================================
-		//      class ChatManager
-		// =====================================================
+	class
+		ChatManager {
 
-		class
-			ChatManager {
+	private:
+		bool
+			editEnabled;
+		bool
+			teamMode;
+		bool
+			disableTeamMode;
+		Console *
+			console;
+		string
+			text;
+		vector < int >
+			textCharLength;
+		int
+			thisTeamIndex;
+		bool
+			inMenu;
+		string
+			manualPlayerNameOverride;
+		int
+			xPos;
+		int
+			yPos;
+		int
+			maxTextLength;
+		Font2D *
+			font;
+		Font3D *
+			font3D;
 
-		private:
-			bool
+		string
+			lastAutoCompleteSearchText;
+		vector <
+			string >
+			autoCompleteTextList;
+
+		CustomInputCallbackInterface *
+			customCB;
+		int
+			maxCustomTextLength;
+
+		string
+			getTextWithLengthCheck(string text, int currentLength, int maxLength);
+		void
+			appendText(string addText, bool validateChars =
+				true, bool addToAutoCompleteBuffer = true);
+		void
+			deleteText(int deleteCount, bool addToAutoCompleteBuffer = true);
+		void
+			updateAutoCompleteBuffer();
+
+	public:
+		ChatManager();
+		void
+			init(Console * console, int thisTeamIndex, const bool inMenu =
+				false, string manualPlayerNameOverride = "");
+
+		bool
+			textInput(std::string text);
+		void
+			keyDown(SDL_KeyboardEvent key);
+		void
+			keyUp(SDL_KeyboardEvent key);
+		void
+			keyPress(SDL_KeyboardEvent c);
+		void
+			updateNetwork();
+
+		bool
+			getEditEnabled() const {
+			return
 				editEnabled;
-			bool
+		}
+		bool
+			getTeamMode() const {
+			return
 				teamMode;
-			bool
-				disableTeamMode;
-			Console *
-				console;
-			string
-				text;
-			vector < int >
-				textCharLength;
-			int
-				thisTeamIndex;
-			bool
+		}
+		bool
+			getInMenu() const {
+			return
 				inMenu;
-			string
-				manualPlayerNameOverride;
-			int
+		}
+		string
+			getText() const {
+			return
+				text;
+		}
+		int
+			getXPos() const {
+			return
 				xPos;
-			int
+		}
+		void
+			setXPos(int xPos) {
+			this->xPos = xPos;
+		}
+		int
+			getYPos() const {
+			return
 				yPos;
-			int
+		}
+		void
+			setYPos(int yPos) {
+			this->yPos = yPos;
+		}
+		int
+			getMaxTextLenght() const {
+			return
 				maxTextLength;
-			Font2D *
+		}
+		void
+			setMaxTextLenght(int maxTextLength) {
+			this->maxTextLength = maxTextLength;
+		}
+		Font2D *
+			getFont() const {
+			return
 				font;
-			Font3D *
+		}
+		Font3D *
+			getFont3D() const {
+			return
 				font3D;
+		}
+		void
+			setFont(Font2D * font) {
+			this->font = font;
+		}
+		void
+			setFont3D(Font3D * font) {
+			this->font3D = font;
+		}
+		void
+			addText(string text);
+		void
+			switchOnEdit(CustomInputCallbackInterface * customCB =
+				NULL, int maxCustomTextLength = -1);
 
-			string
-				lastAutoCompleteSearchText;
-			vector <
-				string >
-				autoCompleteTextList;
+		bool
+			getDisableTeamMode() const {
+			return
+				disableTeamMode;
+		}
+		void
+			setDisableTeamMode(bool value);
 
-			CustomInputCallbackInterface *
-				customCB;
-			int
-				maxCustomTextLength;
+		void
+			setAutoCompleteTextList(const vector < string > &list) {
+			autoCompleteTextList = list;
+		}
 
-			string
-				getTextWithLengthCheck(string text, int currentLength, int maxLength);
-			void
-				appendText(string addText, bool validateChars =
-					true, bool addToAutoCompleteBuffer = true);
-			void
-				deleteText(int deleteCount, bool addToAutoCompleteBuffer = true);
-			void
-				updateAutoCompleteBuffer();
-
-		public:
-			ChatManager();
-			void
-				init(Console * console, int thisTeamIndex, const bool inMenu =
-					false, string manualPlayerNameOverride = "");
-
-			bool
-				textInput(std::string text);
-			void
-				keyDown(SDL_KeyboardEvent key);
-			void
-				keyUp(SDL_KeyboardEvent key);
-			void
-				keyPress(SDL_KeyboardEvent c);
-			void
-				updateNetwork();
-
-			bool
-				getEditEnabled() const {
-				return
-					editEnabled;
-			}
-			bool
-				getTeamMode() const {
-				return
-					teamMode;
-			}
-			bool
-				getInMenu() const {
-				return
-					inMenu;
-			}
-			string
-				getText() const {
-				return
-					text;
-			}
-			int
-				getXPos() const {
-				return
-					xPos;
-			}
-			void
-				setXPos(int xPos) {
-				this->xPos = xPos;
-			}
-			int
-				getYPos() const {
-				return
-					yPos;
-			}
-			void
-				setYPos(int yPos) {
-				this->yPos = yPos;
-			}
-			int
-				getMaxTextLenght() const {
-				return
-					maxTextLength;
-			}
-			void
-				setMaxTextLenght(int maxTextLength) {
-				this->maxTextLength = maxTextLength;
-			}
-			Font2D *
-				getFont() const {
-				return
-					font;
-			}
-			Font3D *
-				getFont3D() const {
-				return
-					font3D;
-			}
-			void
-				setFont(Font2D * font) {
-				this->font = font;
-			}
-			void
-				setFont3D(Font3D * font) {
-				this->font3D = font;
-			}
-			void
-				addText(string text);
-			void
-				switchOnEdit(CustomInputCallbackInterface * customCB =
-					NULL, int maxCustomTextLength = -1);
-
-			bool
-				getDisableTeamMode() const {
-				return
-					disableTeamMode;
-			}
-			void
-				setDisableTeamMode(bool value);
-
-			void
-				setAutoCompleteTextList(const vector < string > &list) {
-				autoCompleteTextList = list;
-			}
-
-			bool
-				isInCustomInputMode() const {
-				return
-					customCB !=
-					NULL;
-			};
+		bool
+			isInCustomInputMode() const {
+			return
+				customCB !=
+				NULL;
 		};
+	};
 
-	}
-}                               //end namespace
+} //end namespace
 
 #endif

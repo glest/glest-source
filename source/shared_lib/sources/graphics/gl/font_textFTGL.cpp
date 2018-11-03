@@ -438,6 +438,6 @@ namespace Shared {
 
 		}
 	}
-}//end namespace
+} //end namespace
 
 #endif // USE_FTGL

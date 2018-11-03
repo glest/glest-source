@@ -106,6 +106,6 @@ namespace Shared {
 		void* getGlProcAddress(const char *procName);
 
 	}
-}//end namespace
+} //end namespace
 
 #endif

@@ -51,6 +51,6 @@ SoundFactory *FactoryRepository::getSoundFactory(const string &name) {
 	throw game_runtime_error("Unknown sound factory: " + name);
 }
 
-}}//end namespace
+}} //end namespace
 
 #endif

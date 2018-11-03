@@ -68,6 +68,6 @@ namespace Shared {
 			virtual void renderNormalsOnly(Model *model) = 0;
 		};
 	}
-}//end namespace
+} //end namespace
 
 #endif

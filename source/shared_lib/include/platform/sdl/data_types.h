@@ -110,7 +110,7 @@ typedef unsigned long long uint64;
 
 #endif
 
-}}//end namespace
+}} //end namespace
 
 // =======================================================
 

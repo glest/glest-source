@@ -385,7 +385,7 @@ namespace MapEditor {
 		virtual int OnExit();
 	};
 
-}// end namespace
+} //end namespace
 
 DECLARE_APP(MapEditor::App)
 

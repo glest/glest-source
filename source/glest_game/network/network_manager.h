@@ -17,8 +17,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_NETWORKMANAGER_H_
-#define _GLEST_GAME_NETWORKMANAGER_H_
+#ifndef _NETWORKMANAGER_H_
+#define _NETWORKMANAGER_H_
 
 #include <cassert>
 #include "socket.h"
@@ -29,42 +29,39 @@
 
 using Shared::Util::Checksum;
 
-namespace ZetaGlest {
-	namespace Game {
+namespace Game {
+	// =====================================================
+	//	class NetworkManager
+	// =====================================================
 
-		// =====================================================
-		//	class NetworkManager
-		// =====================================================
+	class NetworkManager {
+	private:
+		GameNetworkInterface * gameNetworkInterface;
+		NetworkRole networkRole;
 
-		class NetworkManager {
-		private:
-			GameNetworkInterface * gameNetworkInterface;
-			NetworkRole networkRole;
+	public:
+		static NetworkManager &getInstance();
 
-		public:
-			static NetworkManager &getInstance();
+		NetworkManager();
+		virtual ~NetworkManager();
 
-			NetworkManager();
-			virtual ~NetworkManager();
+		void init(NetworkRole networkRole, bool publishEnabled = false);
+		void end();
+		void update();
 
-			void init(NetworkRole networkRole, bool publishEnabled = false);
-			void end();
-			void update();
+		bool isNetworkGame();
+		bool isNetworkGameWithConnectedClients();
 
-			bool isNetworkGame();
-			bool isNetworkGameWithConnectedClients();
+		GameNetworkInterface* getGameNetworkInterface(bool throwErrorOnNull = true);
+		ServerInterface* getServerInterface(bool throwErrorOnNull = true);
+		ClientInterface* getClientInterface(bool throwErrorOnNull = true);
+		NetworkRole getNetworkRole() const {
+			return networkRole;
+		}
 
-			GameNetworkInterface* getGameNetworkInterface(bool throwErrorOnNull = true);
-			ServerInterface* getServerInterface(bool throwErrorOnNull = true);
-			ClientInterface* getClientInterface(bool throwErrorOnNull = true);
-			NetworkRole getNetworkRole() const {
-				return networkRole;
-			}
+		void initServerInterfaces(ClientLagCallbackInterface *intf);
+	};
 
-			void initServerInterfaces(ClientLagCallbackInterface *intf);
-		};
-
-	}
-}//end namespace
+} //end namespace
 
 #endif

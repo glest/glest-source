@@ -17,8 +17,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_TIMEFLOW_H_
-#define _GLEST_GAME_TIMEFLOW_H_
+#ifndef _TIMEFLOW_H_
+#define _TIMEFLOW_H_
 
 #ifdef WIN32
 #include <winsock2.h>
@@ -29,63 +29,60 @@
 #include "sound.h"
 #include "leak_dumper.h"
 
-namespace ZetaGlest {
-	namespace Game {
-
-		using Shared::Sound::StrSound;
-		using Shared::Sound::StrSound;
-		using Shared::Sound::StaticSound;
+namespace Game {
+	using Shared::Sound::StrSound;
+	using Shared::Sound::StrSound;
+	using Shared::Sound::StaticSound;
 
 
-		// =====================================================
-		// 	class TimeFlow  
-		//
-		/// Raises time related events (day/night cycle) 
-		// =====================================================
+	// =====================================================
+	// 	class TimeFlow  
+	//
+	/// Raises time related events (day/night cycle) 
+	// =====================================================
 
-		class TimeFlow {
-		public:
-			static const float dusk;
-			static const float dawn;
+	class TimeFlow {
+	public:
+		static const float dusk;
+		static const float dawn;
 
-		private:
-			bool firstTime;
-			Tileset *tileset;
-			float time;
-			float lastTime;
-			float timeInc;
+	private:
+		bool firstTime;
+		Tileset *tileset;
+		float time;
+		float lastTime;
+		float timeInc;
 
-		public:
-			TimeFlow();
-			void init(Tileset *tileset);
+	public:
+		TimeFlow();
+		void init(Tileset *tileset);
 
-			inline float getTime() const {
-				return time;
-			}
-			inline bool isDay() const {
-				return time > dawn && time < dusk;
-			}
-			inline bool isNight() const {
-				return !isDay();
-			}
-			inline bool isTotalNight() const {
-				return time<dawn + 1.f || time>dusk - 1.f;
-			}
-			inline float getTimeInc() const {
-				return timeInc;
-			}
+		inline float getTime() const {
+			return time;
+		}
+		inline bool isDay() const {
+			return time > dawn && time < dusk;
+		}
+		inline bool isNight() const {
+			return !isDay();
+		}
+		inline bool isTotalNight() const {
+			return time<dawn + 1.f || time>dusk - 1.f;
+		}
+		inline float getTimeInc() const {
+			return timeInc;
+		}
 
-			Vec3f computeLightColor() const;
-			void update();
+		Vec3f computeLightColor() const;
+		void update();
 
-			void saveGame(XmlNode *rootNode);
-			void loadGame(const XmlNode *rootNode);
+		void saveGame(XmlNode *rootNode);
+		void loadGame(const XmlNode *rootNode);
 
-		private:
-			//bool isAproxTime(float time) const;
-		};
+	private:
+		//bool isAproxTime(float time) const;
+	};
 
-	}
 } //end namespace
 
 #endif

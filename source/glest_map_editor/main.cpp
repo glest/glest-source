@@ -36,24 +36,22 @@
 using namespace Shared;
 using namespace Shared::Util;
 using namespace Shared::PlatformCommon;
-using namespace ZetaGlest::Game;
+using namespace Game;
 using namespace std;
 
-namespace ZetaGlest {
-	namespace Game {
-		string getGameReadWritePath(const string &lookupKey) {
-			string path = "";
-			if (path == "" && getenv("GLESTHOME") != NULL) {
-				path = getenv("GLESTHOME");
-				if (path != "" && EndsWith(path, "/") == false && EndsWith(path, "\\") == false) {
-					path += "/";
-				}
-
-				//SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] path to be used for read/write files [%s]\n",__FILE__,__FUNCTION__,__LINE__,path.c_str());
+namespace Game {
+	string getGameReadWritePath(const string &lookupKey) {
+		string path = "";
+		if (path == "" && getenv("GLESTHOME") != NULL) {
+			path = getenv("GLESTHOME");
+			if (path != "" && EndsWith(path, "/") == false && EndsWith(path, "\\") == false) {
+				path += "/";
 			}
 
-			return path;
+			//SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] path to be used for read/write files [%s]\n",__FILE__,__FUNCTION__,__LINE__,path.c_str());
 		}
+
+		return path;
 	}
 }
 
@@ -1779,6 +1777,6 @@ wxT("Help")).ShowModal();
 
 	}
 
-	}// end namespace
+} //end namespace
 
 IMPLEMENT_APP(MapEditor::App)

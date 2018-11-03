@@ -17,58 +17,52 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>
 
-#ifndef _GLEST_GAME_MENUSTATEGRAPHICINFO_H_
-#   define _GLEST_GAME_MENUSTATEGRAPHICINFO_H_
+#ifndef _MENUSTATEGRAPHICINFO_H_
+#define _MENUSTATEGRAPHICINFO_H_
 
-#   include "main_menu.h"
-#   include "leak_dumper.h"
+#include "main_menu.h"
+#include "leak_dumper.h"
 
-using namespace
-Shared::Graphics::Gl;
+using namespace Shared::Graphics::Gl;
 
-namespace ZetaGlest {
-	namespace
-		Game {
+namespace Game {
+	// ===============================
+	//      class MenuStateGraphicInfo  
+	// ===============================
+	class
+		MenuStateGraphicInfo :
+		public
+		MenuState {
+	private:
+		GraphicButton
+			buttonReturn;
+		GraphicLabel
+			labelInfo;
+		GraphicLabel
+			labelMoreInfo;
 
-		// ===============================
-		//      class MenuStateGraphicInfo  
-		// ===============================
+		GraphicLabel
+			labelInternalInfo;
 
-		class
-			MenuStateGraphicInfo :
-			public
-			MenuState {
-		private:
-			GraphicButton
-				buttonReturn;
-			GraphicLabel
-				labelInfo;
-			GraphicLabel
-				labelMoreInfo;
+		//string glInfo;
+		//string glMoreInfo;
 
-			GraphicLabel
-				labelInternalInfo;
+	public:
+		MenuStateGraphicInfo(Program * program, MainMenu * mainMenu);
 
-			//string glInfo;
-			//string glMoreInfo;
+		void
+			mouseClick(int x, int y, MouseButton mouseButton);
+		void
+			mouseMove(int x, int y, const MouseState * mouseState);
+		void
+			render();
+		virtual void
+			keyDown(SDL_KeyboardEvent key);
 
-		public:
-			MenuStateGraphicInfo(Program * program, MainMenu * mainMenu);
+		virtual void
+			reloadUI();
+	};
 
-			void
-				mouseClick(int x, int y, MouseButton mouseButton);
-			void
-				mouseMove(int x, int y, const MouseState * mouseState);
-			void
-				render();
-			virtual void
-				keyDown(SDL_KeyboardEvent key);
-
-			virtual void
-				reloadUI();
-		};
-
-	}
-}                              //end namespace
+} //end namespace
 
 #endif

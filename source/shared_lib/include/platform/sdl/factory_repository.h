@@ -60,6 +60,6 @@ public:
 	SoundFactory *getSoundFactory(const string &name);
 };
 
-}}//end namespace
+}} //end namespace
 
 #endif
