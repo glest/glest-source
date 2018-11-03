@@ -2,7 +2,7 @@
 #
 # Functions shared by several scripts
 #
-# Copyright (c) 2013-2016 MegaGlest Team under GNU GPL v3.0+
+# Copyright (c) 2013-2018 ZetaGlest Team under GNU GPL v3.0+
 
 function detect_system {
 # Determine distro title, release, codename

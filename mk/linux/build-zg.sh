@@ -4,6 +4,8 @@
 # Written by Mark Vejvoda <mark_vejvoda@hotmail.com>
 # Copyright (c) 2011-2013 Mark Vejvoda under GNU GPL v3.0+
 
+./setupBuildDeps.sh
+
 # ----------------------------------------------------------------------------
 #
 # Configuration section
@@ -317,13 +319,14 @@ else
         if [ $? -ne 0 ]; then
           echo 'ERROR: MAKE failed.' >&2; exit 2
         fi
-
+		
+		git clone https://github.com/ZetaGlest/zetaglest-data.git
         cd ..
         echo ''
         echo 'BUILD COMPLETE.'
         echo ''
         echo 'To launch ZetaGlest from the current directory, use:'
-        echo '  ./zetaglest'
+        echo '  ./build/zetaglest'
         #echo 'Or change into mk/linux and run it from there:'
         #echo '  ./zetaglest --ini-path=./ --data-path=./'
 fi
