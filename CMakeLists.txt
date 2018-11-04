@@ -88,11 +88,22 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
     # GCC specific Compiler Options
     ELSE()
         ADD_DEFINITIONS("-frounding-math -fsignaling-nans")
+	
+	IF((NOT CMAKE_GENERATOR STREQUAL Xcode) AND (NOT MINGW))
+		# Debug compiler flags
+		SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -no-pie -fno-pie")
+
+		# Release compiler flags
+		SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -no-pie -fno-pie")
+
+		# Release with debug info compiler flags
+		SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -no-pie -fno-pie")
 
 #                IF(NOT MINGW)
 #                        set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -rdynamic")
 #                        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -rdynamic")
 #                ENDIF()
+	ENDIF()
     ENDIF()
 
 	IF(WANT_USE_STREFLOP)
@@ -153,16 +164,16 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
         ENDIF()
 
 	# Debug compiler flags
-	SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g3 -no-pie -fno-pie")
+	SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g3")
 
 	# Release compiler flags
-	SET(CMAKE_CXX_FLAGS_RELEASE "-O3 ${CMAKE_CXX_FLAGS_RELEASE} -O3 -no-pie -fno-pie")
+	SET(CMAKE_CXX_FLAGS_RELEASE "-O3 ${CMAKE_CXX_FLAGS_RELEASE} -O3")
 	IF(NOT CMAKE_GENERATOR STREQUAL Xcode)
 		SET(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -s")  ## Strip binary
 	ENDIF()
 
 	# Release with debug info compiler flags
-	SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 ${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -g -O3 -no-pie -fno-pie")
+	SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 ${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -g -O3")
 
 	# Release minimum size compiler flags
 	IF(NOT CMAKE_GENERATOR STREQUAL Xcode)

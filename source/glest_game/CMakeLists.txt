@@ -11,27 +11,6 @@ IF(BUILD_ZETAGLEST)
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=gnu++11")
 	add_definitions("-DDATADIR=${INSTALL_DIR_DATA}")
 
-	IF(WIN32)
-		SET(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH}
-				       ${PROJECT_SOURCE_DIR}/source/win32_deps/lib
-				       ${PROJECT_SOURCE_DIR}/source/win32_deps/xerces-c-src_2_8_0/lib)
-
-		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/source/win32_deps/include)
-		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/source/win32_deps/openal-soft-1.12.854/include)
-		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/source/win32_deps/openal-soft-1.12.854)
-		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/source/win32_deps/xerces-c-src_2_8_0/include)
-		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/source/win32_deps/libogg-1.2.1/include)
-		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/source/win32_deps/lua-5.1/src)
-		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/source/win32_deps/jpeg-8b)
-		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/source/win32_deps/lpng141)
-		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/source/win32_deps/zlib-1.2.5)
-		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/source/win32_deps/curl-7.21.3/include)
-		INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/source/win32_deps/${SDL_WINDOWS_DIR_DINC}/include)
-
-		link_directories(${PROJECT_SOURCE_DIR}/source/win32_deps/lib)
-		link_directories(${PROJECT_SOURCE_DIR}/source/win32_deps/xerces-c-src_2_8_0/lib)
-	ENDIF()
-
 	FIND_PACKAGE(${SDL_VERSION_NAME} REQUIRED)
 	INCLUDE_DIRECTORIES(${${SDL_VERSION_NAME}_INCLUDE_DIR})
 	IF(UNIX)
@@ -319,7 +298,7 @@ IF(BUILD_ZETAGLEST)
 
 	IF(UNIX AND APPLE)
 		INSTALL(FILES
-			"${PROJECT_SOURCE_DIR}/mk/macos/bundle_resources/MegaGlest.icns"
+			"${PROJECT_SOURCE_DIR}/mk/macos/bundle_resources/ZetaGlest.icns"
 			DESTINATION ${INSTALL_DIR_ICON})
 	ENDIF()
 
