@@ -17,13 +17,13 @@ SCRIPTDIR="$(dirname "$(readlink -f "$0")")"
 # './setupBuildDeps.sh --manually "Debian" "stable"' is for you.
 
 # Load shared functions
-. $SCRIPTDIR/zg_shared.sh
+. $SCRIPTDIR/detect-system.sh
 
 # Got root?
-if [ `id -u`'x' != '0x' ] && [ "$1" != "--manually" ]; then
-	echo 'This script should be run as root (UID 0).' >&2
-	exit 1
-fi
+#if [ `id -u`'x' != '0x' ] && [ "$1" != "--manually" ]; then
+#	echo 'This script should be run as root (UID 0).' >&2
+#	exit 1
+#fi
 
 if [ "$(which git 2>/dev/null)" != "" ]; then
 	gitcommit="$(git log -1 --pretty=tformat:"%H" $SCRIPTDIR/../..)"

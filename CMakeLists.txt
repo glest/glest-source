@@ -1,9 +1,11 @@
 CMAKE_MINIMUM_REQUIRED( VERSION 2.8.2 )
 PROJECT( ZetaGlest )
 
-# The ZetaGlest CMakeLists is not supported on Windows. To compile on Windows, please use setup.bat in mk/windows
-#
+# The ZetaGlest CMakeLists is not supported on Windows. To compile on Windows, please use
+# setup.bat in mk/windows
+
 #SET(CMAKE_VERBOSE_MAKEFILE ON)
+SET(CMAKE_INSTALL_PREFIX, "/usr")
 
 # build type
 IF(NOT CMAKE_BUILD_TYPE)
@@ -72,7 +74,7 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 	# For gcc warning options see: http://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
 	IF(NOT MINGW)
 		# For tons of verbose warnings add: -Wall
-#		ADD_DEFINITIONS("-Wreturn-type -fno-strict-aliasing -frounding-math  -fsignaling-nans -mfpmath=sse -msse -rdynamic")
+#		ADD_DEFINITIONS("-Wreturn-type -fno-strict-aliasing -frounding-math  -fsignaling-nans -mfpmath=sse -msse -rDynamic")
 #		ADD_DEFINITIONS("-Wuninitialized -Wsign-compare -Wunused-function -Wunused-variable -Wreturn-type -fno-strict-aliasing -frounding-math  -fsignaling-nans -rdynamic")
 	ELSE()
 #		ADD_DEFINITIONS("-Wreturn-type -fno-strict-aliasing -frounding-math  -fsignaling-nans -mfpmath=sse -msse -DUNICODE")
@@ -151,16 +153,16 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
         ENDIF()
 
 	# Debug compiler flags
-	SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g3")
+	SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g3 -no-pie -fno-pie")
 
 	# Release compiler flags
-	SET(CMAKE_CXX_FLAGS_RELEASE "-O3 ${CMAKE_CXX_FLAGS_RELEASE} -O3 ")
+	SET(CMAKE_CXX_FLAGS_RELEASE "-O3 ${CMAKE_CXX_FLAGS_RELEASE} -O3 -no-pie -fno-pie")
 	IF(NOT CMAKE_GENERATOR STREQUAL Xcode)
 		SET(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -s")  ## Strip binary
 	ENDIF()
 
 	# Release with debug info compiler flags
-	SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 ${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -g -O3 ")
+	SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 ${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -g -O3 -no-pie -fno-pie")
 
 	# Release minimum size compiler flags
 	IF(NOT CMAKE_GENERATOR STREQUAL Xcode)
@@ -196,8 +198,6 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 
 	string(TOUPPER "${CMAKE_BUILD_TYPE}" ZG_BUILD_TYPE)
 
-	SET(CMAKE_CXX_FLAGS_{ZG_BUILD_TYPE} "${CMAKE_CXX_FLAGS_${ZG_BUILD_TYPE}}")
-
 	# We do some funky character escaping to get the right stuff written out to
 	# the final Makefile so we get the GIT Global Revsion #
 	string(REPLACE "'" "\"" CMAKE_CXX_FLAGS_${ZG_BUILD_TYPE} "${CMAKE_CXX_FLAGS_${ZG_BUILD_TYPE}}")
@@ -232,33 +232,6 @@ SET(SDL_VERSION_SNAME "sdl")
 
 # output binaries to the top level of the build directory
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
-
-IF(WIN32)
-	SET(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH}
-		${PROJECT_SOURCE_DIR}/source/win32_deps/lib
-		${PROJECT_SOURCE_DIR}/source/win32_deps/xerces-c-src_2_8_0/lib
-		${PROJECT_SOURCE_DIR}/source/win32_deps/wxWidgets-2.8.10/lib)
-
-	SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH}
-		${PROJECT_SOURCE_DIR}/source/win32_deps/include
-		${PROJECT_SOURCE_DIR}/source/win32_deps/openal-soft-1.12.854/include
-		${PROJECT_SOURCE_DIR}/source/win32_deps/openal-soft-1.12.854
-		${PROJECT_SOURCE_DIR}/source/win32_deps/xerces-c-src_2_8_0/include
-		${PROJECT_SOURCE_DIR}/source/win32_deps/libogg-1.2.1/include
-		${PROJECT_SOURCE_DIR}/source/win32_deps/lua-5.1/src
-		${PROJECT_SOURCE_DIR}/source/win32_deps/jpeg-8b
-		${PROJECT_SOURCE_DIR}/source/win32_deps/lpng141
-		${PROJECT_SOURCE_DIR}/source/win32_deps/zlib-1.2.5
-		${PROJECT_SOURCE_DIR}/source/win32_deps/curl-7.21.3/include
-		${PROJECT_SOURCE_DIR}/source/win32_deps/${SDL_WINDOWS_DIR_DINC}/include
-		${PROJECT_SOURCE_DIR}/source/win32_deps/wxWidgets-2.8.10/include)
-
-	link_directories(${PROJECT_SOURCE_DIR}/source/win32_deps/lib)
-	link_directories(${PROJECT_SOURCE_DIR}/source/win32_deps/xerces-c-src_2_8_0/lib)
-	link_directories(${PROJECT_SOURCE_DIR}/source/win32_deps/wxWidgets-2.8.10/lib)
-	include_directories("${PROJECT_SOURCE_DIR}/source/win32_deps/Microsoft\ DirectX\ SDK \(November 2007\)/Include")
-	include_directories(${PROJECT_SOURCE_DIR}/source/win32_deps/openal-soft-1.12.854/include)
-ENDIF()
 
 # Check if sources exist
 IF(EXISTS "${PROJECT_SOURCE_DIR}/source/")

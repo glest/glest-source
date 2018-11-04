@@ -132,7 +132,7 @@ echo "CPU cores to be used: $NUMCORES"
 
 # Load shared functions
 
-. $SCRIPTDIR/zg_shared.sh
+. $SCRIPTDIR/detect-system.sh
 
 # ----------------------------------------------------------------------------
 
@@ -317,14 +317,11 @@ else
         if [ $? -ne 0 ]; then
           echo 'ERROR: MAKE failed.' >&2; exit 2
         fi
-		
-		git clone https://github.com/ZetaGlest/zetaglest-data.git
+
         cd ..
         echo ''
         echo 'BUILD COMPLETE.'
         echo ''
         echo 'To launch ZetaGlest from the current directory, use:'
-        echo '  ./build/zetaglest'
-        #echo 'Or change into mk/linux and run it from there:'
-        #echo '  ./zetaglest --ini-path=./ --data-path=./'
+        echo '  ./zetaglest.sh'
 fi
