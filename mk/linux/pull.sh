@@ -1,7 +1,10 @@
 #!/bin/bash
 cd ../..
 git pull
-currentDir=$PWD
-cd /usr/share/zetaglest
+cd mk/linux
+mkdir build
+cd build
+mkdir data
+cd data
 git pull
-cd $currentDir
+cd ../..

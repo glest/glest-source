@@ -4,10 +4,12 @@
 # Written by Mark Vejvoda <mark_vejvoda@hotmail.com>
 # Copyright (c) 2011-2013 Mark Vejvoda under GNU GPL v3.0+
 
-currentDir=$PWD
-cd /usr/share
-git clone https://github.com/ZetaGlest/zetaglest-data.git zetaglest
-cd $currentDir
+mkdir build
+cd build
+git clone https://github.com/ZetaGlest/zetaglest-data.git data
+cd ..
 ./pull.sh
 ./build-zg.sh
-chmod -R 777 build/
+if [ `id -u`'x' == '0x' ] || [ "$1" == "--manually" ]; then
+	chmod -R 777 build/
+fi
