@@ -71,4 +71,4 @@ set -x
 # These 2 don't get installed automatically, but are required for libsdl2-dev
 sudo apt-get install -y -q libegl1-mesa-dev libgles2-mesa-dev
 
-sudo mk/linux/setupBuildDeps.sh --quiet
+sudo mk/linux/build-deps.sh --quiet
