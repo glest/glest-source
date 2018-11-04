@@ -60,19 +60,19 @@ script:
   - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ] && [ $Tr_Compiler_Version != "6" ]; then
         mkdir build;
         cd build;
-        cmake ..  -DCMAKE_INSTALL_PREFIX=$PWD/local -DBUILD_ZETAGLEST_TESTS=ON;
+        cmake ..  -DCMAKE_INSTALL_PREFIX=$PWD/local;
         make && make install;
     fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" != "" ]; then
         mkdir build;
         cd build;
-        cmake .. -DCMAKE_INSTALL_PREFIX=$PWD/local -DBUILD_ZETAGLEST_TESTS=ON;
+        cmake .. -DCMAKE_INSTALL_PREFIX=$PWD/local;
         make && make install;
     fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
         mkdir build;
         cd build;
-        cmake .. -DCMAKE_INSTALL_PREFIX=$PWD/local -DBUILD_ZETAGLEST_TESTS=ON;
+        cmake .. -DCMAKE_INSTALL_PREFIX=$PWD/local;
         make && make install;
         echo 'Dependencies:';
         otool -L zetaglest;
@@ -80,7 +80,7 @@ script:
   - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ] && [ $Tr_Compiler_Version = "6" ]; then
         mkdir build;
         cd build;
-        cmake ..  -DFORCE_EMBEDDED_LIBS=ON -DCMAKE_INSTALL_PREFIX=$PWD/local -DBUILD_ZETAGLEST_TESTS=ON;
+        cmake ..  -DFORCE_EMBEDDED_LIBS=ON -DCMAKE_INSTALL_PREFIX=$PWD/local;
         make && make install;
     fi
 
