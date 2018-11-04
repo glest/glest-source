@@ -58,7 +58,7 @@ namespace Game {
 	const int
 		HEADLESSSERVER_BROADCAST_SETTINGS_SECONDS = 2;
 	static const char *
-		HEADLESS_SAVED_GAME_FILENAME = "lastHeadlessGameSettings.mgg";
+		HEADLESS_SAVED_GAME_FILENAME = "lastHeadlessGameSettings.zgg";
 
 	const int
 		mapPreviewTexture_X = 5;

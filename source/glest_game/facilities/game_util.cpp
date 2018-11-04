@@ -225,19 +225,14 @@ namespace Game {
 		switch (i) {
 			case 0:
 				return "Martiño Figueroa";
-				//case 0: return "Martino Figueroa";
 			case 1:
 				return "José Luis González";
-				//case 1: return "Jose Luis Gonzalez";
 			case 2:
 				return "Tucho Fernández";
-				//case 2: return "Tucho Fernandez";
 			case 3:
 				return "José Zanni";
-				//case 3: return "Jose Zanni";
 			case 4:
 				return "Félix Menéndez";
-				//case 4: return "Felix Menendez";
 			case 5:
 				return "Marcos Caruncho";
 			case 6:

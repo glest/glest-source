@@ -49,10 +49,10 @@ using namespace Shared::Util;
 
 namespace Game {
 	const int MASTERSERVER_BROADCAST_MAX_WAIT_RESPONSE_SECONDS = 15;
-	static const char *SAVED_GAME_FILENAME = "lastCustomGameSettings.mgg";
-	static const char *DEFAULT_GAME_FILENAME = "data/defaultGameSetup.mgg";
+	static const char *SAVED_GAME_FILENAME = "lastCustomGameSettings.zgg";
+	static const char *DEFAULT_GAME_FILENAME = "data/defaultGameSetup.zgg";
 	static const char *DEFAULT_NETWORKGAME_FILENAME =
-		"data/defaultNetworkGameSetup.mgg";
+		"data/defaultNetworkGameSetup.zgg";
 
 	const int mapPreviewTexture_X = 5;
 	const int mapPreviewTexture_Y = 160;
