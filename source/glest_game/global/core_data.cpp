@@ -278,7 +278,6 @@ namespace Game {
 		if (data_path != "") {
 			endPathWithSlash(data_path);
 		}
-		printf("\nData path: %s\n", data_path.c_str());
 		return data_path;
 	}
 
