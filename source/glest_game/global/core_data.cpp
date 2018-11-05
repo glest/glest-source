@@ -316,6 +316,7 @@ namespace Game {
 	}
 	Texture2D *CoreData::getLogoTexture() {
 		string data_path = getDataPath();
+		printf("\n%s\n", data_path.c_str());
 		loadTextureIfRequired(&logoTexture, data_path,
 			CORE_MENU_TEXTURES_PATH + "logo.tga",
 			tsyst_logoTexture, false, false, false);
