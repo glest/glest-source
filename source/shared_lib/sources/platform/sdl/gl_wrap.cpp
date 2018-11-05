@@ -227,27 +227,27 @@ namespace Shared {
 				}
 
 #ifndef WIN32
-				string mg_icon_file = "";
+				string icon_file = "";
 #if defined(DATADIR)
 				if (fileExists(formatPath(TOSTRING(DATADIR)) + "zetaglest.png")) {
-					mg_icon_file = formatPath(TOSTRING(DATADIR)) + "zetaglest.png";
+					icon_file = formatPath(TOSTRING(DATADIR)) + "zetaglest.png";
 				} else if (fileExists(formatPath(TOSTRING(DATADIR)) + "zetaglest.bmp")) {
-					mg_icon_file = formatPath(TOSTRING(DATADIR)) + "zetaglest.bmp";
+					icon_file = formatPath(TOSTRING(DATADIR)) + "zetaglest.bmp";
 				}
 
 #endif
 
-				if (mg_icon_file == "" && fileExists("zetaglest.png")) {
-					mg_icon_file = "zetaglest.png";
-				} else if (mg_icon_file == "" && fileExists("zetaglest.bmp")) {
-					mg_icon_file = "zetaglest.bmp";
-				} else if (mg_icon_file == "" && fileExists("/usr/share/pixmaps/zetaglest.png")) {
-					mg_icon_file = "/usr/share/pixmaps/zetaglest.png";
-				} else if (mg_icon_file == "" && fileExists("/usr/share/pixmaps/zetaglest.bmp")) {
-					mg_icon_file = "/usr/share/pixmaps/zetaglest.bmp";
+				if (icon_file == "" && fileExists("zetaglest.png")) {
+					icon_file = "zetaglest.png";
+				} else if (icon_file == "" && fileExists("zetaglest.bmp")) {
+					icon_file = "zetaglest.bmp";
+				} else if (icon_file == "" && fileExists("/usr/share/pixmaps/zetaglest.png")) {
+					icon_file = "/usr/share/pixmaps/zetaglest.png";
+				} else if (icon_file == "" && fileExists("/usr/share/pixmaps/zetaglest.bmp")) {
+					icon_file = "/usr/share/pixmaps/zetaglest.bmp";
 				}
 
-				if (mg_icon_file != "") {
+				if (icon_file != "") {
 
 					if (icon != NULL) {
 						SDL_FreeSurface(icon);
@@ -255,12 +255,12 @@ namespace Shared {
 					}
 
 					//printf("Loading icon [%s]\n",mg_icon_file.c_str());
-					if (extractExtension(mg_icon_file) == "bmp") {
-						icon = SDL_LoadBMP(mg_icon_file.c_str());
+					if (extractExtension(icon_file) == "bmp") {
+						icon = SDL_LoadBMP(icon_file.c_str());
 					} else {
 						//printf("Loadng png icon\n");
 						Texture2D *texture2D = GraphicsInterface::getInstance().getFactory()->newTexture2D();
-						texture2D->load(mg_icon_file);
+						texture2D->load(icon_file);
 						std::pair<SDL_Surface*, unsigned char*> result = texture2D->CreateSDLSurface(true);
 						icon = result.first;
 						delete texture2D;
