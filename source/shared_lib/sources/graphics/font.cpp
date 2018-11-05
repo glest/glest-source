@@ -92,13 +92,13 @@ namespace Shared {
 			Font::langHeightText = "yW";
 
 #if defined(WIN32)
-			string newEnvValue = "ZETAGLEST_FONT=";
+			string newEnvValue = "GAME_FONT=";
 			_putenv(newEnvValue.c_str());
-			newEnvValue = "ZETAGLEST_FONT_FAMILY=";
+			newEnvValue = "GAME_FONT_FAMILY=";
 			_putenv(newEnvValue.c_str());
 #else
-			unsetenv("ZETAGLEST_FONT");
-			unsetenv("ZETAGLEST_FONT_FAMILY");
+			unsetenv("GAME_FONT");
+			unsetenv("GAME_FONT_FAMILY");
 #endif
 		}
 
@@ -609,8 +609,8 @@ namespace Shared {
 			}
 
 			// Get user-specified font path
-			string zetaglest_font = safeCharPtrCopy(getenv("ZETAGLEST_FONT"), 8095);
-			string zetaglest_font_family = safeCharPtrCopy(getenv("ZETAGLEST_FONT_FAMILY"), 8095);
+			string zetaglest_font = safeCharPtrCopy(getenv("GAME_FONT"), 8095);
+			string zetaglest_font_family = safeCharPtrCopy(getenv("GAME_FONT_FAMILY"), 8095);
 			if (zetaglest_font != "" || zetaglest_font_family != "") {
 				if (zetaglest_font != "") {
 					tryFont = zetaglest_font;

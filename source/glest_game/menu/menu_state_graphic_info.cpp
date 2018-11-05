@@ -73,9 +73,9 @@ namespace Game {
 
 		string strInternalInfo = "";
 		strInternalInfo += "VBOSupported: " + boolToStr(getVBOSupported());
-		if (getenv("ZETAGLEST_FONT") != NULL) {
-			char *tryFont = getenv("ZETAGLEST_FONT");
-			strInternalInfo += "\nZETAGLEST_FONT: " + string(tryFont);
+		if (getenv("GAME_FONT") != NULL) {
+			char *tryFont = getenv("GAME_FONT");
+			strInternalInfo += "\nGAME_FONT: " + string(tryFont);
 		}
 		strInternalInfo +=
 			"\nforceLegacyFonts: " + boolToStr(Font::forceLegacyFonts);
@@ -127,9 +127,9 @@ namespace Game {
 
 		string strInternalInfo = "";
 		strInternalInfo += "VBOSupported: " + boolToStr(getVBOSupported());
-		if (getenv("ZETAGLEST_FONT") != NULL) {
-			char *tryFont = getenv("ZETAGLEST_FONT");
-			strInternalInfo += "\nZETAGLEST_FONT: " + string(tryFont);
+		if (getenv("GAME_FONT") != NULL) {
+			char *tryFont = getenv("GAME_FONT");
+			strInternalInfo += "\nGAME_FONT: " + string(tryFont);
 		}
 		strInternalInfo +=
 			"\nforceLegacyFonts: " + boolToStr(Font::forceLegacyFonts);

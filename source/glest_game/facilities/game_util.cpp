@@ -338,8 +338,6 @@ namespace Game {
 			result = originalBasePath + uniqueFilePath;
 		}
 
-		printf("\nPath: %s\n", result.c_str());
-
 		if (SystemFlags::VERBOSE_MODE_ENABLED)
 			printf("result [%s]\n", result.c_str());
 

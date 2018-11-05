@@ -121,27 +121,27 @@ namespace Game {
 					strToBool(lang.getString("FONT_RIGHTTOLEFT_MIXED_SUPPORT"));
 			}
 
-			if (lang.hasString("ZETAGLEST_FONT")) {
-				//setenv("ZETAGLEST_FONT","/usr/share/fonts/truetype/ttf-japanese-gothic.ttf",0); // Japanese
+			if (lang.hasString("GAME_FONT")) {
+				//setenv("GAME_FONT","/usr/share/fonts/truetype/ttf-japanese-gothic.ttf",0); // Japanese
 #if defined(WIN32)
 				string newEnvValue =
-					"ZETAGLEST_FONT=" + lang.getString("ZETAGLEST_FONT");
+					"GAME_FONT=" + lang.getString("GAME_FONT");
 				_putenv(newEnvValue.c_str());
 #else
-				setenv("ZETAGLEST_FONT",
-					lang.getString("ZETAGLEST_FONT").c_str(), 0);
+				setenv("GAME_FONT",
+					lang.getString("GAME_FONT").c_str(), 0);
 #endif
 			}
 
-			if (lang.hasString("ZETAGLEST_FONT_FAMILY")) {
+			if (lang.hasString("GAME_FONT_FAMILY")) {
 #if defined(WIN32)
 				string newEnvValue =
-					"ZETAGLEST_FONT_FAMILY=" +
-					lang.getString("ZETAGLEST_FONT_FAMILY");
+					"GAME_FONT_FAMILY=" +
+					lang.getString("GAME_FONT_FAMILY");
 				_putenv(newEnvValue.c_str());
 #else
-				setenv("ZETAGLEST_FONT_FAMILY",
-					lang.getString("ZETAGLEST_FONT_FAMILY").c_str(), 0);
+				setenv("GAME_FONT_FAMILY",
+					lang.getString("GAME_FONT_FAMILY").c_str(), 0);
 #endif
 			}
 
@@ -195,10 +195,10 @@ namespace Game {
 					strToBool(lang.getString("FONT_RIGHTTOLEFT_WINDOWS"));
 			}
 
-			if (lang.hasString("ZETAGLEST_FONT_WINDOWS")) {
-				//setenv("ZETAGLEST_FONT","/usr/share/fonts/truetype/ttf-japanese-gothic.ttf",0); // Japanese
+			if (lang.hasString("GAME_FONT_WINDOWS")) {
+				//setenv("GAME_FONT","/usr/share/fonts/truetype/ttf-japanese-gothic.ttf",0); // Japanese
 				string newEnvValue =
-					"ZETAGLEST_FONT=" + lang.getString("ZETAGLEST_FONT_WINDOWS");
+					"GAME_FONT=" + lang.getString("GAME_FONT_WINDOWS");
 				_putenv(newEnvValue.c_str());
 			}
 

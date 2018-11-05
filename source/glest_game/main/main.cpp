@@ -7137,10 +7137,10 @@ namespace Game {
 
 #if defined(WIN32)
 					string
-						newEnvValue = "ZETAGLEST_FONT=" + newfont;
+						newEnvValue = "GAME_FONT=" + newfont;
 					_putenv(newEnvValue.c_str());
 #else
-					setenv("ZETAGLEST_FONT", newfont.c_str(), 1);
+					setenv("GAME_FONT", newfont.c_str(), 1);
 #endif
 				} else {
 					printf
