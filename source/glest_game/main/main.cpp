@@ -8428,6 +8428,8 @@ namespace Game {
 } //end namespace
 
 int main(int argc, char **argv) {
+	setenv("DBUS_FATAL_WARNINGS", "0", 1);
+	unsetenv("XMODIFIERS");
 	int result = mainSetup(argc,argv);
 	if (result == 0)
 		result = Game::glestMainWrapper(argc, argv);

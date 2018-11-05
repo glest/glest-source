@@ -323,5 +323,5 @@ else
         echo 'BUILD COMPLETE.'
         echo ''
         echo 'To launch ZetaGlest from the current directory, use:'
-        echo '  ./zetaglest.sh'
+        echo '  ./build/zetaglest'
 fi
