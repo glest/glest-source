@@ -325,6 +325,6 @@ else
         echo ''
         echo 'BUILD COMPLETE.'
         echo ''
-        echo 'To launch ZetaGlest from the current directory, use:'
-        echo '  ./build/zetaglest'
+        echo 'The ZetaGlest executable can be found using the following path:'
+        echo '  zetaglest/mk/linux/build/zetaglest'
 fi
