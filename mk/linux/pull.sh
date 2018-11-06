@@ -12,4 +12,9 @@ cd build
 mkdir data
 cd data
 git pull
+if [ `id -u`'x' == '0x' ] || [ "$1" == "--manually" ]; then
+	chmod -R 777 ../../build/
+	cd ../../../..
+	chmod -R 777 .git/
+fi
 cd $currentDir
