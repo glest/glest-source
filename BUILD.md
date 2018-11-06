@@ -82,7 +82,7 @@ Then run the following command to start the game:
 
     zetaglest/mk/linux/build/zetaglest
 
-# For a more thorough approach:
+#### For a more thorough approach:
 
 On Debian, Ubuntu, Fedora, Opensuse and even more Linux distributions,
 after you clone the source repository, you may use
