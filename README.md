@@ -23,8 +23,8 @@ CPU is also available.
 * [Project Goals](https://github.com/ZetaGlest/zetaglest-source#why-this-fork-project-goals)
 * [FAQ](https://github.com/ZetaGlest/zetaglest-source#faq)
 * [Download executable files](https://github.com/ZetaGlest/zetaglest-source#download-executable-files)
+* [Quick Build Guide](https://github.com/ZetaGlest/zetaglest-source#quick-build-guide)
 * [Compiling](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
-* [Running](https://github.com/ZetaGlest/zetaglest-source#running)
 * [Extra Tech trees, mods, tilesets, scenarious (not yet available on the ZetaGlest server)](https://github.com/ZetaGlest/zetaglest-source#extra-tech-trees-mods-tilesets-scenarious-not-yet-available-on-the-zetaglest-server)
 * [Contributing and Testing](https://github.com/ZetaGlest/zetaglest-source#contributing-and-testing)
 * [Contact](https://github.com/ZetaGlest/zetaglest-source#contact)
@@ -60,7 +60,7 @@ the ZetaGlest project.
 The FAQ is located at
 [https://zetaglest.github.io/docs/faq.html](https://zetaglest.github.io/docs/faq.html).
 
-## Download executable files
+## Downloading the game
 
 On Windows, the easiest way to get started is to [download and run the
 installer](https://github.com/ZetaGlest/windows-installer). If you want
@@ -74,13 +74,15 @@ source**](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
 (The ETA for the first official release can be viewed from the [development
 milestone](https://github.com/ZetaGlest/zetaglest-source/milestone/1).)
 
-## Running
+## Quick Build Guide for Linux
 
-    ./zetaglest (if you didn't install)
+For Linux, run the following command:
 
-OR
+    git clone https://github.com/ZetaGlest/zetaglest-source.git zetaglest && sudo zetaglest/mk/linux/setup.sh
 
-    zetaglest (if you installed and the binary is in your PATH)
+Then run the following command to start the game:
+
+    zetaglest/mk/linux/build/zetaglest
 
 To run your own headless (dedicated) server, see [the FAQ](https://zetaglest.github.io/docs/faq.html#headlessserver).
 
