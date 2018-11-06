@@ -7,6 +7,7 @@
 # Copyright (c) 2012-2017 Mark Vejvoda, Tom Reynolds under GNU GPL v3.0
 LANG=C
 
+echo
 echo "Installing required dependencies...(requires root)"
 echo
 

@@ -8,6 +8,7 @@
 #
 # Configuration section
 #
+echo
 echo "Building ZetaGlest..."
 echo
 
