@@ -5,6 +5,8 @@
 # Copyright (c) 2011-2013 Mark Vejvoda under GNU GPL v3.0+
 
 echo "Initializing ZetaGlest setup..."
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+cd $DIR
 echo
 echo "Downloading game data..."
 mkdir build
