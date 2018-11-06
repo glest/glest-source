@@ -8,6 +8,8 @@
 #
 # Configuration section
 #
+echo "Building ZetaGlest..."
+echo
 
 # Default to English language output so we can understand your bug reports
 export LANG=C

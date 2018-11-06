@@ -7,6 +7,9 @@
 # Copyright (c) 2012-2017 Mark Vejvoda, Tom Reynolds under GNU GPL v3.0
 LANG=C
 
+echo "Installing required dependencies...(requires root)"
+echo
+
 SCRIPTDIR="$(dirname "$(readlink -f "$0")")"
 
 # If you wanna only see the BuildDeps then launch script like that: './setupBuildDeps.sh --manually'.
