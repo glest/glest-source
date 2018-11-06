@@ -66,11 +66,23 @@ To view all available options, use `cmake .. -LH` while in the build directory.
 
 ### Windows
 
+On Windows simply run `setup.bat` in `\mk\windows`.
+
 Follow the
 [instructions](https://github.com/ZetaGlest/zetaglest-source/blob/develop/mk/windows/README.md)
-listed in the `Windows` directory.
+listed in the `Windows` directory for further information.
 
 ### Linux
+
+To get the game up and running quickly, use the following command:
+
+    git clone https://github.com/ZetaGlest/zetaglest-source.git zetaglest && sudo zetaglest/mk/linux/setup.sh
+
+Then run the following command to start the game:
+
+    zetaglest/mk/linux/build/zetaglest
+
+# For a more thorough approach:
 
 On Debian, Ubuntu, Fedora, Opensuse and even more Linux distributions,
 after you clone the source repository, you may use
@@ -79,8 +91,6 @@ after you clone the source repository, you may use
     sudo ./setupBuildDeps.sh
 
 which will run your package manager and attempt to install the needed packages.
-
-On Windows simply run `setup.bat` in `\mk\windows`.
 
 (These may vary based on your operating system or Linux distribution;
 we will attempt to document dependencies in more detail)
