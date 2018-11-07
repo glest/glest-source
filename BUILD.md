@@ -48,14 +48,6 @@ info provided by your fork or the main repos. (Use the "Clone or Download" link,
 repo directories are in the same directory, adjacent to each other (and
 **not** in a subdirectory).
 
-### Note
-
-If you have cloned the repositories using your forks, do not use the
-`git_update.sh` provided in the source directory. See
-[syncing](https://github.com/ZetaGlest/zetaglest-source/blob/develop/CONTRIBUTING.md#syncing)
-for information on how to sync your repo with the main upstream (no,
-you can't juse use **_merge_**).
-
 ## Extra Options for compiling
 
 Most people will never have to change the options when running `cmake`.
@@ -66,7 +58,7 @@ To view all available options, use `cmake .. -LH` while in the build directory.
 
 ### Windows
 
-On Windows simply run `setup.bat` in `\mk\windows`.
+On Windows simply run `setup.bat` in `\mk\windows`. `setup.bat` also updates the game before rebuilding.
 
 Follow the
 [instructions](https://github.com/ZetaGlest/zetaglest-source/blob/develop/mk/windows/README.md)
@@ -81,6 +73,8 @@ To get the game up and running quickly, use the following command:
 Then run the following command to start the game:
 
     zetaglest/mk/linux/build/zetaglest
+
+To update and rebuild the game, simply run `sudo zetaglest/mk/linux/setup.sh`, as it performs a `git pull` as part of the process.
 
 #### For a more thorough approach:
 
