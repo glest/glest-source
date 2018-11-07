@@ -5,7 +5,6 @@ PROJECT( ZetaGlest )
 # setup.bat in mk/windows
 
 #SET(CMAKE_VERBOSE_MAKEFILE ON)
-SET(CMAKE_INSTALL_PREFIX, "/usr")
 
 # build type
 IF(NOT CMAKE_BUILD_TYPE)
