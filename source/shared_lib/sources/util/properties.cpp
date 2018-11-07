@@ -262,17 +262,17 @@ namespace Shared {
 			mapTagReplacementValues["%%APPLICATIONPATH%%"] = Properties::applicationPath;
 			mapTagReplacementValues["{APPLICATIONPATH}"] = Properties::applicationPath;
 
-#if defined(DATADIR)
+/*#if defined(DATADIR)
 			mapTagReplacementValues["$APPLICATIONDATAPATH"] = formatPath(TOSTRING(DATADIR));
 			mapTagReplacementValues["%%APPLICATIONDATAPATH%%"] = formatPath(TOSTRING(DATADIR));
 			mapTagReplacementValues["{APPLICATIONDATAPATH}"] = formatPath(TOSTRING(DATADIR));
 
-#else
+#else*/
 			mapTagReplacementValues["$APPLICATIONDATAPATH"] = Properties::applicationDataPath;
 			mapTagReplacementValues["%%APPLICATIONDATAPATH%%"] = Properties::applicationDataPath;
 			mapTagReplacementValues["{APPLICATIONDATAPATH}"] = Properties::applicationDataPath;
 
-#endif
+//#endif
 
 			mapTagReplacementValues["{TECHTREEPATH}"] = Properties::techtreePath;
 			mapTagReplacementValues["{SCENARIOPATH}"] = Properties::scenarioPath;
@@ -395,17 +395,17 @@ namespace Shared {
 				replaceAll(value, "%%APPLICATIONPATH%%", Properties::applicationPath);
 				replaceAll(value, "{APPLICATIONPATH}", Properties::applicationPath);
 
-#if defined(DATADIR)
+/*#if defined(DATADIR)
 				replaceAll(value, "$APPLICATIONDATAPATH", formatPath(TOSTRING(DATADIR)));
 				replaceAll(value, "%%APPLICATIONDATAPATH%%", formatPath(TOSTRING(DATADIR)));
 				replaceAll(value, "{APPLICATIONDATAPATH}", formatPath(TOSTRING(DATADIR)));
 
-#else
+#else*/
 				replaceAll(value, "$APPLICATIONDATAPATH", Properties::applicationDataPath);
 				replaceAll(value, "%%APPLICATIONDATAPATH%%", Properties::applicationDataPath);
 				replaceAll(value, "{APPLICATIONDATAPATH}", Properties::applicationDataPath);
 
-#endif
+//#endif
 
 				replaceAll(value, "{TECHTREEPATH}", Properties::techtreePath);
 				//	if(value.find("{SCENARIOPATH}") != string::npos) {
