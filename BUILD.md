@@ -74,7 +74,7 @@ Then run the following command to start the game:
 
     zetaglest/mk/linux/build/zetaglest
 
-To update and rebuild the game, simply run `sudo zetaglest/mk/linux/setup.sh`, as it performs a `git pull` as part of the process.
+To update and rebuild the game, simply rerun `sudo zetaglest/mk/linux/setup.sh`, as it performs a `git pull` as part of the process.
 
 #### For a more thorough approach:
 
@@ -82,7 +82,7 @@ On Debian, Ubuntu, Fedora, Opensuse and even more Linux distributions,
 after you clone the source repository, you may use
 
     cd mk/linux
-    sudo ./setupBuildDeps.sh
+    sudo ./build-deps.sh
 
 which will run your package manager and attempt to install the needed packages.
 
@@ -122,10 +122,6 @@ You can install the dependencies using `pacman`:
 
 `pacman -S curl ftgl glew glu icu libgl libircclient libvorbis libx11
 lua51 miniupnpc openal sdl2 wxgtk3 xerces-c cmake ftjam git mesa`
-
-### Other (add sections)
-
-(Add other specific operating systems)
 
 ## Installing
 
@@ -185,5 +181,3 @@ If you want to completely erase your previously-used options, remove
 If your build doesn't seem to be using the options you gave it, first
 try removing CMakeCache.txt and rebuilding.
 <!-- end duplication -->
-
-### Other (add sections)
