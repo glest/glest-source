@@ -7455,7 +7455,7 @@ namespace Game {
 			config.setString("Shadows", shadows);
 
 			//lights
-			config.setInt("MaxLights", atiCard ? 1 : 4);
+			config.setInt("MaxLights", atiCard ? 1 : 8);
 
 			//filter
 			config.setString("Filter", "Bilinear");
