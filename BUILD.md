@@ -146,12 +146,12 @@ From the top of the project source directory:
 
 (`cmake` On Linux or Mac OS)
 
-    cmake .. -DINSTALL_DIR_DATA=<absolute-path-to-data>
+    cmake ..
 
 (`cmake` on BSD. Setting the 2 variables before the cmake command tells
 cmake to use the correct compiler)
 
-    CC=`which egcc` CXX=`which eg++` cmake .. -DINSTALL_DIR_DATA=<absolute-path-to-data>
+    CC=`which egcc` CXX=`which eg++` cmake ..
 
 Now that the build configuration has been set, run make, replacing `X` with the number of CPU cores in your computer:
 
@@ -163,10 +163,6 @@ The zetaglest binaries will be in the `build/` directory. Run
 <!-- This needs to be duplicated in the BUILD.md and INSTALL.md doc -->
 See [running](https://github.com/ZetaGlest/zetaglest-source#running) for
 detailed information about running a server or hosting a game.
-
-The value for INSTALL_DIR_DATA is written to the game when compiled,
-therefore if you ever move your data directory, you will have to
-recompile ZetaGlest.
 
 After you run `cmake` for the first time, you won't need to specify any
 options unless you want to change previously-used options. Just use
