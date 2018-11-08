@@ -14,15 +14,6 @@ information about the game from which it was forked, please see the
 
 * CMakeLists.txt files have had a major tune-up (doesn't affect Windows users)
 
-* The `mk/linux/build-zg.sh` and `mk/macos/build-zg.sh` scripts have
-  been deprecated. See the
-  [BUILD.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
-  document for updated instructions.
-
-* Except for Windows, The map editor, model viewer and import/export
-  tools are no longer built by default. See BUILD.md for instructions on
-  how to enable building them.
-
 * BSD build instructions updated
 
 * [INSTALL.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/INSTALL.md) document created
@@ -38,11 +29,9 @@ information about the game from which it was forked, please see the
 Upgrade [libircclient](https://sourceforge.net/projects/libircclient/) embedded library from 1.3 to 1.10/
 [view ChangeLog](https://github.com/ZetaGlest/zetaglest-source/commit/64cc6c3cb10c7fd6d97fa0af4a10b431100c58b0#diff-2a35002207d9e074987b668f273e598d)
 
-
 ## 2018-09-05
 
 * Special effects added to fading/vanishing corpses
-
 
 ## 2018-09-04
 
