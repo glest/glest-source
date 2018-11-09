@@ -44,7 +44,6 @@ Then run the following command to start the game:
 * [Project Goals](https://github.com/ZetaGlest/zetaglest-source#why-this-fork-project-goals)
 * [FAQ](https://github.com/ZetaGlest/zetaglest-source#faq)
 * [Compiling](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
-* [Extra Tech trees, mods, tilesets, scenarious (not yet available on the ZetaGlest server)](https://github.com/ZetaGlest/zetaglest-source#extra-tech-trees-mods-tilesets-scenarious-not-yet-available-on-the-zetaglest-server)
 * [Contributing and Testing](https://github.com/ZetaGlest/zetaglest-source#contributing-and-testing)
 * [Contact](https://github.com/ZetaGlest/zetaglest-source#contact)
 
