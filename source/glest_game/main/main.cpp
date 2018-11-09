@@ -5902,7 +5902,7 @@ namespace Game {
 		if (haveSpecialOutputCommandLineOption == false ||
 			hasCommandArgument(argc, argv,
 				GAME_ARGS[GAME_ARG_VERSION]) == true) {
-			//              printf("Compiled using: %s on: %s platform: %s endianness: %s",getCompilerNameString().c_str(),getCompileDateTime().c_str(),getPlatformNameString().c_str(),(::Shared::PlatformByteOrder::isBigEndian() == true ? "big" : "little"));
+			printf("%s\n", GameVersionString.c_str());
 			printf("Compiled using: %s platform: %s endianness: %s",
 				getCompilerNameString().c_str(),
 				getPlatformNameString().c_str(),
@@ -5984,8 +5984,6 @@ namespace Game {
 				printf("\nSwitchSetupRequest sizeof = " MG_SIZE_T_SPECIFIER "",
 					SwitchSetupRequest().getDataSize());
 			}
-
-			printf("\nversion: [%s]", GameVersionString.c_str());
 
 #ifdef USE_STREFLOP
 

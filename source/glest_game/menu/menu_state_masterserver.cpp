@@ -1257,10 +1257,6 @@ namespace Game {
 				needUpdateFromServer = false;
 
 				if (announcementLoaded == false) {
-					consoleIRC.
-						addLine("---------------------------------------------");
-					consoleIRC.
-						addLine("---------------------------------------------");
 					// write hint to console:
 					Config & configKeys =
 						Config::getInstance(std::pair < ConfigType,
