@@ -1,5 +1,5 @@
 #!/bin/bash
-# Use this script to Analyze world synchronization log files between two or 
+# Use this script to analyze world synchronization log files between two or 
 # more networked players
 # ----------------------------------------------------------------------------
 # Written by Mark Vejvoda <mark_vejvoda@hotmail.com>
