@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/ZetaGlest/zetaglest-source.svg?branch=develop)](https://travis-ci.org/ZetaGlest/zetaglest-source)
 
-**This is the game engine source code repository.**
+**Official Website: https://zetaglest.github.io/**
 
 [ZetaGlest](https://zetaglest.github.io/docs/) is a fork of [MegaGlest](http://megaglest.org/),
 a libre software cross platform real-time strategy game.
