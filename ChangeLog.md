@@ -182,7 +182,8 @@ can now enter the multiplayer lobby unconditionally (i.e.
 
 * [#1] Replaced the Egypt graphics with Archmage's remaster: https://github.com/virtushda/EgyptRemaster
 
-#MegaGlest ChangeLog
+
+# MegaGlest ChangeLog
 
 To see a timeline of detail changes please visit:
 https://github.com/MegaGlest/megaglest-source/commits/master
@@ -658,9 +659,7 @@ v3.5.2
 - much much more data compared to glest ( factions/maps/tilesets ... )
 
 
-======================================================
-All versions before 3.2.2 refer to vanilla Glest
-======================================================
+# Glest ChangeLog
 
 3.2.2
 - Two networking bugfixes
