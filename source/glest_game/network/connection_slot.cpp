@@ -872,7 +872,7 @@ namespace Game {
 										//check consistency
 										if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-										bool compatible = checkVersionComptability(getNetworkVersionGITString(), networkMessageIntro.getVersionString());
+										bool compatible = checkVersionCompatibility(getNetworkVersionGITString(), networkMessageIntro.getVersionString());
 
 										if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 

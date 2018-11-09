@@ -9011,7 +9011,7 @@ namespace Game {
 			Lang & lang = Lang::getInstance();
 			string gameVer = versionNode->getAttribute("version")->getValue();
 			if (gameVer != GameVersionString
-				&& checkVersionComptability(gameVer,
+				&& checkVersionCompatibility(gameVer,
 					GameVersionString) == false) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096,
@@ -9127,7 +9127,7 @@ namespace Game {
 			XmlNode *minimapNode = worldNode->getChild("Minimap");
 
 			if (gameVer != GameVersionString
-				&& checkVersionComptability(gameVer,
+				&& checkVersionCompatibility(gameVer,
 					GameVersionString) == false) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096,

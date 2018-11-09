@@ -855,7 +855,7 @@ namespace Shared {
 			}
 		}
 
-		bool checkVersionComptability(string clientVersionString, string serverVersionString) {
+		bool checkVersionCompatibility(string clientVersionString, string serverVersionString) {
 			//SystemFlags::VERBOSE_MODE_ENABLED = true;
 
 			bool compatible = (clientVersionString == serverVersionString);
@@ -927,7 +927,10 @@ namespace Shared {
 				// strip the v off the first version, ie v3.7.0
 				replaceAll(tokensServer[0], "v", "");
 				replaceAll(tokens[0], "v", "");
-
+				replaceAll(tokensServer[0], "ZetaGlest", "");
+				replaceAll(tokens[0], "ZetaGlest", "");
+				replaceAll(tokensServer[0], " ", "");
+				replaceAll(tokens[0], " ", "");
 
 				if (SystemFlags::VERBOSE_MODE_ENABLED) {
 					// debug version strings

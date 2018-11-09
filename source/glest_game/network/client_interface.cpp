@@ -568,7 +568,7 @@ namespace Game {
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] got NetworkMessageIntro, networkMessageIntro.getGameState() = %d, versionString [%s], sessionKey = %d, playerIndex = %d, serverFTPPort = %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, networkMessageIntro.getGameState(), versionString.c_str(), sessionKey, playerIndex, serverFTPPort);
 
 					//check consistency
-					bool compatible = checkVersionComptability(networkMessageIntro.getVersionString(), getNetworkVersionGITString());
+					bool compatible = checkVersionCompatibility(networkMessageIntro.getVersionString(), getNetworkVersionGITString());
 
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] got NetworkMessageIntro, networkMessageIntro.getGameState() = %d, versionString [%s], sessionKey = %d, playerIndex = %d, serverFTPPort = %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, networkMessageIntro.getGameState(), versionString.c_str(), sessionKey, playerIndex, serverFTPPort);
 

@@ -59,8 +59,7 @@ namespace Game {
 			"buttonMods"),
 		buttonOptions("MainMenu", "buttonOptions"), buttonAbout("MainMenu",
 			"buttonAbout"),
-		buttonExit("MainMenu", "buttonExit"), labelVersion("MainMenu",
-			"labelVersion"),
+		buttonExit("MainMenu", "buttonExit"),
 		labelGreeting("MainMenu", "labelGreeting"), mainMessageBox("MainMenu",
 			"mainMessageBox"),
 		errorMessageBox("MainMenu", "errorMessageBox"),
@@ -76,18 +75,7 @@ namespace Game {
 		int buttonWidth = 200;
 		int buttonXPosition = (1000 - buttonWidth) / 2;
 
-
-		/*//labelVersion.registerGraphicComponent(containerName,"labelVersion");
-		if (EndsWith(glestVersionString, "-dev") == false) {
-			labelVersion.init(525, yPos);
-			labelVersion.setText(glestVersionString);
-		} else {*/
-			labelVersion.init(buttonXPosition, yPos);
-			//labelVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
-			labelVersion.setText(GameVersionString);
-		//}
-
-		labelGreeting.init(labelVersion.getX(), labelVersion.getY() - 16);
+		labelGreeting.init(buttonXPosition, yPos - 16);
 		labelGreeting.setText("");
 
 		Steam *steamInstance =
@@ -223,9 +211,6 @@ namespace Game {
 		Lang & lang = Lang::getInstance();
 
 		console.resetFonts();
-
-		//labelVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
-		labelVersion.setText(GameVersionString);
 
 		buttonNewGame.setText(lang.getString("NewGame"));
 		buttonLoadGame.setText(lang.getString("LoadGame"));
@@ -723,7 +708,6 @@ namespace Game {
 		renderer.renderButton(&buttonOptions);
 		renderer.renderButton(&buttonAbout);
 		renderer.renderButton(&buttonExit);
-		renderer.renderLabel(&labelVersion);
 		renderer.renderLabel(&labelGreeting);
 
 		renderer.renderConsole(&console);

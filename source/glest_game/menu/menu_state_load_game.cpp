@@ -397,7 +397,7 @@ namespace Game {
 								string gameVer =
 									versionNode->getAttribute("version")->getValue();
 								if (gameVer != GameVersionString
-									&& checkVersionComptability(gameVer,
+									&& checkVersionCompatibility(gameVer,
 										GameVersionString) ==
 									false) {
 									char szBuf[8096] = "";

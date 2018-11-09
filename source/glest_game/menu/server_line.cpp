@@ -192,7 +192,7 @@ namespace Game {
 
 		//printf("glestVersionString [%s] masterServerInfo->getGlestVersion() [%s]\n",glestVersionString.c_str(),masterServerInfo->getGlestVersion().c_str());
 		compatible =
-			checkVersionComptability(GameVersionString,
+			checkVersionCompatibility(GameVersionString,
 				masterServerInfo.getGlestVersion());
 		selectButton.setEnabled(compatible);
 		selectButton.setEditable(compatible);

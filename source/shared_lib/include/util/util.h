@@ -257,7 +257,7 @@ namespace Shared {
 		int compareMajorMinorVersion(const string &versionA, const string &versionB);
 		int getMajor(string version);
 		int getMinor(string version);
-		bool checkVersionComptability(string clientVersionString, string serverVersionString);
+		bool checkVersionCompatibility(string clientVersionString, string serverVersionString);
 
 		template<typename T>
 		void enforceMinimumValue(T minValue, T &value) {

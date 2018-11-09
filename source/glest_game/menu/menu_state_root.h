@@ -43,7 +43,6 @@ namespace Game {
 		GraphicButton buttonOptions;
 		GraphicButton buttonAbout;
 		GraphicButton buttonExit;
-		GraphicLabel labelVersion;
 		GraphicLabel labelGreeting;
 
 		GraphicMessageBox mainMessageBox;

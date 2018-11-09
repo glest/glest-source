@@ -39,7 +39,7 @@ namespace Game {
 	const char *mailString = "https://github.com/ZetaGlest";
 
 	string getCrashDumpFileName() {
-		return (string("zetaglest") + GameVersionString) + ".dmp";
+		return GameVersionString + ".dmp";
 	}
 	string getPlatformTypeNameString() {
 		static string platform;
@@ -198,9 +198,9 @@ namespace Game {
 		//case 1: return "Built: " + string(__DATE__) + " " + GIT_Rev;
 		switch (i) {
 			case 0:
-				return string("ZetaGlest ") + GameVersionString;
-			case 1:
 				return GameVersionString;
+			case 1:
+				return "Network multi-player cross-platform 3D real-time strategy (RTS) game";
 			case 2:
 				return "Copyright 2001-2010 The Glest Team";
 			case 3:
