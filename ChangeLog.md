@@ -55,9 +55,7 @@ played by 4 players can have a 5th person observing; a map being played
 by 8 people can have a 9th person observing. Up to 10 people can
 connect, which mean you can have up to 6 observers with a 4-player map,
 and 2 with an 8-player map.
-- [#6](https://github.com/ZetaGlest/zetaglest-source/issues/6) Players
-can now enter the multiplayer lobby unconditionally (i.e.
-"InternetGamesAllowed" will no longer be used)
+- [#6](https://github.com/ZetaGlest/zetaglest-source/issues/6) Players can now enter the multiplayer lobby unconditionally
 - Replaced the Egypt graphics with Archmage's remaster: https://github.com/virtushda/EgyptRemaster
 
 # MegaGlest ChangeLog
