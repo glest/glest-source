@@ -17,6 +17,27 @@ CPU is also available.
 
 ![ZetaGlest ScreenShot](https://zetaglest.github.io/docs/assets/screenshots/screen147.jpg)
 
+## Downloading the game
+
+On Windows, the easiest way to get started is to [download and run the
+installer](https://github.com/ZetaGlest/windows-installer). If you want
+to contribute with the code on Windows, [please follow these
+instructions](https://github.com/ZetaGlest/zetaglest-source/blob/develop/mk/windows/README.md).
+
+For other operating systems, you must [**build and install from
+source**](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
+(Later, we'll be providing binary packages).
+
+## Quick Build Guide for Linux
+
+For Linux, run the following command:
+
+    git clone https://github.com/ZetaGlest/zetaglest-source.git zetaglest && sudo zetaglest/mk/linux/setup.sh
+
+Then run the following command to start the game:
+
+    zetaglest/mk/linux/build/zetaglest
+
 **README Contents**
 
 * [Stay Informed (Updates)](https://github.com/ZetaGlest/zetaglest-source#stay-informed-updates)
@@ -60,32 +81,6 @@ the ZetaGlest project.
 The FAQ is located at
 [https://zetaglest.github.io/docs/faq.html](https://zetaglest.github.io/docs/faq.html).
 
-## Downloading the game
-
-On Windows, the easiest way to get started is to [download and run the
-installer](https://github.com/ZetaGlest/windows-installer). If you want
-to contribute with the code on Windows, [please follow these
-instructions](https://github.com/ZetaGlest/zetaglest-source/blob/develop/mk/windows/README.md).
-
-For other operating systems, you must [**build and install from
-source**](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
-(Later, we'll be providing binary packages).
-
-(The ETA for the first official release can be viewed from the [development
-milestone](https://github.com/ZetaGlest/zetaglest-source/milestone/1).)
-
-## Quick Build Guide for Linux
-
-For Linux, run the following command:
-
-    git clone https://github.com/ZetaGlest/zetaglest-source.git zetaglest && sudo zetaglest/mk/linux/setup.sh
-
-Then run the following command to start the game:
-
-    zetaglest/mk/linux/build/zetaglest
-
-To run your own headless (dedicated) server, see [the FAQ](https://zetaglest.github.io/docs/faq.html#headlessserver).
-
 ### Extra Tech trees, mods, tilesets, scenarios (not yet available on the ZetaGlest server)
 
 * [MODS.md](https://github.com/ZetaGlest/zetaglest-data/blob/develop/MODS.md)
@@ -99,6 +94,8 @@ forking and cloning are outlined in [CONTRIBUTING.md](https://github.com/ZetaGle
 
 Please see [CONTRIBUTING.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/CONTRIBUTING.md)
 for extended, important instructions and guidelines for contributing.
+
+To run your own headless (dedicated) server, see [the FAQ](https://zetaglest.github.io/docs/faq.html#headlessserver).
 
 ## Contact
 
