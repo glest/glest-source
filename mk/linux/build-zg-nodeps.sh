@@ -8,7 +8,7 @@
 #
 # Configuration section
 #
-echo
+
 echo "Building ZetaGlest..."
 echo
 
@@ -320,8 +320,11 @@ else
         if [ $? -ne 0 ]; then
           echo 'ERROR: MAKE failed.' >&2; exit 2
         fi
-
+		
         cd ..
+		if [ `id -u`'x' == '0x' ] || [ "$1" == "--manually" ]; then
+			chmod -R 777 build/
+		fi
         echo ''
         echo 'BUILD COMPLETE.'
         echo ''

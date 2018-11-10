@@ -5,4 +5,5 @@
 # Copyright (c) 2011-2013 Mark Vejvoda under GNU GPL v3.0+
 
 ./build-deps.sh
+echo
 ./build-zg-nodeps.sh
