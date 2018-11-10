@@ -2,7 +2,7 @@
 # Splitting the path into two lines would make the example even more
 # unreadable.
 manpage-has-errors-from-man
-# The icon is provided by megaglest-data now
+# The icon is provided by zetaglest-data now
 menu-icon-missing
 # This script does not need to be executable.
 script-not-executable

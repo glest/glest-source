@@ -2,11 +2,9 @@ temp notes file (-andy5995)
 
 # common options for Cmake prior to `make install`
 
-cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+cmake ..
 
-To see other install locations, use `cmake .. -LH`. In many cases, just
-using CMAKE_INSTALL_PREFIX will be sufficient
-
+To see other install locations, use `cmake .. -LH`.
 
 # generating the man page
 
@@ -29,7 +27,7 @@ git grep -l 'original_text' | xargs sed -i 's/original_text/new_text/g'
 
 mkdir install-build
 cd install-build
-cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DWANT_INSTALL_DATA=ON
+cmake ..
 make -j? (where ? is the number of CPU cores)
 make install DESTDIR=$PWD/install-test
 
