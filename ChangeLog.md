@@ -1,5 +1,8 @@
 # ZetaGlest ChangeLog
 
+To see a full timeline of detailed changes please visit:
+https://github.com/ZetaGlest/zetaglest-source/commits/develop
+
 v1.0
 
 - The new logo is polished
@@ -60,7 +63,7 @@ and 2 with an 8-player map.
 
 # MegaGlest ChangeLog
 
-To see a timeline of detail changes please visit:
+To see a full timeline of detail changes please visit:
 https://github.com/MegaGlest/megaglest-source/commits/master
 
 v3.13.0
