@@ -9,13 +9,6 @@
 #
 # Modified by Andy Alt for ZetaGlest <https://zetaglest.github.io/>
 
-echo ""
-echo "This script has been deprecated. Please see"
-echo "https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md"
-echo "For updated build instructions."
-echo ""
-
-exit 0
 export LANG=C
 
 SCRIPTDIR="$(cd "$(dirname "$0")"; pwd)"
