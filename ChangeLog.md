@@ -31,6 +31,7 @@ v1.0
 - [[bugfix:835c6ef](https://github.com/ZetaGlest/zetaglest-source/commit/835c6efd924ed7e62ccd43e064bc6b7f5cdecbfc)]Fixed "x" key getting stuck on Windows
 - [[045b0b8](https://github.com/ZetaGlest/zetaglest-source/commit/045b0b88e051f7163fbef42fa0adc63a326ca186)]Removed "MG_" and "xxx" (3 digit extension) on nicknames in lobby player list
 - [Windows](https://github.com/ZetaGlest/zetaglest-source/commits/develop/mk/windows) build system, dependencies, and documentation updated
+- Now allows cross-version network games if the data is the same
 - These units can now heal mobile units from their own factions that are in range: nurse (British, radius of 15), archmage_tower (Magic, radius of 8)
 - Auto-healing radius changed from 8 to 15 (with the exception of Valhalla)
 - Units standing near Valhalla (norse) are auto-healed (radius of 8)
