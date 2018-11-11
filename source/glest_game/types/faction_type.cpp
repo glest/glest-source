@@ -212,7 +212,7 @@ namespace Game {
 					string str = currentPath + "units/" + unitTypes[i].getName();
 
 					try {
-						unitTypes[i].loaddd(i, str, techTree, techTreePath, this,
+						unitTypes[i].loadUnit(i, str, techTree, techTreePath, this,
 							checksum, techtreeChecksum, loadedFileList,
 							validationMode);
 						logger.setProgress(progressBaseValue +

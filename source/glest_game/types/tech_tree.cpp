@@ -217,6 +217,7 @@ namespace Game {
 
 			//printf(">>> test path=%s\n",path.c_str());
 			if (isdir(path.c_str()) == true) {
+				//printf(">>> test path=%s\n", path.c_str());
 				return path;
 				//break;
 			}

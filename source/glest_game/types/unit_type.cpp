@@ -195,7 +195,7 @@ namespace Game {
 		name = lastDir(dir);
 	}
 
-	void UnitType::loaddd(int id, const string & dir,
+	void UnitType::loadUnit(int id, const string & dir,
 		const TechTree * techTree,
 		const string & techTreePath,
 		const FactionType * factionType,
@@ -242,6 +242,15 @@ namespace Game {
 			loadedFileList[path].push_back(make_pair(dir, dir));
 
 			const XmlNode *unitNode = xmlTree.getRootNode();
+			if (unitNode->hasChild("link")) {
+				XmlNode* node = unitNode->getChild("link");
+
+				string newFactionPath = techTree->findPath(node->getAttribute("tech-tree")->getValue()) + "/factions/" + node->getAttribute("faction")->getValue() + "/units/" + name;
+				//printf("\nPath: %s\n", newFactionPath.c_str());
+				endPathWithSlash(newFactionPath, false);
+				loadUnit(id, newFactionPath, techTree, techTreePath, factionType, checksum, techtreeChecksum, loadedFileList, validationMode);
+				return;
+			}
 
 			const XmlNode *parametersNode = unitNode->getChild("parameters");
 
