@@ -35,6 +35,8 @@ v1.0
 - These units can now heal mobile units from their own factions that are in range: nurse (British, radius of 15), archmage_tower (Magic, radius of 8)
 - Auto-healing radius changed from 8 to 15 (with the exception of Valhalla)
 - Units standing near Valhalla (norse) are auto-healed (radius of 8)
+- Supports importing units form other factions, such as by creating a folder named "fakir" in "tech" with a file "fakir.xml" with the following text:
+	```<unit><link tech-tree="zetapack" faction="persian"/></unit>```
 - These units can now heal mobile units from their own factions that are in range (radius of 8):
 	priest (Egypt)
 	wartime mechanic (Romans)
