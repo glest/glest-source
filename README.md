@@ -2,9 +2,9 @@
 
 # ZetaGlest
 
-**Official Website: https://zetaglest.github.io/**
+**Official Website: https://zetaglest.github.io**
 
-[ZetaGlest](https://zetaglest.github.io/docs/) is a fork of [MegaGlest](http://megaglest.org/),
+[ZetaGlest](https://zetaglest.github.io) is a fork of [MegaGlest](http://megaglest.org/),
 a libre software cross platform real-time strategy game.
 
 ZetaGlest is a network multi-player real-time strategy game engine.
@@ -53,13 +53,13 @@ Then run the following command to start the game:
 
 **[Screenshots](https://github.com/ZetaGlest/screenshots)**
 
-Open games and [Server list and player stats](https://zetaglest.dreamhosters.com/)
+Open games and [Server list and player stats](http://master.megaglest.org/)
 
 [Detailed information about units in the game](https://zetaglest.github.io/)
 
 ## Stay Informed (Updates)
 
-* [ChangeLog.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/ChangeLog.md)<br >
+* [ZetaGlest Change Log](https://github.com/ZetaGlest/zetaglest-source/blob/develop/ChangeLog.md)<br >
 * [![RSS](rss_23x23.jpeg)](https://zetaglest.github.io/feed.xml)
 [The ZetaGlest Blog](https://zetaglest.github.io/blog/)<br >
 * [![RSS](rss_23x23.jpeg)](https://github.com/ZetaGlest/zetaglest-source/commits/develop.atom)
