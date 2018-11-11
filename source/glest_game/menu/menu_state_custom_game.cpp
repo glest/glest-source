@@ -409,7 +409,6 @@ namespace Game {
 				serverPort + " / " + externalPort + " )");
 			ServerSocket::setExternalPort(strToInt(externalPort));
 
-			//labelLocalGameVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
 			labelLocalGameVersion.setText(GameVersionString);
 
 			xoffset = 65;
@@ -1059,7 +1058,6 @@ namespace Game {
 		mainMessageBox.init(lang.getString("Ok"), 500, 300);
 
 
-		//labelLocalGameVersion.setText(glestVersionString + " [" + getCompileDateTime() + ", " + getGITRevisionString() + "]");
 		labelLocalGameVersion.setText(GameVersionString);
 
 		//vector<string> teamItems, controlItems, results , rMultiplier;
@@ -3602,7 +3600,7 @@ namespace Game {
 		publishToServerInfo["glestVersion"] = GameVersionString;
 		publishToServerInfo["platform"] =
 			getPlatformNameString();
-		publishToServerInfo["binaryCompileDate"] = getCompileDateTime();
+		publishToServerInfo["binaryCompileDate"] = string();
 
 		//game info:
 		publishToServerInfo["serverTitle"] = gameSettings.getGameName();

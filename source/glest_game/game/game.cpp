@@ -9010,9 +9010,7 @@ namespace Game {
 
 			Lang & lang = Lang::getInstance();
 			string gameVer = versionNode->getAttribute("version")->getValue();
-			if (gameVer != GameVersionString
-				&& checkVersionCompatibility(gameVer,
-					GameVersionString) == false) {
+			if (checkVersionCompatibility(gameVer, GameVersionString) == false) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096,
 					lang.getString("SavedGameBadVersion").c_str(),
@@ -9098,7 +9096,7 @@ namespace Game {
 		Lang & lang = Lang::getInstance();
 		string gameVer = versionNode->getAttribute("version")->getValue();
 		// this is the version check for loading normal save games from menu_state_load_game
-		if (gameVer != GameVersionString
+		/*if (gameVer != GameVersionString
 			&&
 			(compareMajorMinorVersion
 			(gameVer, LastCompatibleVersionString) < 0
@@ -9113,7 +9111,7 @@ namespace Game {
 		if (SystemFlags::VERBOSE_MODE_ENABLED)
 			printf
 			("Found saved game version that matches your application version: [%s] --> [%s]\n",
-				gameVer.c_str(), GameVersionString.c_str());
+				gameVer.c_str(), GameVersionString.c_str());*/
 
 		XmlNode *gameNode = rootNode->getChild("Game");
 		GameSettings newGameSettings;
@@ -9126,9 +9124,7 @@ namespace Game {
 			XmlNode *statsNode = worldNode->getChild("Stats");
 			XmlNode *minimapNode = worldNode->getChild("Minimap");
 
-			if (gameVer != GameVersionString
-				&& checkVersionCompatibility(gameVer,
-					GameVersionString) == false) {
+			if (checkVersionCompatibility(gameVer, GameVersionString) == false) {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096,
 					lang.getString("SavedGameBadVersion").c_str(),

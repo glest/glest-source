@@ -2826,7 +2826,7 @@ namespace Game {
 		publishToServerInfo["uuid"] = Config::getInstance().getString("PlayerId", "");
 		publishToServerInfo["glestVersion"] = GameVersionString;
 		publishToServerInfo["platform"] = getPlatformNameString();
-		publishToServerInfo["binaryCompileDate"] = getCompileDateTime();
+		publishToServerInfo["binaryCompileDate"] = string();
 		publishToServerInfo["serverTitle"] = this->getGameSettings()->getGameName();
 		publishToServerInfo["tech"] = this->getGameSettings()->getTech();
 		publishToServerInfo["map"] = this->getGameSettings()->getMap();

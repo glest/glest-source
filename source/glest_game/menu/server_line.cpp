@@ -191,9 +191,7 @@ namespace Game {
 		selectButton.setAlwaysLighted(true);
 
 		//printf("glestVersionString [%s] masterServerInfo->getGlestVersion() [%s]\n",glestVersionString.c_str(),masterServerInfo->getGlestVersion().c_str());
-		compatible =
-			checkVersionCompatibility(GameVersionString,
-				masterServerInfo.getGlestVersion());
+		compatible = checkVersionCompatibility(GameVersionString, masterServerInfo.getGlestVersion());
 		selectButton.setEnabled(compatible);
 		selectButton.setEditable(compatible);
 

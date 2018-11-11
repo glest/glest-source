@@ -396,9 +396,7 @@ namespace Game {
 								const XmlNode *versionNode = rootNode;
 								string gameVer =
 									versionNode->getAttribute("version")->getValue();
-								if (gameVer != GameVersionString
-									&& checkVersionCompatibility(gameVer,
-										GameVersionString) ==
+								if (checkVersionCompatibility(gameVer, GameVersionString) ==
 									false) {
 									char szBuf[8096] = "";
 									snprintf(szBuf, 8096,

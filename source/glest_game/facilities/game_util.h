@@ -41,14 +41,11 @@ namespace Game {
 	string getPlatformArchTypeNameString();
 	string getPlatformNameString();
 	string getCompilerNameString();
-	string getNetworkVersionString();
-	string getNetworkVersionGITString();
 	string getAboutString1(int i);
 	string getAboutString2(int i);
 	string getTeammateName(int i);
 	string getTeammateRole(int i);
-	string getCompileDateTime();
-
+	bool checkVersionCompatibility(string clientVersionString, string serverVersionString);
 	string formatString(string str);
 
 	string getGameReadWritePath(const string & lookupKey = "");

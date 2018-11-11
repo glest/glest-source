@@ -167,33 +167,6 @@ namespace Game {
 		return version;
 	}
 
-	string getNetworkVersionString() {
-		static string version = "";
-		if (version == "") {
-			version =
-				GameVersionString + "-" + getCompilerNameString() + "-" +
-				getCompileDateTime();
-		}
-		return version;
-	}
-
-	string getNetworkVersionGITString() {
-		static string version = "";
-		if (version == "") {
-			version =
-				GameVersionString + getCompilerNameString();
-		}
-		return version;
-	}
-
-	string getCompileDateTime() {
-		static string result = "";
-		//      if(result == "") {
-		//              result = string(__DATE__) + " " + string(__TIME__);
-		//      }
-		return result;
-	}
-
 	string getAboutString1(int i) {
 		//case 1: return "Built: " + string(__DATE__) + " " + GIT_Rev;
 		switch (i) {
@@ -376,13 +349,14 @@ namespace Game {
 		return path;
 	}
 
+	bool checkVersionCompatibility(string clientVersionString, string serverVersionString) {
+		return true;
+	}
+
 	void initSpecialStrings() {
 		getCrashDumpFileName();
 		getPlatformNameString();
 		getCompilerNameString();
-		getNetworkVersionString();
-		getNetworkVersionGITString();
-		getCompileDateTime();
 	}
 
 	bool upgradeFilesInTemp() {

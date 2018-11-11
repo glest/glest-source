@@ -568,7 +568,7 @@ namespace Game {
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] got NetworkMessageIntro, networkMessageIntro.getGameState() = %d, versionString [%s], sessionKey = %d, playerIndex = %d, serverFTPPort = %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, networkMessageIntro.getGameState(), versionString.c_str(), sessionKey, playerIndex, serverFTPPort);
 
 					//check consistency
-					bool compatible = checkVersionCompatibility(networkMessageIntro.getVersionString(), getNetworkVersionGITString());
+					bool compatible = checkVersionCompatibility(GameVersionString, networkMessageIntro.getVersionString());
 
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] got NetworkMessageIntro, networkMessageIntro.getGameState() = %d, versionString [%s], sessionKey = %d, playerIndex = %d, serverFTPPort = %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, networkMessageIntro.getGameState(), versionString.c_str(), sessionKey, playerIndex, serverFTPPort);
 
@@ -581,18 +581,18 @@ namespace Game {
 						if (strncmp(GameVersionString.c_str(), networkMessageIntro.getVersionString().c_str(), GameVersionString.length()) != 0) {
 							string playerNameStr = getHumanPlayerName();
 							sErr = "Server and client binary mismatch!\nYou have to use the exactly same binaries!\n\nServer: " + networkMessageIntro.getVersionString() +
-								"\nClient: " + getNetworkVersionGITString() + " player [" + playerNameStr + "]";
+								"\nClient: " + GameVersionString + " player [" + playerNameStr + "]";
 							printf("%s\n", sErr.c_str());
 
-							sendTextMessage("Server and client binary mismatch!!", -1, true, "");
+							sendTextMessage("Server and client binary mismatch", -1, true, "");
 							sendTextMessage(" Server:" + networkMessageIntro.getVersionString(), -1, true, "");
-							sendTextMessage(" Client: " + getNetworkVersionGITString(), -1, true, "");
+							sendTextMessage(" Client: " + GameVersionString, -1, true, "");
 							sendTextMessage(" Client player [" + playerNameStr + "]", -1, true, "");
 						} else {
 							versionMatched = true;
 							string playerNameStr = getHumanPlayerName();
 							sErr = "Warning, Server and client are using the same version but different platforms.\n\nServer: " + networkMessageIntro.getVersionString() +
-								"\nClient: " + getNetworkVersionGITString() + " player [" + playerNameStr + "]";
+								"\nClient: " + GameVersionString + " player [" + playerNameStr + "]";
 							//printf("%s\n",sErr.c_str());
 						}
 
@@ -620,7 +620,7 @@ namespace Game {
 						//send intro message
 						Lang &lang = Lang::getInstance();
 						NetworkMessageIntro sendNetworkMessageIntro(
-							sessionKey, getNetworkVersionGITString(),
+							sessionKey, GameVersionString,
 							getHumanPlayerName(),
 							-1,
 							nmgstOk,

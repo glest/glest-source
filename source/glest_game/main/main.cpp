@@ -6842,16 +6842,6 @@ namespace Game {
 			MenuStateMasterserver::setDisplayMessageFunction(ExceptionHandler::
 				DisplayMessage);
 
-#ifdef USE_STREFLOP
-			SystemFlags::OutputDebug(SystemFlags::debugSystem,
-				"%s, STREFLOP enabled.\n",
-				getNetworkVersionString().c_str());
-#else
-			SystemFlags::OutputDebug(SystemFlags::debugSystem,
-				"%s, STREFLOP NOT enabled.\n",
-				getNetworkVersionString().c_str());
-#endif
-
 			SystemFlags::OutputDebug(SystemFlags::debugSystem,
 				"In [%s::%s Line: %d]\n", __FILE__,
 				__FUNCTION__, __LINE__);

@@ -244,6 +244,7 @@ namespace Shared {
 		vector<string> split(string s, string d);
 		string toLower(const string &s);
 		bool compareNonCaseSensitive(const string &a, const string &b);
+		string trimAllExceptNumbersAndPeriods(string str);
 		//void copyStringToBuffer(char *buffer, int bufferSize, const string& s);
 
 		//numeric fcs
@@ -257,7 +258,6 @@ namespace Shared {
 		int compareMajorMinorVersion(const string &versionA, const string &versionB);
 		int getMajor(string version);
 		int getMinor(string version);
-		bool checkVersionCompatibility(string clientVersionString, string serverVersionString);
 
 		template<typename T>
 		void enforceMinimumValue(T minValue, T &value) {
