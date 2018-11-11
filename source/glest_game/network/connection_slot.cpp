@@ -879,36 +879,15 @@ namespace Game {
 										if (compatible == false) {
 											if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-											bool versionMatched = false;
-											string sErr = "";
+											string playerNameStr = name;
+											string sErr = "Server and client version mismatch!\nYou have to use the exactly same versions!\n\nServer: " + GameVersionString +
+												"\nClient: " + networkMessageIntro.getVersionString() + " player [" + playerNameStr + "]";
+											printf("%s\n", sErr.c_str());
 
-											if (strncmp(GameVersionString.c_str(), networkMessageIntro.getVersionString().c_str(), GameVersionString.length()) != 0) {
-												string playerNameStr = name;
-												sErr = "Server and client version mismatch!\nYou have to use the exactly same versions!\n\nServer: " + GameVersionString +
-													"\nClient: " + networkMessageIntro.getVersionString() + " player [" + playerNameStr + "]";
-												printf("%s\n", sErr.c_str());
-
-												serverInterface->sendTextMessage("Server and client version mismatch", -1, true, "", lockedSlotIndex);
-												serverInterface->sendTextMessage(" Server:" + GameVersionString, -1, true, "", lockedSlotIndex);
-												serverInterface->sendTextMessage(" Client: " + networkMessageIntro.getVersionString(), -1, true, "", lockedSlotIndex);
-												serverInterface->sendTextMessage(" Client player [" + playerNameStr + "]", -1, true, "", lockedSlotIndex);
-											} else {
-												versionMatched = true;
-
-												string playerNameStr = name;
-												sErr = "Warning, Server and client are using the same version but different platforms.\n\nServer: " + GameVersionString +
-													"\nClient: " + networkMessageIntro.getVersionString() + " player [" + playerNameStr + "]";
-												//printf("%s\n",sErr.c_str());
-												if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] %s\n", __FILE__, __FUNCTION__, __LINE__, sErr.c_str());
-											}
-
-											if (Config::getInstance().getBool("PlatformConsistencyChecks", "true") &&
-												versionMatched == false) { // error message and disconnect only if checked
-												if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] %s\n", __FILE__, __FUNCTION__, __LINE__, sErr.c_str());
-												close();
-												if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] %s\n", __FILE__, __FUNCTION__, __LINE__, sErr.c_str());
-												return;
-											}
+											serverInterface->sendTextMessage("Server and client version mismatch", -1, true, "", lockedSlotIndex);
+											serverInterface->sendTextMessage(" Server:" + GameVersionString, -1, true, "", lockedSlotIndex);
+											serverInterface->sendTextMessage(" Client: " + networkMessageIntro.getVersionString(), -1, true, "", lockedSlotIndex);
+											serverInterface->sendTextMessage(" Client player [" + playerNameStr + "]", -1, true, "", lockedSlotIndex);
 										}
 
 										if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);

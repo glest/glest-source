@@ -575,38 +575,15 @@ namespace Game {
 					if (compatible == false) {
 						if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
-						bool versionMatched = false;
-						string sErr = "";
+						string playerNameStr = getHumanPlayerName();
+						string sErr = "Server and client binary mismatch!\nYou have to use the exactly same binaries!\n\nServer: " + networkMessageIntro.getVersionString() +
+							"\nClient: " + GameVersionString + " player [" + playerNameStr + "]";
+						printf("%s\n", sErr.c_str());
 
-						if (strncmp(GameVersionString.c_str(), networkMessageIntro.getVersionString().c_str(), GameVersionString.length()) != 0) {
-							string playerNameStr = getHumanPlayerName();
-							sErr = "Server and client binary mismatch!\nYou have to use the exactly same binaries!\n\nServer: " + networkMessageIntro.getVersionString() +
-								"\nClient: " + GameVersionString + " player [" + playerNameStr + "]";
-							printf("%s\n", sErr.c_str());
-
-							sendTextMessage("Server and client binary mismatch", -1, true, "");
-							sendTextMessage(" Server:" + networkMessageIntro.getVersionString(), -1, true, "");
-							sendTextMessage(" Client: " + GameVersionString, -1, true, "");
-							sendTextMessage(" Client player [" + playerNameStr + "]", -1, true, "");
-						} else {
-							versionMatched = true;
-							string playerNameStr = getHumanPlayerName();
-							sErr = "Warning, Server and client are using the same version but different platforms.\n\nServer: " + networkMessageIntro.getVersionString() +
-								"\nClient: " + GameVersionString + " player [" + playerNameStr + "]";
-							//printf("%s\n",sErr.c_str());
-						}
-
-						// error message and disconnect only if checked
-						if (Config::getInstance().getBool("PlatformConsistencyChecks", "true") &&
-							versionMatched == false) {
-
-							DisplayErrorMessage(sErr);
-							sleep(1);
-
-							setQuit(true);
-							close();
-							return;
-						}
+						sendTextMessage("Server and client binary mismatch", -1, true, "");
+						sendTextMessage(" Server:" + networkMessageIntro.getVersionString(), -1, true, "");
+						sendTextMessage(" Client: " + GameVersionString, -1, true, "");
+						sendTextMessage(" Client player [" + playerNameStr + "]", -1, true, "");
 					}
 
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance, "In [%s::%s Line: %d] took msecs: %lld\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, chrono.getMillis());
