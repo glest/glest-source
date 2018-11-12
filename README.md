@@ -4,10 +4,7 @@
 
 **Official Website: https://zetaglest.github.io**
 
-[ZetaGlest](https://zetaglest.github.io) is a fork of [MegaGlest](http://megaglest.org/),
-a libre software cross platform real-time strategy game.
-
-ZetaGlest is a network multi-player real-time strategy game engine.
+[ZetaGlest](https://zetaglest.github.io) is a network multi-player real-time strategy game engine.
 It's shipped with the ZetaPack mod, which includes several factions,
 each one consisting of many 3d characters. The factions are loosely
 based on historical empires with added elements of fantasy, such as
