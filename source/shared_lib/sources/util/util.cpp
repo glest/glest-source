@@ -794,7 +794,7 @@ namespace Shared {
 
 		string trimAllExceptNumbersAndPeriods(string str) {
 			char current;
-			int startIndex, endIndex;
+			size_t startIndex, endIndex;
 			for (startIndex = 0; startIndex < str.length(); startIndex++) {
 				current = str[startIndex];
 				if ((current >= '0' && current <= '9') || current == '.')
