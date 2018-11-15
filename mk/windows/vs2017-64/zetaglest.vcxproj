@@ -143,7 +143,7 @@
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <SmallerTypeCheck>true</SmallerTypeCheck>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <PrecompiledHeader>
@@ -188,7 +188,7 @@
       <StringPooling>true</StringPooling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <SmallerTypeCheck>false</SmallerTypeCheck>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <PrecompiledHeader>
@@ -234,7 +234,7 @@
       <PreprocessorDefinitions>AL_LIBTYPE_STATIC;WIN32;NDEBUG;_LIB;_WINDOWS;XML_LIBRARY;USE_PCH=1;_CRT_SECURE_NO_WARNINGS;USE_STREFLOP;STREFLOP_SSE;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;XERCES_STATIC_LIBRARY;GLEW_STATIC;USE_FREETYPEGL_XXX;STATICLIB;USE_FTGL;FTGL_LIBRARY_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Precise</FloatingPointModel>
@@ -286,7 +286,7 @@
       <PreprocessorDefinitions>AL_LIBTYPE_STATIC;WIN32;NDEBUG;_LIB;_WINDOWS;XML_LIBRARY;USE_PCH=1;_CRT_SECURE_NO_WARNINGS;USE_STREFLOP;STREFLOP_SSE;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;XERCES_STATIC_LIBRARY;GLEW_STATIC;USE_FREETYPEGL_XXX;STATICLIB;USE_FTGL;FTGL_LIBRARY_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Precise</FloatingPointModel>
@@ -338,7 +338,7 @@
       <PreprocessorDefinitions>AL_LIBTYPE_STATIC;WIN32;NDEBUG;_LIB;_WINDOWS;XML_LIBRARY;USE_PCH=1;_CRT_SECURE_NO_WARNINGS;USE_STREFLOP;STREFLOP_SSE;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;XERCES_STATIC_LIBRARY;GLEW_STATIC;USE_FREETYPEGL_XXX;STATICLIB;USE_FTGL;FTGL_LIBRARY_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Precise</FloatingPointModel>
@@ -389,7 +389,7 @@
       <PreprocessorDefinitions>NDEBUG;WIN32;AL_LIBTYPE_STATIC;_LIB;_WINDOWS;XML_LIBRARY;USE_PCH=1;_CRT_SECURE_NO_WARNINGS;CURL_STATICLIB;UNICODE;XERCES_STATIC_LIBRARY;GLEW_STATIC;STATICLIB;USE_FTGL;FTGL_LIBRARY_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <FloatingPointModel>Precise</FloatingPointModel>
@@ -440,7 +440,7 @@
       <PreprocessorDefinitions>AL_LIBTYPE_STATIC;WIN32;_LIB;_WINDOWS;XML_LIBRARY;USE_PCH=1;_CRT_SECURE_NO_WARNINGS;USE_STREFLOP;STREFLOP_SSE;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;XERCES_STATIC_LIBRARY;GLEW_STATIC;USE_FREETYPEGL_XXX;STATICLIB;USE_FTGL;FTGL_LIBRARY_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>
       </EnableEnhancedInstructionSet>
@@ -491,7 +491,7 @@
       <PreprocessorDefinitions>AL_LIBTYPE_STATIC;WIN32;NDEBUG;_LIB;_WINDOWS;XML_LIBRARY;USE_PCH=1;_CRT_SECURE_NO_WARNINGS;USE_STREFLOP;STREFLOP_SSE;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;XERCES_STATIC_LIBRARY;GLEW_STATIC;USE_FREETYPEGL_XXX;STATICLIB;USE_FTGL;FTGL_LIBRARY_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>
       </EnableEnhancedInstructionSet>

@@ -136,25 +136,25 @@
     <TargetName>libzetaglest</TargetName>
     <OutDir>$(SolutionDir)\$(TargetName)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
-    <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <TargetName>libzetaglest</TargetName>
     <OutDir>$(SolutionDir)\$(TargetName)\</OutDir>
     <IntDir>$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
-    <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>libzetaglest</TargetName>
     <OutDir>$(SolutionDir)\$(TargetName)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
-    <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetName>libzetaglest</TargetName>
     <OutDir>$(SolutionDir)\$(TargetName)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)\$(TargetName)$(Platform)_obj\$(Configuration)\</IntDir>
-    <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_WITHOUT_STREFLOP|x64'">
     <TargetName>libzetaglest</TargetName>
@@ -175,7 +175,7 @@
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <SmallerTypeCheck>true</SmallerTypeCheck>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -205,7 +205,7 @@
       <StringPooling>true</StringPooling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <SmallerTypeCheck>false</SmallerTypeCheck>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -235,7 +235,7 @@
       <StringPooling>true</StringPooling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <SmallerTypeCheck>false</SmallerTypeCheck>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -269,7 +269,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;USE_PCH=1;USE_STREFLOP;STREFLOP_SSE;STREFLOP_RANDOM_GEN_SIZE=32;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;USE_FTGL;FTGL_LIBRARY_STATIC;TA3D_PLATFORM_MSVC;TA3D_PLATFORM_WINDOWS;STATICLIB;XERCES_STATIC_LIBRARY;GLEW_STATIC;XML_LIBRARY;ZLIB_WINAPI;HAVE_FRIBIDI;HAVE_GOOGLE_BREAKPAD;MINIUPNP_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Precise</FloatingPointModel>
@@ -299,7 +299,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;USE_PCH=1;STREFLOP_SSE;STREFLOP_RANDOM_GEN_SIZE=32;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;USE_FTGL;FTGL_LIBRARY_STATIC;TA3D_PLATFORM_MSVC;TA3D_PLATFORM_WINDOWS;STATICLIB;XERCES_STATIC_LIBRARY;GLEW_STATIC;XML_LIBRARY;ZLIB_WINAPI;HAVE_FRIBIDI;HAVE_GOOGLE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Precise</FloatingPointModel>
@@ -329,7 +329,7 @@
       <PreprocessorDefinitions>DEBUG;AL_LIBTYPE_STATIC;WIN32;_LIB;_CRT_SECURE_NO_WARNINGS;USE_PCH=1;USE_STREFLOP;STREFLOP_SSE;STREFLOP_RANDOM_GEN_SIZE=32;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;USE_FTGL;FTGL_LIBRARY_STATIC;TA3D_PLATFORM_MSVC;TA3D_PLATFORM_WINDOWS;STATICLIB;XERCES_STATIC_LIBRARY;GLEW_STATIC;XML_LIBRARY;ZLIB_WINAPI;HAVE_FRIBIDI;MINIUPNP_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>
       </EnableEnhancedInstructionSet>
@@ -364,7 +364,7 @@
       <PreprocessorDefinitions>NDEBUG;AL_LIBTYPE_STATIC;WIN32;_LIB;_CRT_SECURE_NO_WARNINGS;USE_PCH=1;CURL_STATICLIB;UNICODE;USE_FTGL;FTGL_LIBRARY_STATIC;STATICLIB;XERCES_STATIC_LIBRARY;GLEW_STATIC;XML_LIBRARY;ZLIB_WINAPI;HAVE_FRIBIDI;MINIUPNP_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Precise</FloatingPointModel>
@@ -398,7 +398,7 @@
       <PreprocessorDefinitions>AL_LIBTYPE_STATIC;WIN32;DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;USE_PCH=1;USE_STREFLOP;STREFLOP_SSE;STREFLOP_RANDOM_GEN_SIZE=32;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;USE_FTGL;FTGL_LIBRARY_STATIC;TA3D_PLATFORM_MSVC;TA3D_PLATFORM_WINDOWS;STATICLIB;XERCES_STATIC_LIBRARY;GLEW_STATIC;XML_LIBRARY;ZLIB_WINAPI;HAVE_FRIBIDI;MINIUPNP_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>
       </EnableEnhancedInstructionSet>
@@ -435,7 +435,7 @@
       <PreprocessorDefinitions>AL_LIBTYPE_STATIC;WIN32;DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;USE_PCH=1;USE_STREFLOP;STREFLOP_SSE;STREFLOP_RANDOM_GEN_SIZE=32;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;USE_FTGL;FTGL_LIBRARY_STATIC;TA3D_PLATFORM_MSVC;TA3D_PLATFORM_WINDOWS;STATICLIB;XERCES_STATIC_LIBRARY;GLEW_STATIC;XML_LIBRARY;ZLIB_WINAPI;HAVE_FRIBIDI;MINIUPNP_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>
       </EnableEnhancedInstructionSet>
@@ -472,7 +472,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;USE_PCH=1;STREFLOP_RANDOM_GEN_SIZE=32;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;USE_FTGL;FTGL_LIBRARY_STATIC;TA3D_PLATFORM_MSVC;TA3D_PLATFORM_WINDOWS;STATICLIB;XERCES_STATIC_LIBRARY;GLEW_STATIC;XML_LIBRARY;ZLIB_WINAPI;HAVE_FRIBIDI;HAVE_GOOGLE_BREAKPAD_XXX;MINIUPNP_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>
       </EnableEnhancedInstructionSet>
@@ -505,7 +505,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;USE_PCH=1;STREFLOP_RANDOM_GEN_SIZE=32;LIBM_COMPILING_FLT32;CURL_STATICLIB;UNICODE;USE_FTGL;FTGL_LIBRARY_STATIC;TA3D_PLATFORM_MSVC;TA3D_PLATFORM_WINDOWS;STATICLIB;XERCES_STATIC_LIBRARY;GLEW_STATIC;XML_LIBRARY;ZLIB_WINAPI;HAVE_FRIBIDI;HAVE_GOOGLE_BREAKPAD_XXX;MINIUPNP_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>
       </EnableEnhancedInstructionSet>
