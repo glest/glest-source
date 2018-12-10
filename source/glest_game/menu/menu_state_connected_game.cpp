@@ -299,8 +299,8 @@ namespace Game {
 
 		checkBoxAllowObservers.setEditable(false);
 
-		for (int i = 0; i <= 45; ++i) {
-			rMultiplier.push_back(floatToStr(0.5f + 0.1f * i, 1));
+		for (int i = 1; i <= 20; ++i) {
+			rMultiplier.push_back(floatToStr(0.5f * i, 1));
 		}
 
 		labelFallbackCpuMultiplier.registerGraphicComponent(containerName,
@@ -914,8 +914,8 @@ namespace Game {
 		listBoxAISwitchTeamAcceptPercent.setItems(aiswitchteamModeItems);
 
 		vector < string > rMultiplier;
-		for (int i = 0; i <= 45; ++i) {
-			rMultiplier.push_back(floatToStr(0.5f + 0.1f * i, 1));
+		for (int i = 1; i <= 20; ++i) {
+			rMultiplier.push_back(floatToStr(0.5f * i, 1));
 		}
 		listBoxFallbackCpuMultiplier.setItems(rMultiplier);
 

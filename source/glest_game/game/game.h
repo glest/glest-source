@@ -502,8 +502,7 @@ namespace Game {
 		static int ErrorDisplayMessage(const char *msg, bool exitApp);
 
 		void
-			ReplaceDisconnectedNetworkPlayersWithAI(bool isNetworkGame,
-				NetworkRole role);
+			ReplaceDisconnectedNetworkPlayersWithAI(bool isNetworkGame, NetworkRole role, bool showMessage);
 		void calcCameraMoveX();
 		void calcCameraMoveZ();
 

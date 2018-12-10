@@ -2246,7 +2246,7 @@ namespace Game {
 			//int minutes = (world->getTimeFlow()->getTime() - hours) * 100 * 0.6; // scale 100 to 60
 			//snprintf(szBuf,200,"%s %.2d:%.2d",lang.getString("GameTime","",true).c_str(),hours,minutes);
 			// string header2 = lang.getString("GameDurationTime","",true) + ": " + getTimeString(stats.getFramesToCalculatePlaytime());
-			snprintf(szBuf, 500, "%s %s", lang.getString("GameDurationTime", "").c_str(), getTimeDuationString(world->getFrameCount(), GameConstants::updateFps).c_str());
+			snprintf(szBuf, 500, "%s %s", lang.getString("GameDurationTime", "").c_str(), getTimeDurationString(world->getFrameCount(), GameConstants::updateFps).c_str());
 			if (str != "") {
 				str += " ";
 			}

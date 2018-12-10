@@ -223,7 +223,7 @@ namespace Shared {
 			return out.str();
 		}
 
-		double getTimeDuationMinutes(int frames, int updateFps) {
+		double getTimeDurationMinutes(int frames, int updateFps) {
 			int framesleft = frames;
 			double hours = (int) ((int) frames / (float) updateFps / 3600.0f);
 			framesleft = (int) (framesleft - hours * 3600 * updateFps);
@@ -238,7 +238,7 @@ namespace Shared {
 			return result;
 		}
 
-		string getTimeDuationString(int frames, int updateFps) {
+		string getTimeDurationString(int frames, int updateFps) {
 			int framesleft = frames;
 			int hours = (int) ((int) frames / (float) updateFps / 3600.0f);
 			framesleft = framesleft - hours * 3600 * updateFps;

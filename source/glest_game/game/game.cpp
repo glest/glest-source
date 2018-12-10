@@ -2864,7 +2864,7 @@ namespace Game {
 
 			chronoGamePerformanceCounts.start();
 
-			ReplaceDisconnectedNetworkPlayersWithAI(isNetworkGame, role);
+			ReplaceDisconnectedNetworkPlayersWithAI(isNetworkGame, role, getTimeDurationMinutes(this->world.getFrameCount(), GameConstants::updateFps) > 0.06);
 
 			addPerformanceCount("ReplaceDisconnectedNetworkPlayersWithAI",
 				chronoGamePerformanceCounts.getMillis());
@@ -4362,8 +4362,7 @@ namespace Game {
 	}
 
 	void
-		Game::ReplaceDisconnectedNetworkPlayersWithAI(bool isNetworkGame,
-			NetworkRole role) {
+		Game::ReplaceDisconnectedNetworkPlayersWithAI(bool isNetworkGame, NetworkRole role, bool showMessage) {
 		if (role == nrServer && isNetworkGame == true &&
 			difftime((long int) time(NULL),
 				lastNetworkPlayerConnectionCheck) >=
@@ -4415,42 +4414,43 @@ namespace Game {
 							isPlayerObserver = true;
 
 						}
-
-						const
-							vector <
-							string >
-							languageList =
-							this->gameSettings.getUniqueNetworkPlayerLanguages();
-						for (unsigned int j = 0;
-							j < (unsigned int) languageList.size(); ++j) {
-							if (isPlayerObserver == false) {
-								string
-									msg =
-									"Player #%d %s has disconnected, switching player to AI mode";
-								if (lang.hasString("GameSwitchPlayerToAI",
-									languageList[j], true)) {
-									msg =
-										lang.getString("GameSwitchPlayerToAI", languageList[j]);
+						if (showMessage) {
+							const
+								vector <
+								string >
+								languageList =
+								this->gameSettings.getUniqueNetworkPlayerLanguages();
+							for (unsigned int j = 0;
+								j < (unsigned int) languageList.size(); ++j) {
+								if (isPlayerObserver == false) {
+									string
+										msg =
+										"Player #%d %s has disconnected, switching player to AI mode";
+									if (lang.hasString("GameSwitchPlayerToAI",
+										languageList[j], true)) {
+										msg =
+											lang.getString("GameSwitchPlayerToAI", languageList[j]);
+									}
+									snprintf(szBuf, 8096, msg.c_str(), i + 1,
+										this->gameSettings.getNetworkPlayerName(i).
+										c_str());
+								} else {
+									string
+										msg =
+										"Player #%d %s has disconnected, but player was only an observer";
+									if (lang.hasString("GameSwitchPlayerObserverToAI",
+										languageList[j], true)) {
+										msg =
+											lang.getString("GameSwitchPlayerObserverToAI", languageList[j]);
+									}
+									snprintf(szBuf, 8096, msg.c_str(), i + 1,
+										this->gameSettings.getNetworkPlayerName(i).
+										c_str());
 								}
-								snprintf(szBuf, 8096, msg.c_str(), i + 1,
-									this->gameSettings.getNetworkPlayerName(i).
-									c_str());
-							} else {
-								string
-									msg =
-									"Player #%d %s has disconnected, but player was only an observer";
-								if (lang.hasString("GameSwitchPlayerObserverToAI",
-									languageList[j], true)) {
-									msg =
-										lang.getString("GameSwitchPlayerObserverToAI", languageList[j]);
-								}
-								snprintf(szBuf, 8096, msg.c_str(), i + 1,
-									this->gameSettings.getNetworkPlayerName(i).
-									c_str());
+								bool localEcho = (languageList[j] == lang.getLanguage());
+								server->sendTextMessage(szBuf, -1, localEcho,
+									languageList[j]);
 							}
-							bool localEcho = (languageList[j] == lang.getLanguage());
-							server->sendTextMessage(szBuf, -1, localEcho,
-								languageList[j]);
 						}
 					}
 				}
@@ -6985,7 +6985,7 @@ namespace Game {
 							>::getString
 							(stat_online_minutes_played).c_str
 							()) +
-							getTimeDuationMinutes
+							getTimeDurationMinutes
 							(endStats.getFramesToCalculatePlaytime
 							(), GameConstants::updateFps));
 					}

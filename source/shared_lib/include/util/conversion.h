@@ -52,8 +52,8 @@ namespace Shared {
 
 		string formatNumber(uint64 f);
 
-		double getTimeDuationMinutes(int frames, int updateFps);
-		string getTimeDuationString(int frames, int updateFps);
+		double getTimeDurationMinutes(int frames, int updateFps);
+		string getTimeDurationString(int frames, int updateFps);
 
 	}
 } //end namespace

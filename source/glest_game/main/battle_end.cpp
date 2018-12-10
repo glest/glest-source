@@ -660,7 +660,7 @@ namespace Game {
 
 				int
 					score =
-					enemykills * 100 + unitsProduced * 50 + resourcesHarvested / 10;
+					enemykills * 100 + unitsProduced * 50 + resourcesHarvested / 10 - deaths / 100;
 				string controlString;
 
 				if (stats.getPersonalityType(i) == fpt_Observer) {
@@ -729,7 +729,7 @@ namespace Game {
 					string textToRender = stats.getPlayerName(i).substr(0, 11);
 					if (stats.getPlayerLeftBeforeEnd(i) == true) {
 						textToRender +=
-							"\n(" + getTimeDuationString(stats.getTimePlayerLeft(i),
+							"\n(" + getTimeDurationString(stats.getTimePlayerLeft(i),
 								GameConstants::updateFps) + ")";
 					}
 
@@ -860,7 +860,7 @@ namespace Game {
 			string
 				header2 =
 				lang.getString("GameDurationTime", "") + ": " +
-				getTimeDuationString(stats.getFramesToCalculatePlaytime(),
+				getTimeDurationString(stats.getFramesToCalculatePlaytime(),
 					GameConstants::updateFps);
 			textRenderer->render(header2, lm + 250, bm + 530);
 
