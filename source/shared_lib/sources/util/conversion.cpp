@@ -171,19 +171,19 @@ namespace Shared {
 			return (str[0] != '\0' ? str : "");
 		}
 
-		string floatToStr(float f, int precsion) {
+		string floatToStr(float f, int precision) {
 			setlocale(LC_NUMERIC, "C");
 
 			char str[strSize] = "";
-			snprintf(str, strSize - 1, "%.*f", precsion, f);
+			snprintf(str, strSize - 1, "%.*f", precision, f);
 			return (str[0] != '\0' ? str : "");
 		}
 
-		string doubleToStr(double d, int precsion) {
+		string doubleToStr(double d, int precision) {
 			setlocale(LC_NUMERIC, "C");
 
 			char str[strSize] = "";
-			snprintf(str, strSize - 1, "%.*f", precsion, d);
+			snprintf(str, strSize - 1, "%.*f", precision, d);
 			return (str[0] != '\0' ? str : "");
 		}
 

@@ -48,10 +48,10 @@ using namespace Shared::Util;
 using namespace Shared::Map;
 
 namespace Game {
-	double maxFrameCountLagAllowed = 30;
-	double maxClientLagTimeAllowed = 25;
-	double maxFrameCountLagAllowedEver = 30;
-	double maxClientLagTimeAllowedEver = 25;
+	double maxFrameCountLagAllowed = 60;
+	double maxClientLagTimeAllowed = 50;
+	double maxFrameCountLagAllowedEver = 120;
+	double maxClientLagTimeAllowedEver = 100;
 	double warnFrameCountLagPercent = 0.50;
 
 	ServerInterface::ServerInterface(bool publishEnabled, ClientLagCallbackInterface *clientLagCallbackInterface) : GameNetworkInterface() {
@@ -793,9 +793,10 @@ namespace Game {
 
 							//printf("Closing connection slot lagged out!\n");
 							connectionSlot->close();
-							// not needed now, but will be needed when in-game joins and rejoins
-							// are used
+
 							connectionSlot->resetGraceLagCtr();
+							connectionSlot->setCurrentLagCount(0);
+							connectionSlot->setLagCountWarning(false);
 						}
 
 					}
@@ -2477,7 +2478,7 @@ namespace Game {
 			if (gameSettingsBuffer->getFactionControl(factionIndex) == ctNetwork &&
 				isClientConnected(slotIndex) == false) {
 
-				gameSettingsBuffer->setNetworkPlayerName(factionIndex, GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME);
+				gameSettingsBuffer->setNetworkPlayerName(factionIndex, "");
 			}
 		}
 		if (setGameSettingsBuffer == true) {

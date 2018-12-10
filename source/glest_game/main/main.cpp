@@ -118,6 +118,9 @@ using namespace Shared::Xml;
 using namespace Shared;
 
 void handleUnexpectedError(const char* message) {
+	Game::Game* currentGame = Game::World::getCurrentGame();
+	if (currentGame != NULL && currentGame->isFlagType1BitEnabled(Game::FlagTypes1::ft1_allow_shared_team_resources))
+		return;
 	Game::GameNetworkInterface* gameNetworkInterface = Game::NetworkManager::getInstance().getGameNetworkInterface();
 	if (gameNetworkInterface != NULL)
 		gameNetworkInterface->sendTextMessage(message, -1, true, "");
@@ -7946,6 +7949,9 @@ namespace Game {
 #endif
 					program->loop();
 #ifndef DEBUG
+				} catch (const std::exception &exc) {
+					printf("\nAn unhandled error occurred: %s\nAttempting to recover...\n", exc.what());
+					goto gameloop;
 				} catch (...) {
 					printf("\nAn unhandled error occurred. Attempting to recover...\n");
 					goto gameloop;

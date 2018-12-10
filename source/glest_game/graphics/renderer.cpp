@@ -1841,7 +1841,7 @@ namespace Game {
 				if (playerName != lineInfo->originalPlayerName && lineInfo->originalPlayerName != "") {
 					playerName = lineInfo->originalPlayerName;
 				}
-				if (playerName == GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME) {
+				if (playerName.length() == 0) {
 					playerName = lang.getString("SystemUser");
 				}
 				//printf("playerName [%s], line [%s]\n",playerName.c_str(),line.c_str());

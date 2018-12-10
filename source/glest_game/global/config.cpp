@@ -42,7 +42,7 @@ namespace Game {
 	const float GameConstants::normalMultiplier = 1.0f;
 	const float GameConstants::easyMultiplier = 0.5f;
 	const float GameConstants::ultraMultiplier = 1.5f;
-	const float GameConstants::megaMultiplier = 2.5f;
+	const float GameConstants::zetaMultiplier = 2.5f;
 
 	const char *GameConstants::folder_path_maps = "maps";
 	const char *GameConstants::folder_path_scenarios = "scenarios";
@@ -50,7 +50,6 @@ namespace Game {
 	const char *GameConstants::folder_path_tilesets = "tilesets";
 	const char *GameConstants::folder_path_tutorials = "tutorials";
 
-	const char *GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME = "??";
 	const char *GameConstants::NETWORK_SLOT_CLOSED_SLOTNAME = "Closed";
 
 	const char *GameConstants::folder_path_screenshots = "screens/";

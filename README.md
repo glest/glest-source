@@ -16,10 +16,11 @@ CPU is also available.
 
 ![ZetaGlest ScreenShot](https://zetaglest.github.io/docs/assets/screenshots/screen147.jpg)
 
-## Downloading the game
+## Download for Windows
 
-On Windows, the easiest way to get started is to [download and run the
-installer](https://github.com/ZetaGlest/windows-installer). If you want
+#### Download [ZetaGlest 1.0 from here](https://github.com/ZetaGlest/windows-installer/archive/1.0.zip).
+
+Additionally, if you want
 to contribute with the code on Windows, [please follow these
 instructions](https://github.com/ZetaGlest/zetaglest-source/blob/develop/mk/windows/README.md).
 
@@ -65,12 +66,6 @@ Then run the following command to start the game:
 [Recent Commits to zetaglest-data:develop](https://github.com/ZetaGlest/zetaglest-data/commits/develop.atom)<br >
 * [![RSS](rss_23x23.jpeg)](https://github.com/ZetaGlest/zetaglest.github.io/commits/master.atom)
 [Recent Commits to the web site](https://github.com/ZetaGlest/zetaglest.github.io/commits/master.atom)
-
-## Why this fork? (Project Goals)
-
-Because we love MegaGlest! We wanted to take the project into a
-slightly different direction, and therefore we forked MegaGlest into
-the ZetaGlest project.
 
 ## FAQ
 

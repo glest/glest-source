@@ -4181,8 +4181,7 @@ namespace Game {
 								ssrft_NetworkPlayerName) == ssrft_NetworkPlayerName) {
 								//if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] i = %d, switchSetupRequests[i]->getSwitchFlags() = %d, switchSetupRequests[i]->getNetworkPlayerName() [%s], labelPlayerNames[i].getText() [%s]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,i,switchSetupRequests[i]->getSwitchFlags(),switchSetupRequests[i]->getNetworkPlayerName().c_str(),labelPlayerNames[i].getText().c_str());
 
-								if (switchSetupRequests[i]->getNetworkPlayerName() !=
-									GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME) {
+								if (switchSetupRequests[i]->getNetworkPlayerName().length() != 0) {
 									//labelPlayerNames[i].setText(switchSetupRequests[i]->getNetworkPlayerName());
 									gameSettings.setNetworkPlayerName(i,
 										switchSetupRequests
@@ -4427,7 +4426,7 @@ namespace Game {
 							if (isPlayerObserver == false) {
 								string
 									msg =
-									"Player #%d [%s] has disconnected, switching player to AI mode!";
+									"Player #%d %s has disconnected, switching player to AI mode";
 								if (lang.hasString("GameSwitchPlayerToAI",
 									languageList[j], true)) {
 									msg =
@@ -4439,7 +4438,7 @@ namespace Game {
 							} else {
 								string
 									msg =
-									"Player #%d [%s] has disconnected, but player was only an observer!";
+									"Player #%d %s has disconnected, but player was only an observer";
 								if (lang.hasString("GameSwitchPlayerObserverToAI",
 									languageList[j], true)) {
 									msg =

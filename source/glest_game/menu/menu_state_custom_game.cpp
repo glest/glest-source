@@ -502,7 +502,7 @@ namespace Game {
 			checkBoxAllowObservers.setValue(checkBoxAllowObservers.getValue());
 
 			vector < string > rMultiplier;
-			for (int i = 0; i < 45; ++i) {
+			for (int i = 0; i <= 45; ++i) {
 				rMultiplier.push_back(floatToStr(0.5f + 0.1f * i, 1));
 			}
 
@@ -2493,7 +2493,7 @@ namespace Game {
 		}
 
 		forceWaitForShutdown = false;
-		closeUnusedSlots();
+		//closeUnusedSlots();
 		CoreData & coreData = CoreData::getInstance();
 		SoundRenderer & soundRenderer = SoundRenderer::getInstance();
 		soundRenderer.playFx(coreData.getClickSoundC());
@@ -2625,7 +2625,7 @@ namespace Game {
 		safeMutex.ReleaseLock(true);
 		safeMutexCLI.ReleaseLock(true);
 		GameSettings gameSettings;
-		loadGameSettings(&gameSettings, true);
+		loadGameSettings(&gameSettings, false);
 
 		if (SystemFlags::
 			getSystemSettingType(SystemFlags::debugSystem).enabled)
@@ -3311,9 +3311,9 @@ namespace Game {
 
 								if (listBoxControls[switchFactionIdx].getSelectedItemIndex
 								() == ctNetworkUnassigned) {
-									serverInterface->removeSlot(switchFactionIdx);
+									/*serverInterface->removeSlot(switchFactionIdx);
 									listBoxControls[switchFactionIdx].setSelectedItemIndex
-									(ctClosed);
+									(ctClosed);*/
 
 									labelPlayers[switchFactionIdx].setVisible
 									(switchFactionIdx + 1 <= mapInfo.players);
@@ -3388,8 +3388,7 @@ namespace Game {
 										labelPlayerNames[i].getText().
 										c_str());
 
-								if (switchSetupRequests[i]->getNetworkPlayerName() !=
-									GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME) {
+								if (switchSetupRequests[i]->getNetworkPlayerName().length() != 0) {
 									labelPlayerNames[i].setText(switchSetupRequests
 										[i]->getNetworkPlayerName
 										());
@@ -4447,7 +4446,7 @@ namespace Game {
 #endif
 
 						gameSettings->setNetworkPlayerName(slotIndex,
-							GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME);
+							"");
 						labelPlayerNames[i].setText("");
 					}
 				} else if (listBoxControls[i].getSelectedItemIndex() != ctHuman) {
@@ -5606,9 +5605,7 @@ namespace Game {
 		}
 
 		if (index >= 0 && index < GameConstants::maxPlayers &&
-			labelPlayerNames[index].getText() != "" &&
-			labelPlayerNames[index].getText() !=
-			GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME) {
+			labelPlayerNames[index].getText().length() != 0) {
 			result = labelPlayerNames[index].getText();
 
 			if (activeInputLabel != NULL) {

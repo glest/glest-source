@@ -91,7 +91,7 @@ namespace Game {
 		static const int indirectSightRange = 5;
 
 	private:
-
+		static Game* currentGame;
 		Map map;
 		Tileset tileset;
 		TechTree *techTree;
@@ -167,6 +167,9 @@ namespace Game {
 		void removeFogOfWarSkillType(const Unit *unit);
 		bool removeFogOfWarSkillTypeFromList(const Unit *unit);
 
+		static Game* getCurrentGame() {
+			return currentGame;
+		}
 		//get
 		inline int getMaxPlayers() const {
 			return map.getMaxPlayers();

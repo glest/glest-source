@@ -383,7 +383,7 @@ namespace Game {
 		this->receivedNetworkGameStatus = false;
 
 		this->autoPauseGameCountForLag = 0;
-		this->skipLagCheck = false;
+		this->skipLagCheck = true;
 		this->joinGameInProgress = false;
 		this->canAcceptConnections = true;
 		this->startInGameConnectionLaunch = false;
@@ -499,7 +499,7 @@ namespace Game {
 
 	void ConnectionSlot::setReady() {
 		this->ready = true;
-		this->skipLagCheck = false;
+		this->skipLagCheck = true;
 		this->joinGameInProgress = false;
 		this->sentSavedGameInfo = false;
 	}
@@ -944,7 +944,7 @@ namespace Game {
 							case nmtBroadCastSetup:
 							{
 								if (gotIntro == true) {
-									if (this->serverInterface->getGameSettings() == NULL ||
+									/*if (this->serverInterface->getGameSettings() == NULL ||
 										(joinGameInProgress == false && sessionKey != this->serverInterface->getGameSettings()->getMasterserver_admin())) {
 										string playerNameStr = name;
 										string sErr = "Client has invalid admin sessionid for player [" + playerNameStr + "]";
@@ -953,7 +953,7 @@ namespace Game {
 
 										close();
 										return;
-									}
+									}*/
 
 									NetworkMessageLaunch networkMessageLaunch;
 									if (receiveMessage(&networkMessageLaunch, networkMessageType)) {
@@ -1422,7 +1422,7 @@ namespace Game {
 		//printf("ConnectionSlot::close() #1 this->getSocket() = %p\n",this->getSocket());
 
 		this->gotIntro = false;
-		this->skipLagCheck = false;
+		this->skipLagCheck = true;
 		this->joinGameInProgress = false;
 		this->sentSavedGameInfo = false;
 		this->pauseForInGameConnection = false;

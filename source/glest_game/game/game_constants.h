@@ -209,8 +209,6 @@ namespace Game {
 			folder_path_tutorials;
 
 		static const char *
-			NETWORK_SLOT_UNCONNECTED_SLOTNAME;
-		static const char *
 			NETWORK_SLOT_CLOSED_SLOTNAME;
 
 		static const char *
@@ -268,7 +266,7 @@ namespace Game {
 		static const float
 			ultraMultiplier;
 		static const float
-			megaMultiplier;
+			zetaMultiplier;
 		//
 
 		static const char *

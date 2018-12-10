@@ -185,7 +185,7 @@ namespace Game {
 	string getAboutString2(int i) {
 		switch (i) {
 			case 0:
-				return "Web: https://github.com/ZetaGlest";
+				return "Website: https://zetaglest.github.io";
 			case 1:
 				return "Bug reports: " + string(mailString);
 			case 2:

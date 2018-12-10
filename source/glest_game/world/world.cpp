@@ -48,6 +48,7 @@ namespace Game {
 	int MaxExploredCellsLookupItemCache = 9500;
 	//int MaxExploredCellsLookupItemCache = 0;
 	time_t ExploredCellsLookupItem::lastDebug = 0;
+	Game* World::currentGame = NULL;
 
 	// ===================== PUBLIC ========================
 
@@ -335,6 +336,7 @@ namespace Game {
 		ExploredCellsLookupItemCacheTimer.clear();
 
 		this->game = game;
+		currentGame = game;
 		scriptManager = game->getScriptManager();
 
 		GameSettings *gs = game->getGameSettings();

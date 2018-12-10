@@ -236,8 +236,8 @@ namespace Game {
 					// There is no way to figure out parts without loading the texture
 					// unfortunately we must load it even for headless server
 					// to get width and height
-					bool switchOffNonGraphicalModeEnabled = GlobalStaticFlags::getIsNonGraphicalModeEnabled();
-					if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+					bool isHeadless = GlobalStaticFlags::getIsNonGraphicalModeEnabled();
+					if (isHeadless) {
 						GlobalStaticFlags::setIsNonGraphicalModeEnabled(false);
 					}
 
@@ -263,7 +263,7 @@ namespace Game {
 						exceptionError = "Error: " + path + "\n" + ex.what();
 					}
 
-					if (switchOffNonGraphicalModeEnabled == true) {
+					if (isHeadless) {
 						GlobalStaticFlags::setIsNonGraphicalModeEnabled(true);
 
 						delete pixmap;

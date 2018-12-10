@@ -332,7 +332,7 @@ Please contact the ZetaGlest team for more info.";
 							GameConstants::ultraMultiplier;
 					} else if (factionControl == ctCpuZeta) {
 						scenarioInfo->resourceMultipliers[i] =
-							GameConstants::megaMultiplier;
+							GameConstants::zetaMultiplier;
 					}
 				}
 

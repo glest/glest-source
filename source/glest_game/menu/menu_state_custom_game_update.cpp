@@ -1033,9 +1033,9 @@ namespace Game {
 						|| (listBoxControls[i].getSelectedItemIndex() ==
 							ctNetwork && slot->isConnected() == false
 							&& i >= mapInfo.players)) {
-						if (slot->getCanAcceptConnections() == true) {
+						/*if (slot->getCanAcceptConnections() == true) {
 							slot->setCanAcceptConnections(false);
-						}
+						}*/
 						if (slot->isConnected() == true) {
 							if (listBoxControls[i].getSelectedItemIndex() !=
 								ctNetworkUnassigned) {
@@ -1104,7 +1104,7 @@ namespace Game {
 		} else if (ct == ctCpuZeta || ct == ctNetworkCpuZeta) {
 			listBoxRMultiplier[index].setSelectedItem(floatToStr
 			(GameConstants::
-				megaMultiplier, 1));
+				zetaMultiplier, 1));
 			listBoxRMultiplier[index].setEnabled(checkBoxScenario.getValue() ==
 				false);
 		}

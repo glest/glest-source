@@ -299,7 +299,7 @@ namespace Game {
 
 		checkBoxAllowObservers.setEditable(false);
 
-		for (int i = 0; i < 45; ++i) {
+		for (int i = 0; i <= 45; ++i) {
 			rMultiplier.push_back(floatToStr(0.5f + 0.1f * i, 1));
 		}
 
@@ -914,7 +914,7 @@ namespace Game {
 		listBoxAISwitchTeamAcceptPercent.setItems(aiswitchteamModeItems);
 
 		vector < string > rMultiplier;
-		for (int i = 0; i < 45; ++i) {
+		for (int i = 0; i <= 45; ++i) {
 			rMultiplier.push_back(floatToStr(0.5f + 0.1f * i, 1));
 		}
 		listBoxFallbackCpuMultiplier.setItems(rMultiplier);
@@ -2165,8 +2165,7 @@ namespace Game {
 						&& clientInterface->getJoinGameInProgress() == true) {
 						canGrabSlot =
 							((listBoxControls[i].getSelectedItemIndex() == ctNetwork
-								&& labelNetStatus[i].getText() ==
-								GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME)
+								&& labelNetStatus[i].getText().length() == 0)
 								|| (listBoxControls[i].getSelectedItemIndex() != ctHuman
 									&& listBoxControls[i].getSelectedItemIndex() != ctClosed
 									&& listBoxControls[i].getSelectedItemIndex() !=
@@ -2174,8 +2173,7 @@ namespace Game {
 					} else {
 						canGrabSlot =
 							(listBoxControls[i].getSelectedItemIndex() == ctNetwork
-								&& labelNetStatus[i].getText() ==
-								GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME);
+								&& labelNetStatus[i].getText().length() == 0);
 					}
 
 					if (canGrabSlot == true) {
@@ -2437,7 +2435,7 @@ namespace Game {
 		} else if (ct == ctCpuZeta || ct == ctNetworkCpuZeta) {
 			listBoxRMultiplier[index].setSelectedItem(floatToStr
 			(GameConstants::
-				megaMultiplier, 1));
+				zetaMultiplier, 1));
 			listBoxRMultiplier[index].setEnabled(true);
 		} else {
 			listBoxRMultiplier[index].setSelectedItem(floatToStr
@@ -2792,7 +2790,6 @@ namespace Game {
 				launchingNewGame = true;
 				clientInterface->broadcastGameStart(&gameSettings);
 			}
-			return;
 		} else {
 			launchingNewGame = true;
 			broadCastGameSettingsToHeadlessServer(needToBroadcastServerSettings);
@@ -3675,8 +3672,7 @@ namespace Game {
 					ctNetworkUnassigned) {
 					bool renderIt = true;
 					//printf("Player #%d [%s] control = %d\n",i,labelPlayerNames[i].getText().c_str(),listBoxControls[i].getSelectedItemIndex());
-					if (labelNetStatus[i].getText() ==
-						GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME) {
+					if (labelNetStatus[i].getText().length() == 0) {
 						renderIt = false;
 					}
 					labelPlayers[i].setVisible(renderIt);
@@ -3755,8 +3751,7 @@ namespace Game {
 						&& clientInterface->getJoinGameInProgress() == true) {
 						canGrabSlot =
 							((listBoxControls[i].getSelectedItemIndex() == ctNetwork
-								&& labelNetStatus[i].getText() ==
-								GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME)
+								&& labelNetStatus[i].getText().length() == 0)
 								|| (listBoxControls[i].getSelectedItemIndex() != ctHuman
 									&& listBoxControls[i].getSelectedItemIndex() != ctClosed
 									&& listBoxControls[i].getSelectedItemIndex() !=
@@ -3764,8 +3759,7 @@ namespace Game {
 					} else {
 						canGrabSlot =
 							(listBoxControls[i].getSelectedItemIndex() == ctNetwork
-								&& labelNetStatus[i].getText() ==
-								GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME);
+								&& labelNetStatus[i].getText().length() == 0);
 					}
 
 					if (canGrabSlot == true) {
@@ -3783,8 +3777,7 @@ namespace Game {
 						listBoxControls[i].getSelectedItemIndex() ==
 						ctNetworkUnassigned
 						|| listBoxControls[i].getSelectedItemIndex() == ctHuman) {
-						if (labelNetStatus[i].getText() !=
-							GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME) {
+						if (labelNetStatus[i].getText().length() != 0) {
 							renderer.renderLabel(&labelPlayerNames[i]);
 						}
 					}
@@ -4042,8 +4035,7 @@ namespace Game {
 						hasOpenSlot = true;
 					}
 					if (displayedGamesettings.getFactionControl(i) == ctNetwork &&
-						displayedGamesettings.getNetworkPlayerNameByPlayerIndex(i) !=
-						GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME
+						displayedGamesettings.getNetworkPlayerNameByPlayerIndex(i).length() != 0
 						&& displayedGamesettings.getNetworkPlayerNameByPlayerIndex(i)
 						!= GameConstants::NETWORK_SLOT_CLOSED_SLOTNAME) {
 						//listBoxControls[i].setEditable(false);
@@ -5681,9 +5673,7 @@ namespace Game {
 						currentConnectionCount = 0;
 					for (int i = 0; i < GameConstants::maxPlayers; ++i) {
 						if (displayedGamesettings.getFactionControl(i) == ctNetwork &&
-							displayedGamesettings.getNetworkPlayerName(i) != "" &&
-							displayedGamesettings.getNetworkPlayerName(i) !=
-							GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME) {
+							displayedGamesettings.getNetworkPlayerName(i).length() != 0) {
 							currentConnectionCount++;
 						}
 					}
@@ -7701,9 +7691,7 @@ namespace Game {
 					labelNetStatus[slot].
 						setText(gameSettings->getNetworkPlayerName(i));
 					if (gameSettings->getThisFactionIndex() != i
-						&& gameSettings->getNetworkPlayerName(i) != ""
-						&& gameSettings->getNetworkPlayerName(i) !=
-						GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME) {
+						&& gameSettings->getNetworkPlayerName(i).length() != 0) {
 						labelPlayerNames[slot].
 							setText(gameSettings->getNetworkPlayerName(i));
 					}
@@ -7742,9 +7730,7 @@ namespace Game {
 					}
 
 					if (labelPlayerNames[slot].getText() == "" &&
-						gameSettings->getNetworkPlayerName(i) != "" &&
-						gameSettings->getNetworkPlayerName(i) !=
-						GameConstants::NETWORK_SLOT_UNCONNECTED_SLOTNAME) {
+						gameSettings->getNetworkPlayerName(i).length() != 0) {
 						labelPlayerNames[slot].
 							setText(gameSettings->getNetworkPlayerName(i));
 					}
