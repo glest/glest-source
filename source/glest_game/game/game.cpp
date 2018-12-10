@@ -7569,6 +7569,18 @@ namespace Game {
 				case ctCpuZeta:
 					factionInfo += " CPU Zeta" + multiplier;
 					break;
+				case ctNetworkCpuEasy:
+					factionInfo += " Network CPU Easy" + multiplier;
+					break;
+				case ctNetworkCpu:
+					factionInfo += " Network CPU Normal" + multiplier;
+					break;
+				case ctNetworkCpuUltra:
+					factionInfo += " Network CPU Ultra" + multiplier;
+					break;
+				case ctNetworkCpuZeta:
+					factionInfo += " Network CPU Zeta" + multiplier;
+					break;
 				default:
 					break;
 			}

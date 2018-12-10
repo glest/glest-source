@@ -2076,7 +2076,7 @@ namespace Game {
 			stats.setFactionTypeName(i, formatString(gs->getFactionTypeName(i)));
 			stats.setPersonalityType(i, getFaction(i)->getType()->getPersonalityType());
 			stats.setControl(i, gs->getFactionControl(i));
-			stats.setResourceMultiplier(i, (gs->getResourceMultiplierIndex(i) + 5)*0.1f);
+			stats.setResourceMultiplier(i, (gs->getResourceMultiplierIndex(i) + 1) * 0.5f);
 			stats.setPlayerName(i, gs->getNetworkPlayerName(i));
 			if (getFaction(i)->getTexture()) {
 				stats.setPlayerColor(i, getFaction(i)->getTexture()->getPixmapConst()->getPixel4f(0, 0));

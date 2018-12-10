@@ -713,7 +713,7 @@ namespace Game {
 						"\nx " + floatToStr(stats.getResourceMultiplier(i), 1);
 				} else if (stats.getPlayerLeftBeforeEnd(i) == true) {
 					controlString +=
-						"\n" + lang.getString("CpuUltra") + "\nx " +
+						"\n" + lang.getString("CpuZeta") + "\nx " +
 						floatToStr(stats.getResourceMultiplier(i), 1);
 				}
 
