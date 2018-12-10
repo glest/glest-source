@@ -852,7 +852,7 @@ namespace Game {
 									//printf("Got uuid from client [%s]\n",this->playerUUID.c_str());
 									if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s] got name [%s] versionString [%s], msgSessionId = %d\n", __FILE__, __FUNCTION__, name.c_str(), versionString.c_str(), msgSessionId);
 
-									if (msgSessionId != sessionKey) {
+									/*if (msgSessionId != sessionKey) {
 										string playerNameStr = name;
 										string sErr = "Client gave invalid sessionid for player [" + playerNameStr + "] actual [" + intToStr(msgSessionId) + "] expected [" + intToStr(sessionKey) + "]";
 										printf("%s\n", sErr.c_str());
@@ -860,7 +860,7 @@ namespace Game {
 
 										close();
 										return;
-									} else if (this->playerUUID == "") {
+									} else */if (this->playerUUID == "") {
 										string playerNameStr = name;
 										string sErr = "Client gave an invalid UUID for player [" + playerNameStr + "]";
 										printf("%s\n", sErr.c_str());
@@ -970,7 +970,7 @@ namespace Game {
 											throw game_runtime_error(szBuf);
 										}
 
-										int minHeadLessPlayersRequired = Config::getInstance().getInt("MinHeadlessPlayersRequired", "2");
+										int minHeadLessPlayersRequired = Config::getInstance().getInt("MinHeadlessPlayersRequired", "1");
 										if (this->joinGameInProgress == false &&
 											networkMessageLaunch.getMessageType() == nmtLaunch &&
 											this->ready == false &&
@@ -1281,6 +1281,8 @@ namespace Game {
 									//printf("#2 Server slot got currentFrameCount = %d\n",currentFrameCount);
 
 									this->currentLagCount = 0;
+									this->graceLagCtr = 0;
+									
 									this->lastReceiveCommandListTime = time(NULL);
 
 									this->setReady();

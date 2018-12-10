@@ -457,6 +457,7 @@ namespace Game {
 		luaScript.registerFunction(getUnitFaction, "unitFaction");
 		luaScript.registerFunction(getFactionName, "getFactionName");
 		luaScript.registerFunction(getUnitName, "unitName");
+
 		luaScript.registerFunction(getResourceAmount, "resourceAmount");
 
 		luaScript.registerFunction(getLastCreatedUnitName,

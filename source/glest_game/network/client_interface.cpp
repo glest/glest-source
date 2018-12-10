@@ -1481,7 +1481,7 @@ namespace Game {
 	}
 
 	bool ClientInterface::isMasterServerAdminOverride() {
-		return (gameSettings.getMasterserver_admin() == this->getSessionKey());
+		return gameSettings.getMasterserver_admin() == this->getSessionKey();
 	}
 
 	void ClientInterface::waitUntilReady(Checksum* checksum) {

@@ -1,14 +1,7 @@
 # Installing ZetaGlest
 
-It's recommended to first [read about the system
-requirements](https://zetaglest.github.io/docs/system_requirements.html).
-(even though they probably need editing and updating)
-
 You can install from source or download Installers or packages for your
 operating system.
-
-There hasn't been a formal first release of ZetaGlest yet, but you may
-try development snapshots.
 
 ## Binary Packages
 
@@ -73,7 +66,6 @@ INSTALL_DIR_MAN:PATH=/home/andy/local/share/man/man6
 If you wish to install to a location that does not require super-user
 privileges, change '/usr' to a location to which you have write access.
 
-<!-- This needs to be duplicated in the BUILD.md and INSTALL.md doc -->
 See [running](https://github.com/ZetaGlest/zetaglest-source#running) for
 detailed information about running a server or hosting a game.
 
@@ -93,7 +85,6 @@ If you want to completely erase your previously-used options, remove
 
 If your build doesn't seem to be using the options you gave it, first
 try removing CMakeCache.txt and rebuilding.
-<!-- end duplication -->
 
 **Note:** The majority of the game data is not installed during the
 steps above. The files from the zetaglest-data repo must be copied into

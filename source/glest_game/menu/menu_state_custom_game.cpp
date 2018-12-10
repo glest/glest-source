@@ -48,7 +48,6 @@ using namespace Shared;
 using namespace Shared::Util;
 
 namespace Game {
-	const int MASTERSERVER_BROADCAST_MAX_WAIT_RESPONSE_SECONDS = 15;
 	static const char *SAVED_GAME_FILENAME = "lastCustomGameSettings.zgg";
 	static const char *DEFAULT_GAME_FILENAME = "data/defaultGameSetup.zgg";
 	static const char *DEFAULT_NETWORKGAME_FILENAME =
@@ -3828,32 +3827,30 @@ namespace Game {
 						return;
 					}
 
-					// Give things another chance to see if we can get a connection from the master server
-					if (tMasterserverErrorElapsed > 0 &&
+					/*if (tMasterserverErrorElapsed > 0 &&
 						difftime((long int) time(NULL),
 							tMasterserverErrorElapsed) >
 						MASTERSERVER_BROADCAST_MAX_WAIT_RESPONSE_SECONDS) {
 						showMasterserverError = true;
 						masterServererErrorToShow =
 							(serverInfo != "" ? serverInfo : "No Reply");
-					} else {
+					} else {*/
 						if (tMasterserverErrorElapsed == 0) {
 							tMasterserverErrorElapsed = time(NULL);
 						}
 
 						SystemFlags::OutputDebug(SystemFlags::debugError,
-							"In [%s::%s Line %d] error checking response from masterserver elapsed seconds = %.2f / %d\nResponse:\n%s\n",
+							"In [%s::%s Line %d] error checking response from masterserver elapsed seconds = %.2f\nResponse:\n%s\n",
 							extractFileFromDirectoryPath
 							(__FILE__).c_str(),
 							__FUNCTION__, __LINE__,
 							difftime((long int)
 								time(NULL),
 								tMasterserverErrorElapsed),
-							MASTERSERVER_BROADCAST_MAX_WAIT_RESPONSE_SECONDS,
 							serverInfo.c_str());
-
+						// Give things another chance to see if we can get a connection from the master server
 						needToRepublishToMasterserver = true;
-					}
+					//}
 				}
 			} else {
 				safeMutexThreadOwner.ReleaseLock();
