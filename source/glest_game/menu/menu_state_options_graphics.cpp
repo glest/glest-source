@@ -614,7 +614,7 @@ namespace Game {
 			config.getInt("DepthBits"),
 			config.getInt("StencilBits"),
 			config.getBool("HardwareAcceleration",
-				"false"),
+				"true"),
 			config.getBool("FullScreenAntiAliasing",
 				"false"),
 			config.getFloat("GammaValue", "0.0"));
@@ -757,7 +757,7 @@ namespace Game {
 					config.getInt("DepthBits"),
 					config.getInt("StencilBits"),
 					config.getBool("HardwareAcceleration",
-						"false"),
+						"true"),
 					config.getBool("FullScreenAntiAliasing",
 						"false"),
 					strToFloat(listBoxGammaCorrection.

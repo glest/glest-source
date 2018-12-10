@@ -1313,7 +1313,7 @@ namespace Game {
 		window->initGl(config.getInt("ColorBits"),
 			config.getInt("DepthBits"),
 			config.getInt("StencilBits"),
-			config.getBool("HardwareAcceleration", "false"),
+			config.getBool("HardwareAcceleration", "true"),
 			config.getBool("FullScreenAntiAliasing", "0"),
 			config.getFloat("GammaValue", "0.0"));
 		window->setText(config.getString("WindowTitle", "ZetaGlest"));

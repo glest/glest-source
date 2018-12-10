@@ -1030,17 +1030,21 @@ namespace Game {
 		Config & config = Config::getInstance();
 		string serverTitle = config.getString("ServerTitle", "");
 
-		if (serverTitle != "" && controllingPlayer == "") {
+		if (serverTitle != "" && controllingPlayer == "")
 			return serverTitle;
-		} else if (this->headlessServerMode == true) {
+
+		string defaultPlayerNameEnd = defaultPlayerName.substr(defaultPlayerName.size() - 1, 1);
+		if (this->headlessServerMode == true) {
 			if (controllingPlayer != "") {
 				return controllingPlayer + " controls";
 			} else {
-				return "[H] " + defaultPlayerName;
+				if (defaultPlayerNameEnd == "s") {
+					return defaultPlayerName + "' server";
+				} else {
+					return defaultPlayerName + "'s server";
+				}
 			}
 		} else {
-			string defaultPlayerNameEnd =
-				defaultPlayerName.substr(defaultPlayerName.size() - 1, 1);
 			if (defaultPlayerNameEnd == "s") {
 				return defaultPlayerName + "' game";
 			} else {
