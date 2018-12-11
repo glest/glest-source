@@ -299,7 +299,7 @@ namespace Game {
 
 		checkBoxAllowObservers.setEditable(false);
 
-		for (int i = 1; i <= 20; ++i) {
+		for (int i = 1; i <= 10; ++i) {
 			rMultiplier.push_back(floatToStr(0.5f * i, 1));
 		}
 
@@ -914,7 +914,7 @@ namespace Game {
 		listBoxAISwitchTeamAcceptPercent.setItems(aiswitchteamModeItems);
 
 		vector < string > rMultiplier;
-		for (int i = 1; i <= 20; ++i) {
+		for (int i = 1; i <= 10; ++i) {
 			rMultiplier.push_back(floatToStr(0.5f * i, 1));
 		}
 		listBoxFallbackCpuMultiplier.setItems(rMultiplier);

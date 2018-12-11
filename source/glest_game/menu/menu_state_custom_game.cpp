@@ -501,7 +501,7 @@ namespace Game {
 			checkBoxAllowObservers.setValue(checkBoxAllowObservers.getValue());
 
 			vector < string > rMultiplier;
-			for (int i = 1; i <= 20; ++i) {
+			for (int i = 1; i <= 10; ++i) {
 				rMultiplier.push_back(floatToStr(0.5f * i, 1));
 			}
 
