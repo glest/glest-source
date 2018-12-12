@@ -2927,8 +2927,8 @@ namespace Game {
 			float distToStandingUnit = -1;
 			Unit* attackingEnemySeen = NULL;
 			ControlType controlType = unit->getFaction()->getControlType();
-			bool isUltra = controlType == ctCpuUltra || controlType == ctNetworkCpuUltra;
-			bool isZeta = controlType == ctCpuZeta || controlType == ctNetworkCpuZeta;
+			bool isUltra = controlType == ctCpuUltra;
+			bool isZeta = controlType == ctCpuZeta;
 
 
 			string randomInfoData = "enemies.size() = " + intToStr(enemies.size());

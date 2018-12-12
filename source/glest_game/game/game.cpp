@@ -4376,11 +4376,7 @@ namespace Game {
 			for (int i = 0; i < world.getFactionCount(); ++i) {
 				Faction *faction = world.getFaction(i);
 				if (faction->getFactionDisconnectHandled() == false &&
-					(faction->getControlType() == ctNetwork ||
-						faction->getControlType() == ctNetworkCpuEasy ||
-						faction->getControlType() == ctNetworkCpu ||
-						faction->getControlType() == ctNetworkCpuUltra ||
-						faction->getControlType() == ctNetworkCpuZeta)) {
+					(faction->getControlType() == ctNetwork)) {
 
 					if (aiInterfaces[i] == NULL &&
 						server->
@@ -7568,18 +7564,6 @@ namespace Game {
 					break;
 				case ctCpuZeta:
 					factionInfo += " CPU Zeta" + multiplier;
-					break;
-				case ctNetworkCpuEasy:
-					factionInfo += " Network CPU Easy" + multiplier;
-					break;
-				case ctNetworkCpu:
-					factionInfo += " Network CPU Normal" + multiplier;
-					break;
-				case ctNetworkCpuUltra:
-					factionInfo += " Network CPU Ultra" + multiplier;
-					break;
-				case ctNetworkCpuZeta:
-					factionInfo += " Network CPU Zeta" + multiplier;
 					break;
 				default:
 					break;

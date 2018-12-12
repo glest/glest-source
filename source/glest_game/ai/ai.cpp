@@ -1160,14 +1160,10 @@ namespace Game {
 			possibleTargetFound = false;
 
 		bool
-			ultraResourceAttack = (aiInterface->getControlType() == ctCpuUltra
-				|| aiInterface->getControlType() ==
-				ctNetworkCpuUltra)
+			ultraResourceAttack = (aiInterface->getControlType() == ctCpuUltra)
 			&& random.randRange(0, 2) == 1;
 		bool
-			megaResourceAttack = (aiInterface->getControlType() == ctCpuZeta
-				|| aiInterface->getControlType() ==
-				ctNetworkCpuZeta)
+			megaResourceAttack = (aiInterface->getControlType() == ctCpuZeta)
 			&& random.randRange(0, 1) == 1;
 
 		if (megaResourceAttack || ultraResourceAttack) {
@@ -1289,8 +1285,7 @@ namespace Game {
 			const AttackCommandType *
 				act = unit->getType()->getFirstAttackCommand(field);
 
-			if (aiInterface->getControlType() == ctCpuZeta ||
-				aiInterface->getControlType() == ctNetworkCpuZeta) {
+			if (aiInterface->getControlType() == ctCpuZeta) {
 				if (producerWarriorCount > maxProducerWarriors) {
 					if (unit->getCommandSize() > 0 &&
 						unit->getCurrCommand()->getCommandType() != NULL
@@ -1326,9 +1321,7 @@ namespace Game {
 			if (alreadyAttacking == false
 				&& unit->getType()->hasSkillClass(scAttack)
 				&& (aiInterface->getControlType() == ctCpuUltra
-					|| aiInterface->getControlType() == ctCpuZeta
-					|| aiInterface->getControlType() == ctNetworkCpuUltra
-					|| aiInterface->getControlType() == ctNetworkCpuZeta)) {
+					|| aiInterface->getControlType() == ctCpuZeta)) {
 				//printf("~~~~~~~~ Unit [%s - %d] checking if unit is being attacked\n",unit->getFullName().c_str(),unit->getId());
 
 				std::pair < bool, Unit * >beingAttacked =
@@ -1419,8 +1412,7 @@ namespace Game {
 				}
 
 				// Zeta CPU does not send ( far away ) units which are currently producing something
-				if (aiInterface->getControlType() == ctCpuZeta
-					|| aiInterface->getControlType() == ctNetworkCpuZeta) {
+				if (aiInterface->getControlType() == ctCpuZeta) {
 					if (!isWarrior) {
 						if (!productionInProgress) {
 							shouldAttack = false;
@@ -1439,11 +1431,9 @@ namespace Game {
 			}
 		}
 
-		if (aiInterface->getControlType() == ctCpuEasy ||
-			aiInterface->getControlType() == ctNetworkCpuEasy) {
+		if (aiInterface->getControlType() == ctCpuEasy) {
 			minWarriors += minMinWarriorsExpandCpuEasy;
-		} else if (aiInterface->getControlType() == ctCpuZeta ||
-			aiInterface->getControlType() == ctNetworkCpuZeta) {
+		} else if (aiInterface->getControlType() == ctCpuZeta) {
 			minWarriors += minMinWarriorsExpandCpuZeta;
 			if (minWarriors > maxMinWarriors - 1 || randomMinWarriorsReached) {
 				randomMinWarriorsReached = true;
@@ -1451,8 +1441,7 @@ namespace Game {
 					random.randRange(maxMinWarriors - 10, maxMinWarriors * 2);
 			}
 		} else if (minWarriors < maxMinWarriors) {
-			if (aiInterface->getControlType() == ctCpuUltra ||
-				aiInterface->getControlType() == ctNetworkCpuUltra) {
+			if (aiInterface->getControlType() == ctCpuUltra) {
 				minWarriors += minMinWarriorsExpandCpuUltra;
 			} else {
 				minWarriors += minMinWarriorsExpandCpuNormal;

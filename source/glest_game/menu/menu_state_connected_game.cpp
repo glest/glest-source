@@ -560,14 +560,6 @@ namespace Game {
 		controlItems.push_back(lang.getString("NetworkUnassigned"));
 		controlItems.push_back(lang.getString("Human"));
 
-
-		if (config.getBool("EnableNetworkCpu", "false") == true) {
-			controlItems.push_back(lang.getString("NetworkCpuEasy"));
-			controlItems.push_back(lang.getString("NetworkCpu"));
-			controlItems.push_back(lang.getString("NetworkCpuUltra"));
-			controlItems.push_back(lang.getString("NetworkCpuZeta"));
-		}
-
 		for (int i = 1; i <= GameConstants::maxPlayers; ++i) {
 			teamItems.push_back(intToStr(i));
 		}
@@ -967,13 +959,6 @@ namespace Game {
 		controlItems.push_back(lang.getString("Network"));
 		controlItems.push_back(lang.getString("NetworkUnassigned"));
 		controlItems.push_back(lang.getString("Human"));
-
-		if (config.getBool("EnableNetworkCpu", "false") == true) {
-			controlItems.push_back(lang.getString("NetworkCpuEasy"));
-			controlItems.push_back(lang.getString("NetworkCpu"));
-			controlItems.push_back(lang.getString("NetworkCpuUltra"));
-			controlItems.push_back(lang.getString("NetworkCpuZeta"));
-		}
 
 		for (int i = 0; i < GameConstants::maxPlayers; ++i) {
 			labelPlayers[i].setText(intToStr(i + 1));
@@ -2417,22 +2402,22 @@ namespace Game {
 			ct =
 			static_cast <ControlType>
 			(listBoxControls[index].getSelectedItemIndex());
-		if (ct == ctCpuEasy || ct == ctNetworkCpuEasy) {
+		if (ct == ctCpuEasy) {
 			listBoxRMultiplier[index].setSelectedItem(floatToStr
 			(GameConstants::
 				easyMultiplier, 1));
 			listBoxRMultiplier[index].setEnabled(true);
-		} else if (ct == ctCpu || ct == ctNetworkCpu) {
+		} else if (ct == ctCpu) {
 			listBoxRMultiplier[index].setSelectedItem(floatToStr
 			(GameConstants::
 				normalMultiplier, 1));
 			listBoxRMultiplier[index].setEnabled(true);
-		} else if (ct == ctCpuUltra || ct == ctNetworkCpuUltra) {
+		} else if (ct == ctCpuUltra) {
 			listBoxRMultiplier[index].setSelectedItem(floatToStr
 			(GameConstants::
 				ultraMultiplier, 1));
 			listBoxRMultiplier[index].setEnabled(true);
-		} else if (ct == ctCpuZeta || ct == ctNetworkCpuZeta) {
+		} else if (ct == ctCpuZeta) {
 			listBoxRMultiplier[index].setSelectedItem(floatToStr
 			(GameConstants::
 				zetaMultiplier, 1));

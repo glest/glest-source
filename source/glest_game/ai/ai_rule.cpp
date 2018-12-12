@@ -291,15 +291,13 @@ namespace Game {
 				minUnitsRepairingCastle = 2;
 			}
 		}
-		if (aiInterface->getControlType() == ctCpuEasy ||
-			aiInterface->getControlType() == ctNetworkCpuEasy) {
+		if (aiInterface->getControlType() == ctCpuEasy) {
 			if (!damagedUnitIsCastle) {
 				// cpu easy does not repair!
 				minUnitsRepairingCastle = 0;
 			}
 		}
-		if (aiInterface->getControlType() == ctCpu ||
-			aiInterface->getControlType() == ctNetworkCpu) {
+		if (aiInterface->getControlType() == ctCpu) {
 			if (!damagedUnitIsCastle) {
 				// cpu does only repair with one unit!
 				minUnitsRepairingCastle = 1;
@@ -518,8 +516,7 @@ namespace Game {
 		}
 		// The following rules are specific creation rules for different AI.
 		else {
-			if (ai->getAiInterface()->getControlType() == ctCpuZeta ||
-				ai->getAiInterface()->getControlType() == ctNetworkCpuZeta) {
+			if (ai->getAiInterface()->getControlType() == ctCpuZeta) {
 				if (ai->outputAIBehaviourToConsole())
 					printf
 					("AAA AiRuleAddTasks adding #1 workerCount = %d[%.2f], buildingCount = %d[%.2f] warriorCount = %d[%.2f] upgradeCount = %d RULE Name[%s]\n",
@@ -574,9 +571,7 @@ namespace Game {
 					ai->addTask(new UpgradeTask((const UpgradeType *) NULL));
 				if (ai->isStableBase())
 					ai->addTask(new UpgradeTask((const UpgradeType *) NULL));
-			} else if (ai->getAiInterface()->getControlType() == ctCpuEasy ||
-				ai->getAiInterface()->getControlType() ==
-				ctNetworkCpuEasy) {                   // Easy CPU
+			} else if (ai->getAiInterface()->getControlType() == ctCpuEasy) {                   // Easy CPU
 
 				if (ai->outputAIBehaviourToConsole())
 					printf
@@ -1778,8 +1773,7 @@ namespace Game {
 					producers = idle_producers;
 				}
 
-				if (aiInterface->getControlType() == ctCpuZeta ||
-					aiInterface->getControlType() == ctNetworkCpuZeta) {               // zeta cpu trys to balance the commands to the producers
+				if (aiInterface->getControlType() == ctCpuZeta) {               // zeta cpu trys to balance the commands to the producers
 					int
 						randomstart =
 						ai->getRandom()->randRange(0,

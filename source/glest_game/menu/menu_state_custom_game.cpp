@@ -835,13 +835,6 @@ namespace Game {
 			controlItems.push_back(lang.getString("NetworkUnassigned"));
 			controlItems.push_back(lang.getString("Human"));
 
-			if (config.getBool("EnableNetworkCpu", "false") == true) {
-				controlItems.push_back(lang.getString("NetworkCpuEasy"));
-				controlItems.push_back(lang.getString("NetworkCpu"));
-				controlItems.push_back(lang.getString("NetworkCpuUltra"));
-				controlItems.push_back(lang.getString("NetworkCpuZeta"));
-			}
-
 			vector < string > teamItems;
 			for (int i = 1; i <= GameConstants::maxPlayers; ++i) {
 				teamItems.push_back(intToStr(i));
@@ -1175,13 +1168,6 @@ namespace Game {
 		controlItems.push_back(lang.getString("Network"));
 		controlItems.push_back(lang.getString("NetworkUnassigned"));
 		controlItems.push_back(lang.getString("Human"));
-
-		if (config.getBool("EnableNetworkCpu", "false") == true) {
-			controlItems.push_back(lang.getString("NetworkCpuEasy"));
-			controlItems.push_back(lang.getString("NetworkCpu"));
-			controlItems.push_back(lang.getString("NetworkCpuUltra"));
-			controlItems.push_back(lang.getString("NetworkCpuZeta"));
-		}
 
 		for (int i = 0; i < GameConstants::maxPlayers; ++i) {
 			labelPlayers[i].setText(intToStr(i + 1));

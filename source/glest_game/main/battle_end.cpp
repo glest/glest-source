@@ -685,23 +685,8 @@ namespace Game {
 						case ctHuman:
 							controlString = lang.getString("Human");
 							break;
-
-						case ctNetworkCpuEasy:
-							controlString = lang.getString("NetworkCpuEasy");
-							break;
-						case ctNetworkCpu:
-							controlString = lang.getString("NetworkCpu");
-							break;
-						case ctNetworkCpuUltra:
-							controlString = lang.getString("NetworkCpuUltra");
-							break;
-						case ctNetworkCpuZeta:
-							controlString = lang.getString("NetworkCpuZeta");
-							break;
-
 						default:
-							printf("Error control = %d for i = %d\n", stats.getControl(i),
-								i);
+							printf("Error control = %d for i = %d\n", stats.getControl(i), i);
 							assert(false);
 							break;
 					};

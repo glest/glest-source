@@ -139,12 +139,7 @@ namespace Game {
 		ctCpuZeta,
 		ctNetwork,
 		ctNetworkUnassigned,
-		ctHuman,
-
-		ctNetworkCpuEasy,
-		ctNetworkCpu,
-		ctNetworkCpuUltra,
-		ctNetworkCpuZeta
+		ctHuman
 	};
 
 	enum NetworkRole {

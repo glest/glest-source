@@ -1049,10 +1049,6 @@ namespace Game {
 				if (role == nrServer) {
 					result = (control == ctCpuEasy || control == ctCpu
 						|| control == ctCpuUltra || control == ctCpuZeta);
-				} else {
-					result = (control == ctNetworkCpuEasy || control == ctNetworkCpu
-						|| control == ctNetworkCpuUltra
-						|| control == ctNetworkCpuZeta);
 				}
 			}
 		}
@@ -1062,9 +1058,7 @@ namespace Game {
 
 	bool Faction::getCpuControl() const {
 		return control == ctCpuEasy || control == ctCpu || control == ctCpuUltra
-			|| control == ctCpuZeta || control == ctNetworkCpuEasy
-			|| control == ctNetworkCpu || control == ctNetworkCpuUltra
-			|| control == ctNetworkCpuZeta;
+			|| control == ctCpuZeta;
 	}
 
 	// ==================== upgrade manager ====================

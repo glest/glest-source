@@ -1083,25 +1083,25 @@ namespace Game {
 		ControlType ct =
 			static_cast <ControlType>
 			(listBoxControls[index].getSelectedItemIndex());
-		if (ct == ctCpuEasy || ct == ctNetworkCpuEasy) {
+		if (ct == ctCpuEasy) {
 			listBoxRMultiplier[index].setSelectedItem(floatToStr
 			(GameConstants::
 				easyMultiplier, 1));
 			listBoxRMultiplier[index].setEnabled(checkBoxScenario.getValue() ==
 				false);
-		} else if (ct == ctCpu || ct == ctNetworkCpu) {
+		} else if (ct == ctCpu) {
 			listBoxRMultiplier[index].setSelectedItem(floatToStr
 			(GameConstants::
 				normalMultiplier, 1));
 			listBoxRMultiplier[index].setEnabled(checkBoxScenario.getValue() ==
 				false);
-		} else if (ct == ctCpuUltra || ct == ctNetworkCpuUltra) {
+		} else if (ct == ctCpuUltra) {
 			listBoxRMultiplier[index].setSelectedItem(floatToStr
 			(GameConstants::
 				ultraMultiplier, 1));
 			listBoxRMultiplier[index].setEnabled(checkBoxScenario.getValue() ==
 				false);
-		} else if (ct == ctCpuZeta || ct == ctNetworkCpuZeta) {
+		} else if (ct == ctCpuZeta) {
 			listBoxRMultiplier[index].setSelectedItem(floatToStr
 			(GameConstants::
 				zetaMultiplier, 1));

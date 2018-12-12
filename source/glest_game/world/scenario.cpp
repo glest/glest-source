@@ -573,20 +573,6 @@ Please contact the ZetaGlest team for more info.";
 			case ctHuman:
 				controlString = lang.getString("Human");
 				break;
-
-			case ctNetworkCpuEasy:
-				controlString = lang.getString("NetworkCpuEasy");
-				break;
-			case ctNetworkCpu:
-				controlString = lang.getString("NetworkCpu");
-				break;
-			case ctNetworkCpuUltra:
-				controlString = lang.getString("NetworkCpuUltra");
-				break;
-			case ctNetworkCpuZeta:
-				controlString = lang.getString("NetworkCpuZeta");
-				break;
-
 			default:
 				printf("Error control = %d\n", ct);
 				//assert(false);
