@@ -832,7 +832,6 @@ namespace Game {
 			controlItems.push_back(lang.getString("CpuUltra"));
 			controlItems.push_back(lang.getString("CpuZeta"));
 			controlItems.push_back(lang.getString("Network"));
-			controlItems.push_back(lang.getString("NetworkUnassigned"));
 			controlItems.push_back(lang.getString("Human"));
 
 			vector < string > teamItems;
@@ -1166,7 +1165,6 @@ namespace Game {
 		controlItems.push_back(lang.getString("CpuUltra"));
 		controlItems.push_back(lang.getString("CpuZeta"));
 		controlItems.push_back(lang.getString("Network"));
-		controlItems.push_back(lang.getString("NetworkUnassigned"));
 		controlItems.push_back(lang.getString("Human"));
 
 		for (int i = 0; i < GameConstants::maxPlayers; ++i) {
@@ -2097,12 +2095,6 @@ namespace Game {
 											listBoxControls[index].setSelectedItemIndex
 											(listBoxControls[i].getSelectedItemIndex());
 										}
-										// Skip over networkunassigned
-										if (listBoxControls[index].getSelectedItemIndex() ==
-											ctNetworkUnassigned
-											&& selectedControlItemIndex != ctNetworkUnassigned) {
-											listBoxControls[index].mouseClick(x, y);
-										}
 
 										//look for human players
 										int humanIndex1 = -1;
@@ -2632,7 +2624,7 @@ namespace Game {
 
 		bool dataSynchCheckOk = checkNetworkPlayerDataSynch(true, true, true);
 
-		// Ensure we have no dangling network players
+		/*// Ensure we have no dangling network players
 		for (int i = 0; i < GameConstants::maxPlayers; ++i) {
 			if (listBoxControls[i].getSelectedItemIndex() == ctNetworkUnassigned) {
 				mainMessageBoxState = 1;
@@ -2677,7 +2669,7 @@ namespace Game {
 				safeMutexCLI.ReleaseLock();
 				return;
 			}
-		}
+		}*/
 
 		if (dataSynchCheckOk == false) {
 			if (SystemFlags::
@@ -3015,8 +3007,8 @@ namespace Game {
 					}
 				}
 				for (int i = 0; i < GameConstants::maxPlayers; ++i) {
-					if (listBoxControls[i].getSelectedItemIndex() ==
-						ctNetworkUnassigned) {
+					/*if (listBoxControls[i].getSelectedItemIndex() ==
+						ctNetwork) {*/
 						//printf("Player #%d [%s] control = %d\n",i,labelPlayerNames[i].getText().c_str(),listBoxControls[i].getSelectedItemIndex());
 						labelPlayers[i].setVisible(true);
 						labelPlayerNames[i].setVisible(true);
@@ -3024,7 +3016,7 @@ namespace Game {
 						listBoxFactions[i].setVisible(true);
 						listBoxTeams[i].setVisible(true);
 						labelNetStatus[i].setVisible(true);
-					}
+					//}
 
 					if (hasNetworkGameSettings() == true &&
 						listBoxControls[i].getSelectedItemIndex() != ctClosed) {
@@ -3054,10 +3046,7 @@ namespace Game {
 
 						renderer.renderLabel(&labelPlayerStatus[i]);
 
-						if (listBoxControls[i].getSelectedItemIndex() ==
-							ctNetwork
-							|| listBoxControls[i].getSelectedItemIndex() ==
-							ctNetworkUnassigned) {
+						if (listBoxControls[i].getSelectedItemIndex() == ctNetwork) {
 							ServerInterface *serverInterface =
 								NetworkManager::getInstance().getServerInterface();
 							if (serverInterface != NULL
@@ -3198,8 +3187,7 @@ namespace Game {
 		ServerInterface *
 		&serverInterface,
 		int startIndex,
-		int endIndex,
-		bool onlyNetworkUnassigned) {
+		int endIndex) {
 		for (int i = startIndex; i < endIndex; ++i) {
 			if (switchSetupRequests[i] != NULL) {
 				//printf("Switch slot = %d control = %d newIndex = %d currentindex = %d onlyNetworkUnassigned = %d\n",i,listBoxControls[i].getSelectedItemIndex(),switchSetupRequests[i]->getToFactionIndex(),switchSetupRequests[i]->getCurrentFactionIndex(),onlyNetworkUnassigned);
@@ -3213,20 +3201,7 @@ namespace Game {
 						switchSetupRequests[i]->getSwitchFlags
 						());
 
-				if (onlyNetworkUnassigned == true
-					&& listBoxControls[i].getSelectedItemIndex() !=
-					ctNetworkUnassigned) {
-					if (i < mapInfo.players
-						|| (i >= mapInfo.players
-							&& listBoxControls[i].getSelectedItemIndex() !=
-							ctNetwork)) {
-						continue;
-					}
-				}
-
-				if (listBoxControls[i].getSelectedItemIndex() == ctNetwork
-					|| listBoxControls[i].getSelectedItemIndex() ==
-					ctNetworkUnassigned) {
+				if (listBoxControls[i].getSelectedItemIndex() == ctNetwork) {
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
 						enabled)
 						SystemFlags::OutputDebug(SystemFlags::debugSystem,
@@ -3298,8 +3273,7 @@ namespace Game {
 									(switchSetupRequests[i]->getNetworkPlayerName());
 								}
 
-								if (listBoxControls[switchFactionIdx].getSelectedItemIndex
-								() == ctNetworkUnassigned) {
+								if (listBoxControls[switchFactionIdx].getSelectedItemIndex() == ctNetwork) {
 									/*serverInterface->removeSlot(switchFactionIdx);
 									listBoxControls[switchFactionIdx].setSelectedItemIndex
 									(ctClosed);*/
@@ -3567,9 +3541,7 @@ namespace Game {
 				slotCountUsed++;
 			}
 
-			if (listBoxControls[i].getSelectedItemIndex() == ctNetwork
-				|| listBoxControls[i].getSelectedItemIndex() ==
-				ctNetworkUnassigned) {
+			if (listBoxControls[i].getSelectedItemIndex() == ctNetwork) {
 				slotCountHumans++;
 				if (serverInterface->getSlot(i, true) != NULL &&
 					serverInterface->getSlot(i, true)->isConnected()) {
@@ -4262,8 +4234,7 @@ namespace Game {
 				static_cast <ControlType>
 				(listBoxControls[i].getSelectedItemIndex());
 
-			if (forceCloseUnusedSlots == true
-				&& (ct == ctNetworkUnassigned || ct == ctNetwork)) {
+			if (forceCloseUnusedSlots == true && ct == ctNetwork) {
 				if (serverInterface != NULL &&
 					(serverInterface->getSlot(i, true) == NULL ||
 						serverInterface->getSlot(i, true)->isConnected() == false)) {
@@ -4274,9 +4245,6 @@ namespace Game {
 						ct = ctClosed;
 					}
 				}
-			} else if (ct == ctNetworkUnassigned && i < mapInfo.players) {
-				listBoxControls[i].setSelectedItemIndex(ctNetwork);
-				ct = ctNetwork;
 			}
 
 			if (ct != ctClosed) {
@@ -4380,9 +4348,7 @@ namespace Game {
 					listBoxTeams[i].getSelectedItemIndex());
 				gameSettings->setStartLocationIndex(slotIndex, i);
 
-				if (listBoxControls[i].getSelectedItemIndex() == ctNetwork ||
-					listBoxControls[i].getSelectedItemIndex() ==
-					ctNetworkUnassigned) {
+				if (listBoxControls[i].getSelectedItemIndex() == ctNetwork) {
 					if (serverInterface != NULL &&
 						serverInterface->getSlot(i, true) != NULL &&
 						serverInterface->getSlot(i, true)->isConnected()) {
@@ -4489,7 +4455,7 @@ namespace Game {
 				gameSettings->setTeam(slotIndex,
 					listBoxTeams[i].getSelectedItemIndex());
 				gameSettings->setStartLocationIndex(slotIndex, i);
-				//gameSettings->setResourceMultiplierIndex(slotIndex, 10);
+				//gameSettings->setResourceMultiplierIndex(slotIndex, 1);
 				listBoxRMultiplier[i].setSelectedItem("1.0");
 				gameSettings->setResourceMultiplierIndex(slotIndex,
 					listBoxRMultiplier
@@ -4662,9 +4628,7 @@ namespace Game {
 					c_str(), __FUNCTION__, __LINE__);
 #endif
 
-				if (listBoxControls[i].getSelectedItemIndex() == ctNetwork
-					|| listBoxControls[i].getSelectedItemIndex() ==
-					ctNetworkUnassigned) {
+				if (listBoxControls[i].getSelectedItemIndex() == ctNetwork) {
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
 						enabled)
 						SystemFlags::OutputDebug(SystemFlags::debugSystem,
@@ -4805,7 +4769,7 @@ namespace Game {
 				ControlType ctUI =
 					static_cast <ControlType>
 					(listBoxControls[index2].getSelectedItemIndex());
-				if (ctUI != ctNetwork && ctUI != ctNetworkUnassigned) {
+				if (ctUI != ctNetwork) {
 					foundValidHumanControlTypeInFile = true;
 					//printf("Human found in file [%d]\n",index2);
 				} else if (labelPlayerNames[index2].getText() == "") {
@@ -5192,9 +5156,7 @@ namespace Game {
 		bool foundConnectedPlayer = false;
 		for (int i = 0; i < GameConstants::maxPlayers; ++i) {
 			if (serverInterface->getSlot(i, true) != NULL &&
-				(listBoxControls[i].getSelectedItemIndex() == ctNetwork ||
-					listBoxControls[i].getSelectedItemIndex() ==
-					ctNetworkUnassigned)) {
+				(listBoxControls[i].getSelectedItemIndex() == ctNetwork)) {
 				if (serverInterface->getSlot(i, true)->isConnected() == true) {
 					foundConnectedPlayer = true;
 				}
@@ -5219,11 +5181,9 @@ namespace Game {
 				ControlType ct =
 					static_cast <ControlType>
 					(listBoxControls[i].getSelectedItemIndex());
-				if (ct != ctClosed) {
-					if (ct == ctNetwork || ct == ctNetworkUnassigned) {
-						hasNetworkSlot = true;
-						break;
-					}
+				if (ct == ctNetwork) {
+					hasNetworkSlot = true;
+					break;
 				}
 			}
 			if (hasNetworkSlot == false) {
@@ -5231,11 +5191,9 @@ namespace Game {
 					ControlType ct =
 						static_cast <ControlType>
 						(listBoxControls[i].getSelectedItemIndex());
-					if (ct != ctClosed) {
-						if (ct == ctNetworkUnassigned) {
-							hasNetworkSlot = true;
-							break;
-						}
+					if (ct == ctNetwork) {
+						hasNetworkSlot = true;
+						break;
 					}
 				}
 			}
@@ -5276,23 +5234,18 @@ namespace Game {
 					mapInfo->players = GameConstants::maxPlayers;
 				}
 
-				ServerInterface *serverInterface =
+				/*ServerInterface *serverInterface =
 					NetworkManager::getInstance().getServerInterface();
 				for (int i = 0; i < GameConstants::maxPlayers; ++i) {
 					if (serverInterface->getSlot(i, true) != NULL &&
-						(listBoxControls[i].getSelectedItemIndex() == ctNetwork
-							|| listBoxControls[i].getSelectedItemIndex() ==
-							ctNetworkUnassigned)) {
+						(listBoxControls[i].getSelectedItemIndex() == ctNetwork)) {
 						if (serverInterface->getSlot(i, true)->isConnected() == true) {
-							if (i + 1 > mapInfo->players &&
-								listBoxControls[i].getSelectedItemIndex() !=
-								ctNetworkUnassigned) {
-								listBoxControls[i].setSelectedItemIndex
-								(ctNetworkUnassigned);
+							if (i + 1 > mapInfo->players && listBoxControls[i].getSelectedItemIndex() != ctNetworkUnassigned) {
+								listBoxControls[i].setSelectedItemIndex(ctNetworkUnassigned);
 							}
 						}
 					}
-				}
+				}*/
 
 				// Not painting properly so this is on hold
 				if (loadMapPreview == true) {
@@ -5328,9 +5281,7 @@ namespace Game {
 					NetworkManager::getInstance().getServerInterface();
 				//for(int i= 0; i<mapInfo.players; ++i){
 				for (int i = 0; i < GameConstants::maxPlayers; ++i) {
-					if (listBoxControls[i].getSelectedItemIndex() == ctNetwork ||
-						listBoxControls[i].getSelectedItemIndex() ==
-						ctNetworkUnassigned) {
+					if (listBoxControls[i].getSelectedItemIndex() == ctNetwork) {
 						if (serverInterface->getSlot(i, true) == NULL ||
 							serverInterface->getSlot(i,
 								true)->isConnected() ==

@@ -7355,7 +7355,7 @@ namespace Game {
 						gameSettings->setNetworkPlayerStatuses(i, npst_None);
 						gameSettings->setFactionControl(i, ct);
 						gameSettings->setStartLocationIndex(i, i);
-						gameSettings->setResourceMultiplierIndex(i, 10);
+						gameSettings->setResourceMultiplierIndex(i, gameSettings->getFallbackCpuMultiplier());
 						gameSettings->setNetworkPlayerName(i,
 							GameConstants::
 							NETWORK_SLOT_CLOSED_SLOTNAME);

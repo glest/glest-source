@@ -45,8 +45,8 @@ namespace Shared {
 		string uIntToStr(const uint64 value);
 		string intToStr(const int64 value);
 		string intToHex(int i);
-		string floatToStr(float f, int precsion = 2);
-		string doubleToStr(double f, int precsion = 2);
+		string floatToStr(float f, int precision = 2);
+		string doubleToStr(double f, int precision = 2);
 
 		bool IsNumeric(const char *p, bool  allowNegative = true);
 

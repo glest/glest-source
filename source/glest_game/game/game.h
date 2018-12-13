@@ -526,8 +526,7 @@ namespace Game {
 
 		bool
 			switchSetupForSlots(ServerInterface * &serverInterface,
-				int startIndex, int endIndex,
-				bool onlyNetworkUnassigned);
+				int startIndex, int endIndex);
 		void processNetworkSynchChecksIfRequired();
 		Stats getEndGameStats();
 		void checkWinnerStandardHeadlessOrObserver();

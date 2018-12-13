@@ -231,7 +231,7 @@ namespace Game {
 				networkPlayerStatuses[i] = npst_None;
 				networkPlayerLanguages[i] = DEFAULT_LANG;
 				factionControls[i] = ctClosed;
-				resourceMultiplierIndex[i] = 1.0f;
+				resourceMultiplierIndex[i] = 1;
 				teams[i] = 0;
 				startLocationIndex[i] = i;
 				networkPlayerGameStatus[i] = 0;
@@ -249,7 +249,7 @@ namespace Game {
 			aiAcceptSwitchTeamPercentChance = 30;
 			masterserver_admin = -1;
 			masterserver_admin_factionIndex = -1;
-			fallbackCpuMultiplier = 1.0f;
+			fallbackCpuMultiplier = 1;
 			networkAllowNativeLanguageTechtree = true;
 		}
 
@@ -493,9 +493,7 @@ namespace Game {
 			bool
 				result = false;
 			for (int idx = 0; idx < GameConstants::maxPlayers; ++idx) {
-				if (factionControls[idx] == ctNetwork
-					|| factionControls[idx] == ctNetworkUnassigned
-					|| networkPlayerStatuses[idx] == npst_Disconnected) {
+				if (factionControls[idx] == ctNetwork || networkPlayerStatuses[idx] == npst_Disconnected) {
 					result = true;
 					break;
 				}

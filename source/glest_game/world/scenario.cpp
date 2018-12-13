@@ -629,7 +629,7 @@ Please contact the ZetaGlest team for more info.";
 					gameSettings->setNetworkPlayerPlatform(factionCount,
 						getPlatformNameString
 						());
-				} else if (ct == ctNetwork || ct == ctNetworkUnassigned) {
+				} else if (ct == ctNetwork) {
 					if (gameSettings->getNetworkPlayerName(factionCount) == "") {
 						gameSettings->setNetworkPlayerName(factionCount,
 							controllerTypeToStr(ct));
@@ -643,10 +643,7 @@ Please contact the ZetaGlest team for more info.";
 					}
 				}
 				gameSettings->setFactionControl(factionCount, ct);
-				gameSettings->setResourceMultiplierIndex(factionCount,
-					(scenarioInfo->resourceMultipliers
-						[i]
-				- 0.5f) / 0.1f);
+				gameSettings->setResourceMultiplierIndex(factionCount, (scenarioInfo->resourceMultipliers[i] * 2) - 1);
 				gameSettings->setTeam(factionCount, scenarioInfo->teams[i] - 1);
 				gameSettings->setStartLocationIndex(factionCount, i);
 				gameSettings->setFactionTypeName(factionCount,

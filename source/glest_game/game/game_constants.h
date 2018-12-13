@@ -138,7 +138,6 @@ namespace Game {
 		ctCpuUltra,
 		ctCpuZeta,
 		ctNetwork,
-		ctNetworkUnassigned,
 		ctHuman
 	};
 

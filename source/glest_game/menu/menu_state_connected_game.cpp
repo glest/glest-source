@@ -557,7 +557,6 @@ namespace Game {
 		controlItems.push_back(lang.getString("CpuUltra"));
 		controlItems.push_back(lang.getString("CpuZeta"));
 		controlItems.push_back(lang.getString("Network"));
-		controlItems.push_back(lang.getString("NetworkUnassigned"));
 		controlItems.push_back(lang.getString("Human"));
 
 		for (int i = 1; i <= GameConstants::maxPlayers; ++i) {
@@ -957,7 +956,6 @@ namespace Game {
 		controlItems.push_back(lang.getString("CpuUltra"));
 		controlItems.push_back(lang.getString("CpuZeta"));
 		controlItems.push_back(lang.getString("Network"));
-		controlItems.push_back(lang.getString("NetworkUnassigned"));
 		controlItems.push_back(lang.getString("Human"));
 
 		for (int i = 0; i < GameConstants::maxPlayers; ++i) {
@@ -2368,18 +2366,6 @@ namespace Game {
 			ClientInterface *
 				clientInterface = networkManager.getClientInterface();
 
-			for (int i = 0; i < mapInfo.players; ++i) {
-				if (listBoxControls[i].getSelectedItemIndex() ==
-					ctNetworkUnassigned) {
-					listBoxControls[i].setSelectedItemIndex(ctNetwork);
-				}
-			}
-			for (int i = mapInfo.players; i < GameConstants::maxPlayers; ++i) {
-				if (listBoxControls[i].getSelectedItemIndex() == ctNetwork) {
-					listBoxControls[i].setSelectedItemIndex(ctNetworkUnassigned);
-				}
-			}
-
 			if (validDisplayedGamesettings) {
 				loadGameSettings(&displayedGamesettings);
 
@@ -2619,18 +2605,8 @@ namespace Game {
 								(__FILE__).c_str(), __FUNCTION__,
 								__LINE__);
 
-						//!! this must be done two times!""
-						if (listBoxControls[i].getSelectedItemIndex() ==
-							ctNetworkUnassigned) {
-							listBoxControls[i].mouseClick(x, y);
-						}
 						if ((isHeadlessAdmin() == true)
 							&& (listBoxControls[i].getSelectedItemIndex() == ctHuman)) {
-							listBoxControls[i].mouseClick(x, y);
-						}
-						//!! this must be done two times!""
-						if (listBoxControls[i].getSelectedItemIndex() ==
-							ctNetworkUnassigned) {
 							listBoxControls[i].mouseClick(x, y);
 						}
 
@@ -3181,7 +3157,7 @@ namespace Game {
 					gameSettings->setNetworkPlayerLanguages(slotIndex,
 						lang.getLanguage());
 
-					gameSettings->setResourceMultiplierIndex(slotIndex, 5);
+					gameSettings->setResourceMultiplierIndex(slotIndex, 1);
 				} else {
 					gameSettings->setResourceMultiplierIndex(slotIndex,
 						listBoxRMultiplier
@@ -3216,11 +3192,8 @@ namespace Game {
 				gameSettings->setStartLocationIndex(slotIndex, i);
 				//printf("!!! setStartLocationIndex #1 slotIndex = %d, i = %d\n",slotIndex, i);
 
-				if (listBoxControls[i].getSelectedItemIndex() == ctNetwork
-					|| listBoxControls[i].getSelectedItemIndex() ==
-					ctNetworkUnassigned) {
-					if (oldControlType != ctNetwork
-						&& oldControlType != ctNetworkUnassigned) {
+				if (listBoxControls[i].getSelectedItemIndex() == ctNetwork) {
+					if (oldControlType != ctNetwork) {
 						gameSettings->setNetworkPlayerName(slotIndex, "");
 					}
 				} else if (listBoxControls[i].getSelectedItemIndex() != ctHuman) {
@@ -3264,7 +3237,7 @@ namespace Game {
 				gameSettings->setStartLocationIndex(slotIndex, i);
 				//printf("!!! setStartLocationIndex #2 slotIndex = %d, i = %d\n",slotIndex, i);
 
-				gameSettings->setResourceMultiplierIndex(slotIndex, 5);
+				gameSettings->setResourceMultiplierIndex(slotIndex, gameSettings->getFallbackCpuMultiplier());
 
 				if (SystemFlags::
 					getSystemSettingType(SystemFlags::debugSystem).enabled)
@@ -3653,13 +3626,12 @@ namespace Game {
 			ClientInterface *
 				clientInterface = networkManager.getClientInterface();
 			for (int i = 0; i < GameConstants::maxPlayers; ++i) {
-				if (listBoxControls[i].getSelectedItemIndex() ==
-					ctNetworkUnassigned) {
+				if (listBoxControls[i].getSelectedItemIndex() == ctNetwork) {
 					bool renderIt = true;
 					//printf("Player #%d [%s] control = %d\n",i,labelPlayerNames[i].getText().c_str(),listBoxControls[i].getSelectedItemIndex());
-					if (labelNetStatus[i].getText().length() == 0) {
+					/*if (labelNetStatus[i].getText().length() == 0) {
 						renderIt = false;
-					}
+					}*/
 					labelPlayers[i].setVisible(renderIt);
 					labelPlayerNames[i].setVisible(renderIt);
 					listBoxControls[i].setVisible(renderIt);
@@ -3752,16 +3724,11 @@ namespace Game {
 							renderer.renderButton(&grabSlotButton[i]);
 						}
 					} else if (listBoxControls[i].getSelectedItemIndex() == ctNetwork
-						|| listBoxControls[i].getSelectedItemIndex() ==
-						ctNetworkUnassigned
 						|| listBoxControls[i].getSelectedItemIndex() == ctHuman) {
 						renderer.renderLabel(&labelNetStatus[i]);
 					}
 
-					if (listBoxControls[i].getSelectedItemIndex() == ctNetwork ||
-						listBoxControls[i].getSelectedItemIndex() ==
-						ctNetworkUnassigned
-						|| listBoxControls[i].getSelectedItemIndex() == ctHuman) {
+					if (listBoxControls[i].getSelectedItemIndex() == ctNetwork || listBoxControls[i].getSelectedItemIndex() == ctHuman) {
 						if (labelNetStatus[i].getText().length() != 0) {
 							renderer.renderLabel(&labelPlayerNames[i]);
 						}
@@ -5920,7 +5887,7 @@ namespace Game {
 					static_cast <ControlType>
 					(listBoxControls[i].getSelectedItemIndex());
 				if (ct != ctClosed) {
-					if (ct == ctNetwork || ct == ctNetworkUnassigned) {
+					if (ct == ctNetwork) {
 						hasNetworkSlot = true;
 						break;
 					}
@@ -5932,11 +5899,9 @@ namespace Game {
 						ct =
 						static_cast <ControlType>
 						(listBoxControls[i].getSelectedItemIndex());
-					if (ct != ctClosed) {
-						if (ct == ctNetworkUnassigned) {
-							hasNetworkSlot = true;
-							break;
-						}
+					if (ct == ctNetwork) {
+						hasNetworkSlot = true;
+						break;
 					}
 				}
 			}
@@ -7623,7 +7588,7 @@ namespace Game {
 				}
 
 				if (i >= mapInfo.players) {
-					if (gameSettings->getFactionControl(i) != ctNetworkUnassigned) {
+					if (gameSettings->getFactionControl(i) != ctNetwork) {
 						continue;
 					} else if (clientInterface->getPlayerIndex() != slot) {
 						continue;
@@ -7631,7 +7596,6 @@ namespace Game {
 				}
 
 				if (gameSettings->getFactionControl(i) == ctNetwork ||
-					gameSettings->getFactionControl(i) == ctNetworkUnassigned ||
 					gameSettings->getFactionControl(i) == ctHuman) {
 					switch (gameSettings->getNetworkPlayerStatuses(i)) {
 						case npst_BeRightBack:
@@ -7671,8 +7635,7 @@ namespace Game {
 					getFactionTypeName(i)),
 					false);
 
-				if (gameSettings->getFactionControl(i) == ctNetwork ||
-					gameSettings->getFactionControl(i) == ctNetworkUnassigned) {
+				if (gameSettings->getFactionControl(i) == ctNetwork) {
 					labelNetStatus[slot].
 						setText(gameSettings->getNetworkPlayerName(i));
 					if (gameSettings->getThisFactionIndex() != i
@@ -7691,14 +7654,12 @@ namespace Game {
 					listBoxRMultiplier[slot].setVisible(true);
 				}
 
-				if ((gameSettings->getFactionControl(i) == ctNetwork ||
-					gameSettings->getFactionControl(i) == ctNetworkUnassigned) &&
+				if ((gameSettings->getFactionControl(i) == ctNetwork) &&
 					gameSettings->getThisFactionIndex() == i) {
 
 					// set my current slot to ctHuman
-					if (gameSettings->getFactionControl(i) != ctNetworkUnassigned) {
-						listBoxControls[slot].setSelectedItemIndex(ctHuman);
-					}
+					listBoxControls[slot].setSelectedItemIndex(ctHuman);
+
 					if (checkBoxScenario.getValue() == false) {
 						if (clientInterface->getJoinGameInProgress() == false) {
 							if (i <= mapInfo.hardMaxPlayers) {

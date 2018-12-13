@@ -2963,8 +2963,9 @@ namespace Game {
 												__LINE__, i, j,
 												world.getFactionCount(),
 												chrono.getMillis());
-										aiInterfaces[j]->signalWorkerThread(world.getFrameCount
-										());
+										AiInterface* ai = aiInterfaces[j];
+										if (ai != NULL)
+											ai->signalWorkerThread(world.getFrameCount());
 										hasAIPlayer = true;
 									}
 								}
@@ -3001,8 +3002,8 @@ namespace Game {
 												&&
 												scriptManager.getPlayerModifiers(j)->getAiEnabled
 												() == true) {
-												if (aiInterfaces[j]->isWorkerThreadSignalCompleted
-												(world.getFrameCount()) == false) {
+												AiInterface* ai = aiInterfaces[j];
+												if (ai != NULL && ai->isWorkerThreadSignalCompleted(world.getFrameCount()) == false) {
 													workThreadsFinished = false;
 													break;
 												}
@@ -3710,10 +3711,7 @@ namespace Game {
 
 				bool
 					switchRequested =
-					switchSetupForSlots(server, 0, map->getMaxPlayers(), false);
-				switchRequested = switchRequested
-					|| switchSetupForSlots(server, map->getMaxPlayers(),
-						GameConstants::maxPlayers, true);
+					switchSetupForSlots(server, 0, map->getMaxPlayers());
 
 				if (switchRequested == true) {
 					//printf("Send new game setup from switch: %d\n",switchRequested);
@@ -4026,8 +4024,7 @@ namespace Game {
 
 	bool
 		Game::switchSetupForSlots(ServerInterface * &serverInterface,
-			int startIndex, int endIndex,
-			bool onlyNetworkUnassigned) {
+			int startIndex, int endIndex) {
 		bool switchRequested = false;
 		if (serverInterface == NULL) {
 			return switchRequested;
@@ -4056,17 +4053,7 @@ namespace Game {
 						switchSetupRequests[i]->getSwitchFlags
 						());
 
-				if (onlyNetworkUnassigned == true
-					&& gameSettings.getFactionControl(i) != ctNetworkUnassigned) {
-					if (i < map->getMaxPlayers()
-						|| (i >= map->getMaxPlayers()
-							&& gameSettings.getFactionControl(i) != ctNetwork)) {
-						continue;
-					}
-				}
-
 				if (gameSettings.getFactionControl(i) == ctNetwork ||
-					gameSettings.getFactionControl(i) == ctNetworkUnassigned ||
 					//(gameSettings.getFactionControl(i) != ctClosed && gameSettings.getFactionControl(i) != ctHuman)) {
 					(gameSettings.getFactionControl(i) != ctHuman)) {
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
@@ -7571,7 +7558,7 @@ namespace Game {
 
 			factionInfo +=
 				" [" + formatString(this->gameSettings.getFactionTypeName(i)) +
-				" team: " + intToStr(this->gameSettings.getTeam(i)) + "]";
+				" team: " + intToStr(this->gameSettings.getTeam(i) + 1) + "]";
 
 			//              bool showResourceDebugInfo = true;
 			//              if(showResourceDebugInfo == true) {

@@ -1668,8 +1668,7 @@ namespace Game {
 			("AiAcceptSwitchTeamPercentChance",
 				"30"));
 		gameSettings->setFallbackCpuMultiplier(properties.
-			getInt("FallbackCpuMultiplier",
-				"5"));
+			getInt("FallbackCpuMultiplier", "1"));
 
 		gameSettings->setPathFinderType(static_cast <PathFinderType>
 			(properties.
@@ -1711,16 +1710,12 @@ namespace Game {
 					intToStr(ctClosed).
 					c_str()));
 
-			if (gameSettings->getFactionControl(i) == ctNetworkUnassigned) {
-				gameSettings->setFactionControl(i, ctNetwork);
-			}
-
 			gameSettings->setResourceMultiplierIndex(i,
 				properties.
 				getInt(string
 				("ResourceMultiplierIndex")
 					+ intToStr(i),
-					"5"));
+					"1"));
 			gameSettings->setTeam(i,
 				properties.
 				getInt(string("FactionTeamForIndex") +

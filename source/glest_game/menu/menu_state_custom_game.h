@@ -373,7 +373,7 @@ namespace Game {
 		void
 			switchSetupForSlots(SwitchSetupRequest ** switchSetupRequests,
 				ServerInterface * &serverInterface, int startIndex,
-				int endIndex, bool onlyNetworkUnassigned);
+				int endIndex);
 
 		string createGameName(string controllingPlayer = "");
 		void

@@ -258,10 +258,7 @@ namespace Game {
 				serverInterface->getSwitchSetupRequests();
 			//!!!
 			switchSetupForSlots(switchSetupRequests, serverInterface, 0,
-				mapInfo.players, false);
-			switchSetupForSlots(switchSetupRequests, serverInterface,
-				mapInfo.players, GameConstants::maxPlayers,
-				true);
+				mapInfo.players);
 
 			if (SystemFlags::
 				getSystemSettingType(SystemFlags::debugPerformance).enabled
@@ -321,9 +318,7 @@ namespace Game {
 					}
 				}
 
-				if (listBoxControls[i].getSelectedItemIndex() == ctNetwork ||
-					listBoxControls[i].getSelectedItemIndex() ==
-					ctNetworkUnassigned) {
+				if (listBoxControls[i].getSelectedItemIndex() == ctNetwork) {
 					hasOneNetworkSlotOpen = true;
 
 					if (serverInterface->getSlot(i, true) != NULL &&
@@ -558,30 +553,17 @@ namespace Game {
 						listBoxRMultiplier[i].setEditable(false);
 						listBoxRMultiplier[i].setEnabled(false);
 						listBoxRMultiplier[i].setVisible(false);
-					} else if (listBoxControls[i].getSelectedItemIndex() !=
-						ctNetworkUnassigned) {
-						ConnectionSlot *slot = serverInterface->getSlot(i, true);
-						if ((listBoxControls[i].getSelectedItemIndex() !=
-							ctNetwork)
-							|| (listBoxControls[i].getSelectedItemIndex() ==
-								ctNetwork && (slot == NULL
-									|| slot->isConnected() == false))) {
-							listBoxControls[i].setEditable(true);
-							listBoxControls[i].setEnabled(true);
-							listBoxFactions[i].setEditable(true);
-							listBoxTeams[i].setEditable(true);
-
-							if (listBoxControls[i].getSelectedItemIndex() == ctNetwork &&
-								listBoxFactions[i].getSelectedItem() == formatString(GameConstants::OBSERVER_SLOTNAME)) {
-								listBoxFactions[i].setSelectedItemIndex(0);
-							}
-						} else {
-							listBoxControls[i].setEditable(false);
-							listBoxControls[i].setEnabled(false);
-						}
 					} else {
-						listBoxControls[i].setEditable(false);
-						listBoxControls[i].setEnabled(false);
+						ConnectionSlot *slot = serverInterface->getSlot(i, true);
+						listBoxControls[i].setEditable(true);
+						listBoxControls[i].setEnabled(true);
+						listBoxFactions[i].setEditable(true);
+						listBoxTeams[i].setEditable(true);
+
+						if (listBoxControls[i].getSelectedItemIndex() == ctNetwork &&
+							listBoxFactions[i].getSelectedItem() == formatString(GameConstants::OBSERVER_SLOTNAME)) {
+							listBoxFactions[i].setSelectedItemIndex(0);
+						}
 					}
 				}
 			} else // if this is a scenario...
@@ -958,9 +940,7 @@ namespace Game {
 			}
 
 			for (int i = mapInfo.players; i < GameConstants::maxPlayers; ++i) {
-				if (listBoxControls[i].getSelectedItemIndex() != ctNetwork &&
-					listBoxControls[i].getSelectedItemIndex() !=
-					ctNetworkUnassigned) {
+				if (listBoxControls[i].getSelectedItemIndex() != ctNetwork) {
 					//printf("Closed A [%d] [%s]\n",i,labelPlayerNames[i].getText().c_str());
 
 					listBoxControls[i].setSelectedItemIndex(ctClosed);
@@ -1038,17 +1018,12 @@ namespace Game {
 						}*/
 						if (slot->isConnected() == true) {
 							if (listBoxControls[i].getSelectedItemIndex() !=
-								ctNetworkUnassigned) {
+								ctNetwork) {
 								listBoxControls[i].setSelectedItemIndex
-								(ctNetworkUnassigned);
+								(ctNetwork);
 							}
 						} else {
 							serverInterface->removeSlot(i);
-
-							if (listBoxControls[i].getSelectedItemIndex() ==
-								ctNetworkUnassigned) {
-								listBoxControls[i].setSelectedItemIndex(ctClosed);
-							}
 						}
 					} else if (slot->getCanAcceptConnections() == false) {
 						slot->setCanAcceptConnections(true);
