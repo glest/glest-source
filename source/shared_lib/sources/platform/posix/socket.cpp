@@ -2118,7 +2118,7 @@ namespace Shared {
 				memset((char*) &bcaddr, 0, sizeof(bcaddr));
 				bcaddr.sin_family = AF_INET;
 				bcaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-				bcaddr.sin_port = port;
+				bcaddr.sin_port = htons(port);
 
 				int val = 1;
 #ifndef WIN32
@@ -2985,7 +2985,7 @@ namespace Shared {
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "UDP Socket broadcast using IP [%s]\n", ipSubnetMaskList[idx].c_str());
 					bcLocal[idx].sin_addr.s_addr = inet_addr(ipSubnetMaskList[idx].c_str()); //htonl( INADDR_BROADCAST );
 				}
-				bcLocal[idx].sin_port = port;  // We are letting the OS fill in the port number for the local machine.
+				bcLocal[idx].sin_port = htons(port);  // We are letting the OS fill in the port number for the local machine.
 #ifdef WIN32
 				bcfd[idx] = INVALID_SOCKET;
 #else

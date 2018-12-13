@@ -545,7 +545,7 @@ Please contact the ZetaGlest team for more info.";
 
 		char szBuf[8096] = "";
 		snprintf(szBuf, 8096,
-			"Invalid controller value specified in scenario: [%s] must be one of the following: closed, cpu-easy, cpu, cpu-ultra, cpu-zeta, human",
+			"Invalid controller value specified in scenario: [%s] must be one of the following: closed, cpu-easy, cpu, cpu-ultra, cpu-mega, human",
 			str.c_str());
 		throw std::runtime_error(szBuf);
 	}

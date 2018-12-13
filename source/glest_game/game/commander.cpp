@@ -1347,7 +1347,7 @@ namespace Game {
 					//              world->getFaction(factionIndex)->getPersonalityType(),world->getFaction(factionIndex)->getIndex(),world->getFaction(factionIndex)->getControlType(),settings->getNetworkPlayerStatuses(factionIndex));
 
 					//printf("#2 nctPlayerStatusChange factionIndex = %d playerStatus = %d\n",factionIndex,playerStatus);
-					settings->setFactionControl(factionIndex, ctCpuUltra);
+					settings->setFactionControl(factionIndex, ctCpuZeta);
 					settings->setResourceMultiplierIndex(factionIndex,
 						settings->
 						getFallbackCpuMultiplier
@@ -1356,7 +1356,7 @@ namespace Game {
 					//game->get
 					Faction *
 						faction = this->world->getFaction(factionIndex);
-					faction->setControlType(ctCpuUltra);
+					faction->setControlType(ctCpuZeta);
 
 					if (!world->getGame()->getGameOver()
 						&& !this->world->getGame()->

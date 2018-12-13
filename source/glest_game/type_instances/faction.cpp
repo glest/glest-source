@@ -1038,22 +1038,8 @@ namespace Game {
 		return 0;
 	}
 
-	bool Faction::getCpuControl(bool enableServerControlledAI,
-		bool isNetworkGame, NetworkRole role) const {
-		bool result = false;
-		if (enableServerControlledAI == false || isNetworkGame == false) {
-			result = (control == ctCpuEasy || control == ctCpu
-				|| control == ctCpuUltra || control == ctCpuZeta);
-		} else {
-			if (isNetworkGame == true) {
-				if (role == nrServer) {
-					result = (control == ctCpuEasy || control == ctCpu
-						|| control == ctCpuUltra || control == ctCpuZeta);
-				}
-			}
-		}
-
-		return result;
+	bool Faction::getCpuControl(bool enableServerControlledAI, bool isNetworkGame, NetworkRole role) const {
+		return getCpuControl();
 	}
 
 	bool Faction::getCpuControl() const {

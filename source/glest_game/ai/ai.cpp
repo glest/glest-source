@@ -1163,10 +1163,10 @@ namespace Game {
 			ultraResourceAttack = (aiInterface->getControlType() == ctCpuUltra)
 			&& random.randRange(0, 2) == 1;
 		bool
-			megaResourceAttack = (aiInterface->getControlType() == ctCpuZeta)
+			zetaResourceAttack = (aiInterface->getControlType() == ctCpuZeta)
 			&& random.randRange(0, 1) == 1;
 
-		if (megaResourceAttack || ultraResourceAttack) {
+		if (zetaResourceAttack || ultraResourceAttack) {
 			Map *
 				map = aiInterface->getMap();
 
