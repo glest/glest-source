@@ -2100,14 +2100,11 @@ namespace Shared {
 
 			std::vector<string> foundServers;
 
-			short port;                 // The port for the broadcast.
 			struct sockaddr_in bcSender; // local socket address for the broadcast.
 			struct sockaddr_in bcaddr;  // The broadcast address for the receiver.
 			PLATFORM_SOCKET bcfd;                // The file descriptor used for the broadcast.
 			//bool one = true;            // Parameter for "setscokopt".
 			socklen_t alen = 0;
-
-			port = htons(Socket::getBroadCastPort());
 
 			// Prepare to receive the broadcast.
 			bcfd = socket(AF_INET, SOCK_DGRAM, 0);
@@ -2118,7 +2115,7 @@ namespace Shared {
 				memset((char*) &bcaddr, 0, sizeof(bcaddr));
 				bcaddr.sin_family = AF_INET;
 				bcaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-				bcaddr.sin_port = htons(port);
+				bcaddr.sin_port = htons(Socket::getBroadCastPort());
 
 				int val = 1;
 #ifndef WIN32
@@ -2920,7 +2917,6 @@ namespace Shared {
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "Broadcast thread is running\n");
 
 			const int MAX_NIC_COUNT = 10;
-			short port = 0;                 // The port for the broadcast.
 			struct sockaddr_in bcLocal[MAX_NIC_COUNT]; // local socket address for the broadcast.
 			PLATFORM_SOCKET bcfd[MAX_NIC_COUNT];                // The socket used for the broadcast.
 			int one = 1;            // Parameter for "setscokopt".
@@ -2970,8 +2966,6 @@ namespace Shared {
 				ipSubnetMaskList.push_back("*");
 			}
 
-			port = htons(Socket::getBroadCastPort());
-
 			//for(unsigned int idx = 0; idx < ipList.size() && idx < MAX_NIC_COUNT; idx++) {
 			for (unsigned int idx = 0; idx < (unsigned int) ipSubnetMaskList.size(); idx++) {
 				// Create the broadcast socket
@@ -2985,7 +2979,7 @@ namespace Shared {
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "UDP Socket broadcast using IP [%s]\n", ipSubnetMaskList[idx].c_str());
 					bcLocal[idx].sin_addr.s_addr = inet_addr(ipSubnetMaskList[idx].c_str()); //htonl( INADDR_BROADCAST );
 				}
-				bcLocal[idx].sin_port = htons(port);  // We are letting the OS fill in the port number for the local machine.
+				bcLocal[idx].sin_port = htons(Socket::getBroadCastPort());  // We are letting the OS fill in the port number for the local machine.
 #ifdef WIN32
 				bcfd[idx] = INVALID_SOCKET;
 #else

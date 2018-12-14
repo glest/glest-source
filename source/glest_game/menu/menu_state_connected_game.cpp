@@ -3626,12 +3626,12 @@ namespace Game {
 			ClientInterface *
 				clientInterface = networkManager.getClientInterface();
 			for (int i = 0; i < GameConstants::maxPlayers; ++i) {
-				if (listBoxControls[i].getSelectedItemIndex() == ctNetwork) {
+				/*if (listBoxControls[i].getSelectedItemIndex() == ctNetwork) {
 					bool renderIt = true;
 					//printf("Player #%d [%s] control = %d\n",i,labelPlayerNames[i].getText().c_str(),listBoxControls[i].getSelectedItemIndex());
-					/*if (labelNetStatus[i].getText().length() == 0) {
+					if (labelNetStatus[i].getText().length() == 0) {
 						renderIt = false;
-					}*/
+					}
 					labelPlayers[i].setVisible(renderIt);
 					labelPlayerNames[i].setVisible(renderIt);
 					listBoxControls[i].setVisible(renderIt);
@@ -3639,7 +3639,7 @@ namespace Game {
 					listBoxFactions[i].setVisible(renderIt);
 					listBoxTeams[i].setVisible(renderIt);
 					labelNetStatus[i].setVisible(renderIt);
-				}
+				}*/
 
 				if (listBoxControls[i].getSelectedItemIndex() != ctClosed) {
 					renderer.renderLabel(&labelPlayerStatus[i]);
