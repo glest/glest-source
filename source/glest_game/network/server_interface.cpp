@@ -2316,7 +2316,7 @@ namespace Game {
 		}
 		if (bOkToStart == true) {
 
-			bool useInGameBlockingClientSockets = Config::getInstance().getBool("EnableInGameBlockingSockets", "true");
+			bool useInGameBlockingClientSockets = Config::getInstance().getBool("EnableInGameBlockingSockets", "false");
 			if (useInGameBlockingClientSockets == true) {
 
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
@@ -2431,7 +2431,7 @@ namespace Game {
 			if (difftime((long int) time(NULL), lastListenerSlotCheckTime) >= 7) {
 
 				lastListenerSlotCheckTime = time(NULL);
-				bool useInGameBlockingClientSockets = Config::getInstance().getBool("EnableInGameBlockingSockets", "true");
+				bool useInGameBlockingClientSockets = Config::getInstance().getBool("EnableInGameBlockingSockets", "false");
 
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 				for (int startIndex = 0; startIndex < GameConstants::maxPlayers; ++startIndex) {
