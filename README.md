@@ -51,7 +51,7 @@ Then run the following command to start the game:
 
 **[Screenshots](https://github.com/ZetaGlest/screenshots)**
 
-[Server list and player stats](http://master.megaglest.org/)
+[Server list and player stats](http://master.megaglest.org)
 
 [Detailed information about units in the game](https://zetaglest.github.io/docs)
 
