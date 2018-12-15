@@ -491,9 +491,12 @@ int getLastSocketError() {
 }
 
 const char * getLastSocketErrorText(int *errNumber) {
-	//int errId = (errNumber != NULL ? *errNumber : getLastSocketError());
-	//return WSAGetLastErrorMessage("",errId);
-	return "?";
+	int errId = (errNumber != NULL ? *errNumber : getLastSocketError());
+	char* str = malloc(256);
+	str[0] = '\0';
+	FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, errNumber,
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), str, 256, NULL);
+	return str;
 }
 
 #endif
