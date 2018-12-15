@@ -98,7 +98,7 @@ namespace Shared {
 			if (masterThreadList.find(this) == masterThreadList.end()) {
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d] uniqueID [%s] ret [%d] END\n", __FILE__, __FUNCTION__, __LINE__, uniqueID.c_str(), ret);
 
-				printf("invalid thread delete for ptr: %p", this);
+				//printf("invalid thread delete for ptr: %p", this);
 				//throw game_runtime_error(szBuf);
 			}
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d] uniqueID [%s] ret [%d] END\n", __FILE__, __FUNCTION__, __LINE__, uniqueID.c_str(), ret);
