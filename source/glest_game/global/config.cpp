@@ -35,7 +35,7 @@ using namespace Shared::Util;
 using namespace std;
 
 namespace Game {
-	int GameConstants::networkFramePeriod = 20;
+	int GameConstants::networkFramePeriod = 10;
 	int GameConstants::updateFps = 40;
 	int GameConstants::cameraFps = 100;
 
