@@ -6296,10 +6296,6 @@ namespace Game {
 				()).c_str()));
 
 			Socket::disableNagle = config.getBool("DisableNagle", "true");
-			if (Socket::disableNagle) {
-				printf
-				("*WARNING users wants to disable the socket nagle algorithm.\n");
-			}
 			Socket::DEFAULT_SOCKET_SENDBUF_SIZE =
 				config.getInt("DefaultSocketSendBufferSize",
 					intToStr(Socket::DEFAULT_SOCKET_SENDBUF_SIZE).

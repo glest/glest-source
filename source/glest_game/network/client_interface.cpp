@@ -23,6 +23,7 @@
 #include "window.h"
 
 #include "platform_util.h"
+#include "network_manager.h"
 #include "game_util.h"
 #include "conversion.h"
 #include "config.h"
@@ -1193,6 +1194,9 @@ namespace Game {
 								return;
 							}*/
 							done = true;
+							NetworkManager::getInstance().setNetworkRole(nrServer);
+							//gameSettings.setMasterserver_admin(getSessionKey());
+							//gameSettings.setMasterserver_admin_faction_index(getPlayerIndex());
 						}
 						if (!done) {
 							setQuit(true);
@@ -1534,7 +1538,7 @@ namespace Game {
 			if (isConnected() == false) {
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s] Line: %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 				string sErr = lang.getString("ServerDisconnected");
-				DisplayErrorMessage(sErr);
+				//DisplayErrorMessage(sErr);
 
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s] Line: %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
@@ -1933,7 +1937,7 @@ namespace Game {
 				if (getSocket() == NULL || (chrono.getMillis() % 250 == 0 && isConnected() == false)) {
 					if (getQuit() == false) {
 						Lang &lang = Lang::getInstance();
-						DisplayErrorMessage(lang.getString("ServerDisconnected"));
+						printf("\n%s\n", lang.getString("ServerDisconnected").c_str());
 						setQuit(true);
 					}
 					close();

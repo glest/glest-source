@@ -93,11 +93,11 @@ namespace Game {
 	}
 
 	bool NetworkManager::isNetworkGame() {
-		return networkRole == nrClient || (networkRole == nrServer && getServerInterface()->getSlotCount() > 0);
+		return networkRole == nrClient || (networkRole == nrServer && getServerInterface() != NULL && getServerInterface()->getSlotCount() > 0);
 	}
 
 	bool NetworkManager::isNetworkGameWithConnectedClients() {
-		return networkRole == nrClient || (networkRole == nrServer && getServerInterface()->getConnectedSlotCount(true) > 0);
+		return networkRole == nrClient || (networkRole == nrServer && getServerInterface() != NULL && getServerInterface()->getConnectedSlotCount(true) > 0);
 	}
 
 	GameNetworkInterface* NetworkManager::getGameNetworkInterface(bool throwErrorOnNull) {

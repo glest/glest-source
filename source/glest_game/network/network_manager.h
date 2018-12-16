@@ -59,6 +59,10 @@ namespace Game {
 			return networkRole;
 		}
 
+		void setNetworkRole(NetworkRole role) {
+			networkRole = role;
+		}
+
 		void initServerInterfaces(ClientLagCallbackInterface *intf);
 	};
 
