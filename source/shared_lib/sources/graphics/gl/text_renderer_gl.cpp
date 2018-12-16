@@ -421,7 +421,7 @@ namespace Shared {
 
 			void TextRenderer3DGl::specialFTGLErrorCheckWorkaround(string text) {
 
-				for (GLenum error = glGetError(); error != GL_NO_ERROR; error = glGetError()) {
+				/*for (GLenum error = glGetError(); error != GL_NO_ERROR; error = glGetError()) {
 					//error = glGetError();
 					//if(error) {
 					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("\n\nIn [%s::%s Line: %d] error = %d for text [%s]\n\n", __FILE__, __FUNCTION__, __LINE__, error, text.c_str());
@@ -437,7 +437,7 @@ namespace Shared {
 					}
 
 					currentFTGLErrorCount++;
-				}
+				}*/
 				//}
 			}
 

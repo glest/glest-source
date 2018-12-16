@@ -410,7 +410,6 @@ namespace Game {
 	void GameNetworkInterface::requestCommand(const NetworkCommand *networkCommand, bool insertAtStart) {
 		assert(networkCommand != NULL);
 		Mutex *mutex = getServerSynchAccessor();
-
 		if (insertAtStart == false) {
 			MutexSafeWrapper safeMutex(mutex, string(__FILE__) + "_" + intToStr(__LINE__));
 			requestedCommands.push_back(*networkCommand);

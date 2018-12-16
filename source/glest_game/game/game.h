@@ -472,6 +472,9 @@ namespace Game {
 			return renderInGamePerformance;
 		}
 
+		void
+			ReplaceDisconnectedNetworkPlayersWithAI(bool isNetworkGame, NetworkRole role, bool showMessage);
+
 	private:
 		//render
 		void render3d();
@@ -501,8 +504,6 @@ namespace Game {
 		void renderWorker();
 		static int ErrorDisplayMessage(const char *msg, bool exitApp);
 
-		void
-			ReplaceDisconnectedNetworkPlayersWithAI(bool isNetworkGame, NetworkRole role, bool showMessage);
 		void calcCameraMoveX();
 		void calcCameraMoveZ();
 

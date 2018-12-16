@@ -33,6 +33,7 @@
 #include <cassert>
 #include "shared_const.h"
 #include "leak_dumper.h"
+#include "game.h"
 
 using namespace std;
 using namespace Shared;
@@ -1740,7 +1741,7 @@ namespace Game {
 					return;
 				}
 
-				Shared::Platform::Window::handleEvent();
+				::Shared::Platform::Window::handleEvent();
 				// sleep a bit
 				sleep(waitSleepTime);
 			}

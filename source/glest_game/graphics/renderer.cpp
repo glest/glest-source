@@ -1533,7 +1533,7 @@ namespace Game {
 						visibleQuad.p[3].x, visibleQuad.p[3].y);
 				}
 			} catch (PROJECTION_TO_INFINITY &e) {
-				if (debug) printf("hmm staring at the horizon %d\n", (int) e);
+				if (debug) printf("staring at the horizon %d\n", (int) e);
 				// use historic code solution
 				visibleQuad = this->gameCamera->computeVisibleQuad();
 			}
