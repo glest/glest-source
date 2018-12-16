@@ -554,7 +554,6 @@ namespace Game {
 						listBoxRMultiplier[i].setEnabled(false);
 						listBoxRMultiplier[i].setVisible(false);
 					} else {
-						ConnectionSlot *slot = serverInterface->getSlot(i, true);
 						listBoxControls[i].setEditable(true);
 						listBoxControls[i].setEnabled(true);
 						listBoxFactions[i].setEditable(true);

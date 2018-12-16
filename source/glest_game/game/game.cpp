@@ -4041,7 +4041,6 @@ namespace Game {
 			return switchRequested;
 		}
 
-		Map *map = world.getMap();
 		for (int i = startIndex; i < endIndex; ++i) {
 			if (switchSetupRequests[i] != NULL) {
 				//printf("Faction Index: %d Switch slot = %d to = %d current control = %d\n",i,switchSetupRequests[i]->getCurrentSlotIndex(),switchSetupRequests[i]->getToSlotIndex(),gameSettings.getFactionControl(i));

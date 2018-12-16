@@ -852,7 +852,6 @@ namespace Game {
 
 	void
 		MenuStateConnectedGame::reloadUI() {
-		Config & config = Config::getInstance();
 		Lang & lang = Lang::getInstance();
 
 		console.resetFonts();
