@@ -163,7 +163,7 @@ namespace Game {
 		string versionString;
 		int sessionKey;
 		uint32 connectedRemoteIPAddress;
-		int playerStatus;
+		NetworkPlayerStatusType playerStatus;
 		string playerLanguage;
 		string playerUUID;
 		string platform;
@@ -326,7 +326,7 @@ namespace Game {
 			return playerIndex;
 		}
 
-		int getNetworkPlayerStatus() const {
+		NetworkPlayerStatusType getNetworkPlayerStatus() const {
 			return playerStatus;
 		}
 

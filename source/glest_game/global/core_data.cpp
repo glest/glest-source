@@ -1494,7 +1494,7 @@ namespace Game {
 				()) << std::endl;
 		saveGameFile << "FallbackCpuMultiplier=" << Shared::PlatformByteOrder::
 			toCommonEndian(gameSettings->
-				getFallbackCpuMultiplier()) << std::endl;
+				getFallbackCpuMultiplierIndex()) << std::endl;
 		saveGameFile << "PathFinderType=" << Shared::PlatformByteOrder::
 			toCommonEndian(gameSettings->getPathFinderType()) << std::endl;
 		saveGameFile << "EnableServerControlledAI=" << Shared::
@@ -1667,7 +1667,7 @@ namespace Game {
 			getInt
 			("AiAcceptSwitchTeamPercentChance",
 				"30"));
-		gameSettings->setFallbackCpuMultiplier(properties.
+		gameSettings->setFallbackCpuMultiplierIndex(properties.
 			getInt("FallbackCpuMultiplier", "1"));
 
 		gameSettings->setPathFinderType(static_cast <PathFinderType>

@@ -309,7 +309,7 @@ namespace Game {
 			pair < FTP_Client_ResultType,
 			string > result, void *userdata);
 
-		int32 getNetworkPlayerStatus();
+		NetworkPlayerStatusType getNetworkPlayerStatus();
 		void cleanupMapPreviewTexture();
 
 		void mouseClickAdmin(int x, int y, MouseButton mouseButton,

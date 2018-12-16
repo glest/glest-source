@@ -188,7 +188,7 @@ namespace Game {
 
 		void sendSwitchSetupRequest(string selectedFactionName, int8 currentSlotIndex,
 			int8 toSlotIndex, int8 toTeam, string networkPlayerName,
-			int8 networkPlayerStatus, int8 flags,
+			NetworkPlayerStatusType networkPlayerStatus, int8 flags,
 			string language);
 		virtual bool getConnectHasHandshaked() const {
 			return gotIntro;

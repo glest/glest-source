@@ -366,7 +366,7 @@ namespace Game {
 		void
 			cleanup();
 
-		int32 getNetworkPlayerStatus();
+		NetworkPlayerStatusType getNetworkPlayerStatus();
 		void
 			setupUIFromGameSettings(const GameSettings & gameSettings);
 

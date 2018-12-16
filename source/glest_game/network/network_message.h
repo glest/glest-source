@@ -407,7 +407,7 @@ namespace Game {
 			uint32 flagTypes1;
 
 			int8 aiAcceptSwitchTeamPercentChance;
-			int8 cpuReplacementMultiplier;
+			int8 cpuReplacementMultiplierIndex;
 			int32 masterserver_admin;
 			int32 masterserver_admin_factionIndex;
 
@@ -1073,7 +1073,7 @@ namespace Game {
 		SwitchSetupRequest();
 		SwitchSetupRequest(string selectedFactionName, int8 currentFactionIndex,
 			int8 toFactionIndex, int8 toTeam, string networkPlayerName,
-			int8 networkPlayerStatus, int8 flags,
+			NetworkPlayerStatusType networkPlayerStatus, int8 flags,
 			string language);
 
 		virtual size_t getDataSize() const {
@@ -1109,8 +1109,8 @@ namespace Game {
 			data.switchFlags &= ~flag;
 		}
 
-		int getNetworkPlayerStatus() const {
-			return data.networkPlayerStatus;
+		NetworkPlayerStatusType getNetworkPlayerStatus() const {
+			return (NetworkPlayerStatusType) data.networkPlayerStatus;
 		}
 		string getNetworkPlayerLanguage() const {
 			return data.language.getString();

@@ -3101,7 +3101,7 @@ namespace Game {
 		(listBoxAISwitchTeamAcceptPercent.getSelectedItem
 		()));
 		gameSettings->
-			setFallbackCpuMultiplier
+			setFallbackCpuMultiplierIndex
 			(listBoxFallbackCpuMultiplier.getSelectedItemIndex());
 
 		valueFlags1 = gameSettings->getFlagTypes1();
@@ -3237,7 +3237,7 @@ namespace Game {
 				gameSettings->setStartLocationIndex(slotIndex, i);
 				//printf("!!! setStartLocationIndex #2 slotIndex = %d, i = %d\n",slotIndex, i);
 
-				gameSettings->setResourceMultiplierIndex(slotIndex, gameSettings->getFallbackCpuMultiplier());
+				gameSettings->setResourceMultiplierIndex(slotIndex, gameSettings->getFallbackCpuMultiplierIndex());
 
 				if (SystemFlags::
 					getSystemSettingType(SystemFlags::debugSystem).enabled)
@@ -6275,8 +6275,8 @@ namespace Game {
 		}
 	}
 
-	int32 MenuStateConnectedGame::getNetworkPlayerStatus() {
-		int32 result = npst_None;
+	NetworkPlayerStatusType MenuStateConnectedGame::getNetworkPlayerStatus() {
+		NetworkPlayerStatusType result = npst_None;
 		switch (listBoxPlayerStatus.getSelectedItemIndex()) {
 			case 2:
 				result = npst_Ready;
@@ -7538,7 +7538,7 @@ namespace Game {
 		(gameSettings->getAiAcceptSwitchTeamPercentChance
 		()));
 		listBoxFallbackCpuMultiplier.
-			setSelectedItemIndex(gameSettings->getFallbackCpuMultiplier());
+			setSelectedItemIndex(gameSettings->getFallbackCpuMultiplierIndex());
 
 		if ((gameSettings->getFlagTypes1() & ft1_allow_shared_team_units) ==
 			ft1_allow_shared_team_units) {

@@ -68,11 +68,9 @@ namespace Game {
 					break;
 			};
 		}
-
-		if ((control != ctHuman && control != ctNetwork) ||
-			(control == ctNetwork && playerLeftBeforeEnd == true)) {
+		
+		if ((control != ctHuman && control != ctNetwork) || (control == ctNetwork && playerLeftBeforeEnd == true))
 			controlString += " x " + floatToStr(resourceMultiplier, 1);
-		}
 
 		result += playerName + " (" + controlString + ") ";
 		if (control == ctNetwork && playerLeftBeforeEnd == true) {

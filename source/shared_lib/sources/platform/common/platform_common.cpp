@@ -2248,9 +2248,9 @@ namespace Shared {
 			printf("%s\n", szMsg);
 			SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n", szMsg);
 			SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szMsg);
-			void(*handler)(const char*) = unexpected_handler;
+			/*void(*handler)(const char*) = unexpected_handler;
 			if (handler != NULL)
-				handler(szMsg);
+				handler(szMsg);*/
 		}
 
 		void ValueCheckerVault::addItemToVault(const void *ptr, int value) {

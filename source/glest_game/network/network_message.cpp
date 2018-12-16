@@ -714,7 +714,7 @@ namespace Game {
 			data.factionCRCList[i] = 0;
 		}
 		data.aiAcceptSwitchTeamPercentChance = 0;
-		data.cpuReplacementMultiplier = 10;
+		data.cpuReplacementMultiplierIndex = 1;
 		data.masterserver_admin = -1;
 		data.masterserver_admin_factionIndex = -1;
 	}
@@ -772,7 +772,7 @@ namespace Game {
 			data.networkPlayerUUID[i] = gameSettings->getNetworkPlayerUUID(i);
 			//printf("Build netmsg for index: %d [%s]\n",i,data.networkPlayerUUID[i].getString().c_str());
 		}
-		data.cpuReplacementMultiplier = gameSettings->getFallbackCpuMultiplier();
+		data.cpuReplacementMultiplierIndex = gameSettings->getFallbackCpuMultiplierIndex();
 		data.aiAcceptSwitchTeamPercentChance = gameSettings->getAiAcceptSwitchTeamPercentChance();
 		data.masterserver_admin = gameSettings->getMasterserver_admin();
 		data.masterserver_admin_factionIndex = gameSettings->getMasterserver_admin_faction_index();
@@ -821,7 +821,7 @@ namespace Game {
 			gameSettings->setFactionTypeName(i, data.factionTypeNames[i].getString());
 			gameSettings->setNetworkPlayerName(i, data.networkPlayerNames[i].getString());
 			gameSettings->setNetworkPlayerPlatform(i, data.networkPlayerPlatform[i].getString());
-			gameSettings->setNetworkPlayerStatuses(i, data.networkPlayerStatuses[i]);
+			gameSettings->setNetworkPlayerStatuses(i, (NetworkPlayerStatusType) data.networkPlayerStatuses[i]);
 			gameSettings->setNetworkPlayerLanguages(i, data.networkPlayerLanguages[i].getString());
 			gameSettings->setFactionControl(i, static_cast<ControlType>(data.factionControls[i]));
 			gameSettings->setResourceMultiplierIndex(i, data.resourceMultiplierIndex[i]);
@@ -834,7 +834,7 @@ namespace Game {
 		}
 
 		gameSettings->setAiAcceptSwitchTeamPercentChance(data.aiAcceptSwitchTeamPercentChance);
-		gameSettings->setFallbackCpuMultiplier(data.cpuReplacementMultiplier);
+		gameSettings->setFallbackCpuMultiplierIndex(data.cpuReplacementMultiplierIndex);
 
 		gameSettings->setMasterserver_admin(data.masterserver_admin);
 		gameSettings->setMasterserver_admin_faction_index(data.masterserver_admin_factionIndex);
@@ -867,7 +867,7 @@ namespace Game {
 			Data packedData;
 			packedData.aiAcceptSwitchTeamPercentChance = 0;
 			packedData.allowObservers = 0;
-			packedData.cpuReplacementMultiplier = 0;
+			packedData.cpuReplacementMultiplierIndex = 0;
 			packedData.defaultResources = 0;
 			packedData.defaultUnits = 0;
 			packedData.defaultVictoryConditions = 0;
@@ -878,7 +878,7 @@ namespace Game {
 			}
 			for (unsigned int index = 0; index < (unsigned int) GameConstants::maxPlayers; ++index) {
 				packedData.factionControls[index] = 0;
-				packedData.networkPlayerStatuses[index] = 0;
+				packedData.networkPlayerStatuses[index] = npst_None;
 				packedData.resourceMultiplierIndex[index] = 0;
 				packedData.startLocationIndex[index] = 0;
 				packedData.teams[index] = 0;
@@ -1036,7 +1036,7 @@ namespace Game {
 				packedData.pathFinderType,
 				packedData.flagTypes1,
 				packedData.aiAcceptSwitchTeamPercentChance,
-				packedData.cpuReplacementMultiplier,
+				packedData.cpuReplacementMultiplierIndex,
 				packedData.masterserver_admin,
 				packedData.masterserver_admin_factionIndex,
 				packedData.scenario.getBuffer(),
@@ -1192,7 +1192,7 @@ namespace Game {
 			&data.pathFinderType,
 			&data.flagTypes1,
 			&data.aiAcceptSwitchTeamPercentChance,
-			&data.cpuReplacementMultiplier,
+			&data.cpuReplacementMultiplierIndex,
 			&data.masterserver_admin,
 			&data.masterserver_admin_factionIndex,
 			data.scenario.getBuffer(),
@@ -1347,7 +1347,7 @@ namespace Game {
 			data.pathFinderType,
 			data.flagTypes1,
 			data.aiAcceptSwitchTeamPercentChance,
-			data.cpuReplacementMultiplier,
+			data.cpuReplacementMultiplierIndex,
 			data.masterserver_admin,
 			data.masterserver_admin_factionIndex,
 			data.scenario.getBuffer(),
@@ -1581,7 +1581,7 @@ namespace Game {
 			data.flagTypes1 = Shared::PlatformByteOrder::toCommonEndian(data.flagTypes1);
 
 			data.aiAcceptSwitchTeamPercentChance = Shared::PlatformByteOrder::toCommonEndian(data.aiAcceptSwitchTeamPercentChance);
-			data.cpuReplacementMultiplier = Shared::PlatformByteOrder::toCommonEndian(data.cpuReplacementMultiplier);
+			data.cpuReplacementMultiplierIndex = Shared::PlatformByteOrder::toCommonEndian(data.cpuReplacementMultiplierIndex);
 			data.masterserver_admin = Shared::PlatformByteOrder::toCommonEndian(data.masterserver_admin);
 			data.masterserver_admin_factionIndex = Shared::PlatformByteOrder::toCommonEndian(data.masterserver_admin_factionIndex);
 
@@ -1621,7 +1621,7 @@ namespace Game {
 			data.flagTypes1 = Shared::PlatformByteOrder::fromCommonEndian(data.flagTypes1);
 
 			data.aiAcceptSwitchTeamPercentChance = Shared::PlatformByteOrder::fromCommonEndian(data.aiAcceptSwitchTeamPercentChance);
-			data.cpuReplacementMultiplier = Shared::PlatformByteOrder::fromCommonEndian(data.cpuReplacementMultiplier);
+			data.cpuReplacementMultiplierIndex = Shared::PlatformByteOrder::fromCommonEndian(data.cpuReplacementMultiplierIndex);
 			data.masterserver_admin = Shared::PlatformByteOrder::fromCommonEndian(data.masterserver_admin);
 			data.masterserver_admin_factionIndex = Shared::PlatformByteOrder::fromCommonEndian(data.masterserver_admin_factionIndex);
 
@@ -2956,7 +2956,7 @@ namespace Game {
 
 	SwitchSetupRequest::SwitchSetupRequest(string selectedFactionName, int8 currentFactionIndex,
 		int8 toFactionIndex, int8 toTeam, string networkPlayerName,
-		int8 networkPlayerStatus, int8 flags,
+		NetworkPlayerStatusType networkPlayerStatus, int8 flags,
 		string language) {
 		messageType = nmtSwitchSetupRequest;
 		data.selectedFactionName = selectedFactionName;
@@ -2979,7 +2979,7 @@ namespace Game {
 			Data packedData;
 			packedData.currentSlotIndex = 0;
 			messageType = nmtSwitchSetupRequest;
-			packedData.networkPlayerStatus = 0;
+			packedData.networkPlayerStatus = npst_None;
 			packedData.switchFlags = 0;
 			packedData.toSlotIndex = 0;
 			packedData.toTeam = 0;

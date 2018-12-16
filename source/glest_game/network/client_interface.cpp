@@ -437,7 +437,7 @@ namespace Game {
 			snprintf(szBuf1, 8096, statusTextFormat.c_str(), playerNameStr.c_str());
 
 			DisplayErrorMessage(szBuf1);
-			setQuit(true);
+			//setQuit(true);
 			return;
 		}
 
@@ -1095,12 +1095,11 @@ namespace Game {
 						bool gotCmd = receiveMessage(&networkMessageCommandList);
 						if (gotCmd == false) {
 							SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] error retrieving nmtCommandList returned false!\n", __FILE__, __FUNCTION__, __LINE__);
-							if (isConnected() == false) {
+							printf("Network connection has been interrupted...\n");
+							/*if (isConnected() == false) {
 								setQuit(true);
 								close();
-							}
-							//throw game_runtime_error("error retrieving nmtCommandList returned false!");
-							printf("Network connection has been interrupted...\n");
+							}*/
 							return;
 						}
 
@@ -1188,17 +1187,17 @@ namespace Game {
 						if (gotCmd == false) {
 							//SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] error retrieving nmtQuit returned false!\n", __FILE__, __FUNCTION__, __LINE__);
 							printf("Network connection has been interrupted...\n");
-							setQuit(true);
+							/*setQuit(true);
 							if (isConnected() == false) {
 								close();
 								return;
-							}
-
-							//throw game_runtime_error("error retrieving nmtQuit returned false!");
+							}*/
 							done = true;
 						}
-						setQuit(true);
-						done = true;
+						if (!done) {
+							setQuit(true);
+							done = true;
+						}
 					}
 					break;
 
@@ -2058,7 +2057,7 @@ namespace Game {
 
 	void ClientInterface::sendSwitchSetupRequest(string selectedFactionName, int8 currentSlotIndex,
 		int8 toSlotIndex, int8 toTeam, string networkPlayerName,
-		int8 networkPlayerStatus, int8 flags,
+		NetworkPlayerStatusType networkPlayerStatus, int8 flags,
 		string language) {
 		if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] networkPlayerName [%s] flags = %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, networkPlayerName.c_str(), flags);
 		SwitchSetupRequest message = SwitchSetupRequest(selectedFactionName,

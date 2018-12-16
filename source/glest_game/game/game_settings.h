@@ -123,7 +123,7 @@ namespace Game {
 			networkPlayerNames[GameConstants::maxPlayers];
 		string
 			networkPlayerPlatform[GameConstants::maxPlayers];
-		int
+		NetworkPlayerStatusType
 			networkPlayerStatuses[GameConstants::maxPlayers];
 		string
 			networkPlayerLanguages[GameConstants::maxPlayers];
@@ -150,7 +150,7 @@ namespace Game {
 			mapFilter;
 
 		int
-			fallbackCpuMultiplier;
+			fallbackCpuMultiplierIndex;
 		bool
 			defaultUnits;
 		bool
@@ -249,7 +249,7 @@ namespace Game {
 			aiAcceptSwitchTeamPercentChance = 30;
 			masterserver_admin = -1;
 			masterserver_admin_factionIndex = -1;
-			fallbackCpuMultiplier = 1;
+			fallbackCpuMultiplierIndex = 1;
 			networkAllowNativeLanguageTechtree = true;
 		}
 
@@ -351,7 +351,7 @@ namespace Game {
 			return result;
 		}
 
-		const int
+		const NetworkPlayerStatusType
 			getNetworkPlayerStatuses(int factionIndex) const {
 			if (factionIndex < 0 || factionIndex >= GameConstants::maxPlayers) {
 				char
@@ -724,7 +724,7 @@ namespace Game {
 		}
 
 		void
-			setNetworkPlayerStatuses(int factionIndex, int status) {
+			setNetworkPlayerStatuses(int factionIndex, NetworkPlayerStatusType status) {
 			if (factionIndex < 0 || factionIndex >= GameConstants::maxPlayers) {
 				char
 					szBuf[8096] = "";
@@ -924,13 +924,13 @@ namespace Game {
 		}
 
 		int
-			getFallbackCpuMultiplier() const {
+			getFallbackCpuMultiplierIndex() const {
 			return
-				fallbackCpuMultiplier;
+				fallbackCpuMultiplierIndex;
 		}
 		void
-			setFallbackCpuMultiplier(int value) {
-			fallbackCpuMultiplier = value;
+			setFallbackCpuMultiplierIndex(int value) {
+			fallbackCpuMultiplierIndex = value;
 		}
 
 		int
@@ -1411,7 +1411,7 @@ namespace Game {
 				const XmlNode *
 					networkPlayerStatusesNode =
 					gameSettingsNode->getChild("networkPlayerStatuses", idx);
-				networkPlayerStatuses[idx] =
+				networkPlayerStatuses[idx] = (NetworkPlayerStatusType)
 					networkPlayerStatusesNode->getAttribute("status")->
 					getIntValue();
 			}

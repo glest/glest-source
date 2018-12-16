@@ -1348,10 +1348,8 @@ namespace Game {
 
 					//printf("#2 nctPlayerStatusChange factionIndex = %d playerStatus = %d\n",factionIndex,playerStatus);
 					settings->setFactionControl(factionIndex, ctCpuZeta);
-					settings->setResourceMultiplierIndex(factionIndex,
-						settings->
-						getFallbackCpuMultiplier
-						());
+					settings->setResourceMultiplierIndex(factionIndex, settings->getFallbackCpuMultiplierIndex());
+					world->getStats()->setResourceMultiplier(factionIndex, (settings->getFallbackCpuMultiplierIndex() + 1) * 0.5f);
 					//Game *game = this->world->getGame();
 					//game->get
 					Faction *

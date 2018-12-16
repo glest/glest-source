@@ -4164,7 +4164,7 @@ namespace Game {
 		(listBoxAISwitchTeamAcceptPercent.getSelectedItem
 		()));
 		gameSettings->
-			setFallbackCpuMultiplier
+			setFallbackCpuMultiplierIndex
 			(listBoxFallbackCpuMultiplier.getSelectedItemIndex());
 
 		if (checkBoxAllowInGameJoinPlayer.getValue() == true) {
@@ -4354,10 +4354,7 @@ namespace Game {
 						serverInterface->getSlot(i, true)->isConnected()) {
 
 						gameSettings->setNetworkPlayerStatuses(slotIndex,
-							serverInterface->getSlot
-							(i,
-								true)->getNetworkPlayerStatus
-								());
+							serverInterface->getSlot(i, true)->getNetworkPlayerStatus());
 
 						// I'm putting this inside a ppd for now. I don't see it needs to be
 						// built in unless DEBUG is defined during building -andy5995 2018-01-26
@@ -4987,7 +4984,7 @@ namespace Game {
 		(gameSettings.getAiAcceptSwitchTeamPercentChance
 		()));
 		listBoxFallbackCpuMultiplier.
-			setSelectedItemIndex(gameSettings.getFallbackCpuMultiplier());
+			setSelectedItemIndex(gameSettings.getFallbackCpuMultiplierIndex());
 
 		checkBoxAllowInGameJoinPlayer.setValue((gameSettings.getFlagTypes1() &
 			ft1_allow_in_game_joining) ==
@@ -5631,8 +5628,8 @@ namespace Game {
 				__LINE__);
 	}
 
-	int32 MenuStateCustomGame::getNetworkPlayerStatus() {
-		int32 result = npst_None;
+	NetworkPlayerStatusType MenuStateCustomGame::getNetworkPlayerStatus() {
+		NetworkPlayerStatusType result = npst_None;
 		switch (listBoxPlayerStatus.getSelectedItemIndex()) {
 			case 2:
 				result = npst_Ready;

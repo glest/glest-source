@@ -94,7 +94,6 @@ namespace Game {
 			factionCount;
 		int
 			thisFactionIndex;
-
 		float
 			worldTimeElapsed;
 		int
