@@ -946,8 +946,8 @@ namespace Game {
 			vector < string > languageFileMappings;
 			Tokenize(txnURLFileListMapping, languageFileMappings, "|");
 
-			printf("URL5 file count = " MG_SIZE_T_SPECIFIER ", "
-				MG_SIZE_T_SPECIFIER " [%s]\n", languageFiles.size(),
+			printf("URL5 file count = " SIZE_T_SPECIFIER ", "
+				SIZE_T_SPECIFIER " [%s]\n", languageFiles.size(),
 				languageFileMappings.size(),
 				(languageFiles.empty() ==
 					false ? languageFiles[0].c_str() : ""));

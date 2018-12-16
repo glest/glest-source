@@ -1687,7 +1687,7 @@ namespace Game {
 		gameSettings->setNetworkPauseGameForLaggedClients(properties.
 			getBool
 			("NetworkPauseGameForLaggedClients",
-				"false"));
+				"true"));
 
 		gameSettings->setThisFactionIndex(properties.
 			getInt("FactionThisFactionIndex"));

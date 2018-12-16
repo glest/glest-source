@@ -122,7 +122,7 @@ namespace Shared {
 			if (dialogCommand) {
 				std::string command = dialogCommand;
 
-				string text_file = writepath + "/mg_dialog_text.txt";
+				string text_file = writepath + "/dialog_text.txt";
 				{
 					FILE *fp = fopen(text_file.c_str(),"wt");
 					if (fp != NULL) {

@@ -2357,7 +2357,7 @@ namespace Game {
 				((long int) time(NULL),
 					broadcastServerSettingsDelayTimer) >=
 					HEADLESSSERVER_BROADCAST_SETTINGS_SECONDS))) {
-			//printf("In [%s:%s] Line: %d forceNow = %d broadcastServerSettingsDelayTimer = " MG_SIZE_T_SPECIFIER ", now =" MG_SIZE_T_SPECIFIER "\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,forceNow,broadcastServerSettingsDelayTimer,time(NULL));
+			//printf("In [%s:%s] Line: %d forceNow = %d broadcastServerSettingsDelayTimer = " SIZE_T_SPECIFIER ", now =" SIZE_T_SPECIFIER "\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,forceNow,broadcastServerSettingsDelayTimer,time(NULL));
 
 			needToBroadcastServerSettings = false;
 			broadcastServerSettingsDelayTimer = time(NULL);
@@ -2945,7 +2945,7 @@ namespace Game {
 		if (SystemFlags::VERBOSE_MODE_ENABLED)
 			printf
 			("In [%s::%s Line %d] listBoxMap.getSelectedItemIndex() = %d, mapFiles.size() = "
-				MG_SIZE_T_SPECIFIER ", getCurrentMapFile() [%s]\n",
+				SIZE_T_SPECIFIER ", getCurrentMapFile() [%s]\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__,
 				__LINE__, listBoxMap.getSelectedItemIndex(), mapFiles.size(),
 				getCurrentMapFile().c_str());
@@ -3269,7 +3269,7 @@ namespace Game {
 		("ServerControlledAI",
 			"true"));
 		gameSettings->
-			setNetworkFramePeriod(config.getInt("NetworkSendFrameCount", "20"));
+			setNetworkFramePeriod(config.getInt("NetworkSendFrameCount", "10"));
 
 		if (hasNetworkGameSettings() == true) {
 			if (gameSettings->getTileset() != "") {
@@ -7946,9 +7946,9 @@ namespace Game {
 				if (SystemFlags::VERBOSE_MODE_ENABLED)
 					printf
 					("In [%s::%s Line %d] listBoxMap.getSelectedItemIndex() = %d, mapFiles.size() = "
-						MG_SIZE_T_SPECIFIER
+						SIZE_T_SPECIFIER
 						", mapInfo.players = %d, formattedPlayerSortedMaps[mapInfo.players].size() = "
-						MG_SIZE_T_SPECIFIER ", scenarioInfo.mapName [%s]\n",
+						SIZE_T_SPECIFIER ", scenarioInfo.mapName [%s]\n",
 						extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__,
 						__LINE__, listBoxMap.getSelectedItemIndex(), mapFiles.size(),
 						mapInfo.players,

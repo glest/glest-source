@@ -711,7 +711,7 @@ namespace Game {
 		if (replayCommandList.empty() == false) {
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
 				printf("worldFrameCount = %d replayCommandList.size() = "
-					MG_SIZE_T_SPECIFIER "\n", worldFrameCount,
+					SIZE_T_SPECIFIER "\n", worldFrameCount,
 					replayCommandList.size());
 
 			std::vector < NetworkCommand > replayList;
@@ -732,7 +732,7 @@ namespace Game {
 				if (SystemFlags::VERBOSE_MODE_ENABLED)
 					printf
 					("worldFrameCount = %d GIVING COMMANDS replayList.size() = "
-						MG_SIZE_T_SPECIFIER "\n", worldFrameCount,
+						SIZE_T_SPECIFIER "\n", worldFrameCount,
 						replayList.size());
 				for (int i = 0; i < (int) replayList.size(); ++i) {
 					giveNetworkCommand(&replayList[i]);

@@ -421,7 +421,7 @@ namespace Shared {
 			size_t readBytes = fread(&meshHeader, sizeof(MeshHeaderV2), 1, f);
 			if (readBytes != 1) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+				snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 				throw game_runtime_error(szBuf);
 			}
 			fromEndianMeshHeaderV2(meshHeader);
@@ -501,7 +501,7 @@ namespace Shared {
 			readBytes = fread(vertices, sizeof(Vec3f)*frameCount*vertexCount, 1, f);
 			if (readBytes != 1 && (frameCount * vertexCount) != 0) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
+				snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
 				throw game_runtime_error(szBuf);
 			}
 			fromEndianVecArray<Vec3f>(vertices, frameCount*vertexCount);
@@ -509,7 +509,7 @@ namespace Shared {
 			readBytes = fread(normals, sizeof(Vec3f)*frameCount*vertexCount, 1, f);
 			if (readBytes != 1 && (frameCount * vertexCount) != 0) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
+				snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
 				throw game_runtime_error(szBuf);
 			}
 			fromEndianVecArray<Vec3f>(normals, frameCount*vertexCount);
@@ -518,7 +518,7 @@ namespace Shared {
 				readBytes = fread(texCoords, sizeof(Vec2f)*vertexCount, 1, f);
 				if (readBytes != 1 && vertexCount != 0) {
 					char szBuf[8096] = "";
-					snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
+					snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
 					throw game_runtime_error(szBuf);
 				}
 				fromEndianVecArray<Vec2f>(texCoords, vertexCount);
@@ -526,7 +526,7 @@ namespace Shared {
 			readBytes = fread(&diffuseColor, sizeof(Vec3f), 1, f);
 			if (readBytes != 1) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+				snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 				throw game_runtime_error(szBuf);
 			}
 			fromEndianVecArray<Vec3f>(&diffuseColor, 1);
@@ -534,7 +534,7 @@ namespace Shared {
 			readBytes = fread(&opacity, sizeof(float32), 1, f);
 			if (readBytes != 1) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+				snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 				throw game_runtime_error(szBuf);
 			}
 			opacity = Shared::PlatformByteOrder::fromCommonEndian(opacity);
@@ -548,7 +548,7 @@ namespace Shared {
 			readBytes = fread(indices, sizeof(uint32)*indexCount, 1, f);
 			if (readBytes != 1 && indexCount != 0) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u] on line: %d.", readBytes, indexCount, __LINE__);
+				snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " [%u] on line: %d.", readBytes, indexCount, __LINE__);
 				throw game_runtime_error(szBuf);
 			}
 			Shared::PlatformByteOrder::fromEndianTypeArray<uint32>(indices, indexCount);
@@ -565,7 +565,7 @@ namespace Shared {
 			size_t readBytes = fread(&meshHeader, sizeof(MeshHeaderV3), 1, f);
 			if (readBytes != 1) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+				snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 				throw game_runtime_error(szBuf);
 			}
 			fromEndianMeshHeaderV3(meshHeader);
@@ -642,7 +642,7 @@ namespace Shared {
 			readBytes = fread(vertices, sizeof(Vec3f)*frameCount*vertexCount, 1, f);
 			if (readBytes != 1 && (frameCount * vertexCount) != 0) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
+				snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
 				throw game_runtime_error(szBuf);
 			}
 			fromEndianVecArray<Vec3f>(vertices, frameCount*vertexCount);
@@ -650,7 +650,7 @@ namespace Shared {
 			readBytes = fread(normals, sizeof(Vec3f)*frameCount*vertexCount, 1, f);
 			if (readBytes != 1 && (frameCount * vertexCount) != 0) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
+				snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
 				throw game_runtime_error(szBuf);
 			}
 			fromEndianVecArray<Vec3f>(normals, frameCount*vertexCount);
@@ -660,7 +660,7 @@ namespace Shared {
 					readBytes = fread(texCoords, sizeof(Vec2f)*vertexCount, 1, f);
 					if (readBytes != 1 && vertexCount != 0) {
 						char szBuf[8096] = "";
-						snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
+						snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
 						throw game_runtime_error(szBuf);
 					}
 					fromEndianVecArray<Vec2f>(texCoords, vertexCount);
@@ -669,7 +669,7 @@ namespace Shared {
 			readBytes = fread(&diffuseColor, sizeof(Vec3f), 1, f);
 			if (readBytes != 1) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+				snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 				throw game_runtime_error(szBuf);
 			}
 			fromEndianVecArray<Vec3f>(&diffuseColor, 1);
@@ -677,7 +677,7 @@ namespace Shared {
 			readBytes = fread(&opacity, sizeof(float32), 1, f);
 			if (readBytes != 1) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+				snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 				throw game_runtime_error(szBuf);
 			}
 			opacity = Shared::PlatformByteOrder::fromCommonEndian(opacity);
@@ -692,7 +692,7 @@ namespace Shared {
 			readBytes = fread(indices, sizeof(uint32)*indexCount, 1, f);
 			if (readBytes != 1 && indexCount != 0) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u] on line: %d.", readBytes, indexCount, __LINE__);
+				snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " [%u] on line: %d.", readBytes, indexCount, __LINE__);
 				throw game_runtime_error(szBuf);
 			}
 			Shared::PlatformByteOrder::fromEndianTypeArray<uint32>(indices, indexCount);
@@ -760,7 +760,7 @@ namespace Shared {
 			size_t readBytes = fread(&meshHeader, sizeof(MeshHeader), 1, f);
 			if (readBytes != 1) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+				snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 				throw game_runtime_error(szBuf);
 			}
 			fromEndianMeshHeader(meshHeader);
@@ -807,7 +807,7 @@ namespace Shared {
 					cMapPath[mapPathSize] = 0;
 					if (readBytes != 1 && mapPathSize != 0) {
 						char szBuf[8096] = "";
-						snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u] on line: %d.", readBytes, mapPathSize, __LINE__);
+						snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " [%u] on line: %d.", readBytes, mapPathSize, __LINE__);
 						throw game_runtime_error(szBuf);
 					}
 					Shared::PlatformByteOrder::fromEndianTypeArray<uint8>(cMapPath, mapPathSize);
@@ -836,7 +836,7 @@ namespace Shared {
 			readBytes = fread(vertices, sizeof(Vec3f)*frameCount*vertexCount, 1, f);
 			if (readBytes != 1 && (frameCount * vertexCount) != 0) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
+				snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
 				throw game_runtime_error(szBuf);
 			}
 			fromEndianVecArray<Vec3f>(vertices, frameCount*vertexCount);
@@ -844,7 +844,7 @@ namespace Shared {
 			readBytes = fread(normals, sizeof(Vec3f)*frameCount*vertexCount, 1, f);
 			if (readBytes != 1 && (frameCount * vertexCount) != 0) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
+				snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
 				throw game_runtime_error(szBuf);
 			}
 			fromEndianVecArray<Vec3f>(normals, frameCount*vertexCount);
@@ -853,7 +853,7 @@ namespace Shared {
 				readBytes = fread(texCoords, sizeof(Vec2f)*vertexCount, 1, f);
 				if (readBytes != 1 && vertexCount != 0) {
 					char szBuf[8096] = "";
-					snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
+					snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " [%u][%u] on line: %d.", readBytes, frameCount, vertexCount, __LINE__);
 					throw game_runtime_error(szBuf);
 				}
 				fromEndianVecArray<Vec2f>(texCoords, vertexCount);
@@ -861,7 +861,7 @@ namespace Shared {
 			readBytes = fread(indices, sizeof(uint32)*indexCount, 1, f);
 			if (readBytes != 1 && indexCount != 0) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u] on line: %d.", readBytes, indexCount, __LINE__);
+				snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " [%u] on line: %d.", readBytes, indexCount, __LINE__);
 				throw game_runtime_error(szBuf);
 			}
 			Shared::PlatformByteOrder::fromEndianTypeArray<uint32>(indices, indexCount);
@@ -1198,7 +1198,7 @@ namespace Shared {
 				if (readBytes != 1) {
 					fclose(f);
 					char szBuf[8096] = "";
-					snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+					snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 					throw game_runtime_error(szBuf);
 				}
 				fromEndianFileHeader(fileHeader);
@@ -1224,7 +1224,7 @@ namespace Shared {
 					readBytes = fread(&modelHeader, sizeof(ModelHeader), 1, f);
 					if (readBytes != 1) {
 						char szBuf[8096] = "";
-						snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+						snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 						throw game_runtime_error(szBuf);
 					}
 					fromEndianModelHeader(modelHeader);
@@ -1257,7 +1257,7 @@ namespace Shared {
 					readBytes = fread(&meshCount, sizeof(meshCount), 1, f);
 					if (readBytes != 1 && meshCount != 0) {
 						char szBuf[8096] = "";
-						snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u] on line: %d.", readBytes, meshCount, __LINE__);
+						snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " [%u] on line: %d.", readBytes, meshCount, __LINE__);
 						throw game_runtime_error(szBuf);
 					}
 					meshCount = Shared::PlatformByteOrder::fromCommonEndian(meshCount);
@@ -1283,7 +1283,7 @@ namespace Shared {
 					readBytes = fread(&meshCount, sizeof(meshCount), 1, f);
 					if (readBytes != 1 && meshCount != 0) {
 						char szBuf[8096] = "";
-						snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " [%u] on line: %d.", readBytes, meshCount, __LINE__);
+						snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " [%u] on line: %d.", readBytes, meshCount, __LINE__);
 						throw game_runtime_error(szBuf);
 					}
 					meshCount = Shared::PlatformByteOrder::fromCommonEndian(meshCount);
@@ -2161,7 +2161,7 @@ namespace Shared {
 
 				// now we check the screenshot if we find pixels in color of unit identity
 				// to speedup we only check every "skipSteps" line and pixel in a row if we find such a color.
-				// this is exact enough for MG purpose
+				// this is exact enough for our purpose
 				for (int hh = 0; hh < h && pickedModels.size() < rendererModels.size(); hh = hh + skipSteps) {
 					for (int ww = 0; ww < w && pickedModels.size() < rendererModels.size(); ww = ww + skipSteps) {
 

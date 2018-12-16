@@ -442,13 +442,13 @@ namespace Game {
 				if (SystemFlags::VERBOSE_MODE_ENABLED)
 					printf
 					("In [%s::%s Line: %d] save file [%s] userProperties.size() = "
-						MG_SIZE_T_SPECIFIER "\n", __FILE__, __FUNCTION__, __LINE__,
+						SIZE_T_SPECIFIER "\n", __FILE__, __FUNCTION__, __LINE__,
 						userKeysFile.c_str(), userProperties.size());
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
 					enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem,
 						"In [%s::%s Line: %d] save file [%s] userProperties.size() = "
-						MG_SIZE_T_SPECIFIER "\n", __FILE__,
+						SIZE_T_SPECIFIER "\n", __FILE__,
 						__FUNCTION__, __LINE__,
 						userKeysFile.c_str(),
 						userProperties.size());

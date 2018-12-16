@@ -493,7 +493,7 @@ namespace Game {
 			getSystemSettingType(SystemFlags::debugSystem).enabled)
 			SystemFlags::OutputDebug(SystemFlags::debugSystem,
 				"In [%s::%s Line: %d] ==== END GAME ==== getCurrentPixelByteCount() = "
-				MG_SIZE_T_SPECIFIER "\n",
+				SIZE_T_SPECIFIER "\n",
 				extractFileFromDirectoryPath
 				(__FILE__).c_str(), __FUNCTION__, __LINE__,
 				renderer.getCurrentPixelByteCount());
@@ -650,7 +650,7 @@ namespace Game {
 			getSystemSettingType(SystemFlags::debugSystem).enabled)
 			SystemFlags::OutputDebug(SystemFlags::debugSystem,
 				"In [%s::%s Line: %d] ==== END GAME ==== getCurrentPixelByteCount() = "
-				MG_SIZE_T_SPECIFIER "\n",
+				SIZE_T_SPECIFIER "\n",
 				extractFileFromDirectoryPath
 				(__FILE__).c_str(), __FUNCTION__, __LINE__,
 				renderer.getCurrentPixelByteCount());
@@ -741,7 +741,7 @@ namespace Game {
 					&& EndsWith(factionLogoFilter, ".xml") == false) {
 					if (SystemFlags::VERBOSE_MODE_ENABLED)
 						printf("\nLooking for best logo from a list of: "
-							MG_SIZE_T_SPECIFIER " using filter: [%s]\n",
+							SIZE_T_SPECIFIER " using filter: [%s]\n",
 							loadScreenList.size(), logoFullPathFilter.c_str());
 
 					int bestMinWidthDiff = INT_MAX;
@@ -937,7 +937,7 @@ namespace Game {
 							&& EndsWith(factionLogoFilter, ".xml") == false) {
 							if (SystemFlags::VERBOSE_MODE_ENABLED)
 								printf("\nLooking for best logo from a list of: "
-									MG_SIZE_T_SPECIFIER
+									SIZE_T_SPECIFIER
 									" using filter: [%s]\n",
 									loadScreenList.size(),
 									logoFullPathFilter.c_str());
@@ -1452,7 +1452,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -1557,7 +1557,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -1600,7 +1600,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -1630,7 +1630,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -1656,7 +1656,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -1688,7 +1688,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -1721,7 +1721,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -1768,7 +1768,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -1810,7 +1810,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -1912,7 +1912,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -1956,7 +1956,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -1974,7 +1974,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -2052,7 +2052,7 @@ namespace Game {
 
 			if (showPerfStats) {
 				sprintf(perfBuf,
-					"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER
+					"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER
 					"\n", extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, chronoPerf.getMillis());
 				perfList.push_back(perfBuf);
@@ -2103,7 +2103,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -2126,7 +2126,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -2141,7 +2141,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -2236,7 +2236,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -2272,7 +2272,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -2318,7 +2318,7 @@ namespace Game {
 			getSystemSettingType(SystemFlags::debugSystem).enabled)
 			SystemFlags::OutputDebug(SystemFlags::debugSystem,
 				"In [%s::%s Line: %d] ==== START GAME ==== getCurrentPixelByteCount() = "
-				MG_SIZE_T_SPECIFIER "\n",
+				SIZE_T_SPECIFIER "\n",
 				extractFileFromDirectoryPath
 				(__FILE__).c_str(), __FUNCTION__, __LINE__,
 				renderer.getCurrentPixelByteCount());
@@ -2578,7 +2578,7 @@ namespace Game {
 			if (showPerfStats) {
 				sprintf(perfBuf,
 					"=============== FRAME: %d In [%s::%s] Line: %d took msecs: "
-					MG_I64_SPECIFIER "\n", world.getFrameCount(),
+					I64_SPECIFIER "\n", world.getFrameCount(),
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, chronoPerf.getMillis());
 				perfList.push_back(perfBuf);
@@ -2836,7 +2836,7 @@ namespace Game {
 					__LINE__, chrono.getMillis());
 			if (showPerfStats) {
 				sprintf(perfBuf,
-					"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER
+					"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER
 					"\n", extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, chronoPerf.getMillis());
 				perfList.push_back(perfBuf);
@@ -2852,7 +2852,7 @@ namespace Game {
 					__LINE__, chrono.getMillis());
 			if (showPerfStats) {
 				sprintf(perfBuf,
-					"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER
+					"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER
 					"\n", extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, chronoPerf.getMillis());
 				perfList.push_back(perfBuf);
@@ -2881,7 +2881,7 @@ namespace Game {
 					__LINE__, chrono.getMillis());
 			if (showPerfStats) {
 				sprintf(perfBuf,
-					"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER
+					"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER
 					"\n", extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, chronoPerf.getMillis());
 				perfList.push_back(perfBuf);
@@ -2911,7 +2911,7 @@ namespace Game {
 						if (showPerfStats) {
 							sprintf(perfBuf,
 								"In [%s::%s] Line: %d took msecs: "
-								MG_I64_SPECIFIER "\n",
+								I64_SPECIFIER "\n",
 								extractFileFromDirectoryPath(__FILE__).c_str(),
 								__FUNCTION__, __LINE__, chronoPerf.getMillis());
 							perfList.push_back(perfBuf);
@@ -2973,7 +2973,7 @@ namespace Game {
 								if (showPerfStats) {
 									sprintf(perfBuf,
 										"In [%s::%s] Line: %d took msecs: "
-										MG_I64_SPECIFIER "\n",
+										I64_SPECIFIER "\n",
 										extractFileFromDirectoryPath
 										(__FILE__).c_str(), __FUNCTION__,
 										__LINE__, chronoPerf.getMillis());
@@ -3025,7 +3025,7 @@ namespace Game {
 							if (showPerfStats) {
 								sprintf(perfBuf,
 									"In [%s::%s] Line: %d took msecs: "
-									MG_I64_SPECIFIER "\n",
+									I64_SPECIFIER "\n",
 									extractFileFromDirectoryPath(__FILE__).c_str(),
 									__FUNCTION__, __LINE__, chronoPerf.getMillis());
 								perfList.push_back(perfBuf);
@@ -3082,7 +3082,7 @@ namespace Game {
 						if (showPerfStats) {
 							sprintf(perfBuf,
 								"In [%s::%s] Line: %d took msecs: "
-								MG_I64_SPECIFIER "\n",
+								I64_SPECIFIER "\n",
 								extractFileFromDirectoryPath(__FILE__).c_str(),
 								__FUNCTION__, __LINE__, chronoPerf.getMillis());
 							perfList.push_back(perfBuf);
@@ -3126,7 +3126,7 @@ namespace Game {
 						if (showPerfStats) {
 							sprintf(perfBuf,
 								"In [%s::%s] Line: %d took msecs: "
-								MG_I64_SPECIFIER "\n",
+								I64_SPECIFIER "\n",
 								extractFileFromDirectoryPath(__FILE__).c_str(),
 								__FUNCTION__, __LINE__, chronoPerf.getMillis());
 							perfList.push_back(perfBuf);
@@ -3159,7 +3159,7 @@ namespace Game {
 						if (showPerfStats) {
 							sprintf(perfBuf,
 								"In [%s::%s] Line: %d took msecs: "
-								MG_I64_SPECIFIER "\n",
+								I64_SPECIFIER "\n",
 								extractFileFromDirectoryPath(__FILE__).c_str(),
 								__FUNCTION__, __LINE__, chronoPerf.getMillis());
 							perfList.push_back(perfBuf);
@@ -3178,7 +3178,7 @@ namespace Game {
 						if (showPerfStats) {
 							sprintf(perfBuf,
 								"In [%s::%s] Line: %d took msecs: "
-								MG_I64_SPECIFIER "\n",
+								I64_SPECIFIER "\n",
 								extractFileFromDirectoryPath(__FILE__).c_str(),
 								__FUNCTION__, __LINE__, chronoPerf.getMillis());
 							perfList.push_back(perfBuf);
@@ -3221,7 +3221,7 @@ namespace Game {
 						if (showPerfStats) {
 							sprintf(perfBuf,
 								"In [%s::%s] Line: %d took msecs: "
-								MG_I64_SPECIFIER "\n",
+								I64_SPECIFIER "\n",
 								extractFileFromDirectoryPath(__FILE__).c_str(),
 								__FUNCTION__, __LINE__, chronoPerf.getMillis());
 							perfList.push_back(perfBuf);
@@ -3248,7 +3248,7 @@ namespace Game {
 						if (showPerfStats) {
 							sprintf(perfBuf,
 								"In [%s::%s] Line: %d took msecs: "
-								MG_I64_SPECIFIER "\n",
+								I64_SPECIFIER "\n",
 								extractFileFromDirectoryPath(__FILE__).c_str(),
 								__FUNCTION__, __LINE__, chronoPerf.getMillis());
 							perfList.push_back(perfBuf);
@@ -3279,7 +3279,7 @@ namespace Game {
 						if (showPerfStats) {
 							sprintf(perfBuf,
 								"In [%s::%s] Line: %d took msecs: "
-								MG_I64_SPECIFIER "\n",
+								I64_SPECIFIER "\n",
 								extractFileFromDirectoryPath(__FILE__).c_str(),
 								__FUNCTION__, __LINE__, chronoPerf.getMillis());
 							perfList.push_back(perfBuf);
@@ -3305,7 +3305,7 @@ namespace Game {
 
 			if (showPerfStats) {
 				sprintf(perfBuf,
-					"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER
+					"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER
 					"\n", extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, chronoPerf.getMillis());
 				perfList.push_back(perfBuf);
@@ -3330,7 +3330,7 @@ namespace Game {
 
 			if (showPerfStats) {
 				sprintf(perfBuf,
-					"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER
+					"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER
 					"\n", extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, chronoPerf.getMillis());
 				perfList.push_back(perfBuf);
@@ -3342,7 +3342,7 @@ namespace Game {
 
 			if (showPerfStats) {
 				sprintf(perfBuf,
-					"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER
+					"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER
 					"\n", extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, chronoPerf.getMillis());
 				perfList.push_back(perfBuf);
@@ -3366,7 +3366,7 @@ namespace Game {
 
 			if (showPerfStats) {
 				sprintf(perfBuf,
-					"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER
+					"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER
 					"\n", extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, chronoPerf.getMillis());
 				perfList.push_back(perfBuf);
@@ -3742,7 +3742,7 @@ namespace Game {
 
 			if (showPerfStats) {
 				sprintf(perfBuf,
-					"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER
+					"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER
 					"\n", extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, chronoPerf.getMillis());
 				perfList.push_back(perfBuf);
@@ -3764,7 +3764,7 @@ namespace Game {
 				try {
 					gameStarted = false;
 
-					//printf("\nname [%s] scenarioFile [%s] results.size() = " MG_SIZE_T_SPECIFIER "\n",name.c_str(),scenarioFile.c_str(),results.size());
+					//printf("\nname [%s] scenarioFile [%s] results.size() = " SIZE_T_SPECIFIER "\n",name.c_str(),scenarioFile.c_str(),results.size());
 					//printf("[%s:%s] Line: %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
 
 					bool isTutorial = Scenario::isGameTutorial(scenarioFile);
@@ -3922,7 +3922,7 @@ namespace Game {
 
 			if (showPerfStats) {
 				sprintf(perfBuf,
-					"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER
+					"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER
 					"\n", extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, chronoPerf.getMillis());
 				perfList.push_back(perfBuf);
@@ -3992,7 +3992,7 @@ namespace Game {
 					continue;
 				}
 				//else {
-				//      printf("iterMap->second: " MG_I64_SPECIFIER " WARNING_RENDER_MILLIS = %d\n",iterMap->second,WARNING_RENDER_MILLIS);
+				//      printf("iterMap->second: " I64_SPECIFIER " WARNING_RENDER_MILLIS = %d\n",iterMap->second,WARNING_RENDER_MILLIS);
 				//}
 			} else if (iterMap->second < WARNING_MILLIS) {
 				continue;
@@ -4977,7 +4977,7 @@ namespace Game {
 					factionIndex);
 			}
 		}
-		//printf("#1 ADDED in marked list pos [%s] markedCells.size() = " MG_SIZE_T_SPECIFIER "\n",surfaceCellPos.getString().c_str(),mapMarkedCellList.size());
+		//printf("#1 ADDED in marked list pos [%s] markedCells.size() = " SIZE_T_SPECIFIER "\n",surfaceCellPos.getString().c_str(),mapMarkedCellList.size());
 
 		//isUnMarkCellEnabled = false;
 
@@ -5481,7 +5481,7 @@ namespace Game {
 							//GameNetworkInterface *gameNetworkInterface= NetworkManager::getInstance().getGameNetworkInterface();
 							//gameNetworkInterface->sendMarkCellMessage(mc.getTargetPos(),mc.getFaction()->getIndex(),mc.getNote());
 
-							//printf("#1 ADDED in marked list pos [%s] markedCells.size() = " MG_SIZE_T_SPECIFIER "\n",surfaceCellPos.getString().c_str(),mapMarkedCellList.size());
+							//printf("#1 ADDED in marked list pos [%s] markedCells.size() = " SIZE_T_SPECIFIER "\n",surfaceCellPos.getString().c_str(),mapMarkedCellList.size());
 
 							isMarkCellEnabled = false;
 							cellMarkedData = mc;
@@ -5513,7 +5513,7 @@ namespace Game {
 							isUnMarkCellEnabled = false;
 
 							removeCellMarker(surfaceCellPos, world.getThisFaction());
-							//printf("#1 ADDED in marked list pos [%s] markedCells.size() = " MG_SIZE_T_SPECIFIER "\n",surfaceCellPos.getString().c_str(),mapMarkedCellList.size());
+							//printf("#1 ADDED in marked list pos [%s] markedCells.size() = " SIZE_T_SPECIFIER "\n",surfaceCellPos.getString().c_str(),mapMarkedCellList.size());
 
 							Renderer & renderer = Renderer::getInstance();
 							//renderer.updateMarkedCellScreenPosQuadCache(surfaceCellPos);
@@ -5568,7 +5568,7 @@ namespace Game {
 								"placeholder for note",
 								world.getThisFaction()->getStartLocationIndex());
 
-						//printf("#2 ADDED in marked list pos [%s] markedCells.size() = " MG_SIZE_T_SPECIFIER "\n",surfaceCellPos.getString().c_str(),mapMarkedCellList.size());
+						//printf("#2 ADDED in marked list pos [%s] markedCells.size() = " SIZE_T_SPECIFIER "\n",surfaceCellPos.getString().c_str(),mapMarkedCellList.size());
 
 						isMarkCellEnabled = false;
 						cellMarkedData = mc;
@@ -5598,7 +5598,7 @@ namespace Game {
 
 						isUnMarkCellEnabled = false;
 						removeCellMarker(surfaceCellPos, world.getThisFaction());
-						//printf("#1 ADDED in marked list pos [%s] markedCells.size() = " MG_SIZE_T_SPECIFIER "\n",surfaceCellPos.getString().c_str(),mapMarkedCellList.size());
+						//printf("#1 ADDED in marked list pos [%s] markedCells.size() = " SIZE_T_SPECIFIER "\n",surfaceCellPos.getString().c_str(),mapMarkedCellList.size());
 
 						//Renderer &renderer= Renderer::getInstance();
 						//renderer.updateMarkedCellScreenPosQuadCache(surfaceCellPos);
@@ -9039,7 +9039,7 @@ namespace Game {
 			vector < XmlNode * >networkCommandNodeList =
 				gameNode->getChildList("NetworkCommand");
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
-				printf("networkCommandNodeList.size() = " MG_SIZE_T_SPECIFIER
+				printf("networkCommandNodeList.size() = " SIZE_T_SPECIFIER
 					"\n", networkCommandNodeList.size());
 			for (unsigned int i = 0; i < networkCommandNodeList.size(); ++i) {
 				XmlNode *node = networkCommandNodeList[i];

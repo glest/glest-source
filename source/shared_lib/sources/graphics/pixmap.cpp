@@ -133,7 +133,7 @@ namespace Shared {
 				size_t readBytes = fread(&fileHeader, sizeof(TargaFileHeader), 1, file);
 				if (readBytes != 1) {
 					char szBuf[8096] = "";
-					snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+					snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 					throw game_runtime_error(szBuf);
 				}
 				static bool bigEndianSystem = Shared::PlatformByteOrder::isBigEndian();
@@ -192,7 +192,7 @@ namespace Shared {
 						size_t readBytes = fread(&l, 1, 1, file);
 						if (readBytes != 1) {
 							char szBuf[8096] = "";
-							snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+							snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 							throw game_runtime_error(szBuf);
 						}
 						if (bigEndianSystem == true) {
@@ -206,7 +206,7 @@ namespace Shared {
 						size_t readBytes = fread(&b, 1, 1, file);
 						if (readBytes != 1) {
 							char szBuf[8096] = "";
-							snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+							snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 							throw game_runtime_error(szBuf);
 						}
 						if (bigEndianSystem == true) {
@@ -216,7 +216,7 @@ namespace Shared {
 						readBytes = fread(&g, 1, 1, file);
 						if (readBytes != 1) {
 							char szBuf[8096] = "";
-							snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+							snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 							throw game_runtime_error(szBuf);
 						}
 						if (bigEndianSystem == true) {
@@ -226,7 +226,7 @@ namespace Shared {
 						readBytes = fread(&r, 1, 1, file);
 						if (readBytes != 1) {
 							char szBuf[8096] = "";
-							snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+							snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 							throw game_runtime_error(szBuf);
 						}
 						if (bigEndianSystem == true) {
@@ -237,7 +237,7 @@ namespace Shared {
 							readBytes = fread(&a, 1, 1, file);
 							if (readBytes != 1) {
 								char szBuf[8096] = "";
-								snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+								snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 								throw game_runtime_error(szBuf);
 							}
 							if (bigEndianSystem == true) {
@@ -373,7 +373,7 @@ namespace Shared {
 			size_t readBytes = fread(&fileHeader, sizeof(BitmapFileHeader), 1, file);
 			if (readBytes != 1) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+				snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 				throw game_runtime_error(szBuf);
 			}
 			static bool bigEndianSystem = Shared::PlatformByteOrder::isBigEndian();
@@ -395,7 +395,7 @@ namespace Shared {
 			readBytes = fread(&infoHeader, sizeof(BitmapInfoHeader), 1, file);
 			if (readBytes != 1) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+				snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 				throw game_runtime_error(szBuf);
 			}
 			if (bigEndianSystem == true) {
@@ -432,7 +432,7 @@ namespace Shared {
 				size_t readBytes = fread(&b, 1, 1, file);
 				if (readBytes != 1) {
 					char szBuf[8096] = "";
-					snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+					snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 					throw game_runtime_error(szBuf);
 				}
 				if (bigEndianSystem == true) {
@@ -441,7 +441,7 @@ namespace Shared {
 				readBytes = fread(&g, 1, 1, file);
 				if (readBytes != 1) {
 					char szBuf[8096] = "";
-					snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+					snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 					throw game_runtime_error(szBuf);
 				}
 				if (bigEndianSystem == true) {
@@ -451,7 +451,7 @@ namespace Shared {
 				readBytes = fread(&r, 1, 1, file);
 				if (readBytes != 1) {
 					char szBuf[8096] = "";
-					snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+					snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 					throw game_runtime_error(szBuf);
 				}
 				if (bigEndianSystem == true) {
@@ -1055,7 +1055,7 @@ namespace Shared {
 				std::size_t index = (w*y + x)*components + i;
 				if (index >= getPixelByteCount()) {
 					char szBuf[8096];
-					snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
+					snprintf(szBuf, 8096, "Invalid pixmap index: " SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
 					throw game_runtime_error(szBuf);
 				}
 
@@ -1068,7 +1068,7 @@ namespace Shared {
 				std::size_t index = (w * y + x) * components + i;
 				if (index >= getPixelByteCount()) {
 					char szBuf[8096];
-					snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
+					snprintf(szBuf, 8096, "Invalid pixmap index: " SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
 					throw game_runtime_error(szBuf);
 				}
 
@@ -1080,7 +1080,7 @@ namespace Shared {
 			std::size_t index = (w*y + x)*components + component;
 			if (index >= getPixelByteCount()) {
 				char szBuf[8096];
-				snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
+				snprintf(szBuf, 8096, "Invalid pixmap index: " SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
 				throw game_runtime_error(szBuf);
 			}
 
@@ -1091,7 +1091,7 @@ namespace Shared {
 			std::size_t index = (w*y + x)*components + component;
 			if (index >= getPixelByteCount()) {
 				char szBuf[8096];
-				snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
+				snprintf(szBuf, 8096, "Invalid pixmap index: " SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
 				throw game_runtime_error(szBuf);
 			}
 
@@ -1105,7 +1105,7 @@ namespace Shared {
 				std::size_t index = (w*y + x)*components + i;
 				if (index >= getPixelByteCount()) {
 					char szBuf[8096];
-					snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
+					snprintf(szBuf, 8096, "Invalid pixmap index: " SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
 					throw game_runtime_error(szBuf);
 				}
 
@@ -1120,7 +1120,7 @@ namespace Shared {
 				std::size_t index = (w*y + x)*components + i;
 				if (index >= getPixelByteCount()) {
 					char szBuf[8096];
-					snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
+					snprintf(szBuf, 8096, "Invalid pixmap index: " SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
 					throw game_runtime_error(szBuf);
 				}
 
@@ -1133,7 +1133,7 @@ namespace Shared {
 			std::size_t index = (w * y + x) * components;
 			if (index >= getPixelByteCount()) {
 				char szBuf[8096];
-				snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
+				snprintf(szBuf, 8096, "Invalid pixmap index: " SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
 				throw game_runtime_error(szBuf);
 			}
 			float result = pixels[index] / 255.f;
@@ -1156,7 +1156,7 @@ namespace Shared {
 				std::size_t index = (w * y + x) * components + i;
 				if (index >= getPixelByteCount()) {
 					char szBuf[8096];
-					snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
+					snprintf(szBuf, 8096, "Invalid pixmap index: " SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
 					throw game_runtime_error(szBuf);
 				}
 
@@ -1176,7 +1176,7 @@ namespace Shared {
 				std::size_t index = (w*y + x)*components + i;
 				if (index >= getPixelByteCount()) {
 					char szBuf[8096];
-					snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
+					snprintf(szBuf, 8096, "Invalid pixmap index: " SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
 					throw game_runtime_error(szBuf);
 				}
 				pixels[index] = static_cast<uint8>(value[i] * 255.f);
@@ -1188,7 +1188,7 @@ namespace Shared {
 			std::size_t index = (w*y + x)*components + component;
 			if (index >= getPixelByteCount()) {
 				char szBuf[8096];
-				snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
+				snprintf(szBuf, 8096, "Invalid pixmap index: " SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
 				throw game_runtime_error(szBuf);
 			}
 
@@ -1200,7 +1200,7 @@ namespace Shared {
 			std::size_t index = (w*y + x)*components + component;
 			if (index >= getPixelByteCount()) {
 				char szBuf[8096];
-				snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
+				snprintf(szBuf, 8096, "Invalid pixmap index: " SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
 				throw game_runtime_error(szBuf);
 			}
 
@@ -1214,7 +1214,7 @@ namespace Shared {
 				std::size_t index = (w*y + x)*components + i;
 				if (index >= getPixelByteCount()) {
 					char szBuf[8096];
-					snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
+					snprintf(szBuf, 8096, "Invalid pixmap index: " SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
 					throw game_runtime_error(szBuf);
 				}
 				pixels[index] = static_cast<uint8>(p.ptr()[i] * 255.f);
@@ -1227,7 +1227,7 @@ namespace Shared {
 				std::size_t index = (w*y + x)*components + i;
 				if (index >= getPixelByteCount()) {
 					char szBuf[8096];
-					snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
+					snprintf(szBuf, 8096, "Invalid pixmap index: " SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
 					throw game_runtime_error(szBuf);
 				}
 				pixels[index] = static_cast<uint8>(p.ptr()[i] * 255.f);
@@ -1239,7 +1239,7 @@ namespace Shared {
 			std::size_t index = (w * y + x) * components;
 			if (index >= getPixelByteCount()) {
 				char szBuf[8096];
-				snprintf(szBuf, 8096, "Invalid pixmap index: " MG_SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
+				snprintf(szBuf, 8096, "Invalid pixmap index: " SIZE_T_SPECIFIER " for [%s], h = %d, w = %d, components = %d x = %d y = %d\n", index, path.c_str(), h, w, components, x, y);
 				throw game_runtime_error(szBuf);
 			}
 

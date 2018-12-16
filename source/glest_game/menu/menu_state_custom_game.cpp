@@ -924,7 +924,7 @@ namespace Game {
 						listBoxControls[i].setSelectedItemIndex(ctNetwork);
 					}
 				} else {
-					listBoxControls[1].setSelectedItemIndex(ctCpu);
+					listBoxControls[1].setSelectedItemIndex(ctCpuZeta);
 				}
 				updateControllers();
 				updateNetworkSlots();
@@ -4491,7 +4491,7 @@ namespace Game {
 		("ServerControlledAI",
 			"true"));
 		gameSettings->
-			setNetworkFramePeriod(config.getInt("NetworkSendFrameCount", "20"));
+			setNetworkFramePeriod(config.getInt("NetworkSendFrameCount", "10"));
 		gameSettings->setNetworkPauseGameForLaggedClients(((checkBoxNetworkPauseGameForLaggedClients.getValue() == true)));
 
 		if (gameSettings->getTileset() != "") {
@@ -4662,7 +4662,7 @@ namespace Game {
 							labelGameName.setText(createGameName
 							(serverInterface->
 								getSlot(i, true)->getName()));
-							//printf("slot = %d, admin key [%d] slot connected time[" MG_SIZE_T_SPECIFIER "] clientConnectedTime [" MG_SIZE_T_SPECIFIER "]\n",i,gameSettings->getMasterserver_admin(),serverInterface->getSlot(i)->getConnectedTime(),clientConnectedTime);
+							//printf("slot = %d, admin key [%d] slot connected time[" SIZE_T_SPECIFIER "] clientConnectedTime [" SIZE_T_SPECIFIER "]\n",i,gameSettings->getMasterserver_admin(),serverInterface->getSlot(i)->getConnectedTime(),clientConnectedTime);
 						}
 						if (serverInterface->getSlot(i, true)->getSessionKey() ==
 							gameSettings->getMasterserver_admin()) {
@@ -4705,7 +4705,7 @@ namespace Game {
 							labelGameName.setText(createGameName
 							(serverInterface->
 								getSlot(i, true)->getName()));
-							//printf("slot = %d, admin key [%d] slot connected time[" MG_SIZE_T_SPECIFIER "] clientConnectedTime [" MG_SIZE_T_SPECIFIER "]\n",i,gameSettings->getMasterserver_admin(),serverInterface->getSlot(i)->getConnectedTime(),clientConnectedTime);
+							//printf("slot = %d, admin key [%d] slot connected time[" SIZE_T_SPECIFIER "] clientConnectedTime [" SIZE_T_SPECIFIER "]\n",i,gameSettings->getMasterserver_admin(),serverInterface->getSlot(i)->getConnectedTime(),clientConnectedTime);
 						}
 						if (serverInterface->getSlot(i, true)->getSessionKey() ==
 							gameSettings->getMasterserver_admin()) {

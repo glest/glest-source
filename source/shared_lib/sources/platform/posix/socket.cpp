@@ -1236,11 +1236,11 @@ namespace Shared {
 					if (size > 0) {
 						break;
 					} else if (hasDataToRead() == true) {
-						//if(SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork,"In [%s::%s Line: %d] WARNING PEEKING SOCKET DATA, (hasDataToRead() == true) err = %d, sock = %d, size = " MG_SIZE_T_SPECIFIER ", loopCount = %d\n",__FILE__,__FUNCTION__,__LINE__,err,sock,size,loopCount);
-						if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] WARNING PEEKING SOCKET DATA, (hasDataToRead() == true) err = %d, sock = %d, size = " MG_SIZE_T_SPECIFIER "\n", __FILE__, __FUNCTION__, __LINE__, err, sock, size);
+						//if(SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork,"In [%s::%s Line: %d] WARNING PEEKING SOCKET DATA, (hasDataToRead() == true) err = %d, sock = %d, size = " SIZE_T_SPECIFIER ", loopCount = %d\n",__FILE__,__FUNCTION__,__LINE__,err,sock,size,loopCount);
+						if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] WARNING PEEKING SOCKET DATA, (hasDataToRead() == true) err = %d, sock = %d, size = " SIZE_T_SPECIFIER "\n", __FILE__, __FUNCTION__, __LINE__, err, sock, size);
 					} else {
-						//if(SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork,"In [%s::%s Line: %d] WARNING PEEKING SOCKET DATA, err = %d, sock = %d, size = " MG_SIZE_T_SPECIFIER ", loopCount = %d\n",__FILE__,__FUNCTION__,__LINE__,err,sock,size,loopCount);
-						if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] WARNING PEEKING SOCKET DATA, err = %d, sock = %d, size = " MG_SIZE_T_SPECIFIER "\n", __FILE__, __FUNCTION__, __LINE__, err, sock, size);
+						//if(SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork,"In [%s::%s Line: %d] WARNING PEEKING SOCKET DATA, err = %d, sock = %d, size = " SIZE_T_SPECIFIER ", loopCount = %d\n",__FILE__,__FUNCTION__,__LINE__,err,sock,size,loopCount);
+						if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] WARNING PEEKING SOCKET DATA, err = %d, sock = %d, size = " SIZE_T_SPECIFIER "\n", __FILE__, __FUNCTION__, __LINE__, err, sock, size);
 						break;
 					}
 

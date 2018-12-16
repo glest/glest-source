@@ -364,7 +364,7 @@ namespace Shared {
 					throw game_runtime_error("Can not open file: [" + path + "]", true);
 				}
 
-				if (showPerfStats) printf("In [%s::%s Line: %d] took msecs: " MG_I64_SPECIFIER "\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, chrono.getMillis());
+				if (showPerfStats) printf("In [%s::%s Line: %d] took msecs: " I64_SPECIFIER "\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, chrono.getMillis());
 
 				xmlFile.unsetf(ios::skipws);
 
@@ -380,12 +380,12 @@ namespace Shared {
 					}
 				}
 
-				if (showPerfStats) printf("In [%s::%s Line: %d] took msecs: " MG_I64_SPECIFIER "\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, chrono.getMillis());
+				if (showPerfStats) printf("In [%s::%s Line: %d] took msecs: " I64_SPECIFIER "\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, chrono.getMillis());
 
 				if (file_size <= 0) {
 					throw game_runtime_error("Invalid file size for file: [" + path + "] size = " + intToStr(file_size));
 				}
-				//printf("File size is: " MG_I64_SPECIFIER " for [%s]\n",file_size,path.c_str());
+				//printf("File size is: " I64_SPECIFIER " for [%s]\n",file_size,path.c_str());
 
 				// Load data and add terminating 0
 				vector<char> buffer;
@@ -393,22 +393,22 @@ namespace Shared {
 				xmlFile.read(&buffer.front(), static_cast<streamsize>(file_size));
 				buffer[(unsigned int) file_size] = 0;
 
-				if (showPerfStats) printf("In [%s::%s Line: %d] took msecs: " MG_I64_SPECIFIER "\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, chrono.getMillis());
+				if (showPerfStats) printf("In [%s::%s Line: %d] took msecs: " I64_SPECIFIER "\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, chrono.getMillis());
 
 				// This is required because rapidxml seems to choke when we load lua
 				// scenarios that have lua + xml style comments
 				replaceAllBetweenTokens(buffer, "<!--", "-->", "", true);
 
-				if (showPerfStats) printf("In [%s::%s Line: %d] took msecs: " MG_I64_SPECIFIER "\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, chrono.getMillis());
+				if (showPerfStats) printf("In [%s::%s Line: %d] took msecs: " I64_SPECIFIER "\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, chrono.getMillis());
 
 				xml_document<> doc;
 				doc.parse<parse_no_data_nodes | parse_validate_closing_tags>(&buffer.front());
 
-				if (showPerfStats) printf("In [%s::%s Line: %d] took msecs: " MG_I64_SPECIFIER "\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, chrono.getMillis());
+				if (showPerfStats) printf("In [%s::%s Line: %d] took msecs: " I64_SPECIFIER "\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, chrono.getMillis());
 
 				rootNode = new XmlNode(doc.first_node(), mapTagReplacementValues, skipUpdatePathClimbingParts);
 
-				if (showPerfStats) printf("In [%s::%s Line: %d] took msecs: " MG_I64_SPECIFIER "\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, chrono.getMillis());
+				if (showPerfStats) printf("In [%s::%s Line: %d] took msecs: " I64_SPECIFIER "\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, chrono.getMillis());
 
 #if defined(WIN32) && !defined(__MINGW32__)
 				if (fp) {

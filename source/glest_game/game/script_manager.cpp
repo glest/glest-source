@@ -3580,7 +3580,7 @@ namespace Game {
 
 	void
 		ScriptManager::error(LuaHandle * luaHandle,
-			const game_runtime_error * mgErr,
+			const game_runtime_error * gameErr,
 			const char *file, const char *function, int line) {
 		char
 			szErrBuf[8096] = "";
@@ -3609,7 +3609,7 @@ namespace Game {
 		string
 			sErrBuf = string("Error! The game may no longer be stable!\n\n")
 			+ string(szErrBuf) + "\n" + string(szErrBuf2) + "\n\n"
-			+ string(mgErr->what());
+			+ string(gameErr->what());
 
 		SystemFlags::OutputDebug(SystemFlags::debugError, sErrBuf.c_str());
 		if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).

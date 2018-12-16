@@ -612,7 +612,7 @@ namespace Shared {
 
 			if (verboseEnabled) printf("In [%s] Line: %d, libvlc [%p]\n", __FUNCTION__, __LINE__, ctxPtr->libvlc);
 
-			/* It is meaningless to try all this because we have to restart mg to pickup new env vars
+			/* It is meaningless to try all this because we have to restart the game to pickup new env vars
 			#if defined(WIN32)
 				if(libvlc == NULL) {
 					// For windows check registry for install path
@@ -1168,7 +1168,7 @@ namespace Shared {
 
 				if(verboseEnabled) printf("In [%s] Line: %d, libvlc [%p]\n",__FUNCTION__,__LINE__,libvlc);
 
-			// It is meaningless to try all this because we have to restart mg to pickup new env vars
+			// It is meaningless to try all this because we have to restart the game to pickup new env vars
 			#if defined(WIN32)
 				if(libvlc == NULL) {
 					// For windows check registry for install path

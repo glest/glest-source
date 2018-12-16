@@ -1352,7 +1352,7 @@ namespace Game {
 
 					if (SystemFlags::VERBOSE_MODE_ENABLED)
 						printf("--------------> server [%s] serverEntities.size() = "
-							MG_SIZE_T_SPECIFIER " MIN_FIELDS_EXPECTED = %d\n",
+							SIZE_T_SPECIFIER " MIN_FIELDS_EXPECTED = %d\n",
 							server.c_str(), serverEntities.size(),
 							MIN_FIELDS_EXPECTED);
 

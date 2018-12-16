@@ -118,9 +118,9 @@ namespace Shared {
 
 			size_t result = fwrite(buffer, size, nmemb, out->stream);
 			if (result != nmemb) {
-				if (SystemFlags::VERBOSE_MODE_ENABLED) printf("===> FTP Client thread FAILED to write data chunk to file [%s] nmemb = " MG_SIZE_T_SPECIFIER ", result = " MG_SIZE_T_SPECIFIER "\n", fullFilePath.c_str(), nmemb, result);
-				if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "===> FTP Client thread FAILED to write data chunk to file [%s] nmemb = " MG_SIZE_T_SPECIFIER ", result = " MG_SIZE_T_SPECIFIER "\n", fullFilePath.c_str(), nmemb, result);
-				SystemFlags::OutputDebug(SystemFlags::debugError, "===> FTP Client thread FAILED to write data chunk to file [%s] nmemb = " MG_SIZE_T_SPECIFIER ", result = " MG_SIZE_T_SPECIFIER "\n", fullFilePath.c_str(), nmemb, result);
+				if (SystemFlags::VERBOSE_MODE_ENABLED) printf("===> FTP Client thread FAILED to write data chunk to file [%s] nmemb = " SIZE_T_SPECIFIER ", result = " SIZE_T_SPECIFIER "\n", fullFilePath.c_str(), nmemb, result);
+				if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "===> FTP Client thread FAILED to write data chunk to file [%s] nmemb = " SIZE_T_SPECIFIER ", result = " SIZE_T_SPECIFIER "\n", fullFilePath.c_str(), nmemb, result);
+				SystemFlags::OutputDebug(SystemFlags::debugError, "===> FTP Client thread FAILED to write data chunk to file [%s] nmemb = " SIZE_T_SPECIFIER ", result = " SIZE_T_SPECIFIER "\n", fullFilePath.c_str(), nmemb, result);
 				//return -1; /* failure, can't open file to write */
 			}
 			return result;

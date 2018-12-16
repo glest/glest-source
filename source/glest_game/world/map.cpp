@@ -470,7 +470,7 @@ namespace Game {
 					readBytes = fread(&x, sizeof(int32), 1, f);
 					if (readBytes != 1) {
 						char szBuf[8096] = "";
-						snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+						snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 						throw game_runtime_error(szBuf);
 					}
 					x = ::Shared::PlatformByteOrder::fromCommonEndian(x);
@@ -478,7 +478,7 @@ namespace Game {
 					readBytes = fread(&y, sizeof(int32), 1, f);
 					if (readBytes != 1) {
 						char szBuf[8096] = "";
-						snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+						snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 						throw game_runtime_error(szBuf);
 					}
 					y = ::Shared::PlatformByteOrder::fromCommonEndian(y);
@@ -497,7 +497,7 @@ namespace Game {
 						readBytes = fread(&alt, sizeof(float32), 1, f);
 						if (readBytes != 1) {
 							char szBuf[8096] = "";
-							snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+							snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 							throw game_runtime_error(szBuf);
 						}
 						alt = ::Shared::PlatformByteOrder::fromCommonEndian(alt);
@@ -514,7 +514,7 @@ namespace Game {
 						readBytes = fread(&surf, sizeof(int8), 1, f);
 						if (readBytes != 1) {
 							char szBuf[8096] = "";
-							snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+							snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 							throw game_runtime_error(szBuf);
 						}
 						surf = ::Shared::PlatformByteOrder::fromCommonEndian(surf);
@@ -531,7 +531,7 @@ namespace Game {
 						readBytes = fread(&objNumber, sizeof(int8), 1, f);
 						if (readBytes != 1) {
 							char szBuf[8096] = "";
-							snprintf(szBuf, 8096, "fread returned wrong size = " MG_SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
+							snprintf(szBuf, 8096, "fread returned wrong size = " SIZE_T_SPECIFIER " on line: %d.", readBytes, __LINE__);
 							throw game_runtime_error(szBuf);
 						}
 						objNumber = ::Shared::PlatformByteOrder::fromCommonEndian(objNumber);

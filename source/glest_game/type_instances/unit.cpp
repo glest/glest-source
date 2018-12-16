@@ -2752,8 +2752,8 @@ namespace Game {
 		if (progress > PROGRESS_SPEED_MULTIPLIER) {
 			char szBuf[8096] = "";
 			snprintf(szBuf, 8096,
-				"In [%s::%s Line: %d] ERROR: progress > " MG_I64_SPECIFIER
-				", progress = [" MG_I64_SPECIFIER "]\n",
+				"In [%s::%s Line: %d] ERROR: progress > " I64_SPECIFIER
+				", progress = [" I64_SPECIFIER "]\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, PROGRESS_SPEED_MULTIPLIER,
 				progress);
@@ -2900,12 +2900,12 @@ namespace Game {
 
 			char szBuf[8096] = "";
 			snprintf(szBuf, 8095,
-				"currentProgress = " MG_I64_SPECIFIER " updateFPS = "
-				MG_I64_SPECIFIER " speed = " MG_I64_SPECIFIER
-				" diagonalFactor = " MG_I64_SPECIFIER " heightFactor = "
-				MG_I64_SPECIFIER " speedDenominator = " MG_I64_SPECIFIER
-				" progressIncrease = " MG_I64_SPECIFIER " ["
-				MG_I64_SPECIFIER
+				"currentProgress = " I64_SPECIFIER " updateFPS = "
+				I64_SPECIFIER " speed = " I64_SPECIFIER
+				" diagonalFactor = " I64_SPECIFIER " heightFactor = "
+				I64_SPECIFIER " speedDenominator = " I64_SPECIFIER
+				" progressIncrease = " I64_SPECIFIER " ["
+				I64_SPECIFIER
 				"] height [%f] airHeight [%f] cellUnitHeight [%d] cellObjectHeight [%d] skill [%s] pos [%s] lastpos [%s]",
 				currentProgress, updateFPS, speed, diagonalFactor,
 				heightFactor, speedDenominator, progressIncrease,
@@ -2923,7 +2923,7 @@ namespace Game {
 		newProgress += progressIncrease;
 
 		//      if(currSkill->getClass() == scMove || (currSkill->getClass() == scStop && this->loadCount > 0)) {
-		//              printf("speedDenominator: " MG_I64_SPECIFIER " currentProgress: " MG_I64_SPECIFIER " speed: " MG_I64_SPECIFIER " diagonalFactor: " MG_I64_SPECIFIER " heightFactor: " MG_I64_SPECIFIER " progressIncrease: " MG_I64_SPECIFIER " newProgress: " MG_I64_SPECIFIER " TOP #: " MG_I64_SPECIFIER "\n",speedDenominator,currentProgress,speed,diagonalFactor,heightFactor,progressIncrease,newProgress,(speed * diagonalFactor * heightFactor));
+		//              printf("speedDenominator: " I64_SPECIFIER " currentProgress: " I64_SPECIFIER " speed: " I64_SPECIFIER " diagonalFactor: " I64_SPECIFIER " heightFactor: " I64_SPECIFIER " progressIncrease: " I64_SPECIFIER " newProgress: " I64_SPECIFIER " TOP #: " I64_SPECIFIER "\n",speedDenominator,currentProgress,speed,diagonalFactor,heightFactor,progressIncrease,newProgress,(speed * diagonalFactor * heightFactor));
 		//      }
 
 		return newProgress;
@@ -2934,7 +2934,7 @@ namespace Game {
 		if (debugBoost)
 			printf
 			("===================== START Unit [%d - %s] skill: %s affected unit size: "
-				MG_SIZE_T_SPECIFIER "\n", this->id,
+				SIZE_T_SPECIFIER "\n", this->id,
 				this->getType()->getName(false).c_str(),
 				currSkill->getBoostDesc(false).c_str(),
 				currentAttackBoostOriginatorEffect.
@@ -2980,7 +2980,7 @@ namespace Game {
 			}
 
 			if (debugBoost)
-				printf("Line: %d affected unit size: " MG_SIZE_T_SPECIFIER "\n",
+				printf("Line: %d affected unit size: " SIZE_T_SPECIFIER "\n",
 					__LINE__,
 					currentAttackBoostOriginatorEffect.
 					currentAttackBoostUnits.size());
@@ -2989,7 +2989,7 @@ namespace Game {
 
 			if (currSkill->isAttackBoostEnabled() == true) {
 				if (debugBoost)
-					printf("Line: %d affected unit size: " MG_SIZE_T_SPECIFIER "\n",
+					printf("Line: %d affected unit size: " SIZE_T_SPECIFIER "\n",
 						__LINE__,
 						currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
 						size());
@@ -3004,7 +3004,7 @@ namespace Game {
 					attackBoost->radius);
 
 				if (debugBoost)
-					printf("Line: %d candidates unit size: " MG_SIZE_T_SPECIFIER
+					printf("Line: %d candidates unit size: " SIZE_T_SPECIFIER
 						" attackBoost: %s\n", __LINE__, candidates.size(),
 						attackBoost->getDesc(false).c_str());
 				for (unsigned int i = 0; i < candidates.size(); ++i) {
@@ -3019,7 +3019,7 @@ namespace Game {
 				}
 
 				if (debugBoost)
-					printf("Line: %d affected unit size: " MG_SIZE_T_SPECIFIER "\n",
+					printf("Line: %d affected unit size: " SIZE_T_SPECIFIER "\n",
 						__LINE__,
 						currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
 						size());
@@ -3077,7 +3077,7 @@ namespace Game {
 		} else {
 			if (currSkill->isAttackBoostEnabled() == true) {
 				if (debugBoost)
-					printf("Line: %d affected unit size: " MG_SIZE_T_SPECIFIER "\n",
+					printf("Line: %d affected unit size: " SIZE_T_SPECIFIER "\n",
 						__LINE__,
 						currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
 						size());
@@ -3094,7 +3094,7 @@ namespace Game {
 				candidateValidIdList.reserve(candidates.size());
 
 				if (debugBoost)
-					printf("Line: %d candidates unit size: " MG_SIZE_T_SPECIFIER
+					printf("Line: %d candidates unit size: " SIZE_T_SPECIFIER
 						" attackBoost: %s\n", __LINE__, candidates.size(),
 						attackBoost->getDesc(false).c_str());
 
@@ -3178,7 +3178,7 @@ namespace Game {
 				}
 
 				if (debugBoost)
-					printf("Line: %d affected unit size: " MG_SIZE_T_SPECIFIER "\n",
+					printf("Line: %d affected unit size: " SIZE_T_SPECIFIER "\n",
 						__LINE__,
 						currentAttackBoostOriginatorEffect.currentAttackBoostUnits.
 						size());
@@ -5528,7 +5528,7 @@ namespace Game {
 			char szBuf[8096] = "";
 			snprintf(szBuf, 8096,
 				"FrameCount [%d] Unit = %d [%s][%s] pos = %s, lastPos = %s, targetPos = %s, targetVec = %s, meetingPos = %s, progress ["
-				MG_I64_SPECIFIER
+				I64_SPECIFIER
 				"], progress2 [%d] random [%d]\nUnit Path [%s]\n",
 				getFrameCount(), id, getFullName(false).c_str(),
 				faction->getType()->getName(false).c_str(),
@@ -5624,7 +5624,7 @@ namespace Game {
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096,
 					"[cleaning old bad harvest targets] purgeList.size() ["
-					MG_SIZE_T_SPECIFIER "]", purgeList.size());
+					SIZE_T_SPECIFIER "]", purgeList.size());
 				logSynchData(extractFileFromDirectoryPath(__FILE__).c_str(),
 					__LINE__, szBuf);
 
@@ -7101,7 +7101,7 @@ namespace Game {
 		//WaypointPath waypointPath;
 
 		if (consoleDebug)
-			printf("#11 Unit: %d CRC: %u commands.size(): " MG_SIZE_T_SPECIFIER
+			printf("#11 Unit: %d CRC: %u commands.size(): " SIZE_T_SPECIFIER
 				"\n", id, crcForUnit.getSum(), commands.size());
 
 		//Commands commands;
@@ -7121,7 +7121,7 @@ namespace Game {
 
 		if (consoleDebug)
 			printf("#11 Unit: %d CRC: %u damageParticleSystems.size(): "
-				MG_SIZE_T_SPECIFIER "\n", id, crcForUnit.getSum(),
+				SIZE_T_SPECIFIER "\n", id, crcForUnit.getSum(),
 				damageParticleSystems.size());
 
 		//vector<UnitParticleSystem*> unitParticleSystems;

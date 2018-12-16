@@ -1729,7 +1729,7 @@ namespace Game {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096,
 						"[addResourceTargetToCache] pos [%s]cacheResourceTargetList.size() ["
-						MG_SIZE_T_SPECIFIER "]", pos.getString().c_str(),
+						SIZE_T_SPECIFIER "]", pos.getString().c_str(),
 						cacheResourceTargetList.size());
 
 					//unit->logSynchData(szBuf);
@@ -1765,7 +1765,7 @@ namespace Game {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096,
 							"[removeResourceTargetFromCache] pos [%s]cacheResourceTargetList.size() ["
-							MG_SIZE_T_SPECIFIER "]", pos.getString().c_str(),
+							SIZE_T_SPECIFIER "]", pos.getString().c_str(),
 							cacheResourceTargetList.size());
 
 						//unit->logSynchData(szBuf);
@@ -1829,7 +1829,7 @@ namespace Game {
 					true) {
 					char szBuf[8096] = "";
 					snprintf(szBuf, 8096,
-						"cacheResourceTargetList.size() [" MG_SIZE_T_SPECIFIER
+						"cacheResourceTargetList.size() [" SIZE_T_SPECIFIER
 						"]", cacheResourceTargetList.size());
 
 					if (frameIndex < 0) {
@@ -1965,9 +1965,9 @@ namespace Game {
 						char szBuf[8096] = "";
 						snprintf(szBuf, 8096,
 							"[cleaning old resource targets] deleteList.size() ["
-							MG_SIZE_T_SPECIFIER
+							SIZE_T_SPECIFIER
 							"] cacheResourceTargetList.size() ["
-							MG_SIZE_T_SPECIFIER "] result [%s]",
+							SIZE_T_SPECIFIER "] result [%s]",
 							deleteList.size(), cacheResourceTargetList.size(),
 							result.getString().c_str());
 
@@ -2149,9 +2149,9 @@ namespace Game {
 							char szBuf[8096] = "";
 							snprintf(szBuf, 8096,
 								"[cleaning old resource targets] deleteList.size() ["
-								MG_SIZE_T_SPECIFIER
+								SIZE_T_SPECIFIER
 								"] cacheResourceTargetList.size() ["
-								MG_SIZE_T_SPECIFIER "], needToCleanup [%d]",
+								SIZE_T_SPECIFIER "], needToCleanup [%d]",
 								deleteList.size(), cacheResourceTargetList.size(),
 								needToCleanup);
 							//unit->logSynchData(szBuf);

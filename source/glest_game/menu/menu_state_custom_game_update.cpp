@@ -1004,7 +1004,7 @@ namespace Game {
 						}
 
 						// Revert network to CPU
-						listBoxControls[i].setSelectedItemIndex(ctCpu);
+						listBoxControls[i].setSelectedItemIndex(ctCpuZeta);
 					}
 				}
 				slot = serverInterface->getSlot(i, true);

@@ -1546,7 +1546,7 @@ namespace Game {
 			char szBuf[8096] = "";
 			snprintf(szBuf, 8096,
 				"In [%s::%s Line: %d] i >= commandTypes.size(), i = %d, commandTypes.size() = "
-				MG_SIZE_T_SPECIFIER "",
+				SIZE_T_SPECIFIER "",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, i, commandTypes.size());
 			throw game_runtime_error(szBuf);

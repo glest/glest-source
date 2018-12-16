@@ -211,7 +211,7 @@ namespace Game {
 			i = i2;
 		} else {
 			i = -1 - (int64) (0xffffffffffffffffull - i2);
-			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("IN [%s] [%d] [%d] [%d] [%d] [%d] [%d] [%d] [%d] [" MG_I64_SPECIFIER "] [" MG_I64U_SPECIFIER "]\n", __FUNCTION__, buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7], i, i2);
+			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("IN [%s] [%d] [%d] [%d] [%d] [%d] [%d] [%d] [%d] [" I64_SPECIFIER "] [" I64U_SPECIFIER "]\n", __FUNCTION__, buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7], i, i2);
 		}
 
 		return i;
@@ -336,8 +336,8 @@ namespace Game {
 					packi64(buf, q);
 					buf += 8;
 
-					//if(SystemFlags::VERBOSE_MODE_ENABLED) printf("pack int64 = " MG_I64_SPECIFIER " [%X] q = " MG_I64_SPECIFIER " [%lX] buf pos = %lu\n",(int64)*(buf-8),*(buf-8),q,q,(unsigned long)(buf - bufStart));
-					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("pack int64 = " MG_I64_SPECIFIER " [%X] q = " MG_I64_SPECIFIER " buf pos = %lu\n", (int64)*(buf - 8), *(buf - 8), q, (unsigned long) (buf - bufStart));
+					//if(SystemFlags::VERBOSE_MODE_ENABLED) printf("pack int64 = " I64_SPECIFIER " [%X] q = " I64_SPECIFIER " [%lX] buf pos = %lu\n",(int64)*(buf-8),*(buf-8),q,q,(unsigned long)(buf - bufStart));
+					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("pack int64 = " I64_SPECIFIER " [%X] q = " I64_SPECIFIER " buf pos = %lu\n", (int64)*(buf - 8), *(buf - 8), q, (unsigned long) (buf - bufStart));
 					break;
 
 				case 'Q': // 64-bit unsigned
@@ -346,7 +346,7 @@ namespace Game {
 					packi64(buf, Q);
 					buf += 8;
 
-					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("pack uint64 = " MG_I64U_SPECIFIER " [%X] Q = " MG_I64U_SPECIFIER " buf pos = %lu\n", (uint64)*(buf - 8), *(buf - 8), Q, (unsigned long) (buf - bufStart));
+					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("pack uint64 = " I64U_SPECIFIER " [%X] Q = " I64U_SPECIFIER " buf pos = %lu\n", (uint64)*(buf - 8), *(buf - 8), Q, (unsigned long) (buf - bufStart));
 					break;
 
 				case 'f': // float-16
@@ -512,7 +512,7 @@ namespace Game {
 					buf += 8;
 					size += 8;
 
-					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("unpack int64 = " MG_I64_SPECIFIER " [%X] q = " MG_I64_SPECIFIER " buf pos = %lu\n", (int64)*(buf - 8), *(buf - 8), *q, (unsigned long) (buf - bufStart));
+					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("unpack int64 = " I64_SPECIFIER " [%X] q = " I64_SPECIFIER " buf pos = %lu\n", (int64)*(buf - 8), *(buf - 8), *q, (unsigned long) (buf - bufStart));
 					break;
 
 				case 'Q': // 64-bit unsigned
@@ -521,7 +521,7 @@ namespace Game {
 					buf += 8;
 					size += 8;
 
-					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("unpack uint64 = " MG_I64U_SPECIFIER " [%X] Q = " MG_I64U_SPECIFIER " buf pos = %lu\n", (uint64)*(buf - 8), *(buf - 8), *Q, (unsigned long) (buf - bufStart));
+					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("unpack uint64 = " I64U_SPECIFIER " [%X] Q = " I64U_SPECIFIER " buf pos = %lu\n", (uint64)*(buf - 8), *(buf - 8), *Q, (unsigned long) (buf - bufStart));
 					break;
 
 				case 'f': // float

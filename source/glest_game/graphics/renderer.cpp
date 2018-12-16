@@ -1410,7 +1410,7 @@ namespace Game {
 				visibleQuad.p[3].x, visibleQuad.p[3].y);
 
 			for (unsigned int i = 0; i < quadCache.frustumData.size(); ++i) {
-				printf("\nFrustum #%u [" MG_SIZE_T_SPECIFIER "]: ", i, quadCache.frustumData.size());
+				printf("\nFrustum #%u [" SIZE_T_SPECIFIER "]: ", i, quadCache.frustumData.size());
 				vector<float> &frustumDataInner = quadCache.frustumData[i];
 				for (unsigned int j = 0; j < frustumDataInner.size(); ++j) {
 					printf("[%f]", quadCache.frustumData[i][j]);
@@ -9126,13 +9126,13 @@ namespace Game {
 
 								if (markedCells.empty() == false) {
 									if (markedCells.find(pos) != markedCells.end()) {
-										//printf("#1 ******** VISIBLE SCALED CELL FOUND in marked list pos [%s] markedCells.size() = " MG_SIZE_T_SPECIFIER "\n",pos.getString().c_str(),markedCells.size());
+										//printf("#1 ******** VISIBLE SCALED CELL FOUND in marked list pos [%s] markedCells.size() = " SIZE_T_SPECIFIER "\n",pos.getString().c_str(),markedCells.size());
 									//if(markedCells.empty() == false) {
 										//SurfaceCell *sc = map->getSurfaceCell(pos);
 										//quadCache.visibleScaledCellToScreenPosList[pos]=computeScreenPosition(sc->getVertex());
 										updateMarkedCellScreenPosQuadCache(pos);
 									} else {
-										//printf("#1 VISIBLE SCALED CELL NOT FOUND in marked list pos [%s] markedCells.size() = " MG_SIZE_T_SPECIFIER "\n",pos.getString().c_str(),markedCells.size());
+										//printf("#1 VISIBLE SCALED CELL NOT FOUND in marked list pos [%s] markedCells.size() = " SIZE_T_SPECIFIER "\n",pos.getString().c_str(),markedCells.size());
 									}
 								}
 							} else {
@@ -9160,12 +9160,12 @@ namespace Game {
 
 									if (markedCells.empty() == false) {
 										if (markedCells.find(pos) != markedCells.end()) {
-											//printf("#2 ******** VISIBLE SCALED CELL FOUND in marked list pos [%s] markedCells.size() = " MG_SIZE_T_SPECIFIER "\n",pos.getString().c_str(),markedCells.size());
+											//printf("#2 ******** VISIBLE SCALED CELL FOUND in marked list pos [%s] markedCells.size() = " SIZE_T_SPECIFIER "\n",pos.getString().c_str(),markedCells.size());
 										//if(markedCells.empty() == false) {
 											//quadCache.visibleScaledCellToScreenPosList[pos]=computeScreenPosition(sc->getVertex());
 											updateMarkedCellScreenPosQuadCache(pos);
 										} else {
-											//printf("#2 VISIBLE SCALED CELL NOT FOUND in marked list pos [%s] markedCells.size() = " MG_SIZE_T_SPECIFIER "\n",pos.getString().c_str(),markedCells.size());
+											//printf("#2 VISIBLE SCALED CELL NOT FOUND in marked list pos [%s] markedCells.size() = " SIZE_T_SPECIFIER "\n",pos.getString().c_str(),markedCells.size());
 										}
 									}
 								}

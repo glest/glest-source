@@ -1317,7 +1317,7 @@ namespace Game {
 								szBuf[8096] = "";
 							snprintf(szBuf, 8096,
 								"In produceGeneric priority adding produce task: %d of "
-								MG_SIZE_T_SPECIFIER " for unit type [%s]",
+								SIZE_T_SPECIFIER " for unit type [%s]",
 								i, ableUnits.size(),
 								ableUnits[i]->getName(false).c_str());
 							aiInterface->printLog(4, szBuf);
@@ -1338,7 +1338,7 @@ namespace Game {
 					szBuf[8096] = "";
 				snprintf(szBuf, 8096,
 					"In produceGeneric randomUnitTypeIndex = %d of "
-					MG_SIZE_T_SPECIFIER " equals unit type [%s]",
+					SIZE_T_SPECIFIER " equals unit type [%s]",
 					randomUnitTypeIndex, ableUnits.size() - 1,
 					ableUnits[randomUnitTypeIndex]->getName(false).
 					c_str());
@@ -1749,13 +1749,13 @@ namespace Game {
 							szBuf[8096] = "";
 						printf
 						("In [%s::%s Line: %d] currentProducerIndex >= aiInterface->getMyUnitCount(), currentProducerIndex = %d, aiInterface->getMyUnitCount() = %d, i = %u,producers.size() = "
-							MG_SIZE_T_SPECIFIER "\n", __FILE__, __FUNCTION__,
+							SIZE_T_SPECIFIER "\n", __FILE__, __FUNCTION__,
 							__LINE__, currentProducerIndex,
 							aiInterface->getMyUnitCount(), i,
 							producers.size());
 						snprintf(szBuf, 8096,
 							"In [%s::%s Line: %d] currentProducerIndex >= aiInterface->getMyUnitCount(), currentProducerIndex = %d, aiInterface->getMyUnitCount() = %u, i = %u,producers.size() = "
-							MG_SIZE_T_SPECIFIER "", __FILE__,
+							SIZE_T_SPECIFIER "", __FILE__,
 							__FUNCTION__, __LINE__, currentProducerIndex,
 							aiInterface->getMyUnitCount(), i,
 							producers.size());
@@ -1802,13 +1802,13 @@ namespace Game {
 								szBuf[8096] = "";
 							printf
 							("In [%s::%s Line: %d] currentProducerIndex >= aiInterface->getMyUnitCount(), currentProducerIndex = %d, aiInterface->getMyUnitCount() = %d, i = %u,producers.size() = "
-								MG_SIZE_T_SPECIFIER "\n", __FILE__, __FUNCTION__,
+								SIZE_T_SPECIFIER "\n", __FILE__, __FUNCTION__,
 								__LINE__, currentProducerIndex,
 								aiInterface->getMyUnitCount(), i,
 								producers.size());
 							snprintf(szBuf, 8096,
 								"In [%s::%s Line: %d] currentProducerIndex >= aiInterface->getMyUnitCount(), currentProducerIndex = %d, aiInterface->getMyUnitCount() = %u, i = %u,producers.size() = "
-								MG_SIZE_T_SPECIFIER "", __FILE__,
+								SIZE_T_SPECIFIER "", __FILE__,
 								__FUNCTION__, __LINE__,
 								currentProducerIndex,
 								aiInterface->getMyUnitCount(), i,
@@ -1821,12 +1821,12 @@ namespace Game {
 								szBuf[8096] = "";
 							printf
 							("In [%s::%s Line: %d] prIndex >= producers.size(), currentProducerIndex = %d, i = %u,producers.size() = "
-								MG_SIZE_T_SPECIFIER " \n", __FILE__,
+								SIZE_T_SPECIFIER " \n", __FILE__,
 								__FUNCTION__, __LINE__, prIndex, i,
 								producers.size());
 							snprintf(szBuf, 8096,
 								"In [%s::%s Line: %d] currentProducerIndex >= producers.size(), currentProducerIndex = %d, i = %u,producers.size() = "
-								MG_SIZE_T_SPECIFIER "", __FILE__,
+								SIZE_T_SPECIFIER "", __FILE__,
 								__FUNCTION__, __LINE__,
 								currentProducerIndex, i,
 								producers.size());
@@ -1928,14 +1928,14 @@ namespace Game {
 											szBuf[8096] = "";
 										printf
 										("In [%s::%s Line: %d] currentProducerIndex >= aiInterface->getMyUnitCount(), currentProducerIndex = %d, aiInterface->getMyUnitCount() = %d, i = %u,backupProducers.size() = "
-											MG_SIZE_T_SPECIFIER "\n", __FILE__,
+											SIZE_T_SPECIFIER "\n", __FILE__,
 											__FUNCTION__, __LINE__,
 											currentProducerIndex,
 											aiInterface->getMyUnitCount(), i,
 											backupProducers.size());
 										snprintf(szBuf, 8096,
 											"In [%s::%s Line: %d] currentProducerIndex >= aiInterface->getMyUnitCount(), currentProducerIndex = %d, aiInterface->getMyUnitCount() = %d, i = %u,backupProducers.size() = "
-											MG_SIZE_T_SPECIFIER "",
+											SIZE_T_SPECIFIER "",
 											__FILE__, __FUNCTION__,
 											__LINE__,
 											currentProducerIndex,
@@ -1951,12 +1951,12 @@ namespace Game {
 											szBuf[8096] = "";
 										printf
 										("In [%s::%s Line: %d] prIndex >= backupProducers.size(), currentProducerIndex = %d, i = %u,backupProducers.size() = "
-											MG_SIZE_T_SPECIFIER " \n", __FILE__,
+											SIZE_T_SPECIFIER " \n", __FILE__,
 											__FUNCTION__, __LINE__, prIndex, i,
 											backupProducers.size());
 										snprintf(szBuf, 8096,
 											"In [%s::%s Line: %d] currentProducerIndex >= backupProducers.size(), currentProducerIndex = %d, i = %u,backupProducers.size() = "
-											MG_SIZE_T_SPECIFIER "",
+											SIZE_T_SPECIFIER "",
 											__FILE__, __FUNCTION__,
 											__LINE__,
 											currentProducerIndex, i,
@@ -2428,7 +2428,7 @@ namespace Game {
 								szBuf[8096] = "";
 							snprintf(szBuf, 8096,
 								"In buildGeneric for resource type [%s] aibcResourceProducerUnits = "
-								MG_SIZE_T_SPECIFIER
+								SIZE_T_SPECIFIER
 								" priorityUnit.first: [%s]\n",
 								bt->getResourceType()->getName().
 								c_str(), unitList.size(),
@@ -2467,7 +2467,7 @@ namespace Game {
 								szBuf[8096] = "";
 							snprintf(szBuf, 8096,
 								"In buildGeneric for resource type [%s] aibcBuildingUnits = "
-								MG_SIZE_T_SPECIFIER
+								SIZE_T_SPECIFIER
 								" priorityUnit.first: [%s]\n",
 								bt->getResourceType()->getName().
 								c_str(), unitList.size(),
@@ -2551,7 +2551,7 @@ namespace Game {
 				szBuf[8096] = "";
 			snprintf(szBuf, 8096,
 				"==> START buildBestBuilding buildings.size = "
-				MG_SIZE_T_SPECIFIER "\n", buildings.size());
+				SIZE_T_SPECIFIER "\n", buildings.size());
 			aiInterface->printLog(4, szBuf);
 		}
 
@@ -2660,7 +2660,7 @@ namespace Game {
 				szBuf[8096] = "";
 			snprintf(szBuf, 8096,
 				"==> END buildBestBuilding buildings.size = "
-				MG_SIZE_T_SPECIFIER "\n", buildings.size());
+				SIZE_T_SPECIFIER "\n", buildings.size());
 			aiInterface->printLog(4, szBuf);
 		}
 	}

@@ -1645,7 +1645,6 @@ wxT("Help")).ShowModal();
 		if (argc == 2) {
 			if (argv[1][0] == '-') {   // any flag gives help and exits program.
 				std::cout << std::endl << "ZetaGlest Map Editor " << MapEditorVersionString << " [Using " << (const char *) wxConvCurrent->cWX2MB(wxVERSION_STRING) << "]" << std::endl << std::endl;
-				//std::cout << "\nglest_map_editor [MGM FILE]" << std::endl << std::endl;
 				std::cout << "Creates or edits zetaglest/glest maps. [.zgm/.mgm/.gbm]" << std::endl << std::endl;
 				std::cout << "Draw with left mouse button." << std::endl;
 				std::cout << "Move map with right mouse button." << std::endl;

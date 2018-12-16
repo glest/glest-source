@@ -274,7 +274,7 @@ namespace Shared {
 		inline string trim_at_delim(const string & s, const string &t) {
 			string d(s);
 			string::size_type i(d.find(t));
-			//printf("Searching for [%s] in [%s] got " MG_SIZE_T_SPECIFIER "\n",t.c_str(),d.c_str(),i);
+			//printf("Searching for [%s] in [%s] got " SIZE_T_SPECIFIER "\n",t.c_str(),d.c_str(),i);
 
 			if (i == string::npos) {
 				return d;

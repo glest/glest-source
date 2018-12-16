@@ -936,7 +936,7 @@ namespace Game {
 			replaceFileWithLocalFile(dirList, fileNamePart, result);
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
-				printf("Found file [%s] @ " MG_SIZE_T_SPECIFIER
+				printf("Found file [%s] @ " SIZE_T_SPECIFIER
 					" [%s]\nNew File [%s]\n", fileName.c_str(), pos,
 					fileNamePart.c_str(), result.c_str());
 		} else if (fileName.find("tilesets/") != fileName.npos) {
@@ -947,7 +947,7 @@ namespace Game {
 			replaceFileWithLocalFile(dirList, fileNamePart, result);
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
-				printf("Found file [%s] @ " MG_SIZE_T_SPECIFIER
+				printf("Found file [%s] @ " SIZE_T_SPECIFIER
 					" [%s]\nNew File [%s]\n", fileName.c_str(), pos,
 					fileNamePart.c_str(), result.c_str());
 		} else if (fileName.find("techs/") != fileName.npos) {
@@ -958,7 +958,7 @@ namespace Game {
 			replaceFileWithLocalFile(dirList, fileNamePart, result);
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
-				printf("Found file [%s] @ " MG_SIZE_T_SPECIFIER
+				printf("Found file [%s] @ " SIZE_T_SPECIFIER
 					" [%s]\nNew File [%s]\n", fileName.c_str(), pos,
 					fileNamePart.c_str(), result.c_str());
 		} else if (fileName.find("scenarios/") != fileName.npos) {
@@ -969,7 +969,7 @@ namespace Game {
 			replaceFileWithLocalFile(dirList, fileNamePart, result);
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
-				printf("Found file [%s] @ " MG_SIZE_T_SPECIFIER
+				printf("Found file [%s] @ " SIZE_T_SPECIFIER
 					" [%s]\nNew File [%s]\n", fileName.c_str(), pos,
 					fileNamePart.c_str(), result.c_str());
 		} else if (fileName.find("tutorials/") != fileName.npos) {
@@ -980,7 +980,7 @@ namespace Game {
 			replaceFileWithLocalFile(dirList, fileNamePart, result);
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
-				printf("Found file [%s] @ " MG_SIZE_T_SPECIFIER
+				printf("Found file [%s] @ " SIZE_T_SPECIFIER
 					" [%s]\nNew File [%s]\n", fileName.c_str(), pos,
 					fileNamePart.c_str(), result.c_str());
 		}

@@ -132,7 +132,7 @@ namespace Game {
 		tempDataLocation = getUserHome();
 	static
 		string
-		mg_app_name = "";
+		appNameString = "";
 	static
 		string
 		mailStringSupport = "";
@@ -324,7 +324,7 @@ namespace Game {
 		Thread::shutdownThreads();
 
 		if (SystemFlags::VERBOSE_MODE_ENABLED)
-			printf("start running threads = " MG_SIZE_T_SPECIFIER "\n",
+			printf("start running threads = " SIZE_T_SPECIFIER "\n",
 				Thread::getThreadList().size());
 		time_t
 			elapsed = time(NULL);
@@ -339,7 +339,7 @@ namespace Game {
 					lastLazyThreadDump = difftime((long int) time(NULL), elapsed);
 
 					printf("Waiting for the following threads to exit ["
-						MG_SIZE_T_SPECIFIER "]:\n",
+						SIZE_T_SPECIFIER "]:\n",
 						Thread::getThreadList().size());
 
 					for (int i = 0; i < (int) Thread::getThreadList().size(); ++i) {
@@ -356,7 +356,7 @@ namespace Game {
 			}
 		}
 		if (SystemFlags::VERBOSE_MODE_ENABLED)
-			printf("end running threads = " MG_SIZE_T_SPECIFIER "\n",
+			printf("end running threads = " SIZE_T_SPECIFIER "\n",
 				Thread::getThreadList().size());
 
 		Thread::shutdownThreads();
@@ -406,7 +406,7 @@ namespace Game {
 				errText = string(msg) + " [" + runtimeErrorMsg + "]";
 			//puts(msg);
 			string
-				sErr = string(mg_app_name) + " fatal error";
+				sErr = string(appNameString) + " fatal error";
 			SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n",
 				errText.c_str());
 			SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n",
@@ -703,7 +703,7 @@ namespace Game {
 		ExceptionHandler::handle(LPEXCEPTION_POINTERS pointers) {
 		string
 			msg =
-			"#1 An error occurred and " + string(mg_app_name) +
+			"#1 An error occurred and " + string(appNameString) +
 			" will close.\nPlease report this bug to: " + string(mailString);
 		msg +=
 			", attaching the generated " + getCrashDumpFileName() + " file.";
@@ -729,7 +729,7 @@ namespace Game {
 		ExceptionHandler::handle() {
 		string
 			msg =
-			"#1 An error occurred and " + string(mg_app_name) +
+			"#1 An error occurred and " + string(appNameString) +
 			" will close.\nPlease report this bug to: " + string(mailString);
 #ifdef WIN32
 		msg +=
@@ -952,7 +952,7 @@ namespace Game {
 			string
 				err = "#2 An error occurred and ";
 			if (sdl_quitCalled == false) {
-				err += mg_app_name;
+				err += appNameString;
 			}
 			err +=
 				" will close.\nError msg = [" + errMsg +
@@ -2483,8 +2483,8 @@ namespace Game {
 			}
 		}
 
-		printf("Found tileset filecount = " MG_SIZE_T_SPECIFIER ", used = "
-			MG_SIZE_T_SPECIFIER "\n", foundFileList.size(),
+		printf("Found tileset filecount = " SIZE_T_SPECIFIER ", used = "
+			SIZE_T_SPECIFIER "\n", foundFileList.size(),
 			loadedFileList.size());
 
 		int
@@ -3071,8 +3071,8 @@ namespace Game {
 						}
 					}
 
-					printf("Found techtree filecount = " MG_SIZE_T_SPECIFIER
-						", used = " MG_SIZE_T_SPECIFIER "\n",
+					printf("Found techtree filecount = " SIZE_T_SPECIFIER
+						", used = " SIZE_T_SPECIFIER "\n",
 						foundFileList.size(), loadedFileList.size());
 
 					int
@@ -3187,7 +3187,7 @@ namespace Game {
 								}
 
 								printf("----- START duplicate files for CRC [%u] count ["
-									MG_SIZE_T_SPECIFIER "] first file is [%s]\n",
+									SIZE_T_SPECIFIER "] first file is [%s]\n",
 									iterMap->first, fileList.size(),
 									fileList[0].c_str());
 
@@ -3238,7 +3238,7 @@ namespace Game {
 								}
 
 								printf("----- Finding parents for duplicate files ["
-									MG_SIZE_T_SPECIFIER "] first file is [%s]\n",
+									SIZE_T_SPECIFIER "] first file is [%s]\n",
 									fileList.size(), fileList[0].c_str());
 
 								for (map < string, int >::iterator iterMap1 =
@@ -3254,7 +3254,7 @@ namespace Game {
 								if (purgeDuplicateFiles == true) {
 
 									printf("----- move / remove duplicate files ["
-										MG_SIZE_T_SPECIFIER "] first file is [%s]\n",
+										SIZE_T_SPECIFIER "] first file is [%s]\n",
 										fileList.size(), fileList[0].c_str());
 									// First move first duplicate to commondata and delete all other copies
 									string
@@ -3268,7 +3268,7 @@ namespace Game {
 											off_t
 												fileSize = getFileSize(duplicateFile);
 
-											printf("#1 [%u / " MG_SIZE_T_SPECIFIER
+											printf("#1 [%u / " SIZE_T_SPECIFIER
 												"] removing duplicate [%s]\n", idx,
 												fileList.size(), duplicateFile.c_str());
 
@@ -3382,7 +3382,7 @@ namespace Game {
 									}
 
 									printf("----- update XML files for duplicate files ["
-										MG_SIZE_T_SPECIFIER "] first file is [%s]\n",
+										SIZE_T_SPECIFIER "] first file is [%s]\n",
 										fileList.size(), fileList[0].c_str());
 									std::map < string, int >
 										mapUniqueParentList;
@@ -3564,7 +3564,7 @@ namespace Game {
 								}
 
 
-								printf("----- END duplicate files [" MG_SIZE_T_SPECIFIER
+								printf("----- END duplicate files [" SIZE_T_SPECIFIER
 									"] first file is [%s]\n", fileList.size(),
 									fileList[0].c_str());
 							}
@@ -4956,7 +4956,7 @@ namespace Game {
 						}
 					}
 					printf("===========================================\nTotal: "
-						MG_SIZE_T_SPECIFIER "\n", results.size());
+						SIZE_T_SPECIFIER "\n", results.size());
 				}
 				if (compress_item == "tilesets" || compress_item == "all") {
 					typesSelected++;
@@ -5034,7 +5034,7 @@ namespace Game {
 						}
 					}
 					printf("===========================================\nTotal: "
-						MG_SIZE_T_SPECIFIER "\n", results.size());
+						SIZE_T_SPECIFIER "\n", results.size());
 
 				}
 				if (typesSelected == 0) {
@@ -5365,7 +5365,7 @@ namespace Game {
 				printf("%s\n", mapName.c_str());
 			}
 			printf("===========================================\nTotal: "
-				MG_SIZE_T_SPECIFIER "\n", maps.size());
+				SIZE_T_SPECIFIER "\n", maps.size());
 
 			return_value = 0;
 		}
@@ -5446,7 +5446,7 @@ namespace Game {
 										name2 = results2[k];
 									printf("--> %s\n", name2.c_str());
 								}
-								printf("--> Total Factions: " MG_SIZE_T_SPECIFIER "\n",
+								printf("--> Total Factions: " SIZE_T_SPECIFIER "\n",
 									results2.size());
 								break;
 							}
@@ -5455,7 +5455,7 @@ namespace Game {
 				}
 				printf
 				("===========================================\nTotal Techtrees: "
-					MG_SIZE_T_SPECIFIER "\n", results.size());
+					SIZE_T_SPECIFIER "\n", results.size());
 
 				return_value = 0;
 			}
@@ -5516,7 +5516,7 @@ namespace Game {
 						printf("%s\n", name.c_str());
 					}
 					printf("===========================================\nTotal: "
-						MG_SIZE_T_SPECIFIER "\n", results.size());
+						SIZE_T_SPECIFIER "\n", results.size());
 
 					return_value = 0;
 				}
@@ -5601,7 +5601,7 @@ namespace Game {
 							}
 						}
 						printf("===========================================\nTotal: "
-							MG_SIZE_T_SPECIFIER "\n", results.size());
+							SIZE_T_SPECIFIER "\n", results.size());
 
 						return_value = 0;
 					}
@@ -5687,7 +5687,7 @@ namespace Game {
 								}
 							}
 							printf("===========================================\nTotal: "
-								MG_SIZE_T_SPECIFIER "\n", results.size());
+								SIZE_T_SPECIFIER "\n", results.size());
 
 							return_value = 0;
 						}
@@ -5723,7 +5723,7 @@ namespace Game {
 
 		PlatformExceptionHandler::application_binary =
 			executable_path(argv[0], true);
-		mg_app_name = GameConstants::application_name;
+		appNameString = GameConstants::application_name;
 		mailStringSupport = mailString;
 		SystemFlags::ENABLE_THREADED_LOGGING = false;
 		disableBacktrace = false;
@@ -5912,7 +5912,7 @@ namespace Game {
 				(::Shared::PlatformByteOrder::isBigEndian() ==
 					true ? "big" : "little"));
 
-			//              printf("\n\nData type sizes int8 = " MG_SIZE_T_SPECIFIER " int16 = " MG_SIZE_T_SPECIFIER " int32 = " MG_SIZE_T_SPECIFIER " int64 = " MG_SIZE_T_SPECIFIER "\n\n",sizeof(int8),sizeof(int16),sizeof(int32),sizeof(int64));
+			//              printf("\n\nData type sizes int8 = " SIZE_T_SPECIFIER " int16 = " SIZE_T_SPECIFIER " int32 = " SIZE_T_SPECIFIER " int64 = " SIZE_T_SPECIFIER "\n\n",sizeof(int8),sizeof(int16),sizeof(int32),sizeof(int64));
 			//
 			//              Config::getInstance().setBool("DebugNetworkPackets",true,true);
 			//              NetworkMessageIntro data(424336, "mg_version_x","player_x", 3, nmgstOk,444444, 555555, "english");
@@ -5983,8 +5983,8 @@ namespace Game {
 				testVar = ::Shared::PlatformByteOrder::fromCommonEndian(testVar);
 				printf("\nEndian from common value = %d", testVar);
 
-				printf("\nint8 sizeof = " MG_SIZE_T_SPECIFIER "", sizeof(int8));
-				printf("\nSwitchSetupRequest sizeof = " MG_SIZE_T_SPECIFIER "",
+				printf("\nint8 sizeof = " SIZE_T_SPECIFIER "", sizeof(int8));
+				printf("\nSwitchSetupRequest sizeof = " SIZE_T_SPECIFIER "",
 					SwitchSetupRequest().getDataSize());
 			}
 
@@ -6295,7 +6295,7 @@ namespace Game {
 				(Socket::getBroadCastPort
 				()).c_str()));
 
-			Socket::disableNagle = config.getBool("DisableNagle", "false");
+			Socket::disableNagle = config.getBool("DisableNagle", "true");
 			if (Socket::disableNagle) {
 				printf
 				("*WARNING users wants to disable the socket nagle algorithm.\n");
@@ -7386,7 +7386,7 @@ namespace Game {
 						"true"));
 					gameSettings->setNetworkFramePeriod(config.getInt
 					("NetworkSendFrameCount",
-						"20"));
+						"10"));
 
 					program->initServer(mainWindow, gameSettings);
 					gameInitialized = true;
@@ -7641,7 +7641,7 @@ namespace Game {
 						renderer.reset2d();
 						snprintf(szTextBuf, 8096,
 							"Please wait, converting models [%u of "
-							MG_SIZE_T_SPECIFIER "] ...", i, models.size());
+							SIZE_T_SPECIFIER "] ...", i, models.size());
 
 						if (CoreData::getInstance().getMenuFontBig3D() != NULL) {
 							renderer.renderText3D(szTextBuf,
@@ -7664,7 +7664,7 @@ namespace Game {
 						SDL_PumpEvents();
 
 						try {
-							printf("About to load model [%s] [%u of " MG_SIZE_T_SPECIFIER
+							printf("About to load model [%s] [%u of " SIZE_T_SPECIFIER
 								"]\n", file.c_str(), i, models.size());
 							Model *
 								model = renderer.newModel(rsGlobal, file);

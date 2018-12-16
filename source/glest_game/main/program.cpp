@@ -615,7 +615,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -634,7 +634,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -671,7 +671,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -709,7 +709,7 @@ namespace Game {
 #endif
 			if (showPerfStats) {
 				sprintf(perfBuf,
-					"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER
+					"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER
 					" updateCount: %d\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, chronoPerf.getMillis(),
@@ -738,7 +738,7 @@ namespace Game {
 
 			if (showPerfStats) {
 				sprintf(perfBuf,
-					"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER
+					"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER
 					" updateCount: %d\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, chronoPerf.getMillis(),
@@ -793,7 +793,7 @@ namespace Game {
 
 				if (showPerfStats) {
 					sprintf(perfBuf,
-						"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER
+						"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER
 						" updateCount: %d\n",
 						extractFileFromDirectoryPath(__FILE__).c_str(),
 						__FUNCTION__, __LINE__, chronoPerf.getMillis(),
@@ -826,7 +826,7 @@ namespace Game {
 
 				if (showPerfStats) {
 					sprintf(perfBuf,
-						"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER
+						"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER
 						" updateCount: %d\n",
 						extractFileFromDirectoryPath(__FILE__).c_str(),
 						__FUNCTION__, __LINE__, chronoPerf.getMillis(),
@@ -860,7 +860,7 @@ namespace Game {
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
-				"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
 				__FUNCTION__, __LINE__, chronoPerf.getMillis());
 			perfList.push_back(perfBuf);
@@ -881,7 +881,7 @@ namespace Game {
 
 			if (showPerfStats) {
 				sprintf(perfBuf,
-					"In [%s::%s] Line: %d took msecs: " MG_I64_SPECIFIER "\n",
+					"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
 					extractFileFromDirectoryPath(__FILE__).c_str(),
 					__FUNCTION__, __LINE__, chronoPerf.getMillis());
 				perfList.push_back(perfBuf);
@@ -1526,7 +1526,7 @@ namespace Game {
 	//              window->initGl(config.getInt("ColorBits"),
 	//                                     config.getInt("DepthBits"),
 	//                                     config.getInt("StencilBits"),
-	//                                     config.getBool("HardwareAcceleration","false"),
+	//                                     config.getBool("HardwareAcceleration","true"),
 	//                                     config.getBool("FullScreenAntiAliasing","false"),
 	//                                     config.getFloat("GammaValue","0.0"));
 	//              window->setText(config.getString("WindowTitle","ZetaGlest"));

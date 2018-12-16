@@ -970,7 +970,7 @@ namespace Game {
 			}
 
 			if (foundUnit == false) {
-				//printf("Problem for unit [%s] unitTypes.size() = " MG_SIZE_T_SPECIFIER "\n",unitType.getName().c_str(),unitTypes.size());
+				//printf("Problem for unit [%s] unitTypes.size() = " SIZE_T_SPECIFIER "\n",unitType.getName().c_str(),unitTypes.size());
 
 				char szBuf[8096] = "";
 				snprintf(szBuf, 8096,
@@ -1199,7 +1199,7 @@ namespace Game {
 			}
 		}
 
-		printf("In [%s::%s Line: %d] scanning [%s] size = " MG_SIZE_T_SPECIFIER
+		printf("In [%s::%s Line: %d] scanning [%s] size = " SIZE_T_SPECIFIER
 			"\n", extractFileFromDirectoryPath(__FILE__).c_str(),
 			__FUNCTION__, __LINE__, name.c_str(), unitTypes.size());
 		for (int i = 0; i < (int) unitTypes.size(); i++) {
@@ -1239,7 +1239,7 @@ namespace Game {
 	//              }
 	//    }
 	//
-	//    printf("In [%s::%s Line: %d] scanning [%d] size = " MG_SIZE_T_SPECIFIER "\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,id,unitTypes.size());
+	//    printf("In [%s::%s Line: %d] scanning [%d] size = " SIZE_T_SPECIFIER "\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,id,unitTypes.size());
 	//    for(int i=0; i < (int)unitTypes.size();i++){
 	//      printf("In [%s::%s Line: %d] scanning [%s] idx = %d [%s][%d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,name.c_str(),i,unitTypes[i].getName(false).c_str(),unitTypes[i].getId());
 	//    }
@@ -1259,7 +1259,7 @@ namespace Game {
 			}
 		}
 
-		printf("In [%s::%s Line: %d] scanning [%s] size = " MG_SIZE_T_SPECIFIER
+		printf("In [%s::%s Line: %d] scanning [%s] size = " SIZE_T_SPECIFIER
 			"\n", extractFileFromDirectoryPath(__FILE__).c_str(),
 			__FUNCTION__, __LINE__, name.c_str(), unitTypes.size());
 		for (int i = 0; i < (int) upgradeTypes.size(); i++) {

@@ -625,7 +625,7 @@ namespace Shared {
 					}
 				}
 
-				if (SystemFlags::getSystemSettingType(SystemFlags::debugSound).enabled) SystemFlags::OutputDebug(SystemFlags::debugSound, "In [%s::%s %d] playingCount = %d, staticSources.size() = " MG_SIZE_T_SPECIFIER ", params.staticBufferCount = %u\n", __FILE__, __FUNCTION__, __LINE__, playingCount, (unsigned long) staticSources.size(), params.staticBufferCount);
+				if (SystemFlags::getSystemSettingType(SystemFlags::debugSound).enabled) SystemFlags::OutputDebug(SystemFlags::debugSound, "In [%s::%s %d] playingCount = %d, staticSources.size() = " SIZE_T_SPECIFIER ", params.staticBufferCount = %u\n", __FILE__, __FUNCTION__, __LINE__, playingCount, (unsigned long) staticSources.size(), params.staticBufferCount);
 
 				// create a new source
 				if (staticSources.size() >= params.staticBufferCount) {
