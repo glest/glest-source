@@ -670,15 +670,13 @@ namespace Game {
 					networkCommand->getUnitId());
 				SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szMsg);
 				SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n", szMsg);
-				GameNetworkInterface *
+				/*GameNetworkInterface *
 					gameNetworkInterface =
 					NetworkManager::getInstance().getGameNetworkInterface();
 				if (gameNetworkInterface != NULL) {
 					gameNetworkInterface->
 						sendTextMessage(szMsg, -1, true, "");
-				}
-				/*throw
-					game_runtime_error(szBuf);*/
+				}*/
 				return std::pair<CommandResult, string>(crFailUndefined, "");
 			}
 		}
@@ -1611,14 +1609,12 @@ namespace Game {
 				networkCommand->getUnitId());
 			SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szMsg);
 			SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n", szMsg);
-			GameNetworkInterface *
+			/*GameNetworkInterface *
 				gameNetworkInterface =
 				NetworkManager::getInstance().getGameNetworkInterface();
 			if (gameNetworkInterface != NULL)
-				gameNetworkInterface->sendTextMessage(szMsg, -1, true, "");
+				gameNetworkInterface->sendTextMessage(szMsg, -1, true, "");*/
 
-			/*throw
-				game_runtime_error(szBuf);*/
 			return command;
 		}
 
@@ -1642,11 +1638,11 @@ namespace Game {
 			//world->DumpWorldToLog();
 
 			// Broadcast the error if player is still connected and print locally.
-			GameNetworkInterface *
+			/*GameNetworkInterface *
 				gameNetworkInterface =
 				NetworkManager::getInstance().getGameNetworkInterface();
 			if (gameNetworkInterface != NULL)
-				gameNetworkInterface->sendTextMessage(szMsg, -1, true, "");
+				gameNetworkInterface->sendTextMessage(szMsg, -1, true, "");*/
 			return command;
 		}
 
@@ -1685,11 +1681,11 @@ namespace Game {
 			SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szMsg);
 			//world->DumpWorldToLog();
 
-			GameNetworkInterface *
+			/*GameNetworkInterface *
 				gameNetworkInterface =
 				NetworkManager::getInstance().getGameNetworkInterface();
 			if (gameNetworkInterface != NULL)
-				gameNetworkInterface->sendTextMessage(szMsg, -1, true, "");
+				gameNetworkInterface->sendTextMessage(szMsg, -1, true, "");*/
 
 			return command;
 		}

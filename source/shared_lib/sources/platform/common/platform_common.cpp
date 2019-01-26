@@ -2245,12 +2245,9 @@ namespace Shared {
 			char szMsg[8096];
 			snprintf(szMsg, 8096, "A value in memory has changed unexpectedly (expected %d, found %d). Game out of sync, try leaving and rejoining",
 				expectedValue, actualValue);
-			printf("%s\n", szMsg);
-			SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n", szMsg);
-			SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szMsg);
-			/*void(*handler)(const char*) = unexpected_handler;
+			void(*handler)(const char*) = unexpected_handler;
 			if (handler != NULL)
-				handler(szMsg);*/
+				handler(szMsg);
 		}
 
 		void ValueCheckerVault::addItemToVault(const void *ptr, int value) {

@@ -121,9 +121,12 @@ void handleUnexpectedError(const char* message) {
 	Game::Game* currentGame = Game::World::getCurrentGame();
 	if (currentGame != NULL && currentGame->isFlagType1BitEnabled(Game::FlagTypes1::ft1_allow_shared_team_resources))
 		return;
-	Game::GameNetworkInterface* gameNetworkInterface = Game::NetworkManager::getInstance().getGameNetworkInterface();
+	printf("%s\n", message);
+	SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n", message);
+	SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", message);
+	/*Game::GameNetworkInterface* gameNetworkInterface = Game::NetworkManager::getInstance().getGameNetworkInterface();
 	if (gameNetworkInterface != NULL)
-		gameNetworkInterface->sendTextMessage(message, -1, true, "");
+		gameNetworkInterface->sendTextMessage(message, -1, true, "");*/
 }
 
 namespace Game {

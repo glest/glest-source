@@ -1680,8 +1680,7 @@ namespace Game {
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] WARNING / ERROR, requestedCommands.size() = %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, requestedCommands.size());
 				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] WARNING / ERROR, requestedCommands.size() = %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, requestedCommands.size());
 
-				string sMsg = "may go out of synch: server requestedCommands.size() = " + intToStr(requestedCommands.size());
-				sendTextMessage(sMsg, -1, true, "");
+				printf("May go out of sync: server requestedCommands.size() = %zd\n", requestedCommands.size());
 			}
 
 			// broadcast commands
