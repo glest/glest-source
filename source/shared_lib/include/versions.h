@@ -1,3 +1,4 @@
 #define GAME_VERSION "ZetaGlest 1.0"
+#define GAME_BUILD_DATE "2601"
 #define G3D_VIEWER_VERSION "1.0"
 #define MAP_EDITOR_VERSION "1.0"

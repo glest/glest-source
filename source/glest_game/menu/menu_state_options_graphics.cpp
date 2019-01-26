@@ -1088,9 +1088,12 @@ namespace Game {
 
 		config.save();
 
-		if (config.getBool("DisableLuaSandbox", "false") == true) {
-			LuaScript::setDisableSandbox(true);
-		}
+#ifdef _WIN32
+		if (config.getBool("ShowConsoleWindows", "false") == true)
+			ShowWindow(GetConsoleWindow(), SW_SHOW);
+		else
+			ShowWindow(GetConsoleWindow(), SW_HIDE);
+#endif
 
 		Renderer::getInstance().loadConfig();
 		console.addLine(lang.getString("SettingsSaved"));

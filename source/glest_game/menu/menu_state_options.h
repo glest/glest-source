@@ -73,11 +73,8 @@ namespace Game {
 		GraphicLabel labelChatStaysActive;
 		GraphicCheckBox checkBoxChatStaysActive;
 
-		GraphicLabel labelLuaDisableSecuritySandbox;
-		GraphicCheckBox checkBoxLuaDisableSecuritySandbox;
-
-		GraphicMessageBox luaMessageBox;
-		int luaMessageBoxState;
+		GraphicLabel labelShowDeveloperConsoleOnWindows;
+		GraphicCheckBox checkBoxShowDeveloperConsoleOnWindows;
 
 		map < string, string > languageList;
 
@@ -114,8 +111,6 @@ namespace Game {
 		void saveConfig();
 		void setActiveInputLable(GraphicLabel * newLable);
 		void showMessageBox(const string & text, const string & header,
-			bool toggle);
-		void showLuaMessageBox(const string & text, const string & header,
 			bool toggle);
 
 		void setupTransifexUI();

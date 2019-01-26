@@ -79,11 +79,10 @@ namespace Game {
 		checkBoxTimeDisplay("Options", "checkBoxTimeDisplay"),
 		labelChatStaysActive("Options", "labelChatStaysActive"),
 		checkBoxChatStaysActive("Options", "checkBoxChatStaysActive"),
-		labelLuaDisableSecuritySandbox("Options",
-			"labelLuaDisableSecuritySandbox"),
-		checkBoxLuaDisableSecuritySandbox("Options",
-			"checkBoxLuaDisableSecuritySandbox"),
-		luaMessageBox("Options", "luaMessageBox"),
+		labelShowDeveloperConsoleOnWindows("Options",
+			"labelShowDeveloperConsoleOnWindows"),
+		checkBoxShowDeveloperConsoleOnWindows("Options",
+			"checkBoxShowDeveloperConsoleOnWindows"),
 		labelCustomTranslation("Options", "labelCustomTranslation"),
 		checkBoxCustomTranslation("Options", "checkBoxCustomTranslation"),
 		buttonGetNewLanguageFiles("Options", "buttonGetNewLanguageFiles"),
@@ -379,21 +378,15 @@ namespace Game {
 
 			currentLine -= lineOffset;
 
-			labelLuaDisableSecuritySandbox.init(currentLabelStart, currentLine);
-			labelLuaDisableSecuritySandbox.setText(lang.
-				getString
-				("LuaDisableSecuritySandbox"));
+			labelShowDeveloperConsoleOnWindows.init(currentLabelStart, currentLine);
+			labelShowDeveloperConsoleOnWindows.setText("Show developer console on Windows");
 
-			checkBoxLuaDisableSecuritySandbox.init(currentColumnStart,
+			checkBoxShowDeveloperConsoleOnWindows.init(currentColumnStart,
 				currentLine);
-			checkBoxLuaDisableSecuritySandbox.setValue(config.
+			checkBoxShowDeveloperConsoleOnWindows.setValue(config.
 				getBool
-				("DisableLuaSandbox",
+				("ShowConsoleWindows",
 					"false"));
-
-			luaMessageBox.init(lang.getString("Yes"), lang.getString("No"));
-			luaMessageBox.setEnabled(false);
-			luaMessageBoxState = 0;
 
 			currentLine -= lineOffset;
 
@@ -486,7 +479,6 @@ namespace Game {
 		Lang & lang = Lang::getInstance();
 
 		mainMessageBox.init(lang.getString("Ok"));
-		luaMessageBox.init(lang.getString("Yes"), lang.getString("No"));
 
 		buttonAudioSection.setText(lang.getString("Audio"));
 		buttonVideoSection.setText(lang.getString("Video"));
@@ -499,9 +491,7 @@ namespace Game {
 		labelChatStaysActive.setText(lang.getString("ChatStaysActive"));
 		labelTimeDisplay.setText(lang.getString("TimeDisplay"));
 
-		labelLuaDisableSecuritySandbox.setText(lang.
-			getString
-			("LuaDisableSecuritySandbox"));
+		labelShowDeveloperConsoleOnWindows.setText("Show developer console on Windows");
 		labelLang.setText(lang.getString("Language"));
 		labelPlayerNameLabel.setText(lang.getString("Playername"));
 		labelFontSizeAdjustment.setText(lang.getString("FontSizeAdjustment"));
@@ -562,22 +552,6 @@ namespace Game {
 	}
 
 	void
-		MenuStateOptions::showLuaMessageBox(const string & text,
-			const string & header, bool toggle) {
-		if (!toggle) {
-			luaMessageBox.setEnabled(false);
-		}
-
-		if (!luaMessageBox.getEnabled()) {
-			luaMessageBox.setText(text);
-			luaMessageBox.setHeader(header);
-			luaMessageBox.setEnabled(true);
-		} else {
-			luaMessageBox.setEnabled(false);
-		}
-	}
-
-	void
 		MenuStateOptions::mouseClick(int x, int y, MouseButton mouseButton) {
 
 		Config & config = Config::getInstance();
@@ -613,29 +587,6 @@ namespace Game {
 						mainMessageBox.init(lang.getString("Ok"));
 					}
 				}
-			}
-		} else if (luaMessageBox.getEnabled()) {
-			int
-				button = 0;
-			if (luaMessageBox.mouseClick(x, y, button)) {
-				checkBoxLuaDisableSecuritySandbox.setValue(false);
-				soundRenderer.playFx(coreData.getClickSoundA());
-				if (button == 0) {
-					if (luaMessageBoxState == 1) {
-						checkBoxLuaDisableSecuritySandbox.setValue(true);
-					}
-				}
-				luaMessageBox.setEnabled(false);
-			}
-		} else if (checkBoxLuaDisableSecuritySandbox.mouseClick(x, y)) {
-			if (checkBoxLuaDisableSecuritySandbox.getValue() == true) {
-				checkBoxLuaDisableSecuritySandbox.setValue(false);
-
-				luaMessageBoxState = 1;
-				Lang & lang = Lang::getInstance();
-				showLuaMessageBox(lang.
-					getString("LuaDisableSecuritySandboxWarning"),
-					lang.getString("Question"), false);
 			}
 		} else if (buttonOk.mouseClick(x, y)) {
 			soundRenderer.playFx(coreData.getClickSoundA());
@@ -1131,7 +1082,7 @@ namespace Game {
 			listBoxHealthBars.mouseClick(x, y);
 			checkBoxChatStaysActive.mouseClick(x, y);
 			checkBoxTimeDisplay.mouseClick(x, y);
-			checkBoxLuaDisableSecuritySandbox.mouseClick(x, y);
+			checkBoxShowDeveloperConsoleOnWindows.mouseClick(x, y);
 		}
 	}
 
@@ -1139,9 +1090,6 @@ namespace Game {
 		MenuStateOptions::mouseMove(int x, int y, const MouseState * ms) {
 		if (mainMessageBox.getEnabled()) {
 			mainMessageBox.mouseMove(x, y);
-		}
-		if (luaMessageBox.getEnabled()) {
-			luaMessageBox.mouseMove(x, y);
 		}
 
 		buttonOk.mouseMove(x, y);
@@ -1164,7 +1112,7 @@ namespace Game {
 		checkBoxVisibleHud.mouseMove(x, y);
 		checkBoxChatStaysActive.mouseMove(x, y);
 		checkBoxTimeDisplay.mouseMove(x, y);
-		checkBoxLuaDisableSecuritySandbox.mouseMove(x, y);
+		checkBoxShowDeveloperConsoleOnWindows.mouseMove(x, y);
 		checkBoxCustomTranslation.mouseMove(x, y);
 	}
 
@@ -1219,8 +1167,6 @@ namespace Game {
 
 		if (mainMessageBox.getEnabled()) {
 			renderer.renderMessageBox(&mainMessageBox);
-		} else if (luaMessageBox.getEnabled()) {
-			renderer.renderMessageBox(&luaMessageBox);
 		} else {
 			renderer.renderButton(&buttonOk);
 			renderer.renderButton(&buttonReturn);
@@ -1274,8 +1220,8 @@ namespace Game {
 			renderer.renderLabel(&labelChatStaysActive);
 			renderer.renderLabel(&labelTimeDisplay);
 
-			renderer.renderLabel(&labelLuaDisableSecuritySandbox);
-			renderer.renderCheckBox(&checkBoxLuaDisableSecuritySandbox);
+			renderer.renderLabel(&labelShowDeveloperConsoleOnWindows);
+			renderer.renderCheckBox(&checkBoxShowDeveloperConsoleOnWindows);
 
 			renderer.renderCheckBox(&checkBoxVisibleHud);
 			renderer.renderCheckBox(&checkBoxChatStaysActive);
@@ -1349,13 +1295,16 @@ namespace Game {
 		config.setBool("ChatStaysActive", checkBoxChatStaysActive.getValue());
 		config.setBool("TimeDisplay", checkBoxTimeDisplay.getValue());
 
-		config.setBool("DisableLuaSandbox",
-			checkBoxLuaDisableSecuritySandbox.getValue());
+		config.setBool("ShowConsoleWindows",
+			checkBoxShowDeveloperConsoleOnWindows.getValue());
 		config.save();
 
-		if (config.getBool("DisableLuaSandbox", "false") == true) {
-			LuaScript::setDisableSandbox(true);
-		}
+#ifdef _WIN32
+		if (checkBoxShowDeveloperConsoleOnWindows.getValue())
+			ShowWindow(GetConsoleWindow(), SW_SHOW);
+		else
+			ShowWindow(GetConsoleWindow(), SW_HIDE);
+#endif
 		Renderer::getInstance().loadConfig();
 		console.addLine(lang.getString("SettingsSaved"));
 	}

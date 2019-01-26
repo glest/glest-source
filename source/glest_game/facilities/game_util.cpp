@@ -171,9 +171,9 @@ namespace Game {
 		//case 1: return "Built: " + string(__DATE__) + " " + GIT_Rev;
 		switch (i) {
 			case 0:
-				return GameVersionString;
+				return GameVersionString + " (build " + GameBuildDateString + ")";
 			case 1:
-				return "Network multi-player cross-platform 3D real-time strategy (RTS) game";
+				return "Network multiplayer cross-platform 3D real-time strategy (RTS) game";
 			case 2:
 				return "Copyright 2001-2010 The Glest Team";
 			case 3:

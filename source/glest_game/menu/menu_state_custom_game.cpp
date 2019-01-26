@@ -1920,8 +1920,7 @@ namespace Game {
 								() : NULL),
 								string(__FILE__) + "_" + intToStr(__LINE__));
 
-						switchToNextMapGroup(listBoxMapFilter.getSelectedItemIndex() -
-							oldListBoxMapfilterIndex);
+						switchToNextMapGroup((listBoxMapFilter.getSelectedItemIndex() - oldListBoxMapfilterIndex) == 1 ? 1 : -1);
 
 						if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
 							enabled)

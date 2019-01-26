@@ -5908,7 +5908,7 @@ namespace Game {
 		if (haveSpecialOutputCommandLineOption == false ||
 			hasCommandArgument(argc, argv,
 				GAME_ARGS[GAME_ARG_VERSION]) == true) {
-			printf("%s\n", GameVersionString.c_str());
+			printf("%s (build %s)\n", GameVersionString.c_str(), GameBuildDateString.c_str());
 			printf("Compiled using: %s platform: %s endianness: %s",
 				getCompilerNameString().c_str(),
 				getPlatformNameString().c_str(),
@@ -6266,6 +6266,10 @@ namespace Game {
 			if (config.getBool("DisableLuaSandbox", "false") == true) {
 				LuaScript::setDisableSandbox(true);
 			}
+#ifdef _WIN32
+			if (config.getBool("ShowConsoleWindows", "false") == false)
+				ShowWindow(GetConsoleWindow(), SW_HIDE);
+#endif
 
 			if (hasCommandArgument
 			(argc, argv, GAME_ARGS[GAME_ARG_DEBUG_NETWORK_PACKETS]) == true) {

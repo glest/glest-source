@@ -2534,8 +2534,7 @@ namespace Game {
 					getSystemSettingType(SystemFlags::debugSystem).enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n",
 						getCurrentMapFile().c_str());
-				switchToNextMapGroup(listBoxMapFilter.getSelectedItemIndex() -
-					oldListBoxMapfilterIndex);
+				switchToNextMapGroup((listBoxMapFilter.getSelectedItemIndex() - oldListBoxMapfilterIndex) == 1 ? 1 : -1);
 				if (loadMapInfo
 				(Config::getMapPath(getCurrentMapFile(), "", false), &mapInfo,
 					true) == true) {

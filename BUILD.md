@@ -1,10 +1,5 @@
 # BUILD.md
 
-The Mac build may need attention. If you are interested in helping us
-test that the build completes and the game runs, please post or
-subscribe to this ticket: [Current
-Status](https://github.com/ZetaGlest/zetaglest-source/issues/25)
-
 * **Getting the code:**
   * [Set up the repositories locally](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#set-up-the-repositories-locally)
   * [cloning](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#procedure-for-cloning)
