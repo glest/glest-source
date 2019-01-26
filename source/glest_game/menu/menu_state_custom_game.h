@@ -362,8 +362,6 @@ namespace Game {
 			PlayNow(bool saveGame);
 
 		void
-			SetActivePlayerNameEditor();
-		void
 			cleanup();
 
 		NetworkPlayerStatusType getNetworkPlayerStatus();

@@ -110,8 +110,11 @@ namespace Game {
 					}
 				}
 				if (bFound == false) {
-					--selectedItemIndex %= items.size();
-
+					if (selectedItemIndex == 0)
+						selectedItemIndex = items.size() - 1;
+					else
+						selectedItemIndex--;
+					
 					int type = 0;
 					std::string faction = "";
 					if (menu != NULL) {
@@ -120,11 +123,12 @@ namespace Game {
 					}
 					if (menu != NULL
 						&& faction == formatString(GameConstants::OBSERVER_SLOTNAME)
-						&& (type == ctCpuEasy || type == ctCpu || type == ctCpuUltra || type == ctCpuZeta)) {
-						--selectedItemIndex %= items.size();
+						&& (type == ctCpuEasy || type == ctCpu || type == ctCpuUltra || type == ctCpuZeta || type == ctNetwork)) {
+						if (selectedItemIndex == 0)
+							selectedItemIndex = items.size() - 1;
+						else
+							selectedItemIndex--;
 					}
-
-
 				}
 
 			}
@@ -153,7 +157,7 @@ namespace Game {
 					}
 				}
 				if (bFound == false) {
-					++selectedItemIndex %= items.size();
+					selectedItemIndex = (selectedItemIndex + 1) % items.size();
 
 					int type = 0;
 					std::string faction = "";
@@ -164,7 +168,7 @@ namespace Game {
 					if (menu != NULL
 						&& faction == formatString(GameConstants::OBSERVER_SLOTNAME)
 						&& (type == ctCpuEasy || type == ctCpu || type == ctCpuUltra || type == ctCpuZeta)) {
-						++selectedItemIndex %= items.size();
+						selectedItemIndex = (selectedItemIndex + 1) % items.size();
 					}
 				}
 			}
