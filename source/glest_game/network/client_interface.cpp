@@ -492,9 +492,7 @@ namespace Game {
 			if (requestedCommands.empty() == false) {
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] WARNING / ERROR, requestedCommands.size() = %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, requestedCommands.size());
 
-				printf("May go out of synch: client requestedCommands.size() = %zd\n", requestedCommands.size());
-				/*sendTextMessage(sMsg, -1, true, "");
-				sleep(0);*/
+				printf("May go out of sync: client requestedCommands.size() = %zd\n", requestedCommands.size());
 			}
 		} catch (const game_runtime_error &ex) {
 			SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] Error [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, ex.what());
