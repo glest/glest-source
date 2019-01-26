@@ -1091,7 +1091,7 @@ namespace Game {
 #ifdef _WIN32
 		if (config.getBool("ShowConsoleWindows", "false") == true)
 			ShowWindow(GetConsoleWindow(), SW_SHOW);
-		else
+		else if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false)
 			ShowWindow(GetConsoleWindow(), SW_HIDE);
 #endif
 

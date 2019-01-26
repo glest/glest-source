@@ -1302,7 +1302,7 @@ namespace Game {
 #ifdef _WIN32
 		if (checkBoxShowDeveloperConsoleOnWindows.getValue())
 			ShowWindow(GetConsoleWindow(), SW_SHOW);
-		else
+		else if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false)
 			ShowWindow(GetConsoleWindow(), SW_HIDE);
 #endif
 		Renderer::getInstance().loadConfig();

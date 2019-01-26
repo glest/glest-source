@@ -12,7 +12,8 @@ v1.0
 - Maximum unit selection cap has been removed
 - Size of attack and move icons increased
 - Forest tilesets are more animated
-- You can leave and re-join network games, even if you experience lag
+- You can leave and re-join network games, even if you experience lag (buggy)
+- Console now hidden by default on Windows
 - [Default command is changed to "attack" instead of "move", which is much more intuitive](https://github.com/ZetaGlest/zetaglest-source/commit/2c4fc340de958f6b94b40ee62eabff015625e62b)
 	(pressing "a" not needed anymore); ["m" key can be used for "move"](https://github.com/ZetaGlest/zetaglest-source/commit/bf5a04be18f2b16b8a565acff4baabc5fbfed293).
 - Updated UI to look more modern
