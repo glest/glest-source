@@ -385,7 +385,7 @@ namespace Game {
 	class GameNetworkInterface : public NetworkInterface {
 
 	protected:
-		typedef vector<shared_ptr<NetworkCommand>> Commands;
+		typedef vector<NetworkCommand> Commands;
 
 		Commands requestedCommands;	//commands requested by the user
 		Commands pendingCommands;	//commands ready to be given
@@ -421,8 +421,8 @@ namespace Game {
 		int getPendingCommandCount() const {
 			return (int) pendingCommands.size();
 		}
-		shared_ptr<NetworkCommand> getPendingCommand(int i) {
-			return pendingCommands[i];
+		NetworkCommand* getPendingCommand(int i) {
+			return &pendingCommands[i];
 		}
 		void clearPendingCommands() {
 			pendingCommands.clear();

@@ -220,9 +220,7 @@ namespace Game {
 		void setGameSettings(GameSettings *serverGameSettings);
 		void broadcastGameSetup(const GameSettings *gameSettings);
 		void broadcastGameStart(const GameSettings *gameSettings);
-		void sendAllCommands(NetworkMessageCommandList& networkMessageCommandList);
-		void popBack();
-		void popLastCommand();
+
 		void updateNetworkFrame();
 
 		virtual void saveGame(XmlNode *rootNode) {

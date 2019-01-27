@@ -410,12 +410,13 @@ namespace Game {
 	void GameNetworkInterface::requestCommand(const NetworkCommand *networkCommand, bool insertAtStart) {
 		assert(networkCommand != NULL);
 		Mutex *mutex = getServerSynchAccessor();
-		MutexSafeWrapper safeMutex(mutex, string(__FILE__) + "_" + intToStr(__LINE__));
-		shared_ptr<NetworkCommand> ptr = make_shared<NetworkCommand>(*networkCommand);
-		if (insertAtStart == false)
-			requestedCommands.push_back(ptr);
-		else
-			requestedCommands.insert(requestedCommands.begin(), ptr);
+		if (insertAtStart == false) {
+			MutexSafeWrapper safeMutex(mutex, string(__FILE__) + "_" + intToStr(__LINE__));
+			requestedCommands.push_back(*networkCommand);
+		} else {
+			MutexSafeWrapper safeMutex(mutex, string(__FILE__) + "_" + intToStr(__LINE__));
+			requestedCommands.insert(requestedCommands.begin(), *networkCommand);
+		}
 	}
 
 	// =====================================================

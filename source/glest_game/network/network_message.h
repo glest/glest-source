@@ -543,7 +543,6 @@ namespace Game {
 		}
 
 		bool addCommand(const NetworkCommand* networkCommand);
-		bool addCommand(const shared_ptr<NetworkCommand> networkCommand);
 
 		void clear() {
 			data.header.commandCount = 0;

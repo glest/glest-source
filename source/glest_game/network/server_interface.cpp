@@ -1664,7 +1664,7 @@ namespace Game {
 
 		while (requestedCommands.empty() == false) {
 			// First add the command to the broadcast list (for all clients)
-			if (networkMessageCommandList.addCommand(requestedCommands.back())) {
+			if (networkMessageCommandList.addCommand(&requestedCommands.back())) {
 				// Add the command to the local server command list
 				pendingCommands.push_back(requestedCommands.back());
 				requestedCommands.pop_back();

@@ -1642,12 +1642,6 @@ namespace Game {
 		}
 	}
 
-	bool NetworkMessageCommandList::addCommand(const shared_ptr<NetworkCommand> networkCommand) {
-		data.commands.push_back(*networkCommand);
-		data.header.commandCount++;
-		return true;
-	}
-
 	bool NetworkMessageCommandList::addCommand(const NetworkCommand* networkCommand) {
 		data.commands.push_back(*networkCommand);
 		data.header.commandCount++;
