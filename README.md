@@ -47,8 +47,7 @@ Then run the following command to start the game:
 * [Compiling](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
 * [Contributing and Testing](https://github.com/ZetaGlest/zetaglest-source#contributing-and-testing)
 * [ChangeLog](https://github.com/ZetaGlest/zetaglest-source/blob/develop/ChangeLog.md)
-
-[Detailed information about units in the game](https://zetaglest.github.io/docs)
+* [Detailed information about units in the game](https://zetaglest.github.io/docs)
 
 ### Extra Tech trees, mods, tilesets, scenarios
 
