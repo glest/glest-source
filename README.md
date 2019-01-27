@@ -38,41 +38,19 @@ Then run the following command to start the game:
 
     zetaglest/mk/linux/build/zetaglest
 
-**README Contents**
+## Links
 
-* [Stay Informed (Updates)](https://github.com/ZetaGlest/zetaglest-source#stay-informed-updates)
-* [Project Goals](https://github.com/ZetaGlest/zetaglest-source#why-this-fork-project-goals)
-* [FAQ](https://github.com/ZetaGlest/zetaglest-source#faq)
+* **[Screenshots](https://github.com/ZetaGlest/screenshots)**
+* **[Discord](https://discord.gg/WaAaXS7)**
+* **[Server list and player stats](http://master.megaglest.org)**
+* [FAQ](https://zetaglest.github.io/docs/faq.html)
 * [Compiling](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
 * [Contributing and Testing](https://github.com/ZetaGlest/zetaglest-source#contributing-and-testing)
-* [Contact](https://github.com/ZetaGlest/zetaglest-source#contact)
-
-**[System Requirements](https://zetaglest.github.io/docs/system_requirements.html)**
-
-**[Screenshots](https://github.com/ZetaGlest/screenshots)**
-
-[Server list and player stats](http://master.megaglest.org)
+* [ChangeLog](https://github.com/ZetaGlest/zetaglest-source/blob/develop/ChangeLog.md)
 
 [Detailed information about units in the game](https://zetaglest.github.io/docs)
 
-## Stay Informed (Updates)
-
-* [ZetaGlest Change Log](https://github.com/ZetaGlest/zetaglest-source/blob/develop/ChangeLog.md)<br >
-* [![RSS](rss_23x23.jpeg)](https://zetaglest.github.io/feed.xml)
-[The ZetaGlest Blog](https://zetaglest.github.io/blog/)<br >
-* [![RSS](rss_23x23.jpeg)](https://github.com/ZetaGlest/zetaglest-source/commits/develop.atom)
-[Recent Commits to zetaglest-source:develop](https://github.com/ZetaGlest/zetaglest-source/commits/develop.atom)<br >
-* [![RSS](rss_23x23.jpeg)](https://github.com/ZetaGlest/zetaglest-data/commits/develop.atom)
-[Recent Commits to zetaglest-data:develop](https://github.com/ZetaGlest/zetaglest-data/commits/develop.atom)<br >
-* [![RSS](rss_23x23.jpeg)](https://github.com/ZetaGlest/zetaglest.github.io/commits/master.atom)
-[Recent Commits to the web site](https://github.com/ZetaGlest/zetaglest.github.io/commits/master.atom)
-
-## FAQ
-
-The FAQ is located at
-[https://zetaglest.github.io/docs/faq.html](https://zetaglest.github.io/docs/faq.html).
-
-### Extra Tech trees, mods, tilesets, scenarios (not yet available on the ZetaGlest server)
+### Extra Tech trees, mods, tilesets, scenarios
 
 * [MODS.md](https://github.com/ZetaGlest/zetaglest-data/blob/develop/MODS.md)
 * [TILESETS.md](https://github.com/ZetaGlest/zetaglest-data/blob/develop/TILESETS.md)
@@ -88,7 +66,7 @@ for extended, important instructions and guidelines for contributing.
 
 To run your own headless (dedicated) server, see [the FAQ](https://zetaglest.github.io/docs/faq.html#headlessserver).
 
-## Contact
+### Contact Us
 
 * [Discord](https://discord.gg/WaAaXS7)
 * [Message Board](https://groups.google.com/forum/#!forum/zetaglest)
