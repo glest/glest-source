@@ -820,8 +820,7 @@ namespace Game {
 					for (int i = 0;
 						i < gameNetworkInterface->getPendingCommandCount();
 						++i) {
-						giveNetworkCommand(gameNetworkInterface->
-							getPendingCommand(i));
+						giveNetworkCommand((gameNetworkInterface->getPendingCommand(i)).get());
 					}
 					if (SystemFlags::VERBOSE_MODE_ENABLED)
 						printf("END process: %d network commands in frame: %d\n",

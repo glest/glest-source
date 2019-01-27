@@ -426,37 +426,58 @@ namespace Game {
 		}
 	}
 
+	void ClientInterface::popBack() {
+		shared_ptr<NetworkCommand> temp = requestedCommands.back();
+		requestedCommands.pop_back();
+	}
+
+	void ClientInterface::popLastCommand() {
+		//TODO: THIS IS AN INSANELY UGLY WORKAROUND!! FIX IT!!
+#ifdef _WIN32
+		__try {
+			popBack();
+		} __except (EXCEPTION_CONTINUE_EXECUTION) {
+		}
+#else
+		requestedCommands.pop_back();
+#endif
+	}
+
+	void ClientInterface::sendAllCommands(NetworkMessageCommandList& networkMessageCommandList) {
+		//send as many commands as we can
+		while (requestedCommands.empty() == false) {
+			if (networkMessageCommandList.addCommand(requestedCommands.back())) {
+				popLastCommand();
+			} else {
+				break;
+			}
+		}
+	}
+
 	void ClientInterface::update() {
 		bool wasConnected = this->isConnected();
-		if (gotIntro == true &&
-			wasConnected == false) {
-			string playerNameStr = getHumanPlayerName();
-
-			Lang &lang = Lang::getInstance();
-
-			char szBuf1[8096] = "";
-			string statusTextFormat = lang.getString("PlayerDisconnected");
-			snprintf(szBuf1, 8096, statusTextFormat.c_str(), playerNameStr.c_str());
-
-			DisplayErrorMessage(szBuf1);
-			//setQuit(true);
-			return;
-		}
-
 		try {
+			if (gotIntro == true &&
+				wasConnected == false) {
+				string playerNameStr = getHumanPlayerName();
+
+				Lang &lang = Lang::getInstance();
+
+				char szBuf1[8096] = "";
+				string statusTextFormat = lang.getString("PlayerDisconnected");
+				snprintf(szBuf1, 8096, statusTextFormat.c_str(), playerNameStr.c_str());
+
+				DisplayErrorMessage(szBuf1);
+				//setQuit(true);
+				return;
+			}
+
 			NetworkMessageCommandList networkMessageCommandList(currentFrameCount);
 			for (int index = 0; index < GameConstants::maxPlayers; ++index) {
 				networkMessageCommandList.setNetworkPlayerFactionCRC(index, this->getNetworkPlayerFactionCRC(index));
 			}
 
-			//send as many commands as we can
-			while (requestedCommands.empty() == false) {
-				if (networkMessageCommandList.addCommand(&requestedCommands.back())) {
-					requestedCommands.pop_back();
-				} else {
-					break;
-				}
-			}
+			sendAllCommands(networkMessageCommandList);
 
 			double lastSendElapsed = difftime((long int) time(NULL), lastNetworkCommandListSendTime);
 
@@ -1153,7 +1174,7 @@ namespace Game {
 								//printf("Network cmd type: %d [%d] frame: %d\n",networkMessageCommandList.getCommand(i)->getNetworkCommandType(),nctPauseResume,networkMessageCommandList.getFrameCount());
 							//}
 
-							cachedPendingCommands[networkMessageCommandList.getFrameCount()].push_back(*networkMessageCommandList.getCommand(i));
+							cachedPendingCommands[networkMessageCommandList.getFrameCount()].push_back(make_shared<NetworkCommand>(*networkMessageCommandList.getCommand(i)));
 
 							if (cachedPendingCommandCRCs.find(networkMessageCommandList.getFrameCount()) == cachedPendingCommandCRCs.end()) {
 								cachedPendingCommandCRCs[networkMessageCommandList.getFrameCount()].reserve(GameConstants::maxPlayers);
