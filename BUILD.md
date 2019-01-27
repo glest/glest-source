@@ -152,6 +152,10 @@ Now that the build configuration has been set, run make, replacing `X` with the 
 
     make -jX
 
+On Linux, `X` can be substituted with `$(grep -c ^processor /proc/cpuinfo)`, to automatically get the number of cpu threads:
+
+    make -j$(grep -c ^processor /proc/cpuinfo)
+
 The zetaglest binaries will be in the `build/` directory. Run
 `./zetaglest` to start the game.
 
