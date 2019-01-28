@@ -1945,8 +1945,8 @@ namespace Game {
 
 				if (chrono.getMillis() > messageWaitTimeout) {
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-
-					Lang &lang = Lang::getInstance();
+					printf("\nTimeout waiting for message\n");
+					/*Lang &lang = Lang::getInstance();
 					const vector<string> languageList = this->gameSettings.getUniqueNetworkPlayerLanguages();
 					for (unsigned int langIndex = 0; langIndex < languageList.size(); ++langIndex) {
 
@@ -1963,7 +1963,7 @@ namespace Game {
 
 					sleep(1);
 					setQuit(true);
-					close();
+					close();*/
 					return msg;
 				}
 				// Sleep every x milli-seconds we wait to let other threads work

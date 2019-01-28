@@ -1348,7 +1348,7 @@ namespace Game {
 
 									if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-									Command* new_command = this->game->getCommander()->buildCommand(&networkCommand);
+									Command* new_command = this->game->getCommander()->buildCommand(networkCommand);
 									if (new_command != NULL) {
 										new_command->setStateType(cst_EmergencyReturnResource);
 										new_command->setStateValue(1);
@@ -2067,7 +2067,7 @@ namespace Game {
 
 								if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-								Command* command = this->game->getCommander()->buildCommand(&networkCommand);
+								Command* command = this->game->getCommander()->buildCommand(networkCommand);
 								std::pair<CommandResult, string> cr = unit->checkCommand(command);
 								if (cr.first == crSuccess) {
 									if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);

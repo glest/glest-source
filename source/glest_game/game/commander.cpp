@@ -188,7 +188,7 @@ namespace Game {
 								commandStateValue, unitCommandGroupId);
 
 						//every unit is ordered to a the position
-						resultCur = pushNetworkCommand(&networkCommand);
+						resultCur = pushNetworkCommand(networkCommand);
 					}
 				}
 
@@ -257,7 +257,7 @@ namespace Game {
 					c_str(), __FUNCTION__, __LINE__,
 					chrono.getMillis());
 
-			result = pushNetworkCommand(&networkCommand);
+			result = pushNetworkCommand(networkCommand);
 		}
 
 		if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).
@@ -335,7 +335,7 @@ namespace Game {
 								unitCommandGroupId);
 
 						//every unit is ordered to a different pos
-						resultCur = pushNetworkCommand(&networkCommand);
+						resultCur = pushNetworkCommand(networkCommand);
 					}
 					results.push_back(resultCur);
 				} else {
@@ -410,7 +410,7 @@ namespace Game {
 							unitCommandGroupId);
 
 					//every unit is ordered to a different position
-					resultCur = pushNetworkCommand(&networkCommand);
+					resultCur = pushNetworkCommand(networkCommand);
 				}
 				results.push_back(resultCur);
 			}
@@ -486,7 +486,7 @@ namespace Game {
 								unitId, commandType->getId(), currPos,
 								-1, targetId, -1, tryQueue, cst_None,
 								-1, unitCommandGroupId);
-						resultCur = pushNetworkCommand(&networkCommand, isMove);
+						resultCur = pushNetworkCommand(networkCommand, isMove);
 					}
 					results.push_back(resultCur);
 				} else if (!ignoreBuildings && unit->isMeetingPointSettable()) {
@@ -496,7 +496,7 @@ namespace Game {
 							cst_None, -1, unitCommandGroupId);
 
 					std::pair < CommandResult, string > resultCur =
-						pushNetworkCommand(&command);
+						pushNetworkCommand(command);
 					results.push_back(resultCur);
 				} else {
 					results.push_back(std::pair < CommandResult,
@@ -526,7 +526,7 @@ namespace Game {
 				command(this->world, nctCancelCommand,
 					selection->getUnit(i)->getId(), -1, Vec2i(0), -1, -1,
 					-1, false, cst_None, -1, unitCommandGroupId);
-			pushNetworkCommand(&command);
+			pushNetworkCommand(command);
 		}
 
 		return crSuccess;
@@ -540,7 +540,7 @@ namespace Game {
 
 		NetworkCommand
 			command(this->world, nctSetMeetingPoint, unit->getId(), -1, pos);
-		pushNetworkCommand(&command);
+		pushNetworkCommand(command);
 	}
 
 	void
@@ -551,7 +551,7 @@ namespace Game {
 
 		NetworkCommand
 			command(this->world, nctSwitchTeam, faction->getIndex(), teamIndex);
-		pushNetworkCommand(&command);
+		pushNetworkCommand(command);
 	}
 
 	void
@@ -564,7 +564,7 @@ namespace Game {
 		NetworkCommand
 			command(this->world, nctSwitchTeamVote, faction->getIndex(),
 				vote->factionIndex, Vec2i(0), vote->allowSwitchTeam);
-		pushNetworkCommand(&command);
+		pushNetworkCommand(command);
 	}
 
 	void
@@ -573,7 +573,7 @@ namespace Game {
 		NetworkCommand
 			command(this->world, nctDisconnectNetworkPlayer, faction->getIndex(),
 				playerIndex);
-		pushNetworkCommand(&command);
+		pushNetworkCommand(command);
 	}
 
 	void
@@ -584,7 +584,7 @@ namespace Game {
 			commandTypeId = (clearCaches == true ? 1 : 0);
 		command.
 			unitTypeId = (joinNetworkGame == true ? 1 : 0);
-		pushNetworkCommand(&command);
+		pushNetworkCommand(command);
 	}
 
 	void
@@ -595,7 +595,7 @@ namespace Game {
 			commandTypeId = (clearCaches == true ? 1 : 0);
 		command.
 			unitTypeId = (joinNetworkGame == true ? 1 : 0);
-		pushNetworkCommand(&command);
+		pushNetworkCommand(command);
 	}
 
 	void
@@ -609,7 +609,7 @@ namespace Game {
 		NetworkCommand
 			command(this->world, nctPlayerStatusChange, factionIndex,
 				npst_Disconnected);
-		pushNetworkCommand(&command);
+		pushNetworkCommand(command);
 	}
 
 	// ==================== PRIVATE ====================
@@ -644,8 +644,7 @@ namespace Game {
 
 	std::pair < CommandResult,
 		string >
-		Commander::pushNetworkCommand(const NetworkCommand *
-			networkCommand, bool insertAtStart) const {
+		Commander::pushNetworkCommand(const NetworkCommand& networkCommand, bool insertAtStart) const {
 		GameNetworkInterface *
 			gameNetworkInterface =
 			NetworkManager::getInstance().getGameNetworkInterface();
@@ -657,17 +656,17 @@ namespace Game {
 		//validate unit
 		const Unit *
 			unit = NULL;
-		if (networkCommand->getNetworkCommandType() != nctSwitchTeam &&
-			networkCommand->getNetworkCommandType() != nctSwitchTeamVote &&
-			networkCommand->getNetworkCommandType() != nctPauseResume &&
-			networkCommand->getNetworkCommandType() != nctPlayerStatusChange &&
-			networkCommand->getNetworkCommandType() !=
+		if (networkCommand.getNetworkCommandType() != nctSwitchTeam &&
+			networkCommand.getNetworkCommandType() != nctSwitchTeamVote &&
+			networkCommand.getNetworkCommandType() != nctPauseResume &&
+			networkCommand.getNetworkCommandType() != nctPlayerStatusChange &&
+			networkCommand.getNetworkCommandType() !=
 			nctDisconnectNetworkPlayer) {
-			unit = world->findUnitById(networkCommand->getUnitId());
+			unit = world->findUnitById(networkCommand.getUnitId());
 			if (unit == NULL) {
 				char szMsg[8096] = "";
 				snprintf(szMsg, 8096, "Error: Command refers to non-existent unit id %d. Game out of sync, try leaving and rejoining",
-					networkCommand->getUnitId());
+					networkCommand.getUnitId());
 				SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szMsg);
 				SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n", szMsg);
 				/*GameNetworkInterface *
@@ -686,7 +685,7 @@ namespace Game {
 
 		//calculate the result of the command
 		if (unit != NULL
-			&& networkCommand->getNetworkCommandType() == nctGiveCommand) {
+			&& networkCommand.getNetworkCommandType() == nctGiveCommand) {
 			//printf("In [%s::%s Line: %d] result.first = %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,result.first);
 			Command *
 				command = buildCommand(networkCommand);
@@ -733,7 +732,7 @@ namespace Game {
 						SIZE_T_SPECIFIER "\n", worldFrameCount,
 						replayList.size());
 				for (int i = 0; i < (int) replayList.size(); ++i) {
-					giveNetworkCommand(&replayList[i]);
+					giveNetworkCommand(replayList[i]);
 				}
 				GameNetworkInterface *
 					gameNetworkInterface =
@@ -853,7 +852,7 @@ namespace Game {
 		replayCommandList.push_back(make_pair(worldFrameCount, command));
 	}
 
-	std::pair<CommandResult, string> Commander::giveNetworkCommand(NetworkCommand * networkCommand) const {
+	std::pair<CommandResult, string> Commander::giveNetworkCommand(NetworkCommand& networkCommand) const {
 		Chrono
 			chrono;
 		if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).
@@ -874,8 +873,7 @@ namespace Game {
 			getGame()->
 			addNetworkCommandToReplayList(networkCommand, world->getFrameCount());
 
-		networkCommand->
-			preprocessNetworkCommand(this->world);
+		networkCommand.preprocessNetworkCommand(this->world);
 
 		if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).
 			enabled && chrono.getMillis() > 0)
@@ -888,7 +886,7 @@ namespace Game {
 		bool
 			commandWasHandled = false;
 		// Handle special commands first (that just use network command members as placeholders)
-		switch (networkCommand->getNetworkCommandType()) {
+		switch (networkCommand.getNetworkCommandType()) {
 			case nctSwitchTeam:
 			{
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
@@ -901,9 +899,9 @@ namespace Game {
 
 				commandWasHandled = true;
 				int
-					factionIndex = networkCommand->getUnitId();
+					factionIndex = networkCommand.getUnitId();
 				int
-					newTeam = networkCommand->getCommandTypeId();
+					newTeam = networkCommand.getCommandTypeId();
 
 				// Auto join empty team or ask players to join
 				bool
@@ -1024,11 +1022,11 @@ namespace Game {
 				commandWasHandled = true;
 
 				int
-					votingFactionIndex = networkCommand->getUnitId();
+					votingFactionIndex = networkCommand.getUnitId();
 				int
-					factionIndex = networkCommand->getCommandTypeId();
+					factionIndex = networkCommand.getCommandTypeId();
 				bool
-					allowSwitchTeam = networkCommand->getUnitTypeId() != 0;
+					allowSwitchTeam = networkCommand.getUnitTypeId() != 0;
 
 				Faction *
 					faction = world->getFaction(votingFactionIndex);
@@ -1223,7 +1221,7 @@ namespace Game {
 				if (role == nrServer) {
 					//int factionIndex = networkCommand->getUnitId();
 					int
-						playerIndex = networkCommand->getCommandTypeId();
+						playerIndex = networkCommand.getCommandTypeId();
 
 					GameNetworkInterface *
 						gameNetworkInterface =
@@ -1287,11 +1285,11 @@ namespace Game {
 				commandWasHandled = true;
 
 				bool
-					pauseGame = networkCommand->getUnitId() != 0;
+					pauseGame = networkCommand.getUnitId() != 0;
 				bool
-					clearCaches = (networkCommand->getCommandTypeId() == 1);
+					clearCaches = (networkCommand.getCommandTypeId() == 1);
 				bool
-					joinNetworkGame = (networkCommand->getUnitTypeId() == 1);
+					joinNetworkGame = (networkCommand.getUnitTypeId() == 1);
 				Game *
 					game = this->world->getGame();
 
@@ -1321,9 +1319,9 @@ namespace Game {
 				commandWasHandled = true;
 
 				int
-					factionIndex = networkCommand->getUnitId();
+					factionIndex = networkCommand.getUnitId();
 				int
-					playerStatus = networkCommand->getCommandTypeId();
+					playerStatus = networkCommand.getCommandTypeId();
 
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
 					enabled)
@@ -1388,7 +1386,7 @@ namespace Game {
 
 		if (commandWasHandled == false) {
 			Unit *
-				unit = world->findUnitById(networkCommand->getUnitId());
+				unit = world->findUnitById(networkCommand.getUnitId());
 
 			if (SystemFlags::
 				getSystemSettingType(SystemFlags::debugPerformance).enabled
@@ -1402,12 +1400,12 @@ namespace Game {
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
 				printf
 				("Running command NetworkCommandType = %d, unitid = %d [%p] factionindex = %d\n",
-					networkCommand->getNetworkCommandType(),
-					networkCommand->getUnitId(), unit,
+					networkCommand.getNetworkCommandType(),
+					networkCommand.getUnitId(), unit,
 					(unit != NULL ? unit->getFactionIndex() : -1));
 			//execute command, if unit is still alive
 			if (unit != NULL) {
-				switch (networkCommand->getNetworkCommandType()) {
+				switch (networkCommand.getNetworkCommandType()) {
 					case nctGiveCommand:
 					{
 						assert(networkCommand->getCommandTypeId() !=
@@ -1421,7 +1419,7 @@ namespace Game {
 								extractFileFromDirectoryPath
 								(__FILE__).c_str(),
 								__FUNCTION__, __LINE__,
-								networkCommand->getUnitId());
+								networkCommand.getUnitId());
 
 						Command *
 							command = buildCommand(networkCommand);
@@ -1447,7 +1445,7 @@ namespace Game {
 								command);
 
 						unit->giveCommand(command,
-							(networkCommand->getWantQueue() !=
+							(networkCommand.getWantQueue() !=
 								0));
 
 						if (SystemFlags::
@@ -1468,7 +1466,7 @@ namespace Game {
 								extractFileFromDirectoryPath
 								(__FILE__).c_str(),
 								__FUNCTION__, __LINE__,
-								networkCommand->getUnitId());
+								networkCommand.getUnitId());
 					}
 					break;
 					case nctCancelCommand:
@@ -1515,7 +1513,7 @@ namespace Game {
 								(__FILE__).c_str(),
 								__FUNCTION__, __LINE__);
 
-						unit->setMeetingPos(networkCommand->getPosition());
+						unit->setMeetingPos(networkCommand.getPosition());
 
 						if (SystemFlags::
 							getSystemSettingType(SystemFlags::debugPerformance).
@@ -1549,9 +1547,7 @@ namespace Game {
 						extractFileFromDirectoryPath
 						(__FILE__).c_str(), __FUNCTION__,
 						__LINE__,
-						networkCommand->getUnitId(),
-						networkCommand->
-						getNetworkCommandType());
+						networkCommand.getUnitId(), networkCommand.getNetworkCommandType());
 				return std::pair<CommandResult, string>(crFailUndefined, "");
 			}
 		}
@@ -1568,7 +1564,7 @@ namespace Game {
 
 	// Reconstruct a network command received.
 	Command *
-		Commander::buildCommand(const NetworkCommand * networkCommand) const {
+		Commander::buildCommand(const NetworkCommand& networkCommand) const {
 		// Check a new command is actually being given (and not a cancel command, switch team etc.).
 		assert(networkCommand->getNetworkCommandType() == nctGiveCommand);
 
@@ -1578,7 +1574,7 @@ namespace Game {
 				"In [%s::%s Line: %d] networkCommand [%s]\n",
 				extractFileFromDirectoryPath(__FILE__).
 				c_str(), __FUNCTION__, __LINE__,
-				networkCommand->toString().c_str());
+				networkCommand.toString().c_str());
 
 		// Check there is a world.
 		if (world == NULL) {
@@ -1587,7 +1583,7 @@ namespace Game {
 			snprintf(szBuf, 8096,
 				"In [%s::%s Line: %d] world == NULL for unit with id: %d",
 				extractFileFromDirectoryPath(__FILE__).c_str(),
-				__FUNCTION__, __LINE__, networkCommand->getUnitId());
+				__FUNCTION__, __LINE__, networkCommand.getUnitId());
 			throw
 				game_runtime_error(szBuf);
 		}
@@ -1600,13 +1596,13 @@ namespace Game {
 		const CommandType *
 			ct = NULL;
 		const Unit *
-			unit = world->findUnitById(networkCommand->getUnitId());
+			unit = world->findUnitById(networkCommand.getUnitId());
 
 		// Validate unit is in game.
 		if (unit == NULL) {
 			char szMsg[8096] = "";
 			snprintf(szMsg, 8096, "Error: Cannot find unit with id %d. Game out of sync, try leaving and rejoining",
-				networkCommand->getUnitId());
+				networkCommand.getUnitId());
 			SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szMsg);
 			SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n", szMsg);
 			/*GameNetworkInterface *
@@ -1620,18 +1616,17 @@ namespace Game {
 
 		// Get the command type for the unit.
 		ct =
-			unit->getType()->findCommandTypeById(networkCommand->
-				getCommandTypeId());
+			unit->getType()->findCommandTypeById(networkCommand.getCommandTypeId());
 
 		// Check that the unit from the network command is the same faction as the unit in the local game.
 		if (unit->getFaction()->getIndex() !=
-			networkCommand->getUnitFactionIndex()) {
+			networkCommand.getUnitFactionIndex()) {
 			char szMsg[8096] = "";
 			snprintf(szMsg, 8096,
 				"Error: Unit/Faction mismatch for unitId %d, local faction index %d, remote index %d. Game out of sync, try leaving and rejoining",
-				networkCommand->getUnitId(),
+				networkCommand.getUnitId(),
 				unit->getFaction()->getIndex(),
-				networkCommand->getUnitFactionIndex());
+				networkCommand.getUnitFactionIndex());
 				
 			SystemFlags::OutputDebug(SystemFlags::debugError, "%s\n", szMsg);
 			SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s\n", szMsg);
@@ -1649,7 +1644,7 @@ namespace Game {
 		const UnitType *
 			unitType =
 			world->findUnitTypeById(unit->getFaction()->getType(),
-				networkCommand->getUnitTypeId());
+				networkCommand.getUnitTypeId());
 
 		//validate command type
 
@@ -1659,9 +1654,7 @@ namespace Game {
 		if (ct == NULL && unit->getPreMorphType() != NULL) {
 			const CommandType *
 				ctPreMorph =
-				unit->getPreMorphType()->findCommandTypeById(networkCommand->
-					getCommandTypeId
-					());
+				unit->getPreMorphType()->findCommandTypeById(networkCommand.getCommandTypeId());
 			if (ctPreMorph != NULL) {
 				ct = unit->getType()->getFirstCtOfClass(ccStop);
 				isCancelPreMorphCommand = true;
@@ -1672,8 +1665,8 @@ namespace Game {
 		if (ct == NULL) {
 			char szMsg[8096] = "";
 			snprintf(szMsg, 8096, "Error: Cannot find command type %d for unitId %d [%s]. Game out of sync, try leaving and rejoining",
-				networkCommand->getCommandTypeId(),
-				networkCommand->getUnitId(),
+				networkCommand.getCommandTypeId(),
+				networkCommand.getUnitId(),
 				(unitType !=
 					NULL ? unitType->getName(false).c_str() : "null"));
 
@@ -1698,28 +1691,28 @@ namespace Game {
 			if (ct->getClass() == ccBuild) {
 				// Check the target building ID is valid. If not, throw an error.
 				/// TODO: What is happening here? The error returned does not match the condition. Why is there a constant of 4?
-				if (networkCommand->getTargetId() < 0
-					|| networkCommand->getTargetId() >= 4) {
-					printf("networkCommand->getTargetId() >= 0 && networkCommand->getTargetId() < 4, [%s]", networkCommand->toString().c_str());
+				if (networkCommand.getTargetId() < 0
+					|| networkCommand.getTargetId() >= 4) {
+					printf("networkCommand->getTargetId() >= 0 && networkCommand->getTargetId() < 4, [%s]", networkCommand.toString().c_str());
 					/*throw
 						game_runtime_error(szBuf);*/
 					return command;
 				}
-				facing = CardinalDir(networkCommand->getTargetId());
+				facing = CardinalDir(networkCommand.getTargetId());
 			}
 			// Get the target unit if the ID is valid.
-			else if (networkCommand->getTargetId() != Unit::invalidId) {
-				target = world->findUnitById(networkCommand->getTargetId());
+			else if (networkCommand.getTargetId() != Unit::invalidId) {
+				target = world->findUnitById(networkCommand.getTargetId());
 			}
 		}
 
 		if (isCancelPreMorphCommand == false) {
 			if (unitType != NULL) {
 				command =
-					new Command(ct, networkCommand->getPosition(), unitType,
+					new Command(ct, networkCommand.getPosition(), unitType,
 						facing);
 			} else if (target == NULL) {
-				command = new Command(ct, networkCommand->getPosition());
+				command = new Command(ct, networkCommand.getPosition());
 			} else {
 				command = new Command(ct, target);
 			}
@@ -1729,14 +1722,13 @@ namespace Game {
 
 		// Add in any special state
 		CommandStateType
-			commandStateType = networkCommand->getCommandStateType();
+			commandStateType = networkCommand.getCommandStateType();
 		int
-			commandStateValue = networkCommand->getCommandStateValue();
+			commandStateValue = networkCommand.getCommandStateValue();
 
 		command->setStateType(commandStateType);
 		command->setStateValue(commandStateValue);
-		command->setUnitCommandGroupId(networkCommand->
-			getUnitCommandGroupId());
+		command->setUnitCommandGroupId(networkCommand.getUnitCommandGroupId());
 
 		if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
 			enabled)

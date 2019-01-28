@@ -441,7 +441,7 @@ namespace Game {
 				const GameSettings * joinGameSettings = NULL);
 
 		void
-			addNetworkCommandToReplayList(NetworkCommand * networkCommand,
+			addNetworkCommandToReplayList(NetworkCommand& networkCommand,
 				int worldFrameCount);
 
 		bool factionLostGame(int factionIndex);

@@ -8508,12 +8508,10 @@ namespace Game {
 	}
 
 	void
-		Game::addNetworkCommandToReplayList(NetworkCommand * networkCommand,
-			int worldFrameCount) {
+		Game::addNetworkCommandToReplayList(NetworkCommand& networkCommand, int worldFrameCount) {
 		Config & config = Config::getInstance();
 		if (config.getBool("SaveCommandsForReplay", "false") == true) {
-			replayCommandList.push_back(make_pair
-			(worldFrameCount, *networkCommand));
+			replayCommandList.push_back(make_pair(worldFrameCount, networkCommand));
 		}
 	}
 

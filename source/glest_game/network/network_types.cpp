@@ -50,7 +50,6 @@ namespace Game {
 		, commandStateType(commandStateType)
 		, commandStateValue(commandStateValue)
 		, unitCommandGroupId(unitCommandGroupId) {
-
 		assert(targetId == -1 || facing == -1);
 		this->targetId = targetId >= 0 ? targetId : facing;
 		this->fromFactionIndex = world->getThisFactionIndex();

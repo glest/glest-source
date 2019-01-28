@@ -42,6 +42,7 @@ using Shared::Graphics::Vec2i;
 
 namespace Game {
 	class World;
+
 	// =====================================================
 	//	class NetworkString
 	// =====================================================
@@ -99,39 +100,7 @@ namespace Game {
 
 #pragma pack(push, 1)
 	class NetworkCommand {
-
 	public:
-		NetworkCommand() {
-			networkCommandType = 0;
-			unitId = 0;
-			unitTypeId = 0;
-			commandTypeId = 0;
-			positionX = 0;
-			positionY = 0;
-			targetId = 0;
-			wantQueue = 0;
-			fromFactionIndex = 0;
-			unitFactionUnitCount = 0;
-			unitFactionIndex = 0;
-			commandStateType = 0;
-			commandStateValue = 0;
-			unitCommandGroupId = 0;
-		}
-
-		NetworkCommand(
-			World *world,
-			int networkCommandType,
-			int unitId,
-			int commandTypeId = -1,
-			const Vec2i &pos = Vec2i(0),
-			int unitTypeId = -1,
-			int targetId = -1,
-			int facing = -1,
-			bool wantQueue = false,
-			CommandStateType commandStateType = cst_None,
-			int commandTypeStateValue = -1,
-			int unitCommandGroupId = -1);
-
 		int16 networkCommandType;
 		int32 unitId;
 		int16 unitTypeId;
@@ -146,6 +115,37 @@ namespace Game {
 		int8 commandStateType;
 		int32 commandStateValue;
 		int32 unitCommandGroupId;
+
+		NetworkCommand() :
+			networkCommandType(0),
+			unitId(0),
+			unitTypeId(0),
+			commandTypeId(0),
+			positionX(0),
+			positionY(0),
+			targetId(0),
+			wantQueue(0),
+			fromFactionIndex(0),
+			unitFactionUnitCount(0),
+			unitFactionIndex(0),
+			commandStateType(0),
+			commandStateValue(0),
+			unitCommandGroupId(0) {
+		};
+
+		NetworkCommand(
+			World *world,
+			int networkCommandType,
+			int unitId,
+			int commandTypeId = -1,
+			const Vec2i &pos = Vec2i(0),
+			int unitTypeId = -1,
+			int targetId = -1,
+			int facing = -1,
+			bool wantQueue = false,
+			CommandStateType commandStateType = cst_None,
+			int commandTypeStateValue = -1,
+			int unitCommandGroupId = -1);
 
 		NetworkCommandType getNetworkCommandType() const {
 			return static_cast<NetworkCommandType>(networkCommandType);

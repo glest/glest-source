@@ -1266,8 +1266,7 @@ namespace Game {
 					vector<NetworkCommand> pendingList = connectionSlot->getPendingNetworkCommandList(true);
 					if (pendingList.empty() == false) {
 						for (int idx = 0; exitServer == false && idx < (int) pendingList.size(); ++idx) {
-							NetworkCommand &cmd = pendingList[idx];
-							this->requestCommand(&cmd);
+							this->requestCommand(pendingList[idx]);
 						}
 						//printf("Executed: %d commands from slot: %d\n",pendingList.size(),index);
 					}

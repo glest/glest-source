@@ -172,19 +172,19 @@ namespace Game {
 			tryNetworkPlayerDisconnected(int factionIndex) const;
 
 		Command *
-			buildCommand(const NetworkCommand * networkCommand) const;
+			buildCommand(const NetworkCommand& networkCommand) const;
 
 	private:
 		std::pair <
 			CommandResult,
 			string >
-			pushNetworkCommand(const NetworkCommand * networkCommand, bool insertAtStart = false) const;
+			pushNetworkCommand(const NetworkCommand& networkCommand, bool insertAtStart = false) const;
 		std::pair <
 			CommandResult,
 			string >
 			computeResult(const CommandResultContainer & results) const;
 		std::pair<CommandResult, string>
-			giveNetworkCommand(NetworkCommand * networkCommand) const;
+			giveNetworkCommand(NetworkCommand& networkCommand) const;
 		bool
 			canSubmitCommandType(const Unit * unit,
 				const CommandType * commandType) const;
