@@ -301,19 +301,23 @@ namespace Game {
 			serverInitError = false;
 			try {
 				networkManager.init(nrServer, openNetworkSlots);
-			} catch (const std::exception & ex) {
-				serverInitError = true;
-				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "In [%s::%s %d]\nNetwork init error:\n%s\n",
-					extractFileFromDirectoryPath(__FILE__).c_str(),
-					__FUNCTION__, __LINE__, ex.what());
-				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				if (SystemFlags::
-					getSystemSettingType(SystemFlags::debugSystem).enabled)
-					SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
+			} catch (const std::exception & e) {
+				try {
+					networkManager.init(nrServer, openNetworkSlots);
+				} catch (const std::exception & ex) {
+					serverInitError = true;
+					char szBuf[8096] = "";
+					snprintf(szBuf, 8096, "In [%s::%s %d]\nNetwork init error:\n%s\n",
+						extractFileFromDirectoryPath(__FILE__).c_str(),
+						__FUNCTION__, __LINE__, ex.what());
+					SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
+					if (SystemFlags::
+						getSystemSettingType(SystemFlags::debugSystem).enabled)
+						SystemFlags::OutputDebug(SystemFlags::debugSystem, "%s", szBuf);
 
-				showGeneralError = true;
-				generalErrorToShow = szBuf;
+					showGeneralError = true;
+					generalErrorToShow = szBuf;
+				}
 			}
 
 			if (SystemFlags::
