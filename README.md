@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ZetaGlest/zetaglest-source.svg?branch=develop)](https://travis-ci.org/ZetaGlest/zetaglest-source)
+[![Build Status](https://travis-ci.org/Glest/glest-source.svg?branch=develop)](https://travis-ci.org/Glest/glest-source)
 
 # Glest
 
