@@ -3,6 +3,10 @@
 To see a full timeline of detailed changes please visit:
 https://github.com/Glest/glest-source/commits/develop
 
+v2.0
+
+- Added the Specialists faction
+
 v1.0
 
 - The new logo is polished

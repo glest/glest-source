@@ -1,4 +1,4 @@
-#define GAME_VERSION "Glest 1.0"
-#define GAME_BUILD_DATE "2601"
+#define GAME_VERSION "Glest 2.0"
+#define GAME_BUILD_DATE "3101"
 #define G3D_VIEWER_VERSION "1.0"
 #define MAP_EDITOR_VERSION "1.0"
