@@ -63,7 +63,7 @@ listed in the `Windows` directory for further information.
 
 To get the game up and running quickly, use the following command:
 
-    git clone https://github.com/Glest/glest-source.git glest && sudo glest/mk/linux/setup.sh
+    git clone https://github.com/Glest/glest-source.git glest; sudo glest/mk/linux/setup.sh
 
 Then run the following command to start the game:
 
