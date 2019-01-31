@@ -1,8 +1,8 @@
-// This file is part of ZetaGlest <https://github.com/ZetaGlest>
+// This file is part of Glest <https://github.com/Glest>
 //
-// Copyright (C) 2018  The ZetaGlest team
+// Copyright (C) 2018  The Glest team
 //
-// ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+// Glest is a fork of MegaGlest <https://megaglest.org/>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -130,7 +130,7 @@ namespace Shared {
 
 				int windowX = SDL_WINDOWPOS_UNDEFINED;
 				int windowY = SDL_WINDOWPOS_UNDEFINED;
-				string windowTitleText = "ZetaGlest";
+				string windowTitleText = "Glest";
 				int windowDisplayID = -1;
 
 				if (window != NULL) {
@@ -229,22 +229,22 @@ namespace Shared {
 #ifndef WIN32
 				string icon_file = "";
 #if defined(DATADIR)
-				if (fileExists(formatPath(TOSTRING(DATADIR)) + "zetaglest.png")) {
-					icon_file = formatPath(TOSTRING(DATADIR)) + "zetaglest.png";
-				} else if (fileExists(formatPath(TOSTRING(DATADIR)) + "zetaglest.bmp")) {
-					icon_file = formatPath(TOSTRING(DATADIR)) + "zetaglest.bmp";
+				if (fileExists(formatPath(TOSTRING(DATADIR)) + "glest.png")) {
+					icon_file = formatPath(TOSTRING(DATADIR)) + "glest.png";
+				} else if (fileExists(formatPath(TOSTRING(DATADIR)) + "glest.bmp")) {
+					icon_file = formatPath(TOSTRING(DATADIR)) + "glest.bmp";
 				}
 
 #endif
 
-				if (icon_file == "" && fileExists("zetaglest.png")) {
-					icon_file = "zetaglest.png";
-				} else if (icon_file == "" && fileExists("zetaglest.bmp")) {
-					icon_file = "zetaglest.bmp";
-				} else if (icon_file == "" && fileExists("/usr/share/pixmaps/zetaglest.png")) {
-					icon_file = "/usr/share/pixmaps/zetaglest.png";
-				} else if (icon_file == "" && fileExists("/usr/share/pixmaps/zetaglest.bmp")) {
-					icon_file = "/usr/share/pixmaps/zetaglest.bmp";
+				if (icon_file == "" && fileExists("glest.png")) {
+					icon_file = "glest.png";
+				} else if (icon_file == "" && fileExists("glest.bmp")) {
+					icon_file = "glest.bmp";
+				} else if (icon_file == "" && fileExists("/usr/share/pixmaps/glest.png")) {
+					icon_file = "/usr/share/pixmaps/glest.png";
+				} else if (icon_file == "" && fileExists("/usr/share/pixmaps/glest.bmp")) {
+					icon_file = "/usr/share/pixmaps/glest.bmp";
 				}
 
 				if (icon_file != "") {
@@ -267,7 +267,7 @@ namespace Shared {
 						delete[] result.second;
 					}
 
-					//SDL_Surface *icon = IMG_Load("zetaglest.ico");
+					//SDL_Surface *icon = IMG_Load("glest.ico");
 
 
 				//#if !defined(MACOSX)

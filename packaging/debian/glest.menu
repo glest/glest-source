@@ -1,0 +1,7 @@
+?package(glest): \
+ needs="X11" \
+ section="Games/Strategy" \
+ title="Glest" \
+ longtitle="A 3D real time strategy game." \
+ command="/usr/games/glest" \
+ icon="/usr/share/pixmaps/glest.xpm"

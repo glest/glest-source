@@ -104,7 +104,7 @@ unsuccessfulbuild
 # Makefile and cmake files are generated when the project is built and
 # should be ignored by git.
 #
-# The ZetaGlest project recommends using a separate build directory.
+# The Glest project recommends using a separate build directory.
 #
 build
 local-build

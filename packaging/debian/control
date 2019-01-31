@@ -1,7 +1,7 @@
-Source: zetaglest
+Source: glest
 Section: games
 Priority: extra
-Maintainer: ZetaGlest Team <zetaglest@gmail.com>
+Maintainer: Glest Team <glest@gmail.com>
 Uploaders:
  Andy Alt <andy400-dev@yahoo.com>
 Build-Depends:
@@ -26,22 +26,22 @@ Build-Depends:
  libz-dev,
  xauth
 Standards-Version: 3.9.8
-Homepage: https://github.com/ZetaGlest
+Homepage: https://github.com/Glest
 
-Package: zetaglest
+Package: glest
 Architecture: any
 Depends:
  famfamfam-flag-png,
  fonts-liberation,
  fonts-uralic,
- zetaglest-data (>= 0.8.02),
+ glest-data (>= 0.8.02),
  p7zip-full,
  fonts-dejavu-core,
  fonts-wqy-zenhei,
  ${misc:Depends},
  ${shlibs:Depends}
 Description: network multi-player real-time strategy game engine.
- It's shipped with the ZetaPack mod, which includes several factions,
+ It's shipped with the FactionPack mod, which includes several factions,
  each one consisting of many 3d characters. The factions are loosely
  based on historical empires with added elements of fantasy, such as
  mummies produced by Egyptian priests, Indian shamans who summon

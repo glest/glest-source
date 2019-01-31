@@ -1,8 +1,8 @@
-// This file is part of ZetaGlest <https://github.com/ZetaGlest>
+// This file is part of Glest <https://github.com/Glest>
 //
-// Copyright (C) 2018  The ZetaGlest team
+// Copyright (C) 2018  The Glest team
 //
-// ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+// Glest is a fork of MegaGlest <https://megaglest.org/>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -2785,12 +2785,12 @@ namespace Shared {
 				//int r                   = 0;
 #ifndef MINIUPNPC_VERSION_PRE1_5
 #ifndef MINIUPNPC_VERSION_PRE1_6
-				int r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype, ext_port_str, int_port_str, lanaddr, "ZetaGlest - zetaglest.github.io", "TCP", 0, NULL);
+				int r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype, ext_port_str, int_port_str, lanaddr, "Glest - glest.github.io", "TCP", 0, NULL);
 #else
-				int r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype, ext_port_str, int_port_str, lanaddr, "ZetaGlest - zetaglest.github.io", "TCP", 0);
+				int r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype, ext_port_str, int_port_str, lanaddr, "Glest - glest.github.io", "TCP", 0);
 #endif
 #else
-				int r = UPNP_AddPortMapping(urls.controlURL, data.servicetype, ext_port_str, int_port_str, lanaddr, "ZetaGlest - zetaglest.github.io", "TCP", 0);
+				int r = UPNP_AddPortMapping(urls.controlURL, data.servicetype, ext_port_str, int_port_str, lanaddr, "Glest - glest.github.io", "TCP", 0);
 #endif
 				if (r != UPNPCOMMAND_SUCCESS) {
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line: %d] AddPortMapping(%s, %s, %s) failed\n", __FILE__, __FUNCTION__, __LINE__, ext_port_str, int_port_str, lanaddr);

@@ -1,0 +1,21 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+         |-----handy-ruler------------------------------------------------------|
+glest: glest (network multi-player real-time strategy game engine)
+glest:
+glest: Glest is a network multi-player real-time strategy game engine.
+glest: It's shipped with the FactionPack mod, which includes several factions,
+glest: each one consisting of many 3d characters. The factions are loosely
+glest: based on historical empires with added elements of fantasy, such as
+glest: mummies produced by Egyptian priests, Indian shamans who summon
+glest: thunderbirds for air assaults, and Norsemen who can build flying
+glest: valkries and "Thors". Start the game by harvesting natural resources,
+glest: then use the cash to produce an army.
+glest: Homepage: https://glest.github.io/
+
+

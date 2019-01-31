@@ -1,0 +1,21 @@
+#!/bin/sh
+# 2014 Written by filux <heross(@@)o2.pl>
+# Copyright (c) 2014-2015 under GNU GPL v3.0+
+# ----------------------------------------------------------------------------
+LANG=C
+
+SCRIPTLOCATION="$(readlink -f "$0")"
+GAMEDIR="$(dirname "$SCRIPTLOCATION")"
+# -------
+# useful for mods
+EXC_BINARY="glest_g3dviewer"
+BASIC_SCRIPT="start_glest"
+# -------
+LIBDIR="lib"
+WARNINGS="$("$GAMEDIR/$BASIC_SCRIPT" --tool-g3dviewer "$EXC_BINARY" 2>&1)"
+if [ -d "$GAMEDIR/$LIBDIR" ]; then
+    export LD_LIBRARY_PATH="${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}${GAMEDIR}/${LIBDIR}"
+fi
+BeginTime="$(date +"%s")"
+"$GAMEDIR/$EXC_BINARY" "$@"
+"$GAMEDIR/$BASIC_SCRIPT" --tool-buginfo "$?" "$WARNINGS" "$BeginTime" "$(date +"%s")" "$EXC_BINARY"

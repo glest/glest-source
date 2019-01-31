@@ -1,11 +1,11 @@
 #!/bin/bash
 # script for use with travis and on linux only
 #
-# Copyright (c) 2015-2016 MegaGlest Team under GNU GPL v3.0+
+# Copyright (c) 2015-2016 Glest Team under GNU GPL v3.0+
 #
 # Copyright (c) 2018
-# modified for ZetaGlest <https://github.com/ZetaGlest>
-# ZetaGlest Team
+# modified for Glest <https://github.com/Glest>
+# Glest Team
 
 # This only needs to be changed when Travis updates the Ubuntu version
 # it's using.

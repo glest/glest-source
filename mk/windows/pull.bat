@@ -10,12 +10,12 @@ call .\update-all.bat
 cd ..
 
 echo.
-echo Updating zetaglest-code...
+echo Updating glest-code...
 cd ..\..
 git pull
 Echo.
 
-echo Updating zetaglest-data...
+echo Updating glest-data...
 cd data
 git pull
 cd ..\

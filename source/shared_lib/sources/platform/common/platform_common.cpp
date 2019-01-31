@@ -1,8 +1,8 @@
-// This file is part of ZetaGlest <https://github.com/ZetaGlest>
+// This file is part of Glest <https://github.com/Glest>
 //
-// Copyright (C) 2018  The ZetaGlest team
+// Copyright (C) 2018  The Glest team
 //
-// ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+// Glest is a fork of MegaGlest <https://megaglest.org/>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -1753,46 +1753,46 @@ namespace Shared {
 			replaceAll(context, "&amp;", "&");
 			replaceAll(context, "&lt;", "<");
 			replaceAll(context, "&gt;", ">");
-			//replaceAll(context,"&OElig;","Œ");
+			//replaceAll(context,"&OElig;","??");
 			replaceAll(context, "&OElig;", "\xC5\x92\0");
-			//replaceAll(context,"&oelig;","œ");
+			//replaceAll(context,"&oelig;","??");
 			replaceAll(context, "&oelig;", "\xC5\x93\0");
-			//replaceAll(context,"&Scaron;","Š");
+			//replaceAll(context,"&Scaron;","??");
 			replaceAll(context, "&Scaron;", "\xC5\xA0\0");
-			//replaceAll(context,"&scaron;","š");
+			//replaceAll(context,"&scaron;","??");
 			replaceAll(context, "&scaron;", "\xC5\xA1\0");
-			//replaceAll(context,"&Yuml;","Ÿ");
+			//replaceAll(context,"&Yuml;","??");
 			replaceAll(context, "&Yuml;", "\xC5\xB8\0");
-			replaceAll(context, "&circ;", "ˆ");
-			replaceAll(context, "&tilde;", "˜");
+			replaceAll(context, "&circ;", "??");
+			replaceAll(context, "&tilde;", "??");
 			replaceAll(context, "&ensp;", " ");
 			replaceAll(context, "&emsp;", " ");
 			replaceAll(context, "&thinsp;", " ");
 			replaceAll(context, "&ndash;", "-");
 			replaceAll(context, "&mdash;", "-");
-			//replaceAll(context,"&lsquo;","‘");
+			//replaceAll(context,"&lsquo;","???");
 			replaceAll(context, "&lsquo;", "\xE2\x80\x98\0");
-			//replaceAll(context,"&rsquo;","’");
+			//replaceAll(context,"&rsquo;","???");
 			replaceAll(context, "&rsquo;", "\xE2\x80\x99\0");
-			//replaceAll(context,"&sbquo;","‚");
+			//replaceAll(context,"&sbquo;","???");
 			replaceAll(context, "&sbquo;", "\xE2\x80\x9A\0");
-			//replaceAll(context,"&ldquo;","“");
+			//replaceAll(context,"&ldquo;","???");
 			replaceAll(context, "&ldquo;", "\xE2\x80\x9C\0");
-			//replaceAll(context,"&rdquo;","”");
+			//replaceAll(context,"&rdquo;","???");
 			replaceAll(context, "&rdquo;", "\xE2\x80\x9D\0");
-			//replaceAll(context,"&bdquo;","„");
+			//replaceAll(context,"&bdquo;","???");
 			replaceAll(context, "&bdquo;", "\xE2\x80\x9E\0");
-			//replaceAll(context,"&dagger;","†");
+			//replaceAll(context,"&dagger;","???");
 			replaceAll(context, "&dagger;", "\xE2\x80\xA0\0");
-			//replaceAll(context,"&Dagger;","‡");
+			//replaceAll(context,"&Dagger;","???");
 			replaceAll(context, "&Dagger;", "\xE2\x80\xA1\0");
-			//replaceAll(context,"&permil;","‰");
+			//replaceAll(context,"&permil;","???");
 			replaceAll(context, "&permil;", "\xE2\x80\xB0\0");
-			//replaceAll(context,"&lsaquo;","‹");
+			//replaceAll(context,"&lsaquo;","???");
 			replaceAll(context, "&lsaquo;", "\xE2\x80\xB9\0");
-			//replaceAll(context,"&rsaquo;","›");
+			//replaceAll(context,"&rsaquo;","???");
 			replaceAll(context, "&rsaquo;", "\xE2\x80\xBA\0");
-			//replaceAll(context,"&euro;","€");
+			//replaceAll(context,"&euro;","???");
 			replaceAll(context, "&euro;", "\xE2\x82\xAC\0");
 
 			return context;

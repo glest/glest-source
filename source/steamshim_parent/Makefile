@@ -1,5 +1,5 @@
-TARGET				:= megaglest_shim
-GAME_LAUNCH_NAME	?= megaglest
+TARGET				:= glest_shim
+GAME_LAUNCH_NAME	?= glest
 
 ifndef STEAMWORKS
 # STEAMWORKS			?= /home/softcoder/Code/steamworks_sdk/sdk

@@ -5,17 +5,17 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
-	<string>ZetaGlest</string>
+	<string>Glest</string>
 	<key>CFBundleGetInfoString</key>
-	<string>v${ZETAGLEST_VERSION}, © 2018 The ZetaGlest Team.</string>
+	<string>v${GLEST_VERSION}, © 2018 The Glest Team.</string>
 	<key>CFBundleIconFile</key>
-	<string>ZetaGlest</string>
+	<string>Glest</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.zetaglest.v${ZETAGLEST_VERSION}</string>
+	<string>org.glest.v${GLEST_VERSION}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>ZetaGlest</string>
+	<string>Glest</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

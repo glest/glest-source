@@ -19,10 +19,10 @@ override_dh_installchangelogs:
 override_dh_install:
 	dh_install
 	# Remove empty directory
-	$(RM) -r debian/zetaglest/usr/share/games/zetaglest/data
+	$(RM) -r debian/glest/usr/share/games/glest/data
 	echo \
 		"CountryTexturePath=/usr/share/flags/countries/16x11/" >> \
-		debian/zetaglest/usr/share/games/zetaglest/glest.ini
+		debian/glest/usr/share/games/glest/glest.ini
 
 get-orig-source:
 	uscan --verbose --download-current-version --force-download

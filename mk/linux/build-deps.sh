@@ -3,7 +3,7 @@
 # Use this script to install build dependencies on a number of Linux platforms
 # ----------------------------------------------------------------------------
 # Originally written by Mark Vejvoda <mark_vejvoda@hotmail.com>
-# Rewritten by Tom Reynolds <tomreyn@megaglest.org>
+# Rewritten by Tom Reynolds <tomreyn@glest.org>
 # Copyright (c) 2012-2017 Mark Vejvoda, Tom Reynolds under GNU GPL v3.0
 LANG=C
 
@@ -59,7 +59,7 @@ fi
 common_info() {
 	echo
 	if [ "$1" != "no_install" ]; then
-		echo 'Please report a bug at https://github.com/ZetaGlest/zetaglest-source providing the following information:'
+		echo 'Please report a bug at https://github.com/Glest/glest-source providing the following information:'
 	fi
 	echo '--- snip ---'
 	echo 'Git revision: '"$gitcommit"
@@ -71,8 +71,8 @@ common_info() {
 	echo '--- snip ---'
 	echo
 	if [ "$1" = "+wiki" ]; then
-		echo 'For now, you may want to take a look at the build hints on the ZetaGlest readme at:'
-		echo '  https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md'
+		echo 'For now, you may want to take a look at the build hints on the Glest readme at:'
+		echo '  https://github.com/Glest/glest-source/blob/develop/BUILD.md'
 		echo 'If you can come up with something which works for you, please report back to us, too. Thanks!'
 		exit 1
 	fi

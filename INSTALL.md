@@ -1,22 +1,19 @@
-# Installing ZetaGlest
+# Installing Glest
 
 You can install from source or download Installers or packages for your
 operating system.
 
 ## Binary Packages
 
-**Note:** Installation is not necessary to run the game. You can build
-the game from source and run it without installing
-
 ## Windows
 
-* [ZetaGlest Windows Installer](https://github.com/ZetaGlest/windows-installer)
-* [Build and Install from source code](https://github.com/ZetaGlest/zetaglest-source/blob/develop/mk/windows/README.md)
+* [Glest Windows Installer](https://github.com/Glest/windows-installer)
+* [Build and Install from source code](https://github.com/Glest/glest-source/blob/develop/mk/windows/README.md)
 
 ## Linux, Mac OS, BSD
 
 Review the dependency information and instructions for [building from
-source](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md).
+source](https://github.com/Glest/glest-source/blob/develop/BUILD.md).
 
 From the top of the project source directory:
 
@@ -51,7 +48,7 @@ directories when `-DCMAKE_INSTALL_PREFIX=/home/andy/local` is used:
 INSTALL_DIR_BIN:PATH=/home/andy/local/games
 
 // The installation path for data files
-INSTALL_DIR_DATA:PATH=/home/andy/local/share/zetaglest
+INSTALL_DIR_DATA:PATH=/home/andy/local/share/glest
 
 // The installation path for desktop files
 INSTALL_DIR_DESKTOP:PATH=/home/andy/local/applications
@@ -66,12 +63,12 @@ INSTALL_DIR_MAN:PATH=/home/andy/local/share/man/man6
 If you wish to install to a location that does not require super-user
 privileges, change '/usr' to a location to which you have write access.
 
-See [running](https://github.com/ZetaGlest/zetaglest-source#running) for
+See [running](https://github.com/Glest/glest-source#running) for
 detailed information about running a server or hosting a game.
 
 The value for INSTALL_DIR_DATA is written to the game when compiled,
 therefore if you ever move your data directory, you will have to
-recompile ZetaGlest.
+recompile Glest.
 
 After you run `cmake` for the first time, you won't need to specify any
 options unless you want to change previously-used options. Just use
@@ -87,13 +84,11 @@ If your build doesn't seem to be using the options you gave it, first
 try removing CMakeCache.txt and rebuilding.
 
 **Note:** The majority of the game data is not installed during the
-steps above. The files from the zetaglest-data repo must be copied into
-CMAKE_INSTALL_PREFIX/share/zetaglest, or specify an existing path to
+steps above. The files from the glest-data repo must be copied into
+CMAKE_INSTALL_PREFIX/share/glest, or specify an existing path to
 data by adding this option to cmake:
 
     `-DINSTALL_DIR_DATA=<absolute-path-to-data>`
-
-(data packages will be created soon -andy5995 2018-09-16)
 
 #### Uninstalling
 

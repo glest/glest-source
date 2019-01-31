@@ -1,5 +1,5 @@
 ;
-;  Copyright (c) 2014 MegaGlest. All Rights Reserved.
+;  Copyright (c) 2014 Glest. All Rights Reserved.
 ;
 ;  Use of this source code is governed by the GPL 3.x license 
 

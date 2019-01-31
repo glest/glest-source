@@ -1,8 +1,8 @@
-// This file is part of ZetaGlest <https://github.com/ZetaGlest>
+// This file is part of Glest <https://github.com/Glest>
 //
-// Copyright (C) 2018  The ZetaGlest team
+// Copyright (C) 2018  The Glest team
 //
-// ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+// Glest is a fork of MegaGlest <https://megaglest.org/>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -191,13 +191,13 @@ namespace Shared {
 			printf("\n\n                     \tWhere x is a g3d filename to load separated with a");
 			printf("\n\n                     \tcomma and one or more skill names to try loading.");
 			printf("\n\n                     \texample:");
-			printf("\n\n                     \t%s %s=techs/zetapack/factions/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_UNIT]));
+			printf("\n\n                     \t%s %s=techs/factionpack/factions/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_UNIT]));
 			printf("\n\n                     \ttech/units/battle_machine,attack_skill,stop_skill");
 
 			printf("\n\n%s=x  \tAuto load the model specified in path/filename x.", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_MODEL]));
 			printf("\n\n                     \tWhere x is a g3d filename to load.");
 			printf("\n\n                     \texample:");
-			printf("\n\n                     \t%s %s=techs/zetapack/factions/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_MODEL]));
+			printf("\n\n                     \t%s %s=techs/factionpack/factions/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_MODEL]));
 			printf("\n\n                     \ttech/units/battle_machine/models/battle_machine_dying.g3d");
 
 			printf("\n\n%s=x  ", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_MODEL_ANIMATION_VALUE]));
@@ -217,14 +217,14 @@ namespace Shared {
 			printf("\n\n                     \texample:");
 			printf("\n\n                     \t%s %s=transparent,", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_AUTO_SCREENSHOT]));
 			printf("\n\n                     \tdisable_grid,saveas-test.png,resize-800x600");
-			printf("\n\n                     \t%s=techs/zetapack/factions/tech/units/", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_MODEL]));
+			printf("\n\n                     \t%s=techs/factionpack/factions/tech/units/", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_MODEL]));
 			printf("\n\n                     \tbattle_machine/models/battle_machine_dying.g3d");
 
 			//         "================================================================================"
 			printf("\n\n%s=x  \tAuto load the particle specified in path/filename x.", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE]));
 			printf("\n\n                     \tWhere x is a Particle XML filename to load.");
 			printf("\n\n                     \texample:");
-			printf("\n\n                     \t%s %s=techs/zetapack/factions/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE]));
+			printf("\n\n                     \t%s %s=techs/factionpack/factions/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE]));
 			printf("\n\n                     \tpersian/units/genie/glow_particles.xml");
 
 			printf("\n\n%s=x  ", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_PROJECTILE]));
@@ -233,7 +233,7 @@ namespace Shared {
 			printf("\n\n                     \tWhere x is a Projectile Particle Definition XML");
 			printf("\n\n                     \t    filename to load.");
 			printf("\n\n                     \texample:");
-			printf("\n\n                     \t%s %s=techs/zetapack/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_PROJECTILE]));
+			printf("\n\n                     \t%s %s=techs/factionpack/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_PROJECTILE]));
 			printf("\n\n                     \tfactions/persian/units/genie/particle_proj.xml");
 
 			printf("\n\n%s=x  ", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_SPLASH]));
@@ -242,7 +242,7 @@ namespace Shared {
 			printf("\n\n                     \tWhere x is a Splash Particle Definition XML");
 			printf("\n\n                     \t    filename to load.");
 			printf("\n\n                     \texample:");
-			printf("\n\n                     \t%s %s=techs/zetapack/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_SPLASH]));
+			printf("\n\n                     \t%s %s=techs/factionpack/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_SPLASH]));
 			printf("\n\n                     \tfactions/persian/units/genie/particle_splash.xml");
 
 			printf("\n\n%s=x  ", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_LOOP_VALUE]));
@@ -285,7 +285,7 @@ namespace Shared {
 		// 	class MainWindow
 		// ===============================================
 
-		const string MainWindow::winHeader = string("ZetaGlest G3D viewer ") + G3DViewerVersionString;
+		const string MainWindow::winHeader = string("Glest G3D viewer ") + G3DViewerVersionString;
 
 		const float defaultspeed = 0.025f;
 
@@ -465,7 +465,7 @@ namespace Shared {
 	//@="blergcorp.blergapp.v1"
 
 	//Open the registry key.
-			wstring subKey = L"Software\\Classes\\zetaglest.g3d\\shell\\open\\command";
+			wstring subKey = L"Software\\Classes\\glest.g3d\\shell\\open\\command";
 			HKEY keyHandle;
 			DWORD dwDisposition;
 			RegCreateKeyEx(HKEY_CURRENT_USER, subKey.c_str(), 0, NULL, 0, KEY_ALL_ACCESS, NULL, &keyHandle, &dwDisposition);
@@ -480,7 +480,7 @@ namespace Shared {
 			subKey = L"Software\\Classes\\.g3d";
 			RegCreateKeyEx(HKEY_CURRENT_USER, subKey.c_str(), 0, NULL, 0, KEY_ALL_ACCESS, NULL, &keyHandle, &dwDisposition);
 			//Set the value.
-			launchApp = L"zetaglest.g3d";
+			launchApp = L"glest.g3d";
 			len = (launchApp.size() + 1) * sizeof(wchar_t);
 			RegSetValueEx(keyHandle, NULL, 0, REG_SZ, (PBYTE) launchApp.c_str(), len);
 			RegCloseKey(keyHandle);
@@ -898,9 +898,9 @@ namespace Shared {
 				fileDialog->SetWildcard(wxT("XML files (*.xml)|*.xml"));
 
 				if (isControlKeyPressed == true) {
-					fileDialog->SetMessage(wxT("Adding ZetaGlest particle to current view."));
+					fileDialog->SetMessage(wxT("Adding Glest particle to current view."));
 				} else {
-					fileDialog->SetMessage(wxT("Selecting ZetaGlest particle for current view."));
+					fileDialog->SetMessage(wxT("Selecting Glest particle for current view."));
 				}
 
 				if (fileDialog->ShowModal() == wxID_OK) {
@@ -930,9 +930,9 @@ namespace Shared {
 				fileDialog->SetWildcard(wxT("XML files (*.xml)|*.xml"));
 
 				if (isControlKeyPressed == true) {
-					fileDialog->SetMessage(wxT("Adding ZetaGlest projectile particle to current view."));
+					fileDialog->SetMessage(wxT("Adding Glest projectile particle to current view."));
 				} else {
-					fileDialog->SetMessage(wxT("Selecting ZetaGlest projectile particle for current view."));
+					fileDialog->SetMessage(wxT("Selecting Glest projectile particle for current view."));
 				}
 
 				if (fileDialog->ShowModal() == wxID_OK) {
@@ -962,9 +962,9 @@ namespace Shared {
 				fileDialog->SetWildcard(wxT("XML files (*.xml)|*.xml"));
 
 				if (isControlKeyPressed == true) {
-					fileDialog->SetMessage(wxT("Adding ZetaGlest splash particle to current view."));
+					fileDialog->SetMessage(wxT("Adding Glest splash particle to current view."));
 				} else {
-					fileDialog->SetMessage(wxT("Selecting ZetaGlest splash particle for current view."));
+					fileDialog->SetMessage(wxT("Selecting Glest splash particle for current view."));
 				}
 
 				if (fileDialog->ShowModal() == wxID_OK) {
@@ -1263,7 +1263,7 @@ namespace Shared {
 				}
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
-				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a ZetaGlest particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
+				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a Glest particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
 			}
 		}
 
@@ -1514,7 +1514,7 @@ namespace Shared {
 				}
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
-				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a ZetaGlest projectile particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
+				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a Glest projectile particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
 			}
 			if (timer) timer->Start(100);
 			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] after load [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, path.c_str());
@@ -1619,7 +1619,7 @@ namespace Shared {
 				}
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
-				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a ZetaGlest projectile particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
+				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a Glest projectile particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
 			}
 			if (timer) timer->Start(100);
 			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] after load [%s] particleSplashPathList.size() = " SIZE_T_SPECIFIER "\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, path.c_str(), this->particleSplashPathList.size());

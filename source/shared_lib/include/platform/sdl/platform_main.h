@@ -1,8 +1,8 @@
-// This file is part of ZetaGlest <https://github.com/ZetaGlest>
+// This file is part of Glest <https://github.com/Glest>
 //
-// Copyright (C) 2018  The ZetaGlest team
+// Copyright (C) 2018  The Glest team
 //
-// ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+// Glest is a fork of MegaGlest <https://megaglest.org/>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -214,7 +214,7 @@ void printParameterHelp(const char *argv0, bool foundInvalidArgs) {
 // the 'printf' statement
 //
 	printf("\n\nUsage: %s [OPTION]... VALUE...\n\n\
-Options for running zetaglest from the command line\n\n\
+Options for running glest from the command line\n\n\
   %s\n\
     display usage",
 extractFileFromDirectoryPath(argv0).c_str(),
@@ -361,7 +361,7 @@ GAME_ARGS[GAME_ARG_MOD]);
                         *NOTE: This only applies when files are purged due to\n\
                         the above flags being set.\n\
     example:\n\
-      %s %s=zetapack,vbros_pack_5",
+      %s %s=factionpack,vbros_pack_5",
 GAME_ARGS[GAME_ARG_VALIDATE_TECHTREES],
 extractFileFromDirectoryPath(argv0).c_str(),
 GAME_ARGS[GAME_ARG_VALIDATE_TECHTREES]);
@@ -453,7 +453,7 @@ GAME_ARGS[GAME_ARG_VALIDATE_TECHTREES]);
 	printf("\n\n                     \t    the original texture if its filesize is smaller than the");
 	printf("\n\n                     \t    converted format.");
 	printf("\n\n                     \texample:");
-	printf("\n\n                     \t%s %s=techs/zetapack/factions/tech/", extractFileFromDirectoryPath(argv0).c_str(), GAME_ARGS[GAME_ARG_CONVERT_MODELS]);
+	printf("\n\n                     \t%s %s=techs/factionpack/factions/tech/", extractFileFromDirectoryPath(argv0).c_str(), GAME_ARGS[GAME_ARG_CONVERT_MODELS]);
 	printf("\n\n                     \tunits/castle/models/castle.g3d=png=keepsmallest");
 
 	printf("\n\n%s=x  \tForce the language to be the language specified", GAME_ARGS[GAME_ARG_USE_LANGUAGE]);
@@ -471,7 +471,7 @@ GAME_ARGS[GAME_ARG_VALIDATE_TECHTREES]);
 
 	printf("\n\n%s=x  \tShow the calculated CRC for the techtree named x.", GAME_ARGS[GAME_ARG_SHOW_TECHTREE_CRC]);
 	printf("\n\n                     \tWhere x is a techtree name.");
-	printf("\n\n                     \texample: %s %s=zetapack", extractFileFromDirectoryPath(argv0).c_str(), GAME_ARGS[GAME_ARG_SHOW_TECHTREE_CRC]);
+	printf("\n\n                     \texample: %s %s=factionpack", extractFileFromDirectoryPath(argv0).c_str(), GAME_ARGS[GAME_ARG_SHOW_TECHTREE_CRC]);
 
 	printf("\n\n%s=x  \tShow the calculated CRC for the scenario named x.", GAME_ARGS[GAME_ARG_SHOW_SCENARIO_CRC]);
 	printf("\n\n                     \tWhere x is a scenario name.");
@@ -481,7 +481,7 @@ GAME_ARGS[GAME_ARG_VALIDATE_TECHTREES]);
 	printf("\n\n%s=x=y  \tShow the calculated CRC for files in the path", GAME_ARGS[GAME_ARG_SHOW_PATH_CRC]);
 	printf("\n\n                     \t    located in x using file filter y.");
 	printf("\n\n                     \tWhere x is a path name and y is file(s) filter.");
-	printf("\n\n                     \texample: %s %s=techs/=zetapack.7z", extractFileFromDirectoryPath(argv0).c_str(), GAME_ARGS[GAME_ARG_SHOW_PATH_CRC]);
+	printf("\n\n                     \texample: %s %s=techs/=factionpack.7z", extractFileFromDirectoryPath(argv0).c_str(), GAME_ARGS[GAME_ARG_SHOW_PATH_CRC]);
 
 	printf("\n\n%s  \tDisables stack backtrace on errors.", GAME_ARGS[GAME_ARG_DISABLE_BACKTRACE]);
 

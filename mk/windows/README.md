@@ -1,10 +1,10 @@
-# Build ZetaGlest for Windows
+# Building Glest for Windows
 
-**To build ZetaGlest for the first time:**
+**To build Glest for the first time:**
 
 1. Download Git for Windows (or make sure it is installed), and make sure that `git` is in the `PATH` environment variable.
    To check, open `cmd` and write `git`. If you get a `not recognized` error, then continue with step 1, otherwise skip to step 2. Usually `git.exe` is located in `C:\Program Files\Git\bin` after installation. To add it to `PATH`, right-click on `This PC` -> `Properties` -> `Advanced system settings` -> `Advanced` tab -> `Environment Variables`, and under `System variables` double-click on `PATH`, and add the path to `git` as a listing and click `OK`.
-2. Go to the target directory and clone this repository by running the following command in the command prompt: `git clone https://github.com/ZetaGlest/zetaglest-source.git` (or if you have your own fork, replace the first "ZetaGlest" in the URL with your GitHub username).
+2. Go to the target directory and clone this repository by running the following command in the command prompt: `git clone https://github.com/Glest/glest-source.git` (or if you have your own fork, replace the first "Glest" in the URL with your GitHub username).
 3. Make sure Visual Studio 2015 or 2017 is installed, and that **Windows 8.1 SDK** and Windows Universal CRT SDK are included in the installation. Make sure to have the latest toolset installed for your Visual Studio version. If Visual Studio is installed in a different directory than the default, run the following command before running the script:
 `SET ProgramFiles(x86)=dir` where `dir` should be replaced with the directory containing the Visual Studio installation, usually `Program Files (x86)`. If Windows is 32-bit, omit the `(x86)` part.
 4. Run `setup.bat` in `/mk/windows`.
@@ -13,24 +13,24 @@
 
 **Project overview:**
 
-- `glest_game` is the executable game binary
+- `game` is the executable game binary
 
-- `libglest` is a shared static library for ZetaGlest's components
+- `libglest` is a shared static library for Glest's components
 
 - `g3d_viewer` is a `.g3d` model viewer
 
-- `map_editor` is a ZetaGlest map editor and viewer. ZetaGlest maps are stored in the `.gbm` and the `.mgm` formats.
+- `map_editor` is a Glest map editor and viewer. Glest maps are stored in the `.mgm` format.
 
 - `libstreflop` is a cross-platform float processing library to ensure rounding is the same across machines
 
-- `g2xml` converts `.g3d` ZetaGlest 3D models into a readable XML formatted layout
+- `g2xml` converts `.g3d` Glest 3D models into a readable XML formatted layout
 
 *Side-note for developers who want to debug:*
 
-To be able to run ZetaGlest from within Visual Studio using the debugger, you need to:
+To be able to run Glest from within Visual Studio using the debugger, you need to:
 
-1. Set `glest_game` as the startup project.
-2. Right-click `glest_game` -> `Properties` -> `Debugging` and change `Working Directory` to `$(SolutionDir)$(TargetName)\`
+1. Set `game` as the startup project.
+2. Right-click `game` -> `Properties` -> `Debugging` and change `Working Directory` to `$(SolutionDir)$(TargetName)\`
    Do this also for `g3d_viewer` and `map_editor`.
 
 Configuration in Visual Studio **must be left as `Release`**, and it must match the project architecture as otherwise it won't compile. The settings involved are the following:

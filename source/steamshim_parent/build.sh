@@ -1,13 +1,13 @@
 #!/bin/bash
-# Use this script to build MegaGlest Steam Shim using make
+# Use this script to build Glest Steam Shim using make
 # ----------------------------------------------------------------------------
 # Written by Mark Vejvoda <mark_vejvoda@hotmail.com>
 # Copyright (c) 2011-2017 Mark Vejvoda under GNU GPL v3.0+
 
 # ----------------------------------------------------------------------------
 CURRENTDIR="$(dirname $(readlink -f $0))"
-rm -f ${CURRENTDIR}/megaglest_shim
-rm -f ${CURRENTDIR}/megaglest
+rm -f ${CURRENTDIR}/glest_shim
+rm -f ${CURRENTDIR}/glest
 # Pass the path to your steam SDK example:
 # builds.sh STEAMWORKS?=/home/softcoder/Code/steamworks_sdk/sdk
 #
@@ -17,10 +17,10 @@ if [ $? -ne 0 ]; then
   echo 'ERROR: MAKE failed.' >&2; exit 2
 fi
 
-STEAM_MG_PATH="$HOME/.steam/steam/steamapps/common/MegaGlest/"
+STEAM_MG_PATH="$HOME/.steam/steam/steamapps/common/Glest/"
 if [ -d ${STEAM_MG_PATH} ]; then 
     if [ ! -f "${STEAM_MG_PATH}/steam_appid.txt" ]; then 
-        echo "Installing steam appid file to Megaglest Steam folder [${STEAM_MG_PATH}] ..."
+        echo "Installing steam appid file to Glest Steam folder [${STEAM_MG_PATH}] ..."
         cp ${CURRENTDIR}/steam_appid.txt ${STEAM_MG_PATH}/steam_appid.txt
     fi
 
@@ -29,10 +29,10 @@ if [ -d ${STEAM_MG_PATH} ]; then
     STEAMWORKS=${PARAM1#$prefix}
     # echo "${STEAMWORKS}"
     if [ ! -f "${STEAM_MG_PATH}/lib/libsteam_api.so" ]; then 
-        echo "Installing steam sdk api to Megaglest Steam folder [${STEAM_MG_PATH}/lib/] ..."
+        echo "Installing steam sdk api to Glest Steam folder [${STEAM_MG_PATH}/lib/] ..."
         cp ${STEAMWORKS}/redistributable_bin/linux64/libsteam_api.so ${STEAM_MG_PATH}/lib/libsteam_api.so
     fi
 
-    echo "Installing steam shim to Megaglest Steam folder [${STEAM_MG_PATH}] ..."
-    cp ${CURRENTDIR}/megaglest_shim ${STEAM_MG_PATH}/megaglest_shim
+    echo "Installing steam shim to Glest Steam folder [${STEAM_MG_PATH}] ..."
+    cp ${CURRENTDIR}/glest_shim ${STEAM_MG_PATH}/glest_shim
 fi

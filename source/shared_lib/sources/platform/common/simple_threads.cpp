@@ -1,8 +1,8 @@
-// This file is part of ZetaGlest <https://github.com/ZetaGlest>
+// This file is part of Glest <https://github.com/Glest>
 //
-// Copyright (C) 2018  The ZetaGlest team
+// Copyright (C) 2018  The Glest team
 //
-// ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+// Glest is a fork of MegaGlest <https://megaglest.org/>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -127,14 +127,14 @@ namespace Shared {
 						vector<string> techPaths;
 						findDirs(techDataPaths, techPaths);
 						if (techPaths.empty() == false) {
-							// Always calc zetapack first so its up to date sooner
-							const string zetapackTechtreeName = "zetapack";
-							vector<string>::iterator iterFindZetaPack = std::find(techPaths.begin(), techPaths.end(), zetapackTechtreeName);
-							if (iterFindZetaPack != techPaths.end()) {
-								techPaths.erase(iterFindZetaPack);
-								techPaths.insert(techPaths.begin(), zetapackTechtreeName);
+							// Always calc factionpack first so its up to date sooner
+							const string factionpackTechtreeName = "factionpack";
+							vector<string>::iterator iterFindFactionPack = std::find(techPaths.begin(), techPaths.end(), factionpackTechtreeName);
+							if (iterFindFactionPack != techPaths.end()) {
+								techPaths.erase(iterFindFactionPack);
+								techPaths.insert(techPaths.begin(), factionpackTechtreeName);
 
-								if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] Found zetapack techtree and placing it at the TOP of the list\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
+								if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] Found factionpack techtree and placing it at the TOP of the list\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 							}
 							unsigned int techsPerWorker = ((unsigned int) techPaths.size() / (unsigned int) MAX_FileCRCPreCacheThread_WORKER_THREADS);
 							if (techPaths.size() % MAX_FileCRCPreCacheThread_WORKER_THREADS != 0) {

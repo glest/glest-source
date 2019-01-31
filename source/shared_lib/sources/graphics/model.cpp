@@ -1,8 +1,8 @@
-// This file is part of ZetaGlest <https://github.com/ZetaGlest>
+// This file is part of Glest <https://github.com/Glest>
 //
-// Copyright (C) 2018  The ZetaGlest team
+// Copyright (C) 2018  The Glest team
 //
-// ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+// Glest is a fork of MegaGlest <https://megaglest.org/>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -2141,13 +2141,11 @@ namespace Shared {
 			if (rendererModels.empty() == false) {
 				if (PixelBufferWrapper::getIsPBOEnable() == true) {
 					Pixmap2D *pixmapScreenShot = BaseColorPickEntity::pbo->getPixelBufferFor(x, y, w, h, COLOR_COMPONENTS);
-					//pixmapScreenShot->saveTga("/tmp/toll.tga"); //### for debugging
 					cachedPixels.reset(pixmapScreenShot);
 				} else {
 					Pixmap2D *pixmapScreenShot = new Pixmap2D(w, h, COLOR_COMPONENTS);
 					//glPixelStorei(GL_PACK_ALIGNMENT, 1);
 					glReadPixels(x, y, w, h, GL_RGBA, GL_UNSIGNED_BYTE, pixmapScreenShot->getPixels());
-					//pixmapScreenShot->saveTga("/tmp/toll.tga");
 					cachedPixels.reset(pixmapScreenShot);
 					//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 				}

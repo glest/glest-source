@@ -1,43 +1,43 @@
 # BUILD.md
 
 * **Getting the code:**
-  * [Set up the repositories locally](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#set-up-the-repositories-locally)
-  * [cloning](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#procedure-for-cloning)
-  * [Extra options for compiling](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#extra-options-for-compiling)
+  * [Set up the repositories locally](https://github.com/Glest/glest-source/blob/develop/BUILD.md#set-up-the-repositories-locally)
+  * [cloning](https://github.com/Glest/glest-source/blob/develop/BUILD.md#procedure-for-cloning)
+  * [Extra options for compiling](https://github.com/Glest/glest-source/blob/develop/BUILD.md#extra-options-for-compiling)
 
 * **Dependencies**
-  * [Windows](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#windows)
-  * [Linux, Mac OS, *BSD](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#linux)
-  * [Arch Linux](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#arch-linux)
-  * [Mac OS](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#mac-os)
-  * [BSD](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#bsd)
+  * [Windows](https://github.com/Glest/glest-source/blob/develop/BUILD.md#windows)
+  * [Linux, Mac OS, *BSD](https://github.com/Glest/glest-source/blob/develop/BUILD.md#linux)
+  * [Arch Linux](https://github.com/Glest/glest-source/blob/develop/BUILD.md#arch-linux)
+  * [Mac OS](https://github.com/Glest/glest-source/blob/develop/BUILD.md#mac-os)
+  * [BSD](https://github.com/Glest/glest-source/blob/develop/BUILD.md#bsd)
 
-* [Installing](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#installing)
+* [Installing](https://github.com/Glest/glest-source/blob/develop/BUILD.md#installing)
 
 * **Compiling**
-  * [Windows](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#windows)
-  * [Linux, Mac OS, *BSD](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md#windows-1)
+  * [Windows](https://github.com/Glest/glest-source/blob/develop/BUILD.md#windows)
+  * [Linux, Mac OS, *BSD](https://github.com/Glest/glest-source/blob/develop/BUILD.md#windows-1)
 
 ## Set up the repositories locally
 
 If you think you may be contributing to development, we suggest
-[**forking**](https://github.com/ZetaGlest/zetaglest-source#fork-destination-box)
+[**forking**](https://github.com/Glest/glest-source#fork-destination-box)
 and then **cloning your forks** of these 2 repositories. If you only
 want to build and test out the game, and have no plans of submitting
 patches, you don't need to worry about using the fork option (You can
 fork later if you change your mind).
 
-* https://github.com/ZetaGlest/zetaglest-source
-* https://github.com/ZetaGlest/zetaglest-data
+* https://github.com/Glest/glest-source
+* https://github.com/Glest/glest-data
 
 ### Procedure for cloning
 
-1. Create a new directory to clone your **zetaglest-source** and
-**zetaglest-data** into e.g. call it `ZetaGlest`.
+1. Create a new directory to clone your **glest-source** and
+**glest-data** into e.g. call it `Glest`.
 
-2. Enter (or 'cd') into the new directory (`ZetaGlest` in the example).
+2. Enter (or 'cd') into the new directory (`Glest` in the example).
 
-3. clone **zetaglest-source** and **zetaglest-data** using the clone
+3. clone **glest-source** and **glest-data** using the clone
 info provided by your fork or the main repos. (Use the "Clone or Download" link, but
 **do** select `clone` **not** `Download Zip`.) Make sure the cloned
 repo directories are in the same directory, adjacent to each other (and
@@ -56,20 +56,20 @@ To view all available options, use `cmake .. -LH` while in the build directory.
 On Windows simply run `setup.bat` in `\mk\windows`. `setup.bat` also updates the game before rebuilding.
 
 Follow the
-[instructions](https://github.com/ZetaGlest/zetaglest-source/blob/develop/mk/windows/README.md)
+[instructions](https://github.com/Glest/glest-source/blob/develop/mk/windows/README.md)
 listed in the `Windows` directory for further information.
 
 ### Linux
 
 To get the game up and running quickly, use the following command:
 
-    git clone https://github.com/ZetaGlest/zetaglest-source.git zetaglest && sudo zetaglest/mk/linux/setup.sh
+    git clone https://github.com/Glest/glest-source.git glest && sudo glest/mk/linux/setup.sh
 
 Then run the following command to start the game:
 
-    zetaglest/mk/linux/build/zetaglest
+    glest/mk/linux/build/glest
 
-To update and rebuild the game, simply rerun `sudo zetaglest/mk/linux/setup.sh`, as it performs a `git pull` as part of the process.
+To update and rebuild the game, simply rerun `sudo glest/mk/linux/setup.sh`, as it performs a `git pull` as part of the process.
 
 #### For a more thorough approach:
 
@@ -121,16 +121,16 @@ lua51 miniupnpc openal sdl2 wxgtk3 xerces-c cmake ftjam git mesa`
 ## Installing
 
 Now that you have the source code and the dependencies, you can either
-compile ZetaGlest and run it without installing, or you can set options
+compile Glest and run it without installing, or you can set options
 to install it. If you plan to **install**, then you can **skip the sections below**
 and read
-[INSTALL.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/INSTALL.md)
+[INSTALL.md](https://github.com/Glest/glest-source/blob/develop/INSTALL.md)
 
 ## Compiling
 
 ### Windows
 
-    ./build-zg.bat
+    ./build.bat
 
 ### Linux, Mac OS, BSD
 
@@ -156,11 +156,10 @@ On Linux, `X` can be substituted with `$(grep -c ^processor /proc/cpuinfo)`, to 
 
     make -j$(grep -c ^processor /proc/cpuinfo)
 
-The zetaglest binaries will be in the `build/` directory. Run
-`./zetaglest` to start the game.
+The glest binaries will be in the `build/` directory. Run
+`./glest` to start the game.
 
-<!-- This needs to be duplicated in the BUILD.md and INSTALL.md doc -->
-See [running](https://github.com/ZetaGlest/zetaglest-source#running) for
+See [running](https://github.com/Glest/glest-source#running) for
 detailed information about running a server or hosting a game.
 
 After you run `cmake` for the first time, you won't need to specify any
@@ -175,4 +174,3 @@ If you want to completely erase your previously-used options, remove
 
 If your build doesn't seem to be using the options you gave it, first
 try removing CMakeCache.txt and rebuilding.
-<!-- end duplication -->

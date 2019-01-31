@@ -106,7 +106,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\dependencies\src\wxwidgets\include;..\..\..\source\shared_lib\include\util;..\..\..\source\shared_lib\include\graphics\gl;..\..\..\source\shared_lib\include\graphics;../dependencies/src/wxwidgets/include;..\..\..\source\shared_lib\include\platform\sdl;../../../source/shared_lib/include/platform/common;..\dependencies\src\sdl2\include;../dependencies/src/curl/include;..\..\..\source\glest_game\graphics;..\..\..\source\shared_lib\include\xml;../dependencies/src/xerces/src;..\..\..\source\glest_game\global;..\..\..\source\glest_game\sound;..\..\..\source\shared_lib\include\sound;..\..\..\source\glest_game\game;../../../source/shared_lib/include/map;../dependencies/src/png;..\..\..\source\glest_game\facilities;../dependencies/src/glew/include;..\..\..\source\shared_lib\include\xml\rapidxml;../../../source/shared_lib/include/platform/win32;..\dependencies\src\wxwidgets\lib\vc_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependencies\src\wxwidgets\include;..\..\..\source\shared_lib\include\util;..\..\..\source\shared_lib\include\graphics\gl;..\..\..\source\shared_lib\include\graphics;../dependencies/src/wxwidgets/include;..\..\..\source\shared_lib\include\platform\sdl;../../../source/shared_lib/include/platform/common;..\dependencies\src\sdl2\include;../dependencies/src/curl/include;..\..\..\source\game\graphics;..\..\..\source\shared_lib\include\xml;../dependencies/src/xerces/src;..\..\..\source\game\global;..\..\..\source\game\sound;..\..\..\source\shared_lib\include\sound;..\..\..\source\game\game;../../../source/shared_lib/include/map;../dependencies/src/png;..\..\..\source\game\facilities;../dependencies/src/glew/include;..\..\..\source\shared_lib\include\xml\rapidxml;../../../source/shared_lib/include/platform/win32;..\dependencies\src\wxwidgets\lib\vc_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -134,7 +134,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\dependencies\src\wxwidgets\include;..\..\..\source\shared_lib\include\util;..\..\..\source\shared_lib\include\graphics\gl;..\..\..\source\shared_lib\include\graphics;../dependencies/src/wxwidgets/include;..\..\..\source\shared_lib\include\platform\sdl;../../../source/shared_lib/include/platform/common;..\dependencies\src\sdl2\include;../dependencies/src/curl/include;..\..\..\source\glest_game\graphics;..\..\..\source\shared_lib\include\xml;../dependencies/src/xerces/src;..\..\..\source\glest_game\global;..\..\..\source\glest_game\sound;..\..\..\source\shared_lib\include\sound;..\..\..\source\glest_game\game;../../../source/shared_lib/include/map;../dependencies/src/png;..\..\..\source\glest_game\facilities;../dependencies/src/glew/include;..\..\..\source\shared_lib\include\xml\rapidxml;../../../source/shared_lib/include/platform/win32;..\dependencies\src\wxwidgets\lib\vc_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependencies\src\wxwidgets\include;..\..\..\source\shared_lib\include\util;..\..\..\source\shared_lib\include\graphics\gl;..\..\..\source\shared_lib\include\graphics;../dependencies/src/wxwidgets/include;..\..\..\source\shared_lib\include\platform\sdl;../../../source/shared_lib/include/platform/common;..\dependencies\src\sdl2\include;../dependencies/src/curl/include;..\..\..\source\game\graphics;..\..\..\source\shared_lib\include\xml;../dependencies/src/xerces/src;..\..\..\source\game\global;..\..\..\source\game\sound;..\..\..\source\shared_lib\include\sound;..\..\..\source\game\game;../../../source/shared_lib/include/map;../dependencies/src/png;..\..\..\source\game\facilities;../dependencies/src/glew/include;..\..\..\source\shared_lib\include\xml\rapidxml;../../../source/shared_lib/include/platform/win32;..\dependencies\src\wxwidgets\lib\vc_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -160,7 +160,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <AdditionalOptions>/arch:SSE2 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>..\dependencies\src\wxwidgets\include;..\..\..\source\shared_lib\include;..\..\..\source\shared_lib\include\util;..\..\..\source\shared_lib\include\graphics\gl;..\..\..\source\shared_lib\include\graphics;../dependencies/src/wxwidgets/include;..\..\..\source\shared_lib\include\platform\sdl;../../../source/shared_lib/include/platform/common;..\dependencies\src\sdl2\include;../dependencies/src/curl/include;..\..\..\source\glest_game\graphics;..\..\..\source\shared_lib\include\xml;../dependencies/src/xerces/src;..\..\..\source\glest_game\global;..\..\..\source\glest_game\sound;..\..\..\source\shared_lib\include\sound;..\..\..\source\glest_game\game;../../../source/shared_lib/include/map;../dependencies/src/png;..\..\..\source\glest_game\facilities;../dependencies/src/glew/include;..\..\..\source\shared_lib\include\xml\rapidxml;../../../source/shared_lib/include/platform/win32;..\dependencies\src\wxwidgets\lib\vc_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependencies\src\wxwidgets\include;..\..\..\source\shared_lib\include;..\..\..\source\shared_lib\include\util;..\..\..\source\shared_lib\include\graphics\gl;..\..\..\source\shared_lib\include\graphics;../dependencies/src/wxwidgets/include;..\..\..\source\shared_lib\include\platform\sdl;../../../source/shared_lib/include/platform/common;..\dependencies\src\sdl2\include;../dependencies/src/curl/include;..\..\..\source\game\graphics;..\..\..\source\shared_lib\include\xml;../dependencies/src/xerces/src;..\..\..\source\game\global;..\..\..\source\game\sound;..\..\..\source\shared_lib\include\sound;..\..\..\source\game\game;../../../source/shared_lib/include/map;../dependencies/src/png;..\..\..\source\game\facilities;../dependencies/src/glew/include;..\..\..\source\shared_lib\include\xml\rapidxml;../../../source/shared_lib/include/platform/win32;..\dependencies\src\wxwidgets\lib\vc_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WINDOWS;WIN32;NDEBUG;_CRT_SECURE_NO_WARNINGS;CURL_STATICLIB;UNICODE;_UNICODE;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
@@ -201,7 +201,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>..\dependencies\src\wxwidgets\include;..\..\..\source\shared_lib\include\util;..\..\..\source\shared_lib\include\graphics\gl;..\..\..\source\shared_lib\include\graphics;../dependencies/src/wxwidgets/include;..\..\..\source\shared_lib\include\platform\sdl;../../../source/shared_lib/include/platform/common;..\dependencies\src\sdl2\include;../dependencies/src/curl/include;..\..\..\source\glest_game\graphics;..\..\..\source\shared_lib\include\xml;../dependencies/src/xerces/src;..\..\..\source\glest_game\global;..\..\..\source\glest_game\sound;..\..\..\source\shared_lib\include\sound;..\..\..\source\glest_game\game;../../../source/shared_lib/include/map;../dependencies/src/png;..\..\..\source\glest_game\facilities;../dependencies/src/glew/include;..\..\..\source\shared_lib\include\xml\rapidxml;../../../source/shared_lib/include/platform/win32;..\dependencies\src\wxwidgets\lib\vc_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependencies\src\wxwidgets\include;..\..\..\source\shared_lib\include\util;..\..\..\source\shared_lib\include\graphics\gl;..\..\..\source\shared_lib\include\graphics;../dependencies/src/wxwidgets/include;..\..\..\source\shared_lib\include\platform\sdl;../../../source/shared_lib/include/platform/common;..\dependencies\src\sdl2\include;../dependencies/src/curl/include;..\..\..\source\game\graphics;..\..\..\source\shared_lib\include\xml;../dependencies/src/xerces/src;..\..\..\source\game\global;..\..\..\source\game\sound;..\..\..\source\shared_lib\include\sound;..\..\..\source\game\game;../../../source/shared_lib/include/map;../dependencies/src/png;..\..\..\source\game\facilities;../dependencies/src/glew/include;..\..\..\source\shared_lib\include\xml\rapidxml;../../../source/shared_lib/include/platform/win32;..\dependencies\src\wxwidgets\lib\vc_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;WIN32;CURL_STATICLIB;UNICODE;_UNICODE;GLEW_STATIC;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
@@ -250,13 +250,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\g3d_viewer\main.cpp" />
-    <ClCompile Include="..\..\..\source\glest_game\global\config.cpp" />
-    <ClCompile Include="..\..\..\source\glest_game\graphics\particle_type.cpp" />
+    <ClCompile Include="..\..\..\source\game\global\config.cpp" />
+    <ClCompile Include="..\..\..\source\game\graphics\particle_type.cpp" />
     <ClCompile Include="..\..\..\source\g3d_viewer\renderer.cpp" />
-    <ClCompile Include="..\..\..\source\glest_game\graphics\unit_particle_type.cpp" />
+    <ClCompile Include="..\..\..\source\game\graphics\unit_particle_type.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="libzetaglest.vcxproj">
+    <ProjectReference Include="libglest.vcxproj">
       <Project>{8daa0c24-95cd-4f66-b4c5-19abdd771746}</Project>
     </ProjectReference>
   </ItemGroup>

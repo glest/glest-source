@@ -1,6 +1,6 @@
 #!/bin/bash
 echo
-echo "Initializing ZetaGlest setup..."
+echo "Initializing Glest setup..."
 currentDir=$PWD
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 cd $DIR
@@ -8,5 +8,5 @@ cd $DIR
 echo
 ./pull.sh
 echo
-./build-zg.sh
+./build.sh
 cd $currentDir

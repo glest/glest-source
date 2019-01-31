@@ -50,11 +50,11 @@ ECHO Will build using GIT Revision: [%GITVERSION_REV%.%GITVERSION_SHA1%]
 
 rem Build Mega-Glest in release mode
 ECHO --------------------------------
-Echo Building MegaGlest using Visual Studio 2015...
+Echo Building Glest using Visual Studio 2015...
 
 set CL=/MP
 IF EXIST "steamshim_parent.obj" del steamshim_parent.obj
-IF EXIST "megaglest_shim.exe" del megaglest_shim.exe
+IF EXIST "glest_shim.exe" del glest_shim.exe
 
 rem set VisualStudioVersion=11.0
 set msBuildMaxCPU=
@@ -70,7 +70,7 @@ SET MSBUILD_PATH_MG_x64="%ProgramFiles(x86)%\MSBuild\Microsoft.Cpp\v4.0\V140\\"
 echo Doing a FULL REBUILD...
 nmake /f Makefile.win STEAMWORKS=%STEAMWORKS%
 
-SET STEAM_MG_PATH=C:\Program Files (x86)\Steam\steamapps\common\MegaGlest\
+SET STEAM_MG_PATH=C:\Program Files (x86)\Steam\steamapps\common\Glest\
 if EXIST "%STEAM_MG_PATH%" goto COPY_TO_STEAM
 goto end_script
 
@@ -79,7 +79,7 @@ if NOT EXIST "%STEAM_MG_PATH%\steam_appid.txt" goto COPY_TO_STEAM_APPID
 goto COPY_TO_STEAM_DLL
 
 :COPY_TO_STEAM_APPID
-echo "Installing steam appid file to Megaglest Steam folder [%STEAM_MG_PATH%] ..."
+echo "Installing steam appid file to Glest Steam folder [%STEAM_MG_PATH%] ..."
 copy steam_appid.txt "%STEAM_MG_PATH%"
 
 :COPY_TO_STEAM_DLL
@@ -88,12 +88,12 @@ if NOT EXIST "%STEAM_MG_PATH%\steam_api.dll" goto COPY_TO_STEAM_DLL_START
 goto COPY_TO_STEAM_SHIM
 
 :COPY_TO_STEAM_DLL_START
-echo "Installing steam sdk api to Megaglest Steam folder [%STEAM_MG_PATH%] ..."
+echo "Installing steam sdk api to Glest Steam folder [%STEAM_MG_PATH%] ..."
 copy "%STEAMWORKS%\redistributable_bin\steam_api.dll" "%STEAM_MG_PATH%"
 
 :COPY_TO_STEAM_SHIM
-echo "Installing steam shim to Megaglest Steam folder [%STEAM_MG_PATH%] ..."
-copy megaglest_shim.exe "%STEAM_MG_PATH%"
+echo "Installing steam shim to Glest Steam folder [%STEAM_MG_PATH%] ..."
+copy glest_shim.exe "%STEAM_MG_PATH%"
 
 ECHO ... End.
 

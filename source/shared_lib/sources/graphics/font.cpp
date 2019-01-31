@@ -1,8 +1,8 @@
-// This file is part of ZetaGlest <https://github.com/ZetaGlest>
+// This file is part of Glest <https://github.com/Glest>
 //
-// Copyright (C) 2018  The ZetaGlest team
+// Copyright (C) 2018  The Glest team
 //
-// ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+// Glest is a fork of MegaGlest <https://megaglest.org/>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -609,11 +609,11 @@ namespace Shared {
 			}
 
 			// Get user-specified font path
-			string zetaglest_font = safeCharPtrCopy(getenv("GAME_FONT"), 8095);
-			string zetaglest_font_family = safeCharPtrCopy(getenv("GAME_FONT_FAMILY"), 8095);
-			if (zetaglest_font != "" || zetaglest_font_family != "") {
-				if (zetaglest_font != "") {
-					tryFont = zetaglest_font;
+			string glest_font = safeCharPtrCopy(getenv("GAME_FONT"), 8095);
+			string glest_font_family = safeCharPtrCopy(getenv("GAME_FONT_FAMILY"), 8095);
+			if (glest_font != "" || glest_font_family != "") {
+				if (glest_font != "") {
+					tryFont = glest_font;
 
 					if (Text::DEFAULT_FONT_PATH_ABSOLUTE != "") {
 						tryFont = Text::DEFAULT_FONT_PATH_ABSOLUTE + "/" + extractFileFromDirectoryPath(tryFont);
@@ -622,9 +622,9 @@ namespace Shared {
 					replaceAll(tryFont, "/", "\\");
 #endif
 
-					CHECK_FONT_PATH(tryFont.c_str(), zetaglest_font_family.c_str(), &font, &path);
+					CHECK_FONT_PATH(tryFont.c_str(), glest_font_family.c_str(), &font, &path);
 				} else {
-					CHECK_FONT_PATH(NULL, zetaglest_font_family.c_str(), &font, &path);
+					CHECK_FONT_PATH(NULL, glest_font_family.c_str(), &font, &path);
 				}
 			}
 

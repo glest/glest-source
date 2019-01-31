@@ -1,7 +1,7 @@
-# ZetaGlest ChangeLog
+# Glest ChangeLog
 
 To see a full timeline of detailed changes please visit:
-https://github.com/ZetaGlest/zetaglest-source/commits/develop
+https://github.com/Glest/glest-source/commits/develop
 
 v1.0
 
@@ -14,30 +14,30 @@ v1.0
 - Forest tilesets are more animated
 - You can leave and re-join network games, even if you experience lag (buggy)
 - Console now hidden by default on Windows
-- [Default command is changed to "attack" instead of "move", which is much more intuitive](https://github.com/ZetaGlest/zetaglest-source/commit/2c4fc340de958f6b94b40ee62eabff015625e62b)
-	(pressing "a" not needed anymore); ["m" key can be used for "move"](https://github.com/ZetaGlest/zetaglest-source/commit/bf5a04be18f2b16b8a565acff4baabc5fbfed293).
+- [Default command is changed to "attack" instead of "move", which is much more intuitive](https://github.com/Glest/glest-source/commit/2c4fc340de958f6b94b40ee62eabff015625e62b)
+	(pressing "a" not needed anymore); ["m" key can be used for "move"](https://github.com/Glest/glest-source/commit/bf5a04be18f2b16b8a565acff4baabc5fbfed293).
 - Updated UI to look more modern
 - Improved OOS detection, which also helps detect cheating
-- [Transparency of the alpha component of textures can now be set](https://zetaglest.github.io/docs/modelling/textures.html#Transparency)/
+- [Transparency of the alpha component of textures can now be set](https://glest.github.io/docs/modelling/textures.html#Transparency)/
 - Updated [miniz](https://github.com/richgel999/miniz) library. Thanks
   to [richgel999](https://github.com/richgel999) and the miniz contributors.
 - CMakeLists.txt files have had a major tune-up (doesn't affect Windows users)
 - OpenBSD build instructions added and updated
-- [INSTALL.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/INSTALL.md) document created
+- [INSTALL.md](https://github.com/Glest/glest-source/blob/develop/INSTALL.md) document created
 - man pages are no longer generated each time a build is performed. They must be manually generated when the help usage output is changed.
 - Upgraded [libircclient](https://sourceforge.net/projects/libircclient/) embedded library from 1.3 to 1.10
 - Added support for Windows 10 SDK
-- [16 maps added](https://github.com/ZetaGlest/zetaglest-data/compare/4c67d4bfba21...9dfb37450e07)
-- [[d1acd87](https://github.com/ZetaGlest/zetaglest-source/commit/d1acd8742395bca8b37656e9e8065022902586fe)]Lua can now be used in scripts tag in faction tag within XML
-- [[bugfix:835c6ef](https://github.com/ZetaGlest/zetaglest-source/commit/835c6efd924ed7e62ccd43e064bc6b7f5cdecbfc)]Fixed "x" key getting stuck on Windows
-- [[045b0b8](https://github.com/ZetaGlest/zetaglest-source/commit/045b0b88e051f7163fbef42fa0adc63a326ca186)]Removed "MG_" and "xxx" (3 digit extension) on nicknames in lobby player list
-- [Windows](https://github.com/ZetaGlest/zetaglest-source/commits/develop/mk/windows) build system, dependencies, and documentation updated
+- [16 maps added](https://github.com/Glest/glest-data/compare/4c67d4bfba21...9dfb37450e07)
+- [[d1acd87](https://github.com/Glest/glest-source/commit/d1acd8742395bca8b37656e9e8065022902586fe)]Lua can now be used in scripts tag in faction tag within XML
+- [[bugfix:835c6ef](https://github.com/Glest/glest-source/commit/835c6efd924ed7e62ccd43e064bc6b7f5cdecbfc)]Fixed "x" key getting stuck on Windows
+- [[045b0b8](https://github.com/Glest/glest-source/commit/045b0b88e051f7163fbef42fa0adc63a326ca186)]Removed "MG_" and "xxx" (3 digit extension) on nicknames in lobby player list
+- [Windows](https://github.com/Glest/glest-source/commits/develop/mk/windows) build system, dependencies, and documentation updated
 - Now allows cross-version network games if the data is the same
 - These units can now heal mobile units from their own factions that are in range: nurse (British, radius of 15), archmage_tower (Magic, radius of 8)
 - Auto-healing radius changed from 8 to 15 (with the exception of Valhalla)
 - Units standing near Valhalla (norse) are auto-healed (radius of 8)
 - Supports importing units from other factions, such as by creating a folder named "fakir" in "tech" with a file "fakir.xml" with the following text:
-	```<?xml version="1.0" standalone="no"?><unit><link tech-tree="zetapack" faction="persian"/></unit>```
+	```<?xml version="1.0" standalone="no"?><unit><link tech-tree="factionpack" faction="persian"/></unit>```
 - These units can now heal mobile units from their own factions that are in range (radius of 8):
 	priest (Egypt)
 	wartime mechanic (Romans)
@@ -49,20 +49,20 @@ v1.0
 	H -> T (Toggle team chat)
 	T -> Z (Cycle between store units)
 	M is now the hotkey for "move" when units are selected
-- [Replaced the sphinx with the scarab](https://github.com/ZetaGlest/zetaglest-data/commit/60e734180ecb7f925144c94bef339e6130f9ae20)
+- [Replaced the sphinx with the scarab](https://github.com/Glest/glest-data/commit/60e734180ecb7f925144c94bef339e6130f9ae20)
 (Egypt's starting units)
 - 4 new tactical scenarios were added / Thanks @ [Julie Marchant](https://github.com/onpon4)
 	Witches' Hunt
 	Native Unrest
 	Warlock Overlords
 	Death Road
-- [#13](https://github.com/ZetaGlest/zetaglest-source/issues/13)
+- [#13](https://github.com/Glest/glest-source/issues/13)
 Observers no longer take up slots on a map. For instance, a map being
 played by 4 players can have a 5th person observing; a map being played
 by 8 people can have a 9th person observing. Up to 10 people can
 connect, which mean you can have up to 6 observers with a 4-player map,
 and 2 with an 8-player map.
-- [#6](https://github.com/ZetaGlest/zetaglest-source/issues/6) Players can now enter the multiplayer lobby unconditionally
+- [#6](https://github.com/Glest/glest-source/issues/6) Players can now enter the multiplayer lobby unconditionally
 - Replaced the Egypt graphics with Archmage's remaster: https://github.com/virtushda/EgyptRemaster
 
 # MegaGlest ChangeLog
@@ -87,7 +87,7 @@ v3.13.0
 - improved AI behavior per faction ( mostly magic )
 
 v3.12.0
-- MegaGlest uses SDL2 now
+- Glest uses SDL2 now
 - glowing meshes. ( models can glow like particles do )
 - console message for finished upgrades
 - new parameter to set servers titles
@@ -105,7 +105,7 @@ v3.11.1
 - nicer tilesets as defaults
 - improved camera startposition on game start ( main building in center )
 - attackBoosts: Ep + Hp regeneration is shown in description
-- MegaGlest can be build easier on MacOS ( sadly noone was willing to test )
+- Glest can be build easier on MacOS ( sadly noone was willing to test )
 
 v3.11.0
 - healthbars with a lot of options
@@ -125,9 +125,9 @@ v3.11.0
 - You can have non commandable units
 - Units spawned by an attack skill can get an attack command  
 - Unit and Splash particles can be speeded up ( accelerated )
-- Looting https://github.com/MegaGlest/megaglest-source/pull/17
+- Looting https://github.com/Glest/glest-source/pull/17
 - HP and EP starting values
-- <target-height> <burn-height> can be given https://docs.megaglest.org/XML/Unit#target-height
+- <target-height> <burn-height> can be given https://docs.glest.org/XML/Unit#target-height
 - +several bugfixes
 
 v3.10.0 This version was skipped because of version number trouble.
@@ -139,7 +139,7 @@ v3.9.1
 - Better handling of lagging clients in network games
 - Fixed cmake scripts to correctly detect dependencies that were previously partially
   working on some distros and improved build support for Mac OS X
-- Added numerous new LUA functions as documented at http://wiki.megaglest.org
+- Added numerous new LUA functions as documented at http://wiki.glest.org
 - Code quality improvements as reported by cppcheck and coverity (and clang)
 - Better color picking algorithm thanks to willvarfar makes color picking very stable
 - Render order improved to allow more transparency effects
@@ -198,7 +198,7 @@ v3.7.0
 - network multi-player scenarios
 - campaign scenarios
 - Integrated language translation support (translate / update your favorite language @
-  https://www.transifex.com/projects/p/megaglest and pull the files into the game via
+  https://www.transifex.com/projects/p/glest and pull the files into the game via
   advanced translation options to test your changes)
 - play a sound when player mentions your name in chat mode
 - more game data validation for commandline modders, see --help for more info
@@ -225,13 +225,13 @@ v3.7.0
 
 v3.6.0
 - bugfixes reported in the bugs forum from beta1 and 2
-- iso639-1 style language loading example: megaglest --use-language=zh and auto language
+- iso639-1 style language loading example: glest --use-language=zh and auto language
   detect on first time launch
 - new and updated translations (Greek, Japanese, Russian, Italian, Czech etc)
 - auto complete player names in chat mode using tab character
 - customized port # override via commandline (useful for multiple headless servers) example:
-  megaglest --use-ports=x,y (x is internal port y is external port)
-- new commandline option to support standalone modes example: megaglest --load-mod=x
+  glest --use-ports=x,y (x is internal port y is external port)
+- new commandline option to support standalone modes example: glest --load-mod=x
   (x is the path to the mod)
 - new lua functions added (to be documented on the MG wiki)
 - lower CPU / RAM requirements in headless server mode
@@ -244,7 +244,7 @@ v3.6.0
 - New ability to enable in game team-switching for defecting to other teams in game
 - Ability to toggle languages anywhere in the game using CTRL-L
 - Numerous bug fixes as reported in the bugs forum
-- Improved Megapack including better balanced Romans faction
+- Improved FactionPack including better balanced Romans faction
 - New attack boost system (currently used by Romans faction) which allows new types of
   in game unit effects.
 - New headless server mode allows dedicated servers to host games for network players
@@ -261,10 +261,10 @@ v3.6.0
 - many more...
 
 v3.5.2
-- Lots of work to make MegaGlest a Linux distro friendly package (Debian, Arch, etc)
+- Lots of work to make Glest a Linux distro friendly package (Debian, Arch, etc)
 - Added Support for Russian and Ukrainian with proper fonts in Linux if installed.
 - Map editor now supports diagonal flipping
-- Windows users now have a shortcut to the mod folder in their MegaGlest programs Menu.
+- Windows users now have a shortcut to the mod folder in their Glest programs Menu.
 - Bug fixes including:
   - Fix corrupted g3d viewer screenshots, and automatic screenshot mode does not steal
     focus for Linux users
@@ -278,9 +278,9 @@ v3.5.2
 3.5.1
 - Much better pathfinder performance
 - Allow servers to temporary block specified network players from the game lobby
-- Better Linux distro packaing support (by default megaglest works in standard linux
+- Better Linux distro packaing support (by default glest works in standard linux
   paths and make install added)
-- Game data cleanup (duplicate sound files have been merged in megapack) and non free
+- Game data cleanup (duplicate sound files have been merged in factionpack) and non free
   content replaced. (autumn and desert tilesets)
 - Displayed up to 15 queued commands (observers can view all players queued commands)
 - Allow factions in a techtree to share common data using the special tag in xml files
@@ -322,7 +322,7 @@ v3.5.2
 - better support for multiple platform compiling
 - Modifiable keyboard hotkeys
 - bugfixes for map editor and g3d viewer to work more stable on multiple platforms
-- LSB conform ".megaglest" usage
+- LSB conform ".glest" usage
 
 
 3.4.0
@@ -332,14 +332,14 @@ v3.5.2
   UPNP enabled routers)
 - new network file transfer system current allows servers to send missing maps and
   tilesets to clients
-- new IRC client built into the Internet lobby (uses freenode's megaglest-lobby channel)
+- new IRC client built into the Internet lobby (uses freenode's glest-lobby channel)
 - improved sound handling for better stability and smoother game play
 - CPU AI players now can have their resource multiplier manually changed
 - new fog of war setting allows showing resources on the map at game start (thanks GAE team)
 - many new commandline options (try --help to see)
 - texture compression for video cards that support it
 - improved AI players are much harder to defeat
-- new Romans_beta faction in megapack
+- new Romans_beta faction in factionpack
 - new language translations
 - new tilesets, maps and a tutorials
 - G3D Viewer enhancements including PNG screenshots with alpha transparency option
@@ -411,7 +411,7 @@ v3.5.2
 
 3.3.5
 - major milestone:
-  http://freegamer.blogspot.com/2010/06/megaglest-335-pre-release-special.html
+  http://freegamer.blogspot.com/2010/06/glest-335-pre-release-special.html
 - Thank you to: titi, tomreyn, silnarm, rcl, ultifd, wciow, claymore, 
   coldfusionstorm, FG_Julius (and crew), softcoder
 - Added loads of Network features (See below)
@@ -513,7 +513,7 @@ v3.5.2
 - all network related errors should be handled with a dialog and doesn't crash glest any more.
 
 3.3.0
-- New multiplayer version of megaglest! It should be much more stable now 
+- New multiplayer version of glest! It should be much more stable now 
   and less choppy than original glest !
 - New disconnect messages and chat in connect menu .....
 - Now with several particles for every skill!
@@ -534,7 +534,7 @@ v3.5.2
   The editor includes things like undo/redo, brush copy , mouseover display now
   
 3.2.3
-- MegaGlest forks off vanilla Glest
+- Glest forks off vanilla Glest
 - Only needed factions are loaded ( thanks silnarm ). 
 - a weeker CPU player was added for real beginners
 - two new CPU players were added ( CPU-Mega and CPU-Easy )

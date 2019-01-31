@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# utility for zetaglest, probably works for glest and GAE too
+# utility for glest, probably works for glest and GAE too
 # merge new language variables from the main language (english) to all other language files
 # Copyright 2011 olaus, 20101222
 # license: GPL v3

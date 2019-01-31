@@ -1,7 +1,7 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: ZetaGlest
+Upstream-Name: Glest
 Upstream-Contact: Andy Alt <andy400-dev@yahoo.com>
-Source: https://github.com/ZetaGlest/zetaglest-source
+Source: https://github.com/Glest/glest-source
 
 Files: *
 Copyright: 2008-2011 Titus Tscharntke (info@titusgames.de)
@@ -14,8 +14,8 @@ Copyright: 2008-2011 Titus Tscharntke (info@titusgames.de)
            2005      Roland BROCHAR --> string utilities
            2006-2008 Alexander Chemeris --> data types for win32
            2005-2010 Andreas Martin (andreas.martin@linuxmail.org)
-           2001-2016 The MegaGlest Team and other contributors
-           2018      The ZetaGlest Team and other contributors
+           2001-2016 The Glest Team and other contributors
+           2018      The Glest Team and other contributors
 License: GPL-3+
 Comment:
  See also AUTHORS.md for a list of contributors and
@@ -25,7 +25,7 @@ Files: debian/*
 Copyright: 2011-2014, Mark Vejvoda <mark_vejvoda@hotmail.com>
            2012-2013, Paul Wise <pabs@debian.org>
            2014-2016, Markus Koschany <apo@debian.org>
-           2018       The ZetaGlest Team <zetaglest@gmail.com>
+           2018       The Glest Team <glest@gmail.com>
 License: GPL-3+
 
 Files: mk/cmake/Modules/FindGLIB2.cmake

@@ -1,8 +1,8 @@
-// This file is part of ZetaGlest <https://github.com/ZetaGlest>
+// This file is part of Glest <https://github.com/Glest>
 //
-// Copyright (C) 2018  The ZetaGlest team
+// Copyright (C) 2018  The Glest team
 //
-// ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+// Glest is a fork of MegaGlest <https://megaglest.org/>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -141,7 +141,7 @@ namespace Shared {
 
 			/* some servers don't like requests that are made without a user-agent
 			   field, so we provide one */
-			curl_easy_setopt(handle, CURLOPT_USERAGENT, "zetaglest-agent/1.0");
+			curl_easy_setopt(handle, CURLOPT_USERAGENT, "glest-agent/1.0");
 
 			/* follow HTTP redirects (status 3xx), 20 at most */
 			curl_easy_setopt(handle, CURLOPT_FOLLOWLOCATION, 1);
@@ -572,7 +572,7 @@ namespace Shared {
 					if (currentDebugLog.fileStream->is_open() == true) {
 						MutexSafeWrapper safeMutex(currentDebugLog.mutex, string(extractFileFromDirectoryPath(__FILE__).c_str()) + "_" + intToStr(__LINE__));
 
-						(*currentDebugLog.fileStream) << "Starting ZetaGlest logging for type: " << type << "\n";
+						(*currentDebugLog.fileStream) << "Starting Glest logging for type: " << type << "\n";
 						(*currentDebugLog.fileStream).flush();
 
 						safeMutex.ReleaseLock();

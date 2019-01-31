@@ -1,7 +1,7 @@
 CMAKE_MINIMUM_REQUIRED( VERSION 2.8.2 )
-PROJECT( ZetaGlest )
+PROJECT( Glest )
 
-# The ZetaGlest CMakeLists is not supported on Windows. To compile on Windows, please use
+# The Glest CMakeLists is not supported on Windows. To compile on Windows, please use
 # setup.bat in mk/windows
 
 #SET(CMAKE_VERBOSE_MAKEFILE ON)
@@ -33,7 +33,7 @@ IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     ADD_DEFINITIONS("-Wno-switch")
 ENDIF()
 
-OPTION(BUILD_ZETAGLEST "Build ZetaGlest" ON)
+OPTION(BUILD_GLEST "Build Glest" ON)
 OPTION(WANT_STATIC_LIBS "Builds as many static libs as possible." OFF)
 OPTION(WANT_USE_OpenSSL "Use libOpenSSL during CURL linking." ON)
 OPTION(WANT_USE_FriBiDi "Enable libFriBIDi support." ON)
@@ -45,7 +45,7 @@ include(${CMAKE_SOURCE_DIR}/mk/cmake/Modules/SpecialMacros.cmake)
 include(${CMAKE_SOURCE_DIR}/mk/cmake/Modules/ReqVersAndStaticConf.cmake)
 MESSAGE(STATUS "=====================================================================")
 
-SET(PKG_NAME "zetaglest")
+SET(PKG_NAME "glest")
 
 SET(PIC_FLAG "${PIC_FLAG} -fPIC")
 IF(WANT_STATIC_LIBS AND "${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
@@ -193,7 +193,7 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 	ENDIF()
 # The data dir will get defined as a macro at compile-time
 	IF(NOT INSTALL_DIR_DATA)
-		SET(INSTALL_DIR_DATA "${CMAKE_INSTALL_PREFIX}/share/zetaglest/" CACHE PATH "The installation path for data files")
+		SET(INSTALL_DIR_DATA "${CMAKE_INSTALL_PREFIX}/share/glest/" CACHE PATH "The installation path for data files")
 	ENDIF()
 	SET(INSTALL_DIR_INI "${INSTALL_DIR_DATA}")
 	IF(NOT INSTALL_DIR_DESKTOP)
@@ -206,13 +206,13 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 		SET(INSTALL_DIR_MAN "${CMAKE_INSTALL_PREFIX}/share/man/man6/" CACHE PATH "The installation path for manpage files")
 	ENDIF()
 
-	string(TOUPPER "${CMAKE_BUILD_TYPE}" ZG_BUILD_TYPE)
+	string(TOUPPER "${CMAKE_BUILD_TYPE}" GLEST_BUILD_TYPE)
 
 	# We do some funky character escaping to get the right stuff written out to
 	# the final Makefile so we get the GIT Global Revsion #
-	string(REPLACE "'" "\"" CMAKE_CXX_FLAGS_${ZG_BUILD_TYPE} "${CMAKE_CXX_FLAGS_${ZG_BUILD_TYPE}}")
+	string(REPLACE "'" "\"" CMAKE_CXX_FLAGS_${GLEST_BUILD_TYPE} "${CMAKE_CXX_FLAGS_${GLEST_BUILD_TYPE}}")
 
-	message(STATUS "CMAKE_CXX_FLAGS_${ZG_BUILD_TYPE}: ${CMAKE_CXX_FLAGS_${ZG_BUILD_TYPE}}")
+	message(STATUS "CMAKE_CXX_FLAGS_${GLEST_BUILD_TYPE}: ${CMAKE_CXX_FLAGS_${GLEST_BUILD_TYPE}}")
 
 	# Win32 specific Compiler Flags
 	IF(WIN32)
@@ -248,9 +248,9 @@ IF(EXISTS "${PROJECT_SOURCE_DIR}/source/")
 	MESSAGE(STATUS "**Found game source code.")
 
 	ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/shared_lib )
-	ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/glest_game )
+	ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/game )
 	#if(wxWidgets_FOUND)
-		ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/glest_map_editor )
+		ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/map_editor )
 		ADD_SUBDIRECTORY( ${PROJECT_SOURCE_DIR}/source/g3d_viewer )
 	#else()
 	#  MESSAGE(STATUS "WARNING... the following game tools will NOT be built since we cannot find wxWidgets on this machine")
@@ -266,11 +266,11 @@ ENDIF()
 # at compile-time. That allows the binary to find the data no matter
 # where it is, and whether or not it has actually been installed
 #
-IF(EXISTS "${PROJECT_SOURCE_DIR}/../zetaglest-data/CMakeLists.txt")
+IF(EXISTS "${PROJECT_SOURCE_DIR}/../glest-data/CMakeLists.txt")
     MESSAGE(STATUS "**Found game data.")
 	# using CMAKE_BINARY_DIR as last parameter will output cmake files into the same
 	# directory as the source build.
-	ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/../zetaglest-data ${CMAKE_BINARY_DIR}/data)
+	ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/../glest-data ${CMAKE_BINARY_DIR}/data)
 ENDIF()
 
 IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -278,7 +278,7 @@ IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 ENDIF()
 
 # FIXME: This should output all defines. For example, DATADIR is defined in
-# the glest_game source and sharedlib cmake file as well
+# the game source and sharedlib cmake file as well
 get_directory_property( DirDefs DIRECTORY ${CMAKE_SOURCE_DIR} COMPILE_DEFINITIONS )
 foreach( d ${DirDefs} )
     message( STATUS "=====> Found Define: " ${d} )

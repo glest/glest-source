@@ -1,5 +1,5 @@
 #ifndef GAME_LAUNCH_NAME
-#define GAME_LAUNCH_NAME "megaglest"
+#define GAME_LAUNCH_NAME "glest"
 #endif
 
 #ifdef _WIN32
@@ -306,7 +306,7 @@ static int closeProcess(ProcessType *pid)
 
 int main(int argc, char **argv)
 {
-    printf("#1 =============> Megaglest Parent starting mainline.\n");
+    printf("#1 =============> Glest Parent starting mainline.\n");
 
     signal(SIGPIPE, SIG_IGN);
     GArgc = argc;
@@ -771,10 +771,10 @@ static int mainline(void)
     PipeType pipeChildWrite = NULLPIPE;
     ProcessType childPid;
 
-    printf("#2 =============> Megaglest Parent starting mainline.\n");
+    printf("#2 =============> Glest Parent starting mainline.\n");
 
 #ifdef STEAMSHIM_DEBUG
-    printf("=============> Megaglest Parent starting mainline.\n");
+    printf("=============> Glest Parent starting mainline.\n");
 
 #endif
     dbgpipe("Parent starting mainline.\n");

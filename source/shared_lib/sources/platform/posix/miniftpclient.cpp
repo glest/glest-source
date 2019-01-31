@@ -1,8 +1,8 @@
-// This file is part of ZetaGlest <https://github.com/ZetaGlest>
+// This file is part of Glest <https://github.com/Glest>
 //
-// Copyright (C) 2018  The ZetaGlest team
+// Copyright (C) 2018  The Glest team
 //
-// ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+// Glest is a fork of MegaGlest <https://megaglest.org/>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -294,8 +294,8 @@ namespace Shared {
 			destFile += mapFileName.first;
 
 			if (mapFileName.second == "") {
-				if (EndsWith(destFile, ".zgm") == false && EndsWith(destFile, ".mgm") == false && EndsWith(destFile, ".gbm") == false) {
-					destFileExt = ".zgm";
+				if (EndsWith(destFile, ".mgm") == false && EndsWith(destFile, ".gbm") == false) {
+					destFileExt = ".mgm";
 					destFile += destFileExt;
 				}
 			}
@@ -380,7 +380,7 @@ namespace Shared {
 				result = getMapFromServer(mapFileName, "", "");
 			} else {
 				pair<string, string> findMapFileName = mapFileName;
-				findMapFileName.first += +".zgm";
+				findMapFileName.first += +".mgm";
 
 				result = getMapFromServer(findMapFileName, FTP_MAPS_CUSTOM_USERNAME, FTP_COMMON_PASSWORD);
 				if (result.first == ftp_crt_FAIL && this->getQuitStatus() == false) {
@@ -389,7 +389,7 @@ namespace Shared {
 					result = getMapFromServer(findMapFileName, FTP_MAPS_CUSTOM_USERNAME, FTP_COMMON_PASSWORD);
 					if (result.first == ftp_crt_FAIL && this->getQuitStatus() == false) {
 							findMapFileName = mapFileName;
-							findMapFileName.first += +".zgm";
+							findMapFileName.first += +".mgm";
 							result = getMapFromServer(findMapFileName, FTP_MAPS_USERNAME, FTP_COMMON_PASSWORD);
 						if (result.first == ftp_crt_FAIL && this->getQuitStatus() == false) {
 							findMapFileName = mapFileName;

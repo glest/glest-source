@@ -1,8 +1,8 @@
-// This file is part of ZetaGlest <https://github.com/ZetaGlest>
+// This file is part of Glest <https://github.com/Glest>
 //
-// Copyright (C) 2018  The ZetaGlest team
+// Copyright (C) 2018  The Glest team
 //
-// ZetaGlest is a fork of MegaGlest <https://megaglest.org>
+// Glest is a fork of MegaGlest <https://megaglest.org/>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -108,7 +108,7 @@ namespace Shared {
 
 				message += "Your system supports OpenGL version \"";
 				message += getGlVersion() + string("\"\n");
-				message += "ZetaGlest needs a version that supports\n";
+				message += "Glest needs a version that supports\n";
 				message += "glActiveTexture (OpenGL 1.3) or the ARB_multitexture extension.";
 
 				throw game_runtime_error(message.c_str());
@@ -121,7 +121,7 @@ namespace Shared {
 
 				message += "Your system supports OpenGL version \"";
 				message += getGlVersion() + string("\"\n");
-				message += "ZetaGlest needs at least version 1.3 to work\n";
+				message += "Glest needs at least version 1.3 to work\n";
 				message += "You may solve this problem by installing your latest video card drivers";
 
 				throw game_runtime_error(message.c_str());
@@ -130,7 +130,7 @@ namespace Shared {
 			//opengl 1.4 or extension
 			//if(isGlVersionSupported(1, 4, 0) == false) {
 			if (glewIsSupported("GL_VERSION_1_4") == false) {
-				checkExtension("GL_ARB_texture_env_crossbar", "ZetaGlest");
+				checkExtension("GL_ARB_texture_env_crossbar", "Glest");
 			}
 		}
 

@@ -1,6 +1,6 @@
 # CONTRIBUTING
 
-Welcome to the ZG project! Thank you for reading this document and
+Welcome to the Glest project! Thank you for reading this document and
 considering contributing.
 
 Anyone is welcome to join our [Discord server](https://discord.gg/WaAaXS7).
@@ -11,13 +11,13 @@ Please remember to "star" this project.
 
 ## Website Design
 
-Documentation for designing the websites is in [WEBSITE_DESIGN.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/WEBSITE_DESIGN.md).
+Documentation for designing the websites is in [WEBSITE_DESIGN.md](https://github.com/Glest/glest-source/blob/develop/WEBSITE_DESIGN.md).
 
 ## Mods, tech trees, scenarios, tilesets, maps
 
 Guidelines for submitting or letting us know about content you've
 created can be found on the data repo at
-[zetaglest-data#submitting-mods-tech-trees-tilesets-maps-scenarios](https://github.com/ZetaGlest/zetaglest-data#submitting-mods-tech-trees-tilesets-maps-scenarios)
+[glest-data#submitting-mods-tech-trees-tilesets-maps-scenarios](https://github.com/Glest/glest-data#submitting-mods-tech-trees-tilesets-maps-scenarios)
 
 Our goal with content contributed by artists are:
 
@@ -28,24 +28,24 @@ Our goal with content contributed by artists are:
 
 ## Issues
 
-ZetaGlest Issues are filed on these repositories:
+Glest Issues are filed on these repositories:
 
-* [zetaglest-source Issues](https://github.com/ZetaGlest/zetaglest-source/issues)
-* [zetaglest-data Issues](https://github.com/ZetaGlest/zetaglest-data/issues)
-* [zetaglest-masterserver Issues](https://github.com/ZetaGlest/zetaglest-masterserver/issues)
-* [ZetaGlest web site](https://github.com/ZetaGlest/zetaglest.github.io)
+* [glest-source Issues](https://github.com/Glest/glest-source/issues)
+* [glest-data Issues](https://github.com/Glest/glest-data/issues)
+* [glest-masterserver Issues](https://github.com/Glest/glest-masterserver/issues)
+* [Glest web site](https://github.com/Glest/glest.github.io)
 
 Don't worry about focusing on every repo in the above list. Each repo is separated by
-category. For example, zetaglest-source is for source code, zetaglest-data is for game data.
+category. For example, glest-source is for source code, glest-data is for game data.
 We don't expect contributors to keep track of issues in every repository. If you stay
 with the project for a while, you will not have any problem finding your way around.
 
 For new users, it's recommended to focus on only one repository. However,
 if you are curious to get an overview of every issue filed from the repo list above, this
-link will display a combined list of issues across every repository in the ZetaGlest
+link will display a combined list of issues across every repository in the Glest
 organization.
 
-[https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3AZetaGlest](https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3AZetaGlest)
+[https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3AGlest](https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3AGlest)
 
 If you find an issue that interests you, please leave a note asking about it
 first. If you don't see that anyone has inquired about it, you can simply
@@ -90,9 +90,9 @@ Problems arise when multiple patches are included in a single pull request:
  from being merged 
 
 See the instructions in
-[BUILD.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/BUILD.md)
+[BUILD.md](https://github.com/Glest/glest-source/blob/develop/BUILD.md)
 for important information about how to clone your forks so you can
-easily contribute patches, graphics, or other content to the ZetaGlest
+easily contribute patches, graphics, or other content to the Glest
 repositories.
 
 ## Pull Requests
@@ -103,23 +103,23 @@ you can practice at the repository [Practice Git](https://github.com/grayghostvi
 
 Follow the steps below if you are contributing to any of these repositories:
 
-* [source](https://github.com/ZetaGlest/zetaglest-source)
-* [data](https://github.com/ZetaGlest/zetaglest-data)
-* [masterserver](https://github.com/MegaGlest/megaglest-masterserver)
-* [website](https://github.com/ZetaGlest/zetaglest.github.io)
+* [source](https://github.com/Glest/glest-source)
+* [data](https://github.com/Glest/glest-data)
+* [masterserver](https://github.com/Glest/glest-masterserver)
+* [website](https://github.com/Glest/glest.github.io)
 
-Below, *zetaglest-source* is used for the example, but if you are working on another repository,
-be sure to replace **zetaglest-source** with the appropriate repo url, using the URL of
+Below, *glest-source* is used for the example, but if you are working on another repository,
+be sure to replace **glest-source** with the appropriate repo url, using the URL of
 your fork.
 
-1. [Fork the repo](https://github.com/ZetaGlest/zetaglest-source/fork) (if you haven't already done so)
+1. [Fork the repo](https://github.com/Glest/glest-source/fork) (if you haven't already done so)
 2. Clone it to your computer
 3. When you're ready to work on an issue, be sure you're on the **develop** branch. From there,
 [create a separate branch](https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches)
 (e.g. issue_32)
 4. Make your changes. If you're unsure of some details while you're making edits, you can
 discuss them on the ticket.
-5. Add yourself to the [AUTHORS.md](https://github.com/ZetaGlest/zetaglest-source/blob/develop/AUTHORS.md) file
+5. Add yourself to the [AUTHORS.md](https://github.com/Glest/glest-source/blob/develop/AUTHORS.md) file
 
 6. Commit your changes. [git-cola](https://git-cola.github.io/) is a nice GUI front-end for adding files and entering commit messages (git-cola is probably available from your OS repository).
 
@@ -141,6 +141,6 @@ Periodically, especially before starting a new patch, you'll need to sync your
 repo with the remote upstream. GitHub has instructions for doing this:
 
 1. [Configuring a remote for a fork](https://help.github.com/articles/configuring-a-remote-for-a-fork/)
-    * For step 3 on that page, use https://github.com/ZetaGlest/zetaglest-source for the URL.
+    * For step 3 on that page, use https://github.com/Glest/glest-source for the URL.
 2. [Syncing a Fork](https://help.github.com/articles/syncing-a-fork/)
     * On that page, it shows how to merge the **develop** branch (steps 4 & 5 of **Syncing a Fork**).

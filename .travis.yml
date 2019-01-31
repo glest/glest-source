@@ -75,7 +75,7 @@ script:
         cmake .. -DCMAKE_INSTALL_PREFIX=$PWD/local;
         make && make install;
         echo 'Dependencies:';
-        otool -L zetaglest;
+        otool -L glest;
     fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ] && [ $Tr_Compiler_Version = "6" ]; then
         mkdir build;
@@ -88,7 +88,7 @@ script:
 notifications:
   irc:
     channels:
-      - "irc.freenode.org#zetaglest-dev"
+      - "irc.freenode.org#glest-dev"
     skip_join: true
     use_notice: true
     on_success: change

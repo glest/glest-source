@@ -1,8 +1,8 @@
-/zetaglest
-/zetaglest.6
-/zetaglest_editor*
-/zetaglest_g3dviewer*
-/zetaglest_tests
+/glest
+/glest.6
+/glest_editor*
+/glest_g3dviewer*
+/glest_tests
 
 !/*.desktop
 
