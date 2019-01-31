@@ -31,7 +31,7 @@ source**](https://github.com/Glest/glest-source/blob/develop/BUILD.md)
 
 For Linux, run the following command:
 
-    git clone https://github.com/Glest/glest-source.git glest && sudo glest/mk/linux/setup.sh
+    git clone https://github.com/Glest/glest-source.git glest; sudo glest/mk/linux/setup.sh
 
 Then run the following command to start the game:
 
