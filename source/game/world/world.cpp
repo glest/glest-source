@@ -2883,8 +2883,8 @@ namespace Game {
 			Faction *faction = getFaction(factionIndex);
 			if (faction->getTeam() == thisTeamIndex) {
 				for (int unitIndex = 0; unitIndex < faction->getUnitCount(); ++unitIndex) {
-					const Unit *unit = faction->getUnit(unitIndex);
-					const FowAlphaCellsLookupItem &cache = unit->getCachedFow();
+					Unit *unit = faction->getUnit(unitIndex);
+ 					FowAlphaCellsLookupItem &cache = unit->getCachedFow();
 
 					surfPosAlphaCount += (int) cache.surfPosAlphaList.size();
 				}

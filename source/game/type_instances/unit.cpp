@@ -664,6 +664,7 @@ namespace Game {
 		lastPathfindFailedFrame = 0;
 		lastPathfindFailedPos = Vec2i(0, 0);
 		usePathfinderExtendedMaxNodes = false;
+		lastBuildState = false;
 		this->currentAttackBoostOriginatorEffect.skillType = NULL;
 		lastAttackerUnitId = -1;
 		lastAttackedUnitId = -1;
@@ -1654,17 +1655,23 @@ namespace Game {
 		calculateFogOfWarRadius(forceRefresh);
 	}
 
-	FowAlphaCellsLookupItem Unit::getFogOfWarRadius(bool useCache) const {
+	FowAlphaCellsLookupItem Unit::getFogOfWarRadius(bool useCache) {
 		if (useCache == true) {
-			return cachedFow;
+			if (isBeingBuilt() == lastBuildState)
+				return cachedFow;
+			else
+				lastBuildState = isBeingBuilt();
 		}
-
+		
 		//iterate through all cells
 		int sightRange =
 			this->getType()->getTotalSight(this->getTotalUpgrade());
 		FowAlphaCellsLookupItem result;
 		if (sightRange == 0)
 			return result;
+		else if (!isBuilt()) {
+			sightRange = 1;
+		}
 		int radius = sightRange + World::indirectSightRange;
 		PosCircularIterator pci(map, this->getPosNotThreadSafe(), radius);
 		while (pci.next()) {
@@ -2310,7 +2317,6 @@ namespace Game {
 
 		//push back command
 		if (result.first == crSuccess) {
-			printf("Success\n");
 			static string mutexOwnerId =
 				string(__FILE__) + string("_") + intToStr(__LINE__);
 			MutexSafeWrapper safeMutex(mutexCommands, mutexOwnerId);
@@ -3303,7 +3309,7 @@ namespace Game {
 		if (oldTotalSight !=
 			getType()->getTotalSight(this->getTotalUpgrade())) {
 			oldTotalSight = getType()->getTotalSight(this->getTotalUpgrade());
-			// refresh FogOfWar and so on, because sight ha changed since last update
+			// refresh FogOfWar and so on, because sight has changed since last update
 			refreshPos(true);
 		}
 
@@ -5485,8 +5491,10 @@ namespace Game {
 	void Unit::exploreCells(bool forceRefresh) {
 		if (this->isAlive() == true) {
 			const Vec2i & newPos = this->getCenteredPos();
-			int sightRange =
-				this->getType()->getTotalSight(this->getTotalUpgrade());
+			int sightRange = this->getType()->getTotalSight(this->getTotalUpgrade());
+			if (sightRange != 0 && !isBuilt()) {
+				sightRange = 1;
+			}
 			int teamIndex = this->getTeam();
 
 			if (game == NULL) {

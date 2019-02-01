@@ -514,7 +514,7 @@ namespace Game {
 		int32 lastLine;
 		std::string lastSource;
 		int32 lastRenderFrame;
-		bool visible;
+		bool visible, lastBuildState;
 
 		int retryCurrCommandCount;
 
@@ -622,10 +622,16 @@ namespace Game {
 			pathfindFailedConsecutiveFrameCount = 0;
 		}
 
-		const FowAlphaCellsLookupItem & getCachedFow() const {
+		FowAlphaCellsLookupItem & getCachedFow() {
+			if (isBeingBuilt() == lastBuildState)
+				return cachedFow;
+			else {
+				cachedFow = getFogOfWarRadius(false);
+				lastBuildState = isBeingBuilt();
+			}
 			return cachedFow;
 		}
-		FowAlphaCellsLookupItem getFogOfWarRadius(bool useCache) const;
+		FowAlphaCellsLookupItem getFogOfWarRadius(bool useCache);
 		void calculateFogOfWarRadius(bool forceRefresh = false);
 
 		//queries
