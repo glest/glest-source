@@ -210,8 +210,8 @@ namespace MapEditor {
 		}
 	}
 
-	void Program::glestChangeMapHeight(int x, int y, int Height, int radius) {
-		if (map) map->glestChangeHeight((x - ofsetX) / cellSize, (y + ofsetY) / cellSize, Height, radius);
+	void Program::changeMapHeight(int x, int y, int Height, int radius) {
+		if (map) map->changeHeight((x - ofsetX) / cellSize, (y + ofsetY) / cellSize, Height, radius);
 	}
 
 	void Program::pirateChangeMapHeight(int x, int y, int Height, int radius) {

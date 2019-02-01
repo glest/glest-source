@@ -58,12 +58,25 @@ namespace Game {
 		return true;
 	}
 
-	bool Selection::select(Unit *unit, bool addToSelection) {
+	bool Selection::isSelected(Unit* unit) const {
+		if (unit == NULL)
+			return false;
+		//check if already selected
+		for (int index = 0; index < (int) selectedUnits.size(); ++index) {
+			if (selectedUnits[index] == unit) {
+				return true;
+			}
+		}
+	}
+
+	bool Selection::select(Unit *unit, bool addToSelection, bool toggleSelection) {
 		bool result = false;
 		if (unit != NULL) {
 			//check if already selected
 			for (int index = 0; index < (int) selectedUnits.size(); ++index) {
 				if (selectedUnits[index] == unit) {
+					if (toggleSelection)
+						unSelect(index);
 					return true;
 				}
 			}
@@ -143,11 +156,11 @@ namespace Game {
 		return result;
 	}
 
-	void Selection::select(const UnitContainer &units, bool addToSelection) {
+	void Selection::select(const UnitContainer &units, bool addToSelection, bool toggleSelection) {
 
 		//add units to gui
 		for (UnitIterator it = units.begin(); it != units.end(); ++it) {
-			select(*it, addToSelection);
+			select(*it, addToSelection, toggleSelection);
 		}
 	}
 

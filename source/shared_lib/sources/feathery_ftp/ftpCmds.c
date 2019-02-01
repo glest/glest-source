@@ -456,7 +456,7 @@ LOCAL int ftpCmdRetr(int sessionId, const char* args, int len) {
 
 	if (ftpIsClientAllowedToGetFile != NULL) {
 		if (ftpIsClientAllowedToGetFile(ftpGetSession(sessionId)->remoteIp, ftpFindAccountById(ftpGetSession(sessionId)->userId), realPath) != 1) {
-			if (VERBOSE_MODE_ENABLED) printf("ERROR In ftpCmdRetr FILE DISALLOWED By MGserver [file not available] args [%s] realPath [%s]\n", args, realPath);
+			if (VERBOSE_MODE_ENABLED) printf("ERROR In ftpCmdRetr FILE DISALLOWED By server [file not available] args [%s] realPath [%s]\n", args, realPath);
 
 			ftpSendMsg(MSG_NORMAL, sessionId, 550, ftpMsg032);
 			return 2;

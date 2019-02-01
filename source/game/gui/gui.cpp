@@ -324,6 +324,7 @@ namespace Game {
 				selectionQuad.disable();
 			}
 		}
+		lastToggledUnits.clear();
 	}
 
 	void Gui::mouseMoveGraphics(int x, int y) {
@@ -1154,24 +1155,32 @@ namespace Game {
 				}
 			}
 
-			bool shiftDown = isKeyDown(vkShift);
-			bool controlDown = isKeyDown(vkControl);
-
-			if (!shiftDown && !controlDown) {
-				//if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] about to call selection.clear()\n",__FILE__,__FUNCTION__,__LINE__);
-				selection.clear();
-			}
-
-			if (!controlDown) {
-				//if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] about to call selection.select(units)\n",__FILE__,__FUNCTION__,__LINE__);
-				selection.select(units, shiftDown);
-				if (!selection.isEmpty()) {
-					selectedResourceObject = NULL;
+			if (isKeyDown(vkControl))
+				selection.unSelect(units);
+			else if (isKeyDown(vkShift)) {
+				int j;
+				Unit* unit;
+				bool alreadyToggled;
+				for (int i = 0; i < units.size(); i++) {
+					unit = units[i];
+					alreadyToggled = false;
+					for (j = 0; j < lastToggledUnits.size(); j++) {
+						if (lastToggledUnits[j] == unit) {
+							alreadyToggled = true;
+							break;
+						}
+					}
+					if (!alreadyToggled) {
+						selection.select(unit, true, true);
+						lastToggledUnits.push_back(unit);
+					}
 				}
 			} else {
-				//if(SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem,"In [%s::%s Line: %d] selection.unSelect(units)\n",__FILE__,__FUNCTION__,__LINE__);
-				selection.unSelect(units);
+				selection.clear();
+				selection.select(units, false);
 			}
+			if (!selection.isEmpty())
+				selectedResourceObject = NULL;
 		}
 	}
 

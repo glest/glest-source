@@ -609,11 +609,11 @@ namespace Shared {
 			}
 
 			// Get user-specified font path
-			string glest_font = safeCharPtrCopy(getenv("GAME_FONT"), 8095);
-			string glest_font_family = safeCharPtrCopy(getenv("GAME_FONT_FAMILY"), 8095);
-			if (glest_font != "" || glest_font_family != "") {
-				if (glest_font != "") {
-					tryFont = glest_font;
+			string game_font = safeCharPtrCopy(getenv("GAME_FONT"), 8095);
+			string game_font_family = safeCharPtrCopy(getenv("GAME_FONT_FAMILY"), 8095);
+			if (game_font != "" || game_font_family != "") {
+				if (game_font != "") {
+					tryFont = game_font;
 
 					if (Text::DEFAULT_FONT_PATH_ABSOLUTE != "") {
 						tryFont = Text::DEFAULT_FONT_PATH_ABSOLUTE + "/" + extractFileFromDirectoryPath(tryFont);
@@ -622,9 +622,9 @@ namespace Shared {
 					replaceAll(tryFont, "/", "\\");
 #endif
 
-					CHECK_FONT_PATH(tryFont.c_str(), glest_font_family.c_str(), &font, &path);
+					CHECK_FONT_PATH(tryFont.c_str(), game_font_family.c_str(), &font, &path);
 				} else {
-					CHECK_FONT_PATH(NULL, glest_font_family.c_str(), &font, &path);
+					CHECK_FONT_PATH(NULL, game_font_family.c_str(), &font, &path);
 				}
 			}
 

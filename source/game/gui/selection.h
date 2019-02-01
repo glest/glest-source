@@ -74,11 +74,13 @@ namespace Game {
 		void init(Gui *gui, int factionIndex, int teamIndex, bool allowSharedTeamUnits);
 		virtual ~Selection();
 
-		bool select(Unit *unit, bool addToSelection);
-		void select(const UnitContainer &units, bool addToSelection);
+		bool select(Unit *unit, bool addToSelection, bool toggleSelection = false);
+		void select(const UnitContainer &units, bool addToSelection, bool toggleSelection = false);
 		void unSelect(const UnitContainer &units);
 		void unSelect(int unitIndex);
 		void clear();
+
+		bool isSelected(Unit* unit) const;
 
 		bool isEmpty() const {
 			return selectedUnits.empty();

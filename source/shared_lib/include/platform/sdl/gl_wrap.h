@@ -20,19 +20,10 @@
 #ifndef _SHARED_PLATFORM_GLWRAP_H_
 #define _SHARED_PLATFORM_GLWRAP_H_
 
+#include <GL/glew.h>
+
 #ifdef WIN32
-
 #include <windows.h>
-
-#include <GL/glew.h>
-
-#define GLEST_GLPROC(X, Y) inline X( static a= wglGetProcAddress(a); return a;)
-
-#else
-
-#include <GL/glew.h>
-#define GL_GLEXT_PROTOTYPES
-
 #endif
 
 #include <string>

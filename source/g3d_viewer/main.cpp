@@ -1263,7 +1263,7 @@ namespace Shared {
 				}
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
-				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a Glest particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
+				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a valid particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
 			}
 		}
 
@@ -1514,7 +1514,7 @@ namespace Shared {
 				}
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
-				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a Glest projectile particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
+				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a valid projectile particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
 			}
 			if (timer) timer->Start(100);
 			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] after load [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, path.c_str());
@@ -1619,7 +1619,7 @@ namespace Shared {
 				}
 			} catch (std::runtime_error &e) {
 				std::cout << e.what() << std::endl;
-				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a Glest projectile particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
+				wxMessageDialog(NULL, ToUnicode(e.what()), ToUnicode("Not a valid projectile particle XML file, or broken"), wxOK | wxICON_ERROR).ShowModal();
 			}
 			if (timer) timer->Start(100);
 			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] after load [%s] particleSplashPathList.size() = " SIZE_T_SPECIFIER "\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, path.c_str(), this->particleSplashPathList.size());

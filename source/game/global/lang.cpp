@@ -737,7 +737,7 @@ namespace Game {
 	}
 
 	pair < string,
-		string > Lang::getNavtiveNameFromLanguageName(string langName) {
+		string > Lang::getNativeNameFromLanguageName(string langName) {
 		pair < string, string > result;
 
 		//printf("looking for language [%s]\n",langName.c_str());

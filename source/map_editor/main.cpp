@@ -1274,7 +1274,7 @@ wxT("Help")).ShowModal();
 
 		switch (enabledGroup) {
 			case ctHeight:
-				program->glestChangeMapHeight(x, y, height, radius);
+				program->changeMapHeight(x, y, height, radius);
 				break;
 			case ctSurface:
 				program->changeMapSurface(x, y, surface, radius);

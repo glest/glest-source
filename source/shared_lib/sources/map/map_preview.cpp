@@ -129,8 +129,7 @@ namespace Shared {
 #endif
 		}
 
-		void MapPreview::glestChangeHeight(int x, int y, int height, int radius) {
-
+		void MapPreview::changeHeight(int x, int y, int height, int radius) {
 			for (int i = x - radius + 1; i < x + radius; i++) {
 				for (int j = y - radius + 1; j < y + radius; j++) {
 					if (inside(i, j)) {

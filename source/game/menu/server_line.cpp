@@ -58,14 +58,14 @@ namespace Game {
 
 		//general info:
 		//i+= 10;
-		glestVersionLabel.init(i, baseY - lineOffset);
-		glestVersionLabel.setRenderBackground(true);
-		glestVersionLabel.setMaxEditRenderWidth(970);  // use background for whole line
-		glestVersionLabel.setTextColor(color);
-		glestVersionLabel.setText(" " + masterServerInfo.getGlestVersion());
-		glestVersionLabel.setFont(CoreData::getInstance().
+		versionLabel.init(i, baseY - lineOffset);
+		versionLabel.setRenderBackground(true);
+		versionLabel.setMaxEditRenderWidth(970);  // use background for whole line
+		versionLabel.setTextColor(color);
+		versionLabel.setText(" " + masterServerInfo.getVersion());
+		versionLabel.setFont(CoreData::getInstance().
 			getDisplayFontSmall());
-		glestVersionLabel.setFont3D(CoreData::getInstance().
+		versionLabel.setFont3D(CoreData::getInstance().
 			getDisplayFontSmall3D());
 
 		i += 80;
@@ -182,7 +182,7 @@ namespace Game {
 		status.init(i - 10, baseY - lineOffset);
 		status.setTextColor(color);
 		status.setText(lang.
-			getString("MGGameStatus" +
+			getString("GameStatus" +
 				intToStr(masterServerInfo.getStatus())));
 
 		i += 130;
@@ -190,8 +190,7 @@ namespace Game {
 		selectButton.setText(">");
 		selectButton.setAlwaysLighted(true);
 
-		//printf("glestVersionString [%s] masterServerInfo->getGlestVersion() [%s]\n",glestVersionString.c_str(),masterServerInfo->getGlestVersion().c_str());
-		compatible = checkVersionCompatibility(GameVersionString, masterServerInfo.getGlestVersion());
+		compatible = checkVersionCompatibility(GameVersionString, masterServerInfo.getVersion());
 		selectButton.setEnabled(compatible);
 		selectButton.setEditable(compatible);
 
@@ -200,7 +199,7 @@ namespace Game {
 	void ServerLine::reloadUI() {
 		Lang & lang = Lang::getInstance();
 
-		glestVersionLabel.setText(masterServerInfo.getGlestVersion());
+		versionLabel.setText(masterServerInfo.getVersion());
 
 		string platform = masterServerInfo.getPlatform();
 		size_t revOffset = platform.find("-Rev");
@@ -227,7 +226,7 @@ namespace Game {
 		//externalConnectPort.setText(intToStr(masterServerInfo.getExternalConnectPort()));
 
 		status.setText(lang.
-			getString("MGGameStatus" +
+			getString("GameStatus" +
 				intToStr(masterServerInfo.getStatus())));
 
 		GraphicComponent::
@@ -269,7 +268,7 @@ namespace Game {
 	void ServerLine::render() {
 		Renderer & renderer = Renderer::getInstance();
 		//general info:
-		renderer.renderLabel(&glestVersionLabel);
+		renderer.renderLabel(&versionLabel);
 		renderer.renderLabel(&platformLabel);
 		//renderer.renderLabel(&binaryCompileDateLabel);
 
@@ -320,7 +319,7 @@ namespace Game {
 		selectButton.setY(y);
 
 		//general info:
-		glestVersionLabel.setY(y);
+		versionLabel.setY(y);
 		platformLabel.setY(y);
 		//binaryCompileDateLabel.setY(y);
 

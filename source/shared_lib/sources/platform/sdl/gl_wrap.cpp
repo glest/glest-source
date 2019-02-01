@@ -254,7 +254,6 @@ namespace Shared {
 						icon = NULL;
 					}
 
-					//printf("Loading icon [%s]\n",mg_icon_file.c_str());
 					if (extractExtension(icon_file) == "bmp") {
 						icon = SDL_LoadBMP(icon_file.c_str());
 					} else {

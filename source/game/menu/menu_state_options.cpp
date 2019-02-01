@@ -206,13 +206,13 @@ namespace Game {
 				string,
 				string >
 				defaultLang =
-				Lang::getInstance().getNavtiveNameFromLanguageName(config.
+				Lang::getInstance().getNativeNameFromLanguageName(config.
 					getString
 					("Lang"));
 			if (defaultLang.first == "" && defaultLang.second == "") {
 				defaultLang =
 					Lang::getInstance().
-					getNavtiveNameFromLanguageName(Lang::getInstance().
+					getNativeNameFromLanguageName(Lang::getInstance().
 						getDefaultLanguage());
 			}
 			listBoxLang.
@@ -379,7 +379,7 @@ namespace Game {
 			currentLine -= lineOffset;
 
 			labelShowDeveloperConsoleOnWindows.init(currentLabelStart, currentLine);
-			labelShowDeveloperConsoleOnWindows.setText("Show developer console on Windows");
+			labelShowDeveloperConsoleOnWindows.setText(lang.getString("ShowDevConsoleWin"));
 
 			checkBoxShowDeveloperConsoleOnWindows.init(currentColumnStart,
 				currentLine);
@@ -491,7 +491,7 @@ namespace Game {
 		labelChatStaysActive.setText(lang.getString("ChatStaysActive"));
 		labelTimeDisplay.setText(lang.getString("TimeDisplay"));
 
-		labelShowDeveloperConsoleOnWindows.setText("Show developer console on Windows");
+		labelShowDeveloperConsoleOnWindows.setText(lang.getString("ShowDevConsoleWin"));
 		labelLang.setText(lang.getString("Language"));
 		labelPlayerNameLabel.setText(lang.getString("Playername"));
 		labelFontSizeAdjustment.setText(lang.getString("FontSizeAdjustment"));

@@ -168,42 +168,32 @@ namespace Game {
 
 		//general info:
 		//i+=10;
-		glestVersionLabel.registerGraphicComponent(containerName,
-			"glestVersionLabel");
-		glestVersionLabel.init(i, startOffset - lineOffset);
-		glestVersionLabel.setText(lang.getString("MGVersion"));
+		versionLabel.registerGraphicComponent(containerName,
+			"versionLabel");
+		versionLabel.init(i, startOffset - lineOffset);
+		versionLabel.setText(lang.getString("Version"));
 
 		i += 80;
 		platformLabel.registerGraphicComponent(containerName,
 			"platformLabel");
 		platformLabel.init(i + 15, startOffset - lineOffset);
-		platformLabel.setText(lang.getString("MGPlatform"));
+		platformLabel.setText(lang.getString("Platform"));
 
-		//      i+=50;
-		//      binaryCompileDateLabel.registerGraphicComponent(containerName,"binaryCompileDateLabel");
-		//      binaryCompileDateLabel.init(i,startOffset-lineOffset);
-		//      binaryCompileDateLabel.setText(lang.getString("MGBuildDateTime"));
-
-				//game info:
+		//game info:
 		i += 120;
 		serverTitleLabel.registerGraphicComponent(containerName,
 			"serverTitleLabel");
 		serverTitleLabel.init(i, startOffset - lineOffset);
-		serverTitleLabel.setText(lang.getString("MGGameTitle"));
+		serverTitleLabel.setText(lang.getString("GameTitle"));
 
 		i += 170;
 		countryLabel.registerGraphicComponent(containerName, "countryLabel");
 		countryLabel.init(i - 10, startOffset - lineOffset);
-		countryLabel.setText(lang.getString("MGGameCountry"));
+		countryLabel.setText(lang.getString("GameCountry"));
 
 		i += 60;
 
-		//      ipAddressLabel.registerGraphicComponent(containerName,"ipAddressLabel");
-		//      ipAddressLabel.init(i,startOffset-lineOffset);
-		//      ipAddressLabel.setText(lang.getString("MGGameIP"));
-		//      i+=100;
-
-				//game setup info:
+		//game setup info:
 		techLabel.registerGraphicComponent(containerName, "techLabel");
 		techLabel.init(i, startOffset - lineOffset);
 		techLabel.setText(lang.getString("TechTree"));
@@ -214,15 +204,11 @@ namespace Game {
 		mapLabel.setText(lang.getString("Map"));
 
 		i += 95;
-		//      tilesetLabel.registerGraphicComponent(containerName,"tilesetLabel");
-		//      tilesetLabel.init(i,startOffset-lineOffset);
-		//      tilesetLabel.setText(lang.getString("Tileset"));
-		//      i+=100;
 
 		activeSlotsLabel.registerGraphicComponent(containerName,
 			"activeSlotsLabel");
 		activeSlotsLabel.init(i, startOffset - lineOffset);
-		activeSlotsLabel.setText(lang.getString("MGGameSlots"));
+		activeSlotsLabel.setText(lang.getString("GameSlots"));
 
 		i += 50;
 		//externalConnectPort.registerGraphicComponent(containerName,"externalConnectPort");
@@ -232,12 +218,12 @@ namespace Game {
 		i += 30;
 		statusLabel.registerGraphicComponent(containerName, "statusLabel");
 		statusLabel.init(i + 5, startOffset - lineOffset);
-		statusLabel.setText(lang.getString("MGGameStatus"));
+		statusLabel.setText(lang.getString("GameStatus"));
 
 		i += 130;
 		selectButton.registerGraphicComponent(containerName, "selectButton");
 		selectButton.init(i - 5, startOffset - lineOffset);
-		selectButton.setText(lang.getString("MGJoinGameSlots"));
+		selectButton.setText(lang.getString("JoinGameSlots"));
 
 		// Titles for current games - END
 
@@ -448,25 +434,25 @@ namespace Game {
 			labelTitle.setText("*** " + lang.getString("AvailableServers"));
 		}
 
-		glestVersionLabel.setText(lang.getString("MGVersion"));
+		versionLabel.setText(lang.getString("Version"));
 
-		platformLabel.setText(lang.getString("MGPlatform"));
+		platformLabel.setText(lang.getString("Platform"));
 
-		serverTitleLabel.setText(lang.getString("MGGameTitle"));
+		serverTitleLabel.setText(lang.getString("GameTitle"));
 
-		countryLabel.setText(lang.getString("MGGameCountry"));
+		countryLabel.setText(lang.getString("GameCountry"));
 
 		techLabel.setText(lang.getString("TechTree"));
 
 		mapLabel.setText(lang.getString("Map"));
 
-		activeSlotsLabel.setText(lang.getString("MGGameSlots"));
+		activeSlotsLabel.setText(lang.getString("GameSlots"));
 
 		//externalConnectPort.setText(lang.getString("Port"));
 
-		statusLabel.setText(lang.getString("MGGameStatus"));
+		statusLabel.setText(lang.getString("GameStatus"));
 
-		selectButton.setText(lang.getString("MGJoinGameSlots"));
+		selectButton.setText(lang.getString("JoinGameSlots"));
 
 		// Titles for current games - END
 
@@ -1012,7 +998,7 @@ namespace Game {
 			const Vec4f titleLabelColor = CYAN;
 
 			//general info:
-			renderer.renderLabel(&glestVersionLabel, &titleLabelColor);
+			renderer.renderLabel(&versionLabel, &titleLabelColor);
 			renderer.renderLabel(&platformLabel, &titleLabelColor);
 			//renderer.renderLabel(&binaryCompileDateLabel,&titleLabelColor);
 
@@ -1367,7 +1353,7 @@ namespace Game {
 						MasterServerInfo *masterServerInfo = new MasterServerInfo();
 
 						//general info:
-						masterServerInfo->setGlestVersion(serverEntities[0]);
+						masterServerInfo->setVersion(serverEntities[0]);
 						masterServerInfo->setPlatform(serverEntities[1]);
 						masterServerInfo->setBinaryCompileDate(serverEntities[2]);
 

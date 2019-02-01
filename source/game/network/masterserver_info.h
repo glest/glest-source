@@ -36,7 +36,7 @@ namespace Game {
 	class MasterServerInfo {
 	protected:
 		//general info:
-		string glestVersion;
+		string version;
 		string platform;
 		string binaryCompileDate;
 
@@ -56,8 +56,8 @@ namespace Game {
 		int status;
 
 	public:
-		const string &getGlestVersion() const {
-			return glestVersion;
+		const string &getVersion() const {
+			return version;
 		}
 		const string &getPlatform() const {
 			return platform;
@@ -101,10 +101,9 @@ namespace Game {
 			return status;
 		}
 
-
 		//general info:
-		void setGlestVersion(string value) {
-			glestVersion = value;
+		void setVersion(string value) {
+			version = value;
 		}
 		void setPlatform(string value) {
 			platform = value;

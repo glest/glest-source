@@ -5699,7 +5699,7 @@ namespace Game {
 	}
 
 	int
-		glestMain(int argc, char **argv) {
+		gameMain(int argc, char **argv) {
 #ifdef SL_LEAK_DUMP
 		//AllocInfo::set_application_binary(executable_path(argv[0],true));
 		string & app = AllocInfo::get_application_binary();
@@ -5721,8 +5721,6 @@ namespace Game {
 			Thread::setEnableVerboseMode(true);
 			//LuaScript::setDebugModeEnabled(true);
 		}
-		// DEbug testing threads
-		//Thread::setEnableVerboseMode(true);
 
 		PlatformExceptionHandler::application_binary =
 			executable_path(argv[0], true);
@@ -5914,68 +5912,6 @@ namespace Game {
 				getPlatformNameString().c_str(),
 				(::Shared::PlatformByteOrder::isBigEndian() ==
 					true ? "big" : "little"));
-
-			//              printf("\n\nData type sizes int8 = " SIZE_T_SPECIFIER " int16 = " SIZE_T_SPECIFIER " int32 = " SIZE_T_SPECIFIER " int64 = " SIZE_T_SPECIFIER "\n\n",sizeof(int8),sizeof(int16),sizeof(int32),sizeof(int64));
-			//
-			//              Config::getInstance().setBool("DebugNetworkPackets",true,true);
-			//              NetworkMessageIntro data(424336, "mg_version_x","player_x", 3, nmgstOk,444444, 555555, "english");
-			//              unsigned char *buf = data.packMessage();
-			//              printf("\nSend packet size = %u\n%s\n",data.getPackedSize(),data.toString().c_str());
-			//              data.dump_packet("Send data", buf, data.getPackedSize());
-			//              //delete [] buf;
-			//
-			//              NetworkMessageIntro data2;
-			//              data2.unpackMessage(buf);
-			//              printf("\nReceive packet size = %u\n%s\n",data2.getPackedSize(),data2.toString().c_str());
-			//              data2.dump_packet("nReceive data", buf, data2.getPackedSize());
-			//              delete [] buf;
-
-			//              SwitchSetupRequest data("factionname", 3,-1,2,"softcoder",10, 11,"eng");
-			//
-			//              unsigned char *buf = data.packMessage();
-			//              printf("\nSend packet size = %u\n%s\nTeam = %d faction [%s] currentFactionIndex = %d toFactionIndex = %d [%s] [%s] %d %d\n",data.getPackedSize(),buf,data.getToTeam(),data.getSelectedFactionName().c_str(),data.getCurrentFactionIndex(),data.getToFactionIndex(),data.getNetworkPlayerLanguage().c_str(),data.getNetworkPlayerName().c_str(),data.getNetworkPlayerStatus(),data.getSwitchFlags());
-			//              //delete [] buf;
-			//
-			//              data.unpackMessage(buf);
-			//              printf("\nGot packet size = %u\n%s\nTeam = %d faction [%s] currentFactionIndex = %d toFactionIndex = %d [%s] [%s] %d %d\n",data.getPackedSize(),buf,data.getToTeam(),data.getSelectedFactionName().c_str(),data.getCurrentFactionIndex(),data.getToFactionIndex(),data.getNetworkPlayerLanguage().c_str(),data.getNetworkPlayerName().c_str(),data.getNetworkPlayerStatus(),data.getSwitchFlags());
-			//              delete [] buf;
-
-			//              int8 a = 1;
-			//              uint8 b = 2;
-			//              int16 c = 3;
-			//              uint16 d = 4;
-			//              int32 e = 5;
-			//              uint32 f = 6;
-			//
-			//              printf("\nPack test #1: [%d][%u][%d][%u][%d][%u]\n,",a,b,c,d,e,f);
-			//
-			//              unsigned char *buf = new unsigned char[100];
-			//              unsigned int packedsize = pack(buf, "cChHlL",
-			//                              a,
-			//                              b,
-			//                              c,
-			//                              d,
-			//                              e,
-			//                              f);
-			//
-			//              printf("Pack test #2: [%u][%s]\n,",packedsize,buf);
-			//
-			//              int8 a1 = 0;
-			//              uint8 b1 = 0;
-			//              int16 c1 = 0;
-			//              uint16 d1 = 0;
-			//              int32 e1 = 0;
-			//              uint32 f1 = 0;
-			//
-			//              unpack(buf, "cChHlL",
-			//                              &a1,
-			//                              &b1,
-			//                              &c1,
-			//                              &d1,
-			//                              &e1,
-			//                              &f1);
-			//
-			//              printf("UnPack test #3: [%d][%u][%d][%u][%d][%u]\n,",a1,b1,c1,d1,e1,f1);
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED == true) {
 				int8
@@ -6213,8 +6149,16 @@ namespace Game {
 		}
 
 		SystemFlags::init(haveSpecialOutputCommandLineOption);
-		//SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled  = true;
+		//SystemFlags::getSystemSettingType(SystemFlags::debugError).enabled = true;
+		//SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled = true;
 		//SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled = true;
+		//SystemFlags::getSystemSettingType(SystemFlags::debugPathFinder).enabled = true;
+		//SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled = true;
+		//SystemFlags::getSystemSettingType(SystemFlags::debugSound).enabled = true;
+		//SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled = true;
+		SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled = true;
+		//SystemFlags::getSystemSettingType(SystemFlags::debugWorldSynch).enabled = true;
+		//SystemFlags::getSystemSettingType(SystemFlags::debugWorldSynchMax).enabled = true;
 
 		MainWindow *
 			mainWindow = NULL;
@@ -8270,7 +8214,7 @@ namespace Game {
 #endif
 
 	int
-		glestMainSEHWrapper(int argc, char **argv) {
+		gameMainSEHWrapper(int argc, char **argv) {
 		int
 			result = 0;
 #ifdef WIN32_STACK_TRACE
@@ -8297,7 +8241,7 @@ namespace Game {
 
 			IRCThread::setGlobalCacheContainerName
 			(GameConstants::ircClientCacheLookupKey);
-			result = glestMain(argc, argv);
+			result = gameMain(argc, argv);
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
 				printf("In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
@@ -8330,7 +8274,7 @@ namespace Game {
 	}
 
 	int
-		glestMainWrapper(int argc, char **argv) {
+		gameMainWrapper(int argc, char **argv) {
 		//setlocale(LC_ALL, "zh_TW.UTF-8");
 		//setlocale(LC_ALL, "");
 
@@ -8412,7 +8356,7 @@ namespace Game {
 		}
 
 		int
-			result = glestMainSEHWrapper(argc, argv);
+			result = gameMainSEHWrapper(argc, argv);
 
 		if (isSteamMode == true) {
 			printf("\nSteam API deinit.\n");
@@ -8431,6 +8375,6 @@ int main(int argc, char **argv) {
 #endif
 	int result = mainSetup(argc,argv);
 	if (result == 0)
-		result = Game::glestMainWrapper(argc, argv);
+		result = Game::gameMainWrapper(argc, argv);
     return result;
 }

@@ -645,7 +645,7 @@ namespace Game {
 
 	Game *Unit::game = NULL;
 
-	Unit::Unit(int id, UnitPathInterface * unitpath, const Vec2i & pos,
+	Unit::Unit(int id, UnitPathInterface * unitpath, const Vec2i & position,
 		const UnitType * type, Faction * faction, Map * map,
 		CardinalDir placeFacing) :BaseColorPickEntity(), id(id) {
 #ifdef LEAK_CHECK_UNITS
@@ -690,13 +690,12 @@ namespace Game {
 		pathFindRefreshCellCount =
 			random.randRange(10, 20, intToStr(__LINE__));
 
-		if (map->isInside(pos) == false
-			|| map->isInsideSurface(map->toSurfCoords(pos)) == false) {
-			throw game_runtime_error("#2 Invalid path position = " +
-				pos.getString());
-		}
-
-		this->pos = pos;
+		if (map->isInside(position) == false
+			|| map->isInsideSurface(map->toSurfCoords(position)) == false) {
+			printf("\n#2 Invalid path position = %s\n", position.getString().c_str());
+			this->pos = Vec2i();
+		} else
+			this->pos = position;
 
 		this->faction = faction;
 		this->preMorph_type = NULL;
@@ -1606,13 +1605,7 @@ namespace Game {
 		return &random;
 	}
 
-	void Unit::setPos(const Vec2i & pos, bool clearPathFinder, bool threaded) {
-		if (map->isInside(pos) == false
-			|| map->isInsideSurface(map->toSurfCoords(pos)) == false) {
-			throw game_runtime_error("#3 Invalid path position = " +
-				pos.getString());
-		}
-
+	void Unit::setPos(const Vec2i & position, bool clearPathFinder, bool threaded) {
 		static string mutexOwnerId =
 			string(__FILE__) + string("_") + intToStr(__LINE__);
 		MutexSafeWrapper safeMutex(mutexCommands, mutexOwnerId);
@@ -1628,9 +1621,15 @@ namespace Game {
 		if (clearPathFinder == true && this->unitPath != NULL) {
 			this->unitPath->clear();
 		}
-		//Vec2i oldLastPos = this->lastPos;
+
 		this->lastPos = this->pos;
-		this->pos = pos;
+
+		if (map->isInside(position) == false
+			|| map->isInsideSurface(map->toSurfCoords(position)) == false) {
+			printf("\n#3 Invalid path position = %s\n", position.getString().c_str());
+			this->pos = Vec2i();
+		} else
+			this->pos = position;
 
 		map->clampPos(this->pos);
 		this->meetingPos = pos - Vec2i(1);
@@ -1710,14 +1709,15 @@ namespace Game {
 	}
 
 	void Unit::setTargetPos(const Vec2i & targetPos, bool threaded) {
-
+		Vec2i newTargetPos;
 		if (map->isInside(targetPos) == false
 			|| map->isInsideSurface(map->toSurfCoords(targetPos)) == false) {
-			throw game_runtime_error("#4 Invalid path position = " +
-				targetPos.getString());
-		}
+			printf("\n#3 Invalid path position = %s\n", targetPos.getString().c_str());
+			newTargetPos = Vec2i();
+		} else
+			newTargetPos = targetPos;
 
-		Vec2i relPos = targetPos - pos;
+		Vec2i relPos = newTargetPos - pos;
 		//map->clampPos(relPos);
 
 		Vec2f relPosf = Vec2f((float) relPos.x, (float) relPos.y);
@@ -1733,7 +1733,7 @@ namespace Game {
 
 		targetRef = NULL;
 
-		this->targetPos = targetPos;
+		this->targetPos = newTargetPos;
 		map->clampPos(this->targetPos);
 
 		if (threaded) {
@@ -2152,7 +2152,7 @@ namespace Game {
 				// we just queue it!
 
 			} else {
-				//Delete all lower-prioirty commands
+				//Delete all lower-priority commands
 				for (list < Command * >::iterator i = commands.begin();
 					i != commands.end();) {
 					if ((*i)->getPriority() < command_priority) {
@@ -2310,6 +2310,7 @@ namespace Game {
 
 		//push back command
 		if (result.first == crSuccess) {
+			printf("Success\n");
 			static string mutexOwnerId =
 				string(__FILE__) + string("_") + intToStr(__LINE__);
 			MutexSafeWrapper safeMutex(mutexCommands, mutexOwnerId);
@@ -2645,16 +2646,18 @@ namespace Game {
 		highlight = 1.f;
 	}
 
-	const CommandType *Unit::computeCommandType(const Vec2i & pos,
+	const CommandType *Unit::computeCommandType(const Vec2i & position,
 		const Unit *
 		targetUnit) const {
 		const CommandType *commandType = NULL;
 
-		if (map->isInside(pos) == false
-			|| map->isInsideSurface(map->toSurfCoords(pos)) == false) {
-			throw game_runtime_error("#6 Invalid path position = " +
-				pos.getString());
-		}
+		Vec2i pos;
+		if (map->isInside(position) == false
+			|| map->isInsideSurface(map->toSurfCoords(position)) == false) {
+			printf("\n#6 Invalid path position = %s\n", position.getString().c_str());
+			pos = Vec2i();
+		} else
+			pos = position;
 
 		SurfaceCell *sc = map->getSurfaceCell(Map::toSurfCoords(pos));
 
@@ -2740,9 +2743,6 @@ namespace Game {
 			if (this->getType()->hasSkillClass(scAttack) && (targetUnit == NULL || this->getTeam() != targetUnit->getTeam()))
 				command = ccAttack;
 			commandType = type->getFirstCtOfClass(command);
-
-			// FIXME: I think a better solution would be to have a hotkey for this,
-			// the user can decide, and toggle in-game -andy5995 2018-02-03
 		}
 
 		return commandType;
@@ -4594,16 +4594,14 @@ namespace Game {
 
 	// ==================== PRIVATE ====================
 
-	float Unit::computeHeight(const Vec2i & pos) const {
-		//printf("CRASHING FOR UNIT: %d alive = %d\n",this->getId(),this->isAlive());
-		//printf("[%s]\n",this->getType()->getName().c_str());
-		if (map->isInside(pos) == false
-			|| map->isInsideSurface(map->toSurfCoords(pos)) == false) {
-			//printf("CRASHING FOR UNIT: %d [%s] alive = %d\n",this->getId(),this->getType()->getName().c_str(),this->isAlive());
-			//abort();
-			throw game_runtime_error("#7 Invalid path position = " +
-				pos.getString());
-		}
+	float Unit::computeHeight(const Vec2i & position) const {
+		Vec2i pos;
+		if (map->isInside(position) == false
+			|| map->isInsideSurface(map->toSurfCoords(position)) == false) {
+			printf("\n#7 Invalid path position = %s\n", position.getString().c_str());
+			pos = Vec2i();
+		} else
+			pos = position;
 
 		float height = map->getCell(pos)->getHeight();
 
@@ -5453,15 +5451,15 @@ namespace Game {
 	}
 
 	void Unit::setMeetingPos(const Vec2i & meetingPos) {
-		this->meetingPos = meetingPos;
-		map->clampPos(this->meetingPos);
+		Vec2i pos;
+		if (map->isInside(meetingPos) == false
+			|| map->isInsideSurface(map->toSurfCoords(meetingPos)) == false) {
+			printf("\n#8 Invalid path position = %s\n", meetingPos.getString().c_str());
+			this->meetingPos = Vec2i();
+		} else
+			this->meetingPos = meetingPos;
 
-		if (map->isInside(this->meetingPos) == false
-			|| map->isInsideSurface(map->toSurfCoords(this->meetingPos)) ==
-			false) {
-			throw game_runtime_error("#8 Invalid path position = " +
-				this->meetingPos.getString());
-		}
+		map->clampPos(this->meetingPos);
 
 		logSynchData(extractFileFromDirectoryPath(__FILE__).c_str(),
 			__LINE__);

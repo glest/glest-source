@@ -48,7 +48,7 @@ namespace Game {
 		GraphicLabel wrongVersionLabel;
 
 		//general info:
-		GraphicLabel glestVersionLabel;
+		GraphicLabel versionLabel;
 		GraphicLabel platformLabel;
 		//GraphicLabel binaryCompileDateLabel;
 

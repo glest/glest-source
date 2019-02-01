@@ -54,7 +54,7 @@ namespace Game {
 
 		GraphicLine lines[3];
 
-		GraphicLabel glestVersionLabel;
+		GraphicLabel versionLabel;
 		GraphicLabel platformLabel;
 		//GraphicLabel binaryCompileDateLabel;
 

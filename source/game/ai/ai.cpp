@@ -1166,7 +1166,7 @@ namespace Game {
 			glestResourceAttack = (aiInterface->getControlType() == ctCpuGlest)
 			&& random.randRange(0, 1) == 1;
 
-		if (glestResourceAttack || ultraResourceAttack) {
+		if (ultraResourceAttack || glestResourceAttack) {
 			Map *
 				map = aiInterface->getMap();
 

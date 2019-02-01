@@ -108,7 +108,7 @@ namespace Game {
 		map < string,
 			string > getDiscoveredLanguageList(bool searchKeyIsLangName = false);
 		pair < string,
-			string > getNavtiveNameFromLanguageName(string langName);
+			string > getNativeNameFromLanguageName(string langName);
 
 		string getLanguageFile(string uselanguage);
 	};

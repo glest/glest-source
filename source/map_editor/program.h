@@ -133,7 +133,7 @@ namespace MapEditor {
 		}
 
 		//map cell change
-		void glestChangeMapHeight(int x, int y, int Height, int radius);
+		void changeMapHeight(int x, int y, int Height, int radius);
 		void pirateChangeMapHeight(int x, int y, int Height, int radius);
 		void changeMapSurface(int x, int y, int surface, int radius);
 		void changeMapObject(int x, int y, int object, int radius);

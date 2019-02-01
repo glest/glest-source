@@ -160,6 +160,7 @@ namespace Game {
 		bool selectingBuilding;
 		bool selectingPos;
 		bool selectingMeetingPoint;
+		vector<Unit*> lastToggledUnits;
 
 		CardinalDir selectedBuildingFacing;
 		Vec2i selectedResourceObjectPos;

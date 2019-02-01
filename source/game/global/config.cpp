@@ -1001,12 +1001,12 @@ namespace Game {
 			string map_path = pathList[idx];
 			endPathWithSlash(map_path);
 
-			const string mega = map_path + mapName + ".mgm";
-			const string glest = map_path + mapName + ".gbm";
-			if (fileExists(mega)) {
-				return mega;
-			} else if (fileExists(glest)) {
-				return glest;
+			const string newFormat = map_path + mapName + ".mgm";
+			const string oldFormat = map_path + mapName + ".gbm";
+			if (fileExists(newFormat)) {
+				return newFormat;
+			} else if (fileExists(oldFormat)) {
+				return oldFormat;
 			}
 		}
 

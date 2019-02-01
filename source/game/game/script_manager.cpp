@@ -571,23 +571,6 @@ namespace Game {
 			}
 		}
 
-		//!!!
-	//      string data_path= getGameReadWritePath(GameConstants::path_data_CacheLookupKey);
-	//      if(data_path != ""){
-	//              endPathWithSlash(data_path);
-	//      }
-	//      string sandboxScriptFilename = data_path + "data/core/scripts/sandbox.lua";
-	//      string sandboxLuaCode = getFileTextContents(sandboxScriptFilename);
-	//
-	//      //luaScript.loadCode(sandboxLuaCode + "\n", "glest_lua_sandbox");
-	//      luaScript.setSandboxWrapperFunctionName("runsandboxed");
-	//      luaScript.setSandboxCode(sandboxLuaCode);
-	//      luaScript.runCode(sandboxLuaCode);
-
-	//      // Setup the lua security sandbox here
-	//      luaScript.beginCall("glest_lua_sandbox");
-	//      luaScript.endCall();
-
 		//setup message box
 		messageBox.init(Lang::getInstance().getString("Ok"));
 		messageBox.setEnabled(false);

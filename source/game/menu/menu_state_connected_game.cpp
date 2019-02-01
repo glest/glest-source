@@ -3907,7 +3907,7 @@ namespace Game {
 		string newLabelConnectionInfo = lang.getString("WaitingHost");
 		if (clientInterface != NULL
 			&& clientInterface->getJoinGameInProgress() == true) {
-			newLabelConnectionInfo = lang.getString("MGGameStatus2");
+			newLabelConnectionInfo = lang.getString("GameStatus2");
 		}
 		// Test progress bar
 		//MutexSafeWrapper safeMutexFTPProgress((ftpClientThread != NULL ? ftpClientThread->getProgressMutex() : NULL),string(__FILE__) + "_" + intToStr(__LINE__));
