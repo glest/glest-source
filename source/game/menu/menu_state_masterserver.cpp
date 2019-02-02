@@ -43,8 +43,8 @@ using namespace Shared;
 namespace Game {
 	DisplayMessageFunction MenuStateMasterserver::pCB_DisplayMessage = NULL;
 
-	static string IRC_SERVER = "irc.freenode.net";
-	static string IRC_CHANNEL = "#glest-lobby";
+	static string IRC_SERVER;
+	static string IRC_CHANNEL;
 
 	// =====================================================
 	//      class MenuStateMasterserver
@@ -316,9 +316,7 @@ namespace Game {
 		updateFromMasterserverThread->setUniqueID(mutexOwnerId);
 		updateFromMasterserverThread->start();
 
-		if (Config::getInstance().getString("IRCServer", "") != "") {
-			IRC_SERVER = Config::getInstance().getString("IRCServer");
-		}
+		IRC_SERVER = Config::getInstance().getString("IRCServer", "irc.freenode.net");
 		ircArgs.push_back(IRC_SERVER);
 
 		if (Config::getInstance().getString("IRCNick", "") != "") {
@@ -327,9 +325,7 @@ namespace Game {
 			ircArgs.push_back(szIRCNick);
 		}
 
-		if (Config::getInstance().getString("IRCChannel", "") != "") {
-			IRC_CHANNEL = Config::getInstance().getString("IRCChannel");
-		}
+		IRC_CHANNEL = Config::getInstance().getString("IRCChannel", "#glest-lobby");
 		ircArgs.push_back(IRC_CHANNEL);
 
 		if (Config::getInstance().getString("IRCUsername", "") != "") {
