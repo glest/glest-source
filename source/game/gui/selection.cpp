@@ -63,10 +63,10 @@ namespace Game {
 			return false;
 		//check if already selected
 		for (int index = 0; index < (int) selectedUnits.size(); ++index) {
-			if (selectedUnits[index] == unit) {
+			if (selectedUnits[index] == unit)
 				return true;
-			}
 		}
+		return false;
 	}
 
 	bool Selection::select(Unit *unit, bool addToSelection, bool toggleSelection) {
