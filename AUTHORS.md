@@ -2,7 +2,7 @@
 
 This documents people who have contributed to Glest. If you are
 looking for information about the game from which it was forked, please
-see the [MegaGlest credits page](https://megaglest.org/credits), [MegaGlest credits page](http://megaglest.org/en/credits.php), or view GitHub's
+see the [MegaGlest credits page](https://megaglest.org/credits), [Glest credits page](http://glest.org/en/credits.php), or view GitHub's
 [automated list of contributors](https://github.com/Glest/glest-source/graphs/contributors),
 which includes the commit log.
 

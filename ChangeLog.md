@@ -8,6 +8,7 @@ v2.0
 - Added the Specialists faction
 - Now you can use shift to add and to remove from selected units (or use ctrl to unconditionally deselect)
 - Now the Fog of War around a building being built clears out only after construction
+- Now attack commands can be queued using the Shift key
 
 v1.0
 
