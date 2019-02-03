@@ -4,9 +4,9 @@ echo "Initializing Glest setup..."
 currentDir=$PWD
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 cd $DIR
-./clone-data.sh
+bash ./clone-data.sh
 echo
-./pull.sh
+bash ./pull.sh
 echo
-./build.sh
+bash ./build.sh
 cd $currentDir
