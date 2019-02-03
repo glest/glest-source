@@ -127,14 +127,14 @@ namespace Shared {
 						vector<string> techPaths;
 						findDirs(techDataPaths, techPaths);
 						if (techPaths.empty() == false) {
-							// Always calc factionpack first so its up to date sooner
-							const string factionpackTechtreeName = "factionpack";
-							vector<string>::iterator iterFindFactionPack = std::find(techPaths.begin(), techPaths.end(), factionpackTechtreeName);
-							if (iterFindFactionPack != techPaths.end()) {
-								techPaths.erase(iterFindFactionPack);
-								techPaths.insert(techPaths.begin(), factionpackTechtreeName);
+							// Always calc glestpack first so its up to date sooner
+							const string glestpackTechtreeName = "glestpack";
+							vector<string>::iterator iterFindGlestPack = std::find(techPaths.begin(), techPaths.end(), glestpackTechtreeName);
+							if (iterFindGlestPack != techPaths.end()) {
+								techPaths.erase(iterFindGlestPack);
+								techPaths.insert(techPaths.begin(), glestpackTechtreeName);
 
-								if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] Found factionpack techtree and placing it at the TOP of the list\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
+								if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] Found glestpack techtree and placing it at the TOP of the list\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 							}
 							unsigned int techsPerWorker = ((unsigned int) techPaths.size() / (unsigned int) MAX_FileCRCPreCacheThread_WORKER_THREADS);
 							if (techPaths.size() % MAX_FileCRCPreCacheThread_WORKER_THREADS != 0) {

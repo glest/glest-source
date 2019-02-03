@@ -18,7 +18,7 @@ is run. The script generates the html (which is how you'd preview your
 changes).
 
 Part of the template for the site is in the perl script, and another part is in
-[an ini file](https://github.com/Glest/glest.github.io/blob/master/convert_faction_xml2html/factionpack.ini).
+[an ini file](https://github.com/Glest/glest.github.io/blob/master/convert_faction_xml2html/glestpack.ini).
 
 ## Primary documentation
 

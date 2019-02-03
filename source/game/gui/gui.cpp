@@ -1158,10 +1158,10 @@ namespace Game {
 			if (isKeyDown(vkControl))
 				selection.unSelect(units);
 			else if (isKeyDown(vkShift)) {
-				int j;
+				size_t j;
 				Unit* unit;
 				bool alreadyToggled;
-				for (int i = 0; i < units.size(); i++) {
+				for (size_t i = 0; i < units.size(); i++) {
 					unit = units[i];
 					alreadyToggled = false;
 					for (j = 0; j < lastToggledUnits.size(); j++) {

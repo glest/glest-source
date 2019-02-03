@@ -6123,7 +6123,7 @@ namespace Game {
 				//printf("TECHS i = %d results [%s] scenario [%s]\n",i,results[i].c_str(),scenario.c_str());
 
 				results.at(i) = formatString(results.at(i));
-				if (config.getString("InitialTechTree", "factionpack") ==
+				if (config.getString("InitialTechTree", "glestpack") ==
 					results.at(i)) {
 					initialTechSelection = i;
 				}

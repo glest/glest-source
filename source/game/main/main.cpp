@@ -7287,7 +7287,7 @@ namespace Game {
 						gameSettings = &startupGameSettings;
 					gameSettings->setMap(autoloadMapName);
 					gameSettings->setTileset(tileset);
-					gameSettings->setTech("factionpack");
+					gameSettings->setTech("glestpack");
 					gameSettings->setDefaultUnits(false);
 					gameSettings->setDefaultResources(false);
 					gameSettings->setDefaultVictoryConditions(true);

@@ -43,7 +43,7 @@ v1.0
 - Auto-healing radius changed from 8 to 15 (with the exception of Valhalla)
 - Units standing near Valhalla (norse) are auto-healed (radius of 8)
 - Supports importing units from other factions, such as by creating a folder named "fakir" in "tech" with a file "fakir.xml" with the following text:
-	```<?xml version="1.0" standalone="no"?><unit><link tech-tree="factionpack" faction="persian"/></unit>```
+	```<?xml version="1.0" standalone="no"?><unit><link tech-tree="glestpack" faction="persian"/></unit>```
 - These units can now heal mobile units from their own factions that are in range (radius of 8):
 	priest (Egypt)
 	wartime mechanic (Romans)
@@ -250,7 +250,7 @@ v3.6.0
 - New ability to enable in game team-switching for defecting to other teams in game
 - Ability to toggle languages anywhere in the game using CTRL-L
 - Numerous bug fixes as reported in the bugs forum
-- Improved FactionPack including better balanced Romans faction
+- Improved GlestPack including better balanced Romans faction
 - New attack boost system (currently used by Romans faction) which allows new types of
   in game unit effects.
 - New headless server mode allows dedicated servers to host games for network players
@@ -286,7 +286,7 @@ v3.5.2
 - Allow servers to temporary block specified network players from the game lobby
 - Better Linux distro packaing support (by default glest works in standard linux
   paths and make install added)
-- Game data cleanup (duplicate sound files have been merged in factionpack) and non free
+- Game data cleanup (duplicate sound files have been merged in glestpack) and non free
   content replaced. (autumn and desert tilesets)
 - Displayed up to 15 queued commands (observers can view all players queued commands)
 - Allow factions in a techtree to share common data using the special tag in xml files
@@ -345,7 +345,7 @@ v3.5.2
 - many new commandline options (try --help to see)
 - texture compression for video cards that support it
 - improved AI players are much harder to defeat
-- new Romans_beta faction in factionpack
+- new Romans_beta faction in glestpack
 - new language translations
 - new tilesets, maps and a tutorials
 - G3D Viewer enhancements including PNG screenshots with alpha transparency option
