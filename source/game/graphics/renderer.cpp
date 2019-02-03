@@ -4748,8 +4748,7 @@ namespace Game {
 		const World *world = game->getWorld();
 		//const Map *map= world->getMap();
 
-		Config &config = Config::getInstance();
-		int tilesetObjectsToAnimate = config.getInt("AnimatedTilesetObjects", "-1");
+		//Config &config = Config::getInstance();
 
 		assertGl();
 
@@ -4817,14 +4816,7 @@ namespace Game {
 			//if(this->gameCamera->getPos().dist(o->getPos()) <= SKIP_INTERPOLATION_DISTANCE) {
 
 
-			if (tilesetObjectsToAnimate == -1) {
-				objModel->updateInterpolationData(o->getAnimProgress(), true);
-			} else if (tilesetObjectsToAnimate > 0 && o->isAnimated()) {
-				tilesetObjectsToAnimate--;
-				objModel->updateInterpolationData(o->getAnimProgress(), true);
-			} else {
-				objModel->updateInterpolationData(0, true);
-			}
+			objModel->updateInterpolationData(o->getAnimProgress(), true);
 
 			//		objModel->updateInterpolationData(o->getAnimProgress(), true);
 					//}

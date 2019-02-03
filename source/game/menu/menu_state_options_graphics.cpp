@@ -72,10 +72,6 @@ namespace Game {
 		checkBoxUnitParticles("Options_Graphics", "checkBoxUnitParticles"),
 		labelTilesetParticles("Options_Graphics", "labelTilesetParticles"),
 		checkBoxTilesetParticles("Options_Graphics", "checkBoxTilesetParticles"),
-		labelAnimatedTilesetObjects("Options_Graphics",
-			"labelAnimatedTilesetObjects"),
-		listBoxAnimatedTilesetObjects("Options_Graphics",
-			"listBoxAnimatedTilesetObjects"),
 		labelScreenModes("Options_Graphics", "labelScreenModes"),
 		listBoxScreenModes("Options_Graphics", "listBoxScreenModes"),
 		labelFullscreenWindowed("Options_Graphics", "labelFullscreenWindowed"),
@@ -98,8 +94,6 @@ namespace Game {
 		listBoxShadowIntensity("Options_Graphics", "listBoxShadowIntensity"),
 		labelShadowTextureSize("Options_Graphics", "labelShadowTextureSize"),
 		listBoxShadowTextureSize("Options_Graphics", "listBoxShadowTextureSize"),
-		labelVideos("Options_Graphics", "labelVideos"),
-		checkBoxVideos("Options_Graphics", "checkBoxVideos"),
 		labelSelectionType("Options_Graphics", "labelSelectionType"),
 		listBoxSelectionType("Options_Graphics", "listBoxSelectionType") {
 		try {
@@ -391,29 +385,6 @@ namespace Game {
 					"true"));
 			currentLine -= lineOffset;
 
-			//animated tileset objects
-			labelAnimatedTilesetObjects.init(currentLabelStart, currentLine);
-			labelAnimatedTilesetObjects.setText(lang.
-				getString
-				("AnimatedTilesetObjects"));
-
-			listBoxAnimatedTilesetObjects.init(currentColumnStart, currentLine,
-				80);
-			listBoxAnimatedTilesetObjects.pushBackItem("0");
-			listBoxAnimatedTilesetObjects.pushBackItem("10");
-			listBoxAnimatedTilesetObjects.pushBackItem("25");
-			listBoxAnimatedTilesetObjects.pushBackItem("50");
-			listBoxAnimatedTilesetObjects.pushBackItem("100");
-			listBoxAnimatedTilesetObjects.pushBackItem("300");
-			listBoxAnimatedTilesetObjects.pushBackItem("500");
-			listBoxAnimatedTilesetObjects.pushBackItem("???");
-			listBoxAnimatedTilesetObjects.setSelectedItem("???", true);
-			listBoxAnimatedTilesetObjects.setSelectedItem(config.
-				getString
-				("AnimatedTilesetObjects",
-					"-1"), false);
-			currentLine -= lineOffset;
-
 			//unit particles
 			labelMapPreview.init(currentLabelStart, currentLine);
 			labelMapPreview.setText(lang.getString("ShowMapPreview"));
@@ -449,12 +420,6 @@ namespace Game {
 			checkBoxRainEffect.init(currentColumnStart + 42, currentLine);
 			checkBoxRainEffect.setValue(config.getBool("RainEffect", "true"));
 			currentLine -= lineOffset;
-
-			labelVideos.init(currentLabelStart, currentLine);
-			labelVideos.setText(lang.getString("EnableVideos"));
-
-			checkBoxVideos.init(currentColumnStart, currentLine);
-			checkBoxVideos.setValue(config.getBool("EnableVideos", "true"));
 
 			// end
 
@@ -554,15 +519,11 @@ namespace Game {
 		labelLights.setText(lang.getString("MaxLights"));
 		labelUnitParticles.setText(lang.getString("ShowUnitParticles"));
 		labelTilesetParticles.setText(lang.getString("ShowTilesetParticles"));
-		labelAnimatedTilesetObjects.setText(lang.
-			getString
-			("AnimatedTilesetObjects"));
 		labelMapPreview.setText(lang.getString("ShowMapPreview"));
 		labelEnableTextureCompression.setText(lang.
 			getString
 			("EnableTextureCompression"));
 		labelRainEffect.setText(lang.getString("RainEffectMenuGame"));
-		labelVideos.setText(lang.getString("EnableVideos"));
 
 		buttonOk.setText(lang.getString("Save"));
 		buttonReturn.setText(lang.getString("Return"));
@@ -843,7 +804,6 @@ namespace Game {
 		} else {
 			listBoxSelectionType.mouseClick(x, y);
 			listBoxShadows.mouseClick(x, y);
-			listBoxAnimatedTilesetObjects.mouseClick(x, y);
 			listBoxShadowTextureSize.mouseClick(x, y);
 			listBoxShadowIntensity.mouseClick(x, y);
 			listBoxFilter.mouseClick(x, y);
@@ -866,8 +826,6 @@ namespace Game {
 			checkBoxEnableTextureCompression.mouseClick(x, y);
 			checkBoxRainEffect.mouseClick(x, y);
 			checkBoxRainEffectMenu.mouseClick(x, y);
-
-			checkBoxVideos.mouseClick(x, y);
 		}
 	}
 
@@ -895,8 +853,6 @@ namespace Game {
 		checkBoxTextures3D.mouseMove(x, y);
 		checkBoxUnitParticles.mouseMove(x, y);
 		checkBoxTilesetParticles.mouseMove(x, y);
-		labelAnimatedTilesetObjects.mouseMove(x, y);
-		listBoxAnimatedTilesetObjects.mouseMove(x, y);
 		checkBoxTilesetParticles.mouseMove(x, y);
 		checkBoxMapPreview.mouseMove(x, y);
 		listBoxLights.mouseMove(x, y);
@@ -906,8 +862,6 @@ namespace Game {
 
 		checkBoxRainEffect.mouseMove(x, y);
 		checkBoxRainEffectMenu.mouseMove(x, y);
-
-		checkBoxVideos.mouseMove(x, y);
 	}
 
 	//bool MenuStateOptionsGraphics::isInSpecialKeyCaptureEvent() {
@@ -973,8 +927,6 @@ namespace Game {
 			renderer.renderLabel(&labelTextures3D);
 			renderer.renderLabel(&labelUnitParticles);
 			renderer.renderLabel(&labelTilesetParticles);
-			renderer.renderListBox(&listBoxAnimatedTilesetObjects);
-			renderer.renderLabel(&labelAnimatedTilesetObjects);
 			renderer.renderLabel(&labelMapPreview);
 			renderer.renderLabel(&labelLights);
 			renderer.renderLabel(&labelFilter);
@@ -999,9 +951,6 @@ namespace Game {
 
 			renderer.renderLabel(&labelSelectionType);
 			renderer.renderListBox(&listBoxSelectionType);
-
-			renderer.renderLabel(&labelVideos);
-			renderer.renderCheckBox(&checkBoxVideos);
 		}
 
 		renderer.renderConsole(&console);
@@ -1053,21 +1002,11 @@ namespace Game {
 		config.setBool("MapPreview", checkBoxMapPreview.getValue());
 		config.setInt("MaxLights", listBoxLights.getSelectedItemIndex() + 1);
 
-		if (listBoxAnimatedTilesetObjects.getSelectedItem() == "???") {
-			config.setInt("AnimatedTilesetObjects", -1);
-		} else {
-			config.setInt("AnimatedTilesetObjects",
-				atoi(listBoxAnimatedTilesetObjects.getSelectedItem().
-					c_str()));
-		}
-
 		config.setBool("RainEffect", checkBoxRainEffect.getValue());
 		config.setBool("RainEffectMenu", checkBoxRainEffectMenu.getValue());
 
 		config.setBool("EnableTextureCompression",
 			checkBoxEnableTextureCompression.getValue());
-
-		config.setBool("EnableVideos", checkBoxVideos.getValue());
 
 		string
 			currentResolution =

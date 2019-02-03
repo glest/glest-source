@@ -57,9 +57,6 @@ namespace Game {
 
 		GraphicLabel labelTilesetParticles;
 		GraphicCheckBox checkBoxTilesetParticles;
-		GraphicLabel labelAnimatedTilesetObjects;
-		GraphicListBox listBoxAnimatedTilesetObjects;
-
 
 		GraphicLabel labelScreenModes;
 		GraphicListBox listBoxScreenModes;
@@ -91,9 +88,6 @@ namespace Game {
 
 		GraphicLabel labelShadowTextureSize;
 		GraphicListBox listBoxShadowTextureSize;
-
-		GraphicLabel labelVideos;
-		GraphicCheckBox checkBoxVideos;
 
 		GraphicLabel labelSelectionType;
 		GraphicListBox listBoxSelectionType;
