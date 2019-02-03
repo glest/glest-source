@@ -552,23 +552,34 @@ namespace Game {
 		luaScript.registerFunction(getFactionPlayerType,
 			"getFactionPlayerType");
 
-		//load code
-		for (int i = 0; i < scenario->getScriptCount(); ++i) {
-			const Script *
-				script = scenario->getScript(i);
-			luaScript.loadCode("function " + script->getName() + "()" +
-				script->getCode() + "end\n",
-				script->getName());
-		}
-		//load code
+		map<string, Script> scripts;
+		map<string, Script>::iterator iter;
+
+		//load faction code
 		for (int i = 0; i < world->getFactionCount(); ++i) {
 			FactionType const* type = world->getFaction(i)->getType();
 			for (int j = 0; j < type->getScriptCount(); j++) {
 				const Script* script = type->getScript(j);
-				luaScript.loadCode("function " + script->getName() + "()" +
-					script->getCode() + "end\n",
-					script->getName());
+				iter = scripts.find(script->getName());
+				if (iter == scripts.end())
+					scripts[script->getName()] = *script;
+				else
+					iter->second.appendCode(script->getCode());
 			}
+		}
+		//load scenario code
+		for (int i = 0; i < scenario->getScriptCount(); ++i) {
+			const Script* script = scenario->getScript(i);
+			iter = scripts.find(script->getName());
+			if (iter == scripts.end())
+				scripts[script->getName()] = *script;
+			else
+				iter->second.appendCode(script->getCode());
+		}
+
+		for (iter = scripts.begin(); iter != scripts.end(); ++iter) {
+			luaScript.loadCode("function " + iter->second.getName() + "()" +
+				iter->second.getCode() + "end\n", iter->second.getName());
 		}
 
 		//setup message box

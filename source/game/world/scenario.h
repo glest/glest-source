@@ -117,14 +117,28 @@ namespace Game {
 		string code;
 
 	public:
-		Script(const string & name, const string & code) {
+		Script() {
+		}
+
+		Script(const string& name, const string& code) {
 			this->name = name;
 			this->code = code;
-		} const string & getName() const {
+		}
+		
+		const string& getName() const {
 			return name;
 		}
-		const string & getCode() const {
+
+		const string& getCode() const {
 			return code;
+		}
+
+		void setCode(const string& newCode) {
+			code = newCode;
+		}
+
+		void appendCode(const string& newCode) {
+			code += newCode;
 		}
 	};
 
