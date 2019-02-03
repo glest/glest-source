@@ -7,7 +7,7 @@
 currentDir=$PWD
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 cd $DIR
-./build-deps.sh
+bash ./build-deps.sh
 echo
-./build-nodeps.sh
+bash ./build-nodeps.sh
 cd $currentDir
