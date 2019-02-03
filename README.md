@@ -17,7 +17,7 @@ CPU is also available.
 
 ## Download for Windows
 
-#### Download [Glest 2.0 from here](https://github.com/Glest/windows-installer/archive/2.0.zip).
+#### [Download Glest from here](https://codeload.github.com/glest/windows-installer/zip/master).
 
 Additionally, if you want
 to contribute with the code on Windows, [please follow these
