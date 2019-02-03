@@ -726,7 +726,7 @@ namespace Game {
 
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance, "In [%s::%s Line: %d] took msecs: %lld\n", __FILE__, __FUNCTION__, __LINE__, chrono.getMillis());
 
-			if ((command->getUnit() == NULL || !(command->getUnit()->isAlive())) && unit->getCommandSize() > 1) {
+			/*if ((command->getUnit() == NULL || !(command->getUnit()->isAlive())) && unit->getCommandSize() > 1) {
 
 				if (frameIndex < 0) {
 					unit->finishCommand(); // all queued "ground attacks" are skipped if somthing else is queued after them.
@@ -738,7 +738,7 @@ namespace Game {
 					}
 				}
 				return;
-			}
+			}*/
 
 			//if found
 			//if(frameIndex < 0) {

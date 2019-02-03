@@ -157,7 +157,7 @@ namespace Game {
 		bool attackableOnSight(Unit *unit, Unit **enemyPtr, const AttackSkillType *ast, bool evalMode = false);
 		bool attackableOnRange(Unit *unit, Unit **enemyPtr, const AttackSkillType *ast, bool evalMode = false);
 		bool unitOnRange(Unit *unit, int range, Unit **enemyPtr, const AttackSkillType *ast, bool evalMode = false);
-		void enemiesAtDistance(const Unit *unit, const Unit *priorityUnit, int distance, vector<Unit*> &enemies);
+		//void enemiesAtDistance(const Unit *unit, const Unit *priorityUnit, int distance, vector<Unit*> &enemies);
 
 		void spawn(Unit *unit, string spawnUnit, int spawnUnitcount, int healthMin, int healthMax, int probability);
 		void spawnAttack(Unit *unit, string spawnUnit, int spawnUnitcount, int healthMin, int healthMax, int probability, bool spawnUnitAtTarget, Vec2i targetPos = Vec2i(-10, -10));
