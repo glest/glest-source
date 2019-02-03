@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 echo
 echo "Initializing Glest setup..."
 currentDir=$PWD
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 cd $DIR
-./build-deps.sh
+bash ./build-deps.sh
 echo
-./build.sh
+bash ./build.sh
 cd $currentDir
