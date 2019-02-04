@@ -34,14 +34,23 @@ using namespace std;
 
 namespace Shared {
 	namespace Util {
-
 		const int strSize = 256;
 
+		bool iequals(const string& a, const string& b) {
+			size_t sz = a.size();
+			if (b.size() != sz)
+				return false;
+			for (size_t i = 0; i < sz; ++i)
+				if (tolower(a[i]) != tolower(b[i]))
+					return false;
+			return true;
+		}
+
 		bool strToBool(const string &s) {
-			if (s == "0" || s == "false") {
+			if (s == "0" || iequals(s, "false")) {
 				return false;
 			}
-			if (s == "1" || s == "true") {
+			if (s == "1" || iequals(s, "true")) {
 				return true;
 			}
 			throw game_runtime_error("Error converting string to bool, expected 0 or 1, found: [" + s + "]");
@@ -86,11 +95,11 @@ namespace Shared {
 		}
 
 		bool strToBool(const string &s, bool *b) {
-			if (s == "0" || s == "false") {
+			if (s == "0" || iequals(s, "false")) {
 				*b = false;
 				return true;
 			}
-			if (s == "1" || s == "true") {
+			if (s == "1" || iequals(s, "true")) {
 				*b = true;
 				return true;
 			}

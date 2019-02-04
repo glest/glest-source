@@ -432,6 +432,7 @@ namespace Game {
 		static const int speedDivider;
 		static const int maxDeadCount;
 		static const int invalidId;
+		static bool defaultActionAttack;
 
 #   ifdef LEAK_CHECK_UNITS
 		static std::map < UnitPathInterface *, int >mapMemoryList2;

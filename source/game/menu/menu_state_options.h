@@ -76,6 +76,9 @@ namespace Game {
 		GraphicLabel labelShowDeveloperConsoleOnWindows;
 		GraphicCheckBox checkBoxShowDeveloperConsoleOnWindows;
 
+		GraphicLabel labelDefaultActionOnRightClick;
+		GraphicCheckBox checkBoxDefaultActionOnRightClick;
+
 		map < string, string > languageList;
 
 		GraphicLabel labelCustomTranslation;

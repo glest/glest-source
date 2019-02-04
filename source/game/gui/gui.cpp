@@ -291,7 +291,15 @@ namespace Game {
 	}
 
 	void Gui::mouseDownRightGraphics(int x, int y, bool prepared) {
-		if (selectingPos || selectingMeetingPoint) {
+		if (selectingPos) {
+			//give standard orders
+			Vec2i targetPos = game->getMouseCellPos();
+			if (prepared || (game->isValidMouseCellPos() &&
+				world->getMap()->isInsideSurface(world->getMap()->toSurfCoords(targetPos)) == true)) {
+				giveTwoClickOrders(x, y, prepared);
+			}
+			resetState();
+		} else if (selectingMeetingPoint) {
 			resetState();
 		} else if (selection.isCommandable()) {
 			if (prepared) {

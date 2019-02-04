@@ -637,6 +637,7 @@ namespace Game {
 	const int Unit::speedDivider = 100;
 	const int Unit::maxDeadCount = 800;        //time in until the corpse disapears - should be about 40 seconds
 	const int Unit::invalidId = -1;
+	bool Unit::defaultActionAttack = true;
 
 	//set<int> Unit::livingUnits;
 	//set<Unit*> Unit::livingUnitsp;
@@ -648,6 +649,7 @@ namespace Game {
 	Unit::Unit(int id, UnitPathInterface * unitpath, const Vec2i & position,
 		const UnitType * type, Faction * faction, Map * map,
 		CardinalDir placeFacing) :BaseColorPickEntity(), id(id) {
+		defaultActionAttack = Config::getInstance().getBool("DefaultActionAttack", "true");
 #ifdef LEAK_CHECK_UNITS
 		Unit::mapMemoryList[this] = true;
 #endif
@@ -2746,7 +2748,7 @@ namespace Game {
 		// or when the unit is selected and right clicked to a position.
 		if (commandType == NULL) {
 			CommandClass command = ccMove; //default command
-			if (this->getType()->hasSkillClass(scAttack) && (targetUnit == NULL || this->getTeam() != targetUnit->getTeam()))
+			if (defaultActionAttack && this->getType()->hasSkillClass(scAttack) && (targetUnit == NULL || this->getTeam() != targetUnit->getTeam()))
 				command = ccAttack;
 			commandType = type->getFirstCtOfClass(command);
 		}

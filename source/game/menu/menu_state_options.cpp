@@ -79,10 +79,10 @@ namespace Game {
 		checkBoxTimeDisplay("Options", "checkBoxTimeDisplay"),
 		labelChatStaysActive("Options", "labelChatStaysActive"),
 		checkBoxChatStaysActive("Options", "checkBoxChatStaysActive"),
-		labelShowDeveloperConsoleOnWindows("Options",
-			"labelShowDeveloperConsoleOnWindows"),
-		checkBoxShowDeveloperConsoleOnWindows("Options",
-			"checkBoxShowDeveloperConsoleOnWindows"),
+		labelShowDeveloperConsoleOnWindows("Options", "labelShowDeveloperConsoleOnWindows"),
+		checkBoxShowDeveloperConsoleOnWindows("Options", "checkBoxShowDeveloperConsoleOnWindows"),
+		labelDefaultActionOnRightClick("Options", "labelDefaultActionOnRightClick"),
+		checkBoxDefaultActionOnRightClick("Options", "checkBoxDefaultActionOnRightClick"),
 		labelCustomTranslation("Options", "labelCustomTranslation"),
 		checkBoxCustomTranslation("Options", "checkBoxCustomTranslation"),
 		buttonGetNewLanguageFiles("Options", "buttonGetNewLanguageFiles"),
@@ -381,14 +381,16 @@ namespace Game {
 			labelShowDeveloperConsoleOnWindows.init(currentLabelStart, currentLine);
 			labelShowDeveloperConsoleOnWindows.setText(lang.getString("ShowDevConsoleWin"));
 
-			checkBoxShowDeveloperConsoleOnWindows.init(currentColumnStart,
-				currentLine);
-			checkBoxShowDeveloperConsoleOnWindows.setValue(config.
-				getBool
-				("ShowConsoleWindows",
-					"false"));
+			checkBoxShowDeveloperConsoleOnWindows.init(currentColumnStart, currentLine);
+			checkBoxShowDeveloperConsoleOnWindows.setValue(config.getBool("ShowConsoleWindows", "false"));
 
 			currentLine -= lineOffset;
+
+			labelDefaultActionOnRightClick.init(currentLabelStart, currentLine);
+			labelDefaultActionOnRightClick.setText(lang.getString("DefaultActionOnRightClick"));
+
+			checkBoxDefaultActionOnRightClick.init(currentColumnStart, currentLine);
+			checkBoxDefaultActionOnRightClick.setValue(config.getBool("DefaultActionAttack", "true"));
 
 			currentLine -= lineOffset / 2;
 
@@ -1082,6 +1084,7 @@ namespace Game {
 			listBoxHealthBars.mouseClick(x, y);
 			checkBoxChatStaysActive.mouseClick(x, y);
 			checkBoxTimeDisplay.mouseClick(x, y);
+			checkBoxDefaultActionOnRightClick.mouseClick(x, y);
 			checkBoxShowDeveloperConsoleOnWindows.mouseClick(x, y);
 		}
 	}
@@ -1112,6 +1115,7 @@ namespace Game {
 		checkBoxVisibleHud.mouseMove(x, y);
 		checkBoxChatStaysActive.mouseMove(x, y);
 		checkBoxTimeDisplay.mouseMove(x, y);
+		checkBoxDefaultActionOnRightClick.mouseMove(x, y);
 		checkBoxShowDeveloperConsoleOnWindows.mouseMove(x, y);
 		checkBoxCustomTranslation.mouseMove(x, y);
 	}
@@ -1220,6 +1224,9 @@ namespace Game {
 			renderer.renderLabel(&labelChatStaysActive);
 			renderer.renderLabel(&labelTimeDisplay);
 
+			renderer.renderLabel(&labelDefaultActionOnRightClick);
+			renderer.renderCheckBox(&checkBoxDefaultActionOnRightClick);
+
 			renderer.renderLabel(&labelShowDeveloperConsoleOnWindows);
 			renderer.renderCheckBox(&checkBoxShowDeveloperConsoleOnWindows);
 
@@ -1294,9 +1301,8 @@ namespace Game {
 		config.setBool("VisibleHud", checkBoxVisibleHud.getValue());
 		config.setBool("ChatStaysActive", checkBoxChatStaysActive.getValue());
 		config.setBool("TimeDisplay", checkBoxTimeDisplay.getValue());
-
-		config.setBool("ShowConsoleWindows",
-			checkBoxShowDeveloperConsoleOnWindows.getValue());
+		config.setBool("DefaultActionAttack", checkBoxDefaultActionOnRightClick.getValue());
+		config.setBool("ShowConsoleWindows", checkBoxShowDeveloperConsoleOnWindows.getValue());
 		config.save();
 
 #ifdef _WIN32
