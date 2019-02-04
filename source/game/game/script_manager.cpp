@@ -24,6 +24,8 @@
 #include "game_camera.h"
 #include "game.h"
 #include "config.h"
+#include <unordered_set>
+#include <algorithm>
 
 #include "leak_dumper.h"
 
@@ -552,34 +554,39 @@ namespace Game {
 		luaScript.registerFunction(getFactionPlayerType,
 			"getFactionPlayerType");
 
-		map<string, Script> scripts;
-		map<string, Script>::iterator iter;
+		map<string, pair<Script, vector<string>>> scripts;
+		map<string, pair<Script, vector<string>>>::iterator iter;
+		const Script* script;
 
 		//load faction code
 		for (int i = 0; i < world->getFactionCount(); ++i) {
 			FactionType const* type = world->getFaction(i)->getType();
 			for (int j = 0; j < type->getScriptCount(); j++) {
-				const Script* script = type->getScript(j);
+				script = type->getScript(j);
 				iter = scripts.find(script->getName());
 				if (iter == scripts.end())
-					scripts[script->getName()] = *script;
-				else
-					iter->second.appendCode(script->getCode());
+					scripts[script->getName()] = pair<Script, vector<string>>(*script, { script->getCode() });
+				else if (find(iter->second.second.begin(), iter->second.second.end(), script->getCode()) == iter->second.second.end()) {
+					iter->second.second.push_back(script->getCode());
+					iter->second.first.appendCode(script->getCode());
+				}
 			}
 		}
 		//load scenario code
 		for (int i = 0; i < scenario->getScriptCount(); ++i) {
-			const Script* script = scenario->getScript(i);
+			script = scenario->getScript(i);
 			iter = scripts.find(script->getName());
 			if (iter == scripts.end())
-				scripts[script->getName()] = *script;
-			else
-				iter->second.appendCode(script->getCode());
+				scripts[script->getName()] = pair<Script, vector<string>>(*script, { script->getCode() });
+			else if (find(iter->second.second.begin(), iter->second.second.end(), script->getCode()) == iter->second.second.end()) {
+				iter->second.second.push_back(script->getCode());
+				iter->second.first.appendCode(script->getCode());
+			}
 		}
 
 		for (iter = scripts.begin(); iter != scripts.end(); ++iter) {
-			luaScript.loadCode("function " + iter->second.getName() + "()" +
-				iter->second.getCode() + "end\n", iter->second.getName());
+			luaScript.loadCode("function " + iter->second.first.getName() + "()" +
+				iter->second.first.getCode() + "end\n", iter->second.first.getName());
 		}
 
 		//setup message box
