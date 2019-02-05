@@ -313,8 +313,8 @@ namespace Shared {
 			static wchar_t convertStringtoSDLKey(const string &value);
 		};
 
-		bool isKeyPressed(SDL_Keycode compareKey, SDL_KeyboardEvent input, vector<int> modifiersToCheck);
-		bool isKeyPressed(SDL_Keycode compareKey, SDL_KeyboardEvent input, bool modifiersAllowed = true);
+		bool isKey(SDL_Keycode compareKey, SDL_KeyboardEvent input, vector<int> modifiersToCheck);
+		bool isKey(SDL_Keycode compareKey, SDL_KeyboardEvent input, bool modifiersAllowed = true);
 
 		SDL_Keycode extractKeyPressed(SDL_KeyboardEvent input);
 		//bool isAllowedInputTextKey(SDL_Keycode key);

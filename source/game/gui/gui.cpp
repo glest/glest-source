@@ -411,56 +411,49 @@ namespace Game {
 		}
 	}
 
-	void Gui::hotKey(SDL_KeyboardEvent key) {
+	void Gui::hotKeyPressed(SDL_KeyboardEvent key) {
 		if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s] key = [%c][%d]\n", __FILE__, __FUNCTION__, key, key);
 
 		Config &configKeys = Config::getInstance(std::pair<ConfigType, ConfigType>(cfgMainKeys, cfgUserKeys));
 
-		//if(key == configKeys.getCharKey("HotKeyCenterCameraOnSelection")) {
-		if (isKeyPressed(configKeys.getSDLKey("HotKeyCenterCameraOnSelection"), key) == true) {
+		if (isKey(configKeys.getSDLKey("HotKeyCenterCameraOnSelection"), key) == true) {
 			centerCameraOnSelection();
-		}
-		//else if(key == configKeys.getCharKey("HotKeySelectIdleHarvesterUnit")) {
-		else if (isKeyPressed(configKeys.getSDLKey("HotKeySelectIdleHarvesterUnit"), key) == true) {
+		} else if (isKey(configKeys.getSDLKey("HotKeySelectIdleHarvesterUnit"), key) == true) {
 			selectInterestingUnit(iutIdleHarvester);
-		}
-		//else if(key == configKeys.getCharKey("HotKeySelectBuiltBuilding")) {
-		else if (isKeyPressed(configKeys.getSDLKey("HotKeySelectBuiltBuilding"), key) == true) {
+		} else if (isKey(configKeys.getSDLKey("HotKeySelectBuiltBuilding"), key) == true) {
 			selectInterestingUnit(iutBuiltBuilding);
-		}
-		//else if(key == configKeys.getCharKey("HotKeyDumpWorldToLog")) {
-		else if (isKeyPressed(configKeys.getSDLKey("HotKeyDumpWorldToLog"), key) == true) {
+		} else if (isKey(configKeys.getSDLKey("HotKeyDumpWorldToLog"), key) == true) {
 			std::string worldLog = world->DumpWorldToLog();
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d] worldLog dumped to [%s]\n", __FILE__, __FUNCTION__, __LINE__, worldLog.c_str());
-		}
-		//else if(key == configKeys.getCharKey("HotKeyRotateUnitDuringPlacement")){
-		else if (isKeyPressed(configKeys.getSDLKey("HotKeyRotateUnitDuringPlacement"), key) == true) {
+		} else if (isKey(configKeys.getSDLKey("HotKeyRotateUnitDuringPlacement"), key) == true) {
 			// Here the user triggers a unit rotation while placing a unit
 			if (isPlacingBuilding()) {
 				if (getBuilding()->getRotationAllowed()) {
 					++selectedBuildingFacing;
 				}
 			}
-		}
-		//else if(key == configKeys.getCharKey("HotKeySelectDamagedUnit")) {
-		else if (isKeyPressed(configKeys.getSDLKey("HotKeySelectDamagedUnit"), key) == true) {
+		} else if (isKey(configKeys.getSDLKey("HotKeySelectDamagedUnit"), key) == true) {
 			selectInterestingUnit(iutDamaged);
-		}
-		//else if(key == configKeys.getCharKey("HotKeySelectStoreUnit")) {
-		else if (isKeyPressed(configKeys.getSDLKey("HotKeySelectStoreUnit"), key) == true) {
+		} else if (isKey(configKeys.getSDLKey("HotKeySelectStoreUnit"), key) == true) {
 			selectInterestingUnit(iutStore);
-		}
-		//else if(key == configKeys.getCharKey("HotKeySelectedUnitsAttack")) {
-		else if (isKeyPressed(configKeys.getSDLKey("HotKeySelectedUnitsAttack"), key) == true) {
+		} else if (isKey(configKeys.getSDLKey("HotKeySelectedUnitsAttack"), key) == true) {
 			clickCommonCommand(ccAttack);
-		}
-		//else if(key == configKeys.getCharKey("HotKeySelectedUnitsAttack")) {
-		else if (isKeyPressed(configKeys.getSDLKey("HotKeySelectedUnitsMove"), key) == true) {
+		} else if (isKey(configKeys.getSDLKey("HotKeySelectedUnitsMove"), key) == true) {
 			clickCommonCommand(ccMove);
-		}
-		//else if(key == configKeys.getCharKey("HotKeySelectedUnitsStop")) {
-		else if (isKeyPressed(configKeys.getSDLKey("HotKeySelectedUnitsStop"), key) == true) {
+		} else if (isKey(configKeys.getSDLKey("HotKeySelectedUnitsStop"), key) == true) {
 			clickCommonCommand(ccStop);
+		}
+	}
+
+	void Gui::hotKeyReleased(SDL_KeyboardEvent key) {
+		if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s] key = [%c][%d]\n", __FILE__, __FUNCTION__, key, key);
+
+		Config &configKeys = Config::getInstance(std::pair<ConfigType, ConfigType>(cfgMainKeys, cfgUserKeys));
+
+		if (isKey(configKeys.getSDLKey("HotKeySelectedUnitsAttack"), key) == true) {
+			resetState();
+		} else if (isKey(configKeys.getSDLKey("HotKeySelectedUnitsMove"), key) == true) {
+			resetState();
 		}
 	}
 

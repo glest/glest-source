@@ -541,8 +541,8 @@ namespace Game {
 	bool
 		MenuState::keyPressEditLabel(SDL_KeyboardEvent c,
 			GraphicLabel ** activeInputLabelPtr) {
-		if (isKeyPressed(SDLK_ESCAPE, c, false) == true ||
-			isKeyPressed(SDLK_RETURN, c, false) == true) {
+		if (isKey(SDLK_ESCAPE, c, false) == true ||
+			isKey(SDLK_RETURN, c, false) == true) {
 			GraphicLabel *
 				activeInputLabel = *activeInputLabelPtr;
 			setActiveInputLabel(NULL, activeInputLabelPtr);
@@ -611,7 +611,7 @@ namespace Game {
 		if (activeInputLabel != NULL) {
 			string
 				text = activeInputLabel->getText();
-			if (isKeyPressed(SDLK_BACKSPACE, c) == true && text.length() > 0) {
+			if (isKey(SDLK_BACKSPACE, c) == true && text.length() > 0) {
 				//printf("BSPACE text [%s]\n",text.c_str());
 
 				bool

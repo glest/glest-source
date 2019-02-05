@@ -5381,45 +5381,41 @@ namespace Game {
 						ConfigType >(cfgMainKeys, cfgUserKeys));
 
 				//if(key == configKeys.getCharKey("ShowFullConsole")) {
-				if (isKeyPressed(configKeys.getSDLKey("ShowFullConsole"), key)
-					== true) {
+				if (isKey(configKeys.getSDLKey("ShowFullConsole"), key) == true) {
 					showFullConsole = true;
 				}
 				//Toggle music
 				//else if(key == configKeys.getCharKey("ToggleMusic")) {
-				else
-					if (isKeyPressed(configKeys.getSDLKey("ToggleMusic"), key)
-						== true) {
-						Config & config = Config::getInstance();
-						Lang & lang = Lang::getInstance();
+				else if (isKey(configKeys.getSDLKey("ToggleMusic"), key) == true) {
+					Config & config = Config::getInstance();
+					Lang & lang = Lang::getInstance();
 
-						float configVolume = (config.getInt("SoundVolumeMusic") / 100.f);
-						float currentVolume =
-							CoreData::getInstance().getMenuMusic()->getVolume();
-						if (currentVolume > 0) {
-							CoreData::getInstance().getMenuMusic()->setVolume(0.f);
-							console.addLine(lang.getString("GameMusic") + " " +
-								lang.getString("Off"));
-						} else {
-							CoreData::getInstance().
-								getMenuMusic()->setVolume(configVolume);
-							//If the config says zero, use the default music volume
-							//gameMusic->setVolume(configVolume ? configVolume : 0.9);
-							console.addLine(lang.getString("GameMusic"));
-						}
+					float configVolume = (config.getInt("SoundVolumeMusic") / 100.f);
+					float currentVolume =
+						CoreData::getInstance().getMenuMusic()->getVolume();
+					if (currentVolume > 0) {
+						CoreData::getInstance().getMenuMusic()->setVolume(0.f);
+						console.addLine(lang.getString("GameMusic") + " " +
+							lang.getString("Off"));
+					} else {
+						CoreData::getInstance().
+							getMenuMusic()->setVolume(configVolume);
+						//If the config says zero, use the default music volume
+						//gameMusic->setVolume(configVolume ? configVolume : 0.9);
+						console.addLine(lang.getString("GameMusic"));
 					}
+				}
 				//else if(key == configKeys.getCharKey("SaveGUILayout")) {
-					else
-						if (isKeyPressed(configKeys.getSDLKey("SaveGUILayout"), key)
-							== true) {
-							bool saved =
-								GraphicComponent::saveAllCustomProperties(containerName);
-							Lang & lang = Lang::getInstance();
-							console.addLine(lang.getString("GUILayoutSaved") + " [" +
-								(saved ? lang.
-									getString("Yes") : lang.getString("No")) +
-								"]");
-						}
+				else if (isKey(configKeys.getSDLKey("SaveGUILayout"), key)
+					== true) {
+					bool saved =
+						GraphicComponent::saveAllCustomProperties(containerName);
+					Lang & lang = Lang::getInstance();
+					console.addLine(lang.getString("GUILayoutSaved") + " [" +
+						(saved ? lang.
+							getString("Yes") : lang.getString("No")) +
+						"]");
+				}
 			}
 		}
 	}
@@ -5477,11 +5473,9 @@ namespace Game {
 				}
 			}
 			//else if(key == configKeys.getCharKey("ShowFullConsole")) {
-			else
-				if (isKeyPressed(configKeys.getSDLKey("ShowFullConsole"), key)
-					== true) {
-					showFullConsole = false;
-				}
+			else if (isKey(configKeys.getSDLKey("ShowFullConsole"), key) == true) {
+				showFullConsole = false;
+			}
 		}
 	}
 

@@ -5953,11 +5953,9 @@ namespace Game {
 					Config::getInstance(std::pair < ConfigType,
 						ConfigType >(cfgMainKeys, cfgUserKeys));
 
-				if (isKeyPressed(configKeys.getSDLKey("ShowFullConsole"), key) ==
-					true) {
+				if (isKey(configKeys.getSDLKey("ShowFullConsole"), key) == true) {
 					showFullConsole = true;
-				} else if (isKeyPressed(configKeys.getSDLKey("ToggleMusic"), key) ==
-					true) {
+				} else if (isKey(configKeys.getSDLKey("ToggleMusic"), key) == true) {
 					Config & config = Config::getInstance();
 					Lang & lang = Lang::getInstance();
 
@@ -5979,8 +5977,7 @@ namespace Game {
 					}
 				}
 				//else if(key == configKeys.getCharKey("SaveGUILayout")) {
-				else if (isKeyPressed(configKeys.getSDLKey("SaveGUILayout"), key)
-					== true) {
+				else if (isKey(configKeys.getSDLKey("SaveGUILayout"), key) == true) {
 					bool
 						saved =
 						GraphicComponent::saveAllCustomProperties(containerName);
@@ -6049,8 +6046,7 @@ namespace Game {
 			if (chatManager.getEditEnabled()) {
 				//send key to the chat manager
 				chatManager.keyUp(key);
-			} else if (isKeyPressed(configKeys.getSDLKey("ShowFullConsole"), key)
-				== true) {
+			} else if (isKey(configKeys.getSDLKey("ShowFullConsole"), key) == true) {
 				showFullConsole = false;
 			}
 		}

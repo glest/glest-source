@@ -1544,8 +1544,7 @@ namespace Game {
 				("In [MainWindow::eventKeyDown] ERROR, program == NULL!");
 		}
 
-		if (popupMenu.getVisible() == true
-			&& isKeyPressed(SDLK_ESCAPE, key) == true) {
+		if (popupMenu.getVisible() == true && isKey(SDLK_ESCAPE, key) == true) {
 			this->popupMenu.setEnabled(false);
 			this->popupMenu.setVisible(false);
 			return;
@@ -1559,7 +1558,7 @@ namespace Game {
 
 		if (keystate.mod & (KMOD_LALT | KMOD_RALT)) {
 			//if(key == vkReturn) {
-			if (isKeyPressed(SDLK_RETURN, key) == true) {
+			if (isKey(SDLK_RETURN, key) == true) {
 				SystemFlags::OutputDebug(SystemFlags::debugSystem,
 					"In [%s::%s Line: %d] ALT-ENTER pressed\n",
 					__FILE__, __FUNCTION__, __LINE__);
@@ -1598,7 +1597,7 @@ namespace Game {
 			Config & configKeys =
 				Config::getInstance(std::pair < ConfigType,
 					ConfigType >(cfgMainKeys, cfgUserKeys));
-			if (isKeyPressed(configKeys.getSDLKey("HotKeyShowDebug"), key) ==
+			if (isKey(configKeys.getSDLKey("HotKeyShowDebug"), key) ==
 				true) {
 
 				Renderer & renderer = Renderer::getInstance();
@@ -1612,7 +1611,7 @@ namespace Game {
 					renderer.setShowDebugUI(!showDebugUI);
 				}
 			} else if ((keystate.mod & (KMOD_LCTRL | KMOD_RCTRL)) &&
-				isKeyPressed(configKeys.getSDLKey("SwitchLanguage"),
+				isKey(configKeys.getSDLKey("SwitchLanguage"),
 					key) == true) {
 				if ((keystate.mod & (KMOD_LSHIFT | KMOD_RSHIFT))) {
 					this->triggerLanguageToggle = true;
@@ -1621,15 +1620,11 @@ namespace Game {
 					showLanguages();
 				}
 			} else
-				if (isKeyPressed
-				(configKeys.getSDLKey("ReloadINI"), key,
-					modifiersToCheck) == true) {
+				if (isKey(configKeys.getSDLKey("ReloadINI"), key, modifiersToCheck) == true) {
 					Config & config = Config::getInstance();
 					config.reload();
 				} else
-					if (isKeyPressed
-					(configKeys.getSDLKey("Screenshot"), key,
-						modifiersToCheck) == true) {
+					if (isKey(configKeys.getSDLKey("Screenshot"), key, modifiersToCheck) == true) {
 						if (SystemFlags::VERBOSE_MODE_ENABLED)
 							printf("Screenshot key pressed\n");
 
@@ -1760,8 +1755,7 @@ namespace Game {
 			Config & configKeys =
 				Config::getInstance(std::pair < ConfigType,
 					ConfigType >(cfgMainKeys, cfgUserKeys));
-			if (isKeyPressed
-			(configKeys.getSDLKey("HotKeyToggleOSMouseEnabled"), c) == true) {
+			if (isKey(configKeys.getSDLKey("HotKeyToggleOSMouseEnabled"), c) == true) {
 				SystemFlags::OutputDebug(SystemFlags::debugSystem,
 					"In [%s::%s Line: %d]\n", __FILE__,
 					__FUNCTION__, __LINE__);

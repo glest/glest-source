@@ -892,7 +892,7 @@ namespace Game {
 		BattleEnd::keyDown(SDL_KeyboardEvent key) {
 		SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s %d]\n",
 			__FILE__, __FUNCTION__, __LINE__);
-		if (isKeyPressed(SDLK_ESCAPE, key) == true) {
+		if (isKey(SDLK_ESCAPE, key) == true) {
 			//program->setState(new MainMenu(program));
 
 			if (mainMessageBox.getEnabled()) {
@@ -901,7 +901,7 @@ namespace Game {
 				Lang & lang = Lang::getInstance();
 				showMessageBox(lang.getString("ExitToRootMenu"), "", true);
 			}
-		} else if (isKeyPressed(SDLK_RETURN, key)
+		} else if (isKey(SDLK_RETURN, key)
 			&& mainMessageBox.getEnabled()) {
 			SystemFlags::OutputDebug(SystemFlags::debugSystem,
 				"In [%s::%s Line: %d]\n", __FILE__,

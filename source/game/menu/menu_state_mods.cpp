@@ -3257,8 +3257,7 @@ namespace Game {
 			Config::getInstance(std::pair < ConfigType,
 				ConfigType >(cfgMainKeys, cfgUserKeys));
 		//if(key == configKeys.getCharKey("ShowFullConsole")) {
-		if (isKeyPressed(configKeys.getSDLKey("ShowFullConsole"), key) ==
-			true) {
+		if (isKey(configKeys.getSDLKey("ShowFullConsole"), key) == true) {
 			showFullConsole = true;
 		}
 	}
@@ -3271,8 +3270,7 @@ namespace Game {
 			Config::getInstance(std::pair < ConfigType,
 				ConfigType >(cfgMainKeys, cfgUserKeys));
 		//if(key== configKeys.getCharKey("ShowFullConsole")) {
-		if (isKeyPressed(configKeys.getSDLKey("ShowFullConsole"), key) ==
-			true) {
+		if (isKey(configKeys.getSDLKey("ShowFullConsole"), key) == true) {
 			showFullConsole = false;
 		}
 	}

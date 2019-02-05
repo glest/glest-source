@@ -904,13 +904,13 @@ namespace Game {
 		//exit
 		//if(key == configKeys.getCharKey("ExitKey")) {
 		//printf("Check Root menu exit key!\n");
-		if (isKeyPressed(configKeys.getSDLKey("ExitKey"), key) == true) {
+		if (isKey(configKeys.getSDLKey("ExitKey"), key) == true) {
 			Lang & lang = Lang::getInstance();
 			showMessageBox(lang.getString("ExitGameQuestion"), "", true);
 		}
 		//else if(mainMessageBox.getEnabled() == true && key == vkReturn) {
 		else if (mainMessageBox.getEnabled() == true
-			&& isKeyPressed(SDLK_RETURN, key) == true) {
+			&& isKey(SDLK_RETURN, key) == true) {
 			//SDL_keysym keystate = Window::getKeystate();
 			SDL_keysym keystate = key.keysym;
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
@@ -928,8 +928,7 @@ namespace Game {
 			}
 		}
 		//else if(key == configKeys.getCharKey("SaveGUILayout")) {
-		else if (isKeyPressed(configKeys.getSDLKey("SaveGUILayout"), key) ==
-			true) {
+		else if (isKey(configKeys.getSDLKey("SaveGUILayout"), key) == true) {
 			GraphicComponent::saveAllCustomProperties(containerName);
 			//Lang &lang= Lang::getInstance();
 			//console.addLine(lang.getString("GUILayoutSaved") + " [" + (saved ? lang.getString("Yes") : lang.getString("No"))+ "]");

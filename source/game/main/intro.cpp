@@ -942,9 +942,9 @@ namespace Game {
 		if (keystate.mod & (KMOD_LALT | KMOD_RALT)) {
 			//printf("ALT KEY #1\n");
 
-			if (isKeyPressed(SDLK_RETURN, key) == true ||
-				isKeyPressed(SDLK_RALT, key) == true ||
-				isKeyPressed(SDLK_LALT, key) == true) {
+			if (isKey(SDLK_RETURN, key) == true ||
+				isKey(SDLK_RALT, key) == true ||
+				isKey(SDLK_LALT, key) == true) {
 				return;
 			}
 		}

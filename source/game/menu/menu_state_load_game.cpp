@@ -528,7 +528,7 @@ namespace Game {
 		Config & configKeys =
 			Config::getInstance(std::pair < ConfigType,
 				ConfigType >(cfgMainKeys, cfgUserKeys));
-		if (isKeyPressed(configKeys.getSDLKey("SaveGUILayout"), key) == true) {
+		if (isKey(configKeys.getSDLKey("SaveGUILayout"), key) == true) {
 			GraphicComponent::saveAllCustomProperties(containerName);
 		}
 	}

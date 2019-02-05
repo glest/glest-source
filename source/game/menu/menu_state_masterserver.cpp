@@ -1563,7 +1563,7 @@ namespace Game {
 					(__FILE__).c_str()) + "_" +
 					intToStr(__LINE__));
 				//if (key == vkReturn && ircClient != NULL) {
-				if (isKeyPressed(SDLK_RETURN, key, false) == true
+				if (isKey(SDLK_RETURN, key, false) == true
 					&& ircClient != NULL) {
 					ircClient->SendIRCCmdMessage(IRC_CHANNEL,
 						chatManager.getText());
@@ -1573,7 +1573,7 @@ namespace Game {
 		}
 		if (chatManager.getEditEnabled() == false) {
 			//if(key == configKeys.getCharKey("ToggleMusic")) {
-			if (isKeyPressed(configKeys.getSDLKey("ToggleMusic"), key) == true) {
+			if (isKey(configKeys.getSDLKey("ToggleMusic"), key) == true) {
 				Config & config = Config::getInstance();
 				Lang & lang = Lang::getInstance();
 
@@ -1593,7 +1593,7 @@ namespace Game {
 				}
 			}
 			//else if(key == configKeys.getCharKey("SaveGUILayout")) {
-			else if (isKeyPressed(configKeys.getSDLKey("SaveGUILayout"), key) ==
+			else if (isKey(configKeys.getSDLKey("SaveGUILayout"), key) ==
 				true) {
 				bool saved =
 					GraphicComponent::saveAllCustomProperties(containerName);

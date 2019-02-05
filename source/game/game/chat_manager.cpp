@@ -96,7 +96,7 @@ namespace Game {
 					__FILE__, __FUNCTION__, __LINE__,
 					key.keysym.sym, key.keysym.sym);
 
-				if (isKeyPressed(SDLK_ESCAPE, key, false) == true) {
+				if (isKey(SDLK_ESCAPE, key, false) == true) {
 					text.clear();
 					textCharLength.clear();
 					editEnabled = false;
@@ -186,7 +186,7 @@ namespace Game {
 
 			//toggle team mode
 			if (editEnabled == false &&
-				isKeyPressed(configKeys.getSDLKey("ChatTeamMode"), key) == true) {
+				isKey(configKeys.getSDLKey("ChatTeamMode"), key) == true) {
 				if (disableTeamMode == true) {
 					if (!inMenu) {
 						console->addLine(lang.
@@ -214,7 +214,7 @@ namespace Game {
 			}
 
 
-			if (isKeyPressed(SDLK_RETURN, key, false) == true) {
+			if (isKey(SDLK_RETURN, key, false) == true) {
 				SystemFlags::OutputDebug(SystemFlags::debugSystem,
 					"In [%s::%s Line: %d] key = [%c] [%d]\n",
 					__FILE__, __FUNCTION__, __LINE__,
@@ -298,7 +298,7 @@ namespace Game {
 						switchOnEdit();
 					}
 				}
-			} else if (isKeyPressed(SDLK_TAB, key, false) == true) {
+			} else if (isKey(SDLK_TAB, key, false) == true) {
 				if (text.empty() == false) {
 					// First find the prefix characters to auto-complete
 					string
@@ -475,7 +475,7 @@ namespace Game {
 						appendText(autoCompleteResult, false, false);
 					}
 				}
-			} else if (isKeyPressed(SDLK_BACKSPACE, key, false) == true) {
+			} else if (isKey(SDLK_BACKSPACE, key, false) == true) {
 				SystemFlags::OutputDebug(SystemFlags::debugSystem,
 					"In [%s::%s Line: %d] key = [%c] [%d]\n",
 					__FILE__, __FUNCTION__, __LINE__,

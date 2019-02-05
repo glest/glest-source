@@ -800,7 +800,7 @@ namespace Shared {
 			return result;
 		}
 
-		bool isKeyPressed(SDL_Keycode compareKey, SDL_KeyboardEvent input, bool modifiersAllowed) {
+		bool isKey(SDL_Keycode compareKey, SDL_KeyboardEvent input, bool modifiersAllowed) {
 			vector<int> modifiersToCheck;
 			if (modifiersAllowed == false) {
 				modifiersToCheck.push_back(KMOD_LCTRL);
@@ -809,10 +809,11 @@ namespace Shared {
 				modifiersToCheck.push_back(KMOD_RALT);
 			}
 
-			bool result = isKeyPressed(compareKey, input, modifiersToCheck);
+			bool result = isKey(compareKey, input, modifiersToCheck);
 			return result;
 		}
-		bool isKeyPressed(SDL_Keycode compareKey, SDL_KeyboardEvent input, vector<int> modifiersToCheck) {
+
+		bool isKey(SDL_Keycode compareKey, SDL_KeyboardEvent input, vector<int> modifiersToCheck) {
 			//Uint16 c = SDLK_UNKNOWN;
 			SDL_Keycode c = SDLK_UNKNOWN;
 			//if(input.keysym.unicode > 0 && input.keysym.unicode < 0x80) {
@@ -820,7 +821,7 @@ namespace Shared {
 				c = input.keysym.sym;
 			}
 
-			//printf("START isKeyPressed input = %d compare = %d mod = %d\n",c,compareKey,input.keysym.mod);
+			//printf("START isKey input = %d compare = %d mod = %d\n",c,compareKey,input.keysym.mod);
 
 
 		//	if(compareKey == SDLK_QUESTION && (c == SDLK_SLASH && (input.keysym.mod & (KMOD_SHIFT)))) {

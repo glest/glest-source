@@ -764,7 +764,7 @@ namespace Game {
 					ConfigType >(cfgMainKeys, cfgUserKeys));
 
 			string text = labelServerIp.getText();
-			if (isKeyPressed(SDLK_BACKSPACE, key) == true && text.length() > 0) {
+			if (isKey(SDLK_BACKSPACE, key) == true && text.length() > 0) {
 				if (SystemFlags::
 					getSystemSettingType(SystemFlags::debugSystem).enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugSystem,
@@ -782,10 +782,8 @@ namespace Game {
 				labelServerIp.setText(text);
 			}
 			//else if(key == configKeys.getCharKey("SaveGUILayout")) {
-			else if (isKeyPressed(configKeys.getSDLKey("SaveGUILayout"), key) ==
-				true) {
-				bool saved =
-					GraphicComponent::saveAllCustomProperties(containerName);
+			else if (isKey(configKeys.getSDLKey("SaveGUILayout"), key) == true) {
+				bool saved = GraphicComponent::saveAllCustomProperties(containerName);
 				Lang & lang = Lang::getInstance();
 				console.addLine(lang.getString("GUILayoutSaved") + " [" +
 					(saved ? lang.
@@ -806,10 +804,8 @@ namespace Game {
 					Config::getInstance(std::pair < ConfigType,
 						ConfigType >(cfgMainKeys, cfgUserKeys));
 				//if(key == configKeys.getCharKey("SaveGUILayout")) {
-				if (isKeyPressed(configKeys.getSDLKey("SaveGUILayout"), key) ==
-					true) {
-					bool saved =
-						GraphicComponent::saveAllCustomProperties(containerName);
+				if (isKey(configKeys.getSDLKey("SaveGUILayout"), key) == true) {
+					bool saved = GraphicComponent::saveAllCustomProperties(containerName);
 					Lang & lang = Lang::getInstance();
 					console.addLine(lang.getString("GUILayoutSaved") + " [" +
 						(saved ? lang.

@@ -244,7 +244,8 @@ namespace Game {
 		void mouseDoubleClickLeftGraphics(int x, int y);
 		void mouseDoubleClickRightGraphics(int x, int y, bool prepared);
 		void groupKey(int groupIndex);
-		void hotKey(SDL_KeyboardEvent key);
+		void hotKeyPressed(SDL_KeyboardEvent key);
+		void hotKeyReleased(SDL_KeyboardEvent key);
 
 		//misc
 		void switchToNextDisplayColor();

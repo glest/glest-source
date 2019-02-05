@@ -196,7 +196,7 @@ namespace Game {
 
 		// if user pressed return we exit
 		//if(c == 13) {
-		if (isKeyPressed(SDLK_RETURN, c) == true) {
+		if (isKey(SDLK_RETURN, c) == true) {
 			program->exit();
 			userWantsExit = true;
 		}
@@ -455,8 +455,7 @@ namespace Game {
 
 			//if(key == vkEscape  || key == SDLK_ESCAPE ||
 			//      ((key == vkReturn || key == SDLK_RETURN || key == SDLK_KP_ENTER) && !(keystate.mod & (KMOD_LALT | KMOD_RALT)))) {
-			if (isKeyPressed(SDLK_ESCAPE, key) == true
-				|| ((isKeyPressed(SDLK_RETURN, key) == true)
+			if (isKey(SDLK_ESCAPE, key) == true || ((isKey(SDLK_RETURN, key) == true)
 					&& !(key.keysym.mod & (KMOD_LALT | KMOD_RALT)))) {
 				if (SystemFlags::
 					getSystemSettingType(SystemFlags::debugSystem).enabled)
