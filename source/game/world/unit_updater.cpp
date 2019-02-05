@@ -829,44 +829,44 @@ namespace Game {
 									break;
 							}
 							/*
-												case tsMoving:
-													unit->setCurrSkill(act->getMoveSkillType());
+								case tsMoving:
+									unit->setCurrSkill(act->getMoveSkillType());
 
-													{
-														std::pair<bool,Unit *> beingAttacked = unitBeingAttacked(unit);
-														if(beingAttacked.first == true) {
-															Unit *enemy = beingAttacked.second;
-															const AttackCommandType *act_forenemy = unit->getType()->getFirstAttackCommand(enemy->getCurrField());
-															if(act_forenemy != NULL) {
-																if(unit->getEp() >= act_forenemy->getAttackSkillType()->getEpCost()) {
-																	unit->setCurrSkill(act_forenemy->getAttackSkillType());
-																	unit->setTarget(enemy);
-																}
-																//aiInterface->giveCommand(i, act_forenemy, beingAttacked.second->getPos());
-															}
-															else {
-																const AttackStoppedCommandType *asct_forenemy = unit->getType()->getFirstAttackStoppedCommand(enemy->getCurrField());
-																if(asct_forenemy != NULL) {
-																	//aiInterface->giveCommand(i, asct_forenemy, beingAttacked.second->getCenteredPos());
-																	if(unit->getEp() >= asct_forenemy->getAttackSkillType()->getEpCost()) {
-																		unit->setCurrSkill(asct_forenemy->getAttackSkillType());
-																		unit->setTarget(enemy);
-																	}
-																}
-															}
-														}
-													}
-
-													break;
-
-												case tsBlocked:
-													if(unit->getPath()->isBlocked()){
-														unit->finishCommand();
-													}
-													break;
-												default:
-													unit->finishCommand();
+									{
+										std::pair<bool,Unit *> beingAttacked = unitBeingAttacked(unit);
+										if(beingAttacked.first == true) {
+											Unit *enemy = beingAttacked.second;
+											const AttackCommandType *act_forenemy = unit->getType()->getFirstAttackCommand(enemy->getCurrField());
+											if(act_forenemy != NULL) {
+												if(unit->getEp() >= act_forenemy->getAttackSkillType()->getEpCost()) {
+													unit->setCurrSkill(act_forenemy->getAttackSkillType());
+													unit->setTarget(enemy);
+												}
+												//aiInterface->giveCommand(i, act_forenemy, beingAttacked.second->getPos());
 											}
+											else {
+												const AttackStoppedCommandType *asct_forenemy = unit->getType()->getFirstAttackStoppedCommand(enemy->getCurrField());
+												if(asct_forenemy != NULL) {
+													//aiInterface->giveCommand(i, asct_forenemy, beingAttacked.second->getCenteredPos());
+													if(unit->getEp() >= asct_forenemy->getAttackSkillType()->getEpCost()) {
+														unit->setCurrSkill(asct_forenemy->getAttackSkillType());
+														unit->setTarget(enemy);
+													}
+												}
+											}
+										}
+									}
+
+									break;
+
+								case tsBlocked:
+									if(unit->getPath()->isBlocked()){
+										unit->finishCommand();
+									}
+									break;
+								default:
+									unit->finishCommand();
+							}
 							*/
 
 							if (SystemFlags::getSystemSettingType(SystemFlags::debugWorldSynch).enabled == true && frameIndex < 0 &&
@@ -944,7 +944,7 @@ namespace Game {
 
 			float distToUnit = -1;
 			std::pair<bool, Unit *> result = make_pair(false, (Unit *) NULL);
-			unitBeingAttacked(result, unit, asct->getAttackSkillType(), &distToUnit);
+			unitAttackingUnit(result, unit, asct->getAttackSkillType(), &distToUnit);
 
 
 			if (result.first == true) {
@@ -993,7 +993,7 @@ namespace Game {
 
 	}
 
-	void UnitUpdater::unitBeingAttacked(std::pair<bool, Unit *> &result, const Unit *unit, const AttackSkillType *ast, float *currentDistToUnit) {
+	void UnitUpdater::unitAttackingUnit(std::pair<bool, Unit *> &result, const Unit *unit, const AttackSkillType *ast, float *currentDistToUnit) {
 		//std::pair<bool,Unit *> result = make_pair(false,(Unit *)NULL);
 
 		float distToUnit = -1;
@@ -1001,7 +1001,7 @@ namespace Game {
 			distToUnit = *currentDistToUnit;
 		}
 		if (ast != NULL) {
-			vector<Unit*> enemies = enemyUnitsOnRange(unit, ast);
+			vector<Unit*> enemies = enemyUnitsOnSight(unit, ast, true);
 			for (unsigned j = 0; j < enemies.size(); ++j) {
 				Unit *enemy = enemies[j];
 
@@ -1025,17 +1025,19 @@ namespace Game {
 		//	if(result.first == true) {
 		//		printf("~~~~~~~~ Unit [%s - %d] found enemy [%s - %d] distToUnit = %f\n",unit->getFullName().c_str(),unit->getId(),result.second->getFullName().c_str(),result.second->getId(),distToUnit);
 		//	}
-			//return result;
+		//return result;
 	}
 
-	std::pair<bool, Unit *> UnitUpdater::unitBeingAttacked(const Unit *unit) {
+	std::pair<bool, Unit *> UnitUpdater::unitAttackingUnit(const Unit *unit) {
 		std::pair<bool, Unit *> result = make_pair(false, (Unit *) NULL);
 
 		float distToUnit = -1;
-		for (unsigned int i = 0; i < (unsigned int) unit->getType()->getSkillTypeCount(); ++i) {
+		for (int i = 0; i < unit->getType()->getSkillTypeCount(); ++i) {
 			const SkillType *st = unit->getType()->getSkillType(i);
 			const AttackSkillType *ast = dynamic_cast<const AttackSkillType *>(st);
-			unitBeingAttacked(result, unit, ast, &distToUnit);
+			unitAttackingUnit(result, unit, ast, &distToUnit);
+			if (result.first)
+				break;
 		}
 
 		//	if(result.first == true) {
@@ -2908,8 +2910,8 @@ namespace Game {
 
 							cacheItem.rangeCellList.push_back(cell);
 						}
-						}
 					}
+				}
 
 
 				// Ok update our caches with the latest info
@@ -2918,7 +2920,7 @@ namespace Game {
 
 					UnitRangeCellsLookupItemCache[center][size][range] = cacheItem;
 				}
-				}
+			}
 
 			//attack enemies that can attack first
 			float distToUnit = -1;
@@ -3074,36 +3076,34 @@ namespace Game {
 				}
 			}
 
-			} catch (const exception &ex) {
-				//setRunningStatus(false);
+		} catch (const exception &ex) {
+			//setRunningStatus(false);
 
-				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
-				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
+			SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
+			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-				throw game_runtime_error(ex.what());
-			} catch (...) {
-				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error\n", __FILE__, __FUNCTION__, __LINE__);
-				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw game_runtime_error(szBuf);
-			}
-
-			return result;
+			throw game_runtime_error(ex.what());
+		} catch (...) {
+			char szBuf[8096] = "";
+			snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error\n", __FILE__, __FUNCTION__, __LINE__);
+			SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
+			throw game_runtime_error(szBuf);
 		}
 
+		return result;
+	}
 
-	//if the unit has any enemy on range
-	vector<Unit*> UnitUpdater::enemyUnitsOnRange(const Unit *unit, const AttackSkillType *ast) {
+	//if the unit has any enemy on sight range
+	vector<Unit*> UnitUpdater::enemyUnitsOnSight(const Unit *unit, const AttackSkillType *ast, bool limitByAttackRange) {
 		vector<Unit*> enemies;
-		enemies.reserve(100);
+		enemies.reserve(40);
 
 		try {
-
-
 			int range = unit->getType()->getTotalSight(unit->getTotalUpgrade());
-			if (ast != NULL) {
-
-				range = ast->getTotalAttackRange(unit->getTotalUpgrade());
+			if (limitByAttackRange && ast != NULL) {
+				int attackRange = ast->getTotalAttackRange(unit->getTotalUpgrade());
+				if (attackRange < range)
+					range = attackRange;
 			}
 			//we check command target
 			const Unit *commandTarget = NULL;
@@ -3114,7 +3114,7 @@ namespace Game {
 			//		commandTarget = NULL;
 			//	}
 
-				//aux vars
+			//aux vars
 			int size = unit->getType()->getSize();
 			Vec2i center = unit->getPosNotThreadSafe();
 			Vec2f floatCenter = unit->getFloatCenteredPos();
@@ -3139,8 +3139,8 @@ namespace Game {
 
 							cacheItem.rangeCellList.push_back(cell);
 						}
-						}
 					}
+				}
 
 				// Ok update our caches with the latest info
 				if (cacheItem.rangeCellList.empty() == false) {
@@ -3148,25 +3148,37 @@ namespace Game {
 
 					UnitRangeCellsLookupItemCache[center][size][range] = cacheItem;
 				}
-				}
-
-			} catch (const exception &ex) {
-				//setRunningStatus(false);
-
-				SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
-				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
-
-				throw game_runtime_error(ex.what());
-			} catch (...) {
-				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error\n", __FILE__, __FUNCTION__, __LINE__);
-				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				throw game_runtime_error(szBuf);
 			}
 
-			return enemies;
+		} catch (const exception &ex) {
+			//setRunningStatus(false);
+
+			SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, ex.what());
+			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
+
+			throw game_runtime_error(ex.what());
+		} catch (...) {
+			char szBuf[8096] = "";
+			snprintf(szBuf, 8096, "In [%s::%s %d] UNKNOWN error\n", __FILE__, __FUNCTION__, __LINE__);
+			SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
+			throw game_runtime_error(szBuf);
 		}
 
+		return enemies;
+	}
+
+	bool UnitUpdater::hasEnemyUnitsOnSight(const Unit *unit, bool limitByAttackRange) {
+		vector<Unit*> enemies;
+		float distToUnit = -1;
+		for (int i = 0; i < unit->getType()->getSkillTypeCount(); ++i) {
+			const SkillType *st = unit->getType()->getSkillType(i);
+			const AttackSkillType *ast = dynamic_cast<const AttackSkillType *>(st);
+			enemies = enemyUnitsOnSight(unit, ast, limitByAttackRange);
+			if (enemies.size() != 0)
+				return true;
+		}
+		return false;
+	}
 
 	void UnitUpdater::findUnitsForCell(Cell *cell, vector<Unit*> &units) {
 		//all fields

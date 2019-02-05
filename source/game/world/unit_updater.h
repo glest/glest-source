@@ -130,9 +130,10 @@ namespace Game {
 		inline unsigned int getAttackWarningCount() const {
 			return (unsigned int) attackWarnings.size();
 		}
-		std::pair<bool, Unit *> unitBeingAttacked(const Unit *unit);
-		void unitBeingAttacked(std::pair<bool, Unit *> &result, const Unit *unit, const AttackSkillType *ast, float *currentDistToUnit = NULL);
-		vector<Unit*> enemyUnitsOnRange(const Unit *unit, const AttackSkillType *ast);
+		std::pair<bool, Unit *> unitAttackingUnit(const Unit *unit);
+		void unitAttackingUnit(std::pair<bool, Unit *> &result, const Unit *unit, const AttackSkillType *ast, float *currentDistToUnit = NULL);
+		vector<Unit*> enemyUnitsOnSight(const Unit *unit, const AttackSkillType *ast, bool limitByAttackRange);
+		bool hasEnemyUnitsOnSight(const Unit *unit, bool limitByAttackRange);
 		void findEnemiesForCell(const Vec2i pos, int size, int sightRange, const Faction *faction, vector<Unit*> &enemies, bool attackersOnly) const;
 
 		vector<Unit*> findUnitsInRange(const Unit *unit, int radius);

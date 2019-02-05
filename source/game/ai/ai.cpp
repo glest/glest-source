@@ -1324,12 +1324,10 @@ namespace Game {
 					|| aiInterface->getControlType() == ctCpuGlest)) {
 				//printf("~~~~~~~~ Unit [%s - %d] checking if unit is being attacked\n",unit->getFullName().c_str(),unit->getId());
 
-				std::pair < bool, Unit * >beingAttacked =
-					aiInterface->getWorld()->getUnitUpdater()->
-					unitBeingAttacked(unit);
-				if (beingAttacked.first == true) {
+				std::pair<bool, Unit*> targetUnit = aiInterface->getWorld()->getUnitUpdater()->unitAttackingUnit(unit);
+				if (targetUnit.first == true) {
 					Unit *
-						enemy = beingAttacked.second;
+						enemy = targetUnit.second;
 					const AttackCommandType *
 						act_forenemy =
 						unit->getType()->getFirstAttackCommand(enemy->
@@ -1356,7 +1354,7 @@ namespace Game {
 							}
 
 							aiInterface->giveCommand(i, act_forenemy,
-								beingAttacked.second->
+								targetUnit.second->
 								getPos(),
 								unitGroupCommandId);
 							unitSignalledToAttack = true;
@@ -1389,7 +1387,7 @@ namespace Game {
 								}
 
 								aiInterface->giveCommand(i, asct_forenemy,
-									beingAttacked.second->
+									targetUnit.second->
 									getCenteredPos(),
 									unitGroupCommandId);
 								unitSignalledToAttack = true;

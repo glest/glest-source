@@ -2748,8 +2748,14 @@ namespace Game {
 		// or when the unit is selected and right clicked to a position.
 		if (commandType == NULL) {
 			CommandClass command = ccMove; //default command
-			if (defaultActionAttack && this->getType()->hasSkillClass(scAttack) && (targetUnit == NULL || this->getTeam() != targetUnit->getTeam()))
-				command = ccAttack;
+			if (defaultActionAttack) {
+				if (getType()->hasSkillClass(scAttack)) {
+					if (targetUnit == NULL || this->getTeam() != targetUnit->getTeam()) {
+						if (getCurrSkill()->getClass() != scAttack && !(game->getWorld()->getUnitUpdater()->hasEnemyUnitsOnSight(this, false)))
+							command = ccAttack;
+					}
+				}
+			}
 			commandType = type->getFirstCtOfClass(command);
 		}
 
