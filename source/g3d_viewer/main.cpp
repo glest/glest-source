@@ -225,7 +225,7 @@ namespace Shared {
 			printf("\n\n                     \tWhere x is a Particle XML filename to load.");
 			printf("\n\n                     \texample:");
 			printf("\n\n                     \t%s %s=techs/glestpack/factions/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE]));
-			printf("\n\n                     \tpersian/units/genie/glow_particles.xml");
+			printf("\n\n                     \tpersians/units/genie/glow_particles.xml");
 
 			printf("\n\n%s=x  ", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_PROJECTILE]));
 			printf("\n\n                     \tAuto load the projectile particle specified in");
@@ -234,7 +234,7 @@ namespace Shared {
 			printf("\n\n                     \t    filename to load.");
 			printf("\n\n                     \texample:");
 			printf("\n\n                     \t%s %s=techs/glestpack/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_PROJECTILE]));
-			printf("\n\n                     \tfactions/persian/units/genie/particle_proj.xml");
+			printf("\n\n                     \tfactions/persians/units/genie/particle_proj.xml");
 
 			printf("\n\n%s=x  ", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_SPLASH]));
 			printf("\n\n                     \tAuto load the splash particle specified in");
@@ -243,7 +243,7 @@ namespace Shared {
 			printf("\n\n                     \t    filename to load.");
 			printf("\n\n                     \texample:");
 			printf("\n\n                     \t%s %s=techs/glestpack/", extractFileFromDirectoryPath(argv0).c_str(), (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_SPLASH]));
-			printf("\n\n                     \tfactions/persian/units/genie/particle_splash.xml");
+			printf("\n\n                     \tfactions/persians/units/genie/particle_splash.xml");
 
 			printf("\n\n%s=x  ", (const char *) wxConvCurrent->cWX2MB(GAME_ARGS[GAME_ARG_LOAD_PARTICLE_LOOP_VALUE]));
 			printf("\n\n                     \tParticle loop value when loading one or more");

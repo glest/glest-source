@@ -7,7 +7,7 @@
 [Glest](https://glest.github.io) is a network multi-player real-time strategy game engine.
 It includes several factions, each one consisting of many 3d characters. The factions are loosely
 based on historical empires with added elements of fantasy, such as
-mummies produced by Egyptian priests, Indian shamans who summon
+mummies produced by Egyptian priests, shamans who summon
 thunderbirds for air assaults, and Norsemen who can build flying
 valkries and "Thors". Start the game by harvesting natural resources,
 then use the cash to produce an army. Single-player mode against the
