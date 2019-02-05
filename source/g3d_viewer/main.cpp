@@ -2080,6 +2080,29 @@ namespace Shared {
 
 			bool App::OnInit() {
 			SystemFlags::VERBOSE_MODE_ENABLED = false;
+#ifdef WIN32
+			/*It is recommended that you delay-load ComCtl32.dll (/DelayLoad:ComCtl32.dll)
+			and that you ensure this code runs before GUI components are loaded.
+			Otherwise, you may get weird issues, like black backgrounds in icons in image lists.*/
+			{
+				TCHAR dir[MAX_PATH];
+				ULONG_PTR ulpActivationCookie = FALSE;
+				ACTCTX actCtx =
+				{
+					sizeof(actCtx),
+					ACTCTX_FLAG_RESOURCE_NAME_VALID
+						| ACTCTX_FLAG_SET_PROCESS_DEFAULT
+						| ACTCTX_FLAG_ASSEMBLY_DIRECTORY_VALID,
+					TEXT("shell32.dll"), 0, 0, dir, (LPCTSTR) 124
+				};
+				UINT cch = GetSystemDirectory(dir, sizeof(dir) / sizeof(*dir));
+				if (cch >= sizeof(dir) / sizeof(*dir)) {
+					return FALSE; /*shouldn't happen*/
+				}
+				dir[cch] = TEXT('\0');
+				ActivateActCtx(CreateActCtx(&actCtx), &ulpActivationCookie);
+			}
+#endif
 
 #if defined(wxMAJOR_VERSION) && defined(wxMINOR_VERSION) && defined(wxRELEASE_NUMBER) && defined(wxSUBRELEASE_NUMBER)
 			printf("Using wxWidgets version [%d.%d.%d.%d]\n", wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER, wxSUBRELEASE_NUMBER);
