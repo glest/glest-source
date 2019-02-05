@@ -451,6 +451,7 @@ namespace Game {
 		luaScript.registerFunction(getIsUnitAlive, "isUnitAlive");
 		luaScript.registerFunction(getUnitPosition, "unitPosition");
 		luaScript.registerFunction(setUnitPosition, "setUnitPosition");
+		luaScript.registerFunction(forceSetUnitPosition, "forceSetUnitPosition");
 
 		luaScript.registerFunction(addCellMarker, "addCellMarker");
 		luaScript.registerFunction(removeCellMarker, "removeCellMarker");
@@ -1686,7 +1687,7 @@ namespace Game {
 		}
 	}
 
-	void
+	int
 		ScriptManager::createUnit(const string & unitName, int factionIndex,
 			Vec2i pos) {
 		if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled)
@@ -1695,10 +1696,10 @@ namespace Game {
 				extractFileFromDirectoryPath(__FILE__).
 				c_str(), __FUNCTION__, __LINE__,
 				unitName.c_str(), factionIndex);
-		world->createUnit(unitName, factionIndex, pos);
+		return world->createUnit(unitName, factionIndex, pos)->getId();
 	}
 
-	void
+	int
 		ScriptManager::createUnitNoSpacing(const string & unitName,
 			int factionIndex, Vec2i pos) {
 		if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled)
@@ -1707,7 +1708,7 @@ namespace Game {
 				extractFileFromDirectoryPath(__FILE__).
 				c_str(), __FUNCTION__, __LINE__,
 				unitName.c_str(), factionIndex);
-		world->createUnit(unitName, factionIndex, pos, false);
+		return world->createUnit(unitName, factionIndex, pos, false)->getId();
 	}
 
 	void
@@ -2480,7 +2481,18 @@ namespace Game {
 				extractFileFromDirectoryPath(__FILE__).
 				c_str(), __FUNCTION__, __LINE__);
 
-		return world->setUnitPosition(unitId, pos);
+		return world->setUnitPosition(unitId, pos, false);
+	}
+
+	void
+		ScriptManager::forceSetUnitPosition(int unitId, Vec2i pos) {
+		if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled)
+			SystemFlags::OutputDebug(SystemFlags::debugLUA,
+				"In [%s::%s Line: %d]\n",
+				extractFileFromDirectoryPath(__FILE__).
+				c_str(), __FUNCTION__, __LINE__);
+
+		return world->setUnitPosition(unitId, pos, true);
 	}
 
 	void
@@ -3569,9 +3581,10 @@ namespace Game {
 				luaArguments.getInt(-2));
 
 		try {
-			thisScriptManager->createUnit(luaArguments.getString(-3),
+			int result = thisScriptManager->createUnit(luaArguments.getString(-3),
 				luaArguments.getInt(-2),
 				luaArguments.getVec2i(-1));
+			luaArguments.returnInt(result);
 		} catch (const game_runtime_error & ex) {
 			error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 		}
@@ -3641,9 +3654,11 @@ namespace Game {
 				luaArguments.getInt(-2));
 
 		try {
-			thisScriptManager->createUnitNoSpacing(luaArguments.getString(-3),
-				luaArguments.getInt(-2),
-				luaArguments.getVec2i(-1));
+			int result = thisScriptManager->createUnitNoSpacing(luaArguments.getString(-3),
+					luaArguments.getInt(-2),
+					luaArguments.getVec2i(-1));
+			luaArguments.returnInt(result);
+			
 		} catch (const game_runtime_error & ex) {
 			error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 		}
@@ -4474,6 +4489,20 @@ namespace Game {
 			luaArguments(luaHandle);
 		try {
 			thisScriptManager->setUnitPosition(luaArguments.getInt(-2),
+				luaArguments.getVec2i(-1));
+		} catch (const game_runtime_error & ex) {
+			error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
+		}
+
+		return luaArguments.getReturnCount();
+	}
+
+	int
+		ScriptManager::forceSetUnitPosition(LuaHandle * luaHandle) {
+		LuaArguments
+			luaArguments(luaHandle);
+		try {
+			thisScriptManager->forceSetUnitPosition(luaArguments.getInt(-2),
 				luaArguments.getVec2i(-1));
 		} catch (const game_runtime_error & ex) {
 			error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);

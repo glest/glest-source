@@ -482,9 +482,9 @@ namespace Game {
 		void
 			shakeCamera(int shakeIntensity, int shakeDuration,
 				bool cameraDistanceAffected, int unitId);
-		void
+		int
 			createUnit(const string & unitName, int factionIndex, Vec2i pos);
-		void
+		int
 			createUnitNoSpacing(const string & unitName, int factionIndex,
 				Vec2i pos);
 
@@ -645,6 +645,9 @@ namespace Game {
 
 		void
 			setUnitPosition(int unitId, Vec2i pos);
+
+		void
+			forceSetUnitPosition(int unitId, Vec2i pos);
 
 		void
 			addCellMarker(Vec2i pos, int factionIndex, const string & note,
@@ -959,6 +962,8 @@ namespace Game {
 
 		static int
 			setUnitPosition(LuaHandle * luaHandle);
+		static int
+			forceSetUnitPosition(LuaHandle * luaHandle);
 
 		static int
 			addCellMarker(LuaHandle * luaHandle);

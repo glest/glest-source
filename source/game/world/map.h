@@ -439,7 +439,7 @@ namespace Game {
 		//unit placement
 		bool aproxCanMove(const Unit *unit, const Vec2i &pos1, const Vec2i &pos2, std::map<Vec2i, std::map<Vec2i, std::map<int, std::map<int, std::map<Field, bool> > > > > *lookupCache = NULL) const;
 		bool canMove(const Unit *unit, const Vec2i &pos1, const Vec2i &pos2, std::map<Vec2i, std::map<Vec2i, std::map<int, std::map<Field, bool> > > > *lookupCache = NULL) const;
-		void putUnitCells(Unit *unit, const Vec2i &pos, bool ignoreSkill = false, bool threaded = false);
+		void putUnitCells(Unit *unit, const Vec2i &pos, bool ignoreSkill = false, bool threaded = false, bool forcePut = false);
 		void clearUnitCells(Unit *unit, const Vec2i &pos, bool ignoreSkill = false);
 
 		Vec2i computeRefPos(const Selection *selection) const;
@@ -718,7 +718,7 @@ namespace Game {
 		void smoothSurface(Tileset *tileset);
 		void computeNearSubmerged();
 		void computeCellColors();
-		void putUnitCellsPrivate(Unit *unit, const Vec2i &pos, const UnitType *ut, bool isMorph, bool threaded);
+		void putUnitCellsPrivate(Unit *unit, const Vec2i &pos, const UnitType *ut, bool isMorph, bool threaded, bool forcePut = false);
 	};
 
 

@@ -1168,7 +1168,7 @@ namespace Game {
 	}
 
 	//clears a unit old position from map and places new position
-	void World::moveUnitCells(Unit *unit, bool threaded) {
+	void World::moveUnitCells(Unit *unit, bool threaded, bool forceMove) {
 		if (unit == NULL) {
 			throw game_runtime_error("unit == NULL");
 		}
@@ -1181,7 +1181,7 @@ namespace Game {
 		// from the old one
 		if (newPos != unit->getPos()) {
 			map.clearUnitCells(unit, unit->getPos());
-			map.putUnitCells(unit, newPos, false, threaded);
+			map.putUnitCells(unit, newPos, false, threaded, forceMove);
 		}
 		// Add resources close by to the faction's cache
 		unit->getFaction()->addCloseResourceTargetToCache(newPos);
@@ -1319,9 +1319,10 @@ namespace Game {
 		}
 	}
 
-	void World::createUnit(const string &unitName, int factionIndex, const Vec2i &pos, bool spaciated) {
+	Unit* World::createUnit(const string &unitName, int factionIndex, const Vec2i &pos, bool spaciated) {
 		if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d] unitName [%s] factionIndex = %d\n", __FILE__, __FUNCTION__, __LINE__, unitName.c_str(), factionIndex);
 
+		Unit* unit = NULL;
 		if (factionIndex < (int) factions.size()) {
 			Faction* faction = factions[factionIndex];
 
@@ -1341,7 +1342,7 @@ namespace Game {
 					throw game_runtime_error("detected unsupported pathfinder type!", true);
 			}
 
-			Unit* unit = new Unit(getNextUnitId(faction), newpath, pos, ut, faction, &map, CardinalDir(CardinalDir::NORTH));
+			unit = new Unit(getNextUnitId(faction), newpath, pos, ut, faction, &map, CardinalDir(CardinalDir::NORTH));
 
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d] unit created for unit [%s]\n", __FILE__, __FUNCTION__, __LINE__, unit->toString().c_str());
 
@@ -1368,6 +1369,8 @@ namespace Game {
 		}
 
 		if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
+
+		return unit;
 	}
 
 	void World::giveResource(const string &resourceName, int factionIndex, int amount) {
@@ -1809,13 +1812,13 @@ namespace Game {
 		return unit->getPos();
 	}
 
-	void World::setUnitPosition(int unitId, Vec2i pos) {
+	void World::setUnitPosition(int unitId, Vec2i pos, bool forceSet) {
 		Unit* unit = findUnitById(unitId);
 		if (unit == NULL) {
 			throw game_runtime_error("Can not find unit to set position unitId = " + intToStr(unitId), true);
 		}
 		unit->setTargetPos(pos);
-		this->moveUnitCells(unit, false);
+		this->moveUnitCells(unit, false, forceSet);
 	}
 
 	void World::addCellMarker(Vec2i pos, int factionIndex, const string &note, const string textureFile) {

@@ -1343,12 +1343,9 @@ namespace Game {
 	}
 
 	//put a units into the cells
-	void Map::putUnitCells(Unit *unit, const Vec2i &pos, bool ignoreSkill, bool threaded) {
+	void Map::putUnitCells(Unit *unit, const Vec2i &pos, bool ignoreSkill, bool threaded, bool forcePut) {
 		assert(unit != NULL);
-		if (unit == NULL) {
-			throw game_runtime_error("ut == NULL");
-		}
-		putUnitCellsPrivate(unit, pos, unit->getType(), false, threaded);
+		putUnitCellsPrivate(unit, pos, unit->getType(), false, threaded, forcePut);
 
 		// block space for morphing units
 		if (ignoreSkill == false &&
@@ -1363,11 +1360,8 @@ namespace Game {
 		}
 	}
 
-	void Map::putUnitCellsPrivate(Unit *unit, const Vec2i &pos, const UnitType *ut, bool isMorph, bool threaded) {
+	void Map::putUnitCellsPrivate(Unit *unit, const Vec2i &pos, const UnitType *ut, bool isMorph, bool threaded, bool forcePut) {
 		assert(unit != NULL);
-		if (unit == NULL) {
-			throw game_runtime_error("ut == NULL");
-		}
 
 		bool canPutInCell = true;
 		Field field = ut->getField();
@@ -1375,16 +1369,12 @@ namespace Game {
 			for (int j = 0; j < ut->getSize(); ++j) {
 				Vec2i currPos = pos + Vec2i(i, j);
 				assert(isInside(currPos));
-				if (isInside(currPos) == false) {
-					throw game_runtime_error("isInside(currPos) == false");
-				}
 
 				if (ut->hasCellMap() == false || ut->getCellMapCell(i, j, unit->getModelFacing())) {
 					if (getCell(currPos)->getUnit(field) != NULL && getCell(currPos)->getUnit(field) != unit) {
-
 						// TT: is this ok ?
-											// If unit tries to move into a cell where another unit resides
-											// cancel the move command
+						//If unit tries to move into a cell where another unit resides
+						// cancel the move command
 						if (unit->getCurrSkill() != NULL &&
 							unit->getCurrSkill()->getClass() == scMove) {
 							canPutInCell = false;
@@ -1423,9 +1413,11 @@ namespace Game {
 							getCell(currPos)->setUnit(unit->getCurrField(), unit);
 						}
 					} else if (canPutInCell == true) {
-						char szBuf[8096] = "";
-						snprintf(szBuf, 8096, "Trying to move unit [%d - %s] into occupied cell [%s] and field = %d, unit already in cell [%d - %s] ", unit->getId(), unit->getType()->getName(false).c_str(), pos.getString().c_str(), field, getCell(currPos)->getUnit(field)->getId(), getCell(currPos)->getUnit(field)->getType()->getName(false).c_str());
-						throw game_runtime_error(szBuf);
+						if (!forcePut) {
+							char szBuf[8096] = "";
+							snprintf(szBuf, 8096, "Trying to move unit [%d - %s] into occupied cell [%s] and field = %d, unit already in cell [%d - %s] ", unit->getId(), unit->getType()->getName(false).c_str(), pos.getString().c_str(), field, getCell(currPos)->getUnit(field)->getId(), getCell(currPos)->getUnit(field)->getType()->getName(false).c_str());
+							throw game_runtime_error(szBuf);
+						}
 					}
 				} else if (ut->hasCellMap() == true &&
 					ut->getAllowEmptyCellMap() == true &&
@@ -1447,9 +1439,6 @@ namespace Game {
 	//removes a unit from cells
 	void Map::clearUnitCells(Unit *unit, const Vec2i &pos, bool ignoreSkill) {
 		assert(unit != NULL);
-		if (unit == NULL) {
-			throw game_runtime_error("unit == NULL");
-		}
 
 		const UnitType *ut = unit->getType();
 		Field currentField = unit->getCurrField();
@@ -1472,9 +1461,6 @@ namespace Game {
 			for (int j = 0; j < ut->getSize(); ++j) {
 				Vec2i currPos = pos + Vec2i(i, j);
 				assert(isInside(currPos));
-				if (isInside(currPos) == false) {
-					throw game_runtime_error("isInside(currPos) == false");
-				}
 
 				if (ut->hasCellMap() == false || ut->getCellMapCell(i, j, unit->getModelFacing())) {
 					// This seems to be a bad assert since you can clear the cell

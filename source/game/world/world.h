@@ -280,7 +280,7 @@ namespace Game {
 		const UnitType* findUnitTypeById(const FactionType* factionType, int id);
 		const UnitType *findUnitTypeByName(const string factionName, const string unitTypeName);
 		bool placeUnit(const Vec2i &startLoc, int radius, Unit *unit, bool spaciated = false, bool threaded = false);
-		void moveUnitCells(Unit *unit, bool threaded);
+		void moveUnitCells(Unit *unit, bool threaded, bool forceMove = false);
 
 		bool toRenderUnit(const Unit *unit, const Quad2i &visibleQuad) const;
 		bool toRenderUnit(const Unit *unit) const;
@@ -292,7 +292,7 @@ namespace Game {
 
 		//scripting interface
 		void morphToUnit(int unitId, const string &morphName, bool ignoreRequirements);
-		void createUnit(const string &unitName, int factionIndex, const Vec2i &pos, bool spaciated = true);
+		Unit* createUnit(const string &unitName, int factionIndex, const Vec2i &pos, bool spaciated = true);
 		void givePositionCommand(int unitId, const string &commandName, const Vec2i &pos);
 		vector<int> getUnitsForFaction(int factionIndex, const string& commandTypeName, int field);
 		int getUnitCurrentField(int unitId);
@@ -315,7 +315,7 @@ namespace Game {
 		int getResourceAmount(const string &resourceName, int factionIndex);
 		Vec2i getStartLocation(int factionIndex);
 		Vec2i getUnitPosition(int unitId);
-		void setUnitPosition(int unitId, Vec2i pos);
+		void setUnitPosition(int unitId, Vec2i pos, bool forceSet = false);
 
 		void addCellMarker(Vec2i pos, int factionIndex, const string &note, const string textureFile);
 		void removeCellMarker(Vec2i pos, int factionIndex);
