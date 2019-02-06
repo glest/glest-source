@@ -1239,15 +1239,15 @@ namespace Game {
 				needUpdateFromServer = false;
 
 				if (announcementLoaded == false) {
+					consoleIRC.addLine("This is the network lobby. To start a new network game yourself, click \"Host Game\"");
+					consoleIRC.addLine("");
 					// write hint to console:
 					Config & configKeys =
 						Config::getInstance(std::pair < ConfigType,
 							ConfigType >(cfgMainKeys, cfgUserKeys));
-					consoleIRC.addLine(Lang::getInstance().
-						getString("ToSwitchOffMusicPress") +
-						" - \"" +
+					consoleIRC.addLine(Lang::getInstance().getString("ToSwitchOffMusicPress") + " - \"" +
 						configKeys.getString("ToggleMusic") + "\"");
-
+					consoleIRC.addLine("");
 					announcementLoaded = true;
 				}
 

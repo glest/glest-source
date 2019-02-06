@@ -131,7 +131,6 @@ namespace Game {
 	}
 
 	void Gui::init(Game *game) {
-
 		this->commander = game->getCommander();
 		this->gameCamera = game->getGameCameraPtr();
 		this->console = game->getConsole();
@@ -142,6 +141,8 @@ namespace Game {
 			world->getThisFactionIndex(),
 			world->getThisTeamIndex(),
 			game->isFlagType1BitEnabled(ft1_allow_shared_team_units));
+
+		console->addStdMessage("StartMessage", true);
 	}
 
 	void Gui::end() {
