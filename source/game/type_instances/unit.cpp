@@ -2746,7 +2746,7 @@ namespace Game {
 		// or when the unit is selected and right clicked to a position.
 		if (commandType == NULL) {
 			CommandClass command = ccMove; //default command
-			if (!isMove && defaultActionAttack) {
+			if (!isMove && (preferAttack || defaultActionAttack)) {
 				if (getType()->hasSkillClass(scAttack)) {
 					if (targetUnit == NULL || this->getTeam() != targetUnit->getTeam()) {
 						if (preferAttack || (getCurrSkill()->getClass() != scAttack && !(game->getWorld()->getUnitUpdater()->hasEnemyUnitsOnSight(this, false))))
