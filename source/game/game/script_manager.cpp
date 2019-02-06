@@ -449,6 +449,7 @@ namespace Game {
 
 		luaScript.registerFunction(getStartLocation, "startLocation");
 		luaScript.registerFunction(getIsUnitAlive, "isUnitAlive");
+		luaScript.registerFunction(areCellsFree, "areCellsFree");
 		luaScript.registerFunction(getUnitPosition, "unitPosition");
 		luaScript.registerFunction(setUnitPosition, "setUnitPosition");
 		luaScript.registerFunction(forceSetUnitPosition, "forceSetUnitPosition");
@@ -2452,6 +2453,16 @@ namespace Game {
 		return world->getStartLocation(factionIndex);
 	}
 
+	bool
+		ScriptManager::areCellsFree(Vec2i pos, int size, int field) {
+		if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled)
+			SystemFlags::OutputDebug(SystemFlags::debugLUA,
+				"In [%s::%s Line: %d]\n",
+				extractFileFromDirectoryPath(__FILE__).
+				c_str(), __FUNCTION__, __LINE__);
+
+		return world->areCellsFree(pos, size, static_cast<Field>(field));
+	}
 
 	Vec2i
 		ScriptManager::getUnitPosition(int unitId) {
@@ -4461,6 +4472,21 @@ namespace Game {
 				pos =
 				thisScriptManager->getStartLocation(luaArguments.getInt(-1));
 			luaArguments.returnVec2i(pos);
+		} catch (const game_runtime_error & ex) {
+			error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
+		}
+
+		return luaArguments.getReturnCount();
+	}
+
+	int
+		ScriptManager::areCellsFree(LuaHandle * luaHandle) {
+		LuaArguments
+			luaArguments(luaHandle);
+
+		try {
+			bool result = thisScriptManager->areCellsFree(luaArguments.getVec2i(-3), luaArguments.getInt(-2), luaArguments.getInt(-1));
+			luaArguments.returnInt(result ? 1 : 0);
 		} catch (const game_runtime_error & ex) {
 			error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 		}

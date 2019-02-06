@@ -314,6 +314,7 @@ namespace Game {
 		void giveResource(const string &resourceName, int factionIndex, int amount);
 		int getResourceAmount(const string &resourceName, int factionIndex);
 		Vec2i getStartLocation(int factionIndex);
+		bool areCellsFree(Vec2i pos, int size, Field field);
 		Vec2i getUnitPosition(int unitId);
 		void setUnitPosition(int unitId, Vec2i pos, bool forceSet = false);
 

@@ -629,6 +629,8 @@ namespace Game {
 			getStartLocation(int factionIndex);
 		Vec2i
 			getUnitPosition(int unitId);
+		bool
+			areCellsFree(Vec2i pos, int size, int field);
 		int
 			getUnitFaction(int unitId);
 		const string
@@ -960,6 +962,7 @@ namespace Game {
 		static int
 			getLastCreatedUnitId(LuaHandle * luaHandle);
 
+		static int areCellsFree(LuaHandle * luaHandle);
 		static int
 			setUnitPosition(LuaHandle * luaHandle);
 		static int

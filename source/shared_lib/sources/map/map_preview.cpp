@@ -645,9 +645,9 @@ namespace Shared {
 		}
 
 		void MapPreview::resetFactions(int maxPlayers) {
-			if (maxPlayers < MIN_MAP_FACTIONCOUNT || maxPlayers > MAX_MAP_FACTIONCOUNT) {
+			if (maxPlayers < 0 || maxPlayers > MAX_MAP_FACTIONCOUNT) {
 				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "Max Players must be in the range %d-%d", MIN_MAP_FACTIONCOUNT, MAX_MAP_FACTIONCOUNT);
+				snprintf(szBuf, 8096, "Max Players must be in the range %d-%d", 0, MAX_MAP_FACTIONCOUNT);
 				throw game_runtime_error(szBuf);
 			}
 

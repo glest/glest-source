@@ -1804,6 +1804,10 @@ namespace Game {
 		}
 	}
 
+	bool World::areCellsFree(Vec2i pos, int size, Field field) {
+		return map.isFreeCells(pos, size, field);
+	}
+
 	Vec2i World::getUnitPosition(int unitId) {
 		Unit* unit = findUnitById(unitId);
 		if (unit == NULL) {

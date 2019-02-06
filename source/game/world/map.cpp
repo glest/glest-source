@@ -842,6 +842,16 @@ namespace Game {
 		return false;
 	}
 
+	bool Map::isAproxFreeCell(const Vec2i &pos, Field field) const {
+		for (int i = 0; i <= MAX_MAP_FACTIONCOUNT; i++) {
+			if (!isAproxFreeCell(pos, field, i))
+				return false;
+		}
+
+		//printf("[%s] Line: %d returning false\n",__FUNCTION__,__LINE__);
+		return true;
+	}
+
 	bool Map::isFreeCells(const Vec2i & pos, int size, Field field, bool buildingsOnly) const {
 		for (int i = pos.x; i < pos.x + size; ++i) {
 			for (int j = pos.y; j < pos.y + size; ++j) {
@@ -874,6 +884,16 @@ namespace Game {
 				}
 			}
 		}
+		return true;
+	}
+
+	bool Map::isAproxFreeCells(const Vec2i &pos, int size, Field field) const {
+		for (int i = 0; i <= MAX_MAP_FACTIONCOUNT; i++) {
+			if (!isAproxFreeCells(pos, size, field, i))
+				return false;
+		}
+
+		//printf("[%s] Line: %d returning false\n",__FUNCTION__,__LINE__);
 		return true;
 	}
 
@@ -1321,9 +1341,6 @@ namespace Game {
 	bool Map::isInUnitTypeCells(const UnitType *ut, const Vec2i &pos,
 		const Vec2i &testPos) const {
 		assert(ut != NULL);
-		if (ut == NULL) {
-			throw game_runtime_error("ut == NULL");
-		}
 
 		if (isInside(testPos) && isInsideSurface(toSurfCoords(testPos))) {
 			Cell *testCell = getCell(testPos);
@@ -1372,9 +1389,7 @@ namespace Game {
 
 				if (ut->hasCellMap() == false || ut->getCellMapCell(i, j, unit->getModelFacing())) {
 					if (getCell(currPos)->getUnit(field) != NULL && getCell(currPos)->getUnit(field) != unit) {
-						// TT: is this ok ?
-						//If unit tries to move into a cell where another unit resides
-						// cancel the move command
+						//if unit tries to move into a cell where another unit resides cancel the move command
 						if (unit->getCurrSkill() != NULL &&
 							unit->getCurrSkill()->getClass() == scMove) {
 							canPutInCell = false;
