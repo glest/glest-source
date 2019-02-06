@@ -7364,11 +7364,11 @@ namespace Game {
 		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false) {
 			infoStr += lang.getString("OpenGlInfo") + ":\n";
 			infoStr += "   " + lang.getString("OpenGlVersion") + ": ";
-			infoStr += string((getGlVersion() != NULL ? getGlVersion() : "?")) + "\n";
+			infoStr += string((getGlVersion() != NULL ? getGlVersion() : "unknown")) + "\n";
 			infoStr += "   " + lang.getString("OpenGlRenderer") + ": ";
-			infoStr += string((getGlVersion() != NULL ? getGlVersion() : "?")) + "\n";
+			infoStr += string((getGlVersion() != NULL ? getGlVersion() : "unknown")) + "\n";
 			infoStr += "   " + lang.getString("OpenGlVendor") + ": ";
-			infoStr += string((getGlVendor() != NULL ? getGlVendor() : "?")) + "\n";
+			infoStr += string((getGlVendor() != NULL ? getGlVendor() : "unknown")) + "\n";
 			infoStr += "   " + lang.getString("OpenGlMaxLights") + ": ";
 			infoStr += intToStr(getGlMaxLights()) + "\n";
 			infoStr += "   " + lang.getString("OpenGlMaxTextureSize") + ": ";

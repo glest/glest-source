@@ -2454,13 +2454,12 @@ namespace Game {
 	}
 
 	bool
-		ScriptManager::areCellsFree(Vec2i pos, int size, int field) {
+		ScriptManager::areCellsFree(int size, int field, Vec2i pos) {
 		if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled)
 			SystemFlags::OutputDebug(SystemFlags::debugLUA,
 				"In [%s::%s Line: %d]\n",
 				extractFileFromDirectoryPath(__FILE__).
 				c_str(), __FUNCTION__, __LINE__);
-
 		return world->areCellsFree(pos, size, static_cast<Field>(field));
 	}
 
@@ -4485,7 +4484,7 @@ namespace Game {
 			luaArguments(luaHandle);
 
 		try {
-			bool result = thisScriptManager->areCellsFree(luaArguments.getVec2i(-3), luaArguments.getInt(-2), luaArguments.getInt(-1));
+			bool result = thisScriptManager->areCellsFree(luaArguments.getInt(-3), luaArguments.getInt(-2), luaArguments.getVec2i(-1));
 			luaArguments.returnInt(result ? 1 : 0);
 		} catch (const game_runtime_error & ex) {
 			error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);

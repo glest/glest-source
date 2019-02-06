@@ -1730,7 +1730,7 @@ namespace Game {
 				properties.
 				getString(string
 				("FactionTypeNameForIndex")
-					+ intToStr(i), "?"));
+					+ intToStr(i), "Unknown"));
 
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
 				enabled)

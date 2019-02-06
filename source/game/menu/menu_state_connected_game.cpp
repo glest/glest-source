@@ -380,7 +380,7 @@ namespace Game {
 
 		labelMapInfo.registerGraphicComponent(containerName, "labelMapInfo");
 		labelMapInfo.init(xoffset + 100, mapPos - labelOffset - 10, 200, 40);
-		labelMapInfo.setText("?");
+		labelMapInfo.setText("");
 
 		labelMap.registerGraphicComponent(containerName, "labelMap");
 		labelMap.init(xoffset + 100, mapHeadPos);

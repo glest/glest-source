@@ -630,7 +630,7 @@ namespace Game {
 		Vec2i
 			getUnitPosition(int unitId);
 		bool
-			areCellsFree(Vec2i pos, int size, int field);
+			areCellsFree(int size, int field, Vec2i pos);
 		int
 			getUnitFaction(int unitId);
 		const string

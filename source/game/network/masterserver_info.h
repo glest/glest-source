@@ -144,7 +144,7 @@ namespace Game {
 			externalconnectport = value;
 		}
 		void setCountry(string value) {
-			country = value;
+			country = value == "??" ? "" : value;
 		}
 		void setStatus(int value) {
 			status = value;

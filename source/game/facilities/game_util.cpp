@@ -39,7 +39,7 @@ namespace Game {
 	const char *mailString = "https://github.com/Glest";
 
 	string getCrashDumpFileName() {
-		return GameVersionString + ".dmp";
+		return "glest.dmp";
 	}
 	string getPlatformTypeNameString() {
 		static string platform;
