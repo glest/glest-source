@@ -290,6 +290,32 @@ namespace Game {
 		computeDisplay();
 	}
 
+	void Gui::mouseDownCenterGraphics(int x, int y, bool prepared) {
+		if (selectingPos) {
+			//give standard orders
+			Vec2i targetPos = game->getMouseCellPos();
+			if (prepared || (game->isValidMouseCellPos() &&
+				world->getMap()->isInsideSurface(world->getMap()->toSurfCoords(targetPos)) == true)) {
+				giveTwoClickOrders(x, y, prepared);
+			}
+			resetState();
+		} else if (selectingMeetingPoint) {
+			resetState();
+		} else if (selection.isCommandable()) {
+			if (prepared) {
+				//Vec2i targetPos=game->getMouseCellPos();
+				givePreparedDefaultOrders(x, y, false, true);
+			} else {
+				Vec2i targetPos = game->getMouseCellPos();
+				if (game->isValidMouseCellPos() &&
+					world->getMap()->isInsideSurface(world->getMap()->toSurfCoords(targetPos)) == true) {
+					giveDefaultOrders(x, y, false, true);
+				}
+			}
+		}
+		computeDisplay();
+	}
+
 	void Gui::mouseDownRightGraphics(int x, int y, bool prepared) {
 		if (selectingPos) {
 			//give standard orders
@@ -335,6 +361,12 @@ namespace Game {
 		lastToggledUnits.clear();
 	}
 
+	void Gui::mouseUpRightGraphics(int x, int y) {
+	}
+
+	void Gui::mouseUpCenterGraphics(int x, int y) {
+	}
+
 	void Gui::mouseMoveGraphics(int x, int y) {
 		//compute selection
 		if (selectionQuad.isEnabled()) {
@@ -357,6 +389,9 @@ namespace Game {
 			computeSelected(true, true);
 			computeDisplay();
 		}
+	}
+
+	void Gui::mouseDoubleClickCenterGraphics(int x, int y, bool prepared) {
 	}
 
 	void Gui::mouseDoubleClickRightGraphics(int x, int y, bool prepared) {
@@ -483,7 +518,7 @@ namespace Game {
 		activeCommandClass = ccStop;
 	}
 
-	void Gui::giveDefaultOrders(int x, int y, bool isMove) {
+	void Gui::giveDefaultOrders(int x, int y, bool isMove, bool preferAttack) {
 		//compute target
 		//printf("In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
 
@@ -494,23 +529,23 @@ namespace Game {
 			return;
 		}
 		//printf("In [%s::%s Line: %d] targetUnit = %p\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,targetUnit);
-		giveDefaultOrders(targetPos.x, targetPos.y, targetUnit, true, isMove);
+		giveDefaultOrders(targetPos.x, targetPos.y, targetUnit, true, isMove, preferAttack);
 		//printf("In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
 	}
 
-	void Gui::givePreparedDefaultOrders(int x, int y, bool isMove) {
+	void Gui::givePreparedDefaultOrders(int x, int y, bool isMove, bool preferAttack) {
 		//printf("In [%s::%s Line: %d]\n",__FILE__,__FUNCTION__,__LINE__);
-		giveDefaultOrders(x, y, NULL, false, isMove);
+		giveDefaultOrders(x, y, NULL, false, isMove, preferAttack);
 	}
 
-	void Gui::giveDefaultOrders(int x, int y, const Unit *targetUnit, bool paintMouse3d, bool isMove) {
+	void Gui::giveDefaultOrders(int x, int y, const Unit *targetUnit, bool paintMouse3d, bool isMove, bool preferAttack) {
 		//printf("In [%s::%s Line: %d]\n",__FILE__,__FUNCTION__,__LINE__);
 		bool queueKeyDown = isKeyDown(queueCommandKey);
 		Vec2i targetPos = Vec2i(x, y);
 
 		//give order
 		//printf("In [%s::%s Line: %d]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-		std::pair<CommandResult, string> result = commander->tryGiveCommand(&selection, targetPos, targetUnit, queueKeyDown, -1, isMove);
+		std::pair<CommandResult, string> result = commander->tryGiveCommand(&selection, targetPos, targetUnit, queueKeyDown, -1, isMove, preferAttack);
 
 		//printf("In [%s::%s Line: %d] selected units = %d result.first = %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,selection.getCount(),result.first);
 

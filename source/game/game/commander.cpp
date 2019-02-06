@@ -427,7 +427,7 @@ namespace Game {
 			const Vec2i & pos,
 			const Unit * targetUnit,
 			bool tryQueue,
-			int unitCommandGroupId, bool isMove) const {
+			int unitCommandGroupId, bool isMove, bool preferAttack) const {
 		std::pair < CommandResult, string > result(crFailUndefined, "");
 
 		if (this->pauseNetworkCommands == true) {
@@ -463,7 +463,7 @@ namespace Game {
 				const Unit * unit = selection->getUnit(i);
 				assert(unit != NULL);
 				//get command type
-				const CommandType *commandType = unit->computeCommandType(pos, targetUnit);
+				const CommandType *commandType = unit->computeCommandType(pos, targetUnit, isMove, preferAttack);
 				if (commandType != NULL)
 					ignoreBuildings = true;
 				command[i] = commandType;

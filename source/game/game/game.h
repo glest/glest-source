@@ -368,11 +368,15 @@ namespace Game {
 		virtual void keyUp(SDL_KeyboardEvent key);
 		virtual void keyPress(SDL_KeyboardEvent c);
 		virtual void mouseDownLeft(int x, int y);
-		virtual void mouseDownRight(int x, int y);
-		virtual void mouseUpCenter(int x, int y);
 		virtual void mouseUpLeft(int x, int y);
+		virtual void mouseDownRight(int x, int y);
+		virtual void mouseUpRight(int x, int y);
+		virtual void mouseDownCenter(int x, int y);
+		virtual void mouseUpCenter(int x, int y);
+		
 		virtual void mouseDoubleClickLeft(int x, int y);
 		virtual void mouseDoubleClickRight(int x, int y);
+		virtual void mouseDoubleClickCenter(int x, int y);
 		virtual void eventMouseWheel(int x, int y, int zDelta);
 		virtual void mouseMove(int x, int y, const MouseState * mouseState);
 

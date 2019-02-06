@@ -149,7 +149,7 @@ namespace Game {
 			string >
 			tryGiveCommand(const Selection * selection, const Vec2i & pos,
 				const Unit * targetUnit = NULL, bool tryQueue =
-				false, int unitCommandGroupId = -1, bool isMove = false) const;
+				false, int unitCommandGroupId = -1, bool isMove = false, bool preferAttack = false) const;
 		CommandResult
 			tryCancelCommand(const Selection * selection) const;
 		void

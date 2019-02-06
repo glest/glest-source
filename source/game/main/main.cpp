@@ -1186,14 +1186,14 @@ namespace Game {
 			case mbLeft:
 				program->mouseDownLeft(vx, vy);
 				break;
-			case mbRight:
-				//program->mouseDownRight(vx, vy);
+			/*case mbRight:
+				program->mouseDownRight(vx, vy);
 				break;
 			case mbCenter:
-				//program->mouseDownCenter(vx, vy);
+				program->mouseDownCenter(vx, vy);
 				break;
 			default:
-				break;
+				break;*/
 		}
 
 		SystemFlags::OutputDebug(SystemFlags::debugSystem,

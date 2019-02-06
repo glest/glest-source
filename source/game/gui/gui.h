@@ -238,11 +238,15 @@ namespace Game {
 		void mouseMoveDisplay(int x, int y);
 		void mouseMoveOutsideDisplay();
 		void mouseDownLeftGraphics(int x, int y, bool prepared);
+		void mouseDownCenterGraphics(int x, int y, bool prepared);
 		void mouseDownRightGraphics(int x, int y, bool prepared);
 		void mouseUpLeftGraphics(int x, int y);
+		void mouseUpRightGraphics(int x, int y);
+		void mouseUpCenterGraphics(int x, int y);
 		void mouseMoveGraphics(int x, int y);
 		void mouseDoubleClickLeftGraphics(int x, int y);
 		void mouseDoubleClickRightGraphics(int x, int y, bool prepared);
+		void mouseDoubleClickCenterGraphics(int x, int y, bool prepared);
 		void groupKey(int groupIndex);
 		void hotKeyPressed(SDL_KeyboardEvent key);
 		void hotKeyReleased(SDL_KeyboardEvent key);
@@ -257,9 +261,9 @@ namespace Game {
 	private:
 
 		//orders
-		void giveDefaultOrders(int x, int y, bool isMove = false);
-		void giveDefaultOrders(int x, int y, const Unit *targetUnit, bool paintMouse3d, bool isMove = false);
-		void givePreparedDefaultOrders(int x, int y, bool isMove = false);
+		void giveDefaultOrders(int x, int y, bool isMove = false, bool preferAttack = false);
+		void giveDefaultOrders(int x, int y, const Unit *targetUnit, bool paintMouse3d, bool isMove = false, bool preferAttack = false);
+		void givePreparedDefaultOrders(int x, int y, bool isMove = false, bool preferAttack = false);
 		void giveOneClickOrders();
 		void giveTwoClickOrders(int x, int y, bool prepared);
 

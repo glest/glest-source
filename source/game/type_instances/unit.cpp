@@ -2654,9 +2654,7 @@ namespace Game {
 		highlight = 1.f;
 	}
 
-	const CommandType *Unit::computeCommandType(const Vec2i & position,
-		const Unit *
-		targetUnit) const {
+	const CommandType *Unit::computeCommandType(const Vec2i & position, const Unit* targetUnit, bool isMove, bool preferAttack) const {
 		const CommandType *commandType = NULL;
 
 		Vec2i pos;
@@ -2748,10 +2746,10 @@ namespace Game {
 		// or when the unit is selected and right clicked to a position.
 		if (commandType == NULL) {
 			CommandClass command = ccMove; //default command
-			if (defaultActionAttack) {
+			if (!isMove && defaultActionAttack) {
 				if (getType()->hasSkillClass(scAttack)) {
 					if (targetUnit == NULL || this->getTeam() != targetUnit->getTeam()) {
-						if (getCurrSkill()->getClass() != scAttack && !(game->getWorld()->getUnitUpdater()->hasEnemyUnitsOnSight(this, false)))
+						if (preferAttack || (getCurrSkill()->getClass() != scAttack && !(game->getWorld()->getUnitUpdater()->hasEnemyUnitsOnSight(this, false))))
 							command = ccAttack;
 					}
 				}

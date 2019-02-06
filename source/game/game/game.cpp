@@ -5741,6 +5741,88 @@ namespace Game {
 		}
 	}
 
+	void Game::mouseUpRight(int x, int y) {
+		if (this->masterserverMode == true) {
+			return;
+		}
+
+		if (gameStarted == false || totalRenderFps <= 0) {
+			return;
+		}
+		if (currentUIState != NULL) {
+			currentUIState->mouseUpRight(x, y);
+			return;
+		}
+		gui.mouseUpRightGraphics(x, y);
+	}
+
+	void Game::mouseDownCenter(int x, int y) {
+		if (this->masterserverMode == true) {
+			return;
+		}
+		if (currentUIState != NULL) {
+			currentUIState->mouseDownCenter(x, y);
+			return;
+		}
+
+		try {
+			if (gameStarted == false || totalRenderFps <= 0) {
+				Logger::getInstance().handleMouseClick(x, y);
+				return;
+			}
+
+			Map *map = world.getMap();
+			const Metrics & metrics = Metrics::getInstance();
+
+			if (metrics.isInMinimap(x, y)) {
+				int xm = x - metrics.getMinimapX();
+				int ym = y - metrics.getMinimapY();
+				int
+					xCell =
+					static_cast <
+					int>(xm *
+					(static_cast <
+						float>(map->getW()) / metrics.getMinimapW()));
+				int
+					yCell =
+					static_cast <
+					int>(map->getH() -
+						ym * (static_cast <
+							float>(map->getH()) / metrics.getMinimapH()));
+
+				if (map->isInside(xCell, yCell) && map->isInsideSurface(map->toSurfCoords(Vec2i(xCell, yCell))))
+					gui.mouseDownCenterGraphics(xCell, yCell, true);
+			} else {
+				Vec2i targetPos;
+				Vec2i screenPos(x, y);
+				targetPos = getMouseCellPos();
+				if (isValidMouseCellPos() == true && map->isInsideSurface(map->toSurfCoords(targetPos)) == true)
+					gui.mouseDownCenterGraphics(x, y, false);
+			}
+		} catch (const exception & ex) {
+			char szBuf[8096] = "";
+			snprintf(szBuf, 8096,
+				"In [%s::%s Line: %d] Error [%s] x = %d y = %d\n",
+				extractFileFromDirectoryPath(__FILE__).c_str(),
+				__FUNCTION__, __LINE__, ex.what(), x, y);
+
+			SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
+			if (SystemFlags::
+				getSystemSettingType(SystemFlags::debugSystem).enabled)
+				SystemFlags::OutputDebug(SystemFlags::debugSystem, szBuf);
+
+			NetworkManager & networkManager = NetworkManager::getInstance();
+			if (networkManager.getGameNetworkInterface() != NULL) {
+				GameNetworkInterface *networkInterface =
+					NetworkManager::getInstance().getGameNetworkInterface();
+				networkInterface->sendTextMessage(szBuf, -1, true, "");
+				sleep(10);
+				networkManager.getGameNetworkInterface()->quitGame(true);
+			}
+			ErrorDisplayMessage(ex.what(), true);
+		}
+	}
+
 	void Game::mouseUpCenter(int x, int y) {
 		if (this->masterserverMode == true) {
 			return;
@@ -5754,12 +5836,7 @@ namespace Game {
 			currentUIState->mouseUpCenter(x, y);
 			return;
 		}
-
-		if (mouseMoved == false) {
-			gameCamera.setState(GameCamera::sGame);
-		} else {
-			mouseMoved = false;
-		}
+		gui.mouseUpCenterGraphics(x, y);
 	}
 
 	void Game::mouseUpLeft(int x, int y) {
@@ -5865,6 +5942,7 @@ namespace Game {
 				currentUIState->mouseDoubleClickRight(x, y);
 				return;
 			}
+			gui.mouseDoubleClickRightGraphics(x, y, false);
 			//disabled due to inconsistency
 			/*Map *map = world.getMap();
 			const Metrics & metrics = Metrics::getInstance();
@@ -5915,6 +5993,20 @@ namespace Game {
 			}
 			ErrorDisplayMessage(ex.what(), true);
 		}
+	}
+
+	void Game::mouseDoubleClickCenter(int x, int y) {
+		if (this->masterserverMode == true) {
+			return;
+		}
+
+		if (gameStarted == false || totalRenderFps <= 0)
+			return;
+		if (currentUIState != NULL) {
+			currentUIState->mouseDoubleClickRight(x, y);
+			return;
+		}
+		gui.mouseDoubleClickCenterGraphics(x, y, false);
 	}
 
 	void Game::mouseMove(int x, int y, const MouseState * ms) {
@@ -6579,7 +6671,6 @@ namespace Game {
 					gui.hotKeyReleased(key);
 				}
 
-				//if(key == configKeys.getCharKey("ShowFullConsole")) {
 				if (isKey(configKeys.getSDLKey("ShowFullConsole"), key) == true) {
 					showFullConsole = false;
 				} else if (isKey(configKeys.getSDLKey("SetMarker"), key) == true
