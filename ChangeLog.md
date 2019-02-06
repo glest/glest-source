@@ -11,6 +11,7 @@ v2.0
 - Now attack commands can be queued using the Shift key
 - Renamed factions for consistency
 - Now default command on right-click is customizable
+- Middle mouse button now sends attack command, so you can micro-manage move and attack commands easily using right and middle mouse button
 
 v1.0
 
