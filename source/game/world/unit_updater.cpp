@@ -3169,7 +3169,6 @@ namespace Game {
 
 	bool UnitUpdater::hasEnemyUnitsOnSight(const Unit *unit, bool limitByAttackRange) {
 		vector<Unit*> enemies;
-		float distToUnit = -1;
 		for (int i = 0; i < unit->getType()->getSkillTypeCount(); ++i) {
 			const SkillType *st = unit->getType()->getSkillType(i);
 			const AttackSkillType *ast = dynamic_cast<const AttackSkillType *>(st);
