@@ -60,7 +60,7 @@ namespace Game {
 		this->clientLagCallbackInterface = clientLagCallbackInterface;
 		this->clientsAutoPausedDueToLag = false;
 
-		allowInGameConnections = false;
+		allowInGameConnections = true;
 		gameLaunched = false;
 
 		serverSynchAccessor = new Mutex(CODE_AT_LINE);
