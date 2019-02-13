@@ -31,8 +31,8 @@ matrix:
       osx_image: xcode9.2
       env: Tr_Xcode_Version="9.2"
     - os: osx
-      osx_image: xcode9.3beta
-      env: Tr_Xcode_Version="9.3beta"
+      osx_image: xcode10.1
+      env: Tr_Xcode_Version="10.1"
 
 git:
   submodules: false
