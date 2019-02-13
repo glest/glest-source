@@ -29,7 +29,8 @@ if [ "$Compiler_version" != "" ] && [ "$Compiler_version" != "default" ]; then
   set -x
   if [ "$VersionAvByDefault" = "" ]; then
     # ubuntu test toolchain needed for more recent version of gcc and clang-6.0
-    sudo add-apt-repository --yes "deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu ${codename} main"
+    # sudo add-apt-repository --yes "deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu ${codename} main"
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6B05F25D762E3157 && sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   fi
 fi
 
@@ -46,9 +47,9 @@ if [ "$Compiler_version" != "" ] && [ "$Compiler_version" != "default" ]; then
     Gcc_AvSepGpp="$(apt-cache search ^g[c+][c+]-[0-9] | grep -v '[0-9]-[a-zA-Z]' | grep "^g++-$Compiler_version_grep")"
     set -ex
     if [ "$Gcc_AvSepGpp" = "" ]; then
-      sudo apt-get --allow-unauthenticated install -qq --force-yes gcc-${Compiler_version}
+      sudo apt-get install -qq -y gcc-${Compiler_version}
     else
-      sudo apt-get --allow-unauthenticated install -qq --force-yes gcc-${Compiler_version} g++-${Compiler_version}
+      sudo apt-get install -qq -y gcc-${Compiler_version} g++-${Compiler_version}
     fi
   elif [ "$Compiler_name" = "clang" ]; then
     # llvm-toolchain needed for more recent version of clang
