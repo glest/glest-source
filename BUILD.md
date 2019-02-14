@@ -116,7 +116,7 @@ miniupnpc nghttp2 openal png sdl2 wxWidgets xerces-c`
 You can install the dependencies using `pacman`:
 
 `pacman -S curl ftgl glew glu icu libgl libircclient libvorbis libx11
-lua51 miniupnpc openal sdl2 wxgtk3 xerces-c cmake ftjam git mesa`
+lua51 miniupnpc openal sdl2 wxgtk3 xerces-c cmake ftjam git mesa wxgtk2`
 
 ## Installing
 
