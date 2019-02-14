@@ -864,7 +864,7 @@ namespace Game {
 						|| ftpFileURL == "") {
 						char szMsg[8096] = "";
 						snprintf(szMsg, 8096,
-							"A new update was detected: %s\nUpdate Date: %s\nPlease visit glest.github.io for details!",
+							"A new update was detected: %s\nUpdate Date: %s\nPlease visit glest.io for details!",
 							props.getString("LatestGameVersion", "unknown").c_str(),
 							props.getString("LatestGameVersionReleaseDate", "unknown").c_str());
 						showFTPMessageBox(szMsg, "Update", false, true);

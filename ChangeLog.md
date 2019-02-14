@@ -28,7 +28,7 @@ v1.0
 	(pressing "a" not needed anymore); ["m" key can be used for "move"](https://github.com/Glest/glest-source/commit/bf5a04be18f2b16b8a565acff4baabc5fbfed293).
 - Updated UI to look more modern
 - Improved OOS detection, which also helps detect cheating
-- [Transparency of the alpha component of textures can now be set](https://glest.github.io/docs/modelling/textures.html#Transparency)/
+- [Transparency of the alpha component of textures can now be set](https://glest.io/docs/modelling/textures.html#Transparency)/
 - Updated [miniz](https://github.com/richgel999/miniz) library. Thanks
   to [richgel999](https://github.com/richgel999) and the miniz contributors.
 - CMakeLists.txt files have had a major tune-up (doesn't affect Windows users)

@@ -42,11 +42,11 @@ Then run the following command to start the game:
 * **[Screenshots](https://github.com/Glest/screenshots)**
 * **[Discord](https://discord.gg/WaAaXS7)**
 * **[Server list and player stats](http://master.glest.org)**
-* [FAQ](https://glest.github.io/docs/faq.html)
+* [FAQ](https://glest.io/docs/faq.html)
 * [Compiling](https://github.com/Glest/glest-source/blob/develop/BUILD.md)
 * [Contributing and Testing](https://github.com/Glest/glest-source#contributing-and-testing)
 * [ChangeLog](https://github.com/Glest/glest-source/blob/develop/ChangeLog.md)
-* [Detailed information about units in the game](https://glest.github.io/docs)
+* [Detailed information about units in the game](https://glest.io/docs)
 
 ### Extra Tech trees, mods, tilesets, scenarios
 
@@ -62,7 +62,7 @@ forking and cloning are outlined in [CONTRIBUTING.md](https://github.com/Glest/g
 Please see [CONTRIBUTING.md](https://github.com/Glest/glest-source/blob/develop/CONTRIBUTING.md)
 for extended, important instructions and guidelines for contributing.
 
-To run your own headless (dedicated) server, see [the FAQ](https://glest.github.io/docs/faq.html#headlessserver).
+To run your own headless (dedicated) server, see [the FAQ](https://glest.io/docs/faq.html#headlessserver).
 
 ### Contact Us
 

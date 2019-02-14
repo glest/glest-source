@@ -1,6 +1,6 @@
 PRGNAM="glest"
-VERSION="0.8.02"
-HOMEPAGE="https://glest.github.io/"
+VERSION="2.0"
+HOMEPAGE="https://glest.io/"
 DOWNLOAD="source-placeholder \
           data-placeholder"
 MD5SUM="source \
@@ -8,5 +8,5 @@ MD5SUM="source \
 DOWNLOAD_x86_64=""
 MD5SUM_x86_64=""
 REQUIRES="libircclient SDL2 xerces-c OpenAL lua ftgl wxPython"
-MAINTAINER="Andy Alt"
-EMAIL="andy400-dev@yahoo.com"
+MAINTAINER="MathuSum Mut"
+EMAIL="mathusum.mut@gmail.com"

@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------
 # Default to English language output so we can understand your bug reports
 #
-# Modified by Andy Alt for Glest <https://glest.github.io/>
+# Modified by Andy Alt for Glest
 
 export LANG=C
 

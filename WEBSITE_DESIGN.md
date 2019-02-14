@@ -2,7 +2,7 @@
 
 ## Unit Documentation
 
-### https://glest.github.io/
+### https://glest.io
 
 The repo is at https://github.com/Glest/glest.github.io
 

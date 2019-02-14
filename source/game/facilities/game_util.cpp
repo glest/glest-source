@@ -184,7 +184,7 @@ namespace Game {
 	string getAboutString2(int i) {
 		switch (i) {
 			case 0:
-				return "Website: https://glest.github.io";
+				return "Website: https://glest.io";
 			case 1:
 				return "Discord: https://discord.gg/WaAaXS7";
 			case 2:
