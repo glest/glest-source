@@ -2,9 +2,9 @@
 
 # Glest
 
-**Official Website: https://glest.github.io**
+**Official Website: https://glest.io**
 
-[Glest](https://glest.github.io) is a network multi-player real-time strategy game engine.
+[Glest](https://glest.io) is a network multi-player real-time strategy game engine.
 It includes several factions, each one consisting of many 3d characters. The factions are loosely
 based on historical empires with added elements of fantasy, such as
 mummies produced by Egyptian priests, shamans who summon
@@ -13,7 +13,7 @@ valkries and "Thors". Start the game by harvesting natural resources,
 then use the cash to produce an army. Single-player mode against the
 CPU is also available.
 
-![Glest Screenshot](https://glest.github.io/docs/assets/screenshots/screen147.jpg)
+![Glest Screenshot](https://glest.io/docs/assets/screenshots/screen147.jpg)
 
 ## Download for Windows
 
