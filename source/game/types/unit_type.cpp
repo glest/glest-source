@@ -1228,12 +1228,10 @@ namespace Game {
 				const HarvestCommandType *hct =
 					static_cast <const HarvestCommandType *>(commandTypes[i]);
 
-				if (faction->reqsOk(hct) == false) {
-					continue;
-				}
-
-				if (hct->canHarvest(resourceType)) {
-					return hct;
+				if (faction->checkReqs(hct) == RequirementsIssue::riNone) {
+					if (hct->canHarvest(resourceType)) {
+						return hct;
+					}
 				}
 			}
 		}

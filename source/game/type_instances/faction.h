@@ -59,6 +59,16 @@ namespace Game {
 	class GameSettings;
 	class SurfaceCell;
 
+	enum RequirementsIssue {
+		riNone, //OK
+		riAlreadyUpgraded,
+		riUnitNotFound,
+		riUpgradeNotFound,
+		riNotEnoughResources,
+		riMaxUnitCountReached,
+		riUnitLocked,
+	};
+
 	class FowAlphaCellsLookupItem {
 	public:
 
@@ -399,8 +409,8 @@ namespace Game {
 		bool checkCosts(const ProducibleType * pt, const CommandType * ct);
 
 		//reqs
-		bool reqsOk(const RequirableType * rt) const;
-		bool reqsOk(const CommandType * ct) const;
+		RequirementsIssue checkReqs(const RequirableType * rt) const;
+		RequirementsIssue checkReqs(const CommandType * ct) const;
 		int getCountForMaxUnitCount(const UnitType * unitType) const;
 
 		//diplomacy

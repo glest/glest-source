@@ -279,8 +279,8 @@ namespace Game {
 							if (act != NULL && act->getName(false) == holdPositionName) {
 								if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-								//printf("Re-Queing hold pos = %d, ep = %d skillep = %d skillname [%s]\n ",unit->getFaction()->reqsOk(act),unit->getEp(),act->getAttackSkillType()->getEpCost(),act->getName().c_str());
-								if (unit->getFaction()->reqsOk(act) == true &&
+								//printf("Re-Queing hold pos = %d, ep = %d skillep = %d skillname [%s]\n ",unit->getFaction()->checkReqs(act),unit->getEp(),act->getAttackSkillType()->getEpCost(),act->getName().c_str());
+								if (unit->getFaction()->checkReqs(act) == RequirementsIssue::riNone &&
 									unit->getEp() >= act->getStopSkillType()->getEpCost()) {
 									unit->giveCommand(new Command(act), true);
 								}

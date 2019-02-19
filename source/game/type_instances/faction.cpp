@@ -1073,7 +1073,7 @@ namespace Game {
 	// ==================== reqs ====================
 
 	//checks if all required units and upgrades are present and maxUnitCount is within limit
-	bool Faction::reqsOk(const RequirableType * rt) const {
+	RequirementsIssue Faction::checkReqs(const RequirableType* rt) const {
 		assert(rt != NULL);
 		//required units
 		for (int i = 0; i < rt->getUnitReqCount(); ++i) {
@@ -1092,7 +1092,7 @@ namespace Game {
 					SystemFlags::OutputDebug(SystemFlags::debugLUA,
 						"In [%s::%s Line: %d]\n", __FILE__,
 						__FUNCTION__, __LINE__);
-				return false;
+				return RequirementsIssue::riUnitNotFound;
 			}
 		}
 
@@ -1104,7 +1104,7 @@ namespace Game {
 					SystemFlags::OutputDebug(SystemFlags::debugLUA,
 						"In [%s::%s Line: %d]\n", __FILE__,
 						__FUNCTION__, __LINE__);
-				return false;
+				return RequirementsIssue::riUpgradeNotFound;
 			}
 		}
 
@@ -1115,36 +1115,30 @@ namespace Game {
 			if (cost > 0) {
 				int available = getResource(resource)->getAmount();
 				if (cost > available) {
-					return false;
+					return RequirementsIssue::riNotEnoughResources;
 				}
 			}
 		}
 
-		if (dynamic_cast <const UnitType *>(rt) != NULL) {
-			const UnitType *producedUnitType =
-				dynamic_cast <const UnitType *>(rt);
-			if (producedUnitType != NULL
-				&& producedUnitType->getMaxUnitCount() > 0) {
-				if (producedUnitType->getMaxUnitCount() <=
-					getCountForMaxUnitCount(producedUnitType)) {
-					if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).
-						enabled)
+		if (dynamic_cast<const UnitType*>(rt) != NULL) {
+			const UnitType* producedUnitType = dynamic_cast<const UnitType*>(rt);
+			if (producedUnitType != NULL && producedUnitType->getMaxUnitCount() > 0) {
+				if (producedUnitType->getMaxUnitCount() <= getCountForMaxUnitCount(producedUnitType)) {
+					if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled)
 						SystemFlags::OutputDebug(SystemFlags::debugLUA,
 							"In [%s::%s Line: %d]\n", __FILE__,
 							__FUNCTION__, __LINE__);
-					return false;
+					return RequirementsIssue::riMaxUnitCountReached;
 				}
 			}
-
-			if (producedUnitType != NULL && isUnitLocked(producedUnitType)) {
-				return false;
-			}
+			if (producedUnitType != NULL && isUnitLocked(producedUnitType))
+				return RequirementsIssue::riUnitLocked;
 		}
 
-		return true;
+		return RequirementsIssue::riNone;
 	}
 
-	int Faction::getCountForMaxUnitCount(const UnitType * unitType) const {
+	int Faction::getCountForMaxUnitCount(const UnitType* unitType) const {
 		int count = 0;
 		//calculate current unit count
 		for (int j = 0; j < getUnitCount(); ++j) {
@@ -1160,34 +1154,33 @@ namespace Game {
 	}
 
 
-	bool Faction::reqsOk(const CommandType * ct) const {
+	RequirementsIssue Faction::checkReqs(const CommandType* ct) const {
 		assert(ct != NULL);
-		if (ct == NULL) {
-			throw game_runtime_error("In [Faction::reqsOk] ct == NULL");
-		}
 
-		if (ct->getProduced() != NULL && reqsOk(ct->getProduced()) == false) {
-			if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled)
-				SystemFlags::OutputDebug(SystemFlags::debugLUA,
-					"In [%s::%s Line: %d] reqsOk FAILED\n",
-					__FILE__, __FUNCTION__, __LINE__);
-			return false;
+		if (ct->getProduced() != NULL) {
+			RequirementsIssue issue = checkReqs(ct->getProduced());
+			if (issue != RequirementsIssue::riNone) {
+				if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled)
+					SystemFlags::OutputDebug(SystemFlags::debugLUA,
+						"In [%s::%s Line: %d] checkReqs FAILED\n",
+						__FILE__, __FUNCTION__, __LINE__);
+				return issue;
+			}
 		}
 
 		if (ct->getClass() == ccUpgrade) {
-			const UpgradeCommandType *uct =
-				static_cast <const UpgradeCommandType *>(ct);
+			const UpgradeCommandType *uct = static_cast<const UpgradeCommandType*>(ct);
 			if (upgradeManager.isUpgradingOrUpgraded(uct->getProducedUpgrade())) {
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).
 					enabled)
 					SystemFlags::OutputDebug(SystemFlags::debugLUA,
 						"In [%s::%s Line: %d] upgrade check FAILED\n",
 						__FILE__, __FUNCTION__, __LINE__);
-				return false;
+				return RequirementsIssue::riAlreadyUpgraded;
 			}
 		}
 
-		return reqsOk(static_cast <const RequirableType *>(ct));
+		return checkReqs(static_cast<const RequirableType*>(ct));
 	}
 
 	// ================== cost application ==================

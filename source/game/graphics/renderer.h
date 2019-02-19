@@ -339,7 +339,7 @@ namespace Game {
 
 		//VisibleQuadContainerVBOCache * GetSurfaceVBOs(SurfaceData *cellData);
 		void ReleaseSurfaceVBOs();
-		std::map<string, std::pair<Chrono, std::vector<SurfaceData> > > mapSurfaceData;
+		std::map<string, std::pair<Chrono, std::vector<SurfaceData>>> mapSurfaceData;
 		static bool rendererEnded;
 
 		class MapRenderer {

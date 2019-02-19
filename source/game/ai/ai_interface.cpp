@@ -1217,12 +1217,12 @@ namespace Game {
 	}
 	bool
 		AiInterface::reqsOk(const RequirableType * rt) {
-		return world->getFaction(factionIndex)->reqsOk(rt);
+		return world->getFaction(factionIndex)->checkReqs(rt) == RequirementsIssue::riNone;
 	}
 
 	bool
 		AiInterface::reqsOk(const CommandType * ct) {
-		return world->getFaction(factionIndex)->reqsOk(ct);
+		return world->getFaction(factionIndex)->checkReqs(ct) == RequirementsIssue::riNone;
 	}
 
 	bool

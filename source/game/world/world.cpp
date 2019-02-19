@@ -1288,7 +1288,7 @@ namespace Game {
 
 					std::pair<CommandResult, string> cr(crFailUndefined, "");
 					try {
-						if (unit->getFaction()->reqsOk(mct) == false && ignoreRequirements == true) {
+						if (unit->getFaction()->checkReqs(mct) != RequirementsIssue::riNone && ignoreRequirements == true) {
 							if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled) SystemFlags::OutputDebug(SystemFlags::debugLUA, "In [%s::%s Line: %d] unit [%d] morphName [%s] comparing mct [%s] mct->getUpgradeReqCount() = %d\n", __FILE__, __FUNCTION__, __LINE__, unitId, morphName.c_str(), mct->getName(false).c_str(), mct->getUpgradeReqCount());
 							unit->setIgnoreCheckCommand(true);
 						}
@@ -1610,7 +1610,7 @@ namespace Game {
 						if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
 						try {
-							if (unit->getFaction()->reqsOk(act) == false && ignoreRequirements == true) {
+							if (unit->getFaction()->checkReqs(act) != RequirementsIssue::riNone && ignoreRequirements == true) {
 
 								if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled) SystemFlags::OutputDebug(SystemFlags::debugLUA, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 								unit->setIgnoreCheckCommand(true);

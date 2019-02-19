@@ -257,8 +257,8 @@ namespace Game {
 		bool forceWaitForShutdown;
 		bool headlessServerMode;
 		bool masterserverModeMinimalResources;
-		int
-			lastMasterServerSettingsUpdateCount;
+		bool firstRender;
+		int lastMasterServerSettingsUpdateCount;
 
 		auto_ptr < TechTree > techTree;
 

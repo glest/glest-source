@@ -210,7 +210,7 @@ namespace Game {
 			this->render_mapPreviewTexture_Y = mapPreviewTexture_Y;
 			this->render_mapPreviewTexture_W = mapPreviewTexture_W;
 			this->render_mapPreviewTexture_H = mapPreviewTexture_H;
-
+			this->firstRender = true;
 			this->lastMasterServerSettingsUpdateCount = 0;
 			this->masterserverModeMinimalResources = true;
 			this->parentMenuState = parentMenuState;
@@ -659,8 +659,7 @@ namespace Game {
 			labelAllowInGameJoinPlayer.registerGraphicComponent(containerName,
 				"labelAllowInGameJoinPlayer");
 			labelAllowInGameJoinPlayer.init(50, networkPos - 30, 80);
-			labelAllowInGameJoinPlayer.setText(lang.getString
-			("AllowInGameJoinPlayer"));
+			labelAllowInGameJoinPlayer.setText(lang.getString("AllowInGameJoinPlayer"));
 			labelAllowInGameJoinPlayer.setVisible(allowInProgressJoin);
 
 			checkBoxAllowInGameJoinPlayer.registerGraphicComponent(containerName,
@@ -1113,8 +1112,7 @@ namespace Game {
 		labelEnableSwitchTeamMode.
 			setText(lang.getString("EnableSwitchTeamMode"));
 
-		labelAllowInGameJoinPlayer.setText(lang.getString
-		("AllowInGameJoinPlayer"));
+		labelAllowInGameJoinPlayer.setText(lang.getString("AllowInGameJoinPlayer"));
 
 		labelAllowTeamUnitSharing.
 			setText(lang.getString("AllowTeamUnitSharing"));
@@ -1731,19 +1729,18 @@ namespace Game {
 							() : NULL),
 							string(__FILE__) + "_" + intToStr(__LINE__));
 
-					if (checkBoxPublishServer.getValue() == true) {
+					if (checkBoxPublishServer.getValue()) {
 						needToRepublishToMasterserver = true;
 					}
 
-					if (hasNetworkGameSettings() == true) {
+					if (hasNetworkGameSettings()) {
 						needToSetChangedGameSettings = true;
 						lastSetChangedGameSettings = time(NULL);
 					}
 
 					ServerInterface *serverInterface =
 						NetworkManager::getInstance().getServerInterface();
-					serverInterface->setAllowInGameConnections
-					(checkBoxAllowInGameJoinPlayer.getValue() == true);
+					serverInterface->setAllowInGameConnections(checkBoxAllowInGameJoinPlayer.getValue());
 				} else if (checkBoxAdvanced.getValue() == 1
 					&& checkBoxAllowTeamUnitSharing.mouseClick(x, y)) {
 					MutexSafeWrapper
@@ -2913,6 +2910,35 @@ namespace Game {
 
 	void MenuStateCustomGame::render() {
 		try {
+			if (firstRender) {
+				firstRender = false;
+				checkBoxAllowInGameJoinPlayer.setValue(true);
+				MutexSafeWrapper
+					safeMutex((publishToMasterserverThread !=
+						NULL ?
+						publishToMasterserverThread->getMutexThreadObjectAccessor
+						() : NULL),
+						string(__FILE__) + "_" + intToStr(__LINE__));
+				MutexSafeWrapper
+					safeMutexCLI((publishToClientsThread !=
+						NULL ?
+						publishToClientsThread->getMutexThreadObjectAccessor
+						() : NULL),
+						string(__FILE__) + "_" + intToStr(__LINE__));
+
+				if (checkBoxPublishServer.getValue()) {
+					needToRepublishToMasterserver = true;
+				}
+
+				if (hasNetworkGameSettings()) {
+					needToSetChangedGameSettings = true;
+					lastSetChangedGameSettings = time(NULL);
+				}
+
+				ServerInterface *serverInterface =
+					NetworkManager::getInstance().getServerInterface();
+				serverInterface->setAllowInGameConnections(checkBoxAllowInGameJoinPlayer.getValue());
+			}
 			Renderer & renderer = Renderer::getInstance();
 
 			if (mainMessageBox.getEnabled() == false) {
@@ -3109,6 +3135,7 @@ namespace Game {
 				}
 				renderer.renderLabel(&labelAllowInGameJoinPlayer);
 				renderer.renderCheckBox(&checkBoxAllowInGameJoinPlayer);
+				//printf("\nallow: %s", checkBoxAllowInGameJoinPlayer.getValue() ? "true" : "false");
 
 				renderer.renderLabel(&labelTileset);
 				renderer.renderLabel(&labelMapFilter);
@@ -5012,8 +5039,7 @@ namespace Game {
 		ServerInterface *serverInterface =
 			NetworkManager::getInstance().getServerInterface();
 		if (serverInterface != NULL) {
-			serverInterface->setAllowInGameConnections
-			(checkBoxAllowInGameJoinPlayer.getValue() == true);
+			serverInterface->setAllowInGameConnections(checkBoxAllowInGameJoinPlayer.getValue() == true);
 		}
 
 		checkBoxAllowNativeLanguageTechtree.

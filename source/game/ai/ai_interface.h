@@ -272,8 +272,8 @@ namespace Game {
 				bool usableResourceTypeOnly);
 		bool
 			isAlly(const Unit * unit) const;
-		bool
-			isAlly(int factionIndex) const;
+		/*bool
+			isAlly(int factionIndex) const;*/
 		bool
 			reqsOk(const RequirableType * rt);
 		bool

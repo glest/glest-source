@@ -4719,11 +4719,10 @@ namespace Game {
 			command->getUnit() == this ||
 			getType()->hasCommandType(command->getCommandType()) == false ||
 			(ignoreCheckCommand == false
-				&& this->getFaction()->reqsOk(command->getCommandType()) ==
-				false)) {
+				&& this->getFaction()->checkReqs(command->getCommandType()) != RequirementsIssue::riNone)) {
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled)
 				SystemFlags::OutputDebug(SystemFlags::debugLUA,
-					"In [%s::%s Line: %d] isOperative() = %d, command->getUnit() = %p, getType()->hasCommandType(command->getCommandType()) = %d, this->getFaction()->reqsOk(command->getCommandType()) = %d\n",
+					"In [%s::%s Line: %d] isOperative() = %d, command->getUnit() = %p, getType()->hasCommandType(command->getCommandType()) = %d, this->getFaction()->checkReqs(command->getCommandType()) = %d\n",
 					extractFileFromDirectoryPath
 					(__FILE__).c_str(), __FUNCTION__,
 					__LINE__, isOperative(),
@@ -4732,7 +4731,7 @@ namespace Game {
 					hasCommandType(command->getCommandType
 					()),
 					this->getFaction()->
-					reqsOk(command->getCommandType()));
+					checkReqs(command->getCommandType()));
 
 			// Allow self healing if able to heal own unit type
 			if (command->getUnit() == this &&
@@ -4776,7 +4775,7 @@ namespace Game {
 			command->getCommandType()->getProduced();
 		if (produced != NULL) {
 			if (ignoreCheckCommand == false
-				&& faction->reqsOk(produced) == false) {
+				&& faction->checkReqs(produced) != RequirementsIssue::riNone) {
 				//printf("In [%s::%s Line: %d] command = %p\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,command);
 				//printf("To produce this unit you need:\n%s\n",produced->getUnitAndUpgradeReqDesc().c_str());
 				result.first = crFailReqs;
@@ -4818,7 +4817,7 @@ namespace Game {
 				throw game_runtime_error(szBuf);
 			}
 
-			if (faction->reqsOk(builtUnit) == false) {
+			if (faction->checkReqs(builtUnit) != RequirementsIssue::riNone) {
 				//printf("To build this unit you need:\n%s\n",builtUnit->getUnitAndUpgradeReqDesc().c_str());
 				//printf("In [%s::%s Line: %d] command = %p\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,command);
 				result.first = crFailReqs;

@@ -931,42 +931,19 @@ namespace Game {
 							NetworkManager::getInstance().
 							getGameNetworkInterface();
 						if (gameNetworkInterface != NULL) {
-
 							Lang & lang = Lang::getInstance();
-							const
-								vector <
-								string >
-								languageList =
-								settings->getUniqueNetworkPlayerLanguages();
-							for (unsigned int i = 0; i < languageList.size();
-								++i) {
-								char
-									szMsg[8096] = "";
-								if (lang.
-									hasString("PlayerSwitchedTeam",
-										languageList[i]) == true) {
-									snprintf(szMsg, 8096,
-										lang.
-										getString("PlayerSwitchedTeam",
-											languageList[i]).
-										c_str(),
-										settings->
-										getNetworkPlayerName(factionIndex).
-										c_str(), oldTeam, newTeam);
+							const vector<string> languageList = settings->getUniqueNetworkPlayerLanguages();
+							for (unsigned int i = 0; i < languageList.size(); ++i) {
+								char szMsg[8096] = "";
+								if (lang.hasString("PlayerSwitchedTeam", languageList[i]) == true) {
+									snprintf(szMsg, 8096, lang.getString("PlayerSwitchedTeam", languageList[i]).c_str(),
+										settings->getNetworkPlayerName(factionIndex).c_str(), oldTeam, newTeam);
 								} else {
-									snprintf(szMsg, 8096,
-										"Player %s switched from team# %d to team# %d.",
-										settings->
-										getNetworkPlayerName(factionIndex).
-										c_str(), oldTeam, newTeam);
+									snprintf(szMsg, 8096, "Player %s switched from team# %d to team# %d.",
+										settings->getNetworkPlayerName(factionIndex).c_str(), oldTeam, newTeam);
 								}
-								bool
-									localEcho =
-									lang.isLanguageLocal(languageList[i]);
-								gameNetworkInterface->sendTextMessage(szMsg, -1,
-									localEcho,
-									languageList
-									[i]);
+								bool localEcho = lang.isLanguageLocal(languageList[i]);
+								gameNetworkInterface->sendTextMessage(szMsg, -1, localEcho, languageList[i]);
 							}
 						}
 						world->getGame()->reInitGUI();
@@ -1088,40 +1065,18 @@ namespace Game {
 						if (gameNetworkInterface != NULL) {
 
 							Lang & lang = Lang::getInstance();
-							const
-								vector <
-								string >
-								languageList =
-								settings->getUniqueNetworkPlayerLanguages();
-							for (unsigned int i = 0; i < languageList.size();
-								++i) {
-								char
-									szMsg[8096] = "";
-								if (lang.
-									hasString("PlayerSwitchedTeam",
-										languageList[i]) == true) {
-									snprintf(szMsg, 8096,
-										lang.
-										getString("PlayerSwitchedTeam",
-											languageList[i]).
-										c_str(),
-										settings->
-										getNetworkPlayerName(factionIndex).
-										c_str(), oldTeam, vote->newTeam);
+							const vector<string> languageList = settings->getUniqueNetworkPlayerLanguages();
+							for (unsigned int i = 0; i < languageList.size(); ++i) {
+								char szMsg[8096] = "";
+								if (lang.hasString("PlayerSwitchedTeam", languageList[i]) == true) {
+									snprintf(szMsg, 8096, lang.getString("PlayerSwitchedTeam", languageList[i]).c_str(),
+										settings->getNetworkPlayerName(factionIndex).c_str(), oldTeam, vote->newTeam);
 								} else {
-									snprintf(szMsg, 8096,
-										"Player %s switched from team# %d to team# %d.",
-										settings->
-										getNetworkPlayerName(factionIndex).
-										c_str(), oldTeam, vote->newTeam);
+									snprintf(szMsg, 8096, "Player %s switched from team# %d to team# %d.",
+										settings->getNetworkPlayerName(factionIndex).c_str(), oldTeam, vote->newTeam);
 								}
-								bool
-									localEcho =
-									lang.isLanguageLocal(languageList[i]);
-								gameNetworkInterface->sendTextMessage(szMsg, -1,
-									localEcho,
-									languageList
-									[i]);
+								bool localEcho = lang.isLanguageLocal(languageList[i]);
+								gameNetworkInterface->sendTextMessage(szMsg, -1, localEcho, languageList[i]);
 							}
 						}
 						world->getGame()->reInitGUI();

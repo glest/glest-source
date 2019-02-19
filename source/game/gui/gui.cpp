@@ -708,7 +708,7 @@ namespace Game {
 								}
 								const CommandType *ctype = display.getCommandType(cmdTypeIdNext);
 								if (ctype != NULL && ctype->getClass() == ccAttack) {
-									if (ctype != NULL && unit->getFaction()->reqsOk(ctype)) {
+									if (ctype != NULL && unit->getFaction()->checkReqs(ctype) == RequirementsIssue::riNone) {
 										posDisplay = cmdTypeIdNext;
 										ct = display.getCommandType(posDisplay);
 										break;
@@ -718,7 +718,7 @@ namespace Game {
 							}
 						}
 
-						if (ct != NULL && unit->getFaction()->reqsOk(ct)) {
+						if (ct != NULL && unit->getFaction()->checkReqs(ct) == RequirementsIssue::riNone) {
 							activeCommandType = ct;
 							activeCommandClass = activeCommandType->getClass();
 						} else {
@@ -776,7 +776,7 @@ namespace Game {
 					if (unit != NULL && unit->getFaction() != NULL) {
 
 						if (selection.canSelectUnitFactionCheck(unit) == true &&
-							unit->getFaction()->reqsOk(ut)) {
+							unit->getFaction()->checkReqs(ut) == RequirementsIssue::riNone) {
 
 							choosenBuildingType = ut;
 							selectingPos = true;
@@ -824,7 +824,7 @@ namespace Game {
 						const CommandType *ct = display.getCommandType(posDisplay);
 
 						if (ct != NULL) {
-							if (unit->getFaction()->reqsOk(ct)) {
+							if (unit->getFaction()->checkReqs(ct) == RequirementsIssue::riNone) {
 								display.setInfoText(ct->getDesc(unit->getTotalUpgrade(), game->showTranslatedTechTree()));
 							} else {
 								display.setInfoText(ct->getReqDesc(game->showTranslatedTechTree()));
@@ -963,7 +963,7 @@ namespace Game {
 						}
 
 						display.setDownImage(cancelPos, ut->getCancelImage());
-						display.setDownLighted(cancelPos, true);
+						display.setLightLevel(cancelPos, 1.f);
 					}
 
 					//meeting point
@@ -971,7 +971,7 @@ namespace Game {
 						//printf("selection.isMeetable()\n");
 
 						display.setDownImage(meetingPointPos, ut->getMeetingPointImage());
-						display.setDownLighted(meetingPointPos, true);
+						display.setLightLevel(meetingPointPos, 1.f);
 					}
 
 
@@ -997,7 +997,16 @@ namespace Game {
 								display.setDownImage(displayPos, ct->getImage());
 								display.setCommandType(displayPos, ct);
 								display.setCommandClass(displayPos, ct->getClass());
-								display.setDownLighted(displayPos, u->getFaction()->reqsOk(ct));
+								switch (u->getFaction()->checkReqs(ct)) {
+									case RequirementsIssue::riNone:
+										display.setLightLevel(displayPos, 1.f);
+										break;
+									case RequirementsIssue::riNotEnoughResources:
+										display.setLightLevel(displayPos, 0.57f);
+										break;
+									default:
+										display.setLightLevel(displayPos, 0.3f);
+								}
 							}
 						}
 					} else {
@@ -1011,7 +1020,7 @@ namespace Game {
 							//printf("computeDisplay i = %d cc = %d isshared = %d lastCommand = %d\n",i,cc,isSharedCommandClass(cc),lastCommand);
 
 							if (isSharedCommandClass(cc) && cc != ccBuild) {
-								display.setDownLighted(lastCommand, true);
+								display.setLightLevel(lastCommand, 1.f);
 								display.setDownImage(lastCommand, ut->getFirstCtOfClass(cc)->getImage());
 								display.setCommandClass(lastCommand, cc);
 								lastCommand++;
@@ -1026,10 +1035,19 @@ namespace Game {
 						const BuildCommandType* bct = static_cast<const BuildCommandType*> (activeCommandType);
 						for (int i = 0; i < bct->getBuildingCount(); ++i) {
 							display.setDownImage(i, bct->getBuilding(i)->getImage());
-							display.setDownLighted(i, unit->getFaction()->reqsOk(bct->getBuilding(i)));
+							switch (unit->getFaction()->checkReqs(bct->getBuilding(i))) {
+								case RequirementsIssue::riNone:
+									display.setLightLevel(i, 1.f);
+									break;
+								case RequirementsIssue::riNotEnoughResources:
+									display.setLightLevel(i, 0.57f);
+									break;
+								default:
+									display.setLightLevel(i, 0.3f);
+							}
 						}
 						display.setDownImage(cancelPos, selection.getFrontUnit()->getType()->getCancelImage());
-						display.setDownLighted(cancelPos, true);
+						display.setLightLevel(cancelPos, 1.f);
 					}
 				}
 			}
@@ -1154,7 +1172,7 @@ namespace Game {
 		for (int i = 0; i < selection.getCount(); ++i) {
 			const Unit *unit = selection.getUnit(i);
 			const CommandType *ct = unit->getType()->getFirstCtOfClass(commandClass);
-			if (ct == NULL || !unit->getFaction()->reqsOk(ct))
+			if (ct == NULL || unit->getFaction()->checkReqs(ct) != RequirementsIssue::riNone)
 				return false;
 		}
 		return true;

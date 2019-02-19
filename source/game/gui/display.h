@@ -62,7 +62,7 @@ namespace Game {
 		string infoText;
 		const Texture2D *upImages[upCellCount];
 		const Texture2D *downImages[downCellCount];
-		bool downLighted[downCellCount];
+		float lightLevels[downCellCount];
 		const CommandType *commandTypes[downCellCount];
 		CommandClass commandClasses[downCellCount];
 		int progressBar;
@@ -94,8 +94,8 @@ namespace Game {
 		const Texture2D *getDownImage(int index) const {
 			return downImages[index];
 		}
-		bool getDownLighted(int index) const {
-			return downLighted[index];
+		float getLightLevel(int index) const {
+			return lightLevels[index];
 		}
 		const CommandType *getCommandType(int i) const {
 			return commandTypes[i];
@@ -137,8 +137,8 @@ namespace Game {
 		void setCommandClass(int i, const CommandClass cc) {
 			commandClasses[i] = cc;
 		}
-		void setDownLighted(int i, bool lighted) {
-			downLighted[i] = lighted;
+		void setLightLevel(int i, float lightLevel) {
+			lightLevels[i] = lightLevel;
 		}
 		void setProgressBar(int i) {
 			progressBar = i;

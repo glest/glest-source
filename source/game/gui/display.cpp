@@ -84,7 +84,7 @@ namespace Game {
 
 		for (int i = 0; i < downCellCount; ++i) {
 			downImages[i] = NULL;
-			downLighted[i] = true;
+			lightLevels[i] = 1.0f;
 			commandTypes[i] = NULL;
 			commandClasses[i] = ccNull;
 		}
