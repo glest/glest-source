@@ -2481,7 +2481,7 @@ namespace Game {
 
 		//draw resource status
 		if (localFactionResourcesOnly == true) {
-			Vec4f resourceFontColor = factionForResourceView->getTexture()->getPixmapConst()->getPixel4f(0, 0);
+			Vec4f resourceFontColor = factionForResourceView->getTexture()->getPixmapConst()->getPixel4f(0, 0, true);
 			int resourceCol = 0;
 			int resourceRow = startRow;
 
@@ -5006,7 +5006,7 @@ namespace Game {
 				visibleUnitIndex < (int) qCache.visibleQuadUnitList.size(); ++visibleUnitIndex) {
 				Unit *unit = qCache.visibleQuadUnitList[visibleUnitIndex];
 				Vec3f currVec = unit->getCurrVectorFlat();
-				Vec4f color = unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0);
+				Vec4f color = unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0, true);
 				glColor4f(color.x, color.y, color.z, color.w * 0.7f);
 				renderSelectionCircle(currVec, unit->getType()->getSize(), 0.8f, 0.05f);
 			}
@@ -5037,7 +5037,7 @@ namespace Game {
 
 				std::map<int, HighlightSpecialUnitInfo>::iterator iterFindSpecialUnit = unitHighlightList.find(unit->getId());
 				if (iterFindSpecialUnit != unitHighlightList.end()) {
-					Vec4f color = unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0);
+					Vec4f color = unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0, true);
 					float radius = 1.0f;
 					float thickness = 0.1f;
 					color.w *= 0.65f;
@@ -5081,7 +5081,7 @@ namespace Game {
 				if (unit->isAlive()) {
 					Vec3f currVec = unit->getCurrVectorFlat();
 					renderTeamColorEffect(currVec, visibleUnitIndex, unit->getType()->getSize(),
-						unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0), texture);
+						unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0, true), texture);
 				}
 			}
 			glDisable(GL_COLOR_MATERIAL);
@@ -5290,7 +5290,7 @@ namespace Game {
 				visibleUnitIndex < (int) qCache.visibleQuadUnitBuildList.size(); ++visibleUnitIndex) {
 				const UnitBuildInfo &buildUnit = qCache.visibleQuadUnitBuildList[visibleUnitIndex];
 				//Vec4f modelColor= Vec4f(0.f, 1.f, 0.f, 0.5f);
-				const Vec4f teamColor = buildUnit.unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0);
+				const Vec4f teamColor = buildUnit.unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0, true);
 				Vec4f modelColor = Vec4f(teamColor.x, teamColor.y, teamColor.z, teamColor.w * 0.4f);
 				renderGhostModel(buildUnit.buildUnit, buildUnit.pos, buildUnit.facing, &modelColor);
 
@@ -6104,7 +6104,7 @@ namespace Game {
 
 				Vec2i pos = unit->getPos() / Map::cellScale;
 				int size = unit->getType()->getSize();
-				Vec4f color = unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0);
+				Vec4f color = unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0, true);
 
 				unit_colors[unitIdx] = color;
 				unit_vertices[unitIdx] = Vec2f(mx + pos.x*zoom.x, my + mh - (pos.y*zoom.y));
@@ -6210,7 +6210,7 @@ namespace Game {
 					const Texture2D *texture = game->getHighlightCellTexture();
 					Vec4f color = MarkedCell::static_system_marker_color;
 					if (mc->getFaction() != NULL) {
-						color = mc->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0);
+						color = mc->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0, true);
 					}
 					int lighting = (mc->getAliveCount() % 15);
 					color = Vec4f(color.x / 2 + .5f / lighting, color.y / 2 + .5f / lighting, color.z / 2 + .5f / lighting, color.w);
@@ -6268,7 +6268,7 @@ namespace Game {
 
 					Vec4f color = MarkedCell::static_system_marker_color;
 					if (bm.getFaction() != NULL) {
-						color = bm.getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0);
+						color = bm.getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0, true);
 					}
 					color.w *= 0.65f;
 
@@ -6403,7 +6403,7 @@ namespace Game {
 
 							Vec4f color = MarkedCell::static_system_marker_color;
 							if (bm.getFaction() != NULL) {
-								color = bm.getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0);
+								color = bm.getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0, true);
 							}
 							color.w *= 0.8f;
 							renderTextureQuad(

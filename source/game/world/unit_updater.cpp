@@ -2703,7 +2703,7 @@ namespace Game {
 				psProj->setObserver(new ParticleDamager(unit, (*pt), this, gameCamera));
 				psProj->setVisible(visible);
 				if (unit->getFaction()->getTexture()) {
-					psProj->setFactionColor(unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0));
+					psProj->setFactionColor(unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0, true));
 				}
 				renderer.manageParticleSystem(psProj, rsGame);
 				unit->addAttackParticleSystem(psProj);
@@ -2713,7 +2713,7 @@ namespace Game {
 					psSplash->setPos(endPos);
 					psSplash->setVisible(visible);
 					if (unit->getFaction()->getTexture()) {
-						psSplash->setFactionColor(unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0));
+						psSplash->setFactionColor(unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0, true));
 					}
 					renderer.manageParticleSystem(psSplash, rsGame);
 					unit->addAttackParticleSystem(psSplash);
@@ -2734,7 +2734,7 @@ namespace Game {
 				psSplash->setPos(endPos);
 				psSplash->setVisible(visible);
 				if (unit->getFaction()->getTexture()) {
-					psSplash->setFactionColor(unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0));
+					psSplash->setFactionColor(unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0, true));
 				}
 				renderer.manageParticleSystem(psSplash, rsGame);
 				unit->addAttackParticleSystem(psSplash);

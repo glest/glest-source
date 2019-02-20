@@ -686,8 +686,7 @@ namespace Game {
 							controlString = lang.getString("Human");
 							break;
 						default:
-							printf("Error control = %d for i = %d\n", stats.getControl(i), i);
-							assert(false);
+							controlString = lang.getString("Closed");
 							break;
 					};
 				}

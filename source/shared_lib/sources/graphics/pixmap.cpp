@@ -941,7 +941,7 @@ namespace Shared {
 			this->components = components;
 			deletePixels();
 
-			if (getPixelByteCount() <= 0 || (h <= 0 || w <= 0 || components <= 0)) {
+			if (getPixelByteCount() < 0 || (h < 0 || w < 0 || components < 0)) {
 				char szBuf[8096];
 				snprintf(szBuf, 8096, "Invalid pixmap dimensions for [%s], h = %d, w = %d, components = %d\n", path.c_str(), h, w, components);
 				throw game_runtime_error(szBuf);
@@ -1098,8 +1098,10 @@ namespace Shared {
 			value = pixels[index] / 255.f;
 		}
 
-		//vector get
-		Vec4f Pixmap2D::getPixel4f(int x, int y) const {
+		Vec4f Pixmap2D::getPixel4f(int x, int y, bool fallback) const {
+			if (pixels == NULL && fallback) {
+				return Vec4f(0.f, 0.f, 0.f, 0.f);
+			}
 			Vec4f v(0.f);
 			for (int i = 0; i < components && i < 4; ++i) {
 				std::size_t index = (w*y + x)*components + i;

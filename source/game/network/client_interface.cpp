@@ -1566,10 +1566,6 @@ namespace Game {
 					if (receiveMessage(&networkMessageQuit)) {
 						if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s] Line: %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
-						DisplayErrorMessage(lang.getString("GameCancelledByUser"));
-
-						if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s] Line: %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
-
 						setQuit(true);
 						close();
 

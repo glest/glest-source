@@ -297,7 +297,7 @@ namespace Shared {
 			void getComponent(int x, int y, int component, float32 &value) const;
 
 			//vector get
-			Vec4f getPixel4f(int x, int y) const;
+			Vec4f getPixel4f(int x, int y, bool fallback = false) const;
 			Vec3f getPixel3f(int x, int y) const;
 			float getPixelf(int x, int y) const;
 			float getComponentf(int x, int y, int component) const;

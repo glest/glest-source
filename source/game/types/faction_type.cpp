@@ -70,6 +70,7 @@ namespace Game {
 		string techTreePath = techTree->getPath();
 		string techTreeName = techTree->getNameUntranslated();
 		string currentPath = "";
+		Logger & logger = Logger::getInstance();
 
 		//open xml file
 		string path = "";
@@ -78,6 +79,9 @@ namespace Game {
 
 		//printf("\n>>> factionname=%s\n",factionName.c_str());
 		for (bool realFactionPathFound = false; realFactionPathFound == false;) {
+			if (logger.getCancelLoading()) {
+				return;
+			}
 			currentPath = techTreePath + "factions/" + factionName;
 			endPathWithSlash(currentPath);
 
@@ -155,13 +159,16 @@ namespace Game {
 				break;
 			}
 		}
+		SDL_PumpEvents();
+		if (logger.getCancelLoading())
+			return;
 
 		char szBuf[8096] = "";
 		snprintf(szBuf, 8096,
 			Lang::getInstance().
 			getString("LogScreenGameLoadingFactionType", "").c_str(),
 			formatString(this->getName()).c_str());
-		Logger::getInstance().add(szBuf, true);
+		logger.add(szBuf, true);
 
 		if (personalityType == fpt_Normal) {
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
@@ -183,6 +190,8 @@ namespace Game {
 			unitTypes.resize(unitFilenames.size());
 
 			for (int i = 0; i < (int) unitTypes.size(); ++i) {
+				if (logger.getCancelLoading())
+					return;
 				string str = currentPath + "units/" + unitFilenames[i];
 				unitTypes[i].preLoad(str);
 
@@ -198,6 +207,8 @@ namespace Game {
 
 			upgradeTypes.resize(upgradeFilenames.size());
 			for (int i = 0; i < (int) upgradeTypes.size(); ++i) {
+				if (logger.getCancelLoading())
+					return;
 				string str = currentPath + "upgrades/" + upgradeFilenames[i];
 				upgradeTypes[i].preLoad(str);
 
@@ -206,11 +217,11 @@ namespace Game {
 
 			// b1) load units
 			try {
-				Logger & logger = Logger::getInstance();
 				int progressBaseValue = logger.getProgress();
 				for (int i = 0; i < (int) unitTypes.size(); ++i) {
+					if (logger.getCancelLoading())
+						return;
 					string str = currentPath + "units/" + unitTypes[i].getName();
-
 					try {
 						unitTypes[i].loadUnit(i, str, techTree, techTreePath, this,
 							checksum, techtreeChecksum, loadedFileList,
@@ -256,9 +267,10 @@ namespace Game {
 			// b2) load upgrades
 			try {
 				for (int i = 0; i < (int) upgradeTypes.size(); ++i) {
+					if (logger.getCancelLoading())
+						return;
 					string str =
 						currentPath + "upgrades/" + upgradeTypes[i].getName();
-
 					try {
 						upgradeTypes[i].load(str, techTree, this, checksum,
 							techtreeChecksum, loadedFileList,
@@ -313,6 +325,8 @@ namespace Game {
 
 			startingResources.resize(startingResourcesNode->getChildCount());
 			for (int i = 0; i < (int) startingResources.size(); ++i) {
+				if (logger.getCancelLoading())
+					return;
 				const XmlNode *resourceNode =
 					startingResourcesNode->getChild("resource", i);
 				string name =
@@ -342,6 +356,8 @@ namespace Game {
 			const XmlNode *startingUnitsNode =
 				factionNode->getChild("starting-units");
 			for (int i = 0; i < (int) startingUnitsNode->getChildCount(); ++i) {
+				if (logger.getCancelLoading())
+					return;
 				const XmlNode *unitNode = startingUnitsNode->getChild("unit", i);
 				string name =
 					unitNode->getAttribute("name")->getRestrictedValue();
@@ -351,6 +367,9 @@ namespace Game {
 
 				SDL_PumpEvents();
 			}
+
+			if (logger.getCancelLoading())
+				return;
 
 			//read music
 			const XmlNode *musicNode = factionNode->getChild("music");
@@ -393,6 +412,8 @@ namespace Game {
 						getValue();
 					vector < string > v = split(healthbarVisibleString, "|");
 					for (int i = 0; i < (int) v.size(); ++i) {
+						if (logger.getCancelLoading())
+							return;
 						string current = trim(v[i]);
 						if (current == "always") {
 							healthbarVisible = healthbarVisible | hbvAlways;
@@ -403,9 +424,7 @@ namespace Game {
 						} else if (current == "off") {
 							healthbarVisible = healthbarVisible | hbvOff;
 						} else {
-							throw
-								game_runtime_error
-								("Unknown Healthbar Visible Option: " + current, true);
+							throw game_runtime_error("Unknown Healthbar Visible Option: " + current, true);
 						}
 					}
 				}
@@ -471,6 +490,8 @@ namespace Game {
 				const XmlNode *scriptsNode = factionNode->getChild("scripts");
 
 				for (int i = 0; i < (int) scriptsNode->getChildCount(); ++i) {
+					if (logger.getCancelLoading())
+						return;
 					const XmlNode *scriptNode = scriptsNode->getChild(i);
 					scripts.push_back(Script(getFunctionName(scriptNode), scriptNode->getText()));
 				}
@@ -488,6 +509,8 @@ namespace Game {
 				if (aiNode->hasChild("static-values") == true) {
 					const XmlNode *aiNodeUnits = aiNode->getChild("static-values");
 					for (int i = 0; i < (int) aiNodeUnits->getChildCount(); ++i) {
+						if (logger.getCancelLoading())
+							return;
 						const XmlNode *unitNode = aiNodeUnits->getChild("static", i);
 						AIBehaviorStaticValueCategory type = aibsvcMaxBuildRadius;
 						if (unitNode->hasAttribute("type") == true) {
@@ -513,6 +536,8 @@ namespace Game {
 				if (aiNode->hasChild("worker-units") == true) {
 					const XmlNode *aiNodeUnits = aiNode->getChild("worker-units");
 					for (int i = 0; i < (int) aiNodeUnits->getChildCount(); ++i) {
+						if (logger.getCancelLoading())
+							return;
 						const XmlNode *unitNode = aiNodeUnits->getChild("unit", i);
 						string name =
 							unitNode->getAttribute("name")->getRestrictedValue();
@@ -526,6 +551,8 @@ namespace Game {
 				if (aiNode->hasChild("warrior-units") == true) {
 					const XmlNode *aiNodeUnits = aiNode->getChild("warrior-units");
 					for (int i = 0; i < (int) aiNodeUnits->getChildCount(); ++i) {
+						if (logger.getCancelLoading())
+							return;
 						const XmlNode *unitNode = aiNodeUnits->getChild("unit", i);
 						string name =
 							unitNode->getAttribute("name")->getRestrictedValue();
@@ -540,6 +567,8 @@ namespace Game {
 					const XmlNode *aiNodeUnits =
 						aiNode->getChild("resource-producer-units");
 					for (int i = 0; i < (int) aiNodeUnits->getChildCount(); ++i) {
+						if (logger.getCancelLoading())
+							return;
 						const XmlNode *unitNode = aiNodeUnits->getChild("unit", i);
 						string name =
 							unitNode->getAttribute("name")->getRestrictedValue();
@@ -553,6 +582,8 @@ namespace Game {
 				if (aiNode->hasChild("building-units") == true) {
 					const XmlNode *aiNodeUnits = aiNode->getChild("building-units");
 					for (int i = 0; i < (int) aiNodeUnits->getChildCount(); ++i) {
+						if (logger.getCancelLoading())
+							return;
 						const XmlNode *unitNode = aiNodeUnits->getChild("unit", i);
 						string name =
 							unitNode->getAttribute("name")->getRestrictedValue();
@@ -567,6 +598,8 @@ namespace Game {
 				if (aiNode->hasChild("upgrades") == true) {
 					const XmlNode *aiNodeUpgrades = aiNode->getChild("upgrades");
 					for (int i = 0; i < (int) aiNodeUpgrades->getChildCount(); ++i) {
+						if (logger.getCancelLoading())
+							return;
 						const XmlNode *upgradeNode =
 							aiNodeUpgrades->getChild("upgrade", i);
 						string name =

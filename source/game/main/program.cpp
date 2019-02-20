@@ -502,6 +502,12 @@ namespace Game {
 		}
 	}
 
+	void Program::mouseDownRight(int x, int y) {
+	}
+
+	void Program::mouseDownCenter(int x, int y) {
+	}
+
 	void
 		Program::eventMouseMove(int x, int y, const MouseState * ms) {
 		if (msgBox.getEnabled()) {

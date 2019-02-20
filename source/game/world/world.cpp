@@ -2072,13 +2072,11 @@ namespace Game {
 
 		for (int i = 0; i < (int) factions.size(); ++i) {
 			FactionType *ft = techTree->getTypeByName(gs->getFactionTypeName(i));
-			if (ft == NULL) {
-				throw game_runtime_error("ft == NULL");
-			}
+			if (ft == NULL)
+				return;
 			factions[i]->init(ft, gs->getFactionControl(i), techTree, game, i, gs->getTeam(i),
 				gs->getStartLocationIndex(i), i == thisFactionIndex,
 				gs->getDefaultResources(), loadWorldNode);
-
 			stats.setTeam(i, gs->getTeam(i));
 			stats.setFactionTypeName(i, formatString(gs->getFactionTypeName(i)));
 			stats.setPersonalityType(i, getFaction(i)->getType()->getPersonalityType());
@@ -2086,7 +2084,7 @@ namespace Game {
 			stats.setResourceMultiplier(i, (gs->getResourceMultiplierIndex(i) + 1) * 0.5f);
 			stats.setPlayerName(i, gs->getNetworkPlayerName(i));
 			if (getFaction(i)->getTexture()) {
-				stats.setPlayerColor(i, getFaction(i)->getTexture()->getPixmapConst()->getPixel4f(0, 0));
+				stats.setPlayerColor(i, getFaction(i)->getTexture()->getPixmapConst()->getPixel4f(0, 0, true));
 			}
 		}
 
@@ -2201,17 +2199,15 @@ namespace Game {
 					unit->setCurrSkill(scStop);
 					//unit->create(true);
 					//unit->born();
+					if (unit->getType()->hasSkillClass(scBeBuilt)) {
+						map.flatternTerrain(unit);
+					}
+					if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d] unit created for unit [%s]\n", __FILE__, __FUNCTION__, __LINE__, unit->toString().c_str());
 				} else {
 					string unitName = unit->getType()->getName(false);
 					delete unit;
-					unit = NULL;
-					throw game_runtime_error("Unit: " + unitName + " can't be placed, this error is caused because there\nis not enough room to put all units near their start location.\nmake a better/larger map. Faction: #" + intToStr(i) + " name: " + ft->getName(false));
+					printf("\n%s\n", (string("Unit: ") + unitName + " can't be placed, this error is caused because there\nis not enough room to put all units near their start location.\nmake a better/larger map. Faction: #" + intToStr(i) + " name: " + ft->getName(false)).c_str());
 				}
-
-				if (unit->getType()->hasSkillClass(scBeBuilt)) {
-					map.flatternTerrain(unit);
-				}
-				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d] unit created for unit [%s]\n", __FILE__, __FUNCTION__, __LINE__, unit->toString().c_str());
 			}
 
 			// Ensure Starting Resource Amount are adjusted to max store levels
@@ -2226,6 +2222,10 @@ namespace Game {
 		if (placeUnit(location, generationArea, unit, spaciated)) {
 			unit->create(true);
 			unit->born(NULL);
+			if (unit->getType()->hasSkillClass(scBeBuilt)) {
+				map.flatternTerrain(unit);
+			}
+			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d] unit created for unit [%s]\n", __FILE__, __FUNCTION__, __LINE__, unit->toString().c_str());
 		} else {
 			string unitName = unit->getType()->getName(false);
 			string unitFactionName = unit->getFaction()->getType()->getName(false);
@@ -2234,16 +2234,9 @@ namespace Game {
 			delete unit;
 			unit = NULL;
 
-			char szBuf[8096] = "";
-			snprintf(szBuf, 8096, "Unit: [%s] can't be placed, this error is caused because there\nis not enough room to put all units near their start location.\nmake a better/larger map. Faction: #%d name: [%s]",
+			printf("\nUnit: [%s] can't be placed, this error is caused because there\nis not enough room to put all units near their start location.\nmake a better/larger map. Faction: #%d name: [%s]\n",
 				unitName.c_str(), unitFactionIndex, unitFactionName.c_str());
-			throw game_runtime_error(szBuf, false);
 		}
-		if (unit->getType()->hasSkillClass(scBeBuilt)) {
-			map.flatternTerrain(unit);
-		}
-		if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d] unit created for unit [%s]\n", __FILE__, __FUNCTION__, __LINE__, unit->toString().c_str());
-
 	}
 
 	//place units randomly aroud start location
@@ -2260,6 +2253,8 @@ namespace Game {
 				for (int i = 0; i < getFactionCount(); ++i) {
 					Faction *f = factions[i];
 					const FactionType *ft = f->getType();
+					if (ft == NULL)
+						return;
 					for (int j = 0; j < ft->getStartingUnitCount(); ++j) {
 						const UnitType *ut = ft->getStartingUnit(j);
 						int initNumber = ft->getStartingUnitAmount(j);

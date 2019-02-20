@@ -1002,7 +1002,7 @@ namespace Game {
 										display.setLightLevel(displayPos, 1.f);
 										break;
 									case RequirementsIssue::riNotEnoughResources:
-										display.setLightLevel(displayPos, 0.57f);
+										display.setLightLevel(displayPos, 0.62f);
 										break;
 									default:
 										display.setLightLevel(displayPos, 0.3f);
@@ -1040,7 +1040,7 @@ namespace Game {
 									display.setLightLevel(i, 1.f);
 									break;
 								case RequirementsIssue::riNotEnoughResources:
-									display.setLightLevel(i, 0.57f);
+									display.setLightLevel(i, 0.62f);
 									break;
 								default:
 									display.setLightLevel(i, 0.3f);

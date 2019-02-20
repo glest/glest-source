@@ -563,8 +563,25 @@ namespace Game {
 		//load faction code
 		for (int i = 0; i < world->getFactionCount(); ++i) {
 			FactionType const* type = world->getFaction(i)->getType();
+			if (type == NULL)
+				return;
 			for (int j = 0; j < type->getScriptCount(); j++) {
 				script = type->getScript(j);
+				if (script != NULL) {
+					iter = scripts.find(script->getName());
+					if (iter == scripts.end())
+						scripts[script->getName()] = pair<Script, vector<string>>(*script, { script->getCode() });
+					else if (find(iter->second.second.begin(), iter->second.second.end(), script->getCode()) == iter->second.second.end()) {
+						iter->second.second.push_back(script->getCode());
+						iter->second.first.appendCode(script->getCode());
+					}
+				}
+			}
+		}
+		//load scenario code
+		for (int i = 0; i < scenario->getScriptCount(); ++i) {
+			script = scenario->getScript(i);
+			if (script != NULL) {
 				iter = scripts.find(script->getName());
 				if (iter == scripts.end())
 					scripts[script->getName()] = pair<Script, vector<string>>(*script, { script->getCode() });
@@ -572,17 +589,6 @@ namespace Game {
 					iter->second.second.push_back(script->getCode());
 					iter->second.first.appendCode(script->getCode());
 				}
-			}
-		}
-		//load scenario code
-		for (int i = 0; i < scenario->getScriptCount(); ++i) {
-			script = scenario->getScript(i);
-			iter = scripts.find(script->getName());
-			if (iter == scripts.end())
-				scripts[script->getName()] = pair<Script, vector<string>>(*script, { script->getCode() });
-			else if (find(iter->second.second.begin(), iter->second.second.end(), script->getCode()) == iter->second.second.end()) {
-				iter->second.second.push_back(script->getCode());
-				iter->second.first.appendCode(script->getCode());
 			}
 		}
 

@@ -386,18 +386,18 @@ namespace Game {
 	Vec2i Map::getStartLocation(int locationIndex) const {
 		if (locationIndex < hardMaxPlayers) // maxPlayers for a map, not the Game
 			return startLocations[locationIndex];
-		else if (locationIndex < maxPlayers) {
+		//else if (locationIndex < maxPlayers) {
 			// needed for enhanced observer mode (issue #13)
 			// observer may be in slot 6 of a 4-player map. Just set the
 			// startLocation to 0
-			return startLocations[0];
-		} else {
+			return startLocations == NULL ? Vec2i() : startLocations[0];
+		/*} else {
 			char szBuf[8096] = "";
 			snprintf(szBuf, 8096, "locationIndex >= maxPlayers [%d] [%d]", locationIndex, maxPlayers);
 			printf("%s\n", szBuf);
 			throw game_runtime_error(szBuf);
 			assert(locationIndex < GameConstants::maxPlayers);
-		}
+		}*/
 	}
 
 	Checksum Map::load(const string &path, TechTree *techTree, Tileset *tileset) {

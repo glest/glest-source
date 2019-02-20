@@ -403,9 +403,7 @@ namespace Game {
 				ups->setRotation(unit->getRotation());
 				unit->setMeshPosInParticleSystem(ups);
 				if (unit->getFaction()->getTexture()) {
-					ups->setFactionColor(unit->getFaction()->
-						getTexture()->getPixmapConst()->
-						getPixel4f(0, 0));
+					ups->setFactionColor(unit->getFaction()->getTexture()->getPixmapConst()->getPixel4f(0, 0, true));
 				}
 				//printf("Adding attack boost particle to deferred buffer: %p\n",ups);
 				Renderer::
@@ -1529,7 +1527,7 @@ namespace Game {
 				ups->setRotation(getRotation());
 				ups->setUnitModel(getCurrentModelPtr());
 				if(getFaction()->getTexture()) {
-				ups->setFactionColor(getFaction()->getTexture()->getPixmapConst()->getPixel3f(0,0));
+				ups->setFactionColor(getFaction()->getTexture()->getPixmapConst()->getPixel4f(0,0));
 				}
 				unitParticleSystems.push_back(ups);
 				Renderer::getInstance().manageParticleSystem(ups, rsGame);
@@ -1706,6 +1704,8 @@ namespace Game {
 	}
 
 	void Unit::calculateFogOfWarRadius(bool forceRefresh) {
+		if (game == NULL)
+			return;
 		if (game->getWorld()->getFogOfWar() == true) {
 			if (forceRefresh || this->pos != this->cachedFowPos) {
 				cachedFow = getFogOfWarRadius(false);
@@ -3075,7 +3075,7 @@ namespace Game {
 								currentAttackBoostOriginatorEffect.
 									currentAppliedEffect->ups->
 									setFactionColor(getFaction()->getTexture()->
-										getPixmapConst()->getPixel4f(0, 0));
+										getPixmapConst()->getPixel4f(0, 0, true));
 							}
 							Renderer::
 								getInstance().manageParticleSystem
@@ -3238,7 +3238,7 @@ namespace Game {
 									currentAppliedEffect->ups->
 									setFactionColor(getFaction()->
 										getTexture()->getPixmapConst()->
-										getPixel4f(0, 0));
+										getPixel4f(0, 0, true));
 							}
 							Renderer::
 								getInstance().manageParticleSystem
@@ -3580,7 +3580,7 @@ namespace Game {
 						if (getFaction()->getTexture()) {
 							ups->setFactionColor(getFaction()->
 								getTexture()->getPixmapConst()->
-								getPixel4f(0, 0));
+								getPixel4f(0, 0, true));
 						}
 						unitParticleSystems.push_back(ups);
 						Renderer::getInstance().manageParticleSystem(ups, rsGame);
@@ -3744,7 +3744,7 @@ namespace Game {
 					if (getFaction()->getTexture()) {
 						effect->ups->setFactionColor(getFaction()->
 							getTexture()->getPixmapConst()->
-							getPixel4f(0, 0));
+							getPixel4f(0, 0, true));
 					}
 					Renderer::getInstance().manageParticleSystem(effect->ups,
 						rsGame);
@@ -5176,7 +5176,7 @@ namespace Game {
 							if (getFaction()->getTexture()) {
 								ups->setFactionColor(getFaction()->
 									getTexture()->getPixmapConst()->
-									getPixel4f(0, 0));
+									getPixel4f(0, 0, true));
 							}
 							unitParticleSystems.push_back(ups);
 							Renderer::getInstance().manageParticleSystem(ups, rsGame);
@@ -5365,7 +5365,7 @@ namespace Game {
 						if (getFaction()->getTexture()) {
 							ups->setFactionColor(getFaction()->
 								getTexture()->getPixmapConst()->
-								getPixel4f(0, 0));
+								getPixel4f(0, 0, true));
 						}
 						damageParticleSystems.push_back(ups);
 						damageParticleSystemsInUse[i] = ups;
@@ -5402,7 +5402,7 @@ namespace Game {
 						if (getFaction()->getTexture()) {
 							ups->setFactionColor(getFaction()->
 								getTexture()->getPixmapConst()->
-								getPixel4f(0, 0));
+								getPixel4f(0, 0, true));
 						}
 						damageParticleSystems.push_back(ups);
 						damageParticleSystemsInUse[i] = ups;

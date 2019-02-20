@@ -334,44 +334,32 @@ namespace Game {
 					GameNetworkInterface *
 						gameNetworkInterface =
 						NetworkManager::getInstance().getGameNetworkInterface();
-					const GameSettings *
-						settings = gameNetworkInterface->getGameSettings();
-					for (unsigned int factionIndex = 0;
-						factionIndex <
-						(unsigned int) settings->getFactionCount();
-						++factionIndex) {
-						string
-							playerName =
-							settings->getNetworkPlayerName(factionIndex);
-						if (playerName.length() > autoCompleteName.length()
-							&& StartsWith(toLower(playerName),
-								toLower(autoCompleteName)) == true) {
-							if (toLower(playerName) ==
-								toLower(currentAutoCompleteName)) {
-								replaceCurrentAutoCompleteName = factionIndex;
-							} else {
-								autoCompleteResult =
-									playerName.substr(autoCompleteName.length());
-								matchedIndexes.push_back(factionIndex);
+					if (gameNetworkInterface != NULL) {
+						const GameSettings *
+							settings = gameNetworkInterface->getGameSettings();
+						for (unsigned int factionIndex = 0;
+							factionIndex <
+							(unsigned int) settings->getFactionCount();
+							++factionIndex) {
+							string
+								playerName =
+								settings->getNetworkPlayerName(factionIndex);
+							if (playerName.length() > autoCompleteName.length()
+								&& StartsWith(toLower(playerName),
+									toLower(autoCompleteName)) == true) {
+								if (toLower(playerName) ==
+									toLower(currentAutoCompleteName)) {
+									replaceCurrentAutoCompleteName = factionIndex;
+								} else {
+									autoCompleteResult =
+										playerName.substr(autoCompleteName.length());
+									matchedIndexes.push_back(factionIndex);
+								}
 							}
 						}
-					}
-					if (matchedIndexes.empty() == false) {
-						int
-							newMatchedIndex = -1;
-						for (unsigned int index = 0;
-							index < (unsigned int) matchedIndexes.size();
-							++index) {
+						if (matchedIndexes.empty() == false) {
 							int
-								possibleMatchIndex = matchedIndexes[index];
-							if (replaceCurrentAutoCompleteName < 0
-								|| possibleMatchIndex >
-								replaceCurrentAutoCompleteName) {
-								newMatchedIndex = possibleMatchIndex;
-								break;
-							}
-						}
-						if (newMatchedIndex < 0) {
+								newMatchedIndex = -1;
 							for (unsigned int index = 0;
 								index < (unsigned int) matchedIndexes.size();
 								++index) {
@@ -384,12 +372,26 @@ namespace Game {
 									break;
 								}
 							}
-						}
+							if (newMatchedIndex < 0) {
+								for (unsigned int index = 0;
+									index < (unsigned int) matchedIndexes.size();
+									++index) {
+									int
+										possibleMatchIndex = matchedIndexes[index];
+									if (replaceCurrentAutoCompleteName < 0
+										|| possibleMatchIndex >
+										replaceCurrentAutoCompleteName) {
+										newMatchedIndex = possibleMatchIndex;
+										break;
+									}
+								}
+							}
 
-						if (newMatchedIndex >= 0) {
-							autoCompleteResult =
-								settings->getNetworkPlayerName(newMatchedIndex).
-								substr(autoCompleteName.length());
+							if (newMatchedIndex >= 0) {
+								autoCompleteResult =
+									settings->getNetworkPlayerName(newMatchedIndex).
+									substr(autoCompleteName.length());
+							}
 						}
 					}
 

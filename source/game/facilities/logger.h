@@ -106,7 +106,6 @@ namespace Game {
 		void loadGameHints(string filePathEnglish, string filePathTranslation, bool clearList);
 		void renderLoadingScreen();
 
-		void setCancelLoadingEnabled(bool value);
 		bool getCancelLoading() const {
 			return cancelSelected;
 		}

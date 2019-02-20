@@ -566,7 +566,7 @@ namespace Game {
 				"In [%s::%s Line: %d]\n",
 				extractFileFromDirectoryPath(__FILE__).
 				c_str(), __FUNCTION__, __LINE__);
-		throw game_runtime_error("Faction not found: " + name, true);
+		return NULL;
 	}
 
 	const FactionType *TechTree::getType(const string & name) const {
@@ -581,16 +581,13 @@ namespace Game {
 				"In [%s::%s Line: %d]\n",
 				extractFileFromDirectoryPath(__FILE__).
 				c_str(), __FUNCTION__, __LINE__);
-		throw game_runtime_error("Faction not found: " + name, true);
+		return NULL;
 	}
 
 	const ResourceType *TechTree::getTechResourceType(int i) const {
 		for (int j = 0; j < getResourceTypeCount(); ++j) {
 			const ResourceType *rt = getResourceType(j);
 			assert(rt != NULL);
-			if (rt == NULL) {
-				throw game_runtime_error("rt == NULL");
-			}
 			if (rt->getResourceNumber() == i && rt->getClass() == rcTech)
 				return getResourceType(j);
 		}

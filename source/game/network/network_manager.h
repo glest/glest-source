@@ -52,9 +52,9 @@ namespace Game {
 		bool isNetworkGame();
 		bool isNetworkGameWithConnectedClients();
 
-		GameNetworkInterface* getGameNetworkInterface(bool throwErrorOnNull = true);
-		ServerInterface* getServerInterface(bool throwErrorOnNull = true);
-		ClientInterface* getClientInterface(bool throwErrorOnNull = true);
+		GameNetworkInterface* getGameNetworkInterface(bool throwErrorOnNull = false);
+		ServerInterface* getServerInterface(bool throwErrorOnNull = false);
+		ClientInterface* getClientInterface(bool throwErrorOnNull = false);
 		NetworkRole getNetworkRole() const {
 			return networkRole;
 		}

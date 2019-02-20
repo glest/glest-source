@@ -574,8 +574,7 @@ Please contact the Glest team for more info.";
 				controlString = lang.getString("Human");
 				break;
 			default:
-				printf("Error control = %d\n", ct);
-				//assert(false);
+				controlString = lang.getString("Closed");
 				break;
 		}
 

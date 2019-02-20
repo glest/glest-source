@@ -79,9 +79,9 @@ namespace Shared {
 
 		int RandomGen::randRange(int min, int max, string lastCaller) {
 			if (min > max) {
-				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "In [%s::%s Line: %d] min > max, min = %d, max = %d", __FILE__, __FUNCTION__, __LINE__, min, max);
-				throw game_runtime_error(szBuf);
+				int temp = min;
+				min = max;
+				max = temp;
 			}
 
 			int diff = max - min;
@@ -97,9 +97,9 @@ namespace Shared {
 
 		float RandomGen::randRange(float min, float max, string lastCaller) {
 			if (min > max) {
-				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "In [%s::%s Line: %d] min > max, min = %f, max = %f", __FILE__, __FUNCTION__, __LINE__, min, max);
-				throw game_runtime_error(szBuf);
+				int temp = min;
+				min = max;
+				max = temp;
 			}
 
 			float rand01 = static_cast<float>(this->rand(lastCaller)) / (m - 1);

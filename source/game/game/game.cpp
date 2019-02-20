@@ -751,29 +751,29 @@ namespace Game {
 					for (unsigned int logoIndex = 0;
 						logoIndex < loadScreenList.size(); ++logoIndex) {
 						string
-							senarioLogo = scenarioDir + loadScreenList[bestLogoIndex];
+							scenarioLogo = scenarioDir + loadScreenList[bestLogoIndex];
 						if (SystemFlags::getSystemSettingType
 						(SystemFlags::debugSystem).enabled)
 							SystemFlags::OutputDebug(SystemFlags::debugSystem,
 								"In [%s::%s Line: %d] looking for loading screen '%s'\n",
 								extractFileFromDirectoryPath
 								(__FILE__).c_str(), __FUNCTION__,
-								__LINE__, senarioLogo.c_str());
+								__LINE__, scenarioLogo.c_str());
 
 						if (SystemFlags::VERBOSE_MODE_ENABLED)
 							printf("Looking for best logo: %u [%s]\n", logoIndex,
-								senarioLogo.c_str());
+								scenarioLogo.c_str());
 
-						if (fileExists(senarioLogo) == true) {
+						if (fileExists(scenarioLogo) == true) {
 							if (SystemFlags::getSystemSettingType
 							(SystemFlags::debugSystem).enabled)
 								SystemFlags::OutputDebug(SystemFlags::debugSystem,
 									"In [%s::%s Line: %d] found loading screen '%s'\n",
 									extractFileFromDirectoryPath
 									(__FILE__).c_str(), __FUNCTION__,
-									__LINE__, senarioLogo.c_str());
+									__LINE__, scenarioLogo.c_str());
 
-							Texture2D *checkLogo = Renderer::preloadTexture(senarioLogo);
+							Texture2D *checkLogo = Renderer::preloadTexture(scenarioLogo);
 							if (checkLogo != NULL) {
 								const Metrics & metrics = Metrics::getInstance();
 								int
@@ -797,7 +797,7 @@ namespace Game {
 									bestLogoIndex = logoIndex;
 									if (SystemFlags::VERBOSE_MODE_ENABLED)
 										printf("#1 New best logo is [%s]\n",
-											senarioLogo.c_str());
+											scenarioLogo.c_str());
 								} else if (minWidthDifference == bestMinWidthDiff
 									&& minHeightDifference < bestMinHeightDiff) {
 									bestMinHeightDiff = minHeightDifference;
@@ -805,7 +805,7 @@ namespace Game {
 									bestLogoIndex = logoIndex;
 									if (SystemFlags::VERBOSE_MODE_ENABLED)
 										printf("#2 New best logo is [%s]\n",
-											senarioLogo.c_str());
+											scenarioLogo.c_str());
 								}
 							}
 						}
@@ -1540,6 +1540,11 @@ namespace Game {
 			::Shared::Platform::Window::handleEvent();
 			SDL_PumpEvents();
 		}
+		if (logger.getCancelLoading()) {
+			logger.setCancelLoading(false);
+			endGame();
+			return;
+		}
 
 		if ((loadTypes & lgt_FactionPreview) == lgt_FactionPreview) {
 			if (SystemFlags::
@@ -1553,6 +1558,11 @@ namespace Game {
 
 			::Shared::Platform::Window::handleEvent();
 			SDL_PumpEvents();
+		}
+		if (logger.getCancelLoading()) {
+			logger.setCancelLoading(false);
+			endGame();
+			return;
 		}
 
 		if (showPerfStats) {
@@ -1614,6 +1624,12 @@ namespace Game {
 				(__FILE__).c_str(), __FUNCTION__,
 				__LINE__);
 
+		if (logger.getCancelLoading()) {
+			logger.setCancelLoading(false);
+			endGame();
+			return;
+		}
+
 		//tileset
 		if ((loadTypes & lgt_TileSet) == lgt_TileSet) {
 			if (SystemFlags::
@@ -1626,6 +1642,11 @@ namespace Game {
 			world.
 				loadTileset(config.getPathListForType(ptTilesets, scenarioDir),
 					tilesetName, &checksum, loadedFileList);
+		}
+		if (logger.getCancelLoading()) {
+			logger.setCancelLoading(false);
+			endGame();
+			return;
 		}
 
 		if (showPerfStats) {
@@ -1640,6 +1661,12 @@ namespace Game {
 		sleep(0);
 		::Shared::Platform::Window::handleEvent();
 		SDL_PumpEvents();
+
+		if (logger.getCancelLoading()) {
+			logger.setCancelLoading(false);
+			endGame();
+			return;
+		}
 
 		if (SystemFlags::
 			getSystemSettingType(SystemFlags::debugSystem).enabled)
@@ -1699,6 +1726,12 @@ namespace Game {
 		::Shared::Platform::Window::handleEvent();
 		SDL_PumpEvents();
 
+		if (logger.getCancelLoading()) {
+			logger.setCancelLoading(false);
+			endGame();
+			return;
+		}
+
 		if (SystemFlags::
 			getSystemSettingType(SystemFlags::debugSystem).enabled)
 			SystemFlags::OutputDebug(SystemFlags::debugSystem,
@@ -1719,6 +1752,12 @@ namespace Game {
 			world.loadMap(Config::getMapPath(mapName, scenarioDir), &checksum);
 		}
 
+		if (logger.getCancelLoading()) {
+			logger.setCancelLoading(false);
+			endGame();
+			return;
+		}
+
 		if (showPerfStats) {
 			sprintf(perfBuf,
 				"In [%s::%s] Line: %d took msecs: " I64_SPECIFIER "\n",
@@ -1731,6 +1770,12 @@ namespace Game {
 		sleep(0);
 		::Shared::Platform::Window::handleEvent();
 		SDL_PumpEvents();
+
+		if (logger.getCancelLoading()) {
+			logger.setCancelLoading(false);
+			endGame();
+			return;
+		}
 
 		if (SystemFlags::
 			getSystemSettingType(SystemFlags::debugSystem).enabled)
@@ -1777,6 +1822,12 @@ namespace Game {
 		// give CPU time to update other things to avoid apperance of hanging
 		sleep(0);
 		SDL_PumpEvents();
+
+		if (logger.getCancelLoading()) {
+			logger.setCancelLoading(false);
+			endGame();
+			return;
+		}
 
 		if (SystemFlags::
 			getSystemSettingType(SystemFlags::debugSystem).enabled)
@@ -1868,6 +1919,12 @@ namespace Game {
 			SDL_PumpEvents();
 		}
 
+		if (logger.getCancelLoading()) {
+			logger.setCancelLoading(false);
+			endGame();
+			return;
+		}
+
 		try {
 			world.init(this, gameSettings.getDefaultUnits());
 		} catch (const game_runtime_error & ex) {
@@ -1918,9 +1975,9 @@ namespace Game {
 			perfList.push_back(perfBuf);
 		}
 
-		if (loadGameNode != NULL) {
-			//world.getMapPtr()->loadGame(loadGameNode,&world);
-		}
+		/*if (loadGameNode != NULL) {
+			world.getMapPtr()->loadGame(loadGameNode,&world);
+		}*/
 
 		if (SystemFlags::
 			getSystemSettingType(SystemFlags::debugSystem).enabled)
@@ -1936,6 +1993,11 @@ namespace Game {
 			::Shared::Platform::Window::handleEvent();
 			SDL_PumpEvents();
 
+			if (logger.getCancelLoading()) {
+				logger.setCancelLoading(false);
+				endGame();
+				return;
+			}
 			gui.init(this);
 
 			if (SystemFlags::
@@ -1952,6 +2014,11 @@ namespace Game {
 
 			chatManager.init(&console, world.getThisTeamIndex());
 			console.clearStoredLines();
+		}
+		if (logger.getCancelLoading()) {
+			logger.setCancelLoading(false);
+			endGame();
+			return;
 		}
 
 		if (showPerfStats) {
@@ -1970,6 +2037,12 @@ namespace Game {
 			if (inJoinGameLoading == true) {
 				initCamera(map);
 			}
+		}
+
+		if (logger.getCancelLoading()) {
+			logger.setCancelLoading(false);
+			endGame();
+			return;
 		}
 
 		if (showPerfStats) {
@@ -2021,6 +2094,12 @@ namespace Game {
 			std::vector < SlaveThreadControllerInterface * >slaveThreadList;
 			aiInterfaces.resize(world.getFactionCount());
 			for (int i = 0; i < world.getFactionCount(); ++i) {
+				if (logger.getCancelLoading()) {
+					logger.setCancelLoading(false);
+					endGame();
+					return;
+				}
+
 				Faction *faction = world.getFaction(i);
 
 				//printf("Controltype = %d for index = %d\n",faction->getControlType(),i);
@@ -2071,6 +2150,12 @@ namespace Game {
 			::Shared::Platform::Window::handleEvent();
 			SDL_PumpEvents();
 
+			if (logger.getCancelLoading()) {
+				logger.setCancelLoading(false);
+				endGame();
+				return;
+			}
+
 			if (world.getFactionCount() == 1
 				&& world.getFaction(0)->getPersonalityType() == fpt_Observer) {
 				withRainEffect = false;
@@ -2120,9 +2205,21 @@ namespace Game {
 			add(Lang::
 				getInstance().getString("LogScreenGameLoadingInitRenderer", ""), true);
 
+		if (logger.getCancelLoading()) {
+			logger.setCancelLoading(false);
+			endGame();
+			return;
+		}
+
 		//printf("Before renderer.initGame\n");
 		renderer.initGame(this, this->getGameCameraPtr());
 		//printf("After renderer.initGame\n");
+
+		if (logger.getCancelLoading()) {
+			logger.setCancelLoading(false);
+			endGame();
+			return;
+		}
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
@@ -2155,6 +2252,12 @@ namespace Game {
 			::Shared::Platform::Window::handleEvent();
 			SDL_PumpEvents();
 
+			if (logger.getCancelLoading()) {
+				logger.setCancelLoading(false);
+				endGame();
+				return;
+			}
+
 			if (SystemFlags::
 				getSystemSettingType(SystemFlags::debugSystem).enabled)
 				SystemFlags::OutputDebug(SystemFlags::debugSystem,
@@ -2164,7 +2267,9 @@ namespace Game {
 			logger.
 				add(Lang::
 					getInstance().getString("LogScreenGameLoadingWaitForNetworkPlayers", ""), true);
-			networkManager.getGameNetworkInterface()->waitUntilReady(&checksum);
+			GameNetworkInterface* networkInterface = networkManager.getGameNetworkInterface();
+			if (networkInterface != NULL)
+				networkInterface->waitUntilReady(&checksum);
 
 			//std::string worldLog = world.DumpWorldToLog(true);
 
@@ -2244,8 +2349,6 @@ namespace Game {
 
 		//throw "test";
 
-		logger.setCancelLoadingEnabled(false);
-
 		if (SystemFlags::
 			getSystemSettingType(SystemFlags::debugSystem).enabled)
 			SystemFlags::OutputDebug(SystemFlags::debugSystem,
@@ -2257,6 +2360,12 @@ namespace Game {
 		setupPopupMenus(false);
 
 		for (int i = 0; i < world.getFactionCount(); ++i) {
+			if (logger.getCancelLoading()) {
+				logger.setCancelLoading(false);
+				endGame();
+				return;
+			}
+
 			Faction *faction = world.getFaction(i);
 
 			//printf("Check for team switch to observer i = %d, team = %d [%d]\n",i,faction->getTeam(),(GameConstants::maxPlayers -1 + fpt_Observer));
@@ -2345,6 +2454,11 @@ namespace Game {
 			for (unsigned int x = 0; x < perfList.size(); ++x) {
 				printf("%s", perfList[x].c_str());
 			}
+		}
+
+		if (logger.getCancelLoading()) {
+			logger.setCancelLoading(false);
+			endGame();
 		}
 	}
 
@@ -2528,30 +2642,32 @@ namespace Game {
 
 					NetworkInterface *netIntf =
 						networkManager.getGameNetworkInterface();
-					for (int index = 0; index < GameConstants::maxPlayers; ++index) {
-						if (index < world.getFactionCount()) {
-							Faction *faction = world.getFaction(index);
-							netIntf->setNetworkPlayerFactionCRC(index,
-								faction->getCRC().getSum
-								());
+					if (netIntf != NULL) {
+						for (int index = 0; index < GameConstants::maxPlayers; ++index) {
+							if (index < world.getFactionCount()) {
+								Faction *faction = world.getFaction(index);
+								netIntf->setNetworkPlayerFactionCRC(index,
+									faction->getCRC().getSum
+									());
 
-							if (settings != NULL) {
-								if (isFlagType1BitEnabled
-								(ft1_network_synch_checks_verbose) == true) {
-									faction->addCRC_DetailsForWorldFrame(world.getFrameCount
-									(),
-										role == nrServer);
-								} else
+								if (settings != NULL) {
 									if (isFlagType1BitEnabled
-									(ft1_network_synch_checks) == true
-										&& world.getFrameCount() % 20 == 0) {
+									(ft1_network_synch_checks_verbose) == true) {
 										faction->addCRC_DetailsForWorldFrame(world.getFrameCount
 										(),
 											role == nrServer);
-									}
+									} else
+										if (isFlagType1BitEnabled
+										(ft1_network_synch_checks) == true
+											&& world.getFrameCount() % 20 == 0) {
+											faction->addCRC_DetailsForWorldFrame(world.getFrameCount
+											(),
+												role == nrServer);
+										}
+								}
+							} else {
+								netIntf->setNetworkPlayerFactionCRC(index, 0);
 							}
-						} else {
-							netIntf->setNetworkPlayerFactionCRC(index, 0);
 						}
 					}
 				}
@@ -2603,14 +2719,9 @@ namespace Game {
 				}
 			}
 
-			bool
-				pendingQuitError = (quitPendingIndicator == true ||
-				(NetworkManager::
-					getInstance().getGameNetworkInterface() !=
-					NULL
-					&& NetworkManager::
-					getInstance().getGameNetworkInterface()->
-					getQuit()));
+			bool pendingQuitError = (quitPendingIndicator == true ||
+				(NetworkManager::getInstance().getGameNetworkInterface() != NULL &&
+				NetworkManager::getInstance().getGameNetworkInterface()->getQuit()));
 
 			if (pendingQuitError == true &&
 				(this->masterserverMode == true ||
@@ -3805,7 +3916,8 @@ namespace Game {
 						// MUST DO THIS LAST!!!! Because objects above have pointers to things like
 						// unit particles and fade them out etc and this end method deletes the original
 						// object pointers.
-						Renderer & renderer = Renderer::getInstance();
+						Renderer& renderer = Renderer::getInstance();
+						Logger& logger = Logger::getInstance();
 						renderer.endGame(true);
 
 						GameConstants::updateFps = original_updateFps;
@@ -3814,7 +3926,16 @@ namespace Game {
 						this->setGameSettings(&gameSettings);
 						this->resetMembers();
 						this->load();
-						this->init();
+						if (logger.getCancelLoading()) {
+							logger.setCancelLoading(false);
+							endGame();
+						} else {
+							this->init();
+							if (logger.getCancelLoading()) {
+								logger.setCancelLoading(false);
+								endGame();
+							}
+						}
 					} else {
 						SoundRenderer & soundRenderer = SoundRenderer::getInstance();
 						//printf("In [%s:%s] Line: %d currentAmbientSound = [%p]\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__,currentAmbientSound);
@@ -4944,10 +5065,12 @@ namespace Game {
 
 		//printf("Adding Cell marker pos [%s] factionIndex [%d] note [%s] playerIndex = %d\n",cellData.getTargetPos().getString().c_str(),factionIndex,cellData.getNote().c_str(),playerIndex);
 
-		gameNetworkInterface->sendMarkCellMessage(cellData.getTargetPos(),
-			factionIndex,
-			cellData.getNote(),
-			playerIndex);
+		if (gameNetworkInterface != NULL) {
+			gameNetworkInterface->sendMarkCellMessage(cellData.getTargetPos(),
+				factionIndex,
+				cellData.getNote(),
+				playerIndex);
+		}
 
 		Renderer & renderer = Renderer::getInstance();
 		renderer.forceQuadCacheUpdate();
@@ -4974,8 +5097,10 @@ namespace Game {
 
 				//printf("Remvoing Cell marker pos [%s] factionIndex [%d] note [%s]\n",mc.getTargetPos().getString().c_str(),factionIndex,mc.getNote().c_str());
 
-				gameNetworkInterface->sendUnMarkCellMessage(mc.getTargetPos(),
-					factionIndex);
+				if (gameNetworkInterface != NULL) {
+					gameNetworkInterface->sendUnMarkCellMessage(mc.getTargetPos(),
+						factionIndex);
+				}
 			}
 		}
 		//printf("#1 ADDED in marked list pos [%s] markedCells.size() = " SIZE_T_SPECIFIER "\n",surfaceCellPos.getString().c_str(),mapMarkedCellList.size());
@@ -5000,10 +5125,11 @@ namespace Game {
 
 		GameNetworkInterface *gameNetworkInterface =
 			NetworkManager::getInstance().getGameNetworkInterface();
-		gameNetworkInterface->
-			sendHighlightCellMessage(cellData.getTargetPos(),
-				cellData.getFactionIndex());
-		//}
+		if (gameNetworkInterface != NULL) {
+			gameNetworkInterface->
+				sendHighlightCellMessage(cellData.getTargetPos(),
+					cellData.getFactionIndex());
+		}
 	}
 
 	void Game::mouseDownLeft(int x, int y) {
@@ -5460,8 +5586,8 @@ namespace Game {
 
 							GameNetworkInterface *gameNetworkInterface =
 								NetworkManager::getInstance().getGameNetworkInterface();
-							gameNetworkInterface->
-								sendHighlightCellMessage(mc.getTargetPos(),
+							if (gameNetworkInterface != NULL)
+								gameNetworkInterface->sendHighlightCellMessage(mc.getTargetPos(),
 									mc.getFaction()->getIndex());
 						}
 
@@ -5550,11 +5676,9 @@ namespace Game {
 
 						GameNetworkInterface *gameNetworkInterface =
 							NetworkManager::getInstance().getGameNetworkInterface();
-						gameNetworkInterface->sendHighlightCellMessage(mc.getTargetPos
-						(),
-							mc.getFaction
-							()->getIndex
-							());
+						if (gameNetworkInterface != NULL)
+							gameNetworkInterface->sendHighlightCellMessage(mc.getTargetPos(),
+								mc.getFaction()->getIndex());
 					}
 
 					if (originalIsMarkCellEnabled == true
@@ -7803,7 +7927,10 @@ namespace Game {
 
 			for (int i = 0; i < world.getFactionCount(); ++i) {
 				string factionInfo = factionDebugInfo[i];
-				Vec4f playerColor = world.getFaction(i)->getTexture()->getPixmapConst()->getPixel4f(0, 0);
+				const Texture2D* texture = world.getFaction(i)->getTexture();
+				Vec4f playerColor = Vec4f(0.f, 0.f, 0.f, 0.f);
+				if (texture != NULL)
+					playerColor = texture->getPixmapConst()->getPixel4f(0, 0, true);
 
 				if (Renderer::renderText3DEnabled == true) {
 					renderer.renderText3D(factionInfo,
@@ -7851,10 +7978,8 @@ namespace Game {
 				const Vec4f fontColor = getGui()->getDisplay()->getColor();
 
 				if (Renderer::renderText3DEnabled == true) {
-					renderer.
-						renderTextShadow3D(NetworkManager::
-							getInstance().getGameNetworkInterface
-							()->getNetworkStatus(),
+					renderer.renderTextShadow3D(NetworkManager::
+							getInstance().getGameNetworkInterface()->getNetworkStatus(),
 							coreData.getMenuFontNormal3D(), fontColor,
 							mx + mw + 5,
 							metrics.getVirtualH() - 30 - 20, false);

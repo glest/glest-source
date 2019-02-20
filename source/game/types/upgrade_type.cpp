@@ -1051,7 +1051,8 @@ namespace Game {
 			Lang::getInstance().
 			getString("LogScreenGameLoadingUpgradeType", "").c_str(),
 			formatString(this->getName(true)).c_str());
-		Logger::getInstance().add(szBuf, true);
+		Logger& logger = Logger::getInstance();
+		logger.add(szBuf, true);
 
 		string currentPath = dir;
 		endPathWithSlash(currentPath);
@@ -1091,6 +1092,8 @@ namespace Game {
 			const XmlNode *unitRequirementsNode =
 				upgradeNode->getChild("unit-requirements");
 			for (int i = 0; i < (int) unitRequirementsNode->getChildCount(); ++i) {
+				if (logger.getCancelLoading())
+					return;
 				const XmlNode *unitNode =
 					unitRequirementsNode->getChild("unit", i);
 				string name =
@@ -1111,6 +1114,8 @@ namespace Game {
 
 			for (std::map < string, int >::iterator iterMap =
 				sortedItems.begin(); iterMap != sortedItems.end(); ++iterMap) {
+				if (logger.getCancelLoading())
+					return;
 				unitReqs.push_back(factionType->getUnitType(iterMap->first));
 			}
 			sortedItems.clear();
@@ -1119,8 +1124,9 @@ namespace Game {
 			//upgrade requirements
 			const XmlNode *upgradeRequirementsNode =
 				upgradeNode->getChild("upgrade-requirements");
-			for (int i = 0; i < (int) upgradeRequirementsNode->getChildCount();
-				++i) {
+			for (int i = 0; i < (int) upgradeRequirementsNode->getChildCount(); ++i) {
+				if (logger.getCancelLoading())
+					return;
 				const XmlNode *upgradeReqNode =
 					upgradeRequirementsNode->getChild("upgrade", i);
 				string name =
@@ -1141,6 +1147,8 @@ namespace Game {
 
 			for (std::map < string, int >::iterator iterMap =
 				sortedItems.begin(); iterMap != sortedItems.end(); ++iterMap) {
+				if (logger.getCancelLoading())
+					return;
 				upgradeReqs.push_back(factionType->
 					getUpgradeType(iterMap->first));
 			}
@@ -1154,6 +1162,8 @@ namespace Game {
 
 			costs.resize(resourceRequirementsNode->getChildCount());
 			for (int i = 0; i < (int) costs.size(); ++i) {
+				if (logger.getCancelLoading())
+					return;
 				const XmlNode *resourceNode =
 					resourceRequirementsNode->getChild("resource", i);
 				string name =
@@ -1182,6 +1192,8 @@ namespace Game {
 			index = 0;
 			for (std::map < string, int >::iterator iterMap =
 				sortedItems.begin(); iterMap != sortedItems.end(); ++iterMap) {
+				if (logger.getCancelLoading())
+					return;
 				try {
 					costs[index].init(techTree->getResourceType(iterMap->first),
 						iterMap->second);
@@ -1207,6 +1219,8 @@ namespace Game {
 			const XmlNode *effectsNode = upgradeNode->getChild("effects");
 			vector < XmlNode * >unitNodes = effectsNode->getChildList("unit");
 			for (size_t i = 0; i < unitNodes.size(); ++i) {
+				if (logger.getCancelLoading())
+					return;
 				const XmlNode *unitNode = unitNodes.at(i);
 				string name =
 					unitNode->getAttribute("name")->getRestrictedValue();
@@ -1217,6 +1231,8 @@ namespace Game {
 			//effects -- convert tags into units
 			vector < XmlNode * >tagNodes = effectsNode->getChildList("tag");
 			for (size_t i = 0; i < tagNodes.size(); ++i) {
+				if (logger.getCancelLoading())
+					return;
 				const XmlNode *tagNode = tagNodes.at(i);
 				string name = tagNode->getAttribute("name")->getRestrictedValue();
 				tags.insert(name);

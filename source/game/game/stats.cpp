@@ -63,8 +63,8 @@ namespace Game {
 					break;
 				case ctHuman:controlString = lang.getString("Human");
 					break;
-				default:printf("Error control = %d\n", control);
-					assert(false);
+				default:
+					controlString = lang.getString("Closed");
 					break;
 			};
 		}

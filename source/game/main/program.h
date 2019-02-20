@@ -406,10 +406,10 @@ namespace Game {
 		virtual void
 			simpleTask(BaseThread * callingThread, void *userdata);
 
-		void
-			mouseDownLeft(int x, int y);
-		void
-			eventMouseMove(int x, int y, const MouseState * ms);
+		void mouseDownLeft(int x, int y);
+		void mouseDownRight(int x, int y);
+		void mouseDownCenter(int x, int y);
+		void eventMouseMove(int x, int y, const MouseState * ms);
 
 		void
 			renderProgramMsgBox();

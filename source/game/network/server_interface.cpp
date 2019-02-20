@@ -1901,10 +1901,6 @@ namespace Game {
 
 		bool allReady = false;
 
-		if (Config::getInstance().getBool("EnableGameServerLoadCancel", "false") == true) {
-			logger.setCancelLoadingEnabled(true);
-		}
-
 		Lang &lang = Lang::getInstance();
 		uint64 waitLoopIterationCount = 0;
 		uint64 MAX_LOOP_COUNT_BEFORE_SLEEP = 10;
@@ -2115,10 +2111,6 @@ namespace Game {
 				string sErr = lang.getString("GameCancelledByUser", languageList[langIndex]);
 				bool localEcho = lang.isLanguageLocal(languageList[langIndex]);
 				sendTextMessage(sErr, -1, localEcho, languageList[langIndex]);
-
-				if (localEcho == true) {
-					DisplayErrorMessage(sErr);
-				}
 			}
 			quitGame(true);
 			logger.setCancelLoading(false);

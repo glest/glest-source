@@ -777,7 +777,10 @@ namespace Game {
 		if (overridePersonalityType != fpt_EndCount) {
 			return overridePersonalityType;
 		}
-		return factionType->getPersonalityType();
+		if (factionType == NULL)
+			return fpt_Observer;
+		else
+			return factionType->getPersonalityType();
 	}
 
 	int Faction::

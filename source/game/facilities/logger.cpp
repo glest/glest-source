@@ -140,7 +140,7 @@ namespace Game {
 			showNextHint();
 
 			Lang &lang = Lang::getInstance();
-			buttonNextHint.setText(lang.getString("ShowNextHint", ""));
+			buttonNextHint.setText(lang.getString("ShowNextHint"));
 			buttonCancel.setText(lang.getString("Cancel"));
 
 			GraphicComponent::applyAllCustomProperties("Loading");
@@ -186,12 +186,14 @@ namespace Game {
 				cancelSelected = true;
 			}
 		}
-		if (buttonNextHint.getEnabled() == true && buttonNextHint.mouseClick(x, y) == true) {
-			showNextHint();
-			//buttonNextHint.setLighted(false);
-			SoundRenderer &soundRenderer = SoundRenderer::getInstance();
-			CoreData &coreData = CoreData::getInstance();
-			soundRenderer.playFx(coreData.getClickSoundC());
+		if (buttonNextHint.getEnabled() == true) {
+			if (buttonNextHint.mouseClick(x, y) == true) {
+				showNextHint();
+				//buttonNextHint.setLighted(false);
+				SoundRenderer &soundRenderer = SoundRenderer::getInstance();
+				CoreData &coreData = CoreData::getInstance();
+				soundRenderer.playFx(coreData.getClickSoundC());
+			}
 		}
 	}
 
@@ -271,13 +273,13 @@ namespace Game {
 			}
 		}
 
+		Lang &lang = Lang::getInstance();
 		if (gameHintToShow != "") {
-			Lang &lang = Lang::getInstance();
 			string hintText = lang.getString("Hint", "");
 			char szBuf[8096] = "";
 			snprintf(szBuf, 8096, hintText.c_str(), gameHintToShow.c_str());
 			hintText = szBuf;
-
+			int yLocationHint = 90 * metrics.getVirtualH() / 100;
 			if (Renderer::renderText3DEnabled) {
 				int xLocationHint = (metrics.getVirtualW() / 2) - (coreData.getMenuFontBig3D()->getMetrics()->getTextWidth(hintText) / 2);
 
@@ -285,7 +287,7 @@ namespace Game {
 					hintText, coreData.getMenuFontBig3D(), displayColor,
 					//xLocation*1.5f,
 					xLocationHint,
-					90 * metrics.getVirtualH() / 100, false);
+					yLocationHint, true);
 			} else {
 				int xLocationHint = (metrics.getVirtualW() / 2) - (coreData.getMenuFontBig()->getMetrics()->getTextWidth(hintText) / 2);
 
@@ -293,13 +295,13 @@ namespace Game {
 					hintText, coreData.getMenuFontBig(), displayColor,
 					//xLocation*1.5f,
 					xLocationHint,
-					90 * metrics.getVirtualH() / 100, false);
+					yLocationHint, true);
 
 			}
 			//Show next Hint
 			if (buttonNextHint.getEnabled() == false) {
-				buttonNextHint.init((metrics.getVirtualW() / 2) - (175 / 2), 90 * metrics.getVirtualH() / 100 + 20, 175);
-				buttonNextHint.setText(lang.getString("ShowNextHint", ""));
+				buttonNextHint.init((metrics.getVirtualW() / 2) - (175 / 2), yLocationHint + 20, 175);
+				buttonNextHint.setText(lang.getString("ShowNextHint"));
 				buttonNextHint.setEnabled(true);
 				buttonNextHint.setVisible(true);
 				buttonNextHint.setEditable(true);
@@ -331,22 +333,17 @@ namespace Game {
 
 		}
 
-		if (buttonCancel.getEnabled() == true) {
+		if (Config::getInstance().getBool("EnableLoadCancel", "true")) {
+			if (buttonCancel.getEnabled() == false) {
+				buttonCancel.init((metrics.getVirtualW() / 2) - (125 / 2), 50 * metrics.getVirtualH() / 100, 125);
+				buttonCancel.setText(lang.getString("Cancel"));
+				buttonCancel.setEnabled(true);
+				buttonCancel.setVisible(true);
+				buttonCancel.setEditable(true);
+			}
 			renderer.renderButton(&buttonCancel);
 		}
 
 		renderer.swapBuffers();
 	}
-
-	void Logger::setCancelLoadingEnabled(bool value) {
-		Lang &lang = Lang::getInstance();
-		const Metrics &metrics = Metrics::getInstance();
-		//string containerName = "logger";
-		//buttonCancel.registerGraphicComponent(containerName,"buttonCancel");
-		buttonCancel.init((metrics.getVirtualW() / 2) - (125 / 2), 50 * metrics.getVirtualH() / 100, 125);
-		buttonCancel.setText(lang.getString("Cancel"));
-		buttonCancel.setEnabled(value);
-		//GraphicComponent::applyAllCustomProperties(containerName);
-	}
-
 } //end namespace
