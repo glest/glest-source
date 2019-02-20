@@ -7889,13 +7889,6 @@ namespace Game {
 				try {
 #endif
 					program->loop();
-					if (Logger::getInstance().getCancelLoading()) {
-						Game* game = ::Game::World::getCurrentGame();
-						if (game != NULL) {
-							Logger::getInstance().setCancelLoading(false);
-							game->endGame();
-						}
-					}
 #ifndef DEBUG
 				} catch (const std::exception &exc) {
 					printf("\nAn unhandled error occurred: %s\nAttempting to recover...\n", exc.what());

@@ -2825,8 +2825,9 @@ namespace Game {
 	bool World::showResourceTypeForFaction(const ResourceType *rt, const Faction *faction) const {
 		//if any unit produces the resource
 		bool showResource = false;
-		for (int factionUnitTypeIndex = 0;
-			factionUnitTypeIndex < faction->getType()->getUnitTypeCount();
+		if (faction->getType() == NULL)
+			return showResource;
+		for (int factionUnitTypeIndex = 0; factionUnitTypeIndex < faction->getType()->getUnitTypeCount();
 			++factionUnitTypeIndex) {
 
 			const UnitType *ut = faction->getType()->getUnitType(factionUnitTypeIndex);

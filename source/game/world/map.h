@@ -329,7 +329,6 @@ namespace Game {
 				if (errorOnInvalid == false) {
 					return NULL;
 				}
-				//abort();
 				throw game_runtime_error("arrayIndex >= getCellArraySize(), arrayIndex = " + intToStr(arrayIndex) + " w = " + intToStr(w) + " h = " + intToStr(h));
 			} else if (cells == NULL) {
 				if (errorOnInvalid == false) {

@@ -1542,7 +1542,7 @@ namespace Game {
 		}
 		if (logger.getCancelLoading()) {
 			logger.setCancelLoading(false);
-			endGame();
+			//endGame();
 			return;
 		}
 
@@ -1561,7 +1561,7 @@ namespace Game {
 		}
 		if (logger.getCancelLoading()) {
 			logger.setCancelLoading(false);
-			endGame();
+			//endGame();
 			return;
 		}
 
@@ -1626,7 +1626,7 @@ namespace Game {
 
 		if (logger.getCancelLoading()) {
 			logger.setCancelLoading(false);
-			endGame();
+			//endGame();
 			return;
 		}
 
@@ -1645,7 +1645,7 @@ namespace Game {
 		}
 		if (logger.getCancelLoading()) {
 			logger.setCancelLoading(false);
-			endGame();
+			//endGame();
 			return;
 		}
 
@@ -1664,7 +1664,7 @@ namespace Game {
 
 		if (logger.getCancelLoading()) {
 			logger.setCancelLoading(false);
-			endGame();
+			//endGame();
 			return;
 		}
 
@@ -1728,7 +1728,7 @@ namespace Game {
 
 		if (logger.getCancelLoading()) {
 			logger.setCancelLoading(false);
-			endGame();
+			//endGame();
 			return;
 		}
 
@@ -1754,7 +1754,7 @@ namespace Game {
 
 		if (logger.getCancelLoading()) {
 			logger.setCancelLoading(false);
-			endGame();
+			//endGame();
 			return;
 		}
 
@@ -1773,7 +1773,7 @@ namespace Game {
 
 		if (logger.getCancelLoading()) {
 			logger.setCancelLoading(false);
-			endGame();
+			//endGame();
 			return;
 		}
 
@@ -1825,7 +1825,7 @@ namespace Game {
 
 		if (logger.getCancelLoading()) {
 			logger.setCancelLoading(false);
-			endGame();
+			//endGame();
 			return;
 		}
 
@@ -1921,7 +1921,7 @@ namespace Game {
 
 		if (logger.getCancelLoading()) {
 			logger.setCancelLoading(false);
-			endGame();
+			//endGame();
 			return;
 		}
 
@@ -1995,7 +1995,7 @@ namespace Game {
 
 			if (logger.getCancelLoading()) {
 				logger.setCancelLoading(false);
-				endGame();
+				//endGame();
 				return;
 			}
 			gui.init(this);
@@ -2017,7 +2017,7 @@ namespace Game {
 		}
 		if (logger.getCancelLoading()) {
 			logger.setCancelLoading(false);
-			endGame();
+			//endGame();
 			return;
 		}
 
@@ -2041,7 +2041,7 @@ namespace Game {
 
 		if (logger.getCancelLoading()) {
 			logger.setCancelLoading(false);
-			endGame();
+			//endGame();
 			return;
 		}
 
@@ -2096,7 +2096,7 @@ namespace Game {
 			for (int i = 0; i < world.getFactionCount(); ++i) {
 				if (logger.getCancelLoading()) {
 					logger.setCancelLoading(false);
-					endGame();
+					//endGame();
 					return;
 				}
 
@@ -2152,7 +2152,7 @@ namespace Game {
 
 			if (logger.getCancelLoading()) {
 				logger.setCancelLoading(false);
-				endGame();
+				//endGame();
 				return;
 			}
 
@@ -2207,7 +2207,7 @@ namespace Game {
 
 		if (logger.getCancelLoading()) {
 			logger.setCancelLoading(false);
-			endGame();
+			//endGame();
 			return;
 		}
 
@@ -2217,7 +2217,7 @@ namespace Game {
 
 		if (logger.getCancelLoading()) {
 			logger.setCancelLoading(false);
-			endGame();
+			//endGame();
 			return;
 		}
 
@@ -2254,7 +2254,7 @@ namespace Game {
 
 			if (logger.getCancelLoading()) {
 				logger.setCancelLoading(false);
-				endGame();
+				//endGame();
 				return;
 			}
 
@@ -2286,16 +2286,11 @@ namespace Game {
 
 			if (this->masterserverMode == false) {
 				if (world.getThisFaction() == NULL) {
-					throw game_runtime_error("world.getThisFaction() == NULL");
+					printf("\nworld.getThisFaction() == NULL\n");
 				}
 				if (world.getThisFaction()->getType() == NULL) {
-					throw
-						game_runtime_error
-						("world.getThisFaction()->getType() == NULL");
+					printf("\nworld.getThisFaction()->getType() == NULL\n");
 				}
-				//if(world.getThisFaction()->getType()->getMusic() == NULL) {
-				//      throw game_runtime_error("world.getThisFaction()->getType()->getMusic() == NULL");
-				//}
 			}
 
 			//sounds
@@ -2329,9 +2324,13 @@ namespace Game {
 			}
 
 			if (this->masterserverMode == false) {
-				StrSound *gameMusic =
-					world.getThisFaction()->getType()->getMusic();
-				soundRenderer.playMusic(gameMusic);
+				if (world.getThisFaction() != NULL) {
+					const FactionType* type = world.getThisFaction()->getType();
+					if (type != NULL) {
+						StrSound *gameMusic = type->getMusic();
+						soundRenderer.playMusic(gameMusic);
+					}
+				}
 			}
 
 			logger.
@@ -2347,8 +2346,6 @@ namespace Game {
 			perfList.push_back(perfBuf);
 		}
 
-		//throw "test";
-
 		if (SystemFlags::
 			getSystemSettingType(SystemFlags::debugSystem).enabled)
 			SystemFlags::OutputDebug(SystemFlags::debugSystem,
@@ -2362,7 +2359,7 @@ namespace Game {
 		for (int i = 0; i < world.getFactionCount(); ++i) {
 			if (logger.getCancelLoading()) {
 				logger.setCancelLoading(false);
-				endGame();
+				//endGame();
 				return;
 			}
 
@@ -2454,11 +2451,6 @@ namespace Game {
 			for (unsigned int x = 0; x < perfList.size(); ++x) {
 				printf("%s", perfList[x].c_str());
 			}
-		}
-
-		if (logger.getCancelLoading()) {
-			logger.setCancelLoading(false);
-			endGame();
 		}
 	}
 
@@ -3928,12 +3920,12 @@ namespace Game {
 						this->load();
 						if (logger.getCancelLoading()) {
 							logger.setCancelLoading(false);
-							endGame();
+							//endGame();
 						} else {
 							this->init();
 							if (logger.getCancelLoading()) {
 								logger.setCancelLoading(false);
-								endGame();
+								//endGame();
 							}
 						}
 					} else {

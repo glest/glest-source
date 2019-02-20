@@ -1064,9 +1064,6 @@ namespace Game {
 
 			this->programState = programStateNew;
 			assert(programStateNew != NULL);
-			if (programStateNew == NULL) {
-				throw game_runtime_error("programStateNew == NULL");
-			}
 			programStateNew->load();
 
 			if (SystemFlags::
