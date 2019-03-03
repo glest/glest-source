@@ -549,11 +549,12 @@ namespace Game {
 		if (SystemFlags::VERBOSE_MODE_ENABLED)
 			printf("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-		if (config.getString("Masterserver", "") != "") {
-			string baseURL = config.getString("Masterserver");
-			if (baseURL != "") {
-				endPathWithSlash(baseURL, false);
-			}
+		string baseURL = config.getString("Modserver", "");
+		if (baseURL == "")
+			baseURL = config.getString("Masterserver", "");
+
+		if (baseURL != "") {
+			endPathWithSlash(baseURL, false);
 
 			string phpVersionParam =
 				config.getString("phpVersionParam", "?version=0.1");

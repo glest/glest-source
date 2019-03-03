@@ -333,7 +333,7 @@ namespace Game {
 
 		}
 
-		if (Config::getInstance().getBool("EnableLoadCancel", "true")) {
+		if (Config::getInstance().getBool("EnableLoadCancel", "false")) {
 			if (buttonCancel.getEnabled() == false) {
 				buttonCancel.init((metrics.getVirtualW() / 2) - (125 / 2), 50 * metrics.getVirtualH() / 100, 125);
 				buttonCancel.setText(lang.getString("Cancel"));

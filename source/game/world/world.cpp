@@ -479,7 +479,11 @@ namespace Game {
 		endPathWithSlash(currentPath);
 		string path = currentPath + lastDir(currentPath) + ".xml";
 		const XmlNode *techTreeNode = xmlTree.getRootNode();
-		if (scriptManager) scriptManager->init(this, this->getGame()->getGameCameraPtr(), techTreeNode);
+		if (scriptManager && !Logger::getInstance().getCancelLoading()) {
+			Game* game = getGame();
+			if (game != NULL)
+				scriptManager->init(this, game->getGameCameraPtr(), techTreeNode);
+		}
 		return techtreeChecksum;
 	}
 
@@ -530,11 +534,13 @@ namespace Game {
 	}
 
 	void World::updateAllTilesetObjects() {
-		Gui *gui = this->game->getGuiPtr();
-		if (gui != NULL) {
-			Object *selObj = gui->getHighlightedResourceObject();
-			if (selObj != NULL) {
-				selObj->updateHighlight();
+		if (game != NULL) {
+			Gui *gui = this->game->getGuiPtr();
+			if (gui != NULL) {
+				Object *selObj = gui->getHighlightedResourceObject();
+				if (selObj != NULL) {
+					selObj->updateHighlight();
+				}
 			}
 		}
 

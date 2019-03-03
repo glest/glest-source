@@ -1540,11 +1540,8 @@ namespace Game {
 			::Shared::Platform::Window::handleEvent();
 			SDL_PumpEvents();
 		}
-		if (logger.getCancelLoading()) {
-			logger.setCancelLoading(false);
-			//endGame();
+		if (logger.getCancelLoading())
 			return;
-		}
 
 		if ((loadTypes & lgt_FactionPreview) == lgt_FactionPreview) {
 			if (SystemFlags::
@@ -1559,11 +1556,8 @@ namespace Game {
 			::Shared::Platform::Window::handleEvent();
 			SDL_PumpEvents();
 		}
-		if (logger.getCancelLoading()) {
-			logger.setCancelLoading(false);
-			//endGame();
+		if (logger.getCancelLoading())
 			return;
-		}
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
@@ -1624,11 +1618,8 @@ namespace Game {
 				(__FILE__).c_str(), __FUNCTION__,
 				__LINE__);
 
-		if (logger.getCancelLoading()) {
-			logger.setCancelLoading(false);
-			//endGame();
+		if (logger.getCancelLoading())
 			return;
-		}
 
 		//tileset
 		if ((loadTypes & lgt_TileSet) == lgt_TileSet) {
@@ -1643,11 +1634,8 @@ namespace Game {
 				loadTileset(config.getPathListForType(ptTilesets, scenarioDir),
 					tilesetName, &checksum, loadedFileList);
 		}
-		if (logger.getCancelLoading()) {
-			logger.setCancelLoading(false);
-			//endGame();
+		if (logger.getCancelLoading())
 			return;
-		}
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
@@ -1662,11 +1650,8 @@ namespace Game {
 		::Shared::Platform::Window::handleEvent();
 		SDL_PumpEvents();
 
-		if (logger.getCancelLoading()) {
-			logger.setCancelLoading(false);
-			//endGame();
+		if (logger.getCancelLoading())
 			return;
-		}
 
 		if (SystemFlags::
 			getSystemSettingType(SystemFlags::debugSystem).enabled)
@@ -1726,11 +1711,8 @@ namespace Game {
 		::Shared::Platform::Window::handleEvent();
 		SDL_PumpEvents();
 
-		if (logger.getCancelLoading()) {
-			logger.setCancelLoading(false);
-			//endGame();
+		if (logger.getCancelLoading())
 			return;
-		}
 
 		if (SystemFlags::
 			getSystemSettingType(SystemFlags::debugSystem).enabled)
@@ -1752,11 +1734,8 @@ namespace Game {
 			world.loadMap(Config::getMapPath(mapName, scenarioDir), &checksum);
 		}
 
-		if (logger.getCancelLoading()) {
-			logger.setCancelLoading(false);
-			//endGame();
+		if (logger.getCancelLoading())
 			return;
-		}
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
@@ -1771,11 +1750,8 @@ namespace Game {
 		::Shared::Platform::Window::handleEvent();
 		SDL_PumpEvents();
 
-		if (logger.getCancelLoading()) {
-			logger.setCancelLoading(false);
-			//endGame();
+		if (logger.getCancelLoading())
 			return;
-		}
 
 		if (SystemFlags::
 			getSystemSettingType(SystemFlags::debugSystem).enabled)
@@ -1823,11 +1799,8 @@ namespace Game {
 		sleep(0);
 		SDL_PumpEvents();
 
-		if (logger.getCancelLoading()) {
-			logger.setCancelLoading(false);
-			//endGame();
+		if (logger.getCancelLoading())
 			return;
-		}
 
 		if (SystemFlags::
 			getSystemSettingType(SystemFlags::debugSystem).enabled)
@@ -1919,11 +1892,8 @@ namespace Game {
 			SDL_PumpEvents();
 		}
 
-		if (logger.getCancelLoading()) {
-			logger.setCancelLoading(false);
-			//endGame();
+		if (logger.getCancelLoading())
 			return;
-		}
 
 		try {
 			world.init(this, gameSettings.getDefaultUnits());
@@ -1993,11 +1963,9 @@ namespace Game {
 			::Shared::Platform::Window::handleEvent();
 			SDL_PumpEvents();
 
-			if (logger.getCancelLoading()) {
-				logger.setCancelLoading(false);
-				//endGame();
+			if (logger.getCancelLoading())
 				return;
-			}
+
 			gui.init(this);
 
 			if (SystemFlags::
@@ -2015,11 +1983,8 @@ namespace Game {
 			chatManager.init(&console, world.getThisTeamIndex());
 			console.clearStoredLines();
 		}
-		if (logger.getCancelLoading()) {
-			logger.setCancelLoading(false);
-			//endGame();
+		if (logger.getCancelLoading())
 			return;
-		}
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
@@ -2039,11 +2004,8 @@ namespace Game {
 			}
 		}
 
-		if (logger.getCancelLoading()) {
-			logger.setCancelLoading(false);
-			//endGame();
+		if (logger.getCancelLoading())
 			return;
-		}
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
@@ -2094,11 +2056,8 @@ namespace Game {
 			std::vector < SlaveThreadControllerInterface * >slaveThreadList;
 			aiInterfaces.resize(world.getFactionCount());
 			for (int i = 0; i < world.getFactionCount(); ++i) {
-				if (logger.getCancelLoading()) {
-					logger.setCancelLoading(false);
-					//endGame();
+				if (logger.getCancelLoading())
 					return;
-				}
 
 				Faction *faction = world.getFaction(i);
 
@@ -2150,11 +2109,8 @@ namespace Game {
 			::Shared::Platform::Window::handleEvent();
 			SDL_PumpEvents();
 
-			if (logger.getCancelLoading()) {
-				logger.setCancelLoading(false);
-				//endGame();
+			if (logger.getCancelLoading())
 				return;
-			}
 
 			if (world.getFactionCount() == 1
 				&& world.getFaction(0)->getPersonalityType() == fpt_Observer) {
@@ -2205,21 +2161,15 @@ namespace Game {
 			add(Lang::
 				getInstance().getString("LogScreenGameLoadingInitRenderer", ""), true);
 
-		if (logger.getCancelLoading()) {
-			logger.setCancelLoading(false);
-			//endGame();
+		if (logger.getCancelLoading())
 			return;
-		}
 
 		//printf("Before renderer.initGame\n");
 		renderer.initGame(this, this->getGameCameraPtr());
 		//printf("After renderer.initGame\n");
 
-		if (logger.getCancelLoading()) {
-			logger.setCancelLoading(false);
-			//endGame();
+		if (logger.getCancelLoading())
 			return;
-		}
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
@@ -2252,11 +2202,8 @@ namespace Game {
 			::Shared::Platform::Window::handleEvent();
 			SDL_PumpEvents();
 
-			if (logger.getCancelLoading()) {
-				logger.setCancelLoading(false);
-				//endGame();
+			if (logger.getCancelLoading())
 				return;
-			}
 
 			if (SystemFlags::
 				getSystemSettingType(SystemFlags::debugSystem).enabled)
@@ -2357,11 +2304,8 @@ namespace Game {
 		setupPopupMenus(false);
 
 		for (int i = 0; i < world.getFactionCount(); ++i) {
-			if (logger.getCancelLoading()) {
-				logger.setCancelLoading(false);
-				//endGame();
+			if (logger.getCancelLoading())
 				return;
-			}
 
 			Faction *faction = world.getFaction(i);
 
@@ -3890,6 +3834,8 @@ namespace Game {
 					//world->getMapPtr()->end();
 					//world.end();
 
+					Logger& logger = Logger::getInstance();
+
 					if (keepFactions == false) {
 						world.end();
 
@@ -3909,7 +3855,6 @@ namespace Game {
 						// unit particles and fade them out etc and this end method deletes the original
 						// object pointers.
 						Renderer& renderer = Renderer::getInstance();
-						Logger& logger = Logger::getInstance();
 						renderer.endGame(true);
 
 						GameConstants::updateFps = original_updateFps;
@@ -3919,14 +3864,34 @@ namespace Game {
 						this->resetMembers();
 						this->load();
 						if (logger.getCancelLoading()) {
-							logger.setCancelLoading(false);
-							//endGame();
-						} else {
-							this->init();
-							if (logger.getCancelLoading()) {
-								logger.setCancelLoading(false);
-								//endGame();
+							Lang &lang = Lang::getInstance();
+							const vector<string> languageList = this->gameSettings.getUniqueNetworkPlayerLanguages();
+							for (unsigned int langIndex = 0; langIndex < languageList.size(); ++langIndex) {
+								string sErr = lang.getString("GameCancelledByUser", languageList[langIndex]);
+								bool localEcho = lang.isLanguageLocal(languageList[langIndex]);
+								//sendTextMessage(sErr, -1, localEcho, languageList[langIndex]);
+								/*GameNetworkInterface* gameNetworkInterface = NetworkManager::getInstance().getGameNetworkInterface();
+								if (gameNetworkInterface != NULL)
+									gameNetworkInterface->sendTextMessage(sErr, -1, localEcho, languageList[langIndex]); */
+								printf("\niuieioeioeui\n");
 							}
+							quitGame();
+							logger.setCancelLoading(false);
+							return;
+						}
+						this->init();
+						if (logger.getCancelLoading()) {
+							Lang &lang = Lang::getInstance();
+							const vector<string> languageList = this->gameSettings.getUniqueNetworkPlayerLanguages();
+							for (unsigned int langIndex = 0; langIndex < languageList.size(); ++langIndex) {
+								string sErr = lang.getString("GameCancelledByUser", languageList[langIndex]);
+								bool localEcho = lang.isLanguageLocal(languageList[langIndex]);
+								//sendTextMessage(sErr, -1, localEcho, languageList[langIndex]);
+								printf("\niuieioeioeui\n");
+							}
+							quitGame();
+							logger.setCancelLoading(false);
+							return;
 						}
 					} else {
 						SoundRenderer & soundRenderer = SoundRenderer::getInstance();
@@ -3946,6 +3911,19 @@ namespace Game {
 						this->setGameSettings(&gameSettings);
 						this->load(lgt_FactionPreview | lgt_TileSet | lgt_Map |
 							lgt_Scenario);
+						if (logger.getCancelLoading()) {
+							Lang &lang = Lang::getInstance();
+							const vector<string> languageList = this->gameSettings.getUniqueNetworkPlayerLanguages();
+							for (unsigned int langIndex = 0; langIndex < languageList.size(); ++langIndex) {
+								string sErr = lang.getString("GameCancelledByUser", languageList[langIndex]);
+								bool localEcho = lang.isLanguageLocal(languageList[langIndex]);
+								//sendTextMessage(sErr, -1, localEcho, languageList[langIndex]);
+								printf("\niuieioeioeui\n");
+							}
+							quitGame();
+							logger.setCancelLoading(false);
+							return;
+						}
 						try {
 							world.init(this, gameSettings.getDefaultUnits(), false);
 						} catch (const exception & ex) {
@@ -3963,6 +3941,19 @@ namespace Game {
 							if (errorMessageBox.getEnabled() == false) {
 								ErrorDisplayMessage(ex.what(), true);
 							}
+						}
+						if (logger.getCancelLoading()) {
+							Lang &lang = Lang::getInstance();
+							const vector<string> languageList = this->gameSettings.getUniqueNetworkPlayerLanguages();
+							for (unsigned int langIndex = 0; langIndex < languageList.size(); ++langIndex) {
+								string sErr = lang.getString("GameCancelledByUser", languageList[langIndex]);
+								bool localEcho = lang.isLanguageLocal(languageList[langIndex]);
+								//sendTextMessage(sErr, -1, localEcho, languageList[langIndex]);
+								printf("\niuieioeioeui\n");
+							}
+							quitGame();
+							logger.setCancelLoading(false);
+							return;
 						}
 
 						world.initUnitsForScenario();
@@ -4048,34 +4039,34 @@ namespace Game {
 					printf("%s", perfList[x].c_str());
 				}
 			}
-			} catch (const exception & ex) {
-				quitPendingIndicator = true;
+		} catch (const exception & ex) {
+			quitPendingIndicator = true;
 
-				char szBuf[8096] = "";
-				snprintf(szBuf, 8096, "In [%s::%s Line: %d] Error [%s]\n",
-					extractFileFromDirectoryPath(__FILE__).c_str(),
-					__FUNCTION__, __LINE__, ex.what());
+			char szBuf[8096] = "";
+			snprintf(szBuf, 8096, "In [%s::%s Line: %d] Error [%s]\n",
+				extractFileFromDirectoryPath(__FILE__).c_str(),
+				__FUNCTION__, __LINE__, ex.what());
 
-				SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
-				if (SystemFlags::
-					getSystemSettingType(SystemFlags::debugSystem).enabled)
-					SystemFlags::OutputDebug(SystemFlags::debugSystem, szBuf);
+			SystemFlags::OutputDebug(SystemFlags::debugError, szBuf);
+			if (SystemFlags::
+				getSystemSettingType(SystemFlags::debugSystem).enabled)
+				SystemFlags::OutputDebug(SystemFlags::debugSystem, szBuf);
 
-				//printf("#100 quitPendingIndicator = %d, errorMessageBox.getEnabled() = %d\n",quitPendingIndicator,errorMessageBox.getEnabled());
+			//printf("#100 quitPendingIndicator = %d, errorMessageBox.getEnabled() = %d\n",quitPendingIndicator,errorMessageBox.getEnabled());
 
-				NetworkManager & networkManager = NetworkManager::getInstance();
-				if (networkManager.getGameNetworkInterface() != NULL) {
-					GameNetworkInterface *networkInterface =
-						NetworkManager::getInstance().getGameNetworkInterface();
-					networkInterface->sendTextMessage(szBuf, -1, true, "");
-					sleep(10);
-					networkManager.getGameNetworkInterface()->quitGame(true);
-				}
-				if (errorMessageBox.getEnabled() == false) {
-					ErrorDisplayMessage(ex.what(), true);
-				}
+			NetworkManager & networkManager = NetworkManager::getInstance();
+			if (networkManager.getGameNetworkInterface() != NULL) {
+				GameNetworkInterface *networkInterface =
+					NetworkManager::getInstance().getGameNetworkInterface();
+				networkInterface->sendTextMessage(szBuf, -1, true, "");
+				sleep(10);
+				networkManager.getGameNetworkInterface()->quitGame(true);
+			}
+			if (errorMessageBox.getEnabled() == false) {
+				ErrorDisplayMessage(ex.what(), true);
 			}
 		}
+	}
 
 	void Game::addPerformanceCount(string key, int64 value) {
 		gamePerformanceCounts[key] = value + gamePerformanceCounts[key] / 2;

@@ -79,9 +79,8 @@ namespace Game {
 
 		//printf("\n>>> factionname=%s\n",factionName.c_str());
 		for (bool realFactionPathFound = false; realFactionPathFound == false;) {
-			if (logger.getCancelLoading()) {
+			if (logger.getCancelLoading())
 				return;
-			}
 			currentPath = techTreePath + "factions/" + factionName;
 			endPathWithSlash(currentPath);
 

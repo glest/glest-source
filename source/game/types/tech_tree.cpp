@@ -251,7 +251,11 @@ namespace Game {
 		snprintf(szBuf, 8096,
 			Lang::getInstance().getString("LogScreenGameLoadingTechtree", "").c_str(),
 			formatString(getName(true)).c_str());
-		Logger::getInstance().add(szBuf, true);
+
+		Logger & logger = Logger::getInstance();
+		logger.add(szBuf, true);
+		if (logger.getCancelLoading())
+			return;
 
 		vector < string > filenames;
 		//load resources
@@ -262,6 +266,9 @@ namespace Game {
 			resourceTypes.resize(filenames.size());
 
 			for (int i = 0; i < (int) filenames.size(); ++i) {
+				if (logger.getCancelLoading())
+					return;
+
 				str = currentPath + "resources/" + filenames[i];
 				resourceTypes[i].load(str, checksum, &checksumValue,
 					loadedFileList, treePath);
@@ -298,6 +305,8 @@ namespace Game {
 		sleep(0);
 		Window::handleEvent();
 		SDL_PumpEvents();
+		if (logger.getCancelLoading())
+			return;
 
 		//load tech tree xml info
 		try {
@@ -329,6 +338,8 @@ namespace Game {
 				techTreeNode->getChild("attack-types");
 			attackTypes.resize(attackTypesNode->getChildCount());
 			for (int i = 0; i < (int) attackTypes.size(); ++i) {
+				if (logger.getCancelLoading())
+					return;
 				const XmlNode *attackTypeNode =
 					attackTypesNode->getChild("attack-type", i);
 				attackTypes[i].setName(attackTypeNode->getAttribute("name")->
@@ -348,6 +359,9 @@ namespace Game {
 				techTreeNode->getChild("armor-types");
 			armorTypes.resize(armorTypesNode->getChildCount());
 			for (int i = 0; i < (int) armorTypes.size(); ++i) {
+				if (logger.getCancelLoading())
+					return;
+
 				const XmlNode *armorTypeNode =
 					armorTypesNode->getChild("armor-type", i);
 				armorTypes[i].setName(armorTypeNode->getAttribute("name")->
@@ -365,6 +379,9 @@ namespace Game {
 				techTreeNode->getChild("damage-multipliers");
 			for (int i = 0; i < (int) damageMultipliersNode->getChildCount();
 				++i) {
+				if (logger.getCancelLoading())
+					return;
+
 				const XmlNode *damageMultiplierNode =
 					damageMultipliersNode->getChild("damage-multiplier", i);
 				const AttackType *attackType =
@@ -424,10 +441,10 @@ namespace Game {
 						getTranslatedFactionName(name,
 							factionName)).
 					c_str());
-				Logger & logger = Logger::getInstance();
+				if (logger.getCancelLoading())
+					return;
 				logger.setState(szBuf);
-				logger.
-					setProgress((int)
+				logger.setProgress((int)
 					((((double) i) / (double) factions.size()) *
 						100.0));
 

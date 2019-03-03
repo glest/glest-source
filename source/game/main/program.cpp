@@ -671,8 +671,7 @@ namespace Game {
 		}
 
 		programState->addPerformanceCount("programState->updateCamera()",
-			chronoPerformanceCounts.getMillis
-			());
+			chronoPerformanceCounts.getMillis());
 
 		if (showPerfStats) {
 			sprintf(perfBuf,
@@ -706,6 +705,12 @@ namespace Game {
 			updateCount = 0;
 		while (prevState == this->programState && updateTimer.isTime()) {
 			Chrono chronoUpdateLoop;
+
+			/*if (Logger::getInstance().getCancelLoading()) {
+				Logger::getInstance().setCancelLoading(false);
+				printf("hmm");
+				break;
+			}*/
 
 #ifdef DEBUG
 			if (SystemFlags::
@@ -881,8 +886,7 @@ namespace Game {
 			}
 
 			programState->addPerformanceCount("programState->tick()",
-				chronoPerformanceCounts.getMillis
-				());
+				chronoPerformanceCounts.getMillis());
 
 			if (showPerfStats) {
 				sprintf(perfBuf,

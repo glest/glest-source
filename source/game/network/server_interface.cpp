@@ -1911,9 +1911,7 @@ namespace Game {
 		int sleepMillis = Config::getInstance().getInt("NetworkServerLoopGameLoadingCapSleepMillis", "10");
 		int64 lastStatusUpdate = 0;
 
-		while (exitServer == false &&
-			allReady == false &&
-			logger.getCancelLoading() == false) {
+		while (exitServer == false && allReady == false && logger.getCancelLoading() == false) {
 
 			waitLoopIterationCount++;
 			if (waitLoopIterationCount > 0 &&
@@ -2103,11 +2101,10 @@ namespace Game {
 			Shared::Platform::Window::handleEvent();
 		}
 
-		if (logger.getCancelLoading() == true) {
+		if (logger.getCancelLoading()) {
 			Lang &lang = Lang::getInstance();
 			const vector<string> languageList = this->gameSettings.getUniqueNetworkPlayerLanguages();
 			for (unsigned int langIndex = 0; langIndex < languageList.size(); ++langIndex) {
-
 				string sErr = lang.getString("GameCancelledByUser", languageList[langIndex]);
 				bool localEcho = lang.isLanguageLocal(languageList[langIndex]);
 				sendTextMessage(sErr, -1, localEcho, languageList[langIndex]);

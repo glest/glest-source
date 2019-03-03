@@ -963,7 +963,7 @@ namespace Game {
 
 	//places all the opengl lights
 	void Renderer::setupLighting() {
-		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL) {
 			return;
 		}
 
@@ -1067,6 +1067,9 @@ namespace Game {
 	//}
 
 	void Renderer::loadGameCameraMatrix() {
+		if (game == NULL)
+			return;
+
 		const GameCamera *gameCamera = game->getGameCamera();
 
 		glMatrixMode(GL_MODELVIEW);
@@ -1395,6 +1398,9 @@ namespace Game {
 	}
 
 	void Renderer::computeVisibleQuad() {
+		if (gameCamera == NULL)
+			return;
+
 		visibleQuad = this->gameCamera->computeVisibleQuad();
 
 		bool frustumChanged = false;
@@ -1672,7 +1678,7 @@ namespace Game {
 	}
 
 	void Renderer::renderMouse3d() {
-		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL) {
 			return;
 		}
 
@@ -1681,7 +1687,7 @@ namespace Game {
 			return;
 		}
 
-		if (game == NULL) {
+		/*if (game == NULL) {
 			char szBuf[8096] = "";
 			snprintf(szBuf, 8096, "In [%s::%s] Line: %d game == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 			throw game_runtime_error(szBuf);
@@ -1693,16 +1699,16 @@ namespace Game {
 			char szBuf[8096] = "";
 			snprintf(szBuf, 8096, "In [%s::%s] Line: %d game->getGui()->getMouse3d() == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 			throw game_runtime_error(szBuf);
-		}
+		}*/
 
 		const Gui *gui = game->getGui();
 		const Mouse3d *mouse3d = gui->getMouse3d();
 		const Map *map = game->getWorld()->getMap();
-		if (map == NULL) {
+		/*if (map == NULL) {
 			char szBuf[8096] = "";
 			snprintf(szBuf, 8096, "In [%s::%s] Line: %d map == NULL", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 			throw game_runtime_error(szBuf);
-		}
+		}*/
 
 		assertGl();
 
@@ -2186,7 +2192,7 @@ namespace Game {
 
 
 	void Renderer::renderPerformanceStats() {
-		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL) {
 			return;
 		}
 
@@ -2222,7 +2228,7 @@ namespace Game {
 	}
 
 	void Renderer::renderClock() {
-		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL) {
 			return;
 		}
 
@@ -2294,7 +2300,7 @@ namespace Game {
 	}
 
 	void Renderer::renderResourceStatus() {
-		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL) {
 			return;
 		}
 
@@ -2501,9 +2507,12 @@ namespace Game {
 		string str = intToStr(r->getAmount());
 
 		glEnable(GL_TEXTURE_2D);
+		Vec4f resourceFontColor = Vec4f(1.f, 1.f, 1.f, 1.f);
+		if (game == NULL) {
+			const Vec4f fontColor = game->getGui()->getDisplay()->getColor();
+			resourceFontColor = fontColor;
+		}
 
-		const Vec4f fontColor = game->getGui()->getDisplay()->getColor();
-		Vec4f resourceFontColor = fontColor;
 
 		bool isNegativeConsumableDisplayCycle = false;
 		if (rt->getClass() == rcConsumable) {
@@ -2565,9 +2574,8 @@ namespace Game {
 	}
 
 	void Renderer::renderSelectionQuad() {
-		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL)
 			return;
-		}
 
 		Config &config = Config::getInstance();
 		if (config.getBool("RecordMode", "false") == true) {
@@ -2610,7 +2618,6 @@ namespace Game {
 
 	Vec2i computeCenteredPos(const string &text, Font2D *font, int x, int y) {
 		if (font == NULL) {
-			//abort();
 			throw game_runtime_error("font == NULL (1) text = " + text);
 		}
 		const Metrics &metrics = Metrics::getInstance();
@@ -2655,6 +2662,8 @@ namespace Game {
 
 	void Renderer::renderTextSurroundingBox(int x, int y, int w, int h,
 		int maxEditWidth, int maxEditRenderWidth) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true)
+			return;
 		//glColor4fv(color.ptr());
 		//glBegin(GL_QUADS); // Start drawing a quad primitive
 
@@ -4328,11 +4337,11 @@ namespace Game {
 	}
 
 	void Renderer::renderSurface(const int renderFps) {
-		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL) {
 			return;
 		}
 
-	assertGl();
+		assertGl();
 
 		const World *world = game->getWorld();
 		const Map *map = world->getMap();
@@ -4741,7 +4750,7 @@ namespace Game {
 	}
 
 	void Renderer::renderObjects(const int renderFps) {
-		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL) {
 			return;
 		}
 
@@ -4840,9 +4849,8 @@ namespace Game {
 	}
 
 	void Renderer::renderWater() {
-		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL)
 			return;
-		}
 
 		const World *world = game->getWorld();
 		const Map *map = world->getMap();
@@ -5090,6 +5098,8 @@ namespace Game {
 	}
 
 	void Renderer::renderGhostModel(const UnitType *building, const Vec2i pos, CardinalDir facing, Vec4f *forceColor) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL)
+			return;
 		//const UnitType *building= gui->getBuilding();
 		//const Vec2i &pos= gui->getPosObjWorld();
 
@@ -5240,7 +5250,7 @@ namespace Game {
 				glPopMatrix();
 				unit->setVisible(true);
 
-				if (showDebugUI == true &&
+				if (game != NULL && showDebugUI == true &&
 					(showDebugUILevel & debugui_unit_titles) == debugui_unit_titles) {
 
 					unit->setScreenPos(computeScreenPosition(currVec));
@@ -5336,9 +5346,8 @@ namespace Game {
 	}
 
 	void Renderer::renderMorphEffects() {
-		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL)
 			return;
-		}
 
 		VisibleQuadContainerCache &qCache = getQuadCache();
 		if (qCache.visibleQuadUnitList.empty() == false) {
@@ -5395,9 +5404,8 @@ namespace Game {
 
 
 	void Renderer::renderSelectionEffects(int healthbarMode) {
-		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL)
 			return;
-		}
 
 		Config &config = Config::getInstance();
 		if (config.getBool("RecordMode", "false") == true) {
@@ -5704,6 +5712,9 @@ namespace Game {
 	}
 
 	bool Renderer::isHealthBarVisible(const Unit *unit, int healthbarMode) {
+		if (game == NULL)
+			return false;
+
 		int healthbarVisible = hbvUndefined;
 		//check options (hotkey)
 		if (healthbarMode == hbvUndefined) {
@@ -5733,9 +5744,8 @@ namespace Game {
 	}
 
 	void Renderer::renderWaterEffects() {
-		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL)
 			return;
-		}
 
 		const World *world = game->getWorld();
 		const WaterEffects *we = world->getWaterEffects();
@@ -5832,9 +5842,8 @@ namespace Game {
 	}
 
 	void Renderer::renderHud() {
-		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL)
 			return;
-		}
 
 		Texture2D *hudTexture = game->getGui()->getHudTexture();
 		if (hudTexture != NULL) {
@@ -5844,9 +5853,8 @@ namespace Game {
 	}
 
 	void Renderer::renderMinimap() {
-		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL)
 			return;
-		}
 
 		const World *world = game->getWorld();
 		const Minimap *minimap = world->getMinimap();
@@ -6176,9 +6184,9 @@ namespace Game {
 	}
 
 	void Renderer::renderHighlightedCellsOnMinimap() {
-		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL)
 			return;
-		}
+
 		// Draw marked cells
 		const std::vector<MarkedCell> *highlightedCells = game->getHighlightedCells();
 		if (highlightedCells->empty() == false) {
@@ -6226,6 +6234,9 @@ namespace Game {
 	}
 
 	void Renderer::renderMarkedCellsOnMinimap() {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL)
+			return;
+
 		// Draw marked cells
 		std::map<Vec2i, MarkedCell> markedCells = game->getMapMarkedCellList();
 		if (markedCells.empty() == false) {
@@ -6307,9 +6318,8 @@ namespace Game {
 		}
 	}
 	void Renderer::renderVisibleMarkedCells(bool renderTextHint, int x, int y) {
-		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL)
 			return;
-		}
 
 		// Draw marked cells
 		std::map<Vec2i, MarkedCell> markedCells = game->getMapMarkedCellList();
@@ -6424,9 +6434,8 @@ namespace Game {
 	}
 
 	void Renderer::renderDisplay() {
-		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true) {
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == true || game == NULL)
 			return;
-		}
 
 		CoreData &coreData = CoreData::getInstance();
 		const Metrics &metrics = Metrics::getInstance();
@@ -6800,6 +6809,9 @@ namespace Game {
 	// ==================== computing ====================
 
 	bool Renderer::ccomputePosition(const Vec2i &screenPos, Vec2i &worldPos, bool exactCoords) {
+		if (game == NULL)
+			return false;
+
 		assertGl();
 		const Map* map = game->getWorld()->getMap();
 		const Metrics &metrics = Metrics::getInstance();
@@ -7205,11 +7217,10 @@ namespace Game {
 
 				//assertGl();
 
-				if (nearestLightPos.w == 0.f) {
+				if (nearestLightPos.w == 0.f && game != NULL) {
 					//directional light
 
 					//light pos
-					assert(game != NULL);
 					assert(game->getWorld() != NULL);
 					const TimeFlow *tf = game->getWorld()->getTimeFlow();
 					assert(tf != NULL);
@@ -7419,36 +7430,37 @@ namespace Game {
 	}
 
 	void Renderer::autoConfig() {
-		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false) {
-			Config &config = Config::getInstance();
+		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled())
+			return;
 
-			bool nvidiaCard = toLower(getGlVendor()).find("nvidia") != string::npos;
-			bool atiCard = toLower(getGlVendor()).find("ati") != string::npos;
-			//bool shadowExtensions = isGlExtensionSupported("GL_ARB_shadow") && isGlExtensionSupported("GL_ARB_shadow_ambient");
-			bool shadowExtensions = isGlExtensionSupported("GL_ARB_shadow");
+		Config &config = Config::getInstance();
 
-			//3D textures
-			config.setBool("Textures3D", isGlExtensionSupported("GL_EXT_texture3D"));
+		bool nvidiaCard = toLower(getGlVendor()).find("nvidia") != string::npos;
+		bool atiCard = toLower(getGlVendor()).find("ati") != string::npos;
+		//bool shadowExtensions = isGlExtensionSupported("GL_ARB_shadow") && isGlExtensionSupported("GL_ARB_shadow_ambient");
+		bool shadowExtensions = isGlExtensionSupported("GL_ARB_shadow");
 
-			//shadows
-			string shadows = "";
-			if (getGlMaxTextureUnits() >= 3) {
-				if (nvidiaCard && shadowExtensions) {
-					shadows = shadowsToStr(sShadowMapping);
-				} else {
-					shadows = shadowsToStr(sProjected);
-				}
+		//3D textures
+		config.setBool("Textures3D", isGlExtensionSupported("GL_EXT_texture3D"));
+
+		//shadows
+		string shadows = "";
+		if (getGlMaxTextureUnits() >= 3) {
+			if (nvidiaCard && shadowExtensions) {
+				shadows = shadowsToStr(sShadowMapping);
 			} else {
-				shadows = shadowsToStr(sDisabled);
+				shadows = shadowsToStr(sProjected);
 			}
-			config.setString("Shadows", shadows);
-
-			//lights
-			config.setInt("MaxLights", atiCard ? 1 : 8);
-
-			//filter
-			config.setString("Filter", "Bilinear");
+		} else {
+			shadows = shadowsToStr(sDisabled);
 		}
+		config.setString("Shadows", shadows);
+
+		//lights
+		config.setInt("MaxLights", atiCard ? 1 : 8);
+
+		//filter
+		config.setString("Filter", "Bilinear");
 	}
 
 	void Renderer::clearBuffers() {
@@ -7605,7 +7617,6 @@ namespace Game {
 			return unitsList;
 		}
 
-		assert(game != NULL);
 		//const World *world= game->getWorld();
 		//assert(world != NULL);
 
@@ -9172,6 +9183,9 @@ namespace Game {
 	}
 
 	void Renderer::updateMarkedCellScreenPosQuadCache(Vec2i pos) {
+		if (game == NULL)
+			return;
+
 		const World *world = game->getWorld();
 		const Map *map = world->getMap();
 
