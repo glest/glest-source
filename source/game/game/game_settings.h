@@ -61,9 +61,9 @@ namespace Game {
 			description;
 		string
 			count;                  // used for faction count for example
-		string
+		uint32
 			crc;
-		string
+		uint32
 			localCRC;
 		ModType
 			type;

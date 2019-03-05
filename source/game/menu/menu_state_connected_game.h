@@ -339,7 +339,7 @@ namespace Game {
 		string refreshTilesetModInfo(string tilesetInfo);
 		string refreshTechModInfo(string techInfo);
 		string refreshMapModInfo(string mapInfo);
-		string getMapCRC(string mapName);
+		uint32 getMapCRC(string mapName);
 
 		void disconnectFromServer();
 	};

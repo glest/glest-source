@@ -56,7 +56,7 @@ namespace Game {
 		imageUrl = "";
 		description = "";
 		count = "";
-		crc = "";
+		crc = 0;
 		type = mt_None;
 	}
 
@@ -1127,7 +1127,7 @@ namespace Game {
 			ModInfo modinfo;
 			modinfo.name = techInfoList[0];
 			modinfo.count = techInfoList[1];
-			modinfo.crc = techInfoList[2];
+			modinfo.crc = strToUInt(techInfoList[2]);
 			modinfo.description = techInfoList[3];
 			modinfo.url = techInfoList[4];
 			modinfo.imageUrl = techInfoList[5];
@@ -1156,10 +1156,10 @@ namespace Game {
 								NULL, forceRefresh);
 					}
 				}
-				modinfo.localCRC = uIntToStr(crc);
+				modinfo.localCRC = crc;
 				//printf("itemPath='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
 			} else {
-				modinfo.localCRC = "";
+				modinfo.localCRC = 0;
 			}
 			techCacheList[modinfo.name] = modinfo;
 			return modinfo.name;
@@ -1195,7 +1195,7 @@ namespace Game {
 			Config & config = Config::getInstance();
 			ModInfo modinfo;
 			modinfo.name = tilesetInfoList[0];
-			modinfo.crc = tilesetInfoList[1];
+			modinfo.crc = strToUInt(tilesetInfoList[1]);
 			modinfo.description = tilesetInfoList[2];
 			modinfo.url = tilesetInfoList[3];
 			modinfo.imageUrl = tilesetInfoList[4];
@@ -1224,12 +1224,12 @@ namespace Game {
 								NULL, forceRefresh);
 					}
 				}
-				modinfo.localCRC = uIntToStr(crc);
+				modinfo.localCRC = crc;
 				//printf("itemPath='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
 
 				//printf("#1 refreshTilesetModInfo name [%s] modInfo.crc [%s] modInfo.localCRC [%s]\n",modinfo.name.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str());
 			} else {
-				modinfo.localCRC = "";
+				modinfo.localCRC = 0;
 
 				//printf("#2 refreshTilesetModInfo name [%s] modInfo.crc [%s] modInfo.localCRC [%s]\n",modinfo.name.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str());
 			}
@@ -1248,9 +1248,7 @@ namespace Game {
 	}
 
 	void MenuStateMods::getMapsLocalList() {
-
-		/*
-			Config &config = Config::getInstance();
+		/*	Config &config = Config::getInstance();
 			vector<string> results;
 			set<string> allMaps;
 			findAll(config.getPathListForType(ptMaps), "*.gbm", results, false, false);
@@ -1312,7 +1310,7 @@ namespace Game {
 			ModInfo modinfo;
 			modinfo.name = mapInfoList[0];
 			modinfo.count = mapInfoList[1];
-			modinfo.crc = mapInfoList[2];
+			modinfo.crc = strToUInt(mapInfoList[2]);
 			modinfo.description = mapInfoList[3];
 			modinfo.url = mapInfoList[4];
 			modinfo.imageUrl = mapInfoList[5];
@@ -1324,31 +1322,29 @@ namespace Game {
 		return "";
 	}
 
-	string MenuStateMods::getMapCRC(string mapName) {
+	uint32 MenuStateMods::getMapCRC(string mapName) {
 		Config & config = Config::getInstance();
 		vector < string > mappaths = config.getPathListForType(ptMaps, "");
-		string result = "";
+		uint32 result;
 		if (mappaths.empty() == false) {
 			Checksum checksum;
 			string itemPath = mappaths[1] + "/" + mapName;
 			if (fileExists(itemPath)) {
 				checksum.addFile(itemPath);
-				uint32 crc = checksum.getSum();
-				result = uIntToStr(crc);
+				result = checksum.getSum();
 				//printf("itemPath='%s' modinfo.name='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.name.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
 			} else {
 				itemPath = mappaths[0] + "/" + mapName;
 				if (fileExists(itemPath)) {
 					checksum.addFile(itemPath);
-					uint32 crc = checksum.getSum();
-					result = uIntToStr(crc);
+					result = checksum.getSum();
 					//printf("itemPath='%s' modinfo.name='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.name.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
 				} else {
-					result = "";
+					result = 0;
 				}
 			}
 		} else {
-			result = "";
+			result = 0;
 		}
 		return result;
 	}
@@ -1381,7 +1377,7 @@ namespace Game {
 			Config & config = Config::getInstance();
 			ModInfo modinfo;
 			modinfo.name = scenarioInfoList[0];
-			modinfo.crc = scenarioInfoList[1];
+			modinfo.crc = strToUInt(scenarioInfoList[1]);
 			modinfo.description = scenarioInfoList[2];
 			modinfo.url = scenarioInfoList[3];
 			modinfo.imageUrl = scenarioInfoList[4];
@@ -1410,10 +1406,10 @@ namespace Game {
 								NULL, forceRefresh);
 					}
 				}
-				modinfo.localCRC = uIntToStr(crc);
+				modinfo.localCRC = crc;
 				//printf(" itemPath='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
 			} else {
-				modinfo.localCRC = "";
+				modinfo.localCRC = 0;
 			}
 			scenarioCacheList[modinfo.name] = modinfo;
 			return modinfo.name;
@@ -1999,8 +1995,8 @@ namespace Game {
 						ModInfo & modInfo = techCacheList[selectedTechName];
 
 						if (SystemFlags::VERBOSE_MODE_ENABLED)
-							printf("In [%s::%s Line %d] remote CRC [%s]\n", __FILE__,
-								__FUNCTION__, __LINE__, modInfo.crc.c_str());
+							printf("In [%s::%s Line %d] remote CRC [%u]\n", __FILE__,
+								__FUNCTION__, __LINE__, modInfo.crc);
 
 						Config & config = Config::getInstance();
 						string itemPath =
@@ -2009,11 +2005,9 @@ namespace Game {
 							string("/*");
 						bool forceRefresh =
 							(mapCRCUpdateList.find(itemPath) == mapCRCUpdateList.end());
-						if (strToUInt(modInfo.crc) != 0
-							&& strToUInt(modInfo.crc) !=
+						if (modInfo.crc != 0 && modInfo.crc !=
 							getFolderTreeContentsCheckSumRecursively(itemPath, ".xml",
-								NULL,
-								forceRefresh)) {
+								NULL, forceRefresh)) {
 							if (SystemFlags::VERBOSE_MODE_ENABLED)
 								printf("In [%s::%s Line %d] local CRC [%u]\n", __FILE__,
 									__FUNCTION__, __LINE__,
@@ -2116,8 +2110,8 @@ namespace Game {
 					if (remoteHasTileset) {
 						ModInfo & modInfo = tilesetCacheList[selectedTilesetName];
 						if (SystemFlags::VERBOSE_MODE_ENABLED)
-							printf("In [%s::%s Line %d] remote CRC [%s]\n", __FILE__,
-								__FUNCTION__, __LINE__, modInfo.crc.c_str());
+							printf("In [%s::%s Line %d] remote CRC [%u]\n", __FILE__,
+								__FUNCTION__, __LINE__, modInfo.crc);
 
 						Config & config = Config::getInstance();
 						string itemPath =
@@ -2127,8 +2121,7 @@ namespace Game {
 						bool forceRefresh =
 							(mapCRCUpdateList.find(itemPath) == mapCRCUpdateList.end());
 
-						if (strToUInt(modInfo.crc) != 0 &&
-							strToUInt(modInfo.crc) !=
+						if (modInfo.crc != 0 && modInfo.crc !=
 							getFolderTreeContentsCheckSumRecursively(itemPath, ".xml",
 								NULL,
 								forceRefresh)) {
@@ -2325,8 +2318,8 @@ namespace Game {
 					if (remoteHasScenario) {
 						ModInfo & modInfo = scenarioCacheList[selectedScenarioName];
 						if (SystemFlags::VERBOSE_MODE_ENABLED)
-							printf("In [%s::%s Line %d] remote CRC [%s]\n", __FILE__,
-								__FUNCTION__, __LINE__, modInfo.crc.c_str());
+							printf("In [%s::%s Line %d] remote CRC [%u]\n", __FILE__,
+								__FUNCTION__, __LINE__, modInfo.crc);
 
 						Config & config = Config::getInstance();
 						string itemPath =
@@ -2336,8 +2329,7 @@ namespace Game {
 						bool forceRefresh =
 							(mapCRCUpdateList.find(itemPath) == mapCRCUpdateList.end());
 
-						if (strToUInt(modInfo.crc) != 0 &&
-							strToUInt(modInfo.crc) !=
+						if (modInfo.crc != 0 && modInfo.crc !=
 							getFolderTreeContentsCheckSumRecursively(itemPath, "",
 								NULL,
 								forceRefresh)) {
@@ -2446,7 +2438,7 @@ namespace Game {
 								(mapCacheList.find(mapName) != mapCacheList.end());
 							if (remoteHasMap) {
 								showRemoteDesription(&mapCacheList[selectedMapName]);
-								if (mapCacheList[selectedMapName].localCRC != "") {
+								if (mapCacheList[selectedMapName].localCRC != 0) {
 									loadMapPreview(mapName);
 								}
 							} else {

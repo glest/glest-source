@@ -1096,7 +1096,7 @@ namespace Game {
 			Config & config = Config::getInstance();
 			ModInfo modinfo;
 			modinfo.name = tilesetInfoList[0];
-			modinfo.crc = tilesetInfoList[1];
+			modinfo.crc = strToUInt(tilesetInfoList[1]);
 			modinfo.description = tilesetInfoList[2];
 			modinfo.url = tilesetInfoList[3];
 			modinfo.imageUrl = tilesetInfoList[4];
@@ -1128,12 +1128,12 @@ namespace Game {
 								NULL, forceRefresh);
 					}
 				}
-				modinfo.localCRC = uIntToStr(crc);
+				modinfo.localCRC = crc;
 				//printf("itemPath='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
 
 				//printf("#1 refreshTilesetModInfo name [%s] modInfo.crc [%s] modInfo.localCRC [%s]\n",modinfo.name.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str());
 			} else {
-				modinfo.localCRC = "";
+				modinfo.localCRC = 0;
 
 				//printf("#2 refreshTilesetModInfo name [%s] modInfo.crc [%s] modInfo.localCRC [%s]\n",modinfo.name.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str());
 			}
@@ -1152,7 +1152,7 @@ namespace Game {
 			ModInfo modinfo;
 			modinfo.name = techInfoList[0];
 			modinfo.count = techInfoList[1];
-			modinfo.crc = techInfoList[2];
+			modinfo.crc = strToUInt(techInfoList[2]);
 			modinfo.description = techInfoList[3];
 			modinfo.url = techInfoList[4];
 			modinfo.imageUrl = techInfoList[5];
@@ -1184,10 +1184,10 @@ namespace Game {
 								NULL, forceRefresh);
 					}
 				}
-				modinfo.localCRC = uIntToStr(crc);
+				modinfo.localCRC = crc;
 				//printf("itemPath='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
 			} else {
-				modinfo.localCRC = "";
+				modinfo.localCRC = 0;
 			}
 			techCacheList[modinfo.name] = modinfo;
 			return modinfo.name;
@@ -1195,31 +1195,29 @@ namespace Game {
 		return "";
 	}
 
-	string MenuStateConnectedGame::getMapCRC(string mapName) {
+	uint32 MenuStateConnectedGame::getMapCRC(string mapName) {
 		Config & config = Config::getInstance();
 		vector < string > mappaths = config.getPathListForType(ptMaps, "");
-		string result = "";
+		uint32 result;
 		if (mappaths.empty() == false) {
 			Checksum checksum;
 			string itemPath = mappaths[1] + "/" + mapName;
 			if (fileExists(itemPath)) {
 				checksum.addFile(itemPath);
-				uint32 crc = checksum.getSum();
-				result = uIntToStr(crc);
+				result = checksum.getSum();
 				//printf("itemPath='%s' modinfo.name='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.name.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
 			} else {
 				itemPath = mappaths[0] + "/" + mapName;
 				if (fileExists(itemPath)) {
 					checksum.addFile(itemPath);
-					uint32 crc = checksum.getSum();
-					result = uIntToStr(crc);
+					result = checksum.getSum();
 					//printf("itemPath='%s' modinfo.name='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.name.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
 				} else {
-					result = "";
+					result = 0;
 				}
 			}
 		} else {
-			result = "";
+			result = 0;
 		}
 		return result;
 	}
@@ -1232,7 +1230,7 @@ namespace Game {
 			ModInfo modinfo;
 			modinfo.name = mapInfoList[0];
 			modinfo.count = mapInfoList[1];
-			modinfo.crc = mapInfoList[2];
+			modinfo.crc = strToUInt(mapInfoList[2]);
 			modinfo.description = mapInfoList[3];
 			modinfo.url = mapInfoList[4];
 			modinfo.imageUrl = mapInfoList[5];

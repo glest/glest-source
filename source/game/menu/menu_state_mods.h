@@ -180,7 +180,7 @@ namespace Game {
 		void getMapsLocalList();
 		string refreshMapModInfo(string mapInfo);
 		void refreshMaps();
-		string getMapCRC(string mapName);
+		uint32 getMapCRC(string mapName);
 
 		void getScenariosLocalList();
 		string refreshScenarioModInfo(string scenarioInfo);
