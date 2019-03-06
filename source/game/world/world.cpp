@@ -1453,7 +1453,7 @@ namespace Game {
 		return units;
 	}
 
-	void World::givePositionCommand(int unitId, const string &commandName, const Vec2i &pos) {
+	void World::givePositionCommand(int unitId, const string &commandName, const Vec2i &pos, bool throwOnError) {
 		Unit* unit = findUnitById(unitId);
 		if (unit != NULL) {
 			CommandClass cc;
@@ -1463,17 +1463,22 @@ namespace Game {
 			} else if (commandName == "attack") {
 				cc = ccAttack;
 			} else {
-				throw game_runtime_error("Invalid position command: " + commandName, true);
+				if (throwOnError)
+					throw game_runtime_error("Invalid position command: " + commandName, true);
 			}
 
 			if (unit->getType()->getFirstCtOfClass(cc) == NULL) {
-				throw game_runtime_error("Invalid command: [" + commandName + "] for unit: [" + unit->getType()->getName(false) + "] id [" + intToStr(unit->getId()) + "]", true);
+				if (throwOnError)
+					throw game_runtime_error("Invalid command: [" + commandName + "] for unit: [" + unit->getType()->getName(false) + "] id [" + intToStr(unit->getId()) + "]", true);
+				else
+					return;
 			}
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d] cc = %d Unit [%s]\n", __FILE__, __FUNCTION__, __LINE__, cc, unit->getFullName(false).c_str());
 			unit->giveCommand(new Command(unit->getType()->getFirstCtOfClass(cc), pos));
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 		} else {
-			throw game_runtime_error("Invalid unitId index in givePositionCommand: " + intToStr(unitId) + " commandName = " + commandName, true);
+			if (throwOnError)
+				throw game_runtime_error("Invalid unitId index in givePositionCommand: " + intToStr(unitId) + " commandName = " + commandName, true);
 		}
 	}
 
@@ -1543,7 +1548,7 @@ namespace Game {
 		return (this->disableAttackEffects == false);
 	}
 
-	void World::giveAttackCommand(int unitId, int unitToAttackId) {
+	void World::giveAttackCommand(int unitId, int unitToAttackId, bool throwOnError) {
 		Unit* unit = findUnitById(unitId);
 		if (unit != NULL) {
 			Unit* targetUnit = findUnitById(unitToAttackId);
@@ -1554,17 +1559,20 @@ namespace Game {
 					unit->giveCommand(new Command(ct, targetUnit));
 					if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 				} else {
-					throw game_runtime_error("Invalid ct in giveAttackCommand: " + intToStr(unitId) + " unitToAttackId = " + intToStr(unitToAttackId), true);
+					if (throwOnError)
+						throw game_runtime_error("Invalid ct in giveAttackCommand: " + intToStr(unitId) + " unitToAttackId = " + intToStr(unitToAttackId), true);
 				}
 			} else {
-				throw game_runtime_error("Invalid unitToAttackId index in giveAttackCommand: " + intToStr(unitId) + " unitToAttackId = " + intToStr(unitToAttackId), true);
+				if (throwOnError)
+					throw game_runtime_error("Invalid unitToAttackId index in giveAttackCommand: " + intToStr(unitId) + " unitToAttackId = " + intToStr(unitToAttackId), true);
 			}
 		} else {
-			throw game_runtime_error("Invalid unitId index in giveAttackCommand: " + intToStr(unitId) + " unitToAttackId = " + intToStr(unitToAttackId), true);
+			if (throwOnError)
+				throw game_runtime_error("Invalid unitId index in giveAttackCommand: " + intToStr(unitId) + " unitToAttackId = " + intToStr(unitToAttackId), true);
 		}
 	}
 
-	void World::giveProductionCommand(int unitId, const string &producedName) {
+	void World::giveProductionCommand(int unitId, const string &producedName, bool throwOnError) {
 		//printf("File: %s line: %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__LINE__);
 		Unit *unit = findUnitById(unitId);
 		//printf("File: %s line: %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__LINE__);
@@ -1595,12 +1603,13 @@ namespace Game {
 				}
 			}
 		} else {
-			throw game_runtime_error("Invalid unitId index in giveProductionCommand: " + intToStr(unitId) + " producedName = " + producedName, true);
+			if (throwOnError)
+				throw game_runtime_error("Invalid unitId index in giveProductionCommand: " + intToStr(unitId) + " producedName = " + producedName, true);
 		}
 		//printf("File: %s line: %d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__LINE__);
 	}
 
-	void World::giveAttackStoppedCommand(int unitId, const string &itemName, bool ignoreRequirements) {
+	void World::giveAttackStoppedCommand(int unitId, const string &itemName, bool ignoreRequirements, bool throwOnError) {
 		Unit *unit = findUnitById(unitId);
 		if (unit != NULL) {
 			const UnitType *ut = unit->getType();
@@ -1637,7 +1646,8 @@ namespace Game {
 				}
 			}
 		} else {
-			throw game_runtime_error("Invalid unitId index in giveAttackStoppedCommand: " + intToStr(unitId) + " itemName = " + itemName, true);
+			if (throwOnError)
+				throw game_runtime_error("Invalid unitId index in giveAttackStoppedCommand: " + intToStr(unitId) + " itemName = " + itemName, true);
 		}
 	}
 
@@ -1763,7 +1773,7 @@ namespace Game {
 		return game->getGameSettings()->getFactionTypeName(factionIndex);
 	}
 
-	void World::giveUpgradeCommand(int unitId, const string &upgradeName) {
+	void World::giveUpgradeCommand(int unitId, const string &upgradeName, bool throwOnError) {
 		Unit *unit = findUnitById(unitId);
 		if (unit != NULL) {
 			const UnitType *ut = unit->getType();
@@ -1784,7 +1794,8 @@ namespace Game {
 				}
 			}
 		} else {
-			throw game_runtime_error("Invalid unitId index in giveUpgradeCommand: " + intToStr(unitId) + " upgradeName = " + upgradeName, true);
+			if (throwOnError)
+				throw game_runtime_error("Invalid unitId index in giveUpgradeCommand: " + intToStr(unitId) + " upgradeName = " + upgradeName, true);
 		}
 	}
 

@@ -941,7 +941,7 @@ namespace Shared {
 			this->components = components;
 			deletePixels();
 
-			if (getPixelByteCount() < 0 || (h < 0 || w < 0 || components < 0)) {
+			if (h < 0 || w < 0 || components < 0) {
 				char szBuf[8096];
 				snprintf(szBuf, 8096, "Invalid pixmap dimensions for [%s], h = %d, w = %d, components = %d\n", path.c_str(), h, w, components);
 				throw game_runtime_error(szBuf);

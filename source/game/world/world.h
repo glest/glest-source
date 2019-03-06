@@ -293,14 +293,14 @@ namespace Game {
 		//scripting interface
 		void morphToUnit(int unitId, const string &morphName, bool ignoreRequirements);
 		Unit* createUnit(const string &unitName, int factionIndex, const Vec2i &pos, bool spaciated = true);
-		void givePositionCommand(int unitId, const string &commandName, const Vec2i &pos);
+		void givePositionCommand(int unitId, const string &commandName, const Vec2i &pos, bool throwError = true);
 		vector<int> getUnitsForFaction(int factionIndex, const string& commandTypeName, int field);
 		int getUnitCurrentField(int unitId);
 		bool getIsUnitAlive(int unitId);
-		void giveAttackCommand(int unitId, int unitToAttackId);
-		void giveProductionCommand(int unitId, const string &producedName);
-		void giveUpgradeCommand(int unitId, const string &upgradeName);
-		void giveAttackStoppedCommand(int unitId, const string &itemName, bool ignoreRequirements);
+		void giveAttackCommand(int unitId, int unitToAttackId, bool throwError = true);
+		void giveProductionCommand(int unitId, const string &producedName, bool throwError = true);
+		void giveUpgradeCommand(int unitId, const string &upgradeName, bool throwError = true);
+		void giveAttackStoppedCommand(int unitId, const string &itemName, bool ignoreRequirements, bool throwError = true);
 		void playStaticSound(const string &playSound);
 		void playStreamingSound(const string &playSound);
 		void stopStreamingSound(const string &playSound);

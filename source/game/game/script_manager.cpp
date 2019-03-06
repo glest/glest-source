@@ -521,6 +521,8 @@ namespace Game {
 			"recallGroupSelection");
 		luaScript.registerFunction(removeUnitFromGroupSelection,
 			"removeUnitFromGroupSelection");
+		luaScript.registerFunction(setDebugMode,
+			"setDebugMode");
 		luaScript.registerFunction(setAttackWarningsEnabled,
 			"setAttackWarningsEnabled");
 		luaScript.registerFunction(getAttackWarningsEnabled,
@@ -645,27 +647,29 @@ namespace Game {
 				luaScript.endCall();
 			}
 		} catch (const game_runtime_error & ex) {
-			//string sErrBuf = "";
-			//if(ex.wantStackTrace() == true) {
-			char
-				szErrBuf[8096] = "";
-			//snprintf(szErrBuf,8096,"In [%s::%s %d]",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-			string
-				sErrBuf =
-				string(szErrBuf) +
-				string("The game may no longer be stable!\n\n\t [") +
-				string(ex.what()) + string("]\n");
-			//}
-			SystemFlags::OutputDebug(SystemFlags::debugError, sErrBuf.c_str());
-			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
-				enabled)
-				SystemFlags::OutputDebug(SystemFlags::debugSystem,
-					sErrBuf.c_str());
+			if (debugMode) {
+				//string sErrBuf = "";
+				//if(ex.wantStackTrace() == true) {
+				char
+					szErrBuf[8096] = "";
+				//snprintf(szErrBuf,8096,"In [%s::%s %d]",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
+				string
+					sErrBuf =
+					string(szErrBuf) +
+					string("The game may no longer be stable!\n\n\t [") +
+					string(ex.what()) + string("]\n");
+				//}
+				SystemFlags::OutputDebug(SystemFlags::debugError, sErrBuf.c_str());
+				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
+					enabled)
+					SystemFlags::OutputDebug(SystemFlags::debugSystem,
+						sErrBuf.c_str());
 
-			thisScriptManager->
-				addMessageToQueue(ScriptManagerMessage
-				(sErrBuf.c_str(), "error", -1, -1, true));
-			thisScriptManager->onMessageBoxOk(false);
+				thisScriptManager->
+					addMessageToQueue(ScriptManagerMessage
+					(sErrBuf.c_str(), "error", -1, -1, true));
+				thisScriptManager->onMessageBoxOk(false);
+			}
 		}
 		if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled)
 			SystemFlags::OutputDebug(SystemFlags::debugLUA,
@@ -1695,15 +1699,21 @@ namespace Game {
 	}
 
 	int
-		ScriptManager::createUnit(const string & unitName, int factionIndex,
-			Vec2i pos) {
+		ScriptManager::createUnit(const string & unitName, int factionIndex, Vec2i pos) {
 		if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled)
 			SystemFlags::OutputDebug(SystemFlags::debugLUA,
 				"In [%s::%s Line: %d] unit [%s] factionIndex = %d\n",
 				extractFileFromDirectoryPath(__FILE__).
 				c_str(), __FUNCTION__, __LINE__,
 				unitName.c_str(), factionIndex);
-		return world->createUnit(unitName, factionIndex, pos)->getId();
+		Unit* unit = world->createUnit(unitName, factionIndex, pos);
+		if (unit == NULL) {
+			if (debugMode)
+				return 0;
+			else
+				throw game_runtime_error((string("Unit ") + unitName + " was not created successfully for faction ") + to_string(factionIndex) + (" at " + pos.getString()));
+		} else
+			return unit->getId();
 	}
 
 	int
@@ -1715,7 +1725,14 @@ namespace Game {
 				extractFileFromDirectoryPath(__FILE__).
 				c_str(), __FUNCTION__, __LINE__,
 				unitName.c_str(), factionIndex);
-		return world->createUnit(unitName, factionIndex, pos, false)->getId();
+		Unit* unit = world->createUnit(unitName, factionIndex, pos, false);
+		if (unit == NULL) {
+			if (debugMode)
+				return 0;
+			else
+				throw game_runtime_error((string("Unit ") + unitName + " was not created successfully for faction ") + to_string(factionIndex) + (" at " + pos.getString()));
+		} else
+			return unit->getId();
 	}
 
 	void
@@ -1753,12 +1770,7 @@ namespace Game {
 			unit = world->findUnitById(unitId);
 		if (unit != NULL) {
 			// Make sure they die
-			bool
-				unit_dead = unit->decHp(unit->getHp() * unit->getHp());
-			if (unit_dead == false) {
-				throw
-					game_runtime_error("unit_dead == false", true);
-			}
+			bool unit_dead = unit->decHp(unit->getHp() * unit->getHp());
 			unit->kill();
 			// If called from an existing die event we get a stack overflow
 			//onUnitDied(unit);
@@ -1922,7 +1934,7 @@ namespace Game {
 				extractFileFromDirectoryPath(__FILE__).
 				c_str(), __FUNCTION__, __LINE__);
 
-		world->givePositionCommand(unitId, commandName, pos);
+		world->givePositionCommand(unitId, commandName, pos, debugMode);
 	}
 
 	void
@@ -1933,7 +1945,7 @@ namespace Game {
 				extractFileFromDirectoryPath(__FILE__).
 				c_str(), __FUNCTION__, __LINE__);
 
-		world->giveAttackCommand(unitId, unitToAttackId);
+		world->giveAttackCommand(unitId, unitToAttackId, debugMode);
 	}
 
 	void
@@ -1945,7 +1957,7 @@ namespace Game {
 				extractFileFromDirectoryPath(__FILE__).
 				c_str(), __FUNCTION__, __LINE__);
 
-		world->giveProductionCommand(unitId, producedName);
+		world->giveProductionCommand(unitId, producedName, debugMode);
 	}
 
 	void
@@ -1957,7 +1969,7 @@ namespace Game {
 				extractFileFromDirectoryPath(__FILE__).
 				c_str(), __FUNCTION__, __LINE__);
 
-		world->giveUpgradeCommand(unitId, producedName);
+		world->giveUpgradeCommand(unitId, producedName, debugMode);
 	}
 
 	void
@@ -1970,8 +1982,7 @@ namespace Game {
 				extractFileFromDirectoryPath(__FILE__).
 				c_str(), __FUNCTION__, __LINE__);
 
-		world->giveAttackStoppedCommand(unitId, itemName,
-			(ignoreRequirements == 1));
+		world->giveAttackStoppedCommand(unitId, itemName, (ignoreRequirements == 1), debugMode);
 	}
 
 	void
@@ -3056,6 +3067,17 @@ namespace Game {
 				c_str(), __FUNCTION__, __LINE__);
 
 		world->removeUnitFromGroupSelection(unitId, groupIndex);
+	}
+
+	void
+		ScriptManager::setDebugMode(bool enabled) {
+		if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled)
+			SystemFlags::OutputDebug(SystemFlags::debugLUA,
+				"In [%s::%s Line: %d]\n",
+				extractFileFromDirectoryPath(__FILE__).
+				c_str(), __FUNCTION__, __LINE__);
+
+		debugMode = enabled;
 	}
 
 	void
@@ -5808,6 +5830,21 @@ namespace Game {
 				getInt(-2),
 				luaArguments.
 				getInt(-1));
+		} catch (const game_runtime_error & ex) {
+			error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
+		}
+
+		return luaArguments.getReturnCount();
+	}
+
+	int
+		ScriptManager::setDebugMode(LuaHandle * luaHandle) {
+		LuaArguments
+			luaArguments(luaHandle);
+		try {
+			thisScriptManager->
+				setDebugMode((luaArguments.getInt(-1) ==
+					0 ? false : true));
 		} catch (const game_runtime_error & ex) {
 			error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 		}

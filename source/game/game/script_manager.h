@@ -59,16 +59,11 @@ namespace Game {
 	class
 		ScriptManagerMessage {
 	private:
-		string
-			text;
-		string
-			header;
-		int
-			factionIndex;
-		int
-			teamIndex;
-		bool
-			messageNotTranslated;
+		string text;
+		string header;
+		int factionIndex;
+		int teamIndex;
+		bool messageNotTranslated;
 
 	public:
 		ScriptManagerMessage();
@@ -312,8 +307,7 @@ namespace Game {
 			lastAttackingUnitId;
 
 		// end game state
-		bool
-			gameOver;
+		bool gameOver, debugMode;
 		bool
 			gameWon;
 		PlayerModifiers
@@ -732,6 +726,8 @@ namespace Game {
 		void
 			removeUnitFromGroupSelection(int unitId, int group);
 		void
+			setDebugMode(bool enabled);
+		void
 			setAttackWarningsEnabled(bool enabled);
 		bool
 			getAttackWarningsEnabled();
@@ -1051,6 +1047,8 @@ namespace Game {
 			recallGroupSelection(LuaHandle * luaHandle);
 		static int
 			removeUnitFromGroupSelection(LuaHandle * luaHandle);
+		static int
+			setDebugMode(LuaHandle * luaHandle);
 		static int
 			setAttackWarningsEnabled(LuaHandle * luaHandle);
 		static int
