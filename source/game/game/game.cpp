@@ -3864,31 +3864,12 @@ namespace Game {
 						this->resetMembers();
 						this->load();
 						if (logger.getCancelLoading()) {
-							Lang &lang = Lang::getInstance();
-							const vector<string> languageList = this->gameSettings.getUniqueNetworkPlayerLanguages();
-							for (unsigned int langIndex = 0; langIndex < languageList.size(); ++langIndex) {
-								string sErr = lang.getString("GameCancelledByUser", languageList[langIndex]);
-								bool localEcho = lang.isLanguageLocal(languageList[langIndex]);
-								//sendTextMessage(sErr, -1, localEcho, languageList[langIndex]);
-								/*GameNetworkInterface* gameNetworkInterface = NetworkManager::getInstance().getGameNetworkInterface();
-								if (gameNetworkInterface != NULL)
-									gameNetworkInterface->sendTextMessage(sErr, -1, localEcho, languageList[langIndex]); */
-								printf("\niuieioeioeui\n");
-							}
 							quitGame();
 							logger.setCancelLoading(false);
 							return;
 						}
 						this->init();
 						if (logger.getCancelLoading()) {
-							Lang &lang = Lang::getInstance();
-							const vector<string> languageList = this->gameSettings.getUniqueNetworkPlayerLanguages();
-							for (unsigned int langIndex = 0; langIndex < languageList.size(); ++langIndex) {
-								string sErr = lang.getString("GameCancelledByUser", languageList[langIndex]);
-								bool localEcho = lang.isLanguageLocal(languageList[langIndex]);
-								//sendTextMessage(sErr, -1, localEcho, languageList[langIndex]);
-								printf("\niuieioeioeui\n");
-							}
 							quitGame();
 							logger.setCancelLoading(false);
 							return;
@@ -3912,14 +3893,6 @@ namespace Game {
 						this->load(lgt_FactionPreview | lgt_TileSet | lgt_Map |
 							lgt_Scenario);
 						if (logger.getCancelLoading()) {
-							Lang &lang = Lang::getInstance();
-							const vector<string> languageList = this->gameSettings.getUniqueNetworkPlayerLanguages();
-							for (unsigned int langIndex = 0; langIndex < languageList.size(); ++langIndex) {
-								string sErr = lang.getString("GameCancelledByUser", languageList[langIndex]);
-								bool localEcho = lang.isLanguageLocal(languageList[langIndex]);
-								//sendTextMessage(sErr, -1, localEcho, languageList[langIndex]);
-								printf("\niuieioeioeui\n");
-							}
 							quitGame();
 							logger.setCancelLoading(false);
 							return;
@@ -3943,14 +3916,6 @@ namespace Game {
 							}
 						}
 						if (logger.getCancelLoading()) {
-							Lang &lang = Lang::getInstance();
-							const vector<string> languageList = this->gameSettings.getUniqueNetworkPlayerLanguages();
-							for (unsigned int langIndex = 0; langIndex < languageList.size(); ++langIndex) {
-								string sErr = lang.getString("GameCancelledByUser", languageList[langIndex]);
-								bool localEcho = lang.isLanguageLocal(languageList[langIndex]);
-								//sendTextMessage(sErr, -1, localEcho, languageList[langIndex]);
-								printf("\niuieioeioeui\n");
-							}
 							quitGame();
 							logger.setCancelLoading(false);
 							return;
