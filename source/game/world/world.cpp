@@ -1465,6 +1465,8 @@ namespace Game {
 			} else {
 				if (throwOnError)
 					throw game_runtime_error("Invalid position command: " + commandName, true);
+				else
+					return;
 			}
 
 			if (unit->getType()->getFirstCtOfClass(cc) == NULL) {

@@ -1769,8 +1769,6 @@ namespace Game {
 		Unit *
 			unit = world->findUnitById(unitId);
 		if (unit != NULL) {
-			// Make sure they die
-			bool unit_dead = unit->decHp(unit->getHp() * unit->getHp());
 			unit->kill();
 			// If called from an existing die event we get a stack overflow
 			//onUnitDied(unit);
