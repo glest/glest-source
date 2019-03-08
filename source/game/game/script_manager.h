@@ -374,8 +374,7 @@ namespace Game {
 	public:
 
 		ScriptManager();
-		~
-			ScriptManager();
+		~ScriptManager();
 		void
 			init(World * world, GameCamera * gameCamera, const XmlNode * rootNode);
 

@@ -282,6 +282,7 @@ namespace Game {
 		lastAttackingUnitId = 0;
 		gameOver = false;
 		gameWon = false;
+		debugMode = false;
 		currentTimerTriggeredEventId = 0;
 		currentCellTriggeredEventId = 0;
 		currentCellTriggeredEventUnitId = 0;
@@ -359,8 +360,7 @@ namespace Game {
 		luaScript.registerFunction(shakeCameraOnUnit, "shakeCameraOnUnit");
 		luaScript.registerFunction(createUnit, "createUnit");
 		luaScript.registerFunction(createUnitNoSpacing, "createUnitNoSpacing");
-		luaScript.registerFunction(setLockedUnitForFaction,
-			"setLockedUnitForFaction");
+		luaScript.registerFunction(setLockedUnitForFaction, "setLockedUnitForFaction");
 		luaScript.registerFunction(destroyUnit, "destroyUnit");
 		luaScript.registerFunction(giveKills, "giveKills");
 		luaScript.registerFunction(morphToUnit, "morphToUnit");
@@ -647,26 +647,16 @@ namespace Game {
 				luaScript.endCall();
 			}
 		} catch (const game_runtime_error & ex) {
-			if (debugMode) {
-				//string sErrBuf = "";
-				//if(ex.wantStackTrace() == true) {
-				char
-					szErrBuf[8096] = "";
-				//snprintf(szErrBuf,8096,"In [%s::%s %d]",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
-				string
-					sErrBuf =
-					string(szErrBuf) +
-					string("The game may no longer be stable!\n\n\t [") +
-					string(ex.what()) + string("]\n");
-				//}
-				SystemFlags::OutputDebug(SystemFlags::debugError, sErrBuf.c_str());
-				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
-					enabled)
-					SystemFlags::OutputDebug(SystemFlags::debugSystem,
-						sErrBuf.c_str());
+			char szErrBuf[8096] = "";
+			//snprintf(szErrBuf,8096,"In [%s::%s %d]",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
+			string sErrBuf = string(szErrBuf) + string("An LUA error was encountered\n\n\t [") +
+				string(ex.what()) + string("]\n");
+			SystemFlags::OutputDebug(SystemFlags::debugError, sErrBuf.c_str());
+			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled)
+				SystemFlags::OutputDebug(SystemFlags::debugSystem, sErrBuf.c_str());
 
-				thisScriptManager->
-					addMessageToQueue(ScriptManagerMessage
+			if (debugMode) {
+				thisScriptManager->addMessageToQueue(ScriptManagerMessage
 					(sErrBuf.c_str(), "error", -1, -1, true));
 				thisScriptManager->onMessageBoxOk(false);
 			}
@@ -1736,8 +1726,7 @@ namespace Game {
 	}
 
 	void
-		ScriptManager::setLockedUnitForFaction(const string & unitName,
-			int factionIndex, bool lock) {
+		ScriptManager::setLockedUnitForFaction(const string & unitName, int factionIndex, bool lock) {
 		if (SystemFlags::getSystemSettingType(SystemFlags::debugLUA).enabled)
 			SystemFlags::OutputDebug(SystemFlags::debugLUA,
 				"In [%s::%s Line: %d] unit [%s] factionIndex = %d\n",
@@ -1749,8 +1738,7 @@ namespace Game {
 				ut =
 				world->getFaction(factionIndex)->getType()->
 				getUnitType(unitName);
-			world->getFaction(factionIndex)->setLockedUnitForFaction(ut,
-				lock);
+			world->getFaction(factionIndex)->setLockedUnitForFaction(ut, lock);
 		} else {
 			throw
 				game_runtime_error
@@ -3739,11 +3727,9 @@ namespace Game {
 				luaArguments.getInt(-2));
 
 		try {
-			thisScriptManager->setLockedUnitForFaction(luaArguments.
-				getString(-3),
+			thisScriptManager->setLockedUnitForFaction(luaArguments.getString(-3),
 				luaArguments.getInt(-2),
-				(luaArguments.
-					getInt(-1) ==
+				(luaArguments.getInt(-1) ==
 					0 ? false : true));
 		} catch (const game_runtime_error & ex) {
 			error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
