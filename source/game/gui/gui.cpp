@@ -843,12 +843,12 @@ namespace Game {
 									string text = "";
 									const ProduceCommandType *pct = static_cast<const ProduceCommandType*>(ct);
 									if (unit->getFaction()->isUnitLocked(pct->getProducedUnit())) {
-										display.setInfoText(lang.getString("LockedByScenario") + "\n\n" + ct->getReqDesc(game->showTranslatedTechTree()));
+										display.setInfoText(lang.getString("Locked") + "\n\n" + ct->getReqDesc(game->showTranslatedTechTree()));
 									}
 								} else if (ct->getClass() == ccMorph) {
 									const MorphCommandType *mct = static_cast<const MorphCommandType*>(ct);
 									if (unit->getFaction()->isUnitLocked(mct->getMorphUnit())) {
-										display.setInfoText(lang.getString("LockedByScenario") + "\n\n" + ct->getReqDesc(game->showTranslatedTechTree()));
+										display.setInfoText(lang.getString("Locked") + "\n\n" + ct->getReqDesc(game->showTranslatedTechTree()));
 									}
 								}
 							}
@@ -873,7 +873,7 @@ namespace Game {
 						const BuildCommandType *bct = static_cast<const BuildCommandType*>(activeCommandType);
 						const Unit *unit = selection.getFrontUnit();
 						if (unit->getFaction()->isUnitLocked(bct->getBuilding(posDisplay))) {
-							display.setInfoText(lang.getString("LockedByScenario") + "\n\n" + bct->getBuilding(posDisplay)->getReqDesc(game->showTranslatedTechTree()));
+							display.setInfoText(lang.getString("Locked") + "\n\n" + bct->getBuilding(posDisplay)->getReqDesc(game->showTranslatedTechTree()));
 						} else {
 							bool translatedValue = game->showTranslatedTechTree();
 							const UnitType *building = bct->getBuilding(posDisplay);
