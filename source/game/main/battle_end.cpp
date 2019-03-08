@@ -275,66 +275,69 @@ namespace Game {
 				GameConstants::OBSERVER_SLOTNAME
 				&& fileExists(factionDefinitionXML) == true) {
 
-				if (SystemFlags::VERBOSE_MODE_ENABLED)
-					printf("#2 tech [%s] faction [%s]\n",
-						currentTechName_factionPreview.c_str(),
-						currentFactionName_factionPreview.c_str());
+				try {
+					if (SystemFlags::VERBOSE_MODE_ENABLED)
+						printf("#2 tech [%s] faction [%s]\n",
+							currentTechName_factionPreview.c_str(),
+							currentFactionName_factionPreview.c_str());
 
-				XmlTree xmlTree;
-				std::map < string, string > mapExtraTagReplacementValues;
-				xmlTree.load(factionDefinitionXML,
-					Properties::getTagReplacementValues
-					(&mapExtraTagReplacementValues));
-				const XmlNode *
-					factionNode = xmlTree.getRootNode();
-				if (won == true) {
-					if (factionNode->hasAttribute("battle-end-win-music") == true) {
-						result =
-							factionNode->
-							getAttribute("battle-end-win-music")->getValue();
+					XmlTree xmlTree;
+					std::map < string, string > mapExtraTagReplacementValues;
+					xmlTree.load(factionDefinitionXML,
+						Properties::getTagReplacementValues
+						(&mapExtraTagReplacementValues));
+					const XmlNode *
+						factionNode = xmlTree.getRootNode();
+					if (won == true) {
+						if (factionNode->hasAttribute("battle-end-win-music") == true) {
+							result =
+								factionNode->
+								getAttribute("battle-end-win-music")->getValue();
+						}
+					} else {
+						if (factionNode->hasAttribute("battle-end-lose-music") == true) {
+							result =
+								factionNode->
+								getAttribute("battle-end-lose-music")->getValue();
+						}
 					}
-				} else {
-					if (factionNode->hasAttribute("battle-end-lose-music") == true) {
-						result =
-							factionNode->
-							getAttribute("battle-end-lose-music")->getValue();
+
+					if (result != "" && fileExists(result) == false) {
+						string techTreePath = "";
+						string factionPath = "";
+						std::vector < std::string > factionPartsList;
+						Tokenize(factionDefinitionXML, factionPartsList, "factions/");
+						if (factionPartsList.size() > 1) {
+							techTreePath = factionPartsList[0];
+
+							string
+								factionPath =
+								techTreePath + "factions/" +
+								currentFactionName_factionPreview;
+							endPathWithSlash(factionPath);
+							result = factionPath + result;
+						}
 					}
-				}
 
-				if (result != "" && fileExists(result) == false) {
-					string techTreePath = "";
-					string factionPath = "";
-					std::vector < std::string > factionPartsList;
-					Tokenize(factionDefinitionXML, factionPartsList, "factions/");
-					if (factionPartsList.size() > 1) {
-						techTreePath = factionPartsList[0];
-
-						string
-							factionPath =
-							techTreePath + "factions/" +
-							currentFactionName_factionPreview;
-						endPathWithSlash(factionPath);
-						result = factionPath + result;
+					if (won == true) {
+						resultFallback =
+							Game::findFactionLogoFile(gameSettings, NULL,
+								"battle_end_win_music.*");
+					} else {
+						resultFallback =
+							Game::findFactionLogoFile(gameSettings, NULL,
+								"battle_end_lose_music.*");
 					}
-				}
 
-				if (won == true) {
-					resultFallback =
-						Game::findFactionLogoFile(gameSettings, NULL,
-							"battle_end_win_music.*");
-				} else {
-					resultFallback =
-						Game::findFactionLogoFile(gameSettings, NULL,
-							"battle_end_lose_music.*");
-				}
+					if (SystemFlags::VERBOSE_MODE_ENABLED)
+						printf("#3 result [%s] resultFallback [%s]\n", result.c_str(),
+							resultFallback.c_str());
+					//printf("#3 result [%s] resultFallback [%s]\n",result.c_str(),resultFallback.c_str());
 
-				if (SystemFlags::VERBOSE_MODE_ENABLED)
-					printf("#3 result [%s] resultFallback [%s]\n", result.c_str(),
-						resultFallback.c_str());
-				//printf("#3 result [%s] resultFallback [%s]\n",result.c_str(),resultFallback.c_str());
-
-				if (result == "") {
-					result = resultFallback;
+					if (result == "") {
+						result = resultFallback;
+					}
+				} catch (...) {
 				}
 			}
 			//printf("currentFactionName_factionPreview [%s] random [%s] observer [%s] factionVideoUrl [%s]\n",currentFactionName_factionPreview.c_str(),GameConstants::RANDOMFACTION_SLOTNAME,GameConstants::OBSERVER_SLOTNAME,factionVideoUrl.c_str());

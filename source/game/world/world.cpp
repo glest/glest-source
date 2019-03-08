@@ -1900,18 +1900,14 @@ namespace Game {
 
 	void World::highlightUnit(int unitId, float radius, float thickness, Vec4f color) {
 		Unit* unit = findUnitById(unitId);
-		if (unit == NULL) {
-			throw game_runtime_error("Can not find unit to set highlight unitId = " + intToStr(unitId), true);
-		}
-		game->highlightUnit(unitId, radius, thickness, color);
+		if (unit != NULL)
+			game->highlightUnit(unitId, radius, thickness, color);
 	}
 
 	void World::unhighlightUnit(int unitId) {
 		Unit* unit = findUnitById(unitId);
-		if (unit == NULL) {
-			throw game_runtime_error("Can not find unit to set highlight unitId = " + intToStr(unitId), true);
-		}
-		game->unhighlightUnit(unitId);
+		if (unit != NULL)
+			game->unhighlightUnit(unitId);
 	}
 
 

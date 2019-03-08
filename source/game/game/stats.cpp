@@ -53,15 +53,20 @@ namespace Game {
 				case ctCpuEasy:
 					controlString = lang.getString("CpuEasy");
 					break;
-				case ctCpu:controlString = lang.getString("Cpu");
+				case ctCpu:
+					controlString = lang.getString("Cpu");
 					break;
-				case ctCpuUltra:controlString = lang.getString("CpuUltra");
+				case ctCpuUltra:
+					controlString = lang.getString("CpuUltra");
 					break;
-				case ctCpuGlest:controlString = lang.getString("CpuGlest");
+				case ctCpuGlest:
+					controlString = lang.getString("CpuGlest");
 					break;
-				case ctNetwork:controlString = lang.getString("Network");
+				case ctNetwork:
+					controlString = lang.getString("Network");
 					break;
-				case ctHuman:controlString = lang.getString("Human");
+				case ctHuman:
+					controlString = lang.getString("Human");
 					break;
 				default:
 					controlString = lang.getString("Closed");

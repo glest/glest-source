@@ -4435,6 +4435,8 @@ namespace Game {
 				if (faction->getFactionDisconnectHandled() == false &&
 					(faction->getControlType() == ctNetwork)) {
 
+					if (aiInterfaces.size() <= i)
+						aiInterfaces.push_back(NULL);
 					if (aiInterfaces[i] == NULL && (server == NULL ||
 						server->isClientConnected(faction->getStartLocationIndex()) == false)) {
 

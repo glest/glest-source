@@ -555,8 +555,7 @@ namespace Game {
 		luaScript.registerFunction(storeSaveGameData, "storeSaveGameData");
 		luaScript.registerFunction(loadSaveGameData, "loadSaveGameData");
 
-		luaScript.registerFunction(getFactionPlayerType,
-			"getFactionPlayerType");
+		luaScript.registerFunction(getPlayerType, "getPlayerType");
 
 		map<string, pair<Script, vector<string>>> scripts;
 		map<string, pair<Script, vector<string>>>::iterator iter;
@@ -3397,7 +3396,9 @@ namespace Game {
 	}
 
 	ControlType
-		ScriptManager::getFactionPlayerType(int factionIndex) {
+		ScriptManager::getPlayerType(int factionIndex) {
+		if (factionIndex < 0 || factionIndex >= world->getFactionCount())
+			return ctClosed;
 		Faction *
 			faction = world->getFaction(factionIndex);
 		if (faction != NULL) {
@@ -6104,12 +6105,12 @@ namespace Game {
 	}
 
 	int
-		ScriptManager::getFactionPlayerType(LuaHandle * luaHandle) {
+		ScriptManager::getPlayerType(LuaHandle * luaHandle) {
 		LuaArguments
 			luaArguments(luaHandle);
 		try {
 			luaArguments.returnInt(thisScriptManager->
-				getFactionPlayerType(luaArguments.
+				getPlayerType(luaArguments.
 					getInt(-1)));
 		} catch (const game_runtime_error & ex) {
 			error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);

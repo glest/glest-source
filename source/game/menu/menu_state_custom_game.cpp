@@ -5873,7 +5873,7 @@ namespace Game {
 									lastSelectedTeamIndex[i] =
 										listBoxTeams[i].getSelectedItemIndex();
 								}
-								// Alow Neutral cpu players
+								// Allow Neutral cpu players
 								else if (listBoxControls[i].getSelectedItemIndex() ==
 									ctCpuEasy
 									|| listBoxControls[i].getSelectedItemIndex() ==
