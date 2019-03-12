@@ -1723,10 +1723,10 @@ namespace Game {
 							if (map->isNextTo(unit, store)) {
 								//update resources
 								int resourceAmount = unit->getLoadCount();
-								if (unit->getFaction()->getCpuControl()) {
-									int resourceMultiplierIndex = game->getGameSettings()->getResourceMultiplierIndex(unit->getFaction()->getIndex());
-									resourceAmount = resourceAmount * (resourceMultiplierIndex + 1) * 0.5;
-								}
+								//if (unit->getFaction()->getCpuControl()) {
+								int resourceMultiplierIndex = game->getGameSettings()->getResourceMultiplierIndex(unit->getFaction()->getIndex());
+								resourceAmount = resourceAmount * (resourceMultiplierIndex + 1) * 0.5;
+								//}
 								unit->getFaction()->incResourceAmount(unit->getLoadType(), resourceAmount);
 								world->getStats()->harvest(unit->getFactionIndex(), resourceAmount);
 

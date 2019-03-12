@@ -642,7 +642,7 @@ Please contact the Glest team for more info.";
 					}
 				}
 				gameSettings->setFactionControl(factionCount, ct);
-				gameSettings->setResourceMultiplierIndex(factionCount, (scenarioInfo->resourceMultipliers[i] * 2) - 1);
+				gameSettings->setResourceMultiplierIndex(factionCount, static_cast<int>(scenarioInfo->resourceMultipliers[i] * 2) - 1);
 				gameSettings->setTeam(factionCount, scenarioInfo->teams[i] - 1);
 				gameSettings->setStartLocationIndex(factionCount, i);
 				gameSettings->setFactionTypeName(factionCount,

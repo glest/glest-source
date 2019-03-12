@@ -7691,34 +7691,33 @@ namespace Game {
 			string factionInfo = this->gameSettings.getNetworkPlayerName(i);
 			//factionInfo += " [" + this->gameSettings.getNetworkPlayerUUID(i) + "]";
 			float multi = world.getStats()->getResourceMultiplier(i);
-			string multiplier = "[" + floatToStr(multi, 1) + "]";
+			string multiplier = floatToStr(multi, 1);
 			switch (this->gameSettings.getFactionControl(i)) {
 				case ctCpuEasy:
-					factionInfo += " CPU Easy" + multiplier;
+					factionInfo += " [CPU Easy " + multiplier + "]";
 					break;
 				case ctCpu:
-					factionInfo += " CPU Normal" + multiplier;
+					factionInfo += " [CPU Normal " + multiplier + "]";
 					break;
 				case ctCpuUltra:
-					factionInfo += " CPU Ultra" + multiplier;
+					factionInfo += " [CPU Ultra " + multiplier + "]";
 					break;
 				case ctCpuGlest:
-					factionInfo += " CPU Glest" + multiplier;
+					factionInfo += " [CPU Glest " + multiplier + "]";
 					break;
 				case ctNetwork:
-					factionInfo += " (Network)";
+					factionInfo += " [Network " + multiplier + "]";
 					break;
 				case ctHuman:
-					factionInfo += " (Human)";
+					factionInfo += " [Human " + multiplier + "]";
 					break;
 				default:
-					factionInfo += " (Closed)";
+					factionInfo += " [Closed " + multiplier + "]";
 					break;
 			}
 
 			factionInfo +=
-				" [" + formatString(this->gameSettings.getFactionTypeName(i)) +
-				" team: " + intToStr(this->gameSettings.getTeam(i) + 1) + "]";
+				" [" + formatString(this->gameSettings.getFactionTypeName(i)) + "] Team " + intToStr(this->gameSettings.getTeam(i) + 1);
 
 			//              bool showResourceDebugInfo = true;
 			//              if(showResourceDebugInfo == true) {

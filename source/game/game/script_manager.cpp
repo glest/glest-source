@@ -557,6 +557,8 @@ namespace Game {
 
 		luaScript.registerFunction(getPlayerType, "getPlayerType");
 		luaScript.registerFunction(setPlayerType, "setPlayerType");
+		luaScript.registerFunction(getResourceMultiplier, "getResourceMultiplier");
+		luaScript.registerFunction(setResourceMultiplier, "setResourceMultiplier");
 
 		map<string, pair<Script, vector<string>>> scripts;
 		map<string, pair<Script, vector<string>>>::iterator iter;
@@ -3424,6 +3426,33 @@ namespace Game {
 				stats->setControl(factionIndex, playerType);
 		}
 	}
+
+	float
+		ScriptManager::getResourceMultiplier(int factionIndex) {
+		if (factionIndex < 0 || factionIndex >= world->getFactionCount())
+			return 1.0f;
+		GameSettings* settings = world->getGameSettingsPtr();
+		if (settings != NULL) {
+			return (settings->getResourceMultiplierIndex(factionIndex) + 1) * 0.5f;
+		} else {
+			const Stats* stats = world->getStats();
+			return stats->getResourceMultiplier(factionIndex);
+		}
+	}
+
+	void
+		ScriptManager::setResourceMultiplier(int factionIndex, float multiplier) {
+		if (factionIndex < 0 || factionIndex >= world->getFactionCount())
+			return;
+		GameSettings* settings = world->getGameSettingsPtr();
+		if (settings != NULL) {
+			settings->setResourceMultiplierIndex(factionIndex, static_cast<int>(multiplier * 2) - 1);
+			Stats* stats = world->getStats();
+			if (stats != NULL)
+				stats->setResourceMultiplier(factionIndex, multiplier);
+		}
+	}
+
 	// ========================== lua callbacks ===============================================
 
 	int
@@ -6142,6 +6171,30 @@ namespace Game {
 			luaArguments(luaHandle);
 		try {
 			thisScriptManager->setPlayerType(luaArguments.getInt(-2), static_cast<ControlType>(luaArguments.getInt(-1)));
+		} catch (const game_runtime_error & ex) {
+			error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
+		}
+		return luaArguments.getReturnCount();
+	}
+
+	int
+		ScriptManager::getResourceMultiplier(LuaHandle * luaHandle) {
+		LuaArguments
+			luaArguments(luaHandle);
+		try {
+			luaArguments.returnFloat(thisScriptManager->getResourceMultiplier(luaArguments.getInt(-1)));
+		} catch (const game_runtime_error & ex) {
+			error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
+		}
+		return luaArguments.getReturnCount();
+	}
+
+	int
+		ScriptManager::setResourceMultiplier(LuaHandle * luaHandle) {
+		LuaArguments
+			luaArguments(luaHandle);
+		try {
+			thisScriptManager->setResourceMultiplier(luaArguments.getInt(-2), luaArguments.getFloat(-1));
 		} catch (const game_runtime_error & ex) {
 			error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 		}

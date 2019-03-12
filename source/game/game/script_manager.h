@@ -771,6 +771,9 @@ namespace Game {
 		ControlType getPlayerType(int factionIndex);
 		void setPlayerType(int factionIndex, ControlType playerType);
 
+		float getResourceMultiplier(int factionIndex);
+		void setResourceMultiplier(int factionIndex, float multiplier);
+
 		// -----------------------------------------------------------------------
 
 		static void
@@ -1094,6 +1097,9 @@ namespace Game {
 
 		static int getPlayerType(LuaHandle * luaHandle);
 		static int setPlayerType(LuaHandle * luaHandle);
+
+		static int getResourceMultiplier(LuaHandle * luaHandle);
+		static int setResourceMultiplier(LuaHandle * luaHandle);
 	};
 
 } //end namespace

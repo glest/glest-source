@@ -694,15 +694,8 @@ namespace Game {
 					};
 				}
 
-				if (stats.getControl(i) != ctHuman
-					&& stats.getControl(i) != ctNetwork) {
-					controlString +=
-						"\nx " + floatToStr(stats.getResourceMultiplier(i), 1);
-				} else if (stats.getPlayerLeftBeforeEnd(i) == true) {
-					controlString +=
-						"\nx " +
-						floatToStr(stats.getResourceMultiplier(i), 1);
-				}
+				controlString +=
+					"\nx " + floatToStr(stats.getResourceMultiplier(i), 1);
 
 				if (score == bestScore && stats.getVictory(i)) {
 					if (CoreData::getInstance().getGameWinnerTexture() != NULL) {
