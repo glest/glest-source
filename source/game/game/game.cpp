@@ -7705,7 +7705,14 @@ namespace Game {
 				case ctCpuGlest:
 					factionInfo += " CPU Glest" + multiplier;
 					break;
+				case ctNetwork:
+					factionInfo += " (Network)";
+					break;
+				case ctHuman:
+					factionInfo += " (Human)";
+					break;
 				default:
+					factionInfo += " (Closed)";
 					break;
 			}
 

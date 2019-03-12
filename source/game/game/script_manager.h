@@ -769,6 +769,8 @@ namespace Game {
 			loadSaveGameData(string name);
 
 		ControlType getPlayerType(int factionIndex);
+		void setPlayerType(int factionIndex, ControlType playerType);
+
 		// -----------------------------------------------------------------------
 
 		static void
@@ -1091,6 +1093,7 @@ namespace Game {
 			loadSaveGameData(LuaHandle * luaHandle);
 
 		static int getPlayerType(LuaHandle * luaHandle);
+		static int setPlayerType(LuaHandle * luaHandle);
 	};
 
 } //end namespace

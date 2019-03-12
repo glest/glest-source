@@ -556,6 +556,7 @@ namespace Game {
 		luaScript.registerFunction(loadSaveGameData, "loadSaveGameData");
 
 		luaScript.registerFunction(getPlayerType, "getPlayerType");
+		luaScript.registerFunction(setPlayerType, "setPlayerType");
 
 		map<string, pair<Script, vector<string>>> scripts;
 		map<string, pair<Script, vector<string>>>::iterator iter;
@@ -3406,6 +3407,23 @@ namespace Game {
 		}
 		return ctClosed;
 	}
+
+	void
+		ScriptManager::setPlayerType(int factionIndex, ControlType playerType) {
+		if (factionIndex < 0 || factionIndex >= world->getFactionCount() || playerType < ctClosed || playerType > ctHuman)
+			return;
+		Faction *
+			faction = world->getFaction(factionIndex);
+		if (faction != NULL) {
+			faction->setControlType(playerType);
+			GameSettings* settings = world->getGameSettingsPtr();
+			if (settings != NULL)
+				settings->setFactionControl(factionIndex, playerType);
+			Stats* stats = world->getStats();
+			if (stats != NULL)
+				stats->setControl(factionIndex, playerType);
+		}
+	}
 	// ========================== lua callbacks ===============================================
 
 	int
@@ -6115,9 +6133,19 @@ namespace Game {
 		} catch (const game_runtime_error & ex) {
 			error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
 		}
-
 		return luaArguments.getReturnCount();
+	}
 
+	int
+		ScriptManager::setPlayerType(LuaHandle * luaHandle) {
+		LuaArguments
+			luaArguments(luaHandle);
+		try {
+			thisScriptManager->setPlayerType(luaArguments.getInt(-2), static_cast<ControlType>(luaArguments.getInt(-1)));
+		} catch (const game_runtime_error & ex) {
+			error(luaHandle, &ex, __FILE__, __FUNCTION__, __LINE__);
+		}
+		return luaArguments.getReturnCount();
 	}
 
 	void
