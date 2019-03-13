@@ -59,9 +59,6 @@ Then run the following command to start the game:
 If you'll be contributing code or changes to data, the procedures for
 forking and cloning are outlined in [CONTRIBUTING.md](https://github.com/Glest/glest-source/blob/develop/CONTRIBUTING.md)
 
-Please see [CONTRIBUTING.md](https://github.com/Glest/glest-source/blob/develop/CONTRIBUTING.md)
-for extended, important instructions and guidelines for contributing.
-
 To run your own headless (dedicated) server, see [the FAQ](https://glest.io/docs/faq.html#headlessserver).
 
 ### Contact Us
