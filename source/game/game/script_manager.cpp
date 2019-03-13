@@ -3436,7 +3436,10 @@ namespace Game {
 			return (settings->getResourceMultiplierIndex(factionIndex) + 1) * 0.5f;
 		} else {
 			const Stats* stats = world->getStats();
-			return stats->getResourceMultiplier(factionIndex);
+			if (stats == NULL)
+				return 1.0f;
+			else
+				return stats->getResourceMultiplier(factionIndex);
 		}
 	}
 
