@@ -380,6 +380,8 @@ namespace Game {
 
 		labelMapInfo.registerGraphicComponent(containerName, "labelMapInfo");
 		labelMapInfo.init(xoffset + 100, mapPos - labelOffset - 10, 200, 40);
+		labelMapInfo.setFont(CoreData::getInstance().getDisplayFontSmall());
+		labelMapInfo.setFont3D(CoreData::getInstance().getDisplayFontSmall3D());
 		labelMapInfo.setText("");
 
 		labelMap.registerGraphicComponent(containerName, "labelMap");

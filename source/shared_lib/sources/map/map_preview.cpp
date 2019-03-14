@@ -1088,7 +1088,15 @@ namespace Shared {
 						mapInfo->hardMaxPlayers = mapInfo->players;
 
 						mapInfo->desc = i18nMaxMapPlayersTitle + ": " + intToStr(mapInfo->players) + "\n";
-						mapInfo->desc += i18nMapSizeTitle + ": " + intToStr(mapInfo->size.x) + " x " + intToStr(mapInfo->size.y);
+						mapInfo->desc += i18nMapSizeTitle + ": " + intToStr(mapInfo->size.x) + " x " + intToStr(mapInfo->size.y) + "\n";
+						string author = header.author;
+						if (author.length() > 0) {
+							author = "by " + author;
+						}
+						if (author.length() > 35) {
+							author = author.substr(0, 35) + "...";
+						}
+						mapInfo->desc += author;
 
 						validMap = true;
 					}
