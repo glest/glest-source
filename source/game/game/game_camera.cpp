@@ -51,7 +51,7 @@ namespace Game {
 	const float
 		GameCamera::hTransitionMult = 0.125f;
 	const float
-		GameCamera::defaultHeight = 24.f;
+		GameCamera::defaultHeight = 23.f;
 	const float
 		GameCamera::centerOffsetZ = 8.0f;
 	const float

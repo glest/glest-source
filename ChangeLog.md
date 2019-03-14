@@ -6,12 +6,17 @@ https://github.com/Glest/glest-source/commits/develop
 v2.0
 
 - Added the Specialists faction
+- Added a multitude of cool tilesets
 - Now you can use shift to add and to remove from selected units (or use ctrl to unconditionally deselect)
 - Now the Fog of War around a building being built clears out only after construction
 - Now attack commands can be queued using the Shift key
 - Renamed factions for consistency
 - Now default command on right-click is customizable
 - Middle mouse button now sends attack command, so you can micro-manage move and attack commands easily using right and middle mouse button
+- Finally updated mod center mods
+- Added horse archer to tech
+- Moved default camera position to be slightly higher
+- Added a lot of useful LUA functions, like setResourceMultiplier, setPlayerType, areCellsFree and forceSetUnitPosition
 
 v1.0
 
