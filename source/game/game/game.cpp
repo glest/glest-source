@@ -8369,7 +8369,7 @@ namespace Game {
 
 		Lang & lang = Lang::getInstance();
 
-		if (this->speed < Config::getInstance().getInt("FastSpeedLoops", "8")) {
+		//if (this->speed < Config::getInstance().getInt("FastSpeedLoops", "8")) {
 			if (this->speed == 0) {
 				this->speed = 1;
 			} else {
@@ -8381,7 +8381,7 @@ namespace Game {
 						1) ?
 					lang.getString("Normal") : "x" +
 					intToStr(this->speed)));
-		}
+		//}
 	}
 
 	void Game::decSpeed() {
