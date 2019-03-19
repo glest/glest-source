@@ -2,4 +2,4 @@
 #define G3D_VIEWER_VERSION "1.0"
 #define MAP_EDITOR_VERSION "1.0"
 //Month then Day
-#define GAME_BUILD_DATE "0308"
+#define GAME_BUILD_DATE "0319"

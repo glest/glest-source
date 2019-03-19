@@ -47,7 +47,7 @@ namespace Game {
 	enum ModMenuState {
 		mmst_None,
 		mmst_Loading,
-		mmst_CalculatingCRC
+		//mmst_CalculatingCRC
 	};
 
 	typedef vector < GraphicButton * >UserButtons;

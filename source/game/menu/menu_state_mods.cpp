@@ -685,7 +685,7 @@ namespace Game {
 		tilesetListRemote.clear();
 		Tokenize(tilesetsMetaData, tilesetListRemote, "\n");
 
-		modMenuState = mmst_CalculatingCRC;
+		//modMenuState = mmst_CalculatingCRC;
 
 		getTilesetsLocalList();
 		for (unsigned int i = 0; i < tilesetListRemote.size(); i++) {
@@ -1133,7 +1133,7 @@ namespace Game {
 			modinfo.imageUrl = techInfoList[5];
 			modinfo.type = mt_Techtree;
 
-			string itemPath =
+			/*string itemPath =
 				config.getPathListForType(ptTechs,
 					"")[1] + "/" + modinfo.name +
 				string("/*");
@@ -1158,9 +1158,9 @@ namespace Game {
 				}
 				modinfo.localCRC = crc;
 				//printf("itemPath='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
-			} else {
+			} else {*/
 				modinfo.localCRC = 0;
-			}
+			//}
 			techCacheList[modinfo.name] = modinfo;
 			return modinfo.name;
 		}
@@ -1201,7 +1201,7 @@ namespace Game {
 			modinfo.imageUrl = tilesetInfoList[4];
 			modinfo.type = mt_Tileset;
 
-			string itemPath =
+			/*string itemPath =
 				config.getPathListForType(ptTilesets,
 					"")[1] + "/" + modinfo.name +
 				string("/*");
@@ -1228,11 +1228,11 @@ namespace Game {
 				//printf("itemPath='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
 
 				//printf("#1 refreshTilesetModInfo name [%s] modInfo.crc [%s] modInfo.localCRC [%s]\n",modinfo.name.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str());
-			} else {
+			} else {*/
 				modinfo.localCRC = 0;
 
 				//printf("#2 refreshTilesetModInfo name [%s] modInfo.crc [%s] modInfo.localCRC [%s]\n",modinfo.name.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str());
-			}
+			//}
 
 			tilesetCacheList[modinfo.name] = modinfo;
 			return modinfo.name;
@@ -1315,7 +1315,7 @@ namespace Game {
 			modinfo.url = mapInfoList[4];
 			modinfo.imageUrl = mapInfoList[5];
 			modinfo.type = mt_Map;
-			modinfo.localCRC = getMapCRC(modinfo.name);
+			modinfo.localCRC = /*getMapCRC(modinfo.name)*/0;
 			mapCacheList[modinfo.name] = modinfo;
 			return modinfo.name;
 		}
@@ -1383,7 +1383,7 @@ namespace Game {
 			modinfo.imageUrl = scenarioInfoList[4];
 			modinfo.type = mt_Scenario;
 
-			string itemPath =
+			/*string itemPath =
 				config.getPathListForType(ptScenarios,
 					"")[1] + "/" + modinfo.name +
 				string("/*");
@@ -1408,9 +1408,9 @@ namespace Game {
 				}
 				modinfo.localCRC = crc;
 				//printf(" itemPath='%s' remote crc:'%s'  local crc:'%s'   crc='%d' \n",itemPath.c_str(),modinfo.crc.c_str(),modinfo.localCRC.c_str(),crc);
-			} else {
+			} else {*/
 				modinfo.localCRC = 0;
-			}
+			//}
 			scenarioCacheList[modinfo.name] = modinfo;
 			return modinfo.name;
 		}
@@ -2003,7 +2003,7 @@ namespace Game {
 							config.getPathListForType(ptTechs,
 								"")[1] + "/" + selectedTechName +
 							string("/*");
-						bool forceRefresh =
+						/*bool forceRefresh =
 							(mapCRCUpdateList.find(itemPath) == mapCRCUpdateList.end());
 						if (modInfo.crc != 0 && modInfo.crc !=
 							getFolderTreeContentsCheckSumRecursively(itemPath, ".xml",
@@ -2023,7 +2023,7 @@ namespace Game {
 								lang.getString("ModLocalRemoteMismatch").c_str(),
 								selectedTechName.c_str());
 							showMessageBox(szBuf, lang.getString("Notice"), true);
-						} else {
+						} else {*/
 							mainMessageBoxState = ftpmsg_None;
 							mainMessageBox.init(lang.getString("Ok"), 450);
 							char szBuf[8096] = "";
@@ -2031,7 +2031,7 @@ namespace Game {
 								lang.getString("ModTechAlreadyInstalled").c_str(),
 								selectedTechName.c_str());
 							showMessageBox(szBuf, lang.getString("Notice"), true);
-						}
+						//}
 						mapCRCUpdateList[itemPath] = true;
 					}
 				} else {
@@ -2118,7 +2118,7 @@ namespace Game {
 							config.getPathListForType(ptTilesets,
 								"")[1] + "/" +
 							selectedTilesetName + string("/*");
-						bool forceRefresh =
+						/*bool forceRefresh =
 							(mapCRCUpdateList.find(itemPath) == mapCRCUpdateList.end());
 
 						if (modInfo.crc != 0 && modInfo.crc !=
@@ -2141,7 +2141,7 @@ namespace Game {
 								lang.getString("ModLocalRemoteMismatch").c_str(),
 								selectedTilesetName.c_str());
 							showMessageBox(szBuf, lang.getString("Notice"), true);
-						} else {
+						} else {*/
 							mainMessageBoxState = ftpmsg_None;
 							mainMessageBox.init(lang.getString("Ok"), 450);
 							char szBuf[8096] = "";
@@ -2149,7 +2149,7 @@ namespace Game {
 								lang.getString("ModTilesetAlreadyInstalled").
 								c_str(), selectedTilesetName.c_str());
 							showMessageBox(szBuf, lang.getString("Notice"), true);
-						}
+						//}
 					}
 				} else {
 					string tilesetName = selectedTilesetName;
@@ -2224,7 +2224,7 @@ namespace Game {
 						(mapCacheList.find(selectedMapName) != mapCacheList.end());
 					if (remoteHasMap) {
 						ModInfo & modInfo = mapCacheList[selectedMapName];
-						if (modInfo.crc != modInfo.localCRC) {
+						/*if (modInfo.crc != modInfo.localCRC) {
 							mainMessageBoxState = ftpmsg_ReplaceMap;
 							mainMessageBox.init(lang.getString("Yes"),
 								lang.getString("No"), 450);
@@ -2233,7 +2233,7 @@ namespace Game {
 								lang.getString("ModLocalRemoteMismatch").c_str(),
 								selectedMapName.c_str());
 							showMessageBox(szBuf, lang.getString("Notice"), true);
-						} else {
+						} else {*/
 							mainMessageBoxState = ftpmsg_None;
 							mainMessageBox.init(lang.getString("Ok"), 450);
 							char szBuf[8096] = "";
@@ -2241,7 +2241,7 @@ namespace Game {
 								lang.getString("ModMapAlreadyInstalled").c_str(),
 								selectedMapName.c_str());
 							showMessageBox(szBuf, lang.getString("Notice"), true);
-						}
+						//}
 					}
 				} else {
 					string mapName = selectedMapName;
@@ -2326,7 +2326,7 @@ namespace Game {
 							config.getPathListForType(ptScenarios,
 								"")[1] + "/" +
 							selectedScenarioName + string("/*");
-						bool forceRefresh =
+						/*bool forceRefresh =
 							(mapCRCUpdateList.find(itemPath) == mapCRCUpdateList.end());
 
 						if (modInfo.crc != 0 && modInfo.crc !=
@@ -2348,7 +2348,7 @@ namespace Game {
 								lang.getString("ModLocalRemoteMismatch").c_str(),
 								selectedScenarioName.c_str());
 							showMessageBox(szBuf, lang.getString("Notice"), true);
-						} else {
+						} else {*/
 							mainMessageBoxState = ftpmsg_None;
 							mainMessageBox.init(lang.getString("Ok"), 450);
 							char szBuf[8096] = "";
@@ -2356,7 +2356,7 @@ namespace Game {
 								lang.getString("ModScenarioAlreadyInstalled").
 								c_str(), selectedScenarioName.c_str());
 							showMessageBox(szBuf, lang.getString("Notice"), true);
-						}
+						//}
 					}
 				} else {
 					string scenarioName = selectedScenarioName;
@@ -2854,16 +2854,16 @@ namespace Game {
 						if (remoteHasTech) {
 							ModInfo & modInfo =
 								techCacheList[keyTechButtons[i]->getText()];
-							if (modInfo.crc == modInfo.localCRC) {
+							//if (modInfo.crc == modInfo.localCRC) {
 								keyTechButtons[i]->
 									setCustomTexture(CoreData::getInstance().
 										getOnServerInstalledTexture());
-							} else {
+							/*} else {
 								//printf("modInfo.name=%s modInfo.crc=%s modInfo.localCRC=%s\n",modInfo.name.c_str(),modInfo.crc.c_str(),modInfo.localCRC.c_str());
 								keyTechButtons[i]->
 									setCustomTexture(CoreData::getInstance().
 										getOnServerDifferentTexture());
-							}
+							}*/
 						} else {
 							keyTechButtons[i]->setCustomTexture(CoreData::getInstance().
 								getNotOnServerTexture
@@ -2908,18 +2908,18 @@ namespace Game {
 							ModInfo & modInfo =
 								tilesetCacheList[keyTilesetButtons[i]->getText()];
 
-							if (modInfo.crc == modInfo.localCRC) {
+							//if (modInfo.crc == modInfo.localCRC) {
 								keyTilesetButtons[i]->
 									setCustomTexture(CoreData::getInstance().
 										getOnServerInstalledTexture());
-							} else {
+							/*} else {
 								//printf("modInfo.name=%s modInfo.crc=%s modInfo.localCRC=%s\n",modInfo.name.c_str(),modInfo.crc.c_str(),modInfo.localCRC.c_str());
 								//printf("name [%s] modInfo.crc [%s] modInfo.localCRC [%s]\n",modInfo.name.c_str(),modInfo.crc.c_str(),modInfo.localCRC.c_str());
 
 								keyTilesetButtons[i]->
 									setCustomTexture(CoreData::getInstance().
 										getOnServerDifferentTexture());
-							}
+							}*/
 						} else {
 							keyTilesetButtons[i]->
 								setCustomTexture(CoreData::getInstance().
@@ -2963,16 +2963,16 @@ namespace Game {
 						if (remoteHasMap) {
 							ModInfo & modInfo =
 								mapCacheList[keyMapButtons[i]->getText()];
-							if (modInfo.crc == modInfo.localCRC) {
+							//if (modInfo.crc == modInfo.localCRC) {
 								keyMapButtons[i]->
 									setCustomTexture(CoreData::getInstance().
 										getOnServerInstalledTexture());
-							} else {
+							/*} else {
 								//printf("modInfo.name=%s modInfo.crc=%s modInfo.localCRC=%s\n",modInfo.name.c_str(),modInfo.crc.c_str(),modInfo.localCRC.c_str());
 								keyMapButtons[i]->
 									setCustomTexture(CoreData::getInstance().
 										getOnServerDifferentTexture());
-							}
+							}*/
 						} else {
 							keyMapButtons[i]->setCustomTexture(CoreData::getInstance().
 								getNotOnServerTexture());
@@ -3022,16 +3022,16 @@ namespace Game {
 						if (remoteHasScenario) {
 							ModInfo & modInfo =
 								scenarioCacheList[keyScenarioButtons[i]->getText()];
-							if (modInfo.crc == modInfo.localCRC) {
+							//if (modInfo.crc == modInfo.localCRC) {
 								keyScenarioButtons[i]->
 									setCustomTexture(CoreData::getInstance().
 										getOnServerInstalledTexture());
-							} else {
+							/*} else {
 								//printf("modInfo.name=%s modInfo.crc=%s modInfo.localCRC=%s\n",modInfo.name.c_str(),modInfo.crc.c_str(),modInfo.localCRC.c_str());
 								keyScenarioButtons[i]->
 									setCustomTexture(CoreData::getInstance().
 										getOnServerDifferentTexture());
-							}
+							}*/
 						} else {
 							keyScenarioButtons[i]->
 								setCustomTexture(CoreData::getInstance().
@@ -3111,11 +3111,11 @@ namespace Game {
 						pleaseWaitLabel.setText(lang.
 							getString
 							("GettingModlistFromMasterserver"));
-					} else if (modMenuState == mmst_CalculatingCRC) {
+					}/* else if (modMenuState == mmst_CalculatingCRC) {
 						pleaseWaitLabel.setText(lang.
 							getString
 							("PleaseWaitCalculatingCRC"));
-					}
+					}*/
 					oldMenuState = modMenuState;
 				}
 				float anim = GraphicComponent::getAnim();
@@ -3483,12 +3483,12 @@ namespace Game {
 
 				// Refresh CRC
 				Config & config = Config::getInstance();
-				getFolderTreeContentsCheckSumRecursively(config.
+				/*getFolderTreeContentsCheckSumRecursively(config.
 					getPathListForType
 					(ptTechs, ""),
 					string("/") + itemName +
 					string("/*"), ".xml",
-					NULL, true);
+					NULL, true);*/
 				safeMutexFTPProgress.ReleaseLock();
 
 				refreshTechs();
@@ -3549,12 +3549,12 @@ namespace Game {
 
 				// Refresh CRC
 				Config & config = Config::getInstance();
-				getFolderTreeContentsCheckSumRecursively(config.
+				/*getFolderTreeContentsCheckSumRecursively(config.
 					getPathListForType
 					(ptScenarios, ""),
 					string("/") + itemName +
 					string("/*"), ".xml",
-					NULL, true);
+					NULL, true);*/
 				safeMutexFTPProgress.ReleaseLock();
 
 				refreshScenarios();
