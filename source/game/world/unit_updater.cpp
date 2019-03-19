@@ -1128,7 +1128,7 @@ namespace Game {
 							switch (this->game->getGameSettings()->getPathFinderType()) {
 								case pfBasic:
 									if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d] tsArrived about to call map->isFreeCells() for command->getPos() = %s, ut->getSize() = %d\n", __FILE__, __FUNCTION__, __LINE__, command->getPos().getString().c_str(), ut->getSize());
-									canOccupyCell = map->isFreeCells(command->getPos(), ut->getSize(), fLand, true);
+									canOccupyCell = map->isFreeCells(command->getPos(), ut->getSize(), ut->getField(), true);
 									break;
 								default:
 									throw game_runtime_error("detected unsupported pathfinder type!");
@@ -1227,6 +1227,12 @@ namespace Game {
 					Unit *builtUnit = map->getCell(unit->getTargetPos())->getUnit(fLand);
 					if (builtUnit == NULL) {
 						builtUnit = map->getCell(unit->getTargetPos())->getUnitWithEmptyCellMap(fLand);
+					}
+					if (builtUnit == NULL) {
+						builtUnit = map->getCell(unit->getTargetPos())->getUnit(fAir);
+					}
+					if (builtUnit == NULL) {
+						builtUnit = map->getCell(unit->getTargetPos())->getUnitWithEmptyCellMap(fAir);
 					}
 
 					if (builtUnit != NULL) {
@@ -2002,6 +2008,12 @@ namespace Game {
 			Unit *repaired = (command != NULL ? map->getCell(command->getPos())->getUnitWithEmptyCellMap(fLand) : NULL);
 			if (repaired == NULL && command != NULL) {
 				repaired = map->getCell(command->getPos())->getUnit(fLand);
+			}
+			if (repaired == NULL && command != NULL) {
+				repaired = (command != NULL ? map->getCell(command->getPos())->getUnitWithEmptyCellMap(fAir) : NULL);
+			}
+			if (repaired == NULL && command != NULL) {
+				repaired = map->getCell(command->getPos())->getUnit(fAir);
 			}
 
 			if (repaired != NULL) {

@@ -2794,7 +2794,7 @@ namespace Game {
 									isFreeCells(tryPos - Vec2i(spacing),
 										bt->getUnitType()->
 										getSize() + spacing * 2,
-										fLand)) {
+										bt->getUnitType()->getField())) {
 									enemies.clear();
 									ai->getAiInterface()->getWorld()->
 										getUnitUpdater()->
@@ -2827,7 +2827,7 @@ namespace Game {
 									isFreeCells(tryPos - Vec2i(spacing),
 										bt->getUnitType()->
 										getSize() + spacing * 2,
-										fLand)) {
+										bt->getUnitType()->getField())) {
 									enemies.clear();
 									ai->getAiInterface()->getWorld()->
 										getUnitUpdater()->

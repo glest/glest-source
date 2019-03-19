@@ -1480,9 +1480,9 @@ namespace Game {
 		for (int i = -1; i <= 1; ++i) {
 			for (int j = -1; j <= 1; ++j) {
 				if (isInside(pos.x + i, pos.y + j) && isInsideSurface(toSurfCoords(Vec2i(pos.x + i, pos.y + j)))) {
-					if (getCell(pos.x + i, pos.y + j)->getUnit(fLand) == unit) {
+					if (getCell(pos.x + i, pos.y + j)->getUnit(fLand) == unit || getCell(pos.x + i, pos.y + j)->getUnit(fAir) == unit) {
 						return true;
-					} else if (getCell(pos.x + i, pos.y + j)->getUnitWithEmptyCellMap(fLand) == unit) {
+					} else if (getCell(pos.x + i, pos.y + j)->getUnitWithEmptyCellMap(fLand) == unit || getCell(pos.x + i, pos.y + j)->getUnitWithEmptyCellMap(fAir) == unit) {
 						return true;
 					}
 				}

@@ -5124,7 +5124,7 @@ namespace Game {
 		if (forceColor != NULL) {
 			color = *forceColor;
 		} else {
-			if (map->isFreeCells(pos, building->getSize(), fLand, true)) {
+			if (map->isFreeCells(pos, building->getSize(), building->getField(), true)) {
 				color = Vec4f(1.f, 1.f, 1.f, 0.5f);
 			} else {
 				//			Uint64 tc=game->getTickCount();

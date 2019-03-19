@@ -1004,7 +1004,7 @@ namespace Game {
 					if (aiInterface->
 						isFreeCells(outPos - Vec2i(minBuildSpacing),
 							building->getAiBuildSize() +
-							minBuildSpacing * 2, fLand)) {
+							minBuildSpacing * 2, building->getField())) {
 						int
 							aiBuildSizeDiff =
 							building->getAiBuildSize() - building->getSize();
