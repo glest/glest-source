@@ -542,7 +542,8 @@ namespace Shared {
 
 				try {
 					StreamSoundSource* source = findStreamSoundSource();
-					source->play(strSound, fadeOn);
+					if (source != NULL)
+						source->play(strSound, fadeOn);
 				} catch (std::exception& e) {
 					SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line: %d] Error [%s]\n", __FILE__, __FUNCTION__, __LINE__, e.what());
 					std::cerr << "Couldn't play streaming sound: " << e.what() << "\n";
@@ -656,7 +657,8 @@ namespace Shared {
 
 				// create a new source
 				if (streamSources.size() >= params.strBufferCount) {
-					throw std::runtime_error("Too many stream sounds played at once");
+					//throw std::runtime_error("Too many stream sounds played at once");
+					return NULL;
 				}
 
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSound).enabled) SystemFlags::OutputDebug(SystemFlags::debugSound, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
