@@ -1193,7 +1193,7 @@ namespace Game {
 		unit->getFaction()->addCloseResourceTargetToCache(newPos);
 
 		//water splash
-		if (tileset.getWaterEffects() && unit->getCurrField() == fLand) {
+		if (tileset.getWaterEffects() && SkillType::toActualField(unit->getCurrField()) == fLand) {
 			if (map.getSubmerged(map.getCell(unit->getLastPos()))) {
 
 				if (Thread::isCurrentThreadMainThread() == false) {

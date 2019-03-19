@@ -910,33 +910,64 @@ namespace Game {
 		return "";
 	}
 
+	Field SkillType::toActualField(Field field) {
+		if ((field & fAir) == fAir)
+			return fAir;
+		else if ((field & fLand) == fLand || (field & fWater) == fWater)
+			return fLand;
+		else
+			return fNone;
+	}
+
 	string SkillType::fieldToStr(Field field) {
 		Lang & lang = Lang::getInstance();
-		string fieldName = "";
+		string fieldName;
 		switch (field) {
+			case fNone:
+				if (lang.hasString("FieldNone") == true) {
+					fieldName = lang.getString("FieldNone");
+				} else {
+					fieldName = "None";
+				}
+				return lang.getTilesetString("FieldNoneName", fieldName.c_str());
 			case fLand:
 				if (lang.hasString("FieldLand") == true) {
 					fieldName = lang.getString("FieldLand");
 				} else {
 					fieldName = "Land";
 				}
-				//return "Land";
 				return lang.getTilesetString("FieldLandName", fieldName.c_str());
-
 			case fAir:
 				if (lang.hasString("FieldAir") == true) {
 					fieldName = lang.getString("FieldAir");
 				} else {
 					fieldName = "Air";
 				}
-
-				//return "Air";
 				return lang.getTilesetString("FieldAirName", fieldName.c_str());
+			case fLandAir:
+				if (lang.hasString("FieldLandAir") == true) {
+					fieldName = lang.getString("FieldLandAir");
+				} else {
+					fieldName = "LandAir";
+				}
+				return lang.getTilesetString("FieldLandAirName", fieldName.c_str());
+			case fWater:
+				if (lang.hasString("FieldWater") == true) {
+					fieldName = lang.getString("FieldWater");
+				} else {
+					fieldName = "Water";
+				}
+				return lang.getTilesetString("FieldWaterName", fieldName.c_str());
+			case fLandWater:
+				if (lang.hasString("FieldLandWater") == true) {
+					fieldName = lang.getString("FieldLandWater");
+				} else {
+					fieldName = "LandWater";
+				}
+				return lang.getTilesetString("FieldLandWaterName", fieldName.c_str());
 			default:
-				assert(false);
-				break;
+				return "";
 		}
-		return "";
 	}
 
 	void SkillType::saveGame(XmlNode * rootNode) {
@@ -1041,9 +1072,7 @@ namespace Game {
 		spawnUnitAtTarget = false;
 		splashParticleSystemType = NULL;
 
-		for (int i = 0; i < fieldCount; ++i) {
-			attackFields[i] = false;
-		}
+		attackFields = fNone;
 
 		attackStrength = 0;
 		attackVar = 0;
@@ -1131,14 +1160,20 @@ namespace Game {
 			const XmlNode *fieldNode = attackFieldsNode->getChild("field", i);
 			string fieldName =
 				fieldNode->getAttribute("value")->getRestrictedValue();
-			if (fieldName == "land") {
-				attackFields[fLand] = true;
-			} else if (fieldName == "air") {
-				attackFields[fAir] = true;
-			} else {
-				throw game_runtime_error("Not a valid field: " + fieldName +
-					": " + dir, true);
-			}
+			if (fieldName == "land")
+				attackFields = static_cast<Field>(attackFields | fLand);
+			else if (fieldName == "air")
+				attackFields = static_cast<Field>(attackFields | fAir);
+			else if (fieldName == "landair")
+				attackFields = static_cast<Field>(attackFields | fLandAir);
+			else if (fieldName == "water")
+				attackFields = static_cast<Field>(attackFields | fWater);
+			else if (fieldName == "landwater")
+				attackFields = static_cast<Field>(attackFields | fLandWater);
+			else if (fieldName == "none")
+				attackFields = static_cast<Field>(attackFields | fNone);
+			else
+				throw game_runtime_error("Not a valid field: " + fieldName + ": " + dir, true);
 		}
 
 		if (sn->hasChild("projectile")) {
@@ -1351,14 +1386,10 @@ namespace Game {
 				mapTagReplacements);
 		}
 		//      bool attackFields[fieldCount];
-		for (unsigned int i = 0; i < fieldCount; ++i) {
-			XmlNode *attackFieldsNode =
-				attackSkillTypeNode->addChild("attackFields");
-			attackFieldsNode->addAttribute("key", intToStr(i),
-				mapTagReplacements);
-			attackFieldsNode->addAttribute("value", intToStr(attackFields[i]),
-				mapTagReplacements);
-		}
+		XmlNode *attackFieldsNode =
+			attackSkillTypeNode->addChild("attackFields");
+		attackFieldsNode->addAttribute("value", intToStr(attackFields),
+			mapTagReplacements);
 		//      float attackStartTime;
 		attackSkillTypeNode->addAttribute("attackStartTime",
 			floatToStr(attackStartTime, 6),

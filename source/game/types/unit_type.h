@@ -213,8 +213,6 @@ namespace Game {
 		int maxUnitCount;
 
 
-		// remove fields, multiple fields are not supported by the engine
-		bool fields[fieldCount];  //fields: land, sea or air
 		Field field;
 
 		bool properties[pCount];  //properties
@@ -325,9 +323,6 @@ namespace Game {
 		}
 		inline int getMaxUnitCount() const {
 			return maxUnitCount;
-		}
-		inline bool getField(Field field) const {
-			return fields[field];
 		}
 		inline Field getField() const {
 			return field;

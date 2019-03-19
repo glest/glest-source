@@ -3174,7 +3174,7 @@ namespace Game {
 					result = true;
 					break;
 				case utet_FieldChanged:
-					unit->setCurrField(value == 1 ? fAir : fLand);
+					unit->setCurrField(static_cast<Field>(value));
 					result = true;
 					break;
 				default:

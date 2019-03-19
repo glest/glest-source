@@ -318,7 +318,7 @@ namespace Game {
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugPerformance).enabled && chrono.getMillis() > 0) SystemFlags::OutputDebug(SystemFlags::debugPerformance, "In [%s::%s] Line: %d took msecs: %lld [after world->moveUnitCells()]\n", __FILE__, __FUNCTION__, __LINE__, chrono.getMillis());
 
 				//play water sound
-				if (map->getCell(unit->getPos())->getHeight() < map->getWaterLevel() && unit->getCurrField() == fLand) {
+				if (map->getCell(unit->getPos())->getHeight() < map->getWaterLevel() && SkillType::toActualField(unit->getCurrField()) == fLand) {
 					if (Config::getInstance().getBool("DisableWaterSounds", "false") == false) {
 						soundRenderer.playFx(
 							CoreData::getInstance().getWaterSound(),
@@ -2817,11 +2817,11 @@ namespace Game {
 	void UnitUpdater::findEnemiesForCell(const AttackSkillType *ast, Cell *cell, const Unit *unit,
 		const Unit *commandTarget, vector<Unit*> &enemies) {
 		//all fields
-		for (int k = 0; k < fieldCount; k++) {
+		for (int k = 0; k < ACTUAL_FIELD_COUNT; k++) {
 			Field f = static_cast<Field>(k);
 
 			//check field
-			if ((ast == NULL || ast->getAttackField(f))) {
+			if ((ast == NULL || (ast->getAttackField() & k) == k)) {
 				Unit *possibleEnemy = cell->getUnit(f);
 
 				//check enemy
@@ -2838,7 +2838,7 @@ namespace Game {
 
 	void UnitUpdater::findEnemiesForCell(const Vec2i pos, int size, int sightRange, const Faction *faction, vector<Unit*> &enemies, bool attackersOnly) const {
 		//all fields
-		for (int k = 0; k < fieldCount; k++) {
+		for (int k = 0; k < ACTUAL_FIELD_COUNT; k++) {
 			Field f = static_cast<Field>(k);
 
 			for (int i = pos.x - sightRange; i < pos.x + size + sightRange; ++i) {
@@ -3182,7 +3182,7 @@ namespace Game {
 	void UnitUpdater::findUnitsForCell(Cell *cell, vector<Unit*> &units) {
 		//all fields
 		if (cell != NULL) {
-			for (int k = 0; k < fieldCount; k++) {
+			for (int k = 0; k < ACTUAL_FIELD_COUNT; k++) {
 				Field f = static_cast<Field>(k);
 
 				//check field

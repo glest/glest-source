@@ -760,12 +760,7 @@ namespace Game {
 		}
 		// else it was set appropriately in setModelFacing()
 
-		if (getType()->getField(fAir)) {
-			currField = fAir;
-		}
-		if (getType()->getField(fLand)) {
-			currField = fLand;
-		}
+		currField = getType()->getField();
 
 		computeTotalUpgrade();
 
@@ -4525,13 +4520,7 @@ namespace Game {
 			throw game_runtime_error(szBuf);
 		}
 
-		Field morphUnitField = fLand;
-		if (morphUnitType->getField(fAir)) {
-			morphUnitField = fAir;
-		}
-		if (morphUnitType->getField(fLand)) {
-			morphUnitField = fLand;
-		}
+		Field morphUnitField = morphUnitType->getField();
 
 		map->clearUnitCells(this, pos, false);
 		if (map->canMorph(pos, this, morphUnitType)) {
@@ -4617,7 +4606,7 @@ namespace Game {
 
 		float height = map->getCell(pos)->getHeight();
 
-		if (currField == fAir) {
+		if (SkillType::toActualField(currField) == fAir) {
 			float airHeight = game->getWorld()->getTileset()->getAirHeight();
 			airHeight = truncateDecimal < float >(airHeight, 6);
 

@@ -48,7 +48,7 @@ namespace Game {
 
 	Cell::Cell() {
 		//game data
-		for (int i = 0; i < fieldCount; ++i) {
+		for (int i = 0; i < ACTUAL_FIELD_COUNT; ++i) {
 			units[i] = NULL;
 			unitsWithEmptyCellMap[i] = NULL;
 		}
@@ -64,7 +64,7 @@ namespace Game {
 	void Cell::saveGame(XmlNode *rootNode, int index) const {
 		bool saveCell = false;
 		//if(saveCell == false) {
-		for (unsigned int i = 0; i < fieldCount; ++i) {
+		for (unsigned int i = 0; i < ACTUAL_FIELD_COUNT; ++i) {
 			if (units[i] != NULL) {
 				saveCell = true;
 				break;
@@ -81,16 +81,16 @@ namespace Game {
 			XmlNode *cellNode = rootNode->addChild("Cell" + intToStr(index));
 			cellNode->addAttribute("index", intToStr(index), mapTagReplacements);
 
-			//    Unit *units[fieldCount];	//units on this cell
-			for (unsigned int i = 0; i < fieldCount; ++i) {
+			//units on this cell
+			for (unsigned int i = 0; i < ACTUAL_FIELD_COUNT; ++i) {
 				if (units[i] != NULL) {
 					XmlNode *unitsNode = cellNode->addChild("units");
 					unitsNode->addAttribute("field", intToStr(i), mapTagReplacements);
 					unitsNode->addAttribute("unitid", intToStr(units[i]->getId()), mapTagReplacements);
 				}
 			}
-			//    Unit *unitsWithEmptyCellMap[fieldCount];	//units with an empty cellmap on this cell
-			for (unsigned int i = 0; i < fieldCount; ++i) {
+			//units with an empty cellmap on this cell
+			for (unsigned int i = 0; i < ACTUAL_FIELD_COUNT; ++i) {
 				if (unitsWithEmptyCellMap[i] != NULL) {
 					XmlNode *unitsWithEmptyCellMapNode = cellNode->addChild("unitsWithEmptyCellMap");
 					unitsWithEmptyCellMapNode->addAttribute("field", intToStr(i), mapTagReplacements);
@@ -772,8 +772,8 @@ namespace Game {
 			isInside(pos) &&
 			isInsideSurface(toSurfCoords(pos)) &&
 			(getCell(pos)->isFree(field) ? true : (buildingsOnly && !getCell(pos)->getUnit(field)->getType()->hasSkillClass(scBeBuilt))) &&
-			(field == fAir || getSurfaceCell(toSurfCoords(pos))->isFree()) &&
-			(field != fLand || getDeepSubmerged(getCell(pos)) == false);
+			(SkillType::toActualField(field) == fAir || getSurfaceCell(toSurfCoords(pos))->isFree()) &&
+			(SkillType::toActualField(field) == fAir || ((field & fWater) == fWater ? ((field & fLand) == fLand ? true : getDeepSubmerged(getCell(pos))) : !getDeepSubmerged(getCell(pos))));
 	}
 
 
@@ -789,42 +789,6 @@ namespace Game {
 		return false;
 	}
 
-	//TT: this is much more complicated compared with the old one above. I think its no more needed
-	//bool Map::isFreeCellOrHasUnit(const Vec2i &pos, Field field, const Unit *unit) const {
-	//	if(isInside(pos) && isInsideSurface(toSurfCoords(pos))) {
-	//		if(unit->getCurrField() != field) {
-	//			return isFreeCell(pos, field);
-	//		}
-	//		Cell *c= getCell(pos);
-	//		if(c->getUnit(unit->getCurrField()) == unit) {
-	//			if(unit->getCurrField() == fAir) {
-	//				if(field == fAir) {
-	//					return true;
-	//				}
-	//				const SurfaceCell *sc= getSurfaceCell(toSurfCoords(pos));
-	//				if(sc != NULL) {
-	//					if(getDeepSubmerged(sc) == true) {
-	//						return false;
-	//					}
-	//					else if(field == fLand) {
-	//						if(sc->isFree() == false) {
-	//							return false;
-	//						}
-	//						else if(c->getUnit(field) != NULL) {
-	//							return false;
-	//						}
-	//					}
-	//				}
-	//			}
-	//			return true;
-	//		}
-	//		else{
-	//			return isFreeCell(pos, field);
-	//		}
-	//	}
-	//	return false;
-	//}
-
 	bool Map::isAproxFreeCell(const Vec2i &pos, Field field, int teamIndex) const {
 		if (isInside(pos) && isInsideSurface(toSurfCoords(pos))) {
 			const SurfaceCell *sc = getSurfaceCell(toSurfCoords(pos));
@@ -832,7 +796,7 @@ namespace Game {
 			if (sc->isVisible(teamIndex)) {
 				return isFreeCell(pos, field);
 			} else if (sc->isExplored(teamIndex)) {
-				return field == fLand ? sc->isFree() && !getDeepSubmerged(getCell(pos)) : true;
+				return SkillType::toActualField(field) == fAir ? true : sc->isFree() && ((field & fWater) == fWater ? ((field & fLand) == fLand ? true : getDeepSubmerged(getCell(pos))) : !getDeepSubmerged(getCell(pos)));
 			} else {
 				return true;
 			}
@@ -1513,7 +1477,6 @@ namespace Game {
 
 	//return if unit is next to pos
 	bool Map::isNextTo(const Vec2i &pos, const Unit *unit) const {
-
 		for (int i = -1; i <= 1; ++i) {
 			for (int j = -1; j <= 1; ++j) {
 				if (isInside(pos.x + i, pos.y + j) && isInsideSurface(toSurfCoords(Vec2i(pos.x + i, pos.y + j)))) {

@@ -57,12 +57,16 @@ namespace Game {
 	class TotalUpgrade;
 	class Unit;
 
+#define ACTUAL_FIELD_COUNT 3
 
+	//Bit Flags
 	enum Field {
-		fLand,
-		fAir,
-
-		fieldCount
+		fNone = 0,
+		fLand = 1,
+		fAir = 2,
+		fLandAir = 3, //fLand | fAir
+		fWater = 4,
+		fLandWater = 5 //fLand | fWater
 	};
 
 	enum SkillClass {
@@ -341,6 +345,7 @@ namespace Game {
 		}
 		static string skillClassToStr(SkillClass skillClass);
 		static string fieldToStr(Field field);
+		static Field toActualField(Field field);
 		virtual string getBoostDesc(bool translatedValue) const {
 			return attackBoost.getDesc(translatedValue);
 		}
@@ -382,7 +387,7 @@ namespace Game {
 		int attackVar;
 		int attackRange;
 		const AttackType *attackType;
-		bool attackFields[fieldCount];
+		Field attackFields;
 		float attackStartTime;
 
 		string spawnUnit;
@@ -420,8 +425,8 @@ namespace Game {
 		inline const AttackType *getAttackType() const {
 			return attackType;
 		}
-		inline bool getAttackField(Field field) const {
-			return attackFields[field];
+		inline Field getAttackField() const {
+			return attackFields;
 		}
 		inline float getAttackStartTime() const {
 			return attackStartTime;

@@ -385,13 +385,7 @@ namespace Game {
 		str += "\n";
 
 		//attack fields
-		str += lang.getString("Fields") + ": ";
-		for (int i = 0; i < fieldCount; i++) {
-			Field field = static_cast <Field> (i);
-			if (attackSkillType->getAttackField(field)) {
-				str += SkillType::fieldToStr(field) + " ";
-			}
-		}
+		str += lang.getString("Fields") + ": " + SkillType::fieldToStr(attackSkillType->getAttackField());
 		str += "\n";
 
 		//movement speed
@@ -542,13 +536,7 @@ namespace Game {
 		//attack fields
 		str +=
 			lang.getString("Fields",
-			(translatedValue == true ? "" : "english")) + ": ";
-		for (int i = 0; i < fieldCount; i++) {
-			Field field = static_cast <Field> (i);
-			if (attackSkillType->getAttackField(field)) {
-				str += SkillType::fieldToStr(field) + " ";
-			}
-		}
+			(translatedValue == true ? "" : "english")) + ": " + SkillType::fieldToStr(attackSkillType->getAttackField());
 		str += "\n";
 		str += attackSkillType->getBoostDesc(translatedValue);
 		return str;

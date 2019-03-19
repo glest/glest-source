@@ -111,7 +111,7 @@ namespace Game {
 		armorType = NULL;
 		rotatedBuildPos = 0;
 
-		field = fLand;
+		field = fNone;
 		id = 0;
 		meetingPoint = false;
 		rotationAllowed = false;
@@ -132,10 +132,6 @@ namespace Game {
 
 		for (int i = 0; i < pCount; ++i) {
 			properties[i] = false;
-		}
-
-		for (int i = 0; i < fieldCount; ++i) {
-			fields[i] = false;
 		}
 
 		cellMap = NULL;
@@ -507,22 +503,20 @@ namespace Game {
 				const XmlNode *fieldNode = fieldsNode->getChild("field", i);
 				string fieldName =
 					fieldNode->getAttribute("value")->getRestrictedValue();
-				if (fieldName == "land") {
-					fields[fLand] = true;
-				} else if (fieldName == "air") {
-					fields[fAir] = true;
-				} else {
-					throw game_runtime_error("Not a valid field: " + fieldName +
-						": " + path, true);
-				}
-			}
-
-			if (fields[fLand]) {
-				field = fLand;
-			} else if (fields[fAir]) {
-				field = fAir;
-			} else {
-				throw game_runtime_error("Unit has no field: " + path, true);
+				if (fieldName == "land")
+					field = static_cast<Field>(field | fLand);
+				else if (fieldName == "air")
+					field = static_cast<Field>(field | fAir);
+				else if (fieldName == "landair")
+					field = static_cast<Field>(field | fLandAir);
+				else if (fieldName == "water")
+					field = static_cast<Field>(field | fWater);
+				else if (fieldName == "landwater")
+					field = static_cast<Field>(field | fLandWater);
+				else if (fieldName == "none")
+					field = static_cast<Field>(field | fNone);
+				else
+					throw game_runtime_error("Not a valid field: " + fieldName + ": " + path, true);
 			}
 
 			//properties
@@ -1259,8 +1253,7 @@ namespace Game {
 			if (commandTypes[i]->getClass() == ccAttack) {
 				const AttackCommandType *act =
 					dynamic_cast <const AttackCommandType *>(commandTypes[i]);
-				if (act != NULL
-					&& act->getAttackSkillType()->getAttackField(field)) {
+				if (act != NULL && SkillType::toActualField(act->getAttackSkillType()->getAttackField()) == field) {
 					//printf("## Unit [%s] i = %d, is found\n",this->getName().c_str(),(int)i);
 					return act;
 				}
@@ -1284,8 +1277,7 @@ namespace Game {
 				const AttackStoppedCommandType *act =
 					dynamic_cast <
 					const AttackStoppedCommandType *>(commandTypes[i]);
-				if (act != NULL
-					&& act->getAttackSkillType()->getAttackField(field)) {
+				if (act != NULL && SkillType::toActualField(act->getAttackSkillType()->getAttackField()) == field) {
 					//printf("## Unit [%s] i = %d, is found\n",this->getName().c_str(),(int)i);
 					return act;
 				}
@@ -1598,13 +1590,8 @@ namespace Game {
 		result += " startEpPercentage = " + intToStr(startEpPercentage);
 		result += " epRegeneration = " + intToStr(epRegeneration);
 		result += " maxUnitCount = " + intToStr(getMaxUnitCount());
+		result += " fields = " + intToStr(field);
 
-
-		for (int i = 0; i < fieldCount; i++) {
-			result +=
-				" fields index = " + intToStr(i) + " value = " +
-				intToStr(fields[i]);
-		}
 		for (int i = 0; i < pCount; i++) {
 			result +=
 				" properties index = " + intToStr(i) + " value = " +

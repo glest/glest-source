@@ -5177,7 +5177,7 @@ namespace Game {
 				visibleUnitIndex < (int) qCache.visibleQuadUnitList.size(); ++visibleUnitIndex) {
 				Unit *unit = qCache.visibleQuadUnitList[visibleUnitIndex];
 
-				if ((airUnits == false && unit->getType()->getField() == fAir) || (airUnits == true && unit->getType()->getField() != fAir)) {
+				if (airUnits != (SkillType::toActualField(unit->getType()->getField()) == fAir)) {
 					continue;
 				}
 				meshCallback.setTeamTexture(unit->getFaction()->getTexture());
@@ -5381,10 +5381,9 @@ namespace Game {
 
 							Vec3f currVec = unit->getCurrVectorFlat();
 							currVec = Vec3f(currVec.x, currVec.y + 0.3f, currVec.z);
-							if (mType->getField() == fAir && unit->getType()->getField() == fLand) {
+							if (SkillType::toActualField(mType->getField()) == fAir && SkillType::toActualField(unit->getType()->getField()) == fLand) {
 								currVec = Vec3f(currVec.x, currVec.y + game->getWorld()->getTileset()->getAirHeight(), currVec.z);
-							}
-							if (mType->getField() == fLand && unit->getType()->getField() == fAir) {
+							} else if (SkillType::toActualField(mType->getField()) == fLand && SkillType::toActualField(unit->getType()->getField()) == fAir) {
 								currVec = Vec3f(currVec.x, currVec.y - game->getWorld()->getTileset()->getAirHeight(), currVec.z);
 							}
 

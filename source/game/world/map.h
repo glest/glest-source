@@ -63,8 +63,8 @@ namespace Game {
 
 	class Cell {
 	private:
-		Unit * units[fieldCount];	//units on this cell
-		Unit *unitsWithEmptyCellMap[fieldCount];	//units with an empty cellmap on this cell
+		Unit * units[ACTUAL_FIELD_COUNT];	//units on this cell
+		Unit *unitsWithEmptyCellMap[ACTUAL_FIELD_COUNT];	//units with an empty cellmap on this cell
 		float height;
 
 	private:
@@ -75,29 +75,21 @@ namespace Game {
 		Cell();
 
 		//get
-		inline Unit *getUnit(int field) const {
-			if (field >= fieldCount) {
-				throw game_runtime_error("Invalid field value" + intToStr(field));
-			} return units[field];
+		inline Unit *getUnit(Field field) const {
+			return units[SkillType::toActualField(field)];
 		}
-		inline Unit *getUnitWithEmptyCellMap(int field) const {
-			if (field >= fieldCount) {
-				throw game_runtime_error("Invalid field value" + intToStr(field));
-			} return unitsWithEmptyCellMap[field];
+		inline Unit *getUnitWithEmptyCellMap(Field field) const {
+			return unitsWithEmptyCellMap[SkillType::toActualField(field)];
 		}
 		inline float getHeight() const {
 			return truncateDecimal<float>(height, 6);
 		}
 
-		inline void setUnit(int field, Unit *unit) {
-			if (field >= fieldCount) {
-				throw game_runtime_error("Invalid field value" + intToStr(field));
-			} units[field] = unit;
+		inline void setUnit(Field field, Unit *unit) {
+			units[SkillType::toActualField(field)] = unit;
 		}
-		inline void setUnitWithEmptyCellMap(int field, Unit *unit) {
-			if (field >= fieldCount) {
-				throw game_runtime_error("Invalid field value" + intToStr(field));
-			} unitsWithEmptyCellMap[field] = unit;
+		inline void setUnitWithEmptyCellMap(Field field, Unit *unit) {
+			unitsWithEmptyCellMap[SkillType::toActualField(field)] = unit;
 		}
 		inline void setHeight(float height) {
 			this->height = truncateDecimal<float>(height, 6);
@@ -477,8 +469,8 @@ namespace Game {
 				isInside(pos) &&
 				isInsideSurface(toSurfCoords(pos)) &&
 				getCell(pos)->isFreeOrMightBeFreeSoon(originPos, pos, field) &&
-				(field == fAir || getSurfaceCell(toSurfCoords(pos))->isFree()) &&
-				(field != fLand || getDeepSubmerged(getCell(pos)) == false);
+				(SkillType::toActualField(field) == fAir || getSurfaceCell(toSurfCoords(pos))->isFree()) &&
+				(SkillType::toActualField(field) == fAir || ((field & fWater) == fWater ? ((field & fLand) == fLand ? true : getDeepSubmerged(getCell(pos))) : !getDeepSubmerged(getCell(pos))));
 		}
 
 		inline bool isAproxFreeCellOrMightBeFreeSoon(Vec2i originPos, const Vec2i &pos, Field field, int teamIndex) const {
@@ -488,7 +480,7 @@ namespace Game {
 				if (sc->isVisible(teamIndex)) {
 					return isFreeCellOrMightBeFreeSoon(originPos, pos, field);
 				} else if (sc->isExplored(teamIndex)) {
-					return field == fLand ? sc->isFree() && !getDeepSubmerged(getCell(pos)) : true;
+					return SkillType::toActualField(field) == fAir ? true : sc->isFree() && ((field & fWater) == fWater ? ((field & fLand) == fLand ? true : getDeepSubmerged(getCell(pos))) : !getDeepSubmerged(getCell(pos)));
 				} else {
 					return true;
 				}
@@ -537,9 +529,6 @@ namespace Game {
 					if (sc->isVisible(teamIndex)) {
 						bool testCond = isFreeCellOrMightBeFreeSoon(unit->getPosNotThreadSafe(), pos2, field);
 						extraInfo += (string("isFreeCellOrMightBeFreeSoon = ") + (testCond ? string("true") : string("false")));
-					} else if (sc->isExplored(teamIndex)) {
-						bool testCond = field == fLand ? sc->isFree() && !getDeepSubmerged(getCell(pos2)) : true;
-						extraInfo += (string("field==fLand = ") + (testCond ? string("true") : string("false")));
 					}
 
 					char szBuf[8096] = "";
@@ -565,9 +554,6 @@ namespace Game {
 						if (sc->isVisible(teamIndex)) {
 							bool testCond = isFreeCellOrMightBeFreeSoon(unit->getPosNotThreadSafe(), tryPos, field);
 							extraInfo += (string("isFreeCellOrMightBeFreeSoon = ") + (testCond ? string("true") : string("false")));
-						} else if (sc->isExplored(teamIndex)) {
-							bool testCond = field == fLand ? sc->isFree() && !getDeepSubmerged(getCell(tryPos)) : true;
-							extraInfo += (string("field==fLand = ") + (testCond ? string("true") : string("false")));
 						}
 
 						char szBuf[8096] = "";
@@ -593,9 +579,6 @@ namespace Game {
 						if (sc->isVisible(teamIndex)) {
 							bool testCond = isFreeCellOrMightBeFreeSoon(unit->getPosNotThreadSafe(), tryPos, field);
 							extraInfo += (string("isFreeCellOrMightBeFreeSoon = ") + (testCond ? string("true") : string("false")));
-						} else if (sc->isExplored(teamIndex)) {
-							bool testCond = field == fLand ? sc->isFree() && !getDeepSubmerged(getCell(tryPos)) : true;
-							extraInfo += (string("field==fLand = ") + (testCond ? string("true") : string("false")));
 						}
 
 						char szBuf[8096] = "";
