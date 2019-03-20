@@ -1123,7 +1123,7 @@ namespace Game {
 		std::vector < std::string > techInfoList;
 		Tokenize(techInfo, techInfoList, "|");
 		if (techInfoList.size() >= 6) {
-			Config & config = Config::getInstance();
+			//Config & config = Config::getInstance();
 			ModInfo modinfo;
 			modinfo.name = techInfoList[0];
 			modinfo.count = techInfoList[1];
@@ -1136,7 +1136,7 @@ namespace Game {
 			/*string itemPath =
 				config.getPathListForType(ptTechs,
 					"")[1] + "/" + modinfo.name +
-				string("/*");
+				string("/") + string("*");
 			if (itemPath.empty() == false) {
 				bool forceRefresh =
 					(mapCRCUpdateList.find(itemPath) == mapCRCUpdateList.end());
@@ -1147,7 +1147,7 @@ namespace Game {
 					itemPath =
 						config.getPathListForType(ptTechs,
 							"")[0] + "/" + modinfo.name +
-						string("/*");
+						string("/") + string("*");
 					if (itemPath.empty() == false) {
 						forceRefresh =
 							(mapCRCUpdateList.find(itemPath) == mapCRCUpdateList.end());
@@ -1192,7 +1192,7 @@ namespace Game {
 		std::vector < std::string > tilesetInfoList;
 		Tokenize(tilesetInfo, tilesetInfoList, "|");
 		if (tilesetInfoList.size() >= 5) {
-			Config & config = Config::getInstance();
+			//Config & config = Config::getInstance();
 			ModInfo modinfo;
 			modinfo.name = tilesetInfoList[0];
 			modinfo.crc = strToUInt(tilesetInfoList[1]);
@@ -1204,7 +1204,7 @@ namespace Game {
 			/*string itemPath =
 				config.getPathListForType(ptTilesets,
 					"")[1] + "/" + modinfo.name +
-				string("/*");
+				string("/") + string("*");
 			if (itemPath.empty() == false) {
 				bool forceRefresh =
 					(mapCRCUpdateList.find(itemPath) == mapCRCUpdateList.end());
@@ -1215,7 +1215,7 @@ namespace Game {
 					itemPath =
 						config.getPathListForType(ptTilesets,
 							"")[0] + "/" + modinfo.name +
-						string("/*");
+						string("/") + string("*");
 					if (itemPath.empty() == false) {
 						forceRefresh =
 							(mapCRCUpdateList.find(itemPath) == mapCRCUpdateList.end());
@@ -1374,7 +1374,7 @@ namespace Game {
 		std::vector < std::string > scenarioInfoList;
 		Tokenize(scenarioInfo, scenarioInfoList, "|");
 		if (scenarioInfoList.size() >= 5) {
-			Config & config = Config::getInstance();
+			//Config & config = Config::getInstance();
 			ModInfo modinfo;
 			modinfo.name = scenarioInfoList[0];
 			modinfo.crc = strToUInt(scenarioInfoList[1]);
@@ -1386,7 +1386,7 @@ namespace Game {
 			/*string itemPath =
 				config.getPathListForType(ptScenarios,
 					"")[1] + "/" + modinfo.name +
-				string("/*");
+				string("/") + string("*");
 			if (itemPath.empty() == false) {
 				bool forceRefresh =
 					(mapCRCUpdateList.find(itemPath) == mapCRCUpdateList.end());
@@ -1397,7 +1397,7 @@ namespace Game {
 					itemPath =
 						config.getPathListForType(ptScenarios,
 							"")[0] + "/" + modinfo.name +
-						string("/*");
+						string("/") + string("*");
 					if (itemPath.empty() == false) {
 						forceRefresh =
 							(mapCRCUpdateList.find(itemPath) == mapCRCUpdateList.end());
@@ -2223,8 +2223,8 @@ namespace Game {
 					bool remoteHasMap =
 						(mapCacheList.find(selectedMapName) != mapCacheList.end());
 					if (remoteHasMap) {
-						ModInfo & modInfo = mapCacheList[selectedMapName];
-						/*if (modInfo.crc != modInfo.localCRC) {
+						/*ModInfo & modInfo = mapCacheList[selectedMapName];
+						if (modInfo.crc != modInfo.localCRC) {
 							mainMessageBoxState = ftpmsg_ReplaceMap;
 							mainMessageBox.init(lang.getString("Yes"),
 								lang.getString("No"), 450);
@@ -2316,7 +2316,7 @@ namespace Game {
 						(scenarioCacheList.find(selectedScenarioName) !=
 							scenarioCacheList.end());
 					if (remoteHasScenario) {
-						ModInfo & modInfo = scenarioCacheList[selectedScenarioName];
+						/*ModInfo & modInfo = scenarioCacheList[selectedScenarioName];
 						if (SystemFlags::VERBOSE_MODE_ENABLED)
 							printf("In [%s::%s Line %d] remote CRC [%u]\n", __FILE__,
 								__FUNCTION__, __LINE__, modInfo.crc);
@@ -2325,8 +2325,8 @@ namespace Game {
 						string itemPath =
 							config.getPathListForType(ptScenarios,
 								"")[1] + "/" +
-							selectedScenarioName + string("/*");
-						/*bool forceRefresh =
+							selectedScenarioName + string("/") + string("*");
+						bool forceRefresh =
 							(mapCRCUpdateList.find(itemPath) == mapCRCUpdateList.end());
 
 						if (modInfo.crc != 0 && modInfo.crc !=
@@ -2852,9 +2852,9 @@ namespace Game {
 							(techCacheList.find(keyTechButtons[i]->getText()) !=
 								techCacheList.end());
 						if (remoteHasTech) {
-							ModInfo & modInfo =
+							/*ModInfo & modInfo =
 								techCacheList[keyTechButtons[i]->getText()];
-							//if (modInfo.crc == modInfo.localCRC) {
+							if (modInfo.crc == modInfo.localCRC) {*/
 								keyTechButtons[i]->
 									setCustomTexture(CoreData::getInstance().
 										getOnServerInstalledTexture());
@@ -2905,10 +2905,10 @@ namespace Game {
 							(tilesetCacheList.find(keyTilesetButtons[i]->getText()) !=
 								tilesetCacheList.end());
 						if (remoteHasTileset) {
-							ModInfo & modInfo =
+							/*ModInfo & modInfo =
 								tilesetCacheList[keyTilesetButtons[i]->getText()];
 
-							//if (modInfo.crc == modInfo.localCRC) {
+							if (modInfo.crc == modInfo.localCRC) {*/
 								keyTilesetButtons[i]->
 									setCustomTexture(CoreData::getInstance().
 										getOnServerInstalledTexture());
@@ -2961,9 +2961,9 @@ namespace Game {
 							(mapCacheList.find(keyMapButtons[i]->getText()) !=
 								mapCacheList.end());
 						if (remoteHasMap) {
-							ModInfo & modInfo =
+							/*ModInfo & modInfo =
 								mapCacheList[keyMapButtons[i]->getText()];
-							//if (modInfo.crc == modInfo.localCRC) {
+							if (modInfo.crc == modInfo.localCRC) {*/
 								keyMapButtons[i]->
 									setCustomTexture(CoreData::getInstance().
 										getOnServerInstalledTexture());
@@ -3020,9 +3020,9 @@ namespace Game {
 							(scenarioCacheList.find(keyScenarioButtons[i]->getText()) !=
 								scenarioCacheList.end());
 						if (remoteHasScenario) {
-							ModInfo & modInfo =
+							/*ModInfo & modInfo =
 								scenarioCacheList[keyScenarioButtons[i]->getText()];
-							//if (modInfo.crc == modInfo.localCRC) {
+							if (modInfo.crc == modInfo.localCRC) {*/
 								keyScenarioButtons[i]->
 									setCustomTexture(CoreData::getInstance().
 										getOnServerInstalledTexture());
@@ -3111,11 +3111,11 @@ namespace Game {
 						pleaseWaitLabel.setText(lang.
 							getString
 							("GettingModlistFromMasterserver"));
-					}/* else if (modMenuState == mmst_CalculatingCRC) {
+					} else if (modMenuState == mmst_CalculatingCRC) {
 						pleaseWaitLabel.setText(lang.
 							getString
 							("PleaseWaitCalculatingCRC"));
-					}*/
+					}
 					oldMenuState = modMenuState;
 				}
 				float anim = GraphicComponent::getAnim();
@@ -3482,12 +3482,12 @@ namespace Game {
 					filterFileExt);
 
 				// Refresh CRC
-				Config & config = Config::getInstance();
-				/*getFolderTreeContentsCheckSumRecursively(config.
+				/*Config & config = Config::getInstance();
+				getFolderTreeContentsCheckSumRecursively(config.
 					getPathListForType
 					(ptTechs, ""),
 					string("/") + itemName +
-					string("/*"), ".xml",
+					string("/") + string("*"), ".xml",
 					NULL, true);*/
 				safeMutexFTPProgress.ReleaseLock();
 
@@ -3548,12 +3548,12 @@ namespace Game {
 					filterFileExt);
 
 				// Refresh CRC
-				Config & config = Config::getInstance();
-				/*getFolderTreeContentsCheckSumRecursively(config.
+				/*Config & config = Config::getInstance();
+				getFolderTreeContentsCheckSumRecursively(config.
 					getPathListForType
 					(ptScenarios, ""),
 					string("/") + itemName +
-					string("/*"), ".xml",
+					string("/") + string("*"), ".xml",
 					NULL, true);*/
 				safeMutexFTPProgress.ReleaseLock();
 
