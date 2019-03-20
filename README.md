@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/glest/glest-source.svg?branch=develop)](https://travis-ci.org/glest/glest-source)
+[![Build Status](https://travis-ci.org/glest/glest-source.svg?branch=master)](https://travis-ci.org/glest/glest-source)
 
 # Glest
 
