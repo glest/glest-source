@@ -288,11 +288,14 @@ namespace Game {
 					if (button == 0) {
 						string update = Config::getInstance().getString("UpdateDownloadURL", "");
 						if (update != "") {
+							try {
 #ifdef WIN32
-							ShellExecuteA(0, 0, update.c_str(), 0, 0, SW_SHOW);
+								ShellExecuteA(0, 0, update.c_str(), 0, 0, SW_SHOW);
 #else
-							system(("open " + update).c_str());
+								printf("xdg-open call resulted in: %d\n", system(("xdg-open " + update).c_str());
 #endif
+							} catch (...) {
+							}
 						}
 						/*startFTPClientIfRequired();
 
