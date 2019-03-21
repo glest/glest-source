@@ -286,7 +286,15 @@ namespace Game {
 				if (ftpMessageBox.mouseClick(x, y, button)) {
 					ftpMessageBox.setEnabled(false);
 					if (button == 0) {
-						startFTPClientIfRequired();
+						string update = Config::getInstance().getString("UpdateDownloadURL", "");
+						if (update != "") {
+#ifdef WIN32
+							ShellExecuteA(0, 0, update.c_str(), 0, 0, SW_SHOW);
+#else
+							system(("open " + update).c_str());
+#endif
+						}
+						/*startFTPClientIfRequired();
 
 						lastDownloadProgress = 0;
 						printf("Adding ftpFileName [%s] ftpFileURL [%s]\n",
@@ -307,7 +315,7 @@ namespace Game {
 							ftpClientThread->getProgressMutex()->
 							setOwnerId(mutexOwnerId);
 						fileFTPProgressList[ftpFileName] = pair < int, string >(0, "");
-						safeMutexFTPProgress.ReleaseLock();
+						safeMutexFTPProgress.ReleaseLock();*/
 					}
 				}
 			} else if (mainMessageBox.getEnabled() == false
@@ -781,7 +789,7 @@ namespace Game {
 
 		string updateCheckURL =
 			Config::getInstance().getString("UpdateCheckURL", "");
-		if (updateCheckURL != "") {
+		if (updateCheckURL != "" && Config::getInstance().getBool("UpdateNotifier", "true")) {
 
 			string baseURL = updateCheckURL;
 
@@ -808,7 +816,7 @@ namespace Game {
 			}
 
 			if (curlResult != CURLE_OK) {
-				string curlError = curl_easy_strerror(curlResult);
+				/*string curlError = curl_easy_strerror(curlResult);
 
 				if (SystemFlags::VERBOSE_MODE_ENABLED)
 					printf("In [%s::%s Line %d] curlError [%s]..\n", __FILE__,
@@ -818,34 +826,28 @@ namespace Game {
 				snprintf(szMsg, 8096,
 					"An error was detected while checking for new updates\n%s",
 					curlError.c_str());
-				showErrorMessageBox(szMsg, "ERROR", false);
-			}
-
-			if (curlResult == CURLE_OK ||
+				showErrorMessageBox(szMsg, "ERROR", false);*/
+			} else if (curlResult == CURLE_OK ||
 				(curlResult != CURLE_COULDNT_RESOLVE_HOST &&
 					curlResult != CURLE_COULDNT_CONNECT)) {
 
-				Properties props;
-				props.loadFromText(updateMetaData);
+				//Properties props;
+				//props.loadFromText(updateMetaData);
 
 				int compareResult =
-					compareMajorMinorVersion(GameVersionString,
-						props.getString("LatestGameVersion",
-							""));
+					compareMajorMinorVersion(GameVersionString + GameBuildDateString, updateMetaData);
+						//props.getString("LatestGameVersion", ""));
 				if (compareResult == 0) {
-					if (GameVersionString !=
-						props.getString("LatestGameVersion", "")) {
+					if (GameVersionString != updateMetaData) {
 						compareResult = -1;
 					}
 				}
 				if (SystemFlags::VERBOSE_MODE_ENABLED)
 					printf("compareResult = %d local [%s] remote [%s]\n",
-						compareResult, GameVersionString.c_str(),
-						props.getString("LatestGameVersion", "").c_str());
+						compareResult, GameVersionString.c_str(), updateMetaData.c_str());
 
 				if (compareResult < 0) {
-
-					string downloadBinaryKey =
+					/*string downloadBinaryKey =
 						"LatestGameBinaryUpdateArchiveURL-" +
 						getPlatformTypeNameString() + getPlatformArchTypeNameString();
 					if (props.hasString(downloadBinaryKey)) {
@@ -858,23 +860,19 @@ namespace Game {
 					if (SystemFlags::VERBOSE_MODE_ENABLED)
 						printf
 						("Checking update key downloadBinaryKey [%s] ftpFileURL [%s]\n",
-							downloadBinaryKey.c_str(), ftpFileURL.c_str());
-
-					if (props.getBool("AllowUpdateDownloads", "false") == false
-						|| ftpFileURL == "") {
+							downloadBinaryKey.c_str(), ftpFileURL.c_str());*/
+					ftpFileURL = Config::getInstance().getString("UpdateDownloadURL", "");
+					if (ftpFileURL == "") {
 						char szMsg[8096] = "";
 						snprintf(szMsg, 8096,
-							"A new update was detected: %s\nUpdate Date: %s\nPlease visit glest.io for details!",
-							props.getString("LatestGameVersion", "unknown").c_str(),
-							props.getString("LatestGameVersionReleaseDate", "unknown").c_str());
+							"A new update was detected: %s, please visit glest.io for details!", updateMetaData.c_str());
 						showFTPMessageBox(szMsg, "Update", false, true);
 					} else {
 						char szMsg[8096] = "";
 						snprintf(szMsg, 8096,
-							"A new update was detected: %s\nUpdate Date: %s\nDownload update now?",
-							props.getString("LatestGameVersion", "unknown").c_str(),
-							props.getString("LatestGameVersionReleaseDate", "unknown").c_str());
+							"A new update was detected: %s, do you want to download the update now?", updateMetaData.c_str());
 						showFTPMessageBox(szMsg, "Update", false, false);
+						system("<mybrowser> http://google.com");
 					}
 				}
 			}
