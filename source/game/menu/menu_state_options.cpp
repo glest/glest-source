@@ -83,6 +83,8 @@ namespace Game {
 		checkBoxShowDeveloperConsoleOnWindows("Options", "checkBoxShowDeveloperConsoleOnWindows"),
 		labelDefaultActionOnRightClick("Options", "labelDefaultActionOnRightClick"),
 		checkBoxDefaultActionOnRightClick("Options", "checkBoxDefaultActionOnRightClick"),
+		labelUpdateNotice("Options", "labelUpdateNotice"),
+		checkBoxUpdateNotice("Options", "checkBoxUpdateNotice"),
 		labelCustomTranslation("Options", "labelCustomTranslation"),
 		checkBoxCustomTranslation("Options", "checkBoxCustomTranslation"),
 		buttonGetNewLanguageFiles("Options", "buttonGetNewLanguageFiles"),
@@ -391,6 +393,14 @@ namespace Game {
 
 			checkBoxDefaultActionOnRightClick.init(currentColumnStart, currentLine);
 			checkBoxDefaultActionOnRightClick.setValue(config.getBool("DefaultActionAttack", "true"));
+
+			currentLine -= lineOffset;
+
+			labelUpdateNotice.init(currentLabelStart, currentLine);
+			labelUpdateNotice.setText(lang.getString("UpdateNoticeOption"));
+
+			checkBoxUpdateNotice.init(currentColumnStart, currentLine);
+			checkBoxUpdateNotice.setValue(config.getBool("UpdateNotifier", "true"));
 
 			currentLine -= lineOffset / 2;
 
@@ -1084,8 +1094,9 @@ namespace Game {
 			listBoxHealthBars.mouseClick(x, y);
 			checkBoxChatStaysActive.mouseClick(x, y);
 			checkBoxTimeDisplay.mouseClick(x, y);
-			checkBoxDefaultActionOnRightClick.mouseClick(x, y);
 			checkBoxShowDeveloperConsoleOnWindows.mouseClick(x, y);
+			checkBoxDefaultActionOnRightClick.mouseClick(x, y);
+			checkBoxUpdateNotice.mouseClick(x, y);
 		}
 	}
 
@@ -1115,8 +1126,8 @@ namespace Game {
 		checkBoxVisibleHud.mouseMove(x, y);
 		checkBoxChatStaysActive.mouseMove(x, y);
 		checkBoxTimeDisplay.mouseMove(x, y);
-		checkBoxDefaultActionOnRightClick.mouseMove(x, y);
 		checkBoxShowDeveloperConsoleOnWindows.mouseMove(x, y);
+		checkBoxUpdateNotice.mouseMove(x, y);
 		checkBoxCustomTranslation.mouseMove(x, y);
 	}
 
@@ -1224,11 +1235,14 @@ namespace Game {
 			renderer.renderLabel(&labelChatStaysActive);
 			renderer.renderLabel(&labelTimeDisplay);
 
+			renderer.renderLabel(&labelShowDeveloperConsoleOnWindows);
+			renderer.renderCheckBox(&checkBoxShowDeveloperConsoleOnWindows);
+
 			renderer.renderLabel(&labelDefaultActionOnRightClick);
 			renderer.renderCheckBox(&checkBoxDefaultActionOnRightClick);
 
-			renderer.renderLabel(&labelShowDeveloperConsoleOnWindows);
-			renderer.renderCheckBox(&checkBoxShowDeveloperConsoleOnWindows);
+			renderer.renderLabel(&labelUpdateNotice);
+			renderer.renderCheckBox(&checkBoxUpdateNotice);
 
 			renderer.renderCheckBox(&checkBoxVisibleHud);
 			renderer.renderCheckBox(&checkBoxChatStaysActive);
@@ -1301,8 +1315,9 @@ namespace Game {
 		config.setBool("VisibleHud", checkBoxVisibleHud.getValue());
 		config.setBool("ChatStaysActive", checkBoxChatStaysActive.getValue());
 		config.setBool("TimeDisplay", checkBoxTimeDisplay.getValue());
-		config.setBool("DefaultActionAttack", checkBoxDefaultActionOnRightClick.getValue());
 		config.setBool("ShowConsoleWindows", checkBoxShowDeveloperConsoleOnWindows.getValue());
+		config.setBool("DefaultActionAttack", checkBoxDefaultActionOnRightClick.getValue());
+		config.setBool("UpdateNotifier", checkBoxUpdateNotice.getValue());
 		config.save();
 
 #ifdef _WIN32

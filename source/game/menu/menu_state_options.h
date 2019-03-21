@@ -79,6 +79,9 @@ namespace Game {
 		GraphicLabel labelDefaultActionOnRightClick;
 		GraphicCheckBox checkBoxDefaultActionOnRightClick;
 
+		GraphicLabel labelUpdateNotice;
+		GraphicCheckBox checkBoxUpdateNotice;
+
 		map < string, string > languageList;
 
 		GraphicLabel labelCustomTranslation;
