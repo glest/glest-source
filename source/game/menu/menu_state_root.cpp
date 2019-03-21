@@ -872,7 +872,6 @@ namespace Game {
 						snprintf(szMsg, 8096,
 							"A new update was detected: %s, do you want to download the update now?", updateMetaData.c_str());
 						showFTPMessageBox(szMsg, "Update", false, false);
-						system("<mybrowser> http://google.com");
 					}
 				}
 			}
