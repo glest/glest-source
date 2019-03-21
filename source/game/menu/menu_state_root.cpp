@@ -286,13 +286,13 @@ namespace Game {
 				if (ftpMessageBox.mouseClick(x, y, button)) {
 					ftpMessageBox.setEnabled(false);
 					if (button == 0) {
-						string update = Config::getInstance().getString("UpdateDownloadURL", "");
-						if (update != "") {
+						string updateUrl = Config::getInstance().getString("UpdateDownloadURL", "");
+						if (updateUrl != "") {
 							try {
 #ifdef WIN32
-								ShellExecuteA(0, 0, update.c_str(), 0, 0, SW_SHOW);
+								ShellExecuteA(0, 0, updateUrl.c_str(), 0, 0, SW_SHOW);
 #else
-								printf("xdg-open call resulted in: %d\n", system(("xdg-open " + update).c_str()));
+								printf("open call resulted in: %d\n", system(("open " + updateUrl).c_str()));
 #endif
 							} catch (...) {
 							}
@@ -803,12 +803,11 @@ namespace Game {
 
 			CURL *handle = SystemFlags::initHTTP();
 			CURLcode curlResult = CURLE_OK;
-			string updateMetaData =
-				SystemFlags::getHTTP(baseURL, handle, -1, &curlResult);
+			string serverVersion = SystemFlags::getHTTP(baseURL, handle, -1, &curlResult);
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
 				printf("techsMetaData [%s] curlResult = %d\n",
-					updateMetaData.c_str(), curlResult);
+					serverVersion.c_str(), curlResult);
 
 			if (callingThread->getQuitStatus() == true
 				|| safeMutexThreadOwner.isValidMutex() == false) {
@@ -835,19 +834,19 @@ namespace Game {
 					curlResult != CURLE_COULDNT_CONNECT)) {
 
 				//Properties props;
-				//props.loadFromText(updateMetaData);
-
+				//props.loadFromText(serverVersion);
+				string currentVersion = GameVersionString + GameBuildDateString;
 				int compareResult =
-					compareMajorMinorVersion(GameVersionString + GameBuildDateString, updateMetaData);
+					compareMajorMinorVersion(currentVersion, serverVersion);
 						//props.getString("LatestGameVersion", ""));
 				if (compareResult == 0) {
-					if (GameVersionString != updateMetaData) {
+					if (currentVersion != serverVersion) {
 						compareResult = -1;
 					}
 				}
 				if (SystemFlags::VERBOSE_MODE_ENABLED)
 					printf("compareResult = %d local [%s] remote [%s]\n",
-						compareResult, GameVersionString.c_str(), updateMetaData.c_str());
+						compareResult, GameVersionString.c_str(), serverVersion.c_str());
 
 				if (compareResult < 0) {
 					/*string downloadBinaryKey =
@@ -867,13 +866,13 @@ namespace Game {
 					ftpFileURL = Config::getInstance().getString("UpdateDownloadURL", "");
 					if (ftpFileURL == "") {
 						char szMsg[8096] = "";
-						snprintf(szMsg, 8096,
-							"A new update was detected: %s, please visit glest.io for details!", updateMetaData.c_str());
+						snprintf(szMsg, 8096, Lang::getInstance().getString("UpdateNotice", "").c_str(),
+							currentVersion.c_str(), serverVersion.c_str());
 						showFTPMessageBox(szMsg, "Update", false, true);
 					} else {
 						char szMsg[8096] = "";
-						snprintf(szMsg, 8096,
-							"A new update was detected: %s, do you want to download the update now?", updateMetaData.c_str());
+						snprintf(szMsg, 8096, Lang::getInstance().getString("UpdateNoticeDownloadOffer", "").c_str(),
+							currentVersion.c_str(), serverVersion.c_str());
 						showFTPMessageBox(szMsg, "Update", false, false);
 					}
 				}
