@@ -838,7 +838,7 @@ namespace Game {
 				}
 				if (SystemFlags::VERBOSE_MODE_ENABLED)
 					printf("compareResult = %d local [%s] remote [%s]\n",
-						compareResult, GameVersionString.c_str(), serverVersion.c_str());
+						compareResult, currentVersion.c_str(), serverVersion.c_str());
 
 				if (compareResult < 0) {
 					/*string downloadBinaryKey =
