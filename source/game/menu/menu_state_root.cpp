@@ -789,21 +789,16 @@ namespace Game {
 		if (SystemFlags::VERBOSE_MODE_ENABLED)
 			printf("In [%s::%s Line %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
-
-		string updateCheckURL =
-			Config::getInstance().getString("UpdateCheckURL", "");
-		if (updateCheckURL != "" && Config::getInstance().getBool("UpdateNotifier", "true")) {
-
-			string baseURL = updateCheckURL;
-
+		Config& config = Config::getInstance();
+		string updateCheckURL = config.getString("UpdateCheckURL", "");
+		if (updateCheckURL != "" && config.getBool("UpdateNotifier", "true")) {
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
-				printf
-				("In [%s::%s Line %d] About to call first http url, base [%s]..\n",
-					__FILE__, __FUNCTION__, __LINE__, baseURL.c_str());
+				printf("In [%s::%s Line %d] About to call first http url, base [%s]..\n",
+					__FILE__, __FUNCTION__, __LINE__, updateCheckURL.c_str());
 
 			CURL *handle = SystemFlags::initHTTP();
 			CURLcode curlResult = CURLE_OK;
-			string serverVersion = SystemFlags::getHTTP(baseURL, handle, -1, &curlResult);
+			string serverVersion = SystemFlags::getHTTP(updateCheckURL, handle, -1, &curlResult);
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
 				printf("techsMetaData [%s] curlResult = %d\n",
@@ -830,19 +825,16 @@ namespace Game {
 					curlError.c_str());
 				showErrorMessageBox(szMsg, "ERROR", false);*/
 			} else if (curlResult == CURLE_OK ||
-				(curlResult != CURLE_COULDNT_RESOLVE_HOST &&
-					curlResult != CURLE_COULDNT_CONNECT)) {
+				(curlResult != CURLE_COULDNT_RESOLVE_HOST && curlResult != CURLE_COULDNT_CONNECT)) {
 
 				//Properties props;
 				//props.loadFromText(serverVersion);
 				string currentVersion = GameVersionString + GameBuildDateString;
-				int compareResult =
-					compareMajorMinorVersion(currentVersion, serverVersion);
+				int compareResult = compareMajorMinorVersion(currentVersion, serverVersion);
 						//props.getString("LatestGameVersion", ""));
 				if (compareResult == 0) {
-					if (currentVersion != serverVersion) {
+					if (currentVersion != serverVersion)
 						compareResult = -1;
-					}
 				}
 				if (SystemFlags::VERBOSE_MODE_ENABLED)
 					printf("compareResult = %d local [%s] remote [%s]\n",
@@ -863,16 +855,23 @@ namespace Game {
 						printf
 						("Checking update key downloadBinaryKey [%s] ftpFileURL [%s]\n",
 							downloadBinaryKey.c_str(), ftpFileURL.c_str());*/
-					ftpFileURL = Config::getInstance().getString("UpdateDownloadURL", "");
+					ftpFileURL = config.getString("UpdateDownloadURL", "");
+					Lang& lang = Lang::getInstance();
+					char szMsg[8096] = "";
+					string msg;
 					if (ftpFileURL == "") {
-						char szMsg[8096] = "";
-						snprintf(szMsg, 8096, Lang::getInstance().getString("UpdateNotice", "").c_str(),
-							currentVersion.c_str(), serverVersion.c_str());
+						if (lang.hasString("UpdateNotice"))
+							msg = lang.getString("UpdateNotice");
+						else
+							msg = "A new update was detected, please visit glest.io for details.\n\nCurrent: %s\nNew: %s";
+						snprintf(szMsg, 8096, msg.c_str(), currentVersion.c_str(), serverVersion.c_str());
 						showFTPMessageBox(szMsg, "Update", false, true);
 					} else {
-						char szMsg[8096] = "";
-						snprintf(szMsg, 8096, Lang::getInstance().getString("UpdateNoticeDownloadOffer", "").c_str(),
-							currentVersion.c_str(), serverVersion.c_str());
+						if (lang.hasString("UpdateNoticeDownloadOffer"))
+							msg = lang.getString("UpdateNoticeDownloadOffer");
+						else
+							msg = "A new update was detected, do you want to download it now?\n\nCurrent: %s\nNew: %s";
+						snprintf(szMsg, 8096, msg.c_str(), currentVersion.c_str(), serverVersion.c_str());
 						showFTPMessageBox(szMsg, "Update", false, false);
 					}
 				}
