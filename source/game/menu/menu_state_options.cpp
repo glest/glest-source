@@ -1127,6 +1127,7 @@ namespace Game {
 		checkBoxChatStaysActive.mouseMove(x, y);
 		checkBoxTimeDisplay.mouseMove(x, y);
 		checkBoxShowDeveloperConsoleOnWindows.mouseMove(x, y);
+		checkBoxDefaultActionOnRightClick.mouseMove(x, y);
 		checkBoxUpdateNotice.mouseMove(x, y);
 		checkBoxCustomTranslation.mouseMove(x, y);
 	}
