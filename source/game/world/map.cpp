@@ -1352,7 +1352,8 @@ namespace Game {
 				assert(isInside(currPos));
 
 				if (ut->hasCellMap() == false || ut->getCellMapCell(i, j, unit->getModelFacing())) {
-					if (getCell(currPos)->getUnit(field) != NULL && getCell(currPos)->getUnit(field) != unit) {
+					Unit* current = getCell(currPos)->getUnit(field);
+					if (current != NULL && current != unit) {
 						//if unit tries to move into a cell where another unit resides cancel the move command
 						if (unit->getCurrSkill() != NULL &&
 							unit->getCurrSkill()->getClass() == scMove) {

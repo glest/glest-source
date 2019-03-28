@@ -11,7 +11,7 @@ Please remember to "star" this project.
 
 ## Website Design
 
-Documentation for designing the websites is in [WEBSITE_DESIGN.md](https://github.com/Glest/glest-source/blob/develop/WEBSITE_DESIGN.md).
+Documentation for designing the websites is in [WEBSITE_DESIGN.md](https://github.com/Glest/glest-source/blob/master/WEBSITE_DESIGN.md).
 
 ## Mods, tech trees, scenarios, tilesets, maps
 
@@ -90,7 +90,7 @@ Problems arise when multiple patches are included in a single pull request:
  from being merged 
 
 See the instructions in
-[BUILD.md](https://github.com/Glest/glest-source/blob/develop/BUILD.md)
+[BUILD.md](https://github.com/Glest/glest-source/blob/master/BUILD.md)
 for important information about how to clone your forks so you can
 easily contribute patches, graphics, or other content to the Glest
 repositories.
@@ -114,12 +114,12 @@ your fork.
 
 1. [Fork the repo](https://github.com/Glest/glest-source/fork) (if you haven't already done so)
 2. Clone it to your computer
-3. When you're ready to work on an issue, be sure you're on the **develop** branch. From there,
+3. When you're ready to work on an issue, be sure you're on the **master** branch. From there,
 [create a separate branch](https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches)
 (e.g. issue_32)
 4. Make your changes. If you're unsure of some details while you're making edits, you can
 discuss them on the ticket.
-5. Add yourself to the [AUTHORS.md](https://github.com/Glest/glest-source/blob/develop/AUTHORS.md) file
+5. Add yourself to the [AUTHORS.md](https://github.com/Glest/glest-source/blob/master/AUTHORS.md) file
 
 6. Commit your changes. [git-cola](https://git-cola.github.io/) is a nice GUI front-end for adding files and entering commit messages (git-cola is probably available from your OS repository).
 
@@ -129,7 +129,7 @@ discuss them on the ticket.
 
 7. Push the working branch (e.g. issue_32) to your remote fork and make your
 [pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)
-    * Do not merge it with the **develop** branch on your fork. That would result in multiple, or
+    * Do not merge it with the **master** branch on your fork. That would result in multiple, or
     unrelated patches being included in a single PR.
 8. If any further changes need to be made, comments will be made on the pull request.
 
@@ -143,4 +143,4 @@ repo with the remote upstream. GitHub has instructions for doing this:
 1. [Configuring a remote for a fork](https://help.github.com/articles/configuring-a-remote-for-a-fork/)
     * For step 3 on that page, use https://github.com/Glest/glest-source for the URL.
 2. [Syncing a Fork](https://help.github.com/articles/syncing-a-fork/)
-    * On that page, it shows how to merge the **develop** branch (steps 4 & 5 of **Syncing a Fork**).
+    * On that page, it shows how to merge the **master** branch (steps 4 & 5 of **Syncing a Fork**).

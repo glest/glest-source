@@ -1338,9 +1338,6 @@ namespace Game {
 
 	bool UnitType::getCellMapCell(int x, int y, CardinalDir facing) const {
 		assert(cellMap);
-		if (cellMap == NULL) {
-			throw game_runtime_error("cellMap == NULL");
-		}
 
 		//checkItemInVault(&(this->size),this->size);
 		int tmp = 0;

@@ -69,7 +69,7 @@ namespace Shared {
 				flags |= flag;
 			}
 			static bool isFlagSet(GlobalStaticFlagTypes flag) {
-				return (flags & (unsigned int) flag) == (unsigned int) flag;
+				return (flags & flag) == flag;
 			}
 
 		protected:

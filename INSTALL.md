@@ -8,12 +8,12 @@ operating system.
 ## Windows
 
 * [Glest Windows Installer](https://github.com/Glest/windows-installer)
-* [Build and Install from source code](https://github.com/Glest/glest-source/blob/develop/mk/windows/README.md)
+* [Build and Install from source code](https://github.com/Glest/glest-source/blob/master/mk/windows/README.md)
 
 ## Linux, Mac OS, BSD
 
 Review the dependency information and instructions for [building from
-source](https://github.com/Glest/glest-source/blob/develop/BUILD.md).
+source](https://github.com/Glest/glest-source/blob/master/BUILD.md).
 
 From the top of the project source directory:
 

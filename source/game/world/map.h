@@ -69,7 +69,7 @@ namespace Game {
 
 	private:
 		Cell(Cell&);
-		void operator=(Cell&);
+		//void operator=(Cell&);
 
 	public:
 		Cell();

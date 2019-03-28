@@ -1,22 +1,22 @@
 # BUILD.md
 
 * **Getting the code:**
-  * [Set up the repositories locally](https://github.com/Glest/glest-source/blob/develop/BUILD.md#set-up-the-repositories-locally)
-  * [cloning](https://github.com/Glest/glest-source/blob/develop/BUILD.md#procedure-for-cloning)
-  * [Extra options for compiling](https://github.com/Glest/glest-source/blob/develop/BUILD.md#extra-options-for-compiling)
+  * [Set up the repositories locally](https://github.com/Glest/glest-source/blob/master/BUILD.md#set-up-the-repositories-locally)
+  * [cloning](https://github.com/Glest/glest-source/blob/master/BUILD.md#procedure-for-cloning)
+  * [Extra options for compiling](https://github.com/Glest/glest-source/blob/master/BUILD.md#extra-options-for-compiling)
 
 * **Dependencies**
-  * [Windows](https://github.com/Glest/glest-source/blob/develop/BUILD.md#windows)
-  * [Linux, Mac OS, *BSD](https://github.com/Glest/glest-source/blob/develop/BUILD.md#linux)
-  * [Arch Linux](https://github.com/Glest/glest-source/blob/develop/BUILD.md#arch-linux)
-  * [Mac OS](https://github.com/Glest/glest-source/blob/develop/BUILD.md#mac-os)
-  * [BSD](https://github.com/Glest/glest-source/blob/develop/BUILD.md#bsd)
+  * [Windows](https://github.com/Glest/glest-source/blob/master/BUILD.md#windows)
+  * [Linux, Mac OS, *BSD](https://github.com/Glest/glest-source/blob/master/BUILD.md#linux)
+  * [Arch Linux](https://github.com/Glest/glest-source/blob/master/BUILD.md#arch-linux)
+  * [Mac OS](https://github.com/Glest/glest-source/blob/master/BUILD.md#mac-os)
+  * [BSD](https://github.com/Glest/glest-source/blob/master/BUILD.md#bsd)
 
-* [Installing](https://github.com/Glest/glest-source/blob/develop/BUILD.md#installing)
+* [Installing](https://github.com/Glest/glest-source/blob/master/BUILD.md#installing)
 
 * **Compiling**
-  * [Windows](https://github.com/Glest/glest-source/blob/develop/BUILD.md#windows)
-  * [Linux, Mac OS, *BSD](https://github.com/Glest/glest-source/blob/develop/BUILD.md#windows-1)
+  * [Windows](https://github.com/Glest/glest-source/blob/master/BUILD.md#windows)
+  * [Linux, Mac OS, *BSD](https://github.com/Glest/glest-source/blob/master/BUILD.md#windows-1)
 
 ## Set up the repositories locally
 
@@ -56,7 +56,7 @@ To view all available options, use `cmake .. -LH` while in the build directory.
 On Windows simply run `setup.bat` in `\mk\windows`. `setup.bat` also updates the game before rebuilding.
 
 Follow the
-[instructions](https://github.com/Glest/glest-source/blob/develop/mk/windows/README.md)
+[instructions](https://github.com/Glest/glest-source/blob/master/mk/windows/README.md)
 listed in the `Windows` directory for further information.
 
 ### Linux
@@ -124,7 +124,7 @@ Now that you have the source code and the dependencies, you can either
 compile Glest and run it without installing, or you can set options
 to install it. If you plan to **install**, then you can **skip the sections below**
 and read
-[INSTALL.md](https://github.com/Glest/glest-source/blob/develop/INSTALL.md)
+[INSTALL.md](https://github.com/Glest/glest-source/blob/master/INSTALL.md)
 
 ## Compiling
 
