@@ -3,9 +3,7 @@
 Welcome to the Glest project! Thank you for reading this document and
 considering contributing.
 
-Anyone is welcome to join our [Discord server](https://discord.gg/WaAaXS7).
-
-The Discord rooms are for players, developers, and curiosity/adventure-seekers.
+Anyone is welcome to join our [Discord server](https://discord.gg/es3EyBB) to meet us players, developers, and memers.
 
 Please remember to "star" this project.
 

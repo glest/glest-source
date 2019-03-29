@@ -36,8 +36,6 @@ using namespace Shared::Util;
 using namespace Shared::Platform;
 
 namespace Game {
-	const char *mailString = "https://github.com/Glest";
-
 	string getCrashDumpFileName() {
 		return "glest.dmp";
 	}
@@ -184,11 +182,11 @@ namespace Game {
 	string getAboutString2(int i) {
 		switch (i) {
 			case 0:
-				return "Website: https://glest.io";
+				return "Website: " + Config::getInstance().getString("Website", "https://glest.io");
 			case 1:
-				return "Discord: https://discord.gg/WaAaXS7";
+				return "Join Us: " + Config::getInstance().getString("JoinUs", "https://discord.gg/es3EyBB");
 			case 2:
-				return "Bug reports: " + string(mailString);
+				return "Bug reports: " + Config::getInstance().getString("BugReportUrl", "https://github.com/Glest/glest-source/issues");
 		}
 		return "";
 	}

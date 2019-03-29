@@ -707,7 +707,7 @@ namespace Game {
 		string
 			msg =
 			"#1 An error occurred and " + string(appNameString) +
-			" will close.\nPlease report this bug to: " + string(mailString);
+			" will close.\nPlease report this bug to: " + Config::getInstance().getString("BugReportUrl", "https://github.com/Glest/glest-source/issues");
 		msg +=
 			", attaching the generated " + getCrashDumpFileName() + " file.";
 
@@ -733,7 +733,7 @@ namespace Game {
 		string
 			msg =
 			"#1 An error occurred and " + string(appNameString) +
-			" will close.\nPlease report this bug to: " + string(mailString);
+			" will close.\nPlease report this bug to: " + Config::getInstance().getString("BugReportUrl", "https://github.com/Glest/glest-source/issues");
 #ifdef WIN32
 		msg +=
 			", attaching the generated " + getCrashDumpFileName() + " file.";
@@ -5719,7 +5719,7 @@ namespace Game {
 		PlatformExceptionHandler::application_binary =
 			executable_path(argv[0], true);
 		appNameString = GameConstants::application_name;
-		mailStringSupport = mailString;
+		mailStringSupport = Config::getInstance().getString("BugReportUrl", "https://github.com/Glest/glest-source/issues");
 		SystemFlags::ENABLE_THREADED_LOGGING = false;
 		disableBacktrace = false;
 		bool

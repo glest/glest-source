@@ -33,8 +33,6 @@
 using std::string;
 
 namespace Game {
-	extern const char *mailString;
-
 	void initSpecialStrings();
 	string getCrashDumpFileName();
 	string getPlatformTypeNameString();
