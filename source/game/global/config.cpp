@@ -239,8 +239,11 @@ namespace Game {
 		}
 		if (foundPath == false) {
 			foundPath =
-				tryCustomPath(cfgType, fileName,
-					"/usr/local/share/games/glest/");
+				tryCustomPath(cfgType, fileName, "/usr/local/share/games/glest/");
+		}
+		if (foundPath == false) {
+			foundPath =
+				tryCustomPath(cfgType, fileName, "/app/share/glest/");
 		}
 #endif
 
