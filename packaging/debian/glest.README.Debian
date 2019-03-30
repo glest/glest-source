@@ -1,4 +1,4 @@
-ZegaGlest for Debian
+Glest for Debian
 -----------------------
 
 If your glx version is lower than 1.3 set CheckGlCaps=0 in the

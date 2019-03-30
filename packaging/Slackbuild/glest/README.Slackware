@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/glest/glest-source.svg?branch=develop)](https://travis-ci.org/glest/glest-source)
+[![Build Status](https://travis-ci.org/glest/glest-source.svg?branch=master)](https://travis-ci.org/glest/glest-source)
 
 # Glest
 
@@ -21,10 +21,10 @@ CPU is also available.
 
 Additionally, if you want
 to contribute with the code on Windows, [please follow these
-instructions](https://github.com/Glest/glest-source/blob/develop/mk/windows/README.md).
+instructions](https://github.com/Glest/glest-source/blob/master/mk/windows/README.md).
 
 For other operating systems, you must [**build and install from
-source**](https://github.com/Glest/glest-source/blob/develop/BUILD.md)
+source**](https://github.com/Glest/glest-source/blob/master/BUILD.md)
 (Later, we'll be providing binary packages).
 
 ## Quick Build Guide for Linux
@@ -40,31 +40,23 @@ Then run the following command to start the game:
 ## Links
 
 * **[Screenshots](https://github.com/Glest/screenshots)**
-* **[Discord](https://discord.gg/WaAaXS7)**
+* **[Join us on Discord](https://discord.gg/es3EyBB)**
 * **[Server list and player stats](http://master.glest.org)**
 * [FAQ](https://glest.io/docs/faq.html)
-* [Compiling](https://github.com/Glest/glest-source/blob/develop/BUILD.md)
+* [Compiling](https://github.com/Glest/glest-source/blob/master/BUILD.md)
 * [Contributing and Testing](https://github.com/Glest/glest-source#contributing-and-testing)
-* [ChangeLog](https://github.com/Glest/glest-source/blob/develop/ChangeLog.md)
+* [ChangeLog](https://github.com/Glest/glest-source/blob/master/ChangeLog.md)
 * [Detailed information about units in the game](https://glest.io/docs)
 
 ### Extra Tech trees, mods, tilesets, scenarios
 
-* [MODS.md](https://github.com/Glest/glest-data/blob/develop/MODS.md)
-* [TILESETS.md](https://github.com/Glest/glest-data/blob/develop/TILESETS.md)
-* [SCENARIOS.md](https://github.com/Glest/glest-data/blob/develop/SCENARIOS.md)
+* [MODS.md](https://github.com/Glest/glest-data/blob/master/MODS.md)
+* [TILESETS.md](https://github.com/Glest/glest-data/blob/master/TILESETS.md)
+* [SCENARIOS.md](https://github.com/Glest/glest-data/blob/master/SCENARIOS.md)
 
 ### Contributing and Testing
 
 If you'll be contributing code or changes to data, the procedures for
-forking and cloning are outlined in [CONTRIBUTING.md](https://github.com/Glest/glest-source/blob/develop/CONTRIBUTING.md)
-
-Please see [CONTRIBUTING.md](https://github.com/Glest/glest-source/blob/develop/CONTRIBUTING.md)
-for extended, important instructions and guidelines for contributing.
+forking and cloning are outlined in [CONTRIBUTING.md](https://github.com/Glest/glest-source/blob/master/CONTRIBUTING.md)
 
 To run your own headless (dedicated) server, see [the FAQ](https://glest.io/docs/faq.html#headlessserver).
-
-### Contact Us
-
-* [Discord](https://discord.gg/WaAaXS7)
-* Email: mathusum.mut@gmail.com

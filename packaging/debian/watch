@@ -1,2 +1,2 @@
-version=0.8
+version=2.0
 https://github.com/Glest/glest-source/releases .*/glest-source-([\d.]+)\.(?:zip|tgz|tbz|txz|(?:tar\.(?:gz|bz2|xz)))
