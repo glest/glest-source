@@ -25,21 +25,12 @@ Build-Depends:
  libwxgtk3.0-dev,
  libz-dev,
  xauth
-Standards-Version: 3.9.8
-Homepage: https://github.com/Glest
-
+Standards-Version: 4.0.0
+Homepage: https://glest.io
 Package: glest
 Architecture: any
-Depends:
- famfamfam-flag-png,
- fonts-liberation,
- fonts-uralic,
- glest-data (>= 2.0),
- p7zip-full,
- fonts-dejavu-core,
- fonts-wqy-zenhei,
- ${misc:Depends},
- ${shlibs:Depends}
+Version: 2.0
+Depends: famfamfam-flag-png, fonts-liberation, fonts-uralic, glest-data (>= 2.0), p7zip-full, fonts-dejavu-core, fonts-wqy-zenhei
 Description: network multi-player real-time strategy game engine.
  It includes several factions, each one consisting of many 3d characters.
  The factions are loosely based on historical empires with added elements
