@@ -61,15 +61,21 @@ listed in the `Windows` directory for further information.
 
 ### Linux
 
-To get the game up and running quickly, use the following command:
+For Linux there are three options: 
 
-    git clone https://github.com/Glest/glest-source.git glest; sudo glest/mk/linux/setup.sh
+1. (Recommended) Using a Flatpak: https://github.com/glest/io.glest.Glest
 
-Then run the following command to start the game:
+2. Using the build script:
 
-    glest/mk/linux/build/glest
+       git clone https://github.com/Glest/glest-source.git glest; sudo glest/mk/linux/setup.sh
 
-To update and rebuild the game, simply rerun `sudo glest/mk/linux/setup.sh`, as it performs a `git pull` as part of the process.
+   Then run the following command to start the game:
+
+       glest/mk/linux/build/glest
+
+   To update and rebuild the game, simply rerun `sudo glest/mk/linux/setup.sh`, as it performs a `git pull` as part of the process.
+
+3. Using building manually using CMake (see below)
 
 #### For a more thorough approach:
 
@@ -152,7 +158,7 @@ Now that the build configuration has been set, run make, replacing `X` with the 
 
     make -jX
 
-On Linux, `X` can be substituted with `$(grep -c ^processor /proc/cpuinfo)`, to automatically get the number of cpu threads:
+On Linux, `X` can be substituted with `$(grep -c ^processor /proc/cpuinfo)`, to automatically get the number of CPU threads:
 
     make -j$(grep -c ^processor /proc/cpuinfo)
 
