@@ -29,7 +29,7 @@ source**](https://github.com/Glest/glest-source/blob/master/BUILD.md)
 
 ## Quick Build Guide for Linux
 
-For Linux three options: 
+For Linux there are three options: 
 
 1. (Recommended) Using a Flatpak: https://github.com/glest/io.glest.Glest
 
@@ -37,7 +37,7 @@ For Linux three options:
 
     git clone https://github.com/Glest/glest-source.git glest; sudo glest/mk/linux/setup.sh
 
-Then run the following command to start the game:
+   Then run the following command to start the game:
 
     glest/mk/linux/build/glest
 
