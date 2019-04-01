@@ -35,11 +35,11 @@ For Linux there are three options:
 
 2. Using the build script:
 
-    git clone https://github.com/Glest/glest-source.git glest; sudo glest/mk/linux/setup.sh
+       git clone https://github.com/Glest/glest-source.git glest; sudo glest/mk/linux/setup.sh
 
    Then run the following command to start the game:
 
-    glest/mk/linux/build/glest
+       glest/mk/linux/build/glest
 
 3. Building manually using CMake: https://github.com/glest/glest-source/blob/master/BUILD.md
 
