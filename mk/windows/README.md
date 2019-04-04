@@ -13,7 +13,7 @@
 
 **Project overview:**
 
-- `game` is the executable game binary
+- `glest` is the executable game binary
 
 - `libglest` is a shared static library for Glest's components
 
@@ -21,9 +21,7 @@
 
 - `map_editor` is a Glest map editor and viewer. Glest maps are stored in the `.mgm` format.
 
-- `libstreflop` is a cross-platform float processing library to ensure rounding is the same across machines
-
-- `g2xml` converts `.g3d` Glest 3D models into a readable XML formatted layout
+- `libstreflop` is a cross-platform float processing library to ensure rounding is the same across machines (obsolete)
 
 *Side-note for developers who want to debug:*
 
