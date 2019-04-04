@@ -109,6 +109,8 @@ namespace Game {
 		//update skills
 		bool updateUnit(Unit *unit);
 
+		void buildUnit(Unit *unit, Vec2i buildPos, bool levelTerrain = true, bool toleratePos = false);
+
 		//update commands
 		void updateUnitCommand(Unit *unit, int frameIndex);
 		void updateStop(Unit *unit, int frameIndex);

@@ -33,6 +33,20 @@ IF EXIST .\vs2017-64 (
 	cd ..\
 )
 
+IF EXIST .\vs2019-32 (
+	cd .\vs2019-32
+	CALL :DELETE
+	del /S *.obj
+	cd ..\
+)
+
+IF EXIST .\vs2019-64 (
+	cd .\vs2019-64
+	CALL :DELETE
+	del /S *.obj
+	cd ..\
+)
+
 IF EXIST .\bin (
 	cd .\bin
 	CALL :DELETE

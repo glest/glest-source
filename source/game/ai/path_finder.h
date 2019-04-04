@@ -250,9 +250,9 @@ namespace Game {
 
 	private:
 
-		static int
+		static const int
 			pathFindNodesMax;
-		static int
+		static const int
 			pathFindNodesAbsoluteMax;
 
 
@@ -304,6 +304,9 @@ namespace Game {
 		void
 			loadGame(const XmlNode * rootNode);
 
+		Vec2i
+			computeNearestFreePos(const Unit * unit, const Vec2i & targetPos, bool useApprox = true, bool buildingsOnly = false);
+
 	private:
 		void
 			init();
@@ -324,9 +327,6 @@ namespace Game {
 			}
 			return NULL;
 		}
-
-		Vec2i
-			computeNearestFreePos(const Unit * unit, const Vec2i & targetPos);
 
 		inline static float
 			heuristic(const Vec2i & pos, const Vec2i & finalPos) {
@@ -450,7 +450,7 @@ namespace Game {
 		void
 			processNearestFreePos(const Vec2i & finalPos, int i, int j, int size,
 				Field field, int teamIndex, Vec2i unitPos,
-				Vec2i & nearestPos, float &nearestDist);
+				Vec2i & nearestPos, float &nearestDist, bool useApprox = true, bool buildingsOnly = false);
 		int
 			getPathFindExtendRefreshNodeCount(FactionState & faction);
 

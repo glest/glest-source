@@ -1046,6 +1046,77 @@ namespace Game {
 		return result;
 	}
 
+	void UnitUpdater::buildUnit(Unit* unit, Vec2i buildPos, bool levelTerrain, bool toleratePos) {
+		Command *command = unit->getCurrCommand();
+		const BuildCommandType *bct = static_cast<const BuildCommandType*>(command->getCommandType());
+		const UnitType *builtUnitType = command->getUnitType();
+		CardinalDir facing = command->getFacing();
+
+		UnitPathInterface *newpath = NULL;
+		switch (this->game->getGameSettings()->getPathFinderType()) {
+			case pfBasic:
+				newpath = new UnitPathBasic();
+				break;
+			default:
+				throw game_runtime_error("detected unsupported pathfinder type!");
+		}
+
+		Unit *builtUnit = new Unit(world->getNextUnitId(unit->getFaction()), newpath, buildPos, builtUnitType, unit->getFaction(), world->getMap(), facing);
+		if (toleratePos)
+			builtUnit->setPos(pathFinder->computeNearestFreePos(builtUnit, buildPos, false, true));
+		if (world->getMap()->isFreeCells(builtUnit->getPos(), builtUnit->getType()->getSize(), builtUnit->getCurrField(), true)) {
+			if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
+
+			builtUnit->create();
+
+			if (builtUnitType->hasSkillClass(scBeBuilt) == false) {
+				printf("%s", (string("Unit [") + builtUnitType->getName(false) + "] has no be_built skill, producer was [" + intToStr(unit->getId()) + " - " + unit->getType()->getName(false) + "].").c_str());
+				//throw game_runtime_error("Unit [" + builtUnitType->getName(false) + "] has no be_built skill, producer was [" + intToStr(unit->getId()) + " - " + unit->getType()->getName(false) + "].");
+				return;
+			}
+
+			builtUnit->setCurrSkill(scBeBuilt);
+
+			unit->setCurrSkill(bct->getBuildSkillType());
+			unit->setTarget(builtUnit);
+
+			if (levelTerrain)
+				map->prepareTerrain(builtUnit);
+
+			if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
+
+			switch (this->game->getGameSettings()->getPathFinderType()) {
+				case pfBasic:
+					break;
+				default:
+					throw game_runtime_error("detected unsupported pathfinder type!");
+			}
+
+			command->setUnit(builtUnit);
+
+
+			//play start sound
+			if (unit->getFactionIndex() == world->getThisFactionIndex() ||
+				(game->getWorld()->showWorldForPlayer(game->getWorld()->getThisTeamIndex()) == true)) {
+				SoundRenderer::getInstance().playFx(
+					bct->getStartSound(),
+					unit->getCurrMidHeightVector(),
+					gameCamera->getPos());
+			}
+
+			if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d] unit created for unit [%s]\n", __FILE__, __FUNCTION__, __LINE__, builtUnit->toString(false).c_str());
+		} else {
+			unit->cancelCommand();
+			unit->setCurrSkill(scStop);
+
+			if (unit->getFactionIndex() == world->getThisFactionIndex()) {
+				console->addStdMessage("BuildingNoPlace");
+			}
+
+			if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d] got BuildingNoPlace\n", __FILE__, __FUNCTION__, __LINE__);
+		}
+	}
+
 	// ==================== updateBuild ====================
 
 	void UnitUpdater::updateBuild(Unit *unit, int frameIndex) {
@@ -1137,61 +1208,7 @@ namespace Game {
 							if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d] canOccupyCell = %d\n", __FILE__, __FUNCTION__, __LINE__, canOccupyCell);
 
 							if (canOccupyCell == true) {
-								const UnitType *builtUnitType = command->getUnitType();
-								CardinalDir facing = command->getFacing();
-
-								UnitPathInterface *newpath = NULL;
-								switch (this->game->getGameSettings()->getPathFinderType()) {
-									case pfBasic:
-										newpath = new UnitPathBasic();
-										break;
-									default:
-										throw game_runtime_error("detected unsupported pathfinder type!");
-								}
-
-								Vec2i buildPos = command->getPos();
-								Unit *builtUnit = new Unit(world->getNextUnitId(unit->getFaction()), newpath, buildPos, builtUnitType, unit->getFaction(), world->getMap(), facing);
-
-								if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
-
-								builtUnit->create();
-
-								if (builtUnitType->hasSkillClass(scBeBuilt) == false) {
-									printf("%s", (string("Unit [") + builtUnitType->getName(false) + "] has no be_built skill, producer was [" + intToStr(unit->getId()) + " - " + unit->getType()->getName(false) + "].").c_str());
-									//throw game_runtime_error("Unit [" + builtUnitType->getName(false) + "] has no be_built skill, producer was [" + intToStr(unit->getId()) + " - " + unit->getType()->getName(false) + "].");
-									return;
-								}
-
-								builtUnit->setCurrSkill(scBeBuilt);
-
-								unit->setCurrSkill(bct->getBuildSkillType());
-								unit->setTarget(builtUnit);
-
-
-								map->prepareTerrain(builtUnit);
-
-								if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
-
-								switch (this->game->getGameSettings()->getPathFinderType()) {
-									case pfBasic:
-										break;
-									default:
-										throw game_runtime_error("detected unsupported pathfinder type!");
-								}
-
-								command->setUnit(builtUnit);
-
-
-								//play start sound
-								if (unit->getFactionIndex() == world->getThisFactionIndex() ||
-									(game->getWorld()->showWorldForPlayer(game->getWorld()->getThisTeamIndex()) == true)) {
-									SoundRenderer::getInstance().playFx(
-										bct->getStartSound(),
-										unit->getCurrMidHeightVector(),
-										gameCamera->getPos());
-								}
-
-								if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d] unit created for unit [%s]\n", __FILE__, __FUNCTION__, __LINE__, builtUnit->toString(false).c_str());
+								buildUnit(unit, command->getPos());
 							} else {
 								//if there are no free cells
 								unit->cancelCommand();

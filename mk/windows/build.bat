@@ -26,9 +26,10 @@ Echo Choose Visual Studio version to compile with (must be installed):
 Echo.
 Echo 1. Visual Studio 2015
 Echo 2. Visual Studio 2017
+Echo 3. Visual Studio 2019
 Echo.
 SET QUERY=""
-SET /P QUERY=Choose compiler (1 or 2): 
+SET /P QUERY=Choose compiler (1/2/3): 
 IF /I "%QUERY%"=="1" (
 	call .\set-env-2015.bat
 	IF /I "%VCVARS_PLATFORM%"=="amd64_x86" SET FOLDER_NAME=vs2015-32
@@ -39,11 +40,18 @@ IF /I "%QUERY%"=="2" (
 	IF /I "%VCVARS_PLATFORM%"=="amd64_x86" SET FOLDER_NAME=vs2017-32
 	IF /I "%VCVARS_PLATFORM%" NEQ "amd64_x86" SET FOLDER_NAME=vs2017-64
 )
+IF /I "%QUERY%"=="3" (
+	call .\set-env-2019.bat
+	IF /I "%VCVARS_PLATFORM%"=="amd64_x86" SET FOLDER_NAME=vs2019-32
+	IF /I "%VCVARS_PLATFORM%" NEQ "amd64_x86" SET FOLDER_NAME=vs2019-64
+)
 IF /I "%QUERY%" NEQ "1" (
 	IF /I "%QUERY%" NEQ "2" (
-		Echo Invalid choice.
-		Echo.
-		GOTO CHOOSE
+		IF /I "%QUERY%" NEQ "3" (
+			Echo Invalid choice.
+			Echo.
+			GOTO CHOOSE
+		)
 	)
 )
 

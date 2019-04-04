@@ -30,6 +30,8 @@
 #include "faction.h"
 #include "randomgen.h"
 #include "leak_dumper.h"
+#include "world.h"
+#include "game.h"
 
 using namespace std;
 using namespace Shared::Graphics;
@@ -47,9 +49,9 @@ namespace Game {
 	const int
 		PathFinder::maxFreeSearchRadius = 10;
 
-	int
+	const int
 		PathFinder::pathFindNodesAbsoluteMax = 900;
-	int
+	const int
 		PathFinder::pathFindNodesMax = 2000;
 	const int
 		PathFinder::pathFindBailoutRadius = 20;
@@ -362,7 +364,6 @@ namespace Game {
 					unit->logSynchData(extractFileFromDirectoryPath(__FILE__).
 						c_str(), __LINE__, szBuf);
 				}
-
 				return tsBlocked;
 			}
 
@@ -642,7 +643,48 @@ namespace Game {
 					}
 					if (ts == tsArrived || ts == tsBlocked) {
 						if (frameIndex < 0) {
-							unit->setCurrSkill(scStop);
+							if (unit->isBuildCommandPending()) {
+								Field currentField = unit->getCurrField();
+								if ((currentField & fLand) == fLand)
+									currentField = fLand;
+								else if ((currentField & fAir) == fAir)
+									currentField = fAir;
+								else if ((currentField & fWater) == fWater)
+									currentField = fWater;
+								Field targetField = unit->getBuildCommandPendingInfo().buildUnit->getField();
+								if ((targetField & fLand) == fLand)
+									targetField = fLand;
+								else if ((targetField & fAir) == fAir)
+									targetField = fAir;
+								else if ((targetField & fWater) == fWater)
+									targetField = fWater;
+								if (currentField != targetField) {
+									Vec2i position = unit->getPos();
+									bool found = targetField == fAir;
+									if (!found) {
+										for (int i = -1; i <= 1; ++i) {
+											for (int j = -1; j <= 1; ++j) {
+												if (!(i == 0 && j == 0)) {
+													Vec2i pos = position + Vec2i(i, j);
+													found = ((targetField == fWater) == map->getDeepSubmerged(map->getCell(pos)) && map->isFreeCell(pos, targetField, true));
+													if (found) {
+														position = pos;
+														break;
+													}
+												}
+											}
+											if (found)
+												break;
+										}
+									}
+									if (found) {
+										World::getCurrentGame()->getWorld()->getUnitUpdater()->buildUnit(unit, position, false, true);
+									} else
+										unit->setCurrSkill(scStop);
+								} else
+									unit->setCurrSkill(scStop);
+							} else
+								unit->setCurrSkill(scStop);
 						}
 					}
 					break;
@@ -1565,13 +1607,13 @@ namespace Game {
 		PathFinder::processNearestFreePos(const Vec2i & finalPos, int i, int j,
 			int size, Field field, int teamIndex,
 			Vec2i unitPos, Vec2i & nearestPos,
-			float &nearestDist) {
+			float &nearestDist, bool useApprox, bool buildingsOnly) {
 
 		try {
 			Vec2i
 				currPos = finalPos + Vec2i(i, j);
 
-			if (map->isAproxFreeCells(currPos, size, field, teamIndex)) {
+			if (useApprox ? map->isAproxFreeCells(currPos, size, field, teamIndex) : map->isFreeCells(currPos, size, field, buildingsOnly)) {
 				float
 					dist = currPos.dist(finalPos);
 
@@ -1614,9 +1656,7 @@ namespace Game {
 	}
 
 	Vec2i
-		PathFinder::computeNearestFreePos(const Unit * unit,
-			const Vec2i & finalPos) {
-
+		PathFinder::computeNearestFreePos(const Unit * unit, const Vec2i & finalPos, bool useApprox, bool buildingsOnly) {
 		Vec2i
 			nearestPos(0, 0);
 		try {
@@ -1635,7 +1675,7 @@ namespace Game {
 				teamIndex = unit->getTeam();
 
 			//if finalPos is free return it
-			if (map->isAproxFreeCells(finalPos, size, field, teamIndex)) {
+			if (useApprox ? map->isAproxFreeCells(finalPos, size, field, teamIndex) : map->isFreeCells(finalPos, size, field, buildingsOnly)) {
 				return finalPos;
 			}
 
@@ -1650,7 +1690,7 @@ namespace Game {
 			for (int i = -maxFreeSearchRadius; i <= maxFreeSearchRadius; ++i) {
 				for (int j = -maxFreeSearchRadius; j <= maxFreeSearchRadius; ++j) {
 					processNearestFreePos(finalPos, i, j, size, field, teamIndex,
-						unitPos, nearestPos, nearestDist);
+						unitPos, nearestPos, nearestDist, useApprox, buildingsOnly);
 				}
 			}
 

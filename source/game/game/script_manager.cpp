@@ -502,8 +502,7 @@ namespace Game {
 		luaScript.registerFunction(getUnitsForFaction, "getUnitsForFaction");
 		luaScript.registerFunction(getUnitCurrentField, "getUnitCurrentField");
 
-		luaScript.registerFunction(isFreeCellsOrHasUnit,
-			"isFreeCellsOrHasUnit");
+		luaScript.registerFunction(isFreeCellsOrHasUnit, "isFreeCellsOrHasUnit");
 		luaScript.registerFunction(isFreeCells, "isFreeCells");
 
 		luaScript.registerFunction(getHumanFactionId, "humanFaction");
