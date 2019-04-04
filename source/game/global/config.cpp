@@ -217,9 +217,7 @@ namespace Game {
 
 #if defined(DATADIR)
 		if (foundPath == false) {
-			foundPath =
-				tryCustomPath(cfgType, fileName,
-					formatPath(TOSTRING(DATADIR)));
+			foundPath = tryCustomPath(cfgType, fileName, endPathWithSlash(formatPath(TOSTRING(DATADIR))));
 		}
 #endif
 

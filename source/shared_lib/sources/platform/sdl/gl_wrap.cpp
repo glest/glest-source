@@ -225,16 +225,15 @@ namespace Shared {
 					SDL_SetRelativeMouseMode(SDL_FALSE);
 					SDL_SetRelativeMouseMode(SDL_TRUE);
 				}
-
+				
 #ifndef WIN32
 				string icon_file = "";
 #if defined(DATADIR)
-				if (fileExists(formatPath(TOSTRING(DATADIR)) + "glest.png")) {
-					icon_file = formatPath(TOSTRING(DATADIR)) + "glest.png";
-				} else if (fileExists(formatPath(TOSTRING(DATADIR)) + "glest.bmp")) {
-					icon_file = formatPath(TOSTRING(DATADIR)) + "glest.bmp";
+				if (fileExists(endPathWithSlash(formatPath(TOSTRING(DATADIR))) + "glest.png")) {
+					icon_file = endPathWithSlash(formatPath(TOSTRING(DATADIR))) + "glest.png";
+				} else if (fileExists(endPathWithSlash(formatPath(TOSTRING(DATADIR))) + "glest.bmp")) {
+					icon_file = endPathWithSlash(formatPath(TOSTRING(DATADIR))) + "glest.bmp";
 				}
-
 #endif
 
 				if (icon_file == "" && fileExists("glest.png")) {

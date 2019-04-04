@@ -5737,12 +5737,6 @@ namespace Game {
 		}
 		PlatformExceptionHandler::disableBacktrace = disableBacktrace;
 
-#if defined(DATADIR)
-		if (SystemFlags::VERBOSE_MODE_ENABLED)
-			printf("\n\nDATADIR = [%s]\n\n",
-				formatPath(TOSTRING(DATADIR)).c_str());
-#endif
-
 		const int
 			knownArgCount = sizeof(GAME_ARGS) / sizeof(GAME_ARGS[0]);
 		for (int idx = 1; idx < argc; ++idx) {
