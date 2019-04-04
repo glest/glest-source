@@ -33,6 +33,7 @@ $RECYCLE.BIN/
 *.user
 *.db-shm
 *.db-wal
+*.FileListAbsolute.txt
 
 ## Temp files
 *.tmp
