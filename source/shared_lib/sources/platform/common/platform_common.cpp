@@ -552,7 +552,7 @@ namespace Shared {
 			return result;
 		}
 
-		void endPathWithSlash(string &path, bool requireOSSlash) {
+		string endPathWithSlash(string &path, bool requireOSSlash) {
 			if (EndsWith(path, "/") == false && EndsWith(path, "\\") == false) {
 				string seperator = "/";
 				if (requireOSSlash == true) {
@@ -562,6 +562,7 @@ namespace Shared {
 				}
 				path += seperator;
 			}
+			return path
 		}
 
 		string formatPath(string path) {
