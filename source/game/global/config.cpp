@@ -223,26 +223,34 @@ namespace Game {
 
 		// Look in standard linux shared paths for ini files
 #if defined(__linux__)
-		if (foundPath == false) {
-			foundPath =
-				tryCustomPath(cfgType, fileName, "/usr/share/glest/");
-		}
-		if (foundPath == false) {
-			foundPath =
-				tryCustomPath(cfgType, fileName, "/usr/share/games/glest/");
-		}
-		if (foundPath == false) {
-			foundPath =
-				tryCustomPath(cfgType, fileName, "/usr/local/share/glest/");
-		}
-		if (foundPath == false) {
-			foundPath =
-				tryCustomPath(cfgType, fileName, "/usr/local/share/games/glest/");
-		}
-		if (foundPath == false) {
-			foundPath =
-				tryCustomPath(cfgType, fileName, "/app/share/glest/");
-		}
+		if (foundPath == false)
+			foundPath = tryCustomPath(cfgType, fileName, "/usr/share/glest/");
+		if (foundPath == false)
+			foundPath = tryCustomPath(cfgType, fileName, "/usr/share/games/glest/");
+		if (foundPath == false)
+			foundPath = tryCustomPath(cfgType, fileName, "/usr/local/share/glest/");
+		if (foundPath == false)
+			foundPath = tryCustomPath(cfgType, fileName, "/usr/local/share/games/glest/");
+		if (foundPath == false)
+			foundPath = tryCustomPath(cfgType, fileName, "/app/share/glest/");
+		if (foundPath == false)
+			foundPath = tryCustomPath(cfgType, fileName, "/app/share/games/glest/");
+		if (foundPath == false)
+			foundPath = tryCustomPath(cfgType, fileName, "/app/glest/");
+		if (foundPath == false)
+			foundPath = tryCustomPath(cfgType, fileName, "/app/games/glest/");
+		if (foundPath == false)
+			foundPath = tryCustomPath(cfgType, fileName, "/share/glest/");
+		if (foundPath == false)
+			foundPath = tryCustomPath(cfgType, fileName, "/share/games/glest/");
+		if (foundPath == false)
+			foundPath = tryCustomPath(cfgType, fileName, "/local/share/glest/");
+		if (foundPath == false)
+			foundPath = tryCustomPath(cfgType, fileName, "/local/share/games/glest/");
+		if (foundPath == false)
+			foundPath = tryCustomPath(cfgType, fileName, "/glest/");
+		if (foundPath == false)
+			foundPath = tryCustomPath(cfgType, fileName, "/games/glest/");
 #endif
 
 		if (SystemFlags::VERBOSE_MODE_ENABLED)
