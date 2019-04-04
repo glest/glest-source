@@ -240,7 +240,8 @@ namespace Shared {
 		bool StartsWith(const std::string &str, const std::string &key);
 		bool EndsWith(const string &str, const string& key);
 
-		string endPathWithSlash(string &path, bool requireOSSlash = false);
+		string endPathWithSlash(string& path, bool requireOSSlash = false);
+		string endPathWithSlash(string&& path, bool requireOSSlash = false);
 		string trimPathWithStartingSlash(string &path);
 		string updatePathClimbingParts(string &path, bool processPreviousDirTokenCheck = true);
 		string formatPath(string path);

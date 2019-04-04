@@ -225,7 +225,7 @@ namespace Shared {
 					SDL_SetRelativeMouseMode(SDL_FALSE);
 					SDL_SetRelativeMouseMode(SDL_TRUE);
 				}
-		
+
 #ifndef WIN32
 				string icon_file = "";
 #if defined(DATADIR)

@@ -552,6 +552,19 @@ namespace Shared {
 			return result;
 		}
 
+		string endPathWithSlash(string&& path, bool requireOSSlash) {
+			if (EndsWith(path, "/") == false && EndsWith(path, "\\") == false) {
+				string seperator = "/";
+				if (requireOSSlash == true) {
+#if defined(WIN32)
+					seperator = "\\";
+#endif
+				}
+				path += seperator;
+			}
+			return path;
+		}
+
 		string endPathWithSlash(string &path, bool requireOSSlash) {
 			if (EndsWith(path, "/") == false && EndsWith(path, "\\") == false) {
 				string seperator = "/";
