@@ -241,8 +241,8 @@ namespace Shared {
 		bool EndsWith(const string &str, const string& key);
 
 		string endPathWithSlash(string &path, bool requireOSSlash = false);
-		void trimPathWithStartingSlash(string &path);
-		void updatePathClimbingParts(string &path, bool processPreviousDirTokenCheck = true);
+		string trimPathWithStartingSlash(string &path);
+		string updatePathClimbingParts(string &path, bool processPreviousDirTokenCheck = true);
 		string formatPath(string path);
 
 		string replaceAllHTMLEntities(string& context);
@@ -265,7 +265,6 @@ namespace Shared {
 		void showCursor(bool b);
 		bool isKeyDown(int virtualKey);
 		//bool isKeyDown(SDLKey key);
-		string getCommandLine();
 
 		string getUserHome();
 

@@ -572,14 +572,15 @@ namespace Shared {
 			return path;
 		}
 
-		void trimPathWithStartingSlash(string &path) {
+		string trimPathWithStartingSlash(string &path) {
 			if (StartsWith(path, "/") == true || StartsWith(path, "\\") == true) {
 				path.erase(path.begin(), path.begin() + 1);
 				//printf("************* trimPathWithStartingSlash changed path [%s]\n",path.c_str());
 			}
+			return path;
 		}
 
-		void updatePathClimbingParts(string &path, bool processPreviousDirTokenCheck) {
+		string updatePathClimbingParts(string &path, bool processPreviousDirTokenCheck) {
 			// Update paths with /./
 			string::size_type pos = path.find("/./");
 			if (pos != string::npos && pos != 0) {
@@ -683,6 +684,7 @@ namespace Shared {
 					printf("CHANGED relative path from [%s] to [%s]\n",orig.c_str(),path.c_str());
 				}
 			*/
+			return path;
 		}
 
 		string getCRCCacheFilePath() {

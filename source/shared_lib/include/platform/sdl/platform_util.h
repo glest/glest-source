@@ -71,8 +71,6 @@ namespace Shared {
 		void message(const string &message,bool isNonGraphicalModeEnabled, const string &writepath);
 		void exceptionMessage(const exception &excp);
 
-		string getCommandLine();
-
 		// WINDOWS
 		#else
 
@@ -98,10 +96,7 @@ namespace Shared {
 		#if !defined(__GNUC__)
 			virtual void handle(LPEXCEPTION_POINTERS pointers)=0;
 		#endif
-			static string codeToStr(DWORD code);
 		};
-
-		LONG WINAPI UnhandledExceptionFilter2(struct _EXCEPTION_POINTERS *ExceptionInfo);
 
 		// =====================================================
 		//	Misc
@@ -113,7 +108,6 @@ namespace Shared {
 
 		void message(string message, bool isNonGraphicalModeEnabled,const string &writepath);
 		void exceptionMessage(const exception &excp);
-		string getCommandLine();
 		void init_win32();
 		void done_win32();
 		void ontop_win32(int width, int height);
