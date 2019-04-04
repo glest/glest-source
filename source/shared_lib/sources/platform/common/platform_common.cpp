@@ -562,7 +562,7 @@ namespace Shared {
 				}
 				path += seperator;
 			}
-			return path
+			return path;
 		}
 
 		string formatPath(string path) {
