@@ -219,7 +219,7 @@ namespace Game {
 		if (foundPath == false) {
 			foundPath =
 				tryCustomPath(cfgType, fileName,
-					formatPath(endPathWithSlash((DATADIR))));
+					formatPath(endPathWithSlash(TOSTRING(DATADIR))));
 		}
 #endif
 
