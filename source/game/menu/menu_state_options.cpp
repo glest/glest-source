@@ -208,9 +208,7 @@ namespace Game {
 				string,
 				string >
 				defaultLang =
-				Lang::getInstance().getNativeNameFromLanguageName(config.
-					getString
-					("Lang"));
+				Lang::getInstance().getNativeNameFromLanguageName(config.getString("Lang", "english"));
 			if (defaultLang.first == "" && defaultLang.second == "") {
 				defaultLang =
 					Lang::getInstance().
@@ -247,7 +245,7 @@ namespace Game {
 				listFontSizeAdjustment.pushBackItem(intToStr(i));
 			}
 			listFontSizeAdjustment.
-				setSelectedItem(intToStr(config.getInt("FontSizeAdjustment")));
+				setSelectedItem(intToStr(config.getInt("FontSizeAdjustment", "0")));
 
 			currentLine -= lineOffset;
 			// Screenshot type flag
@@ -604,7 +602,7 @@ namespace Game {
 			soundRenderer.playFx(coreData.getClickSoundA());
 
 			string
-				currentFontSizeAdjustment = config.getString("FontSizeAdjustment");
+				currentFontSizeAdjustment = config.getString("FontSizeAdjustment", "0");
 			string
 				selectedFontSizeAdjustment =
 				listFontSizeAdjustment.getSelectedItem();
@@ -681,7 +679,7 @@ namespace Game {
 						string
 							txnURLFileListMapping =
 							Config::getInstance().
-							getString("TranslationGetURLFileListMapping");
+							getString("TranslationGetURLFileListMapping", "");
 						vector < string > languageFileMappings;
 						Tokenize(txnURLFileListMapping, languageFileMappings, "|");
 
@@ -842,45 +840,42 @@ namespace Game {
 
 			string
 				orig_txnURLUser =
-				Config::getInstance().getString("TranslationGetURLUser");
+				Config::getInstance().getString("TranslationGetURLUser", "");
 			//string orig_txnURLPwd = Config::getInstance().getString("TranslationGetURLPassword","");
 			string
 				orig_txnURLLang =
-				Config::getInstance().getString("TranslationGetURLLanguage");
+				Config::getInstance().getString("TranslationGetURLLanguage", "");
 
-			Config::getInstance().setString("TranslationGetURLUser",
-				labelTransifexUser.getText());
-			Config::getInstance().setString("TranslationGetURLPassword",
-				labelTransifexPwd.getText(), true);
-			Config::getInstance().setString("TranslationGetURLLanguage",
-				labelTransifexI18N.getText());
+			Config::getInstance().setString("TranslationGetURLUser", labelTransifexUser.getText());
+			Config::getInstance().setString("TranslationGetURLPassword", labelTransifexPwd.getText(), true);
+			Config::getInstance().setString("TranslationGetURLLanguage", labelTransifexI18N.getText());
 
 			bool
 				saveChanges = (orig_txnURLUser != labelTransifexUser.getText() ||
 					orig_txnURLLang != labelTransifexI18N.getText());
 
 			string
-				txnURL = Config::getInstance().getString("TranslationGetURL");
+				txnURL = Config::getInstance().getString("TranslationGetURL", "");
 			string
 				txnURLUser =
-				Config::getInstance().getString("TranslationGetURLUser");
+				Config::getInstance().getString("TranslationGetURLUser", "");
 			string
 				txnURLPwd =
-				Config::getInstance().getString("TranslationGetURLPassword");
+				Config::getInstance().getString("TranslationGetURLPassword", "");
 			string
 				txnURLLang =
-				Config::getInstance().getString("TranslationGetURLLanguage");
+				Config::getInstance().getString("TranslationGetURLLanguage", "");
 			string
 				txnURLFileList =
-				Config::getInstance().getString("TranslationGetURLFileList");
+				Config::getInstance().getString("TranslationGetURLFileList", "");
 			string
 				txnURLFileListMapping =
 				Config::getInstance().
-				getString("TranslationGetURLFileListMapping");
+				getString("TranslationGetURLFileListMapping", "");
 
 			string
 				txnURLDetails =
-				Config::getInstance().getString("TranslationGetURLDetails");
+				Config::getInstance().getString("TranslationGetURLDetails", "");
 
 			string
 				credentials = txnURLUser + ":" + txnURLPwd;
@@ -1270,7 +1265,7 @@ namespace Game {
 		std::advance(iterMap, listBoxLang.getSelectedItemIndex());
 
 		config.setString("Lang", iterMap->first);
-		lang.loadGameStrings(config.getString("Lang"));
+		lang.loadGameStrings(config.getString("Lang", "english"));
 
 		config.setString("FontSizeAdjustment",
 			listFontSizeAdjustment.getSelectedItem());

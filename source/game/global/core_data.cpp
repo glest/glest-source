@@ -1148,10 +1148,10 @@ namespace Game {
 		//display font
 		Config & config = Config::getInstance();
 
-		string displayFontNamePrefix = config.getString("FontDisplayPrefix");
-		string displayFontNamePostfix = config.getString("FontDisplayPostfix");
+		string displayFontNamePrefix = config.getString("FontDisplayPrefix", "*-arial-*-r-*-*-");
+		string displayFontNamePostfix = config.getString("FontDisplayPostfix", "-*-*-*-*-*-*-*");
 		int displayFontSize =
-			computeFontSize(config.getInt("FontDisplayBaseSize"));
+			computeFontSize(config.getInt("FontDisplayBaseSize", "12"));
 
 		if (lang.hasString("FontDisplayPrefix") == true) {
 			displayFontNamePrefix = lang.getString("FontDisplayPrefix");
@@ -1185,11 +1185,11 @@ namespace Game {
 
 		//menu fonts
 		string displayFontNameSmallPrefix =
-			config.getString("FontDisplayPrefix");
+			config.getString("FontDisplayPrefix", "*-arial-*-r-*-*-");
 		string displayFontNameSmallPostfix =
-			config.getString("FontDisplayPostfix");
+			config.getString("FontDisplayPostfix", "-*-*-*-*-*-*-*");
 		int displayFontNameSmallSize =
-			computeFontSize(config.getInt("FontDisplaySmallBaseSize"));
+			computeFontSize(config.getInt("FontDisplaySmallBaseSize", "12"));
 
 		if (lang.hasString("FontDisplayPrefix") == true) {
 			displayFontNameSmallPrefix = lang.getString("FontDisplayPrefix");
@@ -1224,11 +1224,11 @@ namespace Game {
 				displayFontNameSmallSize);
 
 		string menuFontNameNormalPrefix =
-			config.getString("FontMenuNormalPrefix");
+			config.getString("FontMenuNormalPrefix", "-*-arial-*-r-*-*-");
 		string menuFontNameNormalPostfix =
-			config.getString("FontMenuNormalPostfix");
+			config.getString("FontMenuNormalPostfix", "-*-*-*-*-*-*-*");
 		int menuFontNameNormalSize =
-			computeFontSize(config.getInt("FontMenuNormalBaseSize"));
+			computeFontSize(config.getInt("FontMenuNormalBaseSize", "14"));
 		if (lang.hasString("FontMenuNormalPrefix") == true) {
 			menuFontNameNormalPrefix = lang.getString("FontMenuNormalPrefix");
 		}
@@ -1261,10 +1261,10 @@ namespace Game {
 				menuFontNameNormal.c_str(),
 				menuFontNameNormalSize);
 
-		string menuFontNameBigPrefix = config.getString("FontMenuBigPrefix");
-		string menuFontNameBigPostfix = config.getString("FontMenuBigPostfix");
+		string menuFontNameBigPrefix = config.getString("FontMenuBigPrefix", "-*-arial-*-r-*-*-");
+		string menuFontNameBigPostfix = config.getString("FontMenuBigPostfix", "-*-*-*-*-*-*-*");
 		int menuFontNameBigSize =
-			computeFontSize(config.getInt("FontMenuBigBaseSize"));
+			computeFontSize(config.getInt("FontMenuBigBaseSize", "20"));
 
 		if (lang.hasString("FontMenuBigPrefix") == true) {
 			menuFontNameBigPrefix = lang.getString("FontMenuBigPrefix");
@@ -1298,11 +1298,11 @@ namespace Game {
 				menuFontNameBigSize);
 
 		string menuFontNameVeryBigPrefix =
-			config.getString("FontMenuBigPrefix");
+			config.getString("FontMenuBigPrefix", "-*-arial-*-r-*-*-");
 		string menuFontNameVeryBigPostfix =
-			config.getString("FontMenuBigPostfix");
+			config.getString("FontMenuBigPostfix", "-*-*-*-*-*-*-*");
 		int menuFontNameVeryBigSize =
-			computeFontSize(config.getInt("FontMenuVeryBigBaseSize"));
+			computeFontSize(config.getInt("FontMenuVeryBigBaseSize", "25"));
 
 		if (lang.hasString("FontMenuBigPrefix") == true) {
 			menuFontNameVeryBigPrefix = lang.getString("FontMenuBigPrefix");
@@ -1337,10 +1337,10 @@ namespace Game {
 				menuFontNameVeryBigSize);
 
 		//console font
-		string consoleFontNamePrefix = config.getString("FontConsolePrefix");
-		string consoleFontNamePostfix = config.getString("FontConsolePostfix");
+		string consoleFontNamePrefix = config.getString("FontConsolePrefix", "-*-arial-*-r-*-*-");
+		string consoleFontNamePostfix = config.getString("FontConsolePostfix", "-*-*-*-*-*-*-*");
 		int consoleFontNameSize =
-			computeFontSize(config.getInt("FontConsoleBaseSize"));
+			computeFontSize(config.getInt("FontConsoleBaseSize", "18"));
 
 		if (lang.hasString("FontConsolePrefix") == true) {
 			consoleFontNamePrefix = lang.getString("FontConsolePrefix");
@@ -1409,11 +1409,11 @@ namespace Game {
 		int rs = size;
 		Config & config = Config::getInstance();
 		if (Font::forceLegacyFonts == true) {
-			int screenH = config.getInt("ScreenHeight");
+			int screenH = config.getInt("ScreenHeight", "768");
 			rs = size * screenH / 1024;
 		}
 		//FontSizeAdjustment
-		rs += config.getInt("FontSizeAdjustment");
+		rs += config.getInt("FontSizeAdjustment", "0");
 		if (Font::forceLegacyFonts == false) {
 			rs += Font::baseSize;   //basesize only for new font system
 		}

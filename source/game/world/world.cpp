@@ -69,8 +69,8 @@ namespace Game {
 		fogOfWarOverride = false;
 		fogOfWarSkillTypeValue = -1;
 
-		fogOfWarSmoothing = config.getBool("FogOfWarSmoothing");
-		fogOfWarSmoothingFrameSkip = config.getInt("FogOfWarSmoothingFrameSkip");
+		fogOfWarSmoothing = config.getBool("FogOfWarSmoothing", "true");
+		fogOfWarSmoothingFrameSkip = config.getInt("FogOfWarSmoothingFrameSkip", "3");
 
 		frameCount = 0;
 

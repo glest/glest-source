@@ -297,8 +297,8 @@ namespace Game {
 		ai.init(this, useStartLocation);
 
 		//config
-		logLevel = Config::getInstance().getInt("AiLog");
-		redir = Config::getInstance().getBool("AiRedir");
+		logLevel = Config::getInstance().getInt("AiLog", "0");
+		redir = Config::getInstance().getBool("AiRedir", "false");
 
 		aiLogFile = getLogFilename();
 		if (getGameReadWritePath(GameConstants::path_logs_CacheLookupKey) !=

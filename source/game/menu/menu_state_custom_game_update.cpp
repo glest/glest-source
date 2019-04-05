@@ -503,7 +503,7 @@ namespace Game {
 						labelNetStatus[i].setText(szBuf);
 					} else {
 						string port =
-							"(" + intToStr(config.getInt("PortServer")) + ")";
+							"(" + intToStr(config.getInt("PortServer", "61357")) + ")";
 						labelNetStatus[i].setText("--- " + port);
 					}
 				} else {
@@ -792,7 +792,7 @@ namespace Game {
 					playFx(snd.getSound(snd.sfxAttention));
 				//switch on music again!!
 				Config & config = Config::getInstance();
-				float configVolume = (config.getInt("SoundVolumeMusic") / 100.f);
+				float configVolume = (config.getInt("SoundVolumeMusic", "70") / 100.f);
 				CoreData::getInstance().getMenuMusic()->setVolume(configVolume);
 			}
 			soundConnectionCount = currentConnectionCount;

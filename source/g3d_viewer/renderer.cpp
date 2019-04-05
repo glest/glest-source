@@ -164,7 +164,7 @@ namespace Shared {
 			}
 
 			Config &config = Config::getInstance();
-			if (config.getBool("CheckGlCaps")) {
+			if (config.getBool("CheckGlCaps", "true")) {
 
 				if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 

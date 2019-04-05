@@ -436,7 +436,6 @@ namespace Game {
 						string >(Config::glestkeys_ini_filename,
 							Config::
 							glestuserkeys_ini_filename),
-						std::pair < bool, bool >(true, false),
 						config.getString("GlestKeysIniPath", ""));
 				string userKeysFile = configKeys.getFileName(true);
 				if (SystemFlags::VERBOSE_MODE_ENABLED)

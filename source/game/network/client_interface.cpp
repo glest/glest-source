@@ -1782,7 +1782,7 @@ namespace Game {
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s] Line: %d %s %s %s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, sErr.c_str(), sErr1.c_str(), sErr2.c_str());
 
 				if (echoLocal == true) {
-					if (Config::getInstance().getBool("NetworkConsistencyChecks")) {
+					if (Config::getInstance().getBool("NetworkConsistencyChecks", "true")) {
 						// error message and disconnect only if checked
 						if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s] Line: %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
@@ -1792,7 +1792,7 @@ namespace Game {
 				}
 			}
 
-			if (Config::getInstance().getBool("NetworkConsistencyChecks")) {
+			if (Config::getInstance().getBool("NetworkConsistencyChecks", "true")) {
 				// error message and disconnect only if checked
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s] Line: %d\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 

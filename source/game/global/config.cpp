@@ -30,6 +30,11 @@
 #include <fstream>
 #include "leak_dumper.h"
 
+#ifdef WIN32
+#include <KnownFolders.h>
+#include "Shlobj.h"
+#endif
+
 using namespace Shared::Platform;
 using namespace Shared::Util;
 using namespace std;
@@ -160,6 +165,12 @@ namespace Game {
 				file.second = linuxPath + file.second;
 				wasFound = true;
 			}
+			nixFile = linuxPath + "linux_" + file.second;
+			if (wasFound == false && fileExists(nixFile) == true) {
+				file.first = linuxPath + file.first;
+				file.second = nixFile;
+				wasFound = true;
+			}
 #elif defined(__WIN32__)
 			string winFile = linuxPath + "windows_" + file.first;
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
@@ -172,11 +183,24 @@ namespace Game {
 				file.second = linuxPath + file.second;
 				wasFound = true;
 			}
+			winFile = linuxPath + "windows_" + file.second;
+			if (wasFound == false && fileExists(winFile) == true) {
+				file.first = linuxPath + file.first;
+				file.second = winFile;
+				wasFound = true;
+			}
 
 #endif
-			if (wasFound == false && fileExists(linuxPath + file.first) == true) {
-				file.first = linuxPath + file.first;
+			string realPath = linuxPath + file.first;
+			if (wasFound == false && fileExists(realPath) == true) {
+				file.first = realPath;
 				file.second = linuxPath + file.second;
+				wasFound = true;
+			}
+			realPath = linuxPath + file.second;
+			if (wasFound == false && fileExists(realPath) == true) {
+				file.first = linuxPath + file.first;
+				file.second = realPath;
 				wasFound = true;
 			}
 		}
@@ -184,8 +208,7 @@ namespace Game {
 	}
 
 	Config::Config(std::pair < ConfigType, ConfigType > type,
-		std::pair < string, string > file, std::pair < bool,
-		bool > fileMustExist, string custom_path) {
+		std::pair < string, string > file, string custom_path) {
 		fileLoaded.first = false;
 		fileLoaded.second = false;
 		cfgType = type;
@@ -210,19 +233,39 @@ namespace Game {
 		}
 
 		if (foundPath == false) {
-			currentpath =
-				extractDirectoryPathFromFile(Properties::getApplicationPath());
+			currentpath = extractDirectoryPathFromFile(Properties::getApplicationPath());
 			foundPath = tryCustomPath(cfgType, fileName, currentpath);
 		}
 
-#if defined(DATADIR)
+#ifdef _WIN32
+		if (foundPath == false) {
+			char* env = getenv("APPDATA");
+			if (env != NULL) {
+				currentpath = env;
+				foundPath = tryCustomPath(cfgType, fileName, endPathWithSlash(currentpath));
+			}
+		}
+		if (foundPath == false) {
+			PWSTR path = NULL;
+			// Get path for each computer, non-user specific and non-roaming data.
+			if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, NULL, &path) != S_OK) {
+				if (path != NULL) {
+					currentpath = *path;
+					foundPath = tryCustomPath(cfgType, fileName, endPathWithSlash(currentpath));
+					CoTaskMemFree(path);
+				}
+			}
+		}
+#endif
+
+#ifdef DATADIR
 		if (foundPath == false) {
 			foundPath = tryCustomPath(cfgType, fileName, endPathWithSlash(formatPath(TOSTRING(DATADIR))));
 		}
 #endif
 
 		// Look in standard linux shared paths for ini files
-#if defined(__linux__)
+#ifdef __linux__
 		if (foundPath == false)
 			foundPath = tryCustomPath(cfgType, fileName, "/usr/share/glest/");
 		if (foundPath == false)
@@ -256,9 +299,8 @@ namespace Game {
 		if (SystemFlags::VERBOSE_MODE_ENABLED)
 			printf("foundPath = [%d]\n", foundPath);
 
-		if (fileMustExist.first == true && fileExists(fileName.first) == false) {
-			//string currentpath = extractDirectoryPathFromFile(Properties::getApplicationPath());
-			fileName.first = currentpath + fileName.first;
+		if (!fileExists(fileName.first) && fileExists(fileName.second)) {
+			fileName.first = fileName.second;
 		}
 
 #if defined(WIN32)
@@ -271,9 +313,7 @@ namespace Game {
 			printf("-=-=-=-=-=-=-= About to load fileName.first = [%s]\n",
 				fileName.first.c_str());
 
-		if (fileMustExist.first == true ||
-			(fileMustExist.first == false
-				&& fileExists(fileName.first) == true)) {
+		if (fileExists(fileName.first)) {
 			properties.first.load(fileName.first);
 			fileLoaded.first = true;
 		}
@@ -300,13 +340,13 @@ namespace Game {
 		} else if (cfgType.first == cfgMainKeys) {
 			Config & mainCfg = Config::getInstance();
 			if (mainCfg.hasString("UserData_Root")) {
-				string userData = mainCfg.getString("UserData_Root");
+				string userData = mainCfg.getString("UserData_Root", "");
 				if (userData != "") {
 					endPathWithSlash(userData);
 				}
 				fileName.second = userData + fileNameParameter.second;
 			} else if (mainCfg.hasString("UserOverrideFile")) {
-				string userData = mainCfg.getString("UserOverrideFile");
+				string userData = mainCfg.getString("UserOverrideFile", "");
 				if (userData != "") {
 					endPathWithSlash(userData);
 				}
@@ -323,9 +363,7 @@ namespace Game {
 			printf("-=-=-=-=-=-=-= About to load fileName.second = [%s]\n",
 				fileName.second.c_str());
 
-		if (fileMustExist.second == true ||
-			(fileMustExist.second == false
-				&& fileExists(fileName.second) == true)) {
+		if (fileName.first != fileName.second && fileExists(fileName.second)) {
 			properties.second.load(fileName.second);
 			fileLoaded.second = true;
 		}
@@ -371,9 +409,7 @@ namespace Game {
 	}
 
 	Config & Config::getInstance(std::pair < ConfigType, ConfigType > type,
-		std::pair < string, string > file,
-		std::pair < bool, bool > fileMustExist,
-		string custom_path) {
+		std::pair < string, string > file, string custom_path) {
 		if (configList.find(type.first) == configList.end()) {
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
@@ -382,7 +418,7 @@ namespace Game {
 						"In [%s::%s Line: %d]\n", __FILE__,
 						__FUNCTION__, __LINE__);
 
-			Config config(type, file, fileMustExist, custom_path);
+			Config config(type, file, custom_path);
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
@@ -424,10 +460,8 @@ namespace Game {
 
 		std::pair < ConfigType, ConfigType > type =
 			std::make_pair(cfgType.first, cfgType.second);
-		Config newconfig(type,
-			std::make_pair(fileNameParameter.first,
-				fileNameParameter.second),
-			std::make_pair(true, false), custom_path_parameter);
+		Config newconfig(type, std::make_pair(fileNameParameter.first,
+				fileNameParameter.second), custom_path_parameter);
 
 		if (SystemFlags::VERBOSE_MODE_ENABLED)
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).
@@ -569,7 +603,7 @@ namespace Game {
 	}
 
 	const bool Config::hasString(const char *key) const {
-		return getString(key).length() != 0;
+		return getString(key, "").length() != 0;
 	}
 
 	SDL_Keycode Config::translateStringToSDLKey(const string & value) const {

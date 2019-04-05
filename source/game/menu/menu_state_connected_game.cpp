@@ -2490,11 +2490,10 @@ namespace Game {
 				needToBroadcastServerSettings = true;
 				broadcastServerSettingsDelayTimer = time(NULL);
 			} else if (checkBoxAllowObservers.mouseClick(x, y)) {
-#ifdef DEBUG
-				PRINT_DEBUG("In [%s::%s Line %d]\n",
-					extractFileFromDirectoryPath(__FILE__).c_str(),
-					__FUNCTION__, __LINE__);
-#endif
+				if (SystemFlags::VERBOSE_MODE_ENABLED)
+					printf("In [%s::%s Line %d]\n",
+						extractFileFromDirectoryPath(__FILE__).c_str(),
+						__FUNCTION__, __LINE__);
 				needToBroadcastServerSettings = true;
 				broadcastServerSettingsDelayTimer = time(NULL);
 			} else if (checkBoxEnableSwitchTeamMode.mouseClick(x, y)) {
@@ -2646,11 +2645,10 @@ namespace Game {
 						getGameSettings()->getStartLocationIndex
 						(clientInterface->getGameSettings()->getThisFactionIndex
 						()) != i && listBoxTeams[i].mouseClick(x, y)) {
-#ifdef DEBUG
-						PRINT_DEBUG("In [%s::%s Line %d]\n",
-							extractFileFromDirectoryPath(__FILE__).c_str(),
-							__FUNCTION__, __LINE__);
-#endif
+						if (SystemFlags::VERBOSE_MODE_ENABLED)
+							printf("In [%s::%s Line %d]\n",
+								extractFileFromDirectoryPath(__FILE__).c_str(),
+								__FUNCTION__, __LINE__);
 						if (factionFiles[listBoxFactions[i].getSelectedItemIndex()] !=
 							formatString(GameConstants::OBSERVER_SLOTNAME)) {
 							if (listBoxTeams[i].getSelectedItemIndex() + 1 !=

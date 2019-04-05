@@ -58,7 +58,7 @@ namespace Game {
 
 		if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s %d]\n", __FILE__, __FUNCTION__, __LINE__);
 		Config &config = Config::getInstance();
-		si.setFactory(fr.getSoundFactory(config.getString("FactorySound")));
+		si.setFactory(fr.getSoundFactory(config.getString("FactorySound", "OpenAL")));
 
 		cleanup();
 		stopAllSounds();
@@ -71,8 +71,8 @@ namespace Game {
 		soundPlayer = si.newSoundPlayer();
 		if (soundPlayer != NULL) {
 			SoundPlayerParams soundPlayerParams;
-			soundPlayerParams.staticBufferCount = config.getInt("SoundStaticBuffers");
-			soundPlayerParams.strBufferCount = config.getInt("SoundStreamingBuffers");
+			soundPlayerParams.staticBufferCount = config.getInt("SoundStaticBuffers", "16");
+			soundPlayerParams.strBufferCount = config.getInt("SoundStreamingBuffers", "4");
 			soundPlayer->init(&soundPlayerParams);
 		}
 		safeMutex.ReleaseLock();
@@ -105,8 +105,8 @@ namespace Game {
 			result = soundPlayer->wasInitOk();
 		} else {
 			Config &config = Config::getInstance();
-			if (config.getString("FactorySound") == "" ||
-				config.getString("FactorySound") == "None") {
+			if (config.getString("FactorySound", "OpenAL") == "" ||
+				config.getString("FactorySound", "OpenAL") == "None") {
 				result = true;
 			}
 		}
@@ -279,9 +279,9 @@ namespace Game {
 	void SoundRenderer::loadConfig() {
 		Config &config = Config::getInstance();
 
-		fxVolume = config.getInt("SoundVolumeFx") / 100.f;
-		musicVolume = config.getInt("SoundVolumeMusic") / 100.f;
-		ambientVolume = config.getInt("SoundVolumeAmbient") / 100.f;
+		fxVolume = config.getInt("SoundVolumeFx", "70") / 100.f;
+		musicVolume = config.getInt("SoundVolumeMusic", "70") / 100.f;
+		ambientVolume = config.getInt("SoundVolumeAmbient", "70") / 100.f;
 	}
 
 } //end namespace

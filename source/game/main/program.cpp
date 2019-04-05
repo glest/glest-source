@@ -1238,11 +1238,11 @@ namespace Game {
 
 		//window
 		//window->setText("Glest");
-		window->setStyle(config.getBool("Windowed") ? wsWindowedFixed :
+		window->setStyle(config.getBool("Windowed", "false") ? wsWindowedFixed :
 			wsFullscreen);
 		window->setPos(0, 0);
-		window->setSize(config.getInt("ScreenWidth"),
-			config.getInt("ScreenHeight"));
+		window->setSize(config.getInt("ScreenWidth", "1024"),
+			config.getInt("ScreenHeight", "768"));
 		window->create();
 
 		if (SystemFlags::
@@ -1316,9 +1316,9 @@ namespace Game {
 				(__FILE__).c_str(), __FUNCTION__,
 				__LINE__);
 
-		window->initGl(config.getInt("ColorBits"),
-			config.getInt("DepthBits"),
-			config.getInt("StencilBits"),
+		window->initGl(config.getInt("ColorBits", "32"),
+			config.getInt("DepthBits", "16"),
+			config.getInt("StencilBits", "0"),
 			config.getBool("HardwareAcceleration", "true"),
 			config.getBool("FullScreenAntiAliasing", "0"),
 			config.getFloat("GammaValue", "0.0"));
@@ -1438,32 +1438,32 @@ namespace Game {
 
 		Config & config = Config::getInstance();
 
-		if (!config.getBool("Windowed")) {
+		if (!config.getBool("Windowed", "false")) {
 
 			//int freq= config.getInt("RefreshFrequency");
 			int
-				colorBits = config.getInt("ColorBits");
+				colorBits = config.getInt("ColorBits", "32");
 			int
-				screenWidth = config.getInt("ScreenWidth");
+				screenWidth = config.getInt("ScreenWidth", "1024");
 			int
-				screenHeight = config.getInt("ScreenHeight");
+				screenHeight = config.getInt("ScreenHeight", "768");
 
 			if (config.getBool("AutoMaxFullScreen", "false") == true) {
 				getFullscreenVideoInfo(colorBits, screenWidth, screenHeight,
-					!config.getBool("Windowed"));
+					!config.getBool("Windowed", "false"));
 				config.setInt("ColorBits", colorBits);
 				config.setInt("ScreenWidth", screenWidth);
 				config.setInt("ScreenHeight", screenHeight);
 			}
 		}
-		changeVideoModeFullScreen(!config.getBool("Windowed"));
+		changeVideoModeFullScreen(!config.getBool("Windowed", "false"));
 	}
 
 	void
 		Program::restoreDisplaySettings() {
 		Config & config = Config::getInstance();
 
-		if (!config.getBool("Windowed")) {
+		if (!config.getBool("Windowed", "false")) {
 			restoreVideoMode(this->getWindow()->getSDLWindow());
 		}
 	}

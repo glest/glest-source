@@ -2917,73 +2917,70 @@ namespace Game {
 			lastMasterserverHeartbeatTime = time(NULL);
 			if (needToRepublishToMasterserver == true) {
 				try {
-					if (Config::getInstance().getString("Masterserver", "") != "") {
-						string request = Config::getInstance().getString("Masterserver");
-						if (request != "") {
-							endPathWithSlash(request, false);
-						}
-						request += "addServerInfo.php?";
-
-						std::map<string, string> newPublishToServerInfo = publishToMasterserver();
-
-						CURL *handle = SystemFlags::initHTTP();
-						for (std::map<string, string>::const_iterator iterMap = newPublishToServerInfo.begin();
-							iterMap != newPublishToServerInfo.end(); ++iterMap) {
-
-							request += iterMap->first;
-							request += "=";
-							request += SystemFlags::escapeURL(iterMap->second, handle);
-							request += "&";
-						}
-
-						//printf("The Host request is:\n%s\n",request.c_str());
-						if (SystemFlags::VERBOSE_MODE_ENABLED) printf("The Host request is:\n%s\n", request.c_str());
-
-						if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line %d] the request is:\n%s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, request.c_str());
-
-						if (SystemFlags::VERBOSE_MODE_ENABLED) printf("Calling masterserver [%s]...\n", request.c_str());
-
-						std::string serverInfo = SystemFlags::getHTTP(request, handle);
-						//printf("Result:\n%s\n",serverInfo .c_str());
-
-						string requestStats = Config::getInstance().getString("Masterserver");
-						if (requestStats != "") {
-							endPathWithSlash(requestStats, false);
-						}
-						requestStats += "addGameStats.php?";
-
-						std::map<string, string> newPublishToServerInfoStats = publishToMasterserverStats();
-						if (newPublishToServerInfoStats.empty() == false) {
-							for (std::map<string, string>::const_iterator iterMap = newPublishToServerInfoStats.begin();
-								iterMap != newPublishToServerInfoStats.end(); ++iterMap) {
-
-								requestStats += iterMap->first;
-								requestStats += "=";
-								requestStats += SystemFlags::escapeURL(iterMap->second, handle);
-								requestStats += "&";
-							}
-
-							//printf("The Host stats request is:\n%s\n",requestStats.c_str());
-							if (SystemFlags::VERBOSE_MODE_ENABLED) printf("The Host request is:\n%s\n", requestStats.c_str());
-							if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line %d] the request is:\n%s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, requestStats.c_str());
-							if (SystemFlags::VERBOSE_MODE_ENABLED) printf("Calling masterserver [%s]...\n", requestStats.c_str());
-
-							std::string serverInfoStats = SystemFlags::getHTTP(requestStats, handle);
-							//printf("Result:\n%s\n",serverInfoStats .c_str());
-
-							if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line %d] the result is:\n'%s'\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, serverInfoStats.c_str());
-						}
-
-						SystemFlags::cleanupHTTP(&handle);
-
-						if (SystemFlags::VERBOSE_MODE_ENABLED) printf("Done Calling masterserver\n");
-
-						//printf("the result is:\n'%s'\n",serverInfo.c_str());
-						if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line %d] the result is:\n'%s'\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, serverInfo.c_str());
-					} else {
-						SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line %d] error, no masterserver defined!\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
+					string request = Config::getInstance().getString("Masterserver", "http://master.megaglest.org/");
+					if (request != "") {
+						endPathWithSlash(request, false);
 					}
-				} catch (const exception &ex) {
+					request += "addServerInfo.php?";
+
+					std::map<string, string> newPublishToServerInfo = publishToMasterserver();
+
+					CURL* handle = SystemFlags::initHTTP();
+					for (std::map<string, string>::const_iterator iterMap = newPublishToServerInfo.begin();
+						iterMap != newPublishToServerInfo.end(); ++iterMap) {
+
+						request += iterMap->first;
+						request += "=";
+						request += SystemFlags::escapeURL(iterMap->second, handle);
+						request += "&";
+					}
+
+					//printf("The Host request is:\n%s\n",request.c_str());
+					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("The Host request is:\n%s\n", request.c_str());
+
+					if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line %d] the request is:\n%s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, request.c_str());
+
+					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("Calling masterserver [%s]...\n", request.c_str());
+
+					std::string serverInfo = SystemFlags::getHTTP(request, handle);
+					//printf("Result:\n%s\n",serverInfo .c_str());
+
+					string requestStats = Config::getInstance().getString("Masterserver", "http://master.megaglest.org/");
+					if (requestStats != "") {
+						endPathWithSlash(requestStats, false);
+					}
+					requestStats += "addGameStats.php?";
+
+					std::map<string, string> newPublishToServerInfoStats = publishToMasterserverStats();
+					if (newPublishToServerInfoStats.empty() == false) {
+						for (std::map<string, string>::const_iterator iterMap = newPublishToServerInfoStats.begin();
+							iterMap != newPublishToServerInfoStats.end(); ++iterMap) {
+
+							requestStats += iterMap->first;
+							requestStats += "=";
+							requestStats += SystemFlags::escapeURL(iterMap->second, handle);
+							requestStats += "&";
+						}
+
+						//printf("The Host stats request is:\n%s\n",requestStats.c_str());
+						if (SystemFlags::VERBOSE_MODE_ENABLED) printf("The Host request is:\n%s\n", requestStats.c_str());
+						if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line %d] the request is:\n%s\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, requestStats.c_str());
+						if (SystemFlags::VERBOSE_MODE_ENABLED) printf("Calling masterserver [%s]...\n", requestStats.c_str());
+
+						std::string serverInfoStats = SystemFlags::getHTTP(requestStats, handle);
+						//printf("Result:\n%s\n",serverInfoStats .c_str());
+
+						if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line %d] the result is:\n'%s'\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, serverInfoStats.c_str());
+					}
+
+					SystemFlags::cleanupHTTP(&handle);
+
+					if (SystemFlags::VERBOSE_MODE_ENABLED) printf("Done Calling masterserver\n");
+
+					//printf("the result is:\n'%s'\n",serverInfo.c_str());
+					if (SystemFlags::getSystemSettingType(SystemFlags::debugNetwork).enabled) SystemFlags::OutputDebug(SystemFlags::debugNetwork, "In [%s::%s Line %d] the result is:\n'%s'\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, serverInfo.c_str());
+				}
+				catch (const exception & ex) {
 					SystemFlags::OutputDebug(SystemFlags::debugError, "In [%s::%s Line %d] error during game status update: [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, ex.what());
 				}
 			}

@@ -47,12 +47,12 @@ namespace Game {
 		if (resWidth > 0) {
 			screenW = resWidth;
 		} else {
-			screenW = config.getInt("ScreenWidth");
+			screenW = config.getInt("ScreenWidth", "1024");
 		}
 		if (resHeight > 0) {
 			screenH = resHeight;
 		} else {
-			screenH = config.getInt("ScreenHeight");
+			screenH = config.getInt("ScreenHeight", "768");
 		}
 
 		minimapX = 10;

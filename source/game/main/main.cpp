@@ -1108,12 +1108,12 @@ namespace Game {
 	int
 		MainWindow::getDesiredScreenWidth() {
 		Config & config = Config::getInstance();
-		return config.getInt("ScreenWidth");
+		return config.getInt("ScreenWidth", "1024");
 	}
 	int
 		MainWindow::getDesiredScreenHeight() {
 		Config & config = Config::getInstance();
-		return config.getInt("ScreenHeight");
+		return config.getInt("ScreenHeight", "768");
 	}
 
 	void
@@ -1125,8 +1125,8 @@ namespace Game {
 				this->program->getWindow()->getScreenHeight());
 		} else {
 			Config & config = Config::getInstance();
-			Metrics::reload(config.getInt("ScreenWidth"),
-				config.getInt("ScreenHeight"));
+			Metrics::reload(config.getInt("ScreenWidth", "1024"),
+				config.getInt("ScreenHeight", "768"));
 			//window->setText(config.getString("WindowTitle","Glest"));
 			//this->mainMenu->init();
 		}
@@ -6277,12 +6277,12 @@ namespace Game {
 				getGameCustomCoreDataPath(data_path_check, "");
 			if (data_path_check == userDataPath_check) {
 				printf
-				("****WARNING**** your game data path and user data path are the same.\nThis will likely create problems: %s\n",
+				("*WARNING* your game data path and user data path are the same.\nThis will likely create problems: %s\n",
 					data_path_check.c_str());
-				throw
+				/*throw
 					game_runtime_error
 					("Regular and User data paths cannot have the same value [" +
-						userDataPath_check + "]");
+						userDataPath_check + "]");*/
 			}
 
 			if (userData != "") {
@@ -6442,7 +6442,7 @@ namespace Game {
 			if (hasCommandArgument
 			(argc, argv,
 				GAME_ARGS[GAME_ARG_DISABLE_OPENGL_CAPS_CHECK]) == true
-				|| config.getBool("CheckGlCaps") == false) {
+				|| config.getBool("CheckGlCaps", "1") == false) {
 				printf("**WARNING** disabling opengl capability checking...\n");
 				config.setBool("CheckGlCaps", false, true);
 			}
@@ -6793,7 +6793,6 @@ namespace Game {
 					std::pair < string,
 					string >(Config::glestkeys_ini_filename,
 						Config::glestuserkeys_ini_filename),
-					std::pair < bool, bool >(true, false),
 					config.getString("GlestKeysIniPath", ""));
 
 			SystemFlags::OutputDebug(SystemFlags::debugSystem,
@@ -6837,7 +6836,7 @@ namespace Game {
 			// Load the language strings
 			Lang & lang = Lang::getInstance();
 			string
-				language = config.getString("Lang");
+				language = config.getString("Lang", "english");
 			if (hasCommandArgument(argc, argv, GAME_ARGS[GAME_ARG_USE_LANGUAGE])
 				== true) {
 				int
@@ -6979,8 +6978,7 @@ namespace Game {
 
 			if (lang.hasString("FONT_HEIGHT_TEXT")) {
 				::Shared::Graphics::Font::langHeightText =
-					config.
-					getString("FONT_HEIGHT_TEXT", ::Shared::Graphics::Font::
+					config.getString("FONT_HEIGHT_TEXT", ::Shared::Graphics::Font::
 						langHeightText.c_str());
 			}
 

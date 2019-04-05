@@ -669,7 +669,7 @@ namespace Game {
 			return;
 		}
 
-		if (Config::getInstance().getBool("AutoTest")) {
+		if (Config::getInstance().getBool("AutoTest", "false")) {
 			SystemFlags::OutputDebug(SystemFlags::debugSystem,
 				"In [%s::%s Line: %d]\n", __FILE__,
 				__FUNCTION__, __LINE__);

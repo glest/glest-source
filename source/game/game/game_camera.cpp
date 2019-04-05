@@ -79,7 +79,7 @@ namespace Game {
 		speed =
 			Config::getInstance().getFloat("CameraMoveSpeed",
 				"15") / GameConstants::cameraFps;
-		clampBounds = !Config::getInstance().getBool("PhotoMode");
+		clampBounds = !Config::getInstance().getBool("PhotoMode", "false");
 		clampDisable = false;
 
 		vAng = startingVAng;

@@ -83,7 +83,7 @@ namespace Shared {
 
 			if (fileStream.is_open() == false) {
 				if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d] path = [%s]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, path.c_str());
-				throw game_runtime_error("File NOT FOUND, can't open file: [" + path + "]");
+				printf("%s", "\nFile NOT FOUND, can't open file: [" + path + "]\n");
 			}
 
 			if (clearCurrentProperties == true) {

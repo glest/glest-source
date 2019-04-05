@@ -967,7 +967,7 @@ namespace Game {
 					ConfigType >(cfgMainKeys, cfgUserKeys));
 
 			console.addLine(lang.getString("ToSwitchOffMusicPress") + " - \"" +
-				configKeys.getString("ToggleMusic") + "\"");
+				configKeys.getString("ToggleMusic", "K") + "\"");
 
 			chatManager.init(&console, -1, true);
 
@@ -1212,7 +1212,7 @@ namespace Game {
 				ConfigType >(cfgMainKeys, cfgUserKeys));
 
 		console.addLine(lang.getString("ToSwitchOffMusicPress") + " - \"" +
-			configKeys.getString("ToggleMusic") + "\"");
+			configKeys.getString("ToggleMusic", "K") + "\"");
 
 		chatManager.init(&console, -1, true);
 
@@ -3506,7 +3506,7 @@ namespace Game {
 			//SoundRenderer &soundRenderer= SoundRenderer::getInstance();
 			//switch on music again!!
 			Config & config = Config::getInstance();
-			float configVolume = (config.getInt("SoundVolumeMusic") / 100.f);
+			float configVolume = (config.getInt("SoundVolumeMusic", "70") / 100.f);
 			if (factionVideoSwitchedOffVolume) {
 				if (CoreData::getInstance().getMenuMusic()->getVolume() !=
 					configVolume) {
@@ -3760,7 +3760,7 @@ namespace Game {
 						extractFileFromDirectoryPath(__FILE__).
 						c_str(), __FUNCTION__, __LINE__);
 
-				string request = Config::getInstance().getString("Masterserver");
+				string request = Config::getInstance().getString("Masterserver", "http://master.megaglest.org/");
 				if (request != "") {
 					endPathWithSlash(request, false);
 				}
@@ -5418,7 +5418,7 @@ namespace Game {
 					Config & config = Config::getInstance();
 					Lang & lang = Lang::getInstance();
 
-					float configVolume = (config.getInt("SoundVolumeMusic") / 100.f);
+					float configVolume = (config.getInt("SoundVolumeMusic", "70") / 100.f);
 					float currentVolume =
 						CoreData::getInstance().getMenuMusic()->getVolume();
 					if (currentVolume > 0) {

@@ -44,10 +44,10 @@ namespace Game {
 			getFontCallbackName
 			(), this);
 
-		maxLines = Config::getInstance().getInt("ConsoleMaxLines");
+		maxLines = Config::getInstance().getInt("ConsoleMaxLines", "6");
 		maxStoredLines =
-			Config::getInstance().getInt("ConsoleMaxLinesStored");
-		timeout = Config::getInstance().getInt("ConsoleTimeout");
+			Config::getInstance().getInt("ConsoleMaxLinesStored", "20");
+		timeout = Config::getInstance().getInt("ConsoleTimeout", "20");
 		timeElapsed = 0.0f;
 		xPos = 20;
 		yPos = 20;

@@ -3784,7 +3784,7 @@ namespace Game {
 			// END - Handle joining in progress games
 
 			//update auto test
-			if (Config::getInstance().getBool("AutoTest")) {
+			if (Config::getInstance().getBool("AutoTest", "false")) {
 				AutoTest::getInstance().updateGame(this);
 				return;
 			}
@@ -6517,13 +6517,11 @@ namespace Game {
 						StrSound *gameMusic =
 							world.getThisFaction()->getType()->getMusic();
 						if (gameMusic != NULL) {
-							float
-								configVolume = (config.getInt("SoundVolumeMusic") / 100.f);
+							float configVolume = (config.getInt("SoundVolumeMusic", "70") / 100.f);
 							float currentVolume = gameMusic->getVolume();
 							if (currentVolume > 0) {
 								gameMusic->setVolume(0);
-								console.addLine(lang.getString("GameMusic") +
-									" " + lang.getString("Off"));
+								console.addLine(lang.getString("GameMusic") + " " + lang.getString("Off"));
 							} else {
 								//If the config says zero, use the default music volume
 								gameMusic->setVolume(configVolume ? configVolume : 0.9);
@@ -6893,7 +6891,7 @@ namespace Game {
 		}
 		//printf("Check savegame\n");
 		//printf("Saving...\n");
-		if (Config::getInstance().getBool("AutoTest")) {
+		if (Config::getInstance().getBool("AutoTest", "false")) {
 			this->saveGame(GameConstants::saveGameFileAutoTestDefault);
 		}
 
@@ -7186,7 +7184,7 @@ namespace Game {
 		}
 
 		if ((game != NULL && game->isMasterserverMode() == true) ||
-			Config::getInstance().getBool("AutoTest") == true) {
+			Config::getInstance().getBool("AutoTest", "false") == true) {
 			printf("Game ending with stats:\n");
 			printf("-----------------------\n");
 

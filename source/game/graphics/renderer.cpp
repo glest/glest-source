@@ -176,13 +176,13 @@ namespace Game {
 
 		Renderer::perspFarPlane = config.getFloat("PerspectiveFarPlane", floatToStr(Renderer::perspFarPlane).c_str());
 		this->no2DMouseRendering = config.getBool("No2DMouseRendering", "false");
-		this->maxConsoleLines = config.getInt("ConsoleMaxLines");
+		this->maxConsoleLines = config.getInt("ConsoleMaxLines", "6");
 
 		if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s Line: %d] Renderer::perspFarPlane [%f] this->no2DMouseRendering [%d] this->maxConsoleLines [%d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__, Renderer::perspFarPlane, this->no2DMouseRendering, this->maxConsoleLines);
 
 		GraphicsInterface &gi = GraphicsInterface::getInstance();
 		FactoryRepository &fr = FactoryRepository::getInstance();
-		gi.setFactory(fr.getGraphicsFactory(config.getString("FactoryGraphics")));
+		gi.setFactory(fr.getGraphicsFactory(config.getString("FactoryGraphics", "OpenGL")));
 		GraphicsFactory *graphicsFactory = GraphicsInterface::getInstance().getFactory();
 
 		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false) {
@@ -364,7 +364,7 @@ namespace Game {
 
 		if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
-		if (config.getBool("CheckGlCaps")) {
+		if (config.getBool("CheckGlCaps", "true")) {
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
@@ -379,10 +379,10 @@ namespace Game {
 
 		if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
-		if (config.getBool("FirstTime")) {
+		if (config.getBool("FirstTime", "false")) {
 			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
-			config.setBool("FirstTime", false);
+			config.setBool("FirstTime", "false");
 			autoConfig();
 
 			if (SystemFlags::VERBOSE_MODE_ENABLED) printf("In [%s::%s %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
@@ -5639,7 +5639,7 @@ namespace Game {
 			return;
 		}
 
-		if (config.getBool("PhotoMode")) {
+		if (config.getBool("PhotoMode", "false")) {
 			return;
 		}
 
@@ -7474,10 +7474,10 @@ namespace Game {
 		Config &config = Config::getInstance();
 
 		//cache most used config params
-		maxLights = config.getInt("MaxLights");
-		photoMode = config.getBool("PhotoMode");
-		focusArrows = config.getBool("FocusArrows");
-		textures3D = config.getBool("Textures3D");
+		maxLights = config.getInt("MaxLights", "8");
+		photoMode = config.getBool("PhotoMode", "false");
+		focusArrows = config.getBool("FocusArrows", "true");
+		textures3D = config.getBool("Textures3D", "true");
 		float gammaValue = config.getFloat("GammaValue", "0.0");
 		if (this->program == NULL) {
 			throw game_runtime_error("this->program == NULL");
@@ -7490,16 +7490,16 @@ namespace Game {
 			//}
 		}
 		//load shadows
-		shadows = strToShadows(config.getString("Shadows"));
+		shadows = strToShadows(config.getString("Shadows", "Projected"));
 		if (shadows == sProjected || shadows == sShadowMapping) {
-			shadowTextureSize = config.getInt("ShadowTextureSize");
-			shadowFrameSkip = config.getInt("ShadowFrameSkip");
+			shadowTextureSize = config.getInt("ShadowTextureSize", "512");
+			shadowFrameSkip = config.getInt("ShadowFrameSkip", "2");
 			shadowIntensity = config.getFloat("ShadowIntensity", "1.0");
 		}
 
 		//load filter settings
-		Texture2D::Filter textureFilter = strToTextureFilter(config.getString("Filter"));
-		int maxAnisotropy = config.getInt("FilterMaxAnisotropy");
+		Texture2D::Filter textureFilter = strToTextureFilter(config.getString("Filter", "Bilinear"));
+		int maxAnisotropy = config.getInt("FilterMaxAnisotropy", "1");
 
 		if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false) {
 			for (int i = 0; i < rsCount; ++i) {
@@ -9234,8 +9234,8 @@ namespace Game {
 
 		if (supportFBOs == true && renderToTexture != NULL) {
 			Config &config = Config::getInstance();
-			Texture2D::Filter textureFilter = strToTextureFilter(config.getString("Filter"));
-			int maxAnisotropy = config.getInt("FilterMaxAnisotropy");
+			Texture2D::Filter textureFilter = strToTextureFilter(config.getString("Filter", "Bilinear"));
+			int maxAnisotropy = config.getInt("FilterMaxAnisotropy", "1");
 
 			const Metrics &metrics = Metrics::getInstance();
 
@@ -9312,8 +9312,8 @@ namespace Game {
 
 		if (supportFBOs == true && renderToTexture != NULL) {
 			Config &config = Config::getInstance();
-			Texture2D::Filter textureFilter = strToTextureFilter(config.getString("Filter"));
-			int maxAnisotropy = config.getInt("FilterMaxAnisotropy");
+			Texture2D::Filter textureFilter = strToTextureFilter(config.getString("Filter", "Bilinear"));
+			int maxAnisotropy = config.getInt("FilterMaxAnisotropy", "1");
 
 			*renderToTexture = GraphicsInterface::getInstance().getFactory()->newTexture2D();
 			Texture2DGl *texture = static_cast<Texture2DGl *>(*renderToTexture);

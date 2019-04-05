@@ -82,8 +82,7 @@ namespace Game {
 
 		Config();
 		Config(std::pair < ConfigType, ConfigType > type, std::pair < string,
-			string > file, std::pair < bool, bool > fileMustExist,
-			string custom_path = "");
+			string > file, string custom_path = "");
 		bool tryCustomPath(std::pair < ConfigType, ConfigType > &type,
 			std::pair < string, string > &file,
 			string custom_path);
@@ -102,48 +101,34 @@ namespace Game {
 			std::pair < string, string > file =
 			std::make_pair(glest_ini_filename,
 				glestuser_ini_filename),
-			std::pair < bool, bool > fileMustExist =
-			std::make_pair(true, false),
 			string custom_path = "");
 		void save(const string & path = "");
 		void reload();
 
-		int getInt(const string & key, const char *defaultValueIfNotFound =
-			NULL) const;
-		bool getBool(const string & key, const char *defaultValueIfNotFound =
-			NULL) const;
-		float getFloat(const string & key, const char *defaultValueIfNotFound =
-			NULL) const;
-		const string getString(const string & key,
-			const char *defaultValueIfNotFound =
-			NULL) const;
+		int getInt(const string & key, const char *defaultValueIfNotFound/* = NULL*/) const;
+		bool getBool(const string & key, const char *defaultValueIfNotFound/* = NULL*/) const;
+		float getFloat(const string & key, const char *defaultValueIfNotFound/* = NULL*/) const;
+		const string getString(const string & key, const char *defaultValueIfNotFound/* = NULL*/) const;
 
-		int getInt(const char *key, const char *defaultValueIfNotFound =
-			NULL) const;
-		bool getBool(const char *key, const char *defaultValueIfNotFound =
-			NULL) const;
-		float getFloat(const char *key, const char *defaultValueIfNotFound =
-			NULL) const;
-		const string getString(const char *key,	const char *defaultValueIfNotFound = "") const;
+		int getInt(const char *key, const char *defaultValueIfNotFound/* = NULL*/) const;
+		bool getBool(const char *key, const char *defaultValueIfNotFound/* = NULL*/) const;
+		float getFloat(const char *key, const char *defaultValueIfNotFound/* = NULL*/) const;
+		const string getString(const char *key,	const char *defaultValueIfNotFound/* = ""*/) const;
 		const bool hasString(const char *key) const;
 		//char getCharKey(const char *key) const;
 		SDL_Keycode getSDLKey(const char *key) const;
 
 		void setInt(const string & key, int value, bool tempBuffer = false);
 		void setBool(const string & key, bool value, bool tempBuffer = false);
-		void setFloat(const string & key, float value, bool tempBuffer =
-			false);
-		void setString(const string & key, const string & value,
-			bool tempBuffer = false);
+		void setFloat(const string & key, float value, bool tempBuffer = false);
+		void setString(const string & key, const string & value, bool tempBuffer = false);
 
-		vector < string > getPathListForType(PathType type,
-			string scenarioDir = "");
+		vector<string> getPathListForType(PathType type, string scenarioDir = "");
 
-		vector < pair < string, string > >getMergedProperties() const;
-		vector < pair < string, string > >getMasterProperties() const;
-		vector < pair < string, string > >getUserProperties() const;
-		void setUserProperties(const vector < pair < string,
-			string > >&valueList);
+		vector<pair<string, string>> getMergedProperties() const;
+		vector<pair<string, string>> getMasterProperties() const;
+		vector<pair<string, string>> getUserProperties() const;
+		void setUserProperties(const vector<pair<string, string>>& valueList);
 
 		string getFileName(bool userFilename) const;
 
