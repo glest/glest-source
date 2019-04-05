@@ -174,7 +174,7 @@ namespace Shared {
 			//         "================================================================================"
 			printf("\n%s %s, [Using %s]\n", extractFileFromDirectoryPath(argv0).c_str(), G3DViewerVersionString.c_str(), (const char *) wxConvCurrent->cWX2MB(wxVERSION_STRING));
 
-			printf("\nDisplays glest 3D-models and unit/projectile/splash particle systems.\n");
+			printf("\nDisplays Glest 3D-models and unit/projectile/splash particle systems.\n");
 			printf("\nRotate with left mouse button. Zoom with right mouse button or mousewheel.");
 			printf("\nUse ctrl to load more than one particle system.");
 			printf("\nPress R to restart particles, this also reloads all files if they are changed.");

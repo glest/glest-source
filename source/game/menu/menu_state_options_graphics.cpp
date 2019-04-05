@@ -110,9 +110,7 @@ namespace Game {
 			screenModeChangedTimer = time(NULL);   // just init
 
 			::Shared::PlatformCommon::getFullscreenVideoModes(&modeInfos,
-				!config.
-				getBool
-				("Windowed"));
+				!config.getBool("Windowed", "false"));
 
 			int
 				leftLabelStart = 100;
@@ -198,9 +196,9 @@ namespace Game {
 				init(currentColumnStart, currentLine, 200);
 
 			string
-				currentResString = config.getString("ScreenWidth") + "x" +
-				config.getString("ScreenHeight") + "-" +
-				intToStr(config.getInt("ColorBits"));
+				currentResString = config.getString("ScreenWidth", "1024") + "x" +
+				config.getString("ScreenHeight", "768") + "-" +
+				intToStr(config.getInt("ColorBits", "32"));
 			bool
 				currentResolutionFound = false;
 			for (vector < ModeInfo >::const_iterator it = modeInfos.begin();
@@ -223,7 +221,7 @@ namespace Game {
 
 			checkBoxFullscreenWindowed.init(currentColumnStart, currentLine);
 			labelFullscreenWindowed.setText(lang.getString("Windowed"));
-			checkBoxFullscreenWindowed.setValue(config.getBool("Windowed"));
+			checkBoxFullscreenWindowed.setValue(config.getBool("Windowed", "false"));
 			currentLine -= lineOffset;
 
 			//gammaCorrection
@@ -250,7 +248,7 @@ namespace Game {
 			listBoxFilter.init(currentColumnStart, currentLine, 200);
 			listBoxFilter.pushBackItem("Bilinear");
 			listBoxFilter.pushBackItem("Trilinear");
-			listBoxFilter.setSelectedItem(config.getString("Filter"));
+			listBoxFilter.setSelectedItem(config.getString("Filter", "Bilinear"));
 			currentLine -= lineOffset;
 
 			//FilterMaxAnisotropy
@@ -305,7 +303,7 @@ namespace Game {
 							(i))));
 			}
 			string
-				str = config.getString("Shadows");
+				str = config.getString("Shadows", "Projected");
 			listBoxShadows.
 				setSelectedItemIndex(clamp
 				(Renderer::strToShadows(str), 0,
@@ -349,7 +347,7 @@ namespace Game {
 
 			checkBoxTextures3D.init(currentColumnStart, currentLine);
 			labelTextures3D.setText(lang.getString("Textures3D"));
-			checkBoxTextures3D.setValue(config.getBool("Textures3D"));
+			checkBoxTextures3D.setValue(config.getBool("Textures3D", "1"));
 			currentLine -= lineOffset;
 
 			//lights
@@ -362,7 +360,7 @@ namespace Game {
 			}
 			listBoxLights.
 				setSelectedItemIndex(clamp
-				(config.getInt("MaxLights") - 1, 0, 7));
+				(config.getInt("MaxLights", "8") - 1, 0, 7));
 			currentLine -= lineOffset;
 
 			//unit particles
@@ -556,28 +554,26 @@ namespace Game {
 		Config & config = Config::getInstance();
 		//!!!
 		// Revert resolution or fullscreen
-		checkBoxFullscreenWindowed.setValue(config.getBool("Windowed"));
+		checkBoxFullscreenWindowed.setValue(config.getBool("Windowed", "false"));
 		string
-			currentResString = config.getString("ScreenWidth") + "x" +
-			config.getString("ScreenHeight") + "-" +
-			intToStr(config.getInt("ColorBits"));
+			currentResString = config.getString("ScreenWidth", "1024") + "x" +
+			config.getString("ScreenHeight", "768") + "-" +
+			intToStr(config.getInt("ColorBits", "32"));
 		listBoxScreenModes.setSelectedItem(currentResString);
 
 
-		changeVideoModeFullScreen(!config.getBool("Windowed"));
+		changeVideoModeFullScreen(!config.getBool("Windowed", "false"));
 		WindowGl *
 			window = this->program->getWindow();
 		window->ChangeVideoMode(true,
-			config.getInt("ScreenWidth"),
-			config.getInt("ScreenHeight"),
-			!config.getBool("Windowed"),
-			config.getInt("ColorBits"),
-			config.getInt("DepthBits"),
-			config.getInt("StencilBits"),
-			config.getBool("HardwareAcceleration",
-				"true"),
-			config.getBool("FullScreenAntiAliasing",
-				"false"),
+			config.getInt("ScreenWidth", "1024"),
+			config.getInt("ScreenHeight", "768"),
+			!config.getBool("Windowed", "false"),
+			config.getInt("ColorBits", "32"),
+			config.getInt("DepthBits", "16"),
+			config.getInt("StencilBits", "0"),
+			config.getBool("HardwareAcceleration", "true"),
+			config.getBool("FullScreenAntiAliasing", "false"),
 			config.getFloat("GammaValue", "0.0"));
 		Metrics::reload(this->program->getWindow()->getScreenWidth(),
 			this->program->getWindow()->getScreenHeight());
@@ -661,13 +657,13 @@ namespace Game {
 				selectedFullscreenWindowed = checkBoxFullscreenWindowed.getValue();
 			string
 				currentResolution =
-				config.getString("ScreenWidth") + "x" +
-				config.getString("ScreenHeight") + "-" +
-				intToStr(config.getInt("ColorBits"));
+				config.getString("ScreenWidth", "1024") + "x" +
+				config.getString("ScreenHeight", "768") + "-" +
+				intToStr(config.getInt("ColorBits", "32"));
 			string
 				selectedResolution = listBoxScreenModes.getSelectedItem();
 			bool
-				currentFullscreenWindowed = config.getBool("Windowed");
+				currentFullscreenWindowed = config.getBool("Windowed", "false");
 			if (currentResolution != selectedResolution
 				|| currentFullscreenWindowed != selectedFullscreenWindowed) {
 
@@ -715,12 +711,10 @@ namespace Game {
 					selectedMode->height,
 					!selectedFullscreenWindowed,
 					selectedMode->depth,
-					config.getInt("DepthBits"),
-					config.getInt("StencilBits"),
-					config.getBool("HardwareAcceleration",
-						"true"),
-					config.getBool("FullScreenAntiAliasing",
-						"false"),
+					config.getInt("DepthBits", "16"),
+					config.getInt("StencilBits", "0"),
+					config.getBool("HardwareAcceleration", "true"),
+					config.getBool("FullScreenAntiAliasing", "false"),
 					strToFloat(listBoxGammaCorrection.
 						getSelectedItem()));
 
@@ -1010,8 +1004,8 @@ namespace Game {
 
 		string
 			currentResolution =
-			config.getString("ScreenWidth") + "x" +
-			config.getString("ScreenHeight");
+			config.getString("ScreenWidth", "1024") + "x" +
+			config.getString("ScreenHeight", "768");
 		string
 			selectedResolution = listBoxScreenModes.getSelectedItem();
 		if (currentResolution != selectedResolution) {
@@ -1028,10 +1022,12 @@ namespace Game {
 		config.save();
 
 #ifdef _WIN32
+#ifndef SHOW_CONSOLE
 		if (config.getBool("ShowConsoleWindows", "false") == true)
 			ShowWindow(GetConsoleWindow(), SW_SHOW);
 		else if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false)
 			ShowWindow(GetConsoleWindow(), SW_HIDE);
+#endif
 #endif
 
 		Renderer::getInstance().loadConfig();

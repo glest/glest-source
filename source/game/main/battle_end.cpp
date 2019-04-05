@@ -451,7 +451,7 @@ namespace Game {
 
 	void
 		BattleEnd::update() {
-		if (Config::getInstance().getBool("AutoTest")) {
+		if (Config::getInstance().getBool("AutoTest", "false")) {
 			AutoTest::getInstance().updateBattleEnd(program);
 			return;
 		}

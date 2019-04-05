@@ -33,6 +33,8 @@
 #ifdef WIN32
 #include <KnownFolders.h>
 #include "Shlobj.h"
+#include <locale>
+#include <codecvt>
 #endif
 
 using namespace Shared::Platform;
@@ -147,14 +149,13 @@ namespace Game {
 				&& file.first == glestkeys_ini_filename
 				&& file.second == glestuserkeys_ini_filename)) {
 
-			string linuxPath = custom_path;
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
 				printf
 				("-=-=-=-=-=-=-= looking for file in possible location  [%s]\n",
-					linuxPath.c_str());
+					custom_path.c_str());
 
 #if defined(__linux__)
-			string nixFile = linuxPath + "linux_" + file.first;
+			string nixFile = custom_path + "linux_" + file.first;
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
 				printf
 				("-=-=-=-=-=-=-= looking for linux specific file in possible location  [%s]\n",
@@ -162,17 +163,17 @@ namespace Game {
 
 			if (wasFound == false && fileExists(nixFile) == true) {
 				file.first = nixFile;
-				file.second = linuxPath + file.second;
+				file.second = custom_path + file.second;
 				wasFound = true;
 			}
-			nixFile = linuxPath + "linux_" + file.second;
+			nixFile = custom_path + "linux_" + file.second;
 			if (wasFound == false && fileExists(nixFile) == true) {
-				file.first = linuxPath + file.first;
+				file.first = custom_path + file.first;
 				file.second = nixFile;
 				wasFound = true;
 			}
 #elif defined(__WIN32__)
-			string winFile = linuxPath + "windows_" + file.first;
+			string winFile = custom_path + "windows_" + file.first;
 			if (SystemFlags::VERBOSE_MODE_ENABLED)
 				printf
 				("-=-=-=-=-=-=-= looking for windows specific file in possible location  [%s]\n",
@@ -180,26 +181,26 @@ namespace Game {
 
 			if (wasFound == false && fileExists(winFile) == true) {
 				file.first = winFile;
-				file.second = linuxPath + file.second;
+				file.second = custom_path + file.second;
 				wasFound = true;
 			}
-			winFile = linuxPath + "windows_" + file.second;
+			winFile = custom_path + "windows_" + file.second;
 			if (wasFound == false && fileExists(winFile) == true) {
-				file.first = linuxPath + file.first;
+				file.first = custom_path + file.first;
 				file.second = winFile;
 				wasFound = true;
 			}
 
 #endif
-			string realPath = linuxPath + file.first;
+			string realPath = custom_path + file.first;
 			if (wasFound == false && fileExists(realPath) == true) {
 				file.first = realPath;
-				file.second = linuxPath + file.second;
+				file.second = custom_path + file.second;
 				wasFound = true;
 			}
-			realPath = linuxPath + file.second;
+			realPath = custom_path + file.second;
 			if (wasFound == false && fileExists(realPath) == true) {
-				file.first = linuxPath + file.first;
+				file.first = custom_path + file.first;
 				file.second = realPath;
 				wasFound = true;
 			}
@@ -242,16 +243,20 @@ namespace Game {
 			char* env = getenv("APPDATA");
 			if (env != NULL) {
 				currentpath = env;
-				foundPath = tryCustomPath(cfgType, fileName, endPathWithSlash(currentpath));
+				foundPath = tryCustomPath(cfgType, fileName, endPathWithSlash(currentpath, true) + "glest\\");
 			}
 		}
 		if (foundPath == false) {
-			PWSTR path = NULL;
+			wchar_t* path = NULL;
 			// Get path for each computer, non-user specific and non-roaming data.
-			if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, NULL, &path) != S_OK) {
+			if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, NULL, &path) == S_OK) {
 				if (path != NULL) {
-					currentpath = *path;
-					foundPath = tryCustomPath(cfgType, fileName, endPathWithSlash(currentpath));
+					wstringstream ss;
+					ss << path;
+					using convert_type = std::codecvt_utf8<wchar_t>;
+					std::wstring_convert<convert_type, wchar_t> converter;
+					currentpath = converter.to_bytes(ss.str());
+					foundPath = tryCustomPath(cfgType, fileName, endPathWithSlash(currentpath, true) + "glest\\");
 					CoTaskMemFree(path);
 				}
 			}

@@ -213,7 +213,7 @@ namespace Game {
 
 			autoConnectToServer = true;
 		} else {
-			string hostIP = config.getString("ServerIp");
+			string hostIP = config.getString("ServerIp", "");
 			if (portNumberOverride > 0) {
 				hostIP += ":" + intToStr(portNumberOverride);
 			}
@@ -914,7 +914,7 @@ namespace Game {
 		labelInfo.setText("");
 
 		//save server ip
-		if (config.getString("ServerIp") != serverIp.getString()) {
+		if (config.getString("ServerIp", serverIp.getString().c_str()) != serverIp.getString()) {
 			config.setString("ServerIp", serverIp.getString());
 			config.save();
 		}

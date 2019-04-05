@@ -51,7 +51,7 @@ namespace Game {
 		time = dawn + 1.5f;
 		lastTime = time;
 		Config &config = Config::getInstance();
-		timeInc = 24.f * (1.f / config.getFloat("DayTime")) / GameConstants::updateFps;
+		timeInc = 24.f * (1.f / config.getFloat("DayTime", "")) / GameConstants::updateFps;
 		//printf("#1 timeInc = %f\n",timeInc);
 
 		if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line %d] timeInc = %f\n", __FILE__, __FUNCTION__, __LINE__, timeInc);

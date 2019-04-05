@@ -6199,8 +6199,10 @@ namespace Game {
 				LuaScript::setDisableSandbox(true);
 			}
 #ifdef _WIN32
+#ifndef SHOW_CONSOLE
 			if (config.getBool("ShowConsoleWindows", "false") == false && GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false)
 				ShowWindow(GetConsoleWindow(), SW_HIDE);
+#endif
 #endif
 
 			if (hasCommandArgument

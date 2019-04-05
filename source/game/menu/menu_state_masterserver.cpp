@@ -320,7 +320,7 @@ namespace Game {
 		ircArgs.push_back(IRC_SERVER);
 
 		if (Config::getInstance().getString("IRCNick", "") != "") {
-			ircArgs.push_back(Config::getInstance().getString("IRCNick"));
+			ircArgs.push_back(Config::getInstance().getString("IRCNick", ""));
 		} else {
 			ircArgs.push_back(szIRCNick);
 		}
@@ -329,13 +329,13 @@ namespace Game {
 		ircArgs.push_back(IRC_CHANNEL);
 
 		if (Config::getInstance().getString("IRCUsername", "") != "") {
-			ircArgs.push_back(Config::getInstance().getString("IRCUsername"));
+			ircArgs.push_back(Config::getInstance().getString("IRCUsername", ""));
 		} else {
 			ircArgs.push_back(szIRCNick);
 		}
 		if (Config::getInstance().getString("IRCPassword", "") != "") {
 			ircArgs.push_back("identify " +
-				Config::getInstance().getString("IRCPassword"));
+				Config::getInstance().getString("IRCPassword", ""));
 		} else {
 			ircArgs.push_back("");
 		}
@@ -1105,7 +1105,7 @@ namespace Game {
 
 			//switch on music again!!
 			Config & config = Config::getInstance();
-			float configVolume = (config.getInt("SoundVolumeMusic") / 100.f);
+			float configVolume = (config.getInt("SoundVolumeMusic", "70") / 100.f);
 			CoreData::getInstance().getMenuMusic()->setVolume(configVolume);
 
 			playServerFoundSound = false;
@@ -1246,7 +1246,7 @@ namespace Game {
 						Config::getInstance(std::pair < ConfigType,
 							ConfigType >(cfgMainKeys, cfgUserKeys));
 					consoleIRC.addLine(Lang::getInstance().getString("ToSwitchOffMusicPress") + " - \"" +
-						configKeys.getString("ToggleMusic") + "\"");
+						configKeys.getString("ToggleMusic", "K") + "\"");
 					consoleIRC.addLine("");
 					announcementLoaded = true;
 				}
@@ -1264,7 +1264,7 @@ namespace Game {
 								getString("PlayerId", ""));
 
 						string baseURL =
-							Config::getInstance().getString("Masterserver");
+							Config::getInstance().getString("Masterserver", "http://master.megaglest.org/");
 						if (baseURL != "") {
 							endPathWithSlash(baseURL, false);
 						}
@@ -1577,7 +1577,7 @@ namespace Game {
 				Config & config = Config::getInstance();
 				Lang & lang = Lang::getInstance();
 
-				float configVolume = (config.getInt("SoundVolumeMusic") / 100.f);
+				float configVolume = (config.getInt("SoundVolumeMusic", "70") / 100.f);
 				float currentVolume =
 					CoreData::getInstance().getMenuMusic()->getVolume();
 				if (currentVolume > 0) {

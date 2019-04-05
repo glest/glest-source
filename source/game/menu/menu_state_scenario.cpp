@@ -367,7 +367,7 @@ namespace Game {
 	}
 
 	void MenuStateScenario::update() {
-		if (Config::getInstance().getBool("AutoTest")) {
+		if (Config::getInstance().getBool("AutoTest", "false")) {
 			AutoTest::getInstance().updateScenario(this);
 			return;
 		}

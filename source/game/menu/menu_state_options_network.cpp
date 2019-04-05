@@ -571,10 +571,10 @@ namespace Game {
 		setActiveInputLable(NULL);
 
 
-		lang.loadGameStrings(config.getString("Lang"));
+		lang.loadGameStrings(config.getString("Lang", "english"));
 
 		config.setString("PortServer", listBoxServerPort.getSelectedItem());
-		config.setInt("FTPServerPort", config.getInt("PortServer") + 1);
+		config.setInt("FTPServerPort", config.getInt("PortServer", "61357") + 1);
 		config.setBool("EnableFTPXfer", checkBoxEnableFTP.getValue());
 		config.setBool("EnableFTPServer", checkBoxEnableFTPServer.getValue());
 

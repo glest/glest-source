@@ -409,7 +409,7 @@ namespace Shared {
 				globfree(&globbuf);
 
 				if (results.empty() == true && errorOnNotFound == true) {
-					throw game_runtime_error("No files found in: " + mypath);
+					printf("%s", ("No files found in: " + mypath).c_str());
 				}
 
 				if (cutExtension) {

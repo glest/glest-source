@@ -71,7 +71,6 @@ namespace Shared {
 		void message(const string &message,bool isNonGraphicalModeEnabled, const string &writepath);
 		void exceptionMessage(const exception &excp);
 
-		// WINDOWS
 		#else
 
 		// =====================================================

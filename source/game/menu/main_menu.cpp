@@ -397,7 +397,7 @@ namespace Game {
 		//switch on menu music again, it might be muted
 		Config & config = Config::getInstance();
 		float
-			configVolume = (config.getInt("SoundVolumeMusic") / 100.f);
+			configVolume = (config.getInt("SoundVolumeMusic", "70") / 100.f);
 		CoreData::getInstance().getMenuMusic()->setVolume(configVolume);
 
 		string

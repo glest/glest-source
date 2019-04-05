@@ -1317,10 +1317,12 @@ namespace Game {
 		config.save();
 
 #ifdef _WIN32
+#ifndef SHOW_CONSOLE
 		if (checkBoxShowDeveloperConsoleOnWindows.getValue())
 			ShowWindow(GetConsoleWindow(), SW_SHOW);
 		else if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false)
 			ShowWindow(GetConsoleWindow(), SW_HIDE);
+#endif
 #endif
 		Renderer::getInstance().loadConfig();
 		console.addLine(lang.getString("SettingsSaved"));

@@ -163,7 +163,7 @@ namespace Game {
 				pushBackItem("OpenAL");
 
 			string
-				FSoundMode = lang.getString(config.getString("FactorySound"));
+				FSoundMode = lang.getString(config.getString("FactorySound", "OpenAL"));
 			listBoxSoundFactory.
 				setSelectedItem(FSoundMode);
 			currentLine -=
@@ -206,13 +206,13 @@ namespace Game {
 					pushBackItem(intToStr(i));
 			}
 			listBoxVolumeFx.
-				setSelectedItem(intToStr(config.getInt("SoundVolumeFx")));
+				setSelectedItem(intToStr(config.getInt("SoundVolumeFx", "70")));
 			listBoxVolumeAmbient.
 				setSelectedItem(intToStr
-				(config.getInt("SoundVolumeAmbient")));
+				(config.getInt("SoundVolumeAmbient", "70")));
 			listBoxVolumeMusic.
 				setSelectedItem(intToStr
-				(config.getInt("SoundVolumeMusic")));
+				(config.getInt("SoundVolumeMusic", "70")));
 
 			//currentLine-=lineOffset/2;
 
@@ -478,10 +478,12 @@ namespace Game {
 		config.save();
 
 #ifdef _WIN32
+#ifndef SHOW_CONSOLE
 		if (config.getBool("ShowConsoleWindows", "false") == true)
 			ShowWindow(GetConsoleWindow(), SW_SHOW);
 		else if (GlobalStaticFlags::getIsNonGraphicalModeEnabled() == false)
 			ShowWindow(GetConsoleWindow(), SW_HIDE);
+#endif
 #endif
 
 		SoundRenderer & soundRenderer = SoundRenderer::getInstance();

@@ -741,7 +741,7 @@ namespace Game {
 	}
 
 	void MenuStateRoot::update() {
-		if (Config::getInstance().getBool("AutoTest")) {
+		if (Config::getInstance().getBool("AutoTest", "false")) {
 			if (AutoTest::getInstance().mustExitGame() == false) {
 				AutoTest::getInstance().updateRoot(program, mainMenu);
 			} else {
