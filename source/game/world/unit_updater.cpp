@@ -1064,7 +1064,7 @@ namespace Game {
 		Unit *builtUnit = new Unit(world->getNextUnitId(unit->getFaction()), newpath, buildPos, builtUnitType, unit->getFaction(), world->getMap(), facing);
 		if (toleratePos)
 			builtUnit->setPos(pathFinder->computeNearestFreePos(builtUnit, buildPos, false, true));
-		if (world->getMap()->isFreeCells(builtUnit->getPos(), builtUnit->getType()->getSize(), builtUnit->getCurrField(), true)) {
+		if (world->getMap()->isFreeCells(builtUnit->getPos(), builtUnit->getType()->getSize(), (builtUnit->getCurrField() & fAir) == fAir ? fAir : fLandWater, true)) {
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugUnitCommands).enabled) SystemFlags::OutputDebug(SystemFlags::debugUnitCommands, "In [%s::%s Line: %d]\n", __FILE__, __FUNCTION__, __LINE__);
 
 			builtUnit->create();

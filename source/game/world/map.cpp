@@ -772,8 +772,9 @@ namespace Game {
 			isInside(pos) &&
 			isInsideSurface(toSurfCoords(pos)) &&
 			(getCell(pos)->isFree(field) ? true : (buildingsOnly && !getCell(pos)->getUnit(field)->getType()->hasSkillClass(scBeBuilt))) &&
-			(SkillType::toActualField(field) == fAir || getSurfaceCell(toSurfCoords(pos))->isFree()) &&
-			(SkillType::toActualField(field) == fAir || ((field & fWater) == fWater ? ((field & fLand) == fLand ? true : getDeepSubmerged(getCell(pos))) : !getDeepSubmerged(getCell(pos))));
+			(SkillType::toActualField(field) == fAir ||
+			(getSurfaceCell(toSurfCoords(pos))->isFree() &&
+			((field & fWater) == fWater ? ((field & fLand) == fLand ? true : getDeepSubmerged(getCell(pos))) : !getDeepSubmerged(getCell(pos)))));
 	}
 
 
