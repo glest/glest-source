@@ -2000,7 +2000,7 @@ namespace Game {
 				foundPath = false;
 			string
 				customPathValue = "";
-
+			
 			if (fileExists(devPropertyFile) == true
 				&& devProperties.hasString("DataPath") == true) {
 				foundPath = true;
