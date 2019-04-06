@@ -22,24 +22,24 @@ copy /y ..\shared\glestkeys.ini bin\vs2019\glestkeys.ini
 
 copy /y vs2015-32\g3d_viewer\g3d_viewer.exe bin\vs2015\g3d_viewer-32.exe
 copy /y vs2017-32\g3d_viewer\g3d_viewer.exe bin\vs2017\g3d_viewer-32.exe
-copy /y vs2017-32\g3d_viewer\g3d_viewer.exe bin\vs2019\g3d_viewer-32.exe
+copy /y vs2019-32\g3d_viewer\g3d_viewer.exe bin\vs2019\g3d_viewer-32.exe
 
 copy /y vs2015-32\map_editor\map_editor.exe bin\vs2015\map_editor-32.exe
 copy /y vs2017-32\map_editor\map_editor.exe bin\vs2017\map_editor-32.exe
-copy /y vs2017-32\map_editor\map_editor.exe bin\vs2019\map_editor-32.exe
+copy /y vs2019-32\map_editor\map_editor.exe bin\vs2019\map_editor-32.exe
 
 copy /y vs2015-32\glest\glest.exe bin\vs2015\glest-32.exe
 copy /y vs2017-32\glest\glest.exe bin\vs2017\glest-32.exe
-copy /y vs2017-32\glest\glest.exe bin\vs2019\glest-32.exe
+copy /y vs2019-32\glest\glest.exe bin\vs2019\glest-32.exe
 
 copy /y vs2015-64\g3d_viewer\g3d_viewer.exe bin\vs2015\g3d_viewer-64.exe
 copy /y vs2017-64\g3d_viewer\g3d_viewer.exe bin\vs2017\g3d_viewer-64.exe
-copy /y vs2017-64\g3d_viewer\g3d_viewer.exe bin\vs2019\g3d_viewer-64.exe
+copy /y vs2019-64\g3d_viewer\g3d_viewer.exe bin\vs2019\g3d_viewer-64.exe
 
 copy /y vs2015-64\map_editor\map_editor.exe bin\vs2015\map_editor-64.exe
 copy /y vs2017-64\map_editor\map_editor.exe bin\vs2017\map_editor-64.exe
-copy /y vs2017-64\map_editor\map_editor.exe bin\vs2019\map_editor-64.exe
+copy /y vs2019-64\map_editor\map_editor.exe bin\vs2019\map_editor-64.exe
 
 copy /y vs2015-64\glest\glest.exe bin\vs2015\glest-64.exe
 copy /y vs2017-64\glest\glest.exe bin\vs2017\glest-64.exe
-copy /y vs2017-64\glest\glest.exe bin\vs2019\glest-64.exe
+copy /y vs2019-64\glest\glest.exe bin\vs2019\glest-64.exe
