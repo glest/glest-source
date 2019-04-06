@@ -665,13 +665,11 @@ namespace Game {
 										if (!found) {
 											for (int i = -1; i <= 1; ++i) {
 												for (int j = -1; j <= 1; ++j) {
-													if (!(i == 0 && j == 0)) {
-														Vec2i pos = position + Vec2i(i, j);
-														found = (((targetField & fWater) == fWater) == map->getDeepSubmerged(map->getCell(pos))) && map->isFreeCell(pos, targetField, true);
-														if (found) {
-															position = pos;
-															break;
-														}
+													Vec2i pos = position + Vec2i(i, j);
+													found = (((targetField & fWater) == fWater) == map->getDeepSubmerged(map->getCell(pos))) && map->isFreeCell(pos, targetField, true);
+													if (found) {
+														position = pos;
+														break;
 													}
 												}
 												if (found)
