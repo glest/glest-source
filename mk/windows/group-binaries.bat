@@ -2,6 +2,7 @@
 md bin
 md bin\vs2015
 md bin\vs2017
+md bin\vs2019
 
 copy /y 7z.dll bin\vs2015\7z.dll
 copy /y 7z.dll bin\vs2017\7z.dll
