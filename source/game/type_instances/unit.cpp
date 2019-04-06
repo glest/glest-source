@@ -4631,6 +4631,8 @@ namespace Game {
 					}
 				}
 			}
+		} else if ((currField & fWater) == fWater && map->getSubmerged(map->getCell(pos))) {
+			height = map->getWaterLevel();
 		}
 
 		return height;

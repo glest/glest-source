@@ -107,6 +107,7 @@ namespace Game {
 		healthbarVisible = hbvUndefined;
 		multiSelect = false;
 		uniformSelect = false;
+		floating = false;
 		commandable = true;
 		armorType = NULL;
 		rotatedBuildPos = 0;
@@ -445,6 +446,13 @@ namespace Game {
 			multiSelect =
 				parametersNode->getChild("multi-selection")->
 				getAttribute("value")->getBoolValue();
+
+			//float
+			if (parametersNode->hasChild("float")) {
+				floating =
+					parametersNode->getChild("float")->
+					getAttribute("value")->getBoolValue();
+			}
 
 			//uniform selection
 			if (parametersNode->hasChild("uniform-selection")) {

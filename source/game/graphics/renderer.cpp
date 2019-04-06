@@ -5365,7 +5365,7 @@ namespace Game {
 						if (mType->getSize() > unit->getType()->getSize() ||
 							mType->getField() != unit->getType()->getField()) {
 							if (!initialized) {
-								const World *world = game->getWorld();
+								const World* world = game->getWorld();
 								frameCycle = world->getFrameCount() % 40;
 
 								glPushAttrib(GL_ENABLE_BIT | GL_CURRENT_BIT | GL_DEPTH_BUFFER_BIT);
@@ -5381,15 +5381,14 @@ namespace Game {
 
 							Vec3f currVec = unit->getCurrVectorFlat();
 							currVec = Vec3f(currVec.x, currVec.y + 0.3f, currVec.z);
-							if (SkillType::toActualField(mType->getField()) == fAir && SkillType::toActualField(unit->getType()->getField()) == fLand) {
+							if ((SkillType::toActualField(mType->getField()) == fAir && SkillType::toActualField(unit->getType()->getField()) == fLand) ||
+								(SkillType::toActualField(mType->getField()) == fLand && SkillType::toActualField(unit->getType()->getField()) == fAir)) {
 								currVec = Vec3f(currVec.x, currVec.y + game->getWorld()->getTileset()->getAirHeight(), currVec.z);
-							} else if (SkillType::toActualField(mType->getField()) == fLand && SkillType::toActualField(unit->getType()->getField()) == fAir) {
-								currVec = Vec3f(currVec.x, currVec.y - game->getWorld()->getTileset()->getAirHeight(), currVec.z);
 							}
 
 							float color = frameCycle * 0.4f / 40;
 							glColor4f(color, color, 0.4f, 0.4f);
-							renderSelectionCircle(currVec, mType->getSize(), frameCycle*0.85f / 40, 0.2f);
+							renderSelectionCircle(currVec, mType->getSize(), frameCycle * 0.85f / 40, 0.2f);
 						}
 					}
 				}

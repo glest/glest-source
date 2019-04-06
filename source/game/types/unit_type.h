@@ -235,6 +235,7 @@ namespace Game {
 		int targetHeight;
 		float rotatedBuildPos;
 		bool rotationAllowed;
+		bool floating;
 
 		//cellmap
 		bool *cellMap;
