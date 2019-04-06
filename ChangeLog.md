@@ -6,6 +6,7 @@ https://github.com/Glest/glest-source/commits/develop
 v2.0
 
 - Added two new field types: "water" and "landwater"
+- Added "float" attribute support for ships and floating units
 - Added the Specialists faction
 - Added a multitude of cool tilesets
 - Now you can use shift to add and to remove from selected units (or use ctrl to unconditionally deselect)
@@ -19,6 +20,7 @@ v2.0
 - Moved default camera position to be slightly higher
 - Added a lot of useful LUA functions, like setResourceMultiplier, setPlayerType, areCellsFree and forceSetUnitPosition
 - Removed game fast-forward multiplier limit
+- Added update notifier (can be disabled)
 
 v1.0
 
