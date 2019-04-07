@@ -53,8 +53,13 @@ namespace Shared {
 	namespace Util {
 
 		string Properties::applicationPath = "";
+#ifdef SNAPCRAFT
+		string Properties::applicationDataPath = std::getenv("SNAP") + formatPath(TOSTRING(DATADIR));
+#elif FLATPAK
+		string Properties::applicationDataPath = formatPath(TOSTRING(DATADIR));
+#else
 		string Properties::applicationDataPath = "";
-
+#endif
 		string Properties::techtreePath = "";
 		string Properties::scenarioPath = "";
 		string Properties::tutorialPath = "";

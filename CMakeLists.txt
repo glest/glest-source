@@ -13,7 +13,7 @@ ENDIF()
 SET_PROPERTY(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS None Debug Release RelWithDebInfo MinSizeRel)
 
 IF(NOT CMAKE_VERSION VERSION_LESS "3.1")
-    cmake_policy(SET CMP0054 NEW)
+	cmake_policy(SET CMP0054 NEW)
 ENDIF()
 
 # add additional CMake modules
@@ -28,9 +28,9 @@ ENDIF()
 # using  CC=`which egcc` CXX=`which eg++`
 
 IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    SET(CMAKE_COMPILER_IS_GNUCXX "YES")
-#        ADD_DEFINITIONS("-Qunused-arguments -Wno-switch")
-    ADD_DEFINITIONS("-Wno-switch")
+	SET(CMAKE_COMPILER_IS_GNUCXX "YES")
+#		ADD_DEFINITIONS("-Qunused-arguments -Wno-switch")
+	ADD_DEFINITIONS("-Wno-switch")
 ENDIF()
 
 OPTION(BUILD_GLEST "Build Glest" ON)
@@ -60,15 +60,15 @@ ENDIF()
 
 IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 	IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-        MESSAGE(STATUS "Detected CLANG Compiler...")
+		MESSAGE(STATUS "Detected CLANG Compiler...")
 	ELSEIF(CMAKE_COMPILER_IS_GNUCXX)
 		MESSAGE(STATUS "Detected GNUC Compiler...")
 	ELSEIF(MINGW)
 		MESSAGE(STATUS "Detected MINGW Compiler...")
 	ENDIF()
 
-    # Common generic GNU type compiler options that work with all generic GCC compatible compilers
-    ADD_DEFINITIONS("-Wuninitialized -Wsign-compare -Wunused-function -Wunused-variable -Wreturn-type -fno-strict-aliasing")
+	# Common generic GNU type compiler options that work with all generic GCC compatible compilers
+	ADD_DEFINITIONS("-Wuninitialized -Wsign-compare -Wunused-function -Wunused-variable -Wreturn-type -fno-strict-aliasing")
 
 	# For gcc warning options see: http://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
 	IF(NOT MINGW)
@@ -78,32 +78,32 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 	ELSE()
 #		ADD_DEFINITIONS("-Wreturn-type -fno-strict-aliasing -frounding-math  -fsignaling-nans -mfpmath=sse -msse -DUNICODE")
 #		ADD_DEFINITIONS("-Wuninitialized -Wsign-compare -Wunused-function -Wunused-variable -Wreturn-type -fno-strict-aliasing -frounding-math  -fsignaling-nans -DUNICODE")
-        ADD_DEFINITIONS("-DUNICODE")
+		ADD_DEFINITIONS("-DUNICODE")
 	ENDIF()
 
-    # CLang specific Compiler Options
-    IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+	# CLang specific Compiler Options
+	IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 
-    # GCC specific Compiler Options
-    ELSE()
-        ADD_DEFINITIONS("-frounding-math -fsignaling-nans")
+	# GCC specific Compiler Options
+	ELSE()
+		ADD_DEFINITIONS("-frounding-math -fsignaling-nans")
 	
-	IF((NOT CMAKE_GENERATOR STREQUAL Xcode) AND (NOT MINGW))
-		# Debug compiler flags
-		SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -no-pie -fno-pie")
+		IF((NOT CMAKE_GENERATOR STREQUAL Xcode) AND (NOT MINGW))
+			# Debug compiler flags
+			SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -no-pie -fno-pie")
 
-		# Release compiler flags
-		SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -no-pie -fno-pie")
+			# Release compiler flags
+			SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -no-pie -fno-pie")
 
-		# Release with debug info compiler flags
-		SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -no-pie -fno-pie")
+			# Release with debug info compiler flags
+			SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -no-pie -fno-pie")
 
-#                IF(NOT MINGW)
-#                        set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -rdynamic")
-#                        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -rdynamic")
-#                ENDIF()
+	#				IF(NOT MINGW)
+	#						set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -rdynamic")
+	#						set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -rdynamic")
+	#				ENDIF()
+		ENDIF()
 	ENDIF()
-    ENDIF()
 
 	IF(WANT_USE_STREFLOP)
 		OPTION(FORCE_STREFLOP_SOFTWRAPPER "Set the streflop library to be forced to use the software emulator" OFF)
@@ -142,25 +142,25 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 		MESSAGE(STATUS "libstreflop disabled")
 	ENDIF()
 
-        include(CheckCXXSourceRuns)
+		include(CheckCXXSourceRuns)
 
-        check_cxx_source_runs("
-        #include <execinfo.h>
-        #include <stdio.h>
-        int main()
-        {
+		check_cxx_source_runs("
+		#include <execinfo.h>
+		#include <stdio.h>
+		int main()
+		{
 	const size_t max_depth = 6;
 	void *stack_addrs[max_depth];
 	size_t stack_depth = backtrace(stack_addrs, max_depth);
-        }"
-        HAS_GCC_BACKTRACE)
+		}"
+		HAS_GCC_BACKTRACE)
 
-        IF(HAS_GCC_BACKTRACE)
-            message(STATUS "Found GCC backtrace lib, will support backtraces")
-            ADD_DEFINITIONS(-DHAS_GCC_BACKTRACE)
-        ELSE()
-            message(STATUS "**WARNING DID NOT Find GCC backtrace lib")
-        ENDIF()
+		IF(HAS_GCC_BACKTRACE)
+			message(STATUS "Found GCC backtrace lib, will support backtraces")
+			ADD_DEFINITIONS(-DHAS_GCC_BACKTRACE)
+		ELSE()
+			message(STATUS "**WARNING DID NOT Find GCC backtrace lib")
+		ENDIF()
 
 	# Debug compiler flags
 	SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g3")
@@ -186,6 +186,12 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 		set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -pthread")
 		SET(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -pthread")
 		SET(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL "${CMAKE_EXE_LINKER_FLAGS_MINSIZEREL} -pthread")
+	ENDIF()
+
+	# Snapcraft build definition.
+	IF(DEFINED ENV{SNAPCRAFT_STAGE})
+		MESSAGE(STATUS "Using snapcraft path...")
+		ADD_DEFINITIONS("-DSNAPCRAFT")
 	ENDIF()
 
 	IF(NOT INSTALL_DIR_BIN)
@@ -267,21 +273,21 @@ ENDIF()
 # where it is, and whether or not it has actually been installed
 #
 IF(EXISTS "${PROJECT_SOURCE_DIR}/../glest-data/CMakeLists.txt")
-    MESSAGE(STATUS "**Found game data.")
+	MESSAGE(STATUS "**Found game data.")
 	# using CMAKE_BINARY_DIR as last parameter will output cmake files into the same
 	# directory as the source build.
 	ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/../glest-data ${CMAKE_BINARY_DIR}/data)
 ENDIF()
 
 IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    MESSAGE(WARNING ">> CLANG is NOT currently compatible as it does not support the following essential GCC compiler settings: -frounding-math -fsignaling-nans")
+	MESSAGE(WARNING ">> CLANG is NOT currently compatible as it does not support the following essential GCC compiler settings: -frounding-math -fsignaling-nans")
 ENDIF()
 
 # FIXME: This should output all defines. For example, DATADIR is defined in
 # the game source and sharedlib cmake file as well
 get_directory_property( DirDefs DIRECTORY ${CMAKE_SOURCE_DIR} COMPILE_DEFINITIONS )
 foreach( d ${DirDefs} )
-    message( STATUS "=====> Found Define: " ${d} )
+	message( STATUS "=====> Found Define: " ${d} )
 endforeach()
 
 MARK_AS_ADVANCED(${SDL_VERSION_NAME}MAIN_LIBRARY)
