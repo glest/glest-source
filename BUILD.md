@@ -79,7 +79,7 @@ For Linux, there are four options:
    
    1. Download: https://github.com/glest/glest-source/blob/master/snapcraft.yaml
    
-   2. Move `snapcraft.yaml` to a directory where you're happy to build the project. Next, run:
+   2. Move `snapcraft.yaml` to a directory where you're happy to build the project. Next, in the same directory as `snapcraft.yaml`, run:
 
           sudo snapcraft
  
