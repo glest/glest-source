@@ -61,11 +61,9 @@ listed in the `Windows` directory for further information.
 
 ### Linux
 
-For Linux there are three options: 
+For Linux, there are four options: 
 
-1. (Recommended) Using a Flatpak: https://github.com/glest/io.glest.Glest
-
-2. Using the build script:
+1. (Standard) Using the build script:
 
        git clone https://github.com/Glest/glest-source.git glest; sudo glest/mk/linux/setup.sh
 
@@ -75,7 +73,25 @@ For Linux there are three options:
 
    To update and rebuild the game, simply rerun `sudo glest/mk/linux/setup.sh`, as it performs a `git pull` as part of the process.
 
-3. Using building manually using CMake (see below)
+2. Build a [Flatpak](https://flatpak.org/) installer: https://github.com/glest/io.glest.Glest
+
+3. Build a [Snapcraft](https://snapcraft.io/) installer. (n.b.: Glest snap develop packages are already built automatically and can be tested by running `snap install --devmode --edge glest`.)
+   
+   1. Download: https://github.com/glest/glest-source/blob/master/snapcraft.yaml
+   
+   2. Move `snapcraft.yaml` to a directory where you're happy to build the project. Next, run:
+
+          sudo snapcraft
+ 
+   3. You should now have a file with a name like `Glest_*.snap`. To install it, run:
+        
+          snap install --devmode Glest_*.snap
+   
+   4. Run the game:
+          
+          glest
+        
+4. Building manually using CMake (see below)
 
 #### For a more thorough approach:
 
@@ -158,12 +174,11 @@ Now that the build configuration has been set, run make, replacing `X` with the 
 
     make -jX
 
-On Linux, `X` can be substituted with `$(grep -c ^processor /proc/cpuinfo)`, to automatically get the number of CPU threads:
+On Linux, `X` can be substituted with `$(nproc)`, to automatically get the number of CPU threads:
 
-    make -j$(grep -c ^processor /proc/cpuinfo)
+    make -j$(nproc)
 
-The glest binaries will be in the `build/` directory. Run
-`./glest` to start the game.
+The glest binaries will be in the `build/` directory. Run `./glest` to start the game.
 
 See [running](https://github.com/Glest/glest-source#running) for
 detailed information about running a server or hosting a game.
