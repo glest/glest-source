@@ -24,25 +24,42 @@ Additionally, if you want
 to contribute with the code on Windows, [please follow these
 instructions](https://github.com/Glest/glest-source/blob/master/mk/windows/README.md).
 
-For other operating systems, you must [**build and install from
-source**](https://github.com/Glest/glest-source/blob/master/BUILD.md)
-(Later, we'll be providing binary packages).
+## Downloads for linux
+
+Glest can be installed using [Snapcraft](https://snapcraft.io/) or [Flatpak](https://flatpak.org/):
+
+1. (Recommended) Install Glest using Snapcraft:
+       
+       snap install --devmode --edge glest
+   
+   Fix for a bug currently in Glest:
+   
+       mkdir ~/snap/glest/1/.glest/
+   
+   Run Glest:
+       
+       glest
+       
+2. Install using Flatpak: https://github.com/glest/io.glest.Glest
 
 ## Quick Build Guide for Linux
 
-For Linux there are three options: 
+If you can't use Snap or flatpak, you can build Glest from source.
 
-1. (Recommended) Using a Flatpak: https://github.com/glest/io.glest.Glest
-
-2. Using the build script:
+Using the build script:
 
        git clone https://github.com/Glest/glest-source.git glest; sudo glest/mk/linux/setup.sh
 
-   Then run the following command to start the game:
+Then run the following command to start the game:
 
        glest/mk/linux/build/glest
 
 3. Building manually using CMake: https://github.com/glest/glest-source/blob/master/BUILD.md
+
+
+For other operating systems, you must [**build and install from
+source**](https://github.com/Glest/glest-source/blob/master/BUILD.md)
+(Later, we'll be providing binary packages).
 
 ## Links
 
