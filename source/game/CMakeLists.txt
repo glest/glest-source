@@ -9,7 +9,6 @@ IF(BUILD_GLEST)
 	MESSAGE(STATUS "Build ${TARGET_NAME} = YES")
 
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=gnu++11")
-	add_definitions("-DDATADIR=${INSTALL_DIR_DATA}")
 	
 	# This is an environment var that pops up when building with snapcraft.
 	# Use this to activate snapcraft path...

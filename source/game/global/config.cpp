@@ -233,12 +233,10 @@ namespace Game {
 			foundPath = tryCustomPath(cfgType, fileName, custom_path);
 		}
 
-#ifndef SNAPCRAFT
 		if (foundPath == false) {
 			currentpath = extractDirectoryPathFromFile(Properties::getApplicationPath());
 			foundPath = tryCustomPath(cfgType, fileName, currentpath);
 		}
-#endif
 
 #ifdef _WIN32
 		if (foundPath == false) {
@@ -265,16 +263,11 @@ namespace Game {
 		}
 #endif
 
-#ifdef SNAPCRAFT
-        if (foundPath == false) {
-			foundPath = tryCustomPath(cfgType, fileName, std::getenv("SNAP") +
-                endPathWithSlash(formatPath(TOSTRING(DATADIR))));
-		}
-#endif
 
-#ifdef DATADIR
-		if (foundPath == false) {
-			foundPath = tryCustomPath(cfgType, fileName, endPathWithSlash(formatPath(TOSTRING(DATADIR))));
+#if defined(DATADIR) && defined(BINDIR)
+        if ((foundPath == false)) {
+			currentpath = getDatPath();
+			foundPath = tryCustomPath(cfgType, fileName, currentpath);
 		}
 #endif
 

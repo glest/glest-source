@@ -53,12 +53,10 @@ namespace Shared {
 	namespace Util {
 
 		string Properties::applicationPath = "";
-#ifdef SNAPCRAFT
-		string Properties::applicationDataPath = std::getenv("SNAP") + formatPath(TOSTRING(DATADIR));
-#elif FLATPAK
-		string Properties::applicationDataPath = formatPath(TOSTRING(DATADIR));
+#if defined(DATADIR) && defined(BINDIR)
+        string Properties::applicationDataPath = getDatPath();
 #else
-		string Properties::applicationDataPath = "";
+        string Properties::applicationDataPath = "";
 #endif
 		string Properties::techtreePath = "";
 		string Properties::scenarioPath = "";
@@ -245,7 +243,7 @@ namespace Shared {
 				//char pMBBuffer[MAX_PATH + 1]="";
 				//wcstombs_s(&size, &pMBBuffer[0], (size_t)size, wBuf, (size_t)size);// Convert to char* from TCHAR[]
 				//string appPath="";
-				//appPath.assign(&pMBBuffer[0]); // Now assign the char* to the string, and there you have it!!! :) 
+				//appPath.assign(&pMBBuffer[0]); // Now assign the char* to the string, and there you have it!!! :)
 				std::string appPath = utf8_encode(szPath);
 				replaceAll(appPath, "\\", "/");
 
@@ -266,8 +264,7 @@ namespace Shared {
 			mapTagReplacementValues["$APPLICATIONPATH"] = Properties::applicationPath;
 			mapTagReplacementValues["%%APPLICATIONPATH%%"] = Properties::applicationPath;
 			mapTagReplacementValues["{APPLICATIONPATH}"] = Properties::applicationPath;
-
-			mapTagReplacementValues["$APPLICATIONDATAPATH"] = Properties::applicationDataPath;
+			mapTagReplacementValues["$APPLICATIONDATAPATH"] = Properties::applicationPath;
 			mapTagReplacementValues["%%APPLICATIONDATAPATH%%"] = Properties::applicationDataPath;
 			mapTagReplacementValues["{APPLICATIONDATAPATH}"] = Properties::applicationDataPath;
 
@@ -372,7 +369,7 @@ namespace Shared {
 					//char pMBBuffer[MAX_PATH + 1]="";
 					//wcstombs_s(&size, &pMBBuffer[0], (size_t)size, wBuf, (size_t)size);// Convert to char* from TCHAR[]
 					//string appPath="";
-					//appPath.assign(&pMBBuffer[0]); // Now assign the char* to the string, and there you have it!!! :) 
+					//appPath.assign(&pMBBuffer[0]); // Now assign the char* to the string, and there you have it!!! :)
 					std::string appPath = utf8_encode(szPath);
 
 					//string appPath = szPath;

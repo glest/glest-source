@@ -6,38 +6,43 @@ then
     echo "Ubuntu 18.04 is required! System found: $ID $VERSION_ID"
 fi;
 
+rm -rf Glest
 mkdir Glest
-mkdir deps
 
-echo "\nGetting build deps..."
+echo
+echo "Getting build deps..."
 sudo ../linux/build-deps.sh
 
-echo "\nGetting and installing required libs..."
-sudo apt clean
-sudo apt --download-only --reinstall install famfamfam-flag-png p7zip-full libcurl4 libfontconfig1 libfribidi0 libftgl2 libgcc1 libgl1-mesa-glx libgl1 libglew2.0 libglu1-mesa libircclient1 libjpeg8 liblua5.3-0 libminiupnpc10 libopenal1 libpng16-16 libsdl2-2.0-0 libstdc++6 libvorbisfile3 libwxbase3.0-0v5 libwxgtk3.0-0v5 libx11-6 libpulse0
-cp /var/cache/apt/archives/*.deb deps
-
-mkdir curdep
-cd curdep
-for f in ../deps/*.deb;
-do
-    ar x $f
-    tar -xf data.tar.* -C ../Glest
-    rm *
-done;
-cd ..
-rm -rf curdep deps
-
-echo "\nBuilding and installing Glest..."
+echo
+echo "Building and installing Glest..."
 mkdir build && cd build
-cmake -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_MAP_EDITOR=OFF -DBUILD_MODEL_VIEWER=OFF -DINSTALL_DIR_BIN=/usr/bin/ -DINSTALL_DIR_DATA=/usr/share/glest/ ../../..
-make -j$(nproc) DESTDIR=../Glest
+cmake -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_MAP_EDITOR=OFF -DBUILD_MODEL_VIEWER=OFF ../../..
+make -j$(nproc) && make install DESTDIR=../Glest
 rm -r *
 
-echo "\n Getting and installing data..."
-git clone https://github.com/glest/glest-data.git
-mkdir build && cd build
-cmake -DINSTALL_DIR_BIN=/usr/bin/ -DINSTALL_DIR_DATA=/usr/share/glest/ -DINSTALL_DIR_DESKTOP=/usr/share/applications/ -DINSTALL_DIR_ICON=/usr/share/icons/hicolor/256x256/ glest-data
-make -j$(nproc) DESTDIR=../Glest
+echo
+echo "Getting and installing data..."
+../../linux/clone-data.sh
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr ../../linux/../data
+make && make install DESTDIR=../Glest
 cd ..
 rm -rf build
+# Remove useless metainfo.
+rm Glest/usr/share/metainfo/io.glest.Editor.appdata.xml
+
+wget -c "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage"
+
+echo
+echo "Creating the AppImage..."
+
+# Path to pulseaudio libs.
+export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/pulseaudio/
+:/usr/lib/i386-linux-gnu/pulseaudio/:$LD_LIBRARY_PATH
+
+chmod +x linuxdeploy-x86_64.AppImage
+./linuxdeploy-x86_64.AppImage --appdir=Glest --output appimage
+chmod +x Glest*.AppImage
+
+echo
+echo "done!"

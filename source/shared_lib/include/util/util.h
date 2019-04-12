@@ -300,6 +300,13 @@ namespace Shared {
 			}
 		};
 
+#ifdef __linux__
+        std::string getExecPath();
+#endif // __linux
+        void eraseSubStr(std::string & mainStr, const std::string & toErase);
+#if defined(DATADIR) && defined(BINDIR)
+        string getDatPath();
+#endif
 	}
 } //end namespace
 

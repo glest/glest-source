@@ -19,10 +19,9 @@ parts:
   glest:
     plugin: cmake
     configflags:
+      - "-DCMAKE_INSTALL_PREFIX=/usr"
       - "-DBUILD_MAP_EDITOR=OFF"
       - "-DBUILD_MODEL_VIEWER=OFF"
-      - "-DINSTALL_DIR_BIN=/usr/bin/"
-      - "-DINSTALL_DIR_DATA=/share/glest/"
     source-type: git
     source: https://github.com/glest/glest-source.git
     #source-type: local
@@ -95,10 +94,9 @@ parts:
   glest-data:
     plugin: cmake
     configflags:
-      - "-DINSTALL_DIR_BIN=/usr/bin/"
-      - "-DINSTALL_DIR_DATA=/share/glest/"
-      - "-DINSTALL_DIR_DESKTOP=/share/applications/"
-      - "-DINSTALL_DIR_ICON=/share/glest/"
+      - "-DCMAKE_INSTALL_PREFIX=/usr"
+      - "-DBUILD_MAP_EDITOR=OFF"
+      - "-DBUILD_MODEL_VIEWER=OFF"
     #source-type: local
     #source: glest-data
     source-type: git
