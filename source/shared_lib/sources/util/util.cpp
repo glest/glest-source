@@ -876,10 +876,15 @@ namespace Shared {
 			}
 		}
 
-#ifdef __linux__
+#ifdef __unix__
         std::string getExecPath() {
             char buff[PATH_MAX];
+#ifdef __linux__
             ssize_t len = ::readlink("/proc/self/exe", buff, sizeof(buff)-1);
+#else
+            // e.g. for FreeBSD with procfs installed.
+            ssize_t len = ::readlink("/proc/curproc/file", buff, sizeof(buff)-1);
+#endif // __linux__
             if (len != -1) {
                   buff[len] = '\0';
                   return std::string(buff);
@@ -901,17 +906,12 @@ namespace Shared {
         }
 
 
-#if defined(DATADIR) && defined(BINDIR)
+#if defined(DATADIR) && defined(BINDIR) && defined(__unix__)
         string getDatPath() {
             string curPath = getExecPath();
-            printf("\n binary Path: %s", curPath.c_str());
             const string subBinPath = endPathWithSlash(formatPath(TOSTRING(BINDIR))) + "glest";
-            printf("\n binary Path: %s", subBinPath.c_str());
             eraseSubStr(curPath, subBinPath);
-            printf("\n path now: %s", curPath.c_str());
             string datPath = curPath + endPathWithSlash(TOSTRING(DATADIR));
-            printf("\n what is this???: %s", TOSTRING(DATADIR));
-            printf("\n data path: %s", datPath.c_str());
             return datPath;
         }
 #endif

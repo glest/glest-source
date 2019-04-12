@@ -264,7 +264,7 @@ namespace Game {
 #endif
 
 
-#if defined(DATADIR) && defined(BINDIR)
+#if defined(DATADIR) && defined(BINDIR) && defined(__unix__)
         if ((foundPath == false)) {
 			currentpath = getDatPath();
 			foundPath = tryCustomPath(cfgType, fileName, currentpath);

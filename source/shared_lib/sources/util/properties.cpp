@@ -53,7 +53,7 @@ namespace Shared {
 	namespace Util {
 
 		string Properties::applicationPath = "";
-#if defined(DATADIR) && defined(BINDIR)
+#if defined(DATADIR) && defined(BINDIR) && defined(__unix__)
         string Properties::applicationDataPath = getDatPath();
 #else
         string Properties::applicationDataPath = "";
