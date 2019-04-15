@@ -7,21 +7,33 @@ description: |
   Glest is a free real-time strategy game.
 
 grade: devel # must be 'stable' to release into candidate/stable channels
-confinement: devmode # use 'strict' once you have the right plugs and slots
+confinement: strict # use 'strict' once you have the right plugs and slots
 
 apps:
-  glest:
+  Glest:
+    desktop: usr/share/applications/io.glest.Glest.desktop
     command: glest
-    environment: 
+    environment:
       LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio
+    plugs:
+      - network
+      - network-bind
+      - home
+      - opengl
+      - pulseaudio
+      - x11
+
+  Glest.mapeditor:
+    command: glest_editor
+
+  Glest.g3dviewer:
+    command: glest_g3dviewer
       
 parts:
   glest:
     plugin: cmake
     configflags:
       - "-DCMAKE_INSTALL_PREFIX=/usr"
-      - "-DBUILD_MAP_EDITOR=OFF"
-      - "-DBUILD_MODEL_VIEWER=OFF"
     source-type: git
     source: https://github.com/glest/glest-source.git
     #source-type: local
@@ -95,8 +107,6 @@ parts:
     plugin: cmake
     configflags:
       - "-DCMAKE_INSTALL_PREFIX=/usr"
-      - "-DBUILD_MAP_EDITOR=OFF"
-      - "-DBUILD_MODEL_VIEWER=OFF"
     #source-type: local
     #source: glest-data
     source-type: git
