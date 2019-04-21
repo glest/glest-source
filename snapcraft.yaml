@@ -10,7 +10,7 @@ grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: strict # use 'strict' once you have the right plugs and slots
 
 apps:
-  Glest:
+  glest:
     desktop: usr/share/applications/io.glest.Glest.desktop
     command: glest
     environment:
@@ -23,10 +23,10 @@ apps:
       - pulseaudio
       - x11
 
-  Glest.mapeditor:
+  glest.mapeditor:
     command: glest_editor
 
-  Glest.g3dviewer:
+  glest.g3dviewer:
     command: glest_g3dviewer
       
 parts:
