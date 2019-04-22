@@ -56,7 +56,6 @@ Then run the following command to start the game:
 
 3. Building manually using CMake: https://github.com/glest/glest-source/blob/master/BUILD.md
 
-
 For other operating systems, you must [**build and install from
 source**](https://github.com/Glest/glest-source/blob/master/BUILD.md)
 (Later, we'll be providing binary packages).
@@ -69,8 +68,8 @@ source**](https://github.com/Glest/glest-source/blob/master/BUILD.md)
 * [FAQ](https://glest.io/docs/faq.html)
 * [Compiling](https://github.com/Glest/glest-source/blob/master/BUILD.md)
 * [Contributing and Testing](https://github.com/Glest/glest-source#contributing-and-testing)
+* [Updating](https://github.com/Glest/glest-source/blob/master/UPDATING.md)
 * [ChangeLog](https://github.com/Glest/glest-source/blob/master/ChangeLog.md)
-* [Detailed information about units in the game](https://glest.io/docs)
 
 ### Extra Tech trees, mods, tilesets, scenarios
 
