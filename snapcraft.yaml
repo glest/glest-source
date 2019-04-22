@@ -25,9 +25,19 @@ apps:
 
   Glest-mapeditor:
     command: glest_editor
+    plugs:
+      - home
+      - opengl
+      - pulseaudio
+      - x11
 
   Glest-g3dviewer:
     command: glest_g3dviewer
+    plugs:
+      - home
+      - opengl
+      - pulseaudio
+      - x11
       
 parts:
   glest:
