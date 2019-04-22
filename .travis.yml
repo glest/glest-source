@@ -54,22 +54,21 @@ before_install:
   - $CXX --version
   - cmake --version
 
-script:
-# ALL THE BUILD COMMANDS HERE
-# version 6 skipped here. Below, it's used to test use of FORCE_EMBEDDED_LIBS option
-  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ] && [ $Tr_Compiler_Version != "6" ]; then
+script: |
+    # ALL THE BUILD COMMANDS HERE
+    # version 6 skipped here. Below, it's used to test use of FORCE_EMBEDDED_LIBS option
+    if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ] && [ $Tr_Compiler_Version != "6" ]; then
         mkdir build;
         cd build;
         cmake .. -DCMAKE_INSTALL_PREFIX=/usr;
-
     fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" != "" ]; then
+    if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" != "" ]; then
         mkdir build;
         cd build;
         cmake .. -DCMAKE_INSTALL_PREFIX=/usr;
         make && make install;
     fi
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+    if [ "$TRAVIS_OS_NAME" = "osx" ]; then
         mkdir build;
         cd build;
         cmake .. -DCMAKE_INSTALL_PREFIX=/usr;
@@ -77,13 +76,13 @@ script:
         echo 'Dependencies:';
         otool -L glest;
     fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ] && [ $Tr_Compiler_Version = "6" ]; then
+    if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ] && [ $Tr_Compiler_Version = "6" ]; then
         mkdir build;
         cd build;
         cmake ..  -DFORCE_EMBEDDED_LIBS=ON -DCMAKE_INSTALL_PREFIX=/usr;
         make && make install;
     fi
-  - make -j$(nproc) && make install DESTDIR=../Glest;
+    make -j$(nproc) && make install DESTDIR=../Glest;
     cd ..;
     rm -rf build;
     git clone https://github.com/glest/glest-data.git;
