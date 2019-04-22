@@ -30,8 +30,8 @@ Three distro-agnostic options are available for Glest on linux:
 
 1. [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/glest)
 
-2. Download the AppImage here: https://drive.google.com/file/d/1vi4SdX97y_xjZ-8EQTf7n62jugkTqROc/view?usp=sharing
-       To run, set the `.AppImage` file to executable with `chmod +x Glest*.AppImage`, then just execute it.
+2. Download the AppImage here: https://github.com/glest/glest-source/releases
+       To run, set the `.AppImage` file to executable with `chmod +x Glest.AppImage`, then just execute it.
 
 3. Install using Flatpak: https://github.com/glest/io.glest.Glest
 
