@@ -60,8 +60,29 @@ script:
   - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" = "" ] && [ $Tr_Compiler_Version != "6" ]; then
         mkdir build;
         cd build;
-        cmake ..  -DCMAKE_INSTALL_PREFIX=$PWD/local;
-        make && make install;
+        cmake .. -DCMAKE_INSTALL_PREFIX=/usr;
+        make -j$(nproc) && make install DESTDIR=../Glest;
+        cd ..;
+        rm -rf build;
+        git clone https://github.com/glest/glest-data.git;
+        mkdir build;
+        cd build;
+        cmake ../glest-data -DCMAKE_INSTALL_PREFIX=/usr;
+        make && make install DESTDIR=../Glest;
+        cd ..;
+        rm -rf build;
+        # Remove useless metainfo.
+        rm Glest/usr/share/metainfo/io.glest.Editor.appdata.xml;
+        find Glest/;
+        export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/pulseaudio/:/usr/lib/i386-linux-gnu/pulseaudio/:$LD_LIBRARY_PATH
+        wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+        chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+        unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
+        export VERSION="2.0" # linuxdeployqt uses this for naming the file
+        ./linuxdeployqt-continuous-x86_64.AppImage Glest/usr/share/applications/io.glest.Glest.desktop -appimage
+        
+# Remove useless metainfo.
+rm Glest/usr/share/metainfo/io.glest.Editor.appdata.xml
     fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$(echo "$CC" | grep 'clang')" != "" ]; then
         mkdir build;
@@ -96,3 +117,25 @@ notifications:
     on_failure: change
     template:
       - "[%{repository_name}#%{branch}@%{commit}] %{author}: %{message} %{build_url}"
+      
+      
+after_success:
+  # find appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq # for debugging
+  # curl --upload-file APPNAME*.AppImage https://transfer.sh/APPNAME-git.$(git rev-parse --short HEAD)-x86_64.AppImage
+  - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+  - bash upload.sh Glest*.AppImage*
+  
+  # Notify discord.
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $WEBHOOK_URL
+  
+after_failure:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL
+
+branches:
+  except:
+    - # Do not build tags that we create when we upload to GitHub Releases
+    - /^(?i:continuous)/

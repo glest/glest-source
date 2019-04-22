@@ -25,6 +25,8 @@ apps:
 
   Glest-mapeditor:
     command: glest_editor
+    environment:
+      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio
     plugs:
       - home
       - opengl
@@ -33,6 +35,8 @@ apps:
 
   Glest-g3dviewer:
     command: glest_g3dviewer
+    environment:
+      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio
     plugs:
       - home
       - opengl
