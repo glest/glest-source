@@ -134,21 +134,7 @@ discuss them on the ticket.
 It's possible to work on two or more different patches (and therefore multiple branches) at
 one time, but it's recommended that beginners only work on one patch at a time.
 
-For devs only: To update a release, make sure to update the following:
-
-- The GitHub Content and releases of:
-	- glest-source (+ AppImage release)
-	- glest-data
-	- windows-binaries
-	- windows-installer
-	- windows-installer-src
-	- io.glest.Glest (+ Flatpak release)
-
-- Update Readme of repos
-
-- The Website:
-	- glest.io (version.txt)
-	- glest.github.io (version.txt)
+See [Updating.md](https://github.com/glest/glest-source/blob/master/UPDATING.md) for instructions on how to update.
 
 ### Syncing ###
 Periodically, especially before starting a new patch, you'll need to sync your
