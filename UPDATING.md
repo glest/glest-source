@@ -13,3 +13,5 @@ For devs only: To update a release, make sure to update the following:
 - The Website:
 	- glest.io (version.txt)
 	- glest.github.io (version.txt)
+
+- The version number in snapcraft.yaml, io.glest.Glest.json and .travis.yml
