@@ -23,11 +23,25 @@ apps:
       - pulseaudio
       - x11
 
-  Glest.mapeditor:
+  Glest-mapeditor:
     command: glest_editor
+    environment:
+      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio
+    plugs:
+      - home
+      - opengl
+      - pulseaudio
+      - x11
 
-  Glest.g3dviewer:
+  Glest-g3dviewer:
     command: glest_g3dviewer
+    environment:
+      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio
+    plugs:
+      - home
+      - opengl
+      - pulseaudio
+      - x11
       
 parts:
   glest:
@@ -111,5 +125,7 @@ parts:
     #source: glest-data
     source-type: git
     source: https://github.com/glest/glest-data.git
-
+    override-build: |
+      snapcraftctl build
+      sed -i 's|Icon=glest|Icon=/usr/share/icons/hicolor/256x256/apps/glest\.png|' $SNAPCRAFT_PART_INSTALL/usr/share/applications/io.glest.Glest.desktop
     

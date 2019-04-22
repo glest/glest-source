@@ -24,7 +24,7 @@ echo
 echo "Getting and installing data..."
 ../../linux/clone-data.sh
 
-cmake -DCMAKE_INSTALL_PREFIX=/usr ../../linux/../data
+cmake -DCMAKE_INSTALL_PREFIX=/usr ../../linux/build/data
 make && make install DESTDIR=../Glest
 cd ..
 rm -rf build
@@ -45,4 +45,4 @@ chmod +x linuxdeploy-x86_64.AppImage
 chmod +x Glest*.AppImage
 
 echo
-echo "done!"
+echo "Done!"
