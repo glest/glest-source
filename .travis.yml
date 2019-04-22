@@ -81,28 +81,29 @@ script: |
         cmake ..  -DFORCE_EMBEDDED_LIBS=ON -DCMAKE_INSTALL_PREFIX=/usr;
     fi
     
-    make -j$(nproc) && make install DESTDIR=../Glest;
-    cd ..;
-    rm -rf build;
-    # Get the data for the appimage build.
-    git clone https://github.com/glest/glest-data.git;
-    mkdir build;
-    cd build;
-    cmake ../glest-data -DCMAKE_INSTALL_PREFIX=/usr;
-    make && make install DESTDIR=../Glest;
-    cd ..;
-    rm -rf build;
-    # Remove useless metainfo.
-    rm Glest/usr/share/metainfo/io.glest.Editor.appdata.xml;
-    find Glest/;
-    # Build the appimage.
-    export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/pulseaudio/:/usr/lib/i386-linux-gnu/pulseaudio/:$LD_LIBRARY_PATH;
-    wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage";
-    chmod a+x linuxdeployqt-continuous-x86_64.AppImage;
-    unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH;
-    export VERSION="2.0"; # linuxdeployqt uses this for naming the file
-    ./linuxdeployqt-continuous-x86_64.AppImage Glest/usr/share/applications/io.glest.Glest.desktop -appimage;
-
+    if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+        make -j$(nproc) && make install DESTDIR=../Glest;
+        cd ..;
+        rm -rf build;
+        # Get the data for the appimage build.
+        git clone https://github.com/glest/glest-data.git;
+        mkdir build;
+        cd build;
+        cmake ../glest-data -DCMAKE_INSTALL_PREFIX=/usr;
+        make && make install DESTDIR=../Glest;
+        cd ..;
+        rm -rf build;
+        # Remove useless metainfo.
+        rm Glest/usr/share/metainfo/io.glest.Editor.appdata.xml;
+        find Glest/;
+        # Build the appimage.
+        export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/pulseaudio/:/usr/lib/i386-linux-gnu/pulseaudio/:$LD_LIBRARY_PATH;
+        wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage";
+        chmod a+x linuxdeployqt-continuous-x86_64.AppImage;
+        unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH;
+        export VERSION="2.0"; # linuxdeployqt uses this for naming the file
+        ./linuxdeployqt-continuous-x86_64.AppImage Glest/usr/share/applications/io.glest.Glest.desktop -appimage;
+    fi
 # https://docs.travis-ci.com/user/notifications/#IRC-notification
 notifications:
   irc:
