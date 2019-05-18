@@ -250,11 +250,11 @@ namespace Shared {
 							//printf("In [%s::%s] Line :%d\n",extractFileFromDirectoryPath(__FILE__).c_str(),__FUNCTION__,__LINE__);
 							codeLocation = "g";
 							if (global_window) {
-								MouseButton b = getMouseButton(event.button.button);
+								MouseButton b = getMouseButton(SDL_BUTTON(event.button.button));
 								setMouseState(b, false);
 
 								global_window->eventMouseUp(event.button.x,
-									event.button.y, getMouseButton(event.button.button));
+									event.button.y, getMouseButton(SDL_BUTTON(event.button.button)));
 							}
 							break;
 						}
@@ -680,7 +680,7 @@ namespace Shared {
 
 			if (SystemFlags::getSystemSettingType(SystemFlags::debugSystem).enabled) SystemFlags::OutputDebug(SystemFlags::debugSystem, "In [%s::%s Line: %d]\n", extractFileFromDirectoryPath(__FILE__).c_str(), __FUNCTION__, __LINE__);
 
-			MouseButton button = getMouseButton(event.button.button);
+			MouseButton button = getMouseButton(SDL_BUTTON(event.button.button));
 
 			Uint32 ticks = SDL_GetTicks();
 			int n = (int) button;
