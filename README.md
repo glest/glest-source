@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/glest/glest-source.svg?branch=master)](https://travis-ci.com/glest/glest-source)
+[![Build Status](https://travis-ci.org/glest/glest-source.svg?branch=master)](https://travis-ci.org/glest/glest-source)
 [![Snap Status](https://build.snapcraft.io/badge/glest/glest-source.svg)](https://build.snapcraft.io/user/glest/glest-source)
 
 # Glest
