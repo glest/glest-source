@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED( VERSION 2.8.2 )
+CMAKE_MINIMUM_REQUIRED( VERSION 3.6.0 )
 PROJECT( Glest )
 
 # The Glest CMakeLists is not supported on Windows. To compile on Windows, please use
@@ -87,7 +87,7 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 	# GCC specific Compiler Options
 	ELSE()
 		ADD_DEFINITIONS("-frounding-math -fsignaling-nans")
-	
+
 		IF((NOT CMAKE_GENERATOR STREQUAL Xcode) AND (NOT MINGW))
 			# Debug compiler flags
 			SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -no-pie -fno-pie")
@@ -193,7 +193,7 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 		MESSAGE(STATUS "Using snapcraft path...")
 		ADD_DEFINITIONS("-DSNAPCRAFT")
 	ENDIF()
-	
+
 	IF(NOT CMAKE_INSTALL_PREFIX)
         SET(CMAKE_INSTALL_PREFIX "/usr")
     ENDIF()
